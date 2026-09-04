@@ -1,4 +1,4 @@
-# Depth-Guided Video Bokeh
+# OPPO Depth-Guided Video Bokeh
 
 低帧率深度引导的端到端视频虚化统一框架研究。
 
