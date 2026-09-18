@@ -1,0 +1,338 @@
+OPPO Depth-Guided Video Bokeh
+当前技术路线理解整理
+
+首先整个网络的输入大致可以分成两部分。
+
+第一部分是原始的高帧率 RGB 视频。
+
+第二部分是原始的低帧率 Depth 视频。除了深度值 D 之外，每一帧 Depth 还可以带上 Mask 和 Confidence。这里 Mask 更准确地说是表示这个位置有没有有效、可用的深度信息，例如遮挡、匹配失败、空洞区域可以记为无效；Confidence 则表示这个有效深度到底有多可信，可以来自双目算法本身的置信度，也可以根据左右一致性、重投影误差或者一些统计量得到。
+
+所以 Depth 这一侧实际上不只是单纯的一张深度图，而可以理解成：
+
+[D, M, C]
+
+其中 D 是深度，M 是有效性，C 是置信度。
+
+然后先进行一个比较初步的时间对齐。因为 RGB 的帧率高于 Depth，所以 RGB 中会存在很多没有对应真实 Depth 的帧。这里可以先通过比较简单的插值、平滑或者时间戳对齐的方法，把低帧率 Depth 补到和 RGB 相同的时间轴上。
+
+不过这里的作用主要还是先解决“哪一帧对应哪一帧”的问题，并不代表已经把人物运动、遮挡这些问题处理好了。后面 Token Merging 里提到的时序传播，可能还会继续处理更精细的运动对应。
+
+完成初步对齐之后，RGB 和 Depth 分别经过自己的 Embedding 层转成 Token。
+
+这里我目前还有第一个问题。
+
+        Q1：Depth 转成 Token 的时候，D、M、C 到底应该怎么进去？
+        
+        是直接把：
+        
+        [D, M, C]
+        
+        看成类似三通道图像一样，一起送进一个 Depth Embedding？
+        
+        还是：
+        
+        Depth → Depth Embedding
+        Mask → 单独编码
+        Confidence → 单独编码
+               ↓
+        最后再进行融合
+        
+        或者 Mask 只负责控制哪些 Token 可以参与后续计算，Confidence 则作为权重去调节 Depth feature？
+        
+        现在计划书只是说明了 Depth 会带 Validity Mask 和 Confidence Encoding，但具体怎样和 Depth Token 融合还没有确定，这一点后面需要看相关 RGB-D、Depth Completion、Confidence-aware Depth 方法是怎么做的。
+        
+        RGB 和 Depth Token 得到之后，还需要通过一层比较小的 Projection Network，把两种 Token 映射到统一的特征空间，然后再加入共享的位置编码。
+        
+        位置编码里面至少包括：
+        
+        (x, y, t)
+        
+        也就是这个 Token 在图像中的横向位置、纵向位置，以及它属于视频中的哪个时间点。
+        
+        这里还有第二个问题。
+        
+        Q2：为什么 RGB Token 和 Depth Token 还需要投影到相同维度？它们的图像大小不是已经一样了吗？
+        
+        这里需要区分一下：
+        
+        空间尺寸一样，不代表 Token 的特征维度一定一样。
+        
+        例如 RGB 的一个 Patch 是：
+        
+        P × P × 3
+        
+        而 Depth 如果包含 D、M、C，原始输入通道和 RGB 也不一样。
+        
+        更重要的是，RGB Embedding 和 Depth Embedding 本来就是两个不同的网络，它们完全可以分别输出：
+        
+        F_RGB ∈ R^(N×C1)
+        
+        和
+        
+        F_D ∈ R^(N×C2)
+        
+        虽然二者的 Token 数量 N 可以相同，但是：
+        
+        C1 ≠ C2
+        
+        仍然是完全可能的。
+        
+        所以这里的小 Projection Network 主要解决的不是图像尺寸，而是：
+        
+        让 RGB 和 Depth 的特征进入同一个 Feature Space，方便后面做融合和 Attention。
+        
+        最后可以统一成：
+        
+        F_RGB, F_D ∈ R^(N×C)
+        
+        再加入相同形式的 (x, y, t) 位置编码。
+
+接下来进入 Token Merging。
+
+按照目前方案，我觉得这里实际上混合了两个作用。
+
+第一个作用是：
+
+把低帧率 Depth 中的几何信息，更准确地传播到高帧率 RGB 对应的 Token 上。
+
+第二个作用才是：
+
+把空间中比较重复、信息量比较低的 Token 合并掉，从而减少后面 Video Transformer 的计算量。
+
+也就是说 Token Merging 里面其实包含：
+
+Temporal / Cross-modal Propagation
++
+Spatial Token Compression
+
+这两件事情虽然都叫 Merging，但目的不完全一样。
+
+这里就是第三个目前比较关键的问题。
+
+Q3：前面不是已经把 Depth 插值到和 RGB 相同帧率了吗？为什么这里还需要再次“对齐”？
+
+我现在的理解是：
+
+前面的插值主要解决的是：
+
+Depth frame number
+        ↓
+和 RGB 时间轴一致
+
+例如原本只有：
+
+D1       D4
+
+先补成：
+
+D1  D2'  D3'  D4
+
+但是这个 D2'、D3' 可能只是一个比较粗的估计。
+
+假如人物从左边走到了右边，仅仅进行时间插值并不能保证：
+
+D1(x1, y1)
+
+里面属于这个人物的几何信息，已经正确传播到了：
+
+D2(x2, y2)
+
+所以 Token Merging 这一阶段更像是利用：
+
+- 时间信息
+- Optical Flow
+- RGB 内容
+- Depth feature
+- Confidence
+
+进一步学习：
+
+“前后帧里面哪些 Token 实际上对应的是同一个物体或者同一个空间区域？”
+
+不过这里不能提前假定一定需要再单独训练一个“小网络”做 correspondence。
+
+因为也有可能前面的 Depth 插值本身就已经利用了 Optical Flow 或 learned warping，那么运动对应的一部分可能已经在插值阶段完成了。
+
+所以这里真正需要后面调研的是：
+
+原始低帧率 Depth
+        ↓
+时间插值 / Flow Warp / Learned Propagation
+        ↓
+当前帧 Depth Representation
+        ↓
+RGB-Depth Token Fusion
+
+这些操作在已有方法中到底是分开的，还是联合学习的。
+
+另外 Spatial Token Merging 又是另一件事。
+
+例如大面积天空、墙面、平坦背景中，很多 Token 可能包含非常相似的信息，这些 Token 可以考虑合并，从而把：
+
+N → N'
+
+减少后面 Attention 的计算量。
+
+但是人物边缘、头发、深度突变这些区域就不能随便合并，因为这些地方恰好是 Depth 和 Alpha 最需要保留的细节。
+
+所以这里未来还需要继续研究：
+
+Temporal Depth Propagation 和 Spatial Token Merging 到底应该由一个模块统一完成，还是分别设计。
+
+目前不能简单理解成“训练一个小网络同时把这两件事情全部解决”。
+
+经过前面的 RGB-Depth Fusion 和 Token Merging 之后，把得到的 Token 输入 Video Transformer。
+
+这里 Video Transformer 的主要作用是进一步进行时空建模。
+
+为了避免直接对整个视频所有 Token 做完整 Attention 导致计算量太大，可以把 Attention 拆成：
+
+Spatial Attention
++
+Temporal Attention
+
+也就是先在单帧内部建立空间关系，再在不同帧之间建立时间关系。
+
+大致可以理解为：
+
+同一帧里：
+人物、背景、边缘之间是什么关系？
+
+不同帧里：
+这些特征随时间怎样变化？
+
+这样可以在控制计算量的同时，让网络获得一个统一的时空共享特征表示。
+
+这里 Video Transformer 的输出仍然只是 Feature，不是最终 Depth、Alpha 或 Bokeh。
+
+然后这些共享特征进入三个轻量的 Decoder Head。
+
+分别输出：
+
+D
+
+Alpha
+
+以及：
+
+Bokeh
+
+其中 Depth 主要描述场景的几何关系，最终决定不同区域应该有多大的模糊程度。
+
+Alpha 主要负责人物、头发、半透明边缘这些区域的前景 / 背景覆盖关系。
+
+这里需要注意的是，Alpha 并不直接决定“谁一定保持清晰”，真正的清晰程度还是应该由：
+
+Depth
++
+Focus Distance
++
+Camera Parameters
+
+共同决定。
+
+Alpha 更像是在边界处告诉 Renderer：
+
+“这个像素里前景和背景各占多少。”
+
+然后利用：
+
+原始 RGB
++
+预测 Depth
++
+预测 Alpha
++
+相机 / 对焦参数
+
+先通过 Physical Renderer 得到一个基础虚化结果。
+
+这里大致就是：
+
+RGB + D + Alpha
+→
+B_physical
+
+不过这一步现在还有一个没有彻底解决的问题，就是仅有 Alpha 是否已经足够处理发丝边缘，因为经典合成公式：
+
+I_out = alpha * F + (1 - alpha) * B_blur
+
+除了 Alpha 之外实际上还需要前景颜色 F 和虚化后的背景颜色 B_blur。所以这个地方后面还需要结合 Matting 和 Bokeh Rendering 文献继续确认。
+
+第三个 Bokeh Head 我目前更倾向于把它理解成：
+
+不是完全重新生成一张虚化图，而是学习修正基础物理 Renderer 无法很好模拟的部分。
+
+例如：
+
+- 高光
+- 光斑形状
+- Cat-eye
+- 边缘过渡
+- 真实镜头的一些非理想效应
+
+所以可以写成：
+
+B_final = B_physical + ΔB_neural
+
+其中：
+
+ΔB_neural
+
+就是 Bokeh Head 学到的修正量。
+
+这样相比于完全 Neural Rendering，还有一个优点：
+
+焦距、光圈、对焦距离这些参数仍然可以直接修改，而不一定需要重新跑整个网络。
+
+最后整个系统进行端到端训练。
+
+整体数据流现在可以先理解成：
+
+High-FPS RGB Video
+        │
+        ├── RGB Embedding ─────────────┐
+        │                              │
+Low-FPS Depth Video                    │
+D + Mask + Confidence                  │
+        │                              │
+Temporal Alignment / Interpolation     │
+        │                              │
+Depth Embedding                        │
+        │                              │
+        └──── Projection / Position Encoding
+                        │
+                        ▼
+             RGB-Depth Token Fusion
+                        │
+                        ▼
+                 Token Merging
+          ┌─────────────┴─────────────┐
+          │                           │
+Temporal Depth Propagation    Spatial Token Reduction
+          │                           │
+          └─────────────┬─────────────┘
+                        ▼
+               Video Transformer
+                        │
+                Shared Feature
+          ┌─────────────┼─────────────┐
+          ▼             ▼             ▼
+     Depth Head     Alpha Head    Bokeh Head
+          │             │             │
+          ▼             ▼             │
+        Depth          Alpha           │
+          │             │             │
+          └──────┬──────┘             │
+                 ▼                    │
+       Physical Bokeh Renderer        │
+                 │                    │
+                 └─────────┬──────────┘
+                           ▼
+                     Final Bokeh
+
+所以如果把现在的理解压缩成一句话，就是：
+
+利用低帧率粗 Depth 给高帧率 RGB 提供几何先验，通过时序传播和视频 Transformer 得到统一的时空特征，再联合预测高帧率 Depth、Alpha 和 Bokeh 修正量，最后结合物理 Renderer 完成可控的视频虚化，并进行端到端联合训练。
+
+目前这版理解已经基本把主干数据流理顺了。接下来最值得做的不是继续凭感觉补模块，而是带着这里的 Q1、Q2、Q3 去读文献——尤其 Q1 的 D/M/C 编码、Q3 的低帧率 Depth propagation，会直接决定前半部分网络到底怎么落地。
