@@ -165,6 +165,7 @@ VEPI + Qualitative Video
 | Dr.Bokeh |  |  |  |  |  |  |  |
 | MPIB |  |  |  |  |  |  |  |
 | Any-to-Bokeh |  |  |  |  |  |  |  |
+| BokehCrafter* |  |  |  |  |  |  |  |
 | Ours |  |  |  |  |  |  |  |
 
 第一轮尽量沿用 Any-to-Bokeh 正式论文的 baseline 集合，保证评价协议一致。
@@ -177,9 +178,13 @@ VEPI + Qualitative Video
 
 | Method | Resolution | Frames | Core Time ↓ | E2E Time ↓ | FPS ↑ | Peak VRAM ↓ | Params |
 |---|---|---:|---:|---:|---:|---:|---:|
+| DeepLens | 1024×576 | 25 |  |  |  |  |  |
+| Dr.Bokeh | 1024×576 | 25 |  |  |  |  |  |
 | BokehMe | 1024×576 | 25 |  |  |  |  |  |
 | MPIB | 1024×576 | 25 |  |  |  |  |  |
+| BokehDiff | 1024×576 | 25 |  |  |  |  |  |
 | Any-to-Bokeh | 1024×576 | 25 |  |  |  |  |  |
+| BokehCrafter* | 1024×576 | 25 |  |  |  |  |  |
 | Ours | 1024×576 | 25 |  |  |  |  |  |
 
 统一要求：
@@ -226,9 +231,13 @@ Final Video
 
 | Method | VEPI ↑ | Qualitative Video | Hair / Thin Edge | Temporal Artifact |
 |---|---:|---|---|---|
+| DeepLens |  |  |  |  |
+| Dr.Bokeh |  |  |  |  |
 | BokehMe |  |  |  |  |
 | MPIB |  |  |  |  |
+| BokehDiff |  |  |  |  |
 | Any-to-Bokeh |  |  |  |  |
+| BokehCrafter* |  |  |  |  |
 | Ours |  |  |  |  |
 
 其中 Hair / Thin Edge 与 Temporal Artifact 第一阶段只做定性观察，不自行构造 1～5 分“伪定量指标”。
@@ -731,3 +740,141 @@ MagicBokeh：
 - Mask → Attention；
 - Geometry Robustness；
 - Alternating Multi-task Training。
+
+
+---
+
+# 12. 当前核心 Baseline：为什么选这 7 个
+
+当前计划将以下 7 个方法作为主要对比对象，再加上 Ours：
+
+| Method | 代表路线 | 为什么要选 | 重点比较什么 |
+|---|---|---|---|
+| **DeepLens** | 单帧学习式 Bokeh / Neural Rendering | 代表较早期的学习式 Bokeh 路线，可作为从传统单帧学习方法到后续几何/生成式方法的参考基线 | 单帧重建质量、边缘保持、逐帧应用到视频后的 temporal artifact |
+| **Dr.Bokeh** | Physical RGBD / Occlusion-aware Rendering | 代表强物理模型与显式遮挡处理 | 物理可控性、Depth Boundary、partial occlusion、color bleeding，以及与 Ours 的 neural correction 是否带来额外收益 |
+| **BokehMe** | Physical + Neural Hybrid | 与本项目“Physical Renderer + Neural Residual”思想最接近 | 混合物理/神经路线的视觉收益、边缘 artifact、真实感与效率 |
+| **MPIB** | MPI / Explicit Layered Geometry | 代表显式多平面/分层几何和遮挡建模 | Layered Geometry 对边缘和遮挡的处理，以及与我们 Depth + Alpha 分层思路的差异 |
+| **BokehDiff** | One-step Diffusion / Generative Bokeh | 代表现代生成式 Bokeh 与强图像先验 | LPIPS/FVD 等感知质量、复杂边缘/高光表现，以及生成式路线与物理可控路线的质量-效率权衡 |
+| **Any-to-Bokeh** | Video + Explicit Geometry + Temporal Modeling | 与我们的 Video Bokeh 任务最接近，也是当前最重要 baseline | 视频时序一致性、Geometry 条件利用、动态 Focus、Depth/Disparity Error 鲁棒性 |
+| **BokehCrafter*** | Video Diffusion | 代表以 Video Diffusion / Temporal Prior 直接生成 Bokeh Video 的路线 | FVD、FD、RM、Dynamic Focus、长视频 temporal consistency，以及与显式 Geometry Video 方法的差异 |
+| **Ours** | Low-FPS Depth-guided Video + Depth/Alpha + Hybrid Rendering | 本项目 | Low-FPS coarse Depth 条件下的最终 Bokeh 质量、时序、边缘、效率及鲁棒性 |
+
+`* BokehCrafter` 只有在能够获得可运行的官方实现 / checkpoint，并能在与其他方法相同的 Benchmark 和评价协议上产生结果时，才进入正式定量主表。
+
+---
+
+# 13. 为什么不是“越多 Baseline 越好”
+
+当前 Baseline 的选择原则不是简单追求数量，而是覆盖主要技术范式，并确保每个方法都有明确比较价值：
+
+```text
+DeepLens
+→ 单帧学习式 Neural Bokeh
+
+Dr.Bokeh
+→ 强 Physical / RGBD Renderer
+
+BokehMe
+→ Physical + Neural Hybrid
+
+MPIB
+→ Explicit Layered Geometry
+
+BokehDiff
+→ One-step Generative / Diffusion
+
+Any-to-Bokeh
+→ Geometry-guided Video Bokeh
+
+BokehCrafter
+→ Video Diffusion / Temporal Prior
+
+Ours
+→ Low-FPS Depth-guided Video + Dense Geometry/Alpha + Hybrid Rendering
+```
+
+这样主实验可以回答的不只是“谁的 PSNR 更高”，而是：
+
+1. **纯物理模型 vs 神经模型**：真实感、边缘和效率如何权衡？
+2. **显式 Geometry vs Generative Prior**：哪类方法在可控性、边界质量和感知质量上更有优势？
+3. **逐帧单图方法 vs 原生 Video 方法**：Temporal Modeling 到底带来多少收益？
+4. **High-FPS / Per-frame Geometry vs Low-FPS Coarse Depth**：我们的核心输入设定是否能在更弱几何条件下保持竞争力？
+5. **纯生成 Bokeh vs Physical + Neural Hybrid**：强生成先验是否值得其额外计算成本？
+6. **Layered / Occlusion-aware Rendering vs Alpha-assisted Hybrid Rendering**：边缘和遮挡问题由哪种表示处理得更好？
+
+---
+
+# 14. 每类 Baseline 最重点看的指标
+
+不同方法最值得关注的指标并不完全一样，但正式主表仍使用统一指标。
+
+## 14.1 DeepLens / Dr.Bokeh / BokehMe / MPIB
+
+这些方法如果逐帧用于视频，需要重点观察：
+
+- PSNR ↑；
+- SSIM ↑；
+- LPIPS ↓；
+- VEPI ↑；
+- FD ↓；
+- RM ↓；
+- 实际视频中的 flicker。
+
+这里最关键的问题是：
+
+> 单帧效果好，是否意味着连续视频也稳定？
+
+---
+
+## 14.2 BokehDiff
+
+重点：
+
+- LPIPS ↓；
+- FVD ↓；
+- 边缘 / Highlight / Hair 的视觉质量；
+- Core Time / FPS；
+- Peak VRAM。
+
+这里重点回答：
+
+> 强生成先验是否提升感知真实感，以及这种提升付出了多少效率和可控性成本。
+
+---
+
+## 14.3 Any-to-Bokeh / BokehCrafter
+
+重点：
+
+- FVD ↓；
+- VFID-I ↓；
+- FD ↓；
+- RM ↓；
+- Dynamic Focus；
+- Temporal Artifact；
+- 长视频稳定性；
+- Runtime / VRAM。
+
+它们是与我们最关键的视频级对比。
+
+---
+
+## 14.4 Ours
+
+除统一主表外，需要重点增加：
+
+- Low-FPS Depth 不同采样率；
+- Coarse Depth Noise；
+- Mask / Confidence；
+- Depth / Alpha Boundary；
+- E2E Runtime；
+- Peak VRAM。
+
+也就是说，我们最终不只要回答：
+
+> Ours 的 Bokeh 是否更好？
+
+还要回答：
+
+> 在只有低帧率、带噪粗 Depth 的更困难输入条件下，是否仍然能获得稳定、可控且高质量的视频 Bokeh？
+
