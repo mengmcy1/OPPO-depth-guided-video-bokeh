@@ -878,3 +878,467 @@ Ours
 
 > 在只有低帧率、带噪粗 Depth 的更困难输入条件下，是否仍然能获得稳定、可控且高质量的视频 Bokeh？
 
+
+
+---
+
+# 15. Baseline 的输入类型：单图逐帧 vs 原生视频
+
+当前核心 baseline 并不都是“输入视频并做跨帧时序建模”。
+
+需要明确区分：
+
+| Method | 原生输入形式 | 原生视频模型 | 视频实验中的使用方式 |
+|---|---|---:|---|
+| **DeepLens** | 单张 RGB + Depth / Estimated Depth + Focus/Aperture Control | ❌ | 对视频逐帧独立处理 |
+| **Dr.Bokeh** | 单张 RGB + Depth + Lens / Focus Parameters | ❌ | 对视频逐帧独立渲染 |
+| **BokehMe** | 单张 All-in-Focus RGB + Disparity + Focus Disparity + Blur Strength (K) | ❌ | 对视频逐帧独立处理 |
+| **MPIB** | 单张 All-in-Focus RGB + Disparity + Focus Disparity + Blur Strength (K) | ❌ | 对视频逐帧独立处理 |
+| **BokehDiff** | 单张 All-in-Focus RGB + Geometry / Defocus Control | ❌ | 对视频逐帧独立处理 |
+| **Any-to-Bokeh** | RGB Video + Per-frame Disparity / Depth + Focus Target / Focus Plane + Blur Strength | ✅ | 原生视频输入，并进行 temporal modeling |
+| **BokehCrafter** | All-in-Focus Video + Reference Bokeh Image + Text Instruction | ✅ | 原生视频输入，并进行 temporal modeling |
+| **Ours** | High-FPS RGB Video + Low-FPS Coarse Depth + Validity Mask / Confidence + Focus / Camera Parameters | ✅ | 原生视频输入，并显式利用低帧率几何先验 |
+
+因此目前可以把对比方法简单理解为：
+
+[
+5 个单图/逐帧方法
++
+2 个原生 Video 方法
++
+Ours
+]
+
+这组设计能够直接比较：
+
+[
+Frame	ext{-}wise Processing
+quad vs quad
+Temporal Video Modeling
+]
+
+---
+
+# 16. 各 Baseline 输入说明
+
+## 16.1 DeepLens
+
+典型输入可以理解为：
+
+```text
+Single RGB Image
++
+Depth / Estimated Depth
++
+Focus / Aperture Control
+        ↓
+DeepLens
+        ↓
+Bokeh Image
+```
+
+它本质上是单图学习式浅景深方法。
+
+用于视频 Benchmark 时，需要逐帧运行：
+
+```text
+RGB_t + Depth_t
+↓
+DeepLens
+↓
+Bokeh_t
+```
+
+它本身没有跨帧 temporal modeling。
+
+---
+
+## 16.2 Dr.Bokeh
+
+典型输入：
+
+```text
+RGB
++
+Depth
++
+Focus / Lens Parameters
+        ↓
+Occlusion-aware Physical Renderer
+        ↓
+Bokeh
+```
+
+核心特点不是学习视频时序，而是利用显式 Geometry 处理：
+
+- partial occlusion；
+- depth discontinuity；
+- foreground/background color bleeding。
+
+用于视频时同样是逐帧渲染。
+
+---
+
+## 16.3 BokehMe
+
+典型输入：
+
+```text
+All-in-Focus RGB
++
+Disparity Map
++
+Focus Disparity
++
+Blur Strength K
+        ↓
+BokehMe
+        ↓
+Bokeh Image
+```
+
+其中：
+
+- Disparity 决定场景相对深度；
+- Focus Disparity 决定焦平面；
+- (K) 控制虚化强度。
+
+视频实验中逐帧输入对应 RGB / Disparity。
+
+---
+
+## 16.4 MPIB
+
+输入形式与 BokehMe 类似：
+
+```text
+All-in-Focus RGB
++
+Disparity
++
+Focus Disparity
++
+Blur Strength K
+        ↓
+MPI Representation / Layered Rendering
+        ↓
+Bokeh Image
+```
+
+区别主要在内部表示：
+
+> MPIB 将 Geometry 显式转换为 Multi-Plane Image（多平面图像）/ layered representation，以增强 partial occlusion 和前后景关系处理。
+
+因此它非常适合和我们未来的：
+
+```text
+Depth
++
+Alpha / Layer Information
+```
+
+做结构层面对比。
+
+---
+
+## 16.5 BokehDiff
+
+典型输入可概括为：
+
+```text
+All-in-Focus RGB
++
+Geometry / Depth-dependent Defocus Control
+        ↓
+One-step Diffusion
+        ↓
+Bokeh Image
+```
+
+它仍然属于单图方法。
+
+其核心价值在于：
+
+> 使用生成式先验，在显式 Bokeh / CoC 约束下恢复更真实的 lens blur appearance。
+
+视频比较时只能逐帧运行，除非额外引入 temporal module。
+
+---
+
+## 16.6 Any-to-Bokeh
+
+这是与我们最接近的输入结构之一：
+
+```text
+RGB Video
++
+Per-frame Disparity / Depth
++
+Focus Target / Focus Plane
++
+Blur Strength
+        ↓
+Spatial Geometry Modeling
++
+Temporal Module
+        ↓
+Bokeh Video
+```
+
+关键点：
+
+> 它基本假设每一帧已经具有可用的 Geometry。
+
+因此它和我们最大的输入差异在于：
+
+```text
+Any-to-Bokeh:
+High-FPS RGB
++
+Per-frame / High-FPS Geometry
+
+Ours:
+High-FPS RGB
++
+Low-FPS Coarse Depth
+```
+
+这也是我们 Q3：
+
+[
+Low	ext{-}FPS Depth
+ightarrow
+High	ext{-}FPS Geometry
+]
+
+的核心来源。
+
+---
+
+## 16.7 BokehCrafter
+
+其输入和传统 Depth-guided 方法明显不同：
+
+```text
+All-in-Focus Video
++
+Reference Bokeh Image
++
+Text Instruction
+        ↓
+Video Diffusion
+        ↓
+Bokeh Video
+```
+
+其中：
+
+- All-in-Focus Video 提供场景内容；
+- Reference Bokeh Image 提供 Bokeh appearance / blur style；
+- Text Instruction 提供控制语义。
+
+因此它虽然是原生 Video Bokeh 方法，但并不依赖显式 Depth / Disparity 输入。
+
+这意味着：
+
+> BokehCrafter 可以作为“Video Generative Prior”路线的对照，但与我们并不是完全相同的输入条件。
+
+---
+
+## 16.8 Ours
+
+当前设想输入：
+
+```text
+High-FPS RGB Video
++
+Low-FPS Coarse Depth
++
+Depth Validity Mask
++
+Depth Confidence
++
+Focus / Camera Parameters
+        ↓
+Temporal Geometry Propagation
++
+Video Transformer
+        ↓
+High-FPS Depth
++
+Alpha
++
+Physical Renderer
++
+Neural Residual
+        ↓
+Final Video Bokeh
+```
+
+我们的核心输入特征是：
+
+> Geometry 存在，但它是低帧率、粗糙且可能带错误的真实 Depth Prior。
+
+因此本项目不是简单的：
+
+```text
+RGB Video → Bokeh Video
+```
+
+也不是：
+
+```text
+RGB + Perfect Per-frame Depth → Bokeh
+```
+
+而是：
+
+[
+High	ext{-}FPS RGB
++
+Low	ext{-}FPS Noisy Geometry
+ightarrow
+High	ext{-}FPS Stable Bokeh
+]
+
+---
+
+# 17. 为什么单图方法仍然值得放进 Video Benchmark
+
+单图方法逐帧应用时：
+
+```text
+Frame t-1 → Bokeh Model → Output t-1
+Frame t   → Bokeh Model → Output t
+Frame t+1 → Bokeh Model → Output t+1
+```
+
+不同帧之间没有直接的信息交互。
+
+即使每一帧单独看起来质量很好，连续播放时仍可能出现：
+
+- Depth Error 在不同帧间跳动；
+- Subject Boundary flicker；
+- Hair / Thin Structure 抖动；
+- Blur Radius 不连续；
+- Focus Boundary 跳变。
+
+而原生 Video 方法：
+
+```text
+Frame t-1
+Frame t
+Frame t+1
+   ↓
+Temporal Module / Temporal Attention
+   ↓
+Video Output
+```
+
+能够显式利用跨帧信息。
+
+因此主表同时保留单图逐帧方法和原生 Video 方法，可以回答：
+
+> **Temporal Modeling 本身到底带来了多少收益？**
+
+---
+
+# 18. 公平比较需要区分两种 Geometry Protocol
+
+我们的真实输入条件为：
+
+[
+RGB_{highfps}
++
+Depth_{lowfps}^{coarse}
+]
+
+而部分 baseline 原本假设每一帧都已有：
+
+[
+RGB_t + Depth_t
+]
+
+或：
+
+[
+RGB_t + Disparity_t
+]
+
+因此正式比较时不能：
+
+- 给 baseline 每帧 GT / 高质量 Depth；
+- 同时只给 Ours Low-FPS Coarse Depth。
+
+否则 Geometry 输入条件不公平。
+
+建议未来正式实验分成两套协议。
+
+## Protocol A：Ideal / Per-frame Geometry
+
+所有需要 Geometry 的方法都提供相同质量、相同帧率的 per-frame geometry：
+
+```text
+RGB Video
++
+Per-frame Depth / Disparity
+        ↓
+各方法
+```
+
+主要回答：
+
+> **当 Geometry 已经给定时，各种 Renderer / Video Model 本身谁更好？**
+
+重点比较：
+
+- PSNR；
+- SSIM；
+- LPIPS；
+- VEPI；
+- FVD；
+- FD；
+- RM；
+- Runtime。
+
+---
+
+## Protocol B：OPPO Realistic Low-FPS Coarse Depth
+
+所有方法从真实任务条件出发：
+
+[
+High	ext{-}FPS RGB
++
+Low	ext{-}FPS Coarse Depth
+]
+
+对于原本要求每帧 Depth / Disparity 的 baseline，统一使用相同的前处理：
+
+```text
+Low-FPS Coarse Depth
+        ↓
+统一的 Depth Interpolation / Propagation
+        ↓
+Per-frame Geometry
+        ↓
+DeepLens / Dr.Bokeh / BokehMe / MPIB / ...
+```
+
+而 Ours 可以直接利用：
+
+```text
+Low-FPS Depth
++
+RGB Temporal Feature
++
+Mask / Confidence
+```
+
+完成 learned temporal geometry propagation。
+
+这套协议主要回答：
+
+> **在真正的 OPPO 输入条件下，我们的一体化 Video Geometry + Bokeh 方法是否比“先补 Depth，再逐帧渲染”的传统 pipeline 更稳定、更准确、更高效？**
+
+这是本项目最终最关键的比较之一。
