@@ -1342,3 +1342,489 @@ Mask / Confidence
 > **在真正的 OPPO 输入条件下，我们的一体化 Video Geometry + Bokeh 方法是否比“先补 Depth，再逐帧渲染”的传统 pipeline 更稳定、更准确、更高效？**
 
 这是本项目最终最关键的比较之一。
+
+
+---
+
+# 19. Benchmark 与指标的对应关系
+
+这一节固定不同 Benchmark 应该计算哪些指标，并区分：
+
+1. **论文原生指标（paper-native metrics）**：原论文在该 Benchmark 上实际报告的指标；
+2. **统一扩展指标（our unified metrics）**：为了让不同算法在统一协议下横向比较，我们额外计算的指标。
+
+不能把“某个指标理论上可以算”与“原论文就是这样评的”混为一谈。
+
+---
+
+## 19.1 多个 paired Benchmark 共用的核心指标
+
+对于存在 paired Bokeh GT 的 Benchmark，统一保留：
+
+| 指标 | 趋势 | 含义 |
+|---|---:|---|
+| PSNR | ↑ | 像素级重建准确性 |
+| SSIM | ↑ | 结构保持 |
+| LPIPS | ↓ | 感知特征相似度 |
+
+因此：
+
+\[
+\boxed{PSNR,\ SSIM,\ LPIPS}
+\]
+
+作为 Any-to-Bokeh Synthetic、VBS 和 OPPO-style Synthetic 的共同画质指标。
+
+---
+
+## 19.2 所有方法共用的效率指标
+
+效率不属于某一个特定 Benchmark，可统一记录：
+
+| 指标 | 趋势 | 含义 |
+|---|---:|---|
+| Core Time | ↓ | 核心模型推理时间 |
+| E2E Time | ↓ | 包含 Depth / Mask 等前处理的完整耗时 |
+| FPS | ↑ | 实际处理帧率 |
+| Peak VRAM | ↓ | 峰值显存 |
+| Params | ↓ | 模型参数量 |
+
+统一测试条件：
+
+- 同一 GPU；
+- 相同分辨率；
+- 相同帧数；
+- batch size = 1；
+- warm-up 后测量；
+- 多次重复取均值。
+
+---
+
+# 20. Any-to-Bokeh Synthetic Benchmark：指标
+
+## 20.1 论文原生指标
+
+Any-to-Bokeh 的 synthetic test set 原生报告：
+
+\[
+\boxed{
+PSNR,\ SSIM,\ LPIPS,\ FVD,\ VFID\text{-}I,\ FD,\ RM
+}
+\]
+
+其中：
+
+- **PSNR ↑**：像素级 fidelity；
+- **SSIM ↑**：结构相似度；
+- **LPIPS ↓**：感知相似度；
+- **FVD ↓**：视频整体分布质量；
+- **VFID-I ↓**：基于 I3D feature 的视频分布距离；
+- **FD ↓**：Flow Difference，比较预测与 GT 的运动/光流关系；
+- **RM ↓**：Relation Metric，比较预测帧间变化与 GT 帧间变化。
+
+RM 的核心不是要求相邻帧不变化，而是：
+
+\[
+Predicted\ Temporal\ Change
+\approx
+GT\ Temporal\ Change
+\]
+
+## 20.2 我们的建议
+
+这一套指标建议全部沿用。
+
+推荐主表：
+
+| Method | PSNR ↑ | SSIM ↑ | LPIPS ↓ | FVD ↓ | VFID-I ↓ | FD ↓ | RM ↓ |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| DeepLens | | | | | | | |
+| Dr.Bokeh | | | | | | | |
+| BokehMe | | | | | | | |
+| MPIB | | | | | | | |
+| BokehDiff | | | | | | | |
+| Any-to-Bokeh | | | | | | | |
+| BokehCrafter* | | | | | | | |
+| Ours | | | | | | | |
+
+---
+
+# 21. VBS Benchmark：指标
+
+VBS 是 BokehCrafter 的视频 Bokeh Benchmark，包含：
+
+- paired Bokeh video；
+- Static Focus；
+- Dynamic Focus；
+- 不同 blur strength。
+
+## 21.1 BokehCrafter 论文原生指标
+
+BokehCrafter 在 VBS 上使用：
+
+\[
+\boxed{
+PSNR,\ SSIM,\ LPIPS
+}
+\]
+
+评价 Bokeh rendering quality。
+
+同时使用专门的 temporal consistency formulation：
+
+\[
+L_{temp}
+=
+\sqrt{
+\frac{1}{N-1}
+\sum_{i=1}^{N-1}
+\left|
+(F_{i+1}^{GT}-F_i^{GT})
+-
+(F_{i+1}^{pred}-F_i^{pred})
+\right|^2
+}
+\]
+
+它比较：
+
+\[
+GT\ frame\text{-}to\text{-}frame\ change
+\]
+
+和：
+
+\[
+Predicted\ frame\text{-}to\text{-}frame\ change
+\]
+
+是否一致。
+
+因此仍体现：
+
+\[
+Temporal\ Consistency
+\neq
+Temporal\ Constancy
+\]
+
+## 21.2 我们在 VBS 上建议使用
+
+### 必须保留原生指标
+
+\[
+\boxed{
+PSNR,\ SSIM,\ LPIPS,\ Temporal\ Consistency
+}
+\]
+
+这样可以和 BokehCrafter 原论文对齐。
+
+### 推荐额外统一计算
+
+如果评价代码能够统一，可额外计算：
+
+\[
+FVD,\ VFID\text{-}I,\ FD,\ RM
+\]
+
+这些应明确标记为：
+
+> our unified evaluation extension
+
+而不是声称 BokehCrafter 原论文全部使用了这些指标。
+
+## 21.3 Static / Dynamic Focus 分组
+
+VBS 最值得单独报告：
+
+| Setting | PSNR ↑ | SSIM ↑ | LPIPS ↓ | Temporal Consistency ↓ | FD ↓ | RM ↓ |
+|---|---:|---:|---:|---:|---:|---:|
+| Static Focus | | | | | | |
+| Dynamic Focus | | | | | | |
+
+目的：
+
+> 检查模型是否会把真实的动态对焦变化错误地压成“稳定但错误”的输出。
+
+---
+
+# 22. DAVIS Real-world Benchmark：指标
+
+DAVIS 是真实视频，没有严格配对的真实 Bokeh GT。
+
+因此不能把 against-Bokeh-GT 的：
+
+- PSNR；
+- SSIM；
+- LPIPS；
+
+作为主指标。
+
+如果 FD / RM 的定义依赖 GT Bokeh temporal change，也不能直接照搬 synthetic benchmark。
+
+## 22.1 原生指标：VEPI
+
+Any-to-Bokeh 在 DAVIS 上使用：
+
+\[
+\boxed{VEPI\uparrow}
+\]
+
+VEPI（Video Edge Preservation Index）主要评价：
+
+- focused subject edge；
+- Hair；
+- Thin Structure；
+- 前景边缘是否被背景 blur 吞噬。
+
+它利用 DAVIS 的 foreground segmentation mask 构造 ROI，并比较原始 focused foreground 与 Bokeh 输出的 Laplacian edge response。
+
+## 22.2 DAVIS 推荐评价方式
+
+第一阶段：
+
+\[
+\boxed{
+VEPI
++
+Qualitative\ Video
++
+Fixed\ Key\ Frames
+}
+\]
+
+后续需要更正式时，再增加：
+
+- blinded user study；
+- MOS / preference study。
+
+第一阶段不要自行构造没有文献依据的“1～5 分 temporal stability”。
+
+## 22.3 固定定性观察项
+
+每段视频建议固定观察：
+
+- Hair / Thin Structure；
+- Foreground Halo；
+- Background Leakage；
+- Color Bleeding；
+- Focus Error；
+- Temporal Flicker；
+- Occlusion / Disocclusion；
+- Camera Motion；
+- Fast Motion。
+
+---
+
+# 23. OPPO-style Low-FPS Coarse Depth Benchmark：指标
+
+这是为了本项目核心输入条件构造的专项 Benchmark：
+
+\[
+High\text{-}FPS\ RGB
++
+Low\text{-}FPS\ Coarse\ Depth
+\]
+
+如果它建立在有完整 GT 的 synthetic data 上，则可以同时拥有：
+
+- Bokeh GT；
+- Full-FPS Depth GT；
+- 可选 Alpha GT。
+
+因此可以同时评价最终 Bokeh 与中间任务。
+
+## 23.1 Final Bokeh
+
+尽量与 Any-to-Bokeh Synthetic 对齐：
+
+\[
+\boxed{
+PSNR,\ SSIM,\ LPIPS,\ FVD,\ VFID\text{-}I,\ FD,\ RM
+}
+\]
+
+这样能够直接观察：
+
+> Depth FPS / Depth Quality 下降以后，最终 Bokeh 如何退化。
+
+## 23.2 Depth 指标
+
+如果有 Full-FPS Depth GT：
+
+| 指标 | 趋势 | 含义 |
+|---|---:|---|
+| AbsRel | ↓ | 相对深度误差 |
+| RMSE | ↓ | 均方根深度误差 |
+| δ1 | ↑ | 阈值内深度像素比例 |
+| Depth Edge Error | ↓ | 深度突变边缘恢复 |
+
+这可以回答：
+
+> Temporal Geometry Propagation 是否真正恢复了高帧率 Geometry。
+
+## 23.3 Alpha 指标
+
+如果存在 Alpha GT：
+
+| 指标 | 趋势 | 含义 |
+|---|---:|---|
+| SAD | ↓ | Alpha absolute difference |
+| MSE | ↓ | Alpha 均方误差 |
+| Gradient Error | ↓ | 发丝/软边缘恢复 |
+| Connectivity Error | ↓ | 前景拓扑/连通性 |
+
+Depth / Alpha 指标单独建表，不与最终 Bokeh 指标混成一张表。
+
+## 23.4 Low-FPS Depth 专项变量
+
+建议 Depth FPS：
+
+\[
+30,\ 15,\ 10,\ 5,\ 2\ fps
+\]
+
+例如：
+
+| Depth FPS | PSNR ↑ | LPIPS ↓ | FVD ↓ | FD ↓ | RM ↓ | Depth AbsRel ↓ |
+|---:|---:|---:|---:|---:|---:|---:|
+| 30 | | | | | | |
+| 15 | | | | | | |
+| 10 | | | | | | |
+| 5 | | | | | | |
+| 2 | | | | | | |
+
+Depth Quality 建议分：
+
+- Clean；
+- Mild；
+- Medium；
+- Severe。
+
+候选退化：
+
+- smooth / Gaussian perturbation；
+- local holes；
+- boundary corruption；
+- dilation / erosion；
+- temporal missing frames；
+- confidence degradation。
+
+可进一步做二维鲁棒性表：
+
+| Depth FPS \ Quality | Clean | Mild | Medium | Severe |
+|---|---:|---:|---:|---:|
+| 30 fps | | | | |
+| 15 fps | | | | |
+| 10 fps | | | | |
+| 5 fps | | | | |
+
+---
+
+# 24. 四个 Benchmark 的指标总表
+
+| Benchmark | PSNR | SSIM | LPIPS | FVD | VFID-I | FD | RM | Temporal Consistency | VEPI | Depth | Alpha |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **Any-to-Bokeh Synthetic** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | — | 可选 | — | — |
+| **VBS** | ✅ | ✅ | ✅ | 推荐扩展 | 推荐扩展 | 推荐扩展 | 推荐扩展 | ✅ 原生 | 可选 | — | — |
+| **DAVIS** | — | — | — | — | — | — | — | 定性为主 | ✅ | — | — |
+| **OPPO-style Synthetic** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | 可选 | 推荐 | ✅ | ✅（若有 GT） |
+
+---
+
+# 25. 最终统一指标层级
+
+## 第一层：所有 paired Bokeh Benchmark 共用
+
+\[
+\boxed{
+PSNR,\ SSIM,\ LPIPS
+}
+\]
+
+回答：
+
+> 最终 Bokeh 的单帧重建质量怎么样？
+
+## 第二层：有 GT 的视频 Benchmark 尽量统一
+
+建议：
+
+\[
+\boxed{
+FVD,\ FD,\ RM
+}
+\]
+
+并在需要与 Any-to-Bokeh 完全对齐时保留：
+
+\[
+VFID\text{-}I
+\]
+
+回答：
+
+> 视频整体质量和 temporal behavior 怎么样？
+
+VBS 同时必须保留 BokehCrafter 原论文的 Temporal Consistency，方便与原论文结果对齐。
+
+## 第三层：专项指标
+
+### DAVIS
+
+\[
+\boxed{VEPI}
+\]
+
+### OPPO-style
+
+\[
+\boxed{
+Depth\ Metrics
++
+Alpha\ Metrics
++
+Depth\ FPS/Noise\ Robustness
+}
+\]
+
+---
+
+# 26. 当前 Benchmark 体系
+
+建议现阶段固定为：
+
+~~~text
+1. Any-to-Bokeh Synthetic
+   → 主定量
+   → PSNR / SSIM / LPIPS
+   → FVD / VFID-I / FD / RM
+
+2. VBS
+   → 第二视频 Benchmark
+   → PSNR / SSIM / LPIPS
+   → BokehCrafter Temporal Consistency
+   → Static / Dynamic Focus 分组
+   → 可选统一 FVD / FD / RM
+
+3. DAVIS
+   → Real-world Generalization
+   → VEPI
+   → Qualitative Video
+   → User Study（后续）
+
+4. OPPO-style Low-FPS Depth
+   → Project-specific Benchmark
+   → Final Bokeh Metrics
+   → Depth Metrics
+   → Alpha Metrics
+   → FPS / Noise Robustness
+~~~
+
+四层分别回答：
+
+1. 标准 paired 场景下做得准不准？
+2. 动态对焦与复杂视频条件下稳不稳？
+3. 真实场景泛化行不行？
+4. Low-FPS + Coarse / Noisy Depth 下，我们的核心创新有没有价值？
