@@ -2029,3 +2029,379 @@ E2E Time：
 
 > 不把 Any-to-Bokeh Synthetic 和 VBS 的样本混成一个数据集，也不把两个数据集的指标简单平均成一个总分。
 
+
+
+---
+
+# 30. Track A / Track B 双轨评价协议
+
+为了把“Bokeh 模型本身的能力”和“Low-FPS Coarse Depth 适应能力”分开评价，当前建议采用两条实验 Track。
+
+---
+
+## Track A：Unified Per-frame Geometry
+
+### 输入条件
+
+对于需要 Geometry 的方法，尽可能提供统一质量、统一帧率的 per-frame Depth / Disparity，并统一：
+
+- Focus Plane；
+- Blur Strength / \(K\)；
+- 分辨率；
+- 视频长度；
+- 评价代码。
+
+示意：
+
+~~~text
+RGB Video
++
+Per-frame Geometry
++
+Focus / Blur Control
+        ↓
+各 Baseline / Ours
+        ↓
+Bokeh Video
+~~~
+
+### 主要回答
+
+> **当 Geometry 条件已经充分提供时，各方法的 Bokeh Rendering / Video Modeling 本身谁更强？**
+
+这里尽量削弱 Geometry 输入质量差异的影响，更关注：
+
+- Renderer；
+- Neural Prior；
+- Occlusion Handling；
+- Temporal Modeling；
+- Boundary Quality；
+- Video Generation Quality。
+
+### 主要指标
+
+- PSNR；
+- SSIM；
+- LPIPS；
+- FVD；
+- FD；
+- RM；
+- VBS 上额外 Temporal Consistency；
+- DAVIS 不属于该 Track 的主要 quantitative 场景。
+
+---
+
+## Track B：Low-FPS Coarse Geometry
+
+### 输入条件
+
+所有方法从更接近本项目真实条件的输入出发：
+
+\[
+High\text{-}FPS\ RGB
++
+Low\text{-}FPS\ Coarse\ Depth
+\]
+
+对于原本需要每帧 Geometry 的 baseline，统一增加相同的 Depth interpolation / propagation preprocessing：
+
+~~~text
+Low-FPS Coarse Depth
+        ↓
+统一 Depth Interpolation / Propagation
+        ↓
+Per-frame Geometry
+        ↓
+Baseline
+~~~
+
+而 Ours 可以直接利用：
+
+~~~text
+High-FPS RGB
++
+Low-FPS Coarse Depth
++
+Mask / Confidence
+        ↓
+Learned Temporal Geometry Propagation
+        ↓
+Depth / Alpha / Bokeh
+~~~
+
+### 主要回答
+
+> **在 Low-FPS、粗糙、可能存在误差的 Geometry 条件下，谁更稳定、更准确？**
+
+这条 Track 才直接对应本项目的核心问题：
+
+\[
+Low\text{-}FPS\ Coarse\ Depth
+\rightarrow
+High\text{-}FPS\ Stable\ Video\ Bokeh
+\]
+
+### 主要指标
+
+最终 Bokeh：
+
+- PSNR；
+- SSIM；
+- LPIPS；
+- FVD；
+- FD；
+- RM。
+
+若有 Geometry GT：
+
+- AbsRel；
+- RMSE；
+- \(\delta_1\)；
+- Depth Edge Error。
+
+若有 Alpha GT：
+
+- SAD；
+- MSE；
+- Gradient Error；
+- Connectivity Error。
+
+同时记录：
+
+- Depth FPS；
+- Depth Noise Level；
+- Core Time；
+- E2E Time；
+- FPS；
+- Peak VRAM。
+
+---
+
+# 31. 哪些 Benchmark 做双 Track
+
+不需要把所有 Benchmark 机械重复两遍。
+
+建议如下：
+
+| Benchmark | Track A：Per-frame Geometry | Track B：Low-FPS Coarse Depth | 说明 |
+|---|:---:|:---:|---|
+| **Any-to-Bokeh Synthetic** | ✅ | ✅ | 有 GT / Geometry，最适合做双 Track |
+| **VBS** | ✅ | ✅ | 有 GT，且可结合 Static / Dynamic Focus |
+| **DAVIS** | ❌ 不作为严格 Track A | ✅ 以真实条件泛化为主 | 无真实 Bokeh GT / Full Geometry GT |
+| **OPPO-style Benchmark** | 可作为参考上限 | ✅ 核心 | 本身就是为 Track B 设计 |
+
+---
+
+# 32. Any-to-Bokeh Synthetic 的双 Track
+
+## Track A
+
+~~~text
+RGB Video
++
+Full / Per-frame Geometry
++
+Focus / K
+        ↓
+各方法
+~~~
+
+回答：
+
+> 如果大家都有完整 Geometry，谁的 Bokeh 本身最好？
+
+---
+
+## Track B
+
+从原本 Full-FPS Geometry 人为降采样：
+
+~~~text
+30 fps Geometry
+↓
+15 / 10 / 5 / 2 fps
+↓
+加入 Noise / Hole / Boundary Error
+↓
+各方法
+~~~
+
+回答：
+
+> Geometry 帧率和质量下降后，各方法性能如何退化？
+
+建议同时画：
+
+\[
+DepthFPS \rightarrow PSNR
+\]
+
+\[
+DepthFPS \rightarrow LPIPS
+\]
+
+\[
+DepthFPS \rightarrow FVD
+\]
+
+\[
+DepthFPS \rightarrow FD/RM
+\]
+
+---
+
+# 33. VBS 的双 Track
+
+## Track A
+
+使用 VBS 原始完整 Geometry / Focus 条件。
+
+主表：
+
+\[
+PSNR,\ SSIM,\ LPIPS,\ FVD,\ FD,\ RM,\ Temporal\ Consistency
+\]
+
+---
+
+## Track B
+
+对 VBS Geometry 做 Low-FPS / Coarse 模拟：
+
+\[
+Full\ Geometry
+\rightarrow
+Low\text{-}FPS\ Geometry
+\]
+
+再分别测试：
+
+- Static Focus；
+- Dynamic Focus。
+
+这样可以额外回答：
+
+> 当 Geometry 本身已经变稀疏时，Dynamic Focus 是否更容易造成时序错误？
+
+---
+
+# 34. DAVIS 不做机械双 Track
+
+DAVIS 的主要职责是：
+
+> **Real-world Generalization**
+
+它没有严格 paired Bokeh GT，也没有天然完整 Geometry GT。
+
+因此不建议强行构造一个“Track A DAVIS”和“Track B DAVIS”并比较全参考指标。
+
+更合适的是：
+
+~~~text
+Real RGB Video
++
+现实可获得的 Geometry / Estimated Geometry
+        ↓
+各方法
+        ↓
+VEPI
++
+Qualitative Video
++
+Fixed Key Frames
+~~~
+
+重点观察：
+
+- Hair；
+- Thin Structure；
+- Halo；
+- Leakage；
+- Flicker；
+- Occlusion；
+- Fast Motion。
+
+---
+
+# 35. OPPO-style Benchmark 的定位
+
+OPPO-style Benchmark 本身就是 Track B 的专项 Benchmark。
+
+核心条件：
+
+\[
+High\text{-}FPS\ RGB
++
+Low\text{-}FPS\ Coarse\ Depth
+\]
+
+因此它不需要再完整复制一个 Track A。
+
+可以保留 Full-FPS / Clean Geometry 结果作为：
+
+> Upper-bound / Reference Setting
+
+但主要实验仍放在：
+
+- Depth FPS；
+- Depth Noise；
+- Missing Geometry；
+- Confidence；
+- Boundary Error；
+
+这些真实问题上。
+
+---
+
+# 36. 双 Track 的最终作用
+
+两个 Track 分别回答不同科学问题：
+
+## Track A
+
+\[
+\boxed{
+\text{Bokeh Rendering / Video Modeling 本身谁更强？}
+}
+\]
+
+尽量控制 Geometry 输入差异。
+
+## Track B
+
+\[
+\boxed{
+\text{Low-FPS Coarse Geometry 条件下谁更强？}
+}
+\]
+
+直接验证本项目的核心贡献。
+
+因此两个 Track 都做是有价值的，但不是简单把所有 Benchmark 复制两遍，而是：
+
+~~~text
+Any-to-Bokeh Synthetic
+├── Track A
+└── Track B
+
+VBS
+├── Track A
+└── Track B
+    └── Dynamic Focus 专项
+
+DAVIS
+└── Real-world Generalization
+
+OPPO-style
+└── Track B Core Benchmark
+~~~
+
+这样可以把：
+
+> Geometry 条件差异
+
+与：
+
+> Bokeh 模型 / Temporal Modeling 能力差异
+
+尽可能分开分析。
