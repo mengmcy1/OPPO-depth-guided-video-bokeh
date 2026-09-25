@@ -1828,3 +1828,204 @@ Depth\ FPS/Noise\ Robustness
 2. 动态对焦与复杂视频条件下稳不稳？
 3. 真实场景泛化行不行？
 4. Low-FPS + Coarse / Noisy Depth 下，我们的核心创新有没有价值？
+
+
+---
+
+# 27. VBS 主表与 Dynamic Focus 专项评测的最终组织方式
+
+当前决定：
+
+> **VBS 本身作为一个完整 Benchmark，不再把 Dynamic Focus 单独称为新的 Benchmark。**
+
+VBS 内部包含：
+
+- S-Focus：Static Focus；
+- D-Focus：Dynamic Focus。
+
+因此：
+
+~~~text
+VBS Benchmark
+│
+├── Static Focus samples
+└── Dynamic Focus samples
+~~~
+
+Dynamic Focus 的定位是：
+
+> **VBS Dynamic-Focus Subset Evaluation / VBS 动态对焦专项评测**
+
+而不是一个独立的新 Benchmark。
+
+---
+
+# 28. 最终 Benchmark 表格模板
+
+## Table 1：Any-to-Bokeh Synthetic
+
+统一使用六个核心指标：
+
+\[
+PSNR,\ SSIM,\ LPIPS,\ FVD,\ FD,\ RM
+\]
+
+| Method | PSNR ↑ | SSIM ↑ | LPIPS ↓ | FVD ↓ | FD ↓ | RM ↓ |
+|---|---:|---:|---:|---:|---:|---:|
+| DeepLens |  |  |  |  |  |  |
+| Dr.Bokeh |  |  |  |  |  |  |
+| BokehMe |  |  |  |  |  |  |
+| MPIB |  |  |  |  |  |  |
+| BokehDiff |  |  |  |  |  |  |
+| Any-to-Bokeh |  |  |  |  |  |  |
+| BokehCrafter* |  |  |  |  |  |  |
+| **Ours** |  |  |  |  |  |  |
+
+说明：
+
+- PSNR / SSIM / LPIPS：最终 Bokeh 单帧质量；
+- FVD：整段视频的总体分布质量；
+- FD：预测与 GT 的运动/光流关系差异；
+- RM：预测帧间变化与 GT 帧间变化的一致性；
+- BokehCrafter* 只有在能够在同一 Benchmark 上运行时进入正式定量表。
+
+---
+
+## Table 2：VBS
+
+前六个指标与 Any-to-Bokeh Synthetic 保持一致，并额外增加 VBS / BokehCrafter 原生使用的 Temporal Consistency：
+
+| Method | PSNR ↑ | SSIM ↑ | LPIPS ↓ | FVD ↓ | FD ↓ | RM ↓ | Temporal Consistency ↓ |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| DeepLens |  |  |  |  |  |  |  |
+| Dr.Bokeh |  |  |  |  |  |  |  |
+| BokehMe |  |  |  |  |  |  |  |
+| MPIB |  |  |  |  |  |  |  |
+| BokehDiff |  |  |  |  |  |  |  |
+| Any-to-Bokeh |  |  |  |  |  |  |  |
+| BokehCrafter |  |  |  |  |  |  |  |
+| **Ours** |  |  |  |  |  |  |  |
+
+说明：
+
+- PSNR / SSIM / LPIPS：paired Bokeh reconstruction；
+- FVD / FD / RM：为了与 Any-to-Bokeh Synthetic 统一而额外计算；
+- Temporal Consistency：保留 BokehCrafter / VBS 的原生时序评价方式。
+
+因此 VBS 主表可以同时满足：
+
+1. 与 Any-to-Bokeh Synthetic 横向使用相同的六个指标；
+2. 与 BokehCrafter 原论文保持 Temporal Consistency 的可比性。
+
+---
+
+## Table 3：VBS Focus-type Analysis
+
+Dynamic Focus 不作为新 Benchmark，而是 VBS 内部的专项子集分析。
+
+优先比较真正具有 Video Temporal Modeling 的方法：
+
+| Method | Focus Setting | PSNR ↑ | SSIM ↑ | LPIPS ↓ | FD ↓ | RM ↓ | Temporal Consistency ↓ |
+|---|---|---:|---:|---:|---:|---:|---:|
+| Any-to-Bokeh | Static |  |  |  |  |  |  |
+| Any-to-Bokeh | Dynamic |  |  |  |  |  |  |
+| BokehCrafter | Static |  |  |  |  |  |  |
+| BokehCrafter | Dynamic |  |  |  |  |  |  |
+| **Ours** | Static |  |  |  |  |  |  |
+| **Ours** | Dynamic |  |  |  |  |  |  |
+
+重点回答：
+
+> 当 Focus Plane 随时间真实变化时，模型能否既保留正确的 Focus Transition，又避免错误 Flicker？
+
+这里检验的是：
+
+\[
+Temporal\ Consistency
+\neq
+Temporal\ Constancy
+\]
+
+---
+
+## Table 4：DAVIS Real-world
+
+DAVIS 没有 paired Bokeh GT，因此不强行计算 against-GT 的 PSNR / SSIM / LPIPS。
+
+| Method | VEPI ↑ | Hair / Thin Structure | Halo / Leakage | Temporal Flicker | Qualitative Video |
+|---|---:|---|---|---|---|
+| DeepLens |  |  |  |  |  |
+| Dr.Bokeh |  |  |  |  |  |
+| BokehMe |  |  |  |  |  |
+| MPIB |  |  |  |  |  |
+| BokehDiff |  |  |  |  |  |
+| Any-to-Bokeh |  |  |  |  |  |
+| BokehCrafter* |  |  |  |  |  |
+| **Ours** |  |  |  |  |  |
+
+其中：
+
+- VEPI 是主要量化指标；
+- Hair / Thin Structure、Halo / Leakage、Temporal Flicker 第一阶段作为固定 qualitative checklist；
+- 后续如需量化真实视频主观质量，再增加 blinded user study / MOS。
+
+---
+
+## Table 5：Efficiency
+
+所有算法尽可能在统一硬件、分辨率和帧数下重新测量：
+
+| Method | Resolution | Frames | Core Time ↓ | E2E Time ↓ | FPS ↑ | Peak VRAM ↓ | Params ↓ |
+|---|---|---:|---:|---:|---:|---:|---:|
+| DeepLens | 1024×576 | 25 |  |  |  |  |  |
+| Dr.Bokeh | 1024×576 | 25 |  |  |  |  |  |
+| BokehMe | 1024×576 | 25 |  |  |  |  |  |
+| MPIB | 1024×576 | 25 |  |  |  |  |  |
+| BokehDiff | 1024×576 | 25 |  |  |  |  |  |
+| Any-to-Bokeh | 1024×576 | 25 |  |  |  |  |  |
+| BokehCrafter* | 1024×576 | 25 |  |  |  |  |  |
+| **Ours** | 1024×576 | 25 |  |  |  |  |  |
+
+Core Time：
+
+> 只统计核心网络 / Renderer 的计算时间。
+
+E2E Time：
+
+> 包含 Depth Estimation、Mask Extraction、Geometry Preprocessing、核心模型与 Renderer 的完整 pipeline 时间。
+
+---
+
+# 29. 当前 Benchmark Suite 的最终层级
+
+~~~text
+1. Unified Paired Video Bokeh Benchmark Suite
+   │
+   ├── Set A: Any-to-Bokeh Synthetic
+   │      └── PSNR / SSIM / LPIPS / FVD / FD / RM
+   │
+   └── Set B: VBS
+          ├── PSNR / SSIM / LPIPS / FVD / FD / RM
+          ├── + Temporal Consistency
+          └── Dynamic Focus Subset 专项分析
+
+2. DAVIS
+   └── Real-world Generalization
+       VEPI + Qualitative Video
+
+3. OPPO-style Low-FPS Coarse Depth Benchmark
+   └── Project-specific
+       Final Bokeh + Depth + Alpha + FPS/Noise Robustness
+~~~
+
+“Unified”指：
+
+- 统一输出格式；
+- 统一核心评价代码；
+- 统一六个主指标；
+- 尽可能统一输入预处理；
+
+但：
+
+> 不把 Any-to-Bokeh Synthetic 和 VBS 的样本混成一个数据集，也不把两个数据集的指标简单平均成一个总分。
+
