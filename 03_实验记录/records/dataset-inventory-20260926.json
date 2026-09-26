@@ -1,0 +1,52 @@
+{
+  "date": "2026-09-26",
+  "sources": "configs/dataset-sources.json",
+  "datasets": {
+    "AM-2k": {
+      "train": 1800,
+      "validation": 200,
+      "official_manifest_files": 7803,
+      "all_present": true,
+      "original_mask_names_dimensions_match": true,
+      "foreground_alpha_pairs": 1800,
+      "validation_trimaps": 200,
+      "raw_GiB": 3.999924061819911
+    },
+    "BG-20k": {
+      "original": "https://github.com/JizhiziLi/GFM",
+      "mirror": "https://huggingface.co/datasets/unography/BG-20k",
+      "retrieval_endpoint": "https://hf-mirror.com",
+      "split_mapping": {
+        "train": "train",
+        "test": "testval"
+      },
+      "counts": {
+        "train": 15000,
+        "testval": 5000
+      },
+      "validation": "Exact original filename sets; first shard matched decoded pixels of 207 official images. Existing official files preserved.",
+      "complete": true,
+      "raw_GiB": 13.154445607215166
+    },
+    "VideoMatte240K": {
+      "train_pairs": 479,
+      "test_pairs": 5,
+      "format": "full-resolution HEVC",
+      "read_check": "1080p train and 4K test foreground/alpha samples decoded successfully",
+      "raw_GiB": 4.676770519465208
+    },
+    "DAVIS-2017": {
+      "train_sequences": 60,
+      "val_sequences": 30,
+      "frames": 6208,
+      "resolution_folder": "Full-Resolution",
+      "scope": "Full-resolution TrainVal only",
+      "raw_GiB": 2.7881287448108196
+    }
+  },
+  "unavailable_or_deferred": {
+    "Any-to-Bokeh official synthetic test": "No verified public download found",
+    "VBS/BokehCrafter": "Deferred by current protocol/user"
+  },
+  "free_GiB": 601.4008102416992
+}

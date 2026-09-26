@@ -1,0 +1,35 @@
+{
+  "DAVIS-2017": {
+    "official_page": "https://davischallenge.org/davis2017/code.html",
+    "download": "https://data.vision.ee.ethz.ch/csergi/share/davis/DAVIS-2017-trainval-Full-Resolution.zip",
+    "local": "data/raw/DAVIS-2017/DAVIS",
+    "scope": "Full-resolution TrainVal, 60 train and 30 val sequences; no bokeh ground truth"
+  },
+  "VideoMatte240K": {
+    "official_page": "https://grail.cs.washington.edu/projects/background-matting-v2/#/datasets",
+    "download": "https://drive.google.com/file/d/1z-KDuqk1g7-H94iGXDrpZGpexN9jizbQ/view",
+    "local": "data/raw/VideoMatte240K_HEVC/VideoMatte240K",
+    "format": "Full-resolution HEVC in a tar archive, 479 train and 5 test foreground/alpha video pairs",
+    "note": "Official JPEG HD is decoded from the HEVC version; do not download both unnecessarily"
+  },
+  "AM-2k": {
+    "official_page": "https://github.com/JizhiziLi/GFM",
+    "download": "https://drive.google.com/drive/folders/1SReB9Zma0TDfDhow7P5kiZNMwY9j9xMA",
+    "agreement": "https://jizhizili.github.io/files/gfm_datasets_agreements/AM-2k_Dataset_Release_Agreement.pdf",
+    "local": "data/raw/AM-2k",
+    "expected_files": 7803,
+    "scope": "1800 train originals/masks/estimated foregrounds/backgrounds; 200 validation originals/masks/trimaps; 3 documentation files",
+    "note": "Use an official folder listing and public Google Drive download URLs; no login credentials required for the retrieved files"
+  },
+  "BG-20k": {
+    "official_page": "https://github.com/JizhiziLi/GFM",
+    "download": "https://drive.google.com/drive/folders/1ZBaMJxZtUNHIuGj8D8v3B9Adn8dbHwSS",
+    "agreement": "https://jizhizili.github.io/files/gfm_datasets_agreements/BG-20k_Dataset_Release_Agreement.pdf",
+    "mirror": "https://huggingface.co/datasets/unography/BG-20k",
+    "retrieval_endpoint": "https://hf-mirror.com",
+    "local": "data/raw/BG-20k",
+    "scope": "15000 train and 5000 testval images; mirror test maps to official testval",
+    "validation": "Original filename sets checked; 207 existing official images matched decoded mirror pixels. Mirror is not claimed to be author-hosted.",
+    "mirror_revision": "189ef62d6ae2cfbb6d1d410a726ab26f168cd16e"
+  }
+}
