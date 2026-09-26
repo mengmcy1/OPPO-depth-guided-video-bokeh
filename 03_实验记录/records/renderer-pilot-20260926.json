@@ -1,0 +1,364 @@
+{
+  "decision": "Blender Cycles / OptiX / 1024 samples as main reference renderer for the next benchmark stage; Dr.Bokeh as cross-check",
+  "status": "5 development scenes only; final benchmark not frozen",
+  "metrics": {
+    "scope": "5 development scenes; one prediction per scene evaluated against two references; not official test scores",
+    "metrics": {
+      "PSNR": "mean frame PSNR, RGB sRGB [0,1]",
+      "SSIM": "Gaussian sigma1.5, RGB, skimage population covariance",
+      "LPIPS": "squeeze v0.1, RGB [-1,1]",
+      "FD": "torchvision RAFT-large C_T_SKHT_V2, full resolution, mean L1 flow difference over 24 transitions",
+      "RM": "mean absolute difference of predicted and reference frame differences over all 24 transitions",
+      "FVD": "not reported: 5 clips insufficient for stable distribution comparison"
+    },
+    "rows": [
+      {
+        "scene": "scene_000",
+        "renderer": "Dr.Bokeh",
+        "PSNR": 30.388258743286134,
+        "SSIM": 0.958187198638916,
+        "LPIPS": 0.03865325853228569,
+        "FD": 0.01566934531244139,
+        "RM": 0.0032770654652267694,
+        "FVD": null
+      },
+      {
+        "scene": "scene_000",
+        "renderer": "Blender Cycles",
+        "PSNR": 30.393083572387695,
+        "SSIM": 0.9585358715057373,
+        "LPIPS": 0.043048426359891895,
+        "FD": 0.01574113379077365,
+        "RM": 0.0036971529480069876,
+        "FVD": null
+      },
+      {
+        "scene": "scene_001",
+        "renderer": "Dr.Bokeh",
+        "PSNR": 29.38326539993286,
+        "SSIM": 0.9767521238327026,
+        "LPIPS": 0.03171279229223728,
+        "FD": 0.012449120404198766,
+        "RM": 0.003448497736826539,
+        "FVD": null
+      },
+      {
+        "scene": "scene_001",
+        "renderer": "Blender Cycles",
+        "PSNR": 29.38595724105835,
+        "SSIM": 0.9766785049438477,
+        "LPIPS": 0.037415333241224286,
+        "FD": 0.012566304920862118,
+        "RM": 0.004049023147672415,
+        "FVD": null
+      },
+      {
+        "scene": "scene_002",
+        "renderer": "Dr.Bokeh",
+        "PSNR": 39.45724058151245,
+        "SSIM": 0.992195405960083,
+        "LPIPS": 0.012468302324414253,
+        "FD": 0.018345409965453047,
+        "RM": 0.0026881389785557985,
+        "FVD": null
+      },
+      {
+        "scene": "scene_002",
+        "renderer": "Blender Cycles",
+        "PSNR": 39.32461061477661,
+        "SSIM": 0.9924015140533448,
+        "LPIPS": 0.0124726078286767,
+        "FD": 0.017355259934750695,
+        "RM": 0.0033578986767679453,
+        "FVD": null
+      },
+      {
+        "scene": "scene_003",
+        "renderer": "Dr.Bokeh",
+        "PSNR": 34.550564002990725,
+        "SSIM": 0.967791051864624,
+        "LPIPS": 0.041266776770353314,
+        "FD": 0.035888599193034075,
+        "RM": 0.003639972535893321,
+        "FVD": null
+      },
+      {
+        "scene": "scene_003",
+        "renderer": "Blender Cycles",
+        "PSNR": 33.66473598480225,
+        "SSIM": 0.9621223211288452,
+        "LPIPS": 0.04959876149892807,
+        "FD": 0.03824851017755767,
+        "RM": 0.003487154608592391,
+        "FVD": null
+      },
+      {
+        "scene": "scene_004",
+        "renderer": "Dr.Bokeh",
+        "PSNR": 31.53068971633911,
+        "SSIM": 0.9850953936576843,
+        "LPIPS": 0.014350433945655822,
+        "FD": 0.03172111697494984,
+        "RM": 0.004888603929430246,
+        "FVD": null
+      },
+      {
+        "scene": "scene_004",
+        "renderer": "Blender Cycles",
+        "PSNR": 31.527483654022216,
+        "SSIM": 0.9857757019996644,
+        "LPIPS": 0.013482380844652652,
+        "FD": 0.026028214876229566,
+        "RM": 0.00511628994718194,
+        "FVD": null
+      }
+    ],
+    "mean": {
+      "Dr.Bokeh": {
+        "PSNR": 33.062003688812254,
+        "SSIM": 0.9760042347908021,
+        "LPIPS": 0.02769031277298927,
+        "FD": 0.022814718370015426,
+        "RM": 0.003588455729186535
+      },
+      "Blender Cycles": {
+        "PSNR": 32.859174213409425,
+        "SSIM": 0.9751027827262879,
+        "LPIPS": 0.031203501954674716,
+        "FD": 0.021987884740034738,
+        "RM": 0.003941503865644336
+      }
+    }
+  },
+  "checks": {
+    "independent_seed": {
+      "PSNR": 57.16125965118408,
+      "MAE": 0.0006977050215937197
+    },
+    "convergence_4096": {
+      "PSNR": 59.21465873718262,
+      "MAE": 0.0005511429626494646
+    },
+    "bokeh_dr": {
+      "frames": 125,
+      "total_seconds": 405.1346719544381,
+      "mean_seconds": 3.2410773756355047,
+      "median_seconds": 2.6797623969614506
+    },
+    "cycles_optix_s1024_f0.945244": {
+      "frames": 125,
+      "total_seconds": 303.30634313076735,
+      "mean_seconds": 2.4264507450461386,
+      "median_seconds": 2.2031638994812965
+    },
+    "notes": [
+      "Dr timing includes core and transfers but excludes PNG IO; Cycles includes render and PNG IO. These are pilot costs, not standardized Table 3 measurements.",
+      "Some original Dr frames overlapped calibration probes; use only as approximate cost."
+    ]
+  },
+  "calibration": {
+    "Dr.Bokeh": {
+      "effective_radius_px": 5.707908957035791,
+      "profile": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0006070545641705394,
+        0.009134060703217983,
+        0.05448010563850403,
+        0.13286888599395752,
+        0.22696639597415924,
+        0.33245202898979187,
+        0.44520193338394165,
+        0.5583380460739136,
+        0.6653871536254883,
+        0.7758200764656067,
+        0.8713682889938354,
+        0.9473034739494324,
+        0.9910975098609924,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "Cycles": {
+      "effective_radius_px": 5.395365455034556,
+      "profile": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0011597862467169762,
+        0.03768879547715187,
+        0.11594801396131516,
+        0.2132083922624588,
+        0.32310518622398376,
+        0.44034457206726074,
+        0.5595393776893616,
+        0.6765569448471069,
+        0.7868399620056152,
+        0.8846674561500549,
+        0.9622474312782288,
+        0.9986812472343445,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "fstop_scale": 0.9452437829065262,
+    "calibrated_cycles_radius_px": 5.701970754626039,
+    "relative_radius_error": 0.0010403463780606081
+  },
+  "config": {
+    "width": 1024,
+    "height": 576,
+    "frames": 25,
+    "scenes": 5,
+    "seed": 20260926,
+    "K": 16.0,
+    "focal_length_mm": 50.0,
+    "sensor_width_mm": 36.0,
+    "foreground_depth_m": 2.0,
+    "background_depth_m": 6.0,
+    "cycles_samples": 1024,
+    "note": "Renderer development pilot using AM-2k training foregrounds; exclude these assets from final held-out evaluation. Geometry is constructed planar geometry, not real scene depth.",
+    "cycles_fstop_scale": 0.945244,
+    "calibration_scope": "K=16, camera 50mm/36mm, foreground focus 2m, background 6m; edge-spread second moment matched; not a universal mapping across depths/K",
+    "foreground_files": [
+      "data/raw/AM-2k/train/fg/m_00308c60.png",
+      "data/raw/AM-2k/train/fg/m_003d01f4.png",
+      "data/raw/AM-2k/train/fg/m_00420d1e.png",
+      "data/raw/AM-2k/train/fg/m_004fa5c7.png",
+      "data/raw/AM-2k/train/fg/m_008cd4af.png"
+    ],
+    "background_files": [
+      "data/raw/BG-20k/testval/h_0006a281.jpg",
+      "data/raw/BG-20k/testval/h_00226e0d.jpg",
+      "data/raw/BG-20k/testval/h_00241c18.jpg",
+      "data/raw/BG-20k/testval/h_0029c18d.jpg",
+      "data/raw/BG-20k/testval/h_00577a09.jpg"
+    ]
+  },
+  "input_validation": [
+    {
+      "scene": "scene_000",
+      "frames": 25,
+      "shape": [
+        576,
+        1024
+      ],
+      "geometry_finite": true,
+      "mask_nonempty": true,
+      "prediction_frames": 25
+    },
+    {
+      "scene": "scene_001",
+      "frames": 25,
+      "shape": [
+        576,
+        1024
+      ],
+      "geometry_finite": true,
+      "mask_nonempty": true,
+      "prediction_frames": 25
+    },
+    {
+      "scene": "scene_002",
+      "frames": 25,
+      "shape": [
+        576,
+        1024
+      ],
+      "geometry_finite": true,
+      "mask_nonempty": true,
+      "prediction_frames": 25
+    },
+    {
+      "scene": "scene_003",
+      "frames": 25,
+      "shape": [
+        576,
+        1024
+      ],
+      "geometry_finite": true,
+      "mask_nonempty": true,
+      "prediction_frames": 25
+    },
+    {
+      "scene": "scene_004",
+      "frames": 25,
+      "shape": [
+        576,
+        1024
+      ],
+      "geometry_finite": true,
+      "mask_nonempty": true,
+      "prediction_frames": 25
+    }
+  ],
+  "determinism": {
+    "scene": "scene_000",
+    "seed": 20260926,
+    "checked_files": 125,
+    "pixel_and_depth_equal": true
+  },
+  "limitations": [
+    "AM-2k training cutouts with affine motion; exclude all pilot foregrounds/backgrounds from final held-out data.",
+    "Known planar geometry and emissive textures; not full 3D object geometry or real captured bokeh.",
+    "K/f-stop calibration valid at the reference depth pair, not a universal calibration across K/depth.",
+    "FVD omitted for 5 clips; renderer cost measurements have different IO scopes and are not standardized efficiency results.",
+    "Any-to-Bokeh original interface uses 8-bit disparity PNG; ground-truth layers use float inverse-meter depths."
+  ]
+}

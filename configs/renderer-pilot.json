@@ -1,0 +1,30 @@
+{
+  "width": 1024,
+  "height": 576,
+  "frames": 25,
+  "scenes": 5,
+  "seed": 20260926,
+  "K": 16.0,
+  "focal_length_mm": 50.0,
+  "sensor_width_mm": 36.0,
+  "foreground_depth_m": 2.0,
+  "background_depth_m": 6.0,
+  "cycles_samples": 1024,
+  "note": "Renderer development pilot using AM-2k training foregrounds; exclude these assets from final held-out evaluation. Geometry is constructed planar geometry, not real scene depth.",
+  "cycles_fstop_scale": 0.945244,
+  "calibration_scope": "K=16, camera 50mm/36mm, foreground focus 2m, background 6m; edge-spread second moment matched; not a universal mapping across depths/K",
+  "foreground_files": [
+    "data/raw/AM-2k/train/fg/m_00308c60.png",
+    "data/raw/AM-2k/train/fg/m_003d01f4.png",
+    "data/raw/AM-2k/train/fg/m_00420d1e.png",
+    "data/raw/AM-2k/train/fg/m_004fa5c7.png",
+    "data/raw/AM-2k/train/fg/m_008cd4af.png"
+  ],
+  "background_files": [
+    "data/raw/BG-20k/testval/h_0006a281.jpg",
+    "data/raw/BG-20k/testval/h_00226e0d.jpg",
+    "data/raw/BG-20k/testval/h_00241c18.jpg",
+    "data/raw/BG-20k/testval/h_0029c18d.jpg",
+    "data/raw/BG-20k/testval/h_00577a09.jpg"
+  ]
+}

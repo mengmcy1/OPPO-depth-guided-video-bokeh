@@ -1,0 +1,38 @@
+"""Exploratory renderer comparison on aligned PNG frames, not paper-score reproduction."""
+import argparse,json,sys,os,time
+from pathlib import Path
+import cv2,numpy as np,torch
+from skimage.metrics import structural_similarity
+root=Path(__file__).resolve().parents[1];os.environ.setdefault('TORCH_HOME',str(root/'models/metrics'))
+import lpips
+from torchvision.models.optical_flow import raft_large,Raft_Large_Weights
+p=argparse.ArgumentParser();p.add_argument('--input',type=Path,required=True);p.add_argument('--cycles',default='cycles_optix_s1024_f0.945244');p.add_argument('--report',type=Path);a=p.parse_args();report_path=a.report or a.input/'metrics.json'
+if report_path.exists():raise FileExistsError(f'Use a new report path: {report_path}')
+torch.set_num_threads(4)
+perceptual=lpips.LPIPS(net='squeeze').eval().cuda();weights=Raft_Large_Weights.DEFAULT;flow=raft_large(weights=weights).eval().cuda();preprocess=weights.transforms()
+def load(folder):
+ imgs=[]
+ for p in sorted(folder.glob('*.png')):
+  if not p.stem.isdigit():continue
+  x=cv2.imread(str(p),cv2.IMREAD_UNCHANGED);scale=65535 if x.dtype==np.uint16 else 255;imgs.append(x[:,:,::-1].astype(np.float32)/scale)
+ assert len(imgs)==25,(folder,len(imgs));return np.stack(imgs)
+def tensor(x):return torch.from_numpy(x.copy()).permute(0,3,1,2).cuda()
+rows=[]
+with torch.inference_mode():
+ for folder in sorted(a.input.glob('scene_*')):
+  pred=load(folder/'pred_any2bokeh')
+  for label,sub in [('Dr.Bokeh','bokeh_dr'),('Blender Cycles',a.cycles)]:
+   gt=load(folder/sub);ps=[];ss=[];lp=[];fd=[]
+   for j in range(len(pred)):
+    ps.append(float(-10*np.log10(max(np.mean((pred[j]-gt[j])**2),1e-12))))
+    ss.append(float(structural_similarity(pred[j],gt[j],channel_axis=-1,data_range=1.,gaussian_weights=True,sigma=1.5,use_sample_covariance=False)))
+    lp.append(float(perceptual(tensor(pred[j:j+1])*2-1,tensor(gt[j:j+1])*2-1).item()))
+   for j in range(1,len(pred)):
+    x=tensor(np.stack([pred[j-1],gt[j-1]]));y=tensor(np.stack([pred[j],gt[j]]));x,y=preprocess(x,y);f=flow(x,y)[-1];fd.append(float((f[0]-f[1]).abs().mean().item()))
+   rm=float(np.mean(np.abs(np.diff(pred,axis=0)-np.diff(gt,axis=0))))
+   row=dict(scene=folder.name,renderer=label,PSNR=float(np.mean(ps)),SSIM=float(np.mean(ss)),LPIPS=float(np.mean(lp)),FD=float(np.mean(fd)),RM=rm,FVD=None)
+   rows.append(row);print(json.dumps(row),flush=True)
+report={'scope':'5 development scenes; one prediction per scene evaluated against two references; not official test scores','metrics':{'PSNR':'mean frame PSNR, RGB sRGB [0,1]','SSIM':'Gaussian sigma1.5, RGB, skimage population covariance','LPIPS':'squeeze v0.1, RGB [-1,1]','FD':'torchvision RAFT-large C_T_SKHT_V2, full resolution, mean L1 flow difference over 24 transitions','RM':'mean absolute difference of predicted and reference frame differences over all 24 transitions','FVD':'not reported: 5 clips insufficient for stable distribution comparison'},'rows':rows,'mean':{}}
+for label in ['Dr.Bokeh','Blender Cycles']:
+ report['mean'][label]={k:float(np.mean([r[k] for r in rows if r['renderer']==label])) for k in ['PSNR','SSIM','LPIPS','FD','RM']}
+report_path.write_text(json.dumps(report,indent=2));print(json.dumps(report['mean']),flush=True)
