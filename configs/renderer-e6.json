@@ -1,5 +1,5 @@
 {
-  "status": "SOURCE_BOUNDARY_FIX_AND_REPRESENTATIVE_PREFLIGHT_PASSED_FULL_24_PENDING",
+  "status": "FULL_24_PIPELINE_AND_REVIEW_COMPLETE_E6_CLOSURE_PENDING",
   "width": 1024,
   "height": 576,
   "frames": 25,
@@ -709,13 +709,11 @@
     ]
   },
   "pending": [
-    "Full 24-scene generation, per-scene input/output validation and quality review",
-    "Sample stability and alpha/occlusion review on remaining foregrounds/conditions",
-    "Sub-2px conditions: separate measurement validation or restrict radius-accuracy claims",
-    "Instantiate formal test source list and check source-level isolation",
-    "E6 final acceptance and E7 freeze not reached"
+    "Resolve sub-2px physical-radius measurement scope or explicitly limit quantitative calibration claims",
+    "Create formal test source list and verify source-level isolation from all development and rejected assets",
+    "Only then assess E6 final acceptance and E7 freeze"
   ],
-  "validation_record": "03_\u5b9e\u9a8c\u8bb0\u5f55/records/renderer-e6-validation-20260926-v2.json",
+  "validation_record": "03_\u5b9e\u9a8c\u8bb0\u5f55/records/renderer-e6-full-20260926.json",
   "dynamic_foreground_layout": "cover_canvas_centered",
   "AM_foreground_selection": "alpha is zero on all four source-image borders; old rejected development assets remain excluded from formal test"
 }
