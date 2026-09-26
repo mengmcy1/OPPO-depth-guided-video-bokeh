@@ -595,6 +595,35 @@ Any-to-Bokeh 对同一批输入只产生一份 prediction，再分别以两种 r
 
 不能与原论文官方 200-video test set 的 paper-reported numbers 直接混为同一测试集结果。
 
+### E7 冻结后的 Any-to-Bokeh 外部参考检查
+
+正式 Reproduced Any-to-Bokeh-style Synthetic Benchmark 的场景清单、源素材、Geometry / Focus / \(K\)、Renderer 和指标配置**全部冻结后**，再使用官方公开的 Any-to-Bokeh 权重在该冻结测试集上运行一次，作为外部 **sanity check（合理性检查）**。
+
+该检查回答的是：
+
+> 我们冻结后的测试集上，Any-to-Bokeh 的指标量级、定性现象和失败案例是否处于可解释范围；与论文公开 synthetic 结果相比，差异是否能由测试集分布、GT Renderer、场景运动、Geometry / Focus / \(K\) 分布和评价实现解释。
+
+执行原则：
+
+- 论文公开结果与本项目冻结测试集结果必须分开报告，不能视为同一测试集上的直接复现；
+- 只比较**指标量级、趋势和典型 failure case**，不要求数值接近或一致；
+- 若指标定义、预处理或分辨率口径不同，必须先标明不可直接数值比较；
+- 若差异异常大，优先审计 RGB/GT 对齐、帧顺序、色彩空间、Depth/Disparity、Focus、\(K\)、CoC、输出尺寸及 metric implementation；
+- 只修复能够客观确认的实现错误。若冻结后发现必须修改 Benchmark 构造规则，应明确升级 Benchmark 版本并重新冻结，不能静默改动；
+- **禁止根据 Any-to-Bokeh 与论文分数的接近程度反向调整**测试源素材、场景难度、Depth/Focus/\(K\) 分布、Blender 光圈、Renderer 参数或评价阈值；
+- 该检查不是 Benchmark 选材标准，也不是 Renderer 选型依据。
+
+推荐在报告中单独保留：
+
+> **Comparison with Any-to-Bokeh reported synthetic results**
+
+并明确写明：
+
+> 本 Benchmark 受 Any-to-Bokeh 公开合成协议启发，但不是作者官方 Synthetic Test Set 的逐样本复现，因此 paper-reported numbers 仅作为外部参考，不与本项目 Table 1A / 1B 成绩混为同一评价结果。
+
+该 sanity check 应在 E7 冻结后、正式大规模 baseline Table 1A / 1B 比较前完成。
+
+
 ---
 
 ## Table 2：DAVIS Real-world
