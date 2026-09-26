@@ -41,14 +41,17 @@ def generate(cfg, scene, out, count):
             c.set(cv2.CAP_PROP_POS_FRAMES, scene['start_frame'])
     else:
         for file in scene['foreground_files']:
-            assets.append((np.array(Image.open(ROOT / file).convert('RGB')),
-                           np.array(Image.open(ROOT / file.replace('/fg/', '/mask/')).convert('L'))))
+            color = np.array(Image.open(ROOT / file).convert('RGB'))
+            alpha = np.array(Image.open(ROOT / file.replace('/fg/', '/mask/')).convert('L'))
+            assert not any(edge.any() for edge in [alpha[0],alpha[-1],alpha[:,0],alpha[:,-1]]), 'AM source is truncated at image boundary; select a complete foreground'
+            assets.append((color, alpha))
     config = {key: cfg[key] for key in ['width', 'height', 'seed', 'focal_length_mm', 'sensor_width_mm']}
     config.update(K=scene['K'], background_depth_m=scene['background_depth_m'])
     meta = dict(config=config, source=scene, frames=[], role='E6_development_only',
                 geometry='dynamic layered planar synthesis',
                 color_space='linear-light composition, sRGB quantized PNG textures',
                 disparity_rule='inverse axial meters, no scene normalization, alpha >0.5 visible layer; PNG8 is adapter only',
+                dynamic_layout='cover_canvas_centered; source-frame cuts stay at/outside canvas boundary' if dynamic else None,
                 opencv=cv2.__version__)
     assert scene['foreground_depths_m'] == sorted(scene['foreground_depths_m'])
     assert max(scene['foreground_depths_m']) < scene['background_depth_m']
@@ -70,7 +73,9 @@ def generate(cfg, scene, out, count):
                 color = srgb_to_linear(color.astype(np.float32) / 255)
                 alpha = alpha.astype(np.float32) / 255
                 h, w = alpha.shape
-                scale = min((H * .9 if dynamic else 420) / h, (W * .9 if dynamic else 650) / w) * (0.8 if li else 1)
+                # A cropped source person must not acquire a floating rectangular cut edge.
+                # Cover the canvas so every source-frame boundary is outside/on the output edge.
+                scale = max(W / w, H / h) if dynamic else min(420 / h, 650 / w) * (0.8 if li else 1)
                 phase = 2 * np.pi * t / (cfg['frames']-1)
                 angle = 0 if dynamic else scene['motion']['rotation_amplitude_degrees'] * np.sin(phase)
                 dx = 0 if dynamic else scene['motion']['translation_x_amplitude_px'] * np.sin(phase)

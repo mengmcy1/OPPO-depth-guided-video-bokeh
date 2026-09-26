@@ -1,0 +1,771 @@
+{
+  "date": "2026-09-26",
+  "status": "PARTIAL_CHECKS_PASSED_DYNAMIC_FRAMING_DEFECT_FOUND",
+  "scope": "3 representative full clips and controls; not full E6 acceptance or formal benchmark scores",
+  "config": "configs/renderer-e6.json",
+  "output": "outputs/renderer-e6-validation-20260926",
+  "noise": {
+    "criteria": {
+      "status": "engineering thresholds specified before E6 results; not literature standards",
+      "calibration_radius_tolerance_px": 0.35,
+      "calibration_radius_tolerance_relative": 0.05,
+      "calibration_rule": "abs error <= max(0.35px, 5% target); target radius <2px is resolution-limited and reported separately",
+      "in_focus_excess_radius_max_px": 0.5,
+      "independent_seed_psnr_min_db": 45.0,
+      "independent_seed_mae_max": 0.002,
+      "static_repeated_render_mean_temporal_L1_max": 0.003,
+      "noise_scope": "static duplicate scene separates sampling noise from motion; dynamic clips also require edge/crop visual review",
+      "alignment_pinhole_psnr_min_db": 45.0,
+      "alpha_checks": "finite [0,1], matched timestamps/dimensions; no systematic halo/leakage on black/white/checker backgrounds or occlusion reversal",
+      "reproducibility": "same source list/seed produces identical input arrays; record decoder versions; GPU render assessed statistically",
+      "split": "exclude every E1-E6 source foreground, background and whole VM video from formal test",
+      "FVD": "not enabled automatically for 24 clips"
+    },
+    "color_space": "sRGB [0,1]",
+    "rows": [
+      {
+        "scene": "dynamic_vm02",
+        "independent_seed_frames": [
+          {
+            "PSNR": 54.952179531571225,
+            "MAE": 0.0008821075304840462
+          },
+          {
+            "PSNR": 54.99997881652817,
+            "MAE": 0.0008796554845736189
+          },
+          {
+            "PSNR": 55.03128948510819,
+            "MAE": 0.000883218917091477
+          },
+          {
+            "PSNR": 54.93145206092555,
+            "MAE": 0.000896515681368641
+          },
+          {
+            "PSNR": 54.83248701941933,
+            "MAE": 0.0009124308817717869
+          },
+          {
+            "PSNR": 54.81323755849769,
+            "MAE": 0.0009177904145278204
+          },
+          {
+            "PSNR": 54.796711132656306,
+            "MAE": 0.0009239915911629864
+          },
+          {
+            "PSNR": 54.70860346183116,
+            "MAE": 0.0009364511957751711
+          },
+          {
+            "PSNR": 54.75485695385224,
+            "MAE": 0.000939881533367565
+          },
+          {
+            "PSNR": 54.68416811376375,
+            "MAE": 0.0009498009341437657
+          },
+          {
+            "PSNR": 54.678954852129245,
+            "MAE": 0.0009519975523172298
+          },
+          {
+            "PSNR": 54.62350896033136,
+            "MAE": 0.0009545113682776197
+          },
+          {
+            "PSNR": 54.69892438970309,
+            "MAE": 0.0009480923191990245
+          },
+          {
+            "PSNR": 54.66834977602795,
+            "MAE": 0.0009507790016150233
+          },
+          {
+            "PSNR": 54.69895523790817,
+            "MAE": 0.0009488334390697237
+          },
+          {
+            "PSNR": 54.67023360609549,
+            "MAE": 0.0009494393253897448
+          },
+          {
+            "PSNR": 54.666886180574316,
+            "MAE": 0.0009473567011141512
+          },
+          {
+            "PSNR": 54.7584832184601,
+            "MAE": 0.0009394588013252395
+          },
+          {
+            "PSNR": 54.79502233444738,
+            "MAE": 0.0009308566988209932
+          },
+          {
+            "PSNR": 54.81319175966271,
+            "MAE": 0.000930398998531761
+          },
+          {
+            "PSNR": 54.7874480591132,
+            "MAE": 0.0009318697431626466
+          },
+          {
+            "PSNR": 54.833246651485545,
+            "MAE": 0.0009303662378979757
+          },
+          {
+            "PSNR": 54.81024885045956,
+            "MAE": 0.0009286885209134477
+          },
+          {
+            "PSNR": 54.81541335521725,
+            "MAE": 0.000928447399544331
+          },
+          {
+            "PSNR": 54.82160662127395,
+            "MAE": 0.000927090709175737
+          }
+        ],
+        "min_seed_psnr_db": 54.62350896033136,
+        "max_seed_mae": 0.0009545113682776197,
+        "mean_temporal_L1": 0.014451032740053658,
+        "mean_seed_difference_temporal_L1": 0.001318951499309903,
+        "independent_seed_pass": true,
+        "note": "Raw temporal L1 includes real motion; static threshold is not applied to it"
+      },
+      {
+        "scene": "static_vm11",
+        "independent_seed_frames": [
+          {
+            "PSNR": 64.99254696662007,
+            "MAE": 0.0002379822812334871
+          },
+          {
+            "PSNR": 64.99440898535016,
+            "MAE": 0.000238014455470037
+          },
+          {
+            "PSNR": 64.98639427017832,
+            "MAE": 0.00023821017417085128
+          },
+          {
+            "PSNR": 64.93425338621289,
+            "MAE": 0.00023906527069244337
+          },
+          {
+            "PSNR": 64.9331338552504,
+            "MAE": 0.00023837073490800602
+          },
+          {
+            "PSNR": 64.94928565527631,
+            "MAE": 0.00023856123639812304
+          },
+          {
+            "PSNR": 64.97735210994986,
+            "MAE": 0.00023808882443707193
+          },
+          {
+            "PSNR": 64.99490334039717,
+            "MAE": 0.00023808077009857364
+          },
+          {
+            "PSNR": 65.00300369174174,
+            "MAE": 0.00023770553623231786
+          },
+          {
+            "PSNR": 64.9577799050377,
+            "MAE": 0.00023900269865802728
+          },
+          {
+            "PSNR": 64.96807732127584,
+            "MAE": 0.0002386709702925474
+          },
+          {
+            "PSNR": 64.94471690599586,
+            "MAE": 0.00023856344401124426
+          },
+          {
+            "PSNR": 64.99041997253649,
+            "MAE": 0.00023800203764622787
+          },
+          {
+            "PSNR": 64.95362481231322,
+            "MAE": 0.00023868420734778867
+          },
+          {
+            "PSNR": 64.98086624070149,
+            "MAE": 0.0002376489747695648
+          },
+          {
+            "PSNR": 64.99700622162729,
+            "MAE": 0.00023777677487293416
+          },
+          {
+            "PSNR": 64.94133034333787,
+            "MAE": 0.00023898504637654292
+          },
+          {
+            "PSNR": 64.98049365033908,
+            "MAE": 0.00023804692290520474
+          },
+          {
+            "PSNR": 64.96801858173657,
+            "MAE": 0.00023824966112586675
+          },
+          {
+            "PSNR": 64.98170313334495,
+            "MAE": 0.00023847721774716938
+          },
+          {
+            "PSNR": 64.95540794250401,
+            "MAE": 0.0002383506939201365
+          },
+          {
+            "PSNR": 64.94117776006709,
+            "MAE": 0.00023865939757063644
+          },
+          {
+            "PSNR": 64.96635910009003,
+            "MAE": 0.0002379339293320302
+          },
+          {
+            "PSNR": 64.99326731158492,
+            "MAE": 0.00023822692960950495
+          },
+          {
+            "PSNR": 65.01099545506841,
+            "MAE": 0.00023790612720427977
+          }
+        ],
+        "min_seed_psnr_db": 64.9331338552504,
+        "max_seed_mae": 0.00023906527069244337,
+        "mean_temporal_L1": 0.00023824635401792872,
+        "mean_seed_difference_temporal_L1": 0.0003374113670955575,
+        "independent_seed_pass": true,
+        "static_flicker_pass": true
+      }
+    ]
+  },
+  "edge_alignment": {
+    "criteria": {
+      "status": "engineering thresholds specified before E6 results; not literature standards",
+      "calibration_radius_tolerance_px": 0.35,
+      "calibration_radius_tolerance_relative": 0.05,
+      "calibration_rule": "abs error <= max(0.35px, 5% target); target radius <2px is resolution-limited and reported separately",
+      "in_focus_excess_radius_max_px": 0.5,
+      "independent_seed_psnr_min_db": 45.0,
+      "independent_seed_mae_max": 0.002,
+      "static_repeated_render_mean_temporal_L1_max": 0.003,
+      "noise_scope": "static duplicate scene separates sampling noise from motion; dynamic clips also require edge/crop visual review",
+      "alignment_pinhole_psnr_min_db": 45.0,
+      "alpha_checks": "finite [0,1], matched timestamps/dimensions; no systematic halo/leakage on black/white/checker backgrounds or occlusion reversal",
+      "reproducibility": "same source list/seed produces identical input arrays; record decoder versions; GPU render assessed statistically",
+      "split": "exclude every E1-E6 source foreground, background and whole VM video from formal test",
+      "FVD": "not enabled automatically for 24 clips"
+    },
+    "color_space": "sRGB [0,1]",
+    "rows": [
+      {
+        "scene": "am_05_black",
+        "PSNR": 58.7111229445388,
+        "MAE": 9.324117897954055e-05,
+        "alignment_pass": true,
+        "note": "Pinhole agreement alone does not validate bokeh edges; inspect matched bokeh views and source alpha"
+      },
+      {
+        "scene": "am_05_black_reverse",
+        "PSNR": 58.62314360656473,
+        "MAE": 0.00010045074327243149,
+        "alignment_pass": true,
+        "note": "Pinhole agreement alone does not validate bokeh edges; inspect matched bokeh views and source alpha"
+      },
+      {
+        "scene": "am_05_checker",
+        "PSNR": 58.7748013140071,
+        "MAE": 0.000117222739024454,
+        "alignment_pass": true,
+        "note": "Pinhole agreement alone does not validate bokeh edges; inspect matched bokeh views and source alpha"
+      },
+      {
+        "scene": "am_05_checker_reverse",
+        "PSNR": 58.68395939175415,
+        "MAE": 0.00012445107665236748,
+        "alignment_pass": true,
+        "note": "Pinhole agreement alone does not validate bokeh edges; inspect matched bokeh views and source alpha"
+      },
+      {
+        "scene": "am_05_white",
+        "PSNR": 70.60196720580964,
+        "MAE": 3.2836028947614e-05,
+        "alignment_pass": true,
+        "note": "Pinhole agreement alone does not validate bokeh edges; inspect matched bokeh views and source alpha"
+      },
+      {
+        "scene": "am_05_white_reverse",
+        "PSNR": 69.30829449810221,
+        "MAE": 4.0167520748031166e-05,
+        "alignment_pass": true,
+        "note": "Pinhole agreement alone does not validate bokeh edges; inspect matched bokeh views and source alpha"
+      },
+      {
+        "scene": "vm_02_black",
+        "PSNR": 58.56381515769882,
+        "MAE": 0.0002074917722396933,
+        "alignment_pass": true,
+        "note": "Pinhole agreement alone does not validate bokeh edges; inspect matched bokeh views and source alpha"
+      },
+      {
+        "scene": "vm_02_checker",
+        "PSNR": 58.20717999199243,
+        "MAE": 0.0002100953932119915,
+        "alignment_pass": true,
+        "note": "Pinhole agreement alone does not validate bokeh edges; inspect matched bokeh views and source alpha"
+      },
+      {
+        "scene": "vm_02_white",
+        "PSNR": 66.32175453788574,
+        "MAE": 0.00010125470250569836,
+        "alignment_pass": true,
+        "note": "Pinhole agreement alone does not validate bokeh edges; inspect matched bokeh views and source alpha"
+      }
+    ]
+  },
+  "edge_boundary_diagnostics": {
+    "scope": "Diagnostic only; no new acceptance threshold introduced",
+    "rows": [
+      {
+        "scene": "am_05_black",
+        "boundary_pixels": 21304,
+        "pinhole_boundary_MAE": 0.002513159855883705
+      },
+      {
+        "scene": "am_05_black_reverse",
+        "boundary_pixels": 21304,
+        "pinhole_boundary_MAE": 0.002492079858069131
+      },
+      {
+        "scene": "am_05_checker",
+        "boundary_pixels": 21304,
+        "pinhole_boundary_MAE": 0.0016185292657926505
+      },
+      {
+        "scene": "am_05_checker_reverse",
+        "boundary_pixels": 21304,
+        "pinhole_boundary_MAE": 0.0015979706990680504
+      },
+      {
+        "scene": "am_05_white",
+        "boundary_pixels": 21304,
+        "pinhole_boundary_MAE": 0.0008407777887698502
+      },
+      {
+        "scene": "am_05_white_reverse",
+        "boundary_pixels": 21304,
+        "pinhole_boundary_MAE": 0.0008230746780141527
+      },
+      {
+        "scene": "vm_02_black",
+        "boundary_pixels": 57037,
+        "pinhole_boundary_MAE": 0.0015115688163127108
+      },
+      {
+        "scene": "vm_02_checker",
+        "boundary_pixels": 57037,
+        "pinhole_boundary_MAE": 0.0011312768148894967
+      },
+      {
+        "scene": "vm_02_white",
+        "boundary_pixels": 57037,
+        "pinhole_boundary_MAE": 0.0006739088775267134
+      }
+    ]
+  },
+  "edge_visual_review": {
+    "views": "black/white/checker backgrounds on vm_02 and am_05, with am_05 depth-order reversal",
+    "finding": "No obvious systematic newly introduced halo/leakage seen in reviewed full views and crops; source alpha/foreground errors remain possible",
+    "limitation": "Representative visual inspection, not proof for every source or every frame; physical bokeh can extend beyond sharp alpha"
+  },
+  "adapter": [
+    {
+      "scene": "am_05",
+      "frames": 25,
+      "resolution": [
+        1024,
+        576
+      ],
+      "K": 16.0,
+      "disparity": "inverse meters; PNG8, no per-scene normalization",
+      "max_coc_radius_quantization_error_px": 0.03137254901960773,
+      "quantization_bound_px": 0.03137254901960784,
+      "caveat": "Author PNG8 conditioning is retained; float depth remains the physical reference",
+      "batch_shapes": {
+        "pixel_values": [
+          6,
+          8,
+          3,
+          576,
+          1024
+        ],
+        "coc": [
+          6,
+          8,
+          3,
+          576,
+          1024
+        ],
+        "k": [
+          6,
+          8
+        ],
+        "mpi_mask": [
+          6,
+          8,
+          576,
+          1024
+        ],
+        "weight": [
+          6,
+          8
+        ]
+      }
+    },
+    {
+      "scene": "vm_02",
+      "frames": 25,
+      "resolution": [
+        1024,
+        576
+      ],
+      "K": 16.0,
+      "disparity": "inverse meters; PNG8, no per-scene normalization",
+      "max_coc_radius_quantization_error_px": 0.03137254901960773,
+      "quantization_bound_px": 0.03137254901960784,
+      "caveat": "Author PNG8 conditioning is retained; float depth remains the physical reference",
+      "batch_shapes": {
+        "pixel_values": [
+          6,
+          8,
+          3,
+          576,
+          1024
+        ],
+        "coc": [
+          6,
+          8,
+          3,
+          576,
+          1024
+        ],
+        "k": [
+          6,
+          8
+        ],
+        "mpi_mask": [
+          6,
+          8,
+          576,
+          1024
+        ],
+        "weight": [
+          6,
+          8
+        ]
+      }
+    },
+    {
+      "scene": "vm_11",
+      "frames": 25,
+      "resolution": [
+        1024,
+        576
+      ],
+      "K": 32.0,
+      "disparity": "inverse meters; PNG8, no per-scene normalization",
+      "max_coc_radius_quantization_error_px": 0.06274520470588207,
+      "quantization_bound_px": 0.06274509803921569,
+      "caveat": "Author PNG8 conditioning is retained; float depth remains the physical reference",
+      "batch_shapes": {
+        "pixel_values": [
+          6,
+          8,
+          3,
+          576,
+          1024
+        ],
+        "coc": [
+          6,
+          8,
+          3,
+          576,
+          1024
+        ],
+        "k": [
+          6,
+          8
+        ],
+        "mpi_mask": [
+          6,
+          8,
+          576,
+          1024
+        ],
+        "weight": [
+          6,
+          8
+        ]
+      }
+    }
+  ],
+  "inference": [
+    {
+      "scene": "am_05",
+      "output_frames": 25,
+      "output_shape": [
+        576,
+        1024,
+        3
+      ],
+      "timing": {
+        "seconds": [
+          3.7323565650731325,
+          3.3720464035868645,
+          4.610170539468527
+        ],
+        "total_seconds": 11.714573508128524,
+        "frames": 25,
+        "peak_allocated_GiB": 34.344754219055176,
+        "peak_reserved_GiB": 42.29296875,
+        "note": "pilot only; not repeated standardized efficiency benchmark"
+      }
+    },
+    {
+      "scene": "vm_02",
+      "output_frames": 25,
+      "output_shape": [
+        576,
+        1024,
+        3
+      ],
+      "timing": {
+        "seconds": [
+          3.369949685409665,
+          3.369087800383568,
+          4.609785674139857
+        ],
+        "total_seconds": 11.34882315993309,
+        "frames": 25,
+        "peak_allocated_GiB": 34.34962177276611,
+        "peak_reserved_GiB": 42.29296875,
+        "note": "pilot only; not repeated standardized efficiency benchmark"
+      }
+    },
+    {
+      "scene": "vm_11",
+      "output_frames": 25,
+      "output_shape": [
+        576,
+        1024,
+        3
+      ],
+      "timing": {
+        "seconds": [
+          3.367277128621936,
+          3.3677384685724974,
+          4.609047789126635
+        ],
+        "total_seconds": 11.344063386321068,
+        "frames": 25,
+        "peak_allocated_GiB": 34.348538398742676,
+        "peak_reserved_GiB": 42.294921875,
+        "note": "pilot only; not repeated standardized efficiency benchmark"
+      }
+    }
+  ],
+  "full_clips": [
+    {
+      "scene": "am_05",
+      "frames": 25,
+      "shape": [
+        576,
+        1024,
+        3
+      ],
+      "cycles": {
+        "seconds": [
+          2.9545153826475143,
+          2.893112411722541,
+          2.886291354894638,
+          2.897746441885829,
+          2.8827530313283205,
+          2.8418907430022955,
+          2.8894419260323048,
+          2.9317349027842283,
+          2.7653282545506954,
+          2.8019279036670923,
+          2.7518318481743336,
+          2.74817955493927,
+          2.8885409273207188,
+          2.9010128621011972,
+          2.7597287986427546,
+          2.826483754441142,
+          2.7649847958236933,
+          2.724119696766138,
+          2.749390410259366,
+          2.7439715154469013,
+          2.754161735996604,
+          2.7081664446741343,
+          2.696919806301594,
+          2.7360910959541798,
+          2.778460307046771
+        ],
+        "total_seconds": 70.27678590640426,
+        "samples": 1024,
+        "aperture_fstop": 2.222222328186035,
+        "gpu": [
+          "NVIDIA RTX PRO 6000 Blackwell Server Edition"
+        ],
+        "compute_device_type": "OPTIX",
+        "blender": "4.5.13 LTS",
+        "scope": "render + PNG IO; includes first scene update; no denoising"
+      }
+    },
+    {
+      "scene": "vm_02",
+      "frames": 25,
+      "shape": [
+        576,
+        1024,
+        3
+      ],
+      "cycles": {
+        "seconds": [
+          2.268999435007572,
+          2.1547471042722464,
+          2.158729787915945,
+          2.1628029346466064,
+          2.18992536701262,
+          2.1827455554157495,
+          2.2544092405587435,
+          2.1968954857438803,
+          2.2101170755922794,
+          2.2148179691284895,
+          2.1898055765777826,
+          2.2248770482838154,
+          2.2009643651545048,
+          2.2473382633179426,
+          2.241114679723978,
+          2.2523875758051872,
+          2.2116546481847763,
+          2.2094747740775347,
+          2.2147680204361677,
+          2.20084260776639,
+          2.211937714368105,
+          2.19662993773818,
+          2.1956970058381557,
+          2.195581305772066,
+          2.204772848635912
+        ],
+        "total_seconds": 55.19203632697463,
+        "samples": 1024,
+        "aperture_fstop": 2.222222328186035,
+        "gpu": [
+          "NVIDIA RTX PRO 6000 Blackwell Server Edition"
+        ],
+        "compute_device_type": "OPTIX",
+        "blender": "4.5.13 LTS",
+        "scope": "render + PNG IO; includes first scene update; no denoising"
+      }
+    },
+    {
+      "scene": "vm_11",
+      "frames": 25,
+      "shape": [
+        576,
+        1024,
+        3
+      ],
+      "cycles": {
+        "seconds": [
+          1.9179378226399422,
+          1.9094274584203959,
+          1.921185877174139,
+          2.011054439470172,
+          1.9255387671291828,
+          1.9298839084804058,
+          1.9230649955570698,
+          1.9252798408269882,
+          1.9296339191496372,
+          1.969004524871707,
+          1.9421761576086283,
+          1.962574927136302,
+          1.9663213901221752,
+          1.962236324325204,
+          1.9991965107619762,
+          1.9752700626850128,
+          1.9834469240158796,
+          1.9929738212376833,
+          2.0212823636829853,
+          2.0159954577684402,
+          1.9837200287729502,
+          1.9774119164794683,
+          1.9602442663162947,
+          1.9831441827118397,
+          1.9739010594785213
+        ],
+        "total_seconds": 49.061906946823,
+        "samples": 1024,
+        "aperture_fstop": 1.1111111640930176,
+        "gpu": [
+          "NVIDIA RTX PRO 6000 Blackwell Server Edition"
+        ],
+        "compute_device_type": "OPTIX",
+        "blender": "4.5.13 LTS",
+        "scope": "render + PNG IO; includes first scene update; no denoising"
+      }
+    }
+  ],
+  "tests": [
+    "Legacy five scene_* inputs discovered",
+    "Empty input rejected",
+    "Three sampled frames rejected as full clip",
+    "All original acceptance thresholds unchanged",
+    "All 75 prediction frames match expected shape/count; model outputs checked finite before save"
+  ],
+  "implementation": [
+    "Author model code and PNG8 conditioning retained",
+    "Only project runner scene discovery/preflight extended",
+    "Cycles vm_02 full render reused from identical dynamic noise control inputs/settings/seed"
+  ],
+  "environment": {
+    "render_and_metrics": "magicbokeh and Blender 4.5.13 LTS / OptiX GPU 0",
+    "inference_and_mp4": "any2bokeh; preexisting imageio-ffmpeg 0.6.0",
+    "new_dependencies": [],
+    "preview_retry": "MP4 preview initially used magicbokeh without ffmpeg plugin; incomplete artifact preserved under previews/noise-incomplete, valid previews rebuilt in any2bokeh"
+  },
+  "pending": [
+    "Generate and evaluate full 24-scene set, checking all inputs and outputs",
+    "Review remaining dynamic foregrounds and boundary failure cases",
+    "Small-radius (<2 px) measurement separately validated or excluded from radius-accuracy claims",
+    "Formal test source-level split not yet instantiated; keep development exclusions",
+    "E6 final pass and E7 freeze not reached"
+  ],
+  "construction_defect": {
+    "type": "source-frame truncation becomes an interior cutout edge after 0.9-scale placement",
+    "affected_first_frame_candidates": [
+      "vm_00",
+      "vm_03",
+      "vm_05",
+      "vm_06",
+      "vm_07",
+      "vm_09",
+      "vm_11"
+    ],
+    "fix": "Dynamic video covers canvas, so source-frame truncation remains on/outside image boundary",
+    "revalidation_output": "outputs/renderer-e6-validation-20260926-v2",
+    "note": "Earlier numerical noise/adapter results remain valid for those exact inputs; do not label original construction accepted",
+    "AM_truncated_source_count": 3,
+    "AM_original_source_count": 4,
+    "AM_fix": "Reselect four AM foregrounds with alpha exactly zero on all four source borders; preserve previous exclusions"
+  }
+}
