@@ -48,9 +48,10 @@ def raw_references(value):
 
 def collect_development():
     documents = [ROOT/'configs/renderer-pilot.json', ROOT/'configs/renderer-e6.json']
-    foreground_development = ROOT/'configs/am-foreground-development.json'
-    if foreground_development.exists():
-        documents.append(foreground_development)
+    for name in ['am-foreground-development.json', 'am-foreground-estimation.json']:
+        foreground_development = ROOT/'configs'/name
+        if foreground_development.exists():
+            documents.append(foreground_development)
     for pattern in ['renderer-pilot-*', 'renderer-e6-*']:
         for folder in sorted((ROOT/'outputs').glob(pattern)):
             for name in ['metadata.json', 'config.json']:

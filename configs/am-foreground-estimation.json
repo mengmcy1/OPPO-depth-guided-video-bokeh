@@ -1,0 +1,76 @@
+{
+  "status": "DEVELOPMENT_COMPARISON_PREREGISTERED_NOT_ESTIMATOR_FREEZE",
+  "development_config": "configs/am-foreground-development.json",
+  "version": "am-color-comparison-v1",
+  "pymatting_version": "1.1.16",
+  "candidates": [
+    "naive",
+    "ml_srgb",
+    "ml_linear"
+  ],
+  "ml_parameters": {
+    "regularization": 1e-05,
+    "n_small_iterations": 10,
+    "n_big_iterations": 2,
+    "small_size": 32,
+    "gradient_weight": 1.0
+  },
+  "input": "native resolution decoded float32 RGB/255, alpha/255; no resizing or alteration of foreground/alpha; estimator receives only image and alpha",
+  "output": "straight RGB; ML outputs clipped [0,1] with pre-clamp range recorded; convert to common sRGB and linear for comparison; never multiply alpha into stored FG",
+  "controlled_inputs": [
+    "srgb composite from official proxy FG",
+    "linear composite from official proxy FG, encoded sRGB before estimator"
+  ],
+  "controlled_background_assignment": "sample index modulo 7 through fixed backgrounds; same background for srgb/linear controls and all candidates; no quantization of synthetic input",
+  "backgrounds": [
+    {
+      "name": "black",
+      "value_srgb": 0.0
+    },
+    {
+      "name": "white",
+      "value_srgb": 1.0
+    },
+    {
+      "name": "gray",
+      "value_srgb": 0.5
+    },
+    {
+      "name": "checker",
+      "period_px": 32
+    },
+    {
+      "name": "dark_bg",
+      "raw_path": "data/raw/BG-20k/train/h_00168a88.jpg",
+      "thumbnail_mean_luma": 0.12653081045113357,
+      "thumbnail_std_luma": 0.17520864363320474
+    },
+    {
+      "name": "bright_bg",
+      "raw_path": "data/raw/BG-20k/train/h_0008b529.jpg",
+      "thumbnail_mean_luma": 0.9390791910807288,
+      "thumbnail_std_luma": 0.13449468500920445
+    },
+    {
+      "name": "contrast_bg",
+      "raw_path": "data/raw/BG-20k/train/h_001bc6c5.jpg",
+      "thumbnail_mean_luma": 0.49505755734911155,
+      "thumbnail_std_luma": 0.3203331773363527
+    }
+  ],
+  "background_selection": "dark/bright/high contrast from existing E6 development BG train sources using 128x128 center-cover sRGB luma; fixed before estimates",
+  "background_resize": "center-cover bilinear resize to source size",
+  "soft_region": "0.05 < alpha < 0.95",
+  "secondary_region": "0 < alpha < 1",
+  "primary_metric": "mean(abs(alpha*(F_est_linear-F_reference_linear))) in soft region; average per source equally; independent of new BG",
+  "secondary_metrics": [
+    "sRGB and linear FG MAE/MSE/PSNR",
+    "finite-difference gradient MAE on links with both pixels inside soft region; not official GRAD metric",
+    "mean displayed sRGB recomposite MAE over 7 backgrounds",
+    "alpha weighted sRGB foreground MAE over full image",
+    "runtime per estimator excluding first numba warmup; not standardized GPU efficiency"
+  ],
+  "decision_rule": "Select only if a ML candidate consistently improves primary mean and majority of source pairs vs naive in both controlled input spaces, is not worse than naive on natural-image proxy primary mean, and visual review finds no recurrent new artifacts. Prefer one ML candidate over the other only if same candidate has lower primary means in both controlled input spaces; otherwise retain conditional ranking and do not freeze unique winner. Proxy agreement alone never selects method.",
+  "visuals": "per source: full image overview and fixed 256px crop chosen by max soft-alpha count on 128px grid before estimation; columns reference,naive,ml_srgb,ml_linear; rows 7 backgrounds; fixed native pixel crop; report inspected subset honestly",
+  "scope": "60 animal train sources; official FG estimated reference; controlled accuracy applies only to constructed input; no validation or baseline reads"
+}
