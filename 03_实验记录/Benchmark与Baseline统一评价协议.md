@@ -506,6 +506,65 @@ Track A / Track B 不意味着所有 Benchmark 都机械重复两遍。
 
 # 11. 最终结果表模板
 
+## Table 0：GT Renderer Comparison
+
+这张表用于在正式构建 Synthetic Benchmark 前，比较两种 Bokeh GT 生成方案：
+
+1. **Dr.Bokeh Renderer**：作为快速、易接入的物理渲染方案；
+2. **Blender Cycles**：作为独立于参赛 baseline 的物理光线追踪方案。
+
+比较时必须使用完全相同的：
+
+- RGB / AiF；
+- Disparity / Depth；
+- Alpha；
+- Focus；
+- Blur Strength \(K\)；
+- Scene；
+- Frame sequence。
+
+Any-to-Bokeh 对同一批输入只产生一份 prediction，再分别以两种 renderer 产生的结果作为 GT 进行评价。
+
+| GT Renderer | PSNR ↑ | SSIM ↑ | LPIPS ↓ | FVD ↓ | FD ↓ | RM ↓ | Rendering Time ↓ | Visual Quality | Fairness |
+|---|---:|---:|---:|---:|---:|---:|---:|---|---|
+| Dr.Bokeh Renderer |  |  |  |  |  |  |  |  |  |
+| Blender Cycles |  |  |  |  |  |  |  |  |  |
+
+除数值指标外，还固定观察：
+
+- Hair / Thin Structure；
+- Foreground / Background Occlusion；
+- Halo；
+- Color Bleeding；
+- Strong Bokeh realism；
+- temporal stability；
+- renderer speed；
+- reproducibility；
+- 是否与参赛 baseline 存在天然偏置。
+
+需要特别注意：
+
+> 与 Any-to-Bokeh 论文报告指标更接近，只能作为“数据分布可能更接近原论文”的参考，不能单独作为最终选择 renderer 的依据。
+
+最终 GT Renderer 需要综合考虑：
+
+1. 与 Any-to-Bokeh 论文指标量级的接近程度；
+2. 视觉真实性；
+3. 发丝和遮挡边界质量；
+4. 时序稳定性；
+5. 生成成本；
+6. 可复现性；
+7. Benchmark 公平性。
+
+原则上：
+
+\[
+\boxed{GT\ Generator \neq Compared\ Baseline}
+\]
+
+因此 Dr.Bokeh Renderer 可以作为快速验证方案，但如果 Blender 的质量与成本可接受，则 Blender 更适合作为正式 Benchmark GT 的候选。
+
+
 ## Table 1：Any-to-Bokeh Synthetic / Reproduced Synthetic
 
 建议分别报告 Track A 与 Track B。
@@ -1530,3 +1589,57 @@ Track B
 这样才能把它真正作为一个：
 
 > **可复现、可审计、可公平比较的 paired video bokeh benchmark。**
+
+
+---
+
+# 18. 当前最终表格数量
+
+当前实验方案共保留 **5 张主表**：
+
+1. **Table 0：GT Renderer Comparison**  
+   用于选择正式 Synthetic Benchmark 的 Bokeh GT Renderer。
+
+2. **Table 1：Any-to-Bokeh Synthetic / Reproduced Synthetic**  
+   主 paired synthetic 定量 Benchmark。
+
+3. **Table 2：DAVIS Real-world**  
+   真实视频泛化。
+
+4. **Table 3：Efficiency**  
+   速度、显存、参数量和端到端成本。
+
+5. **Table 4：OPPO-style Low-FPS Depth Robustness**  
+   Low-FPS Coarse Depth 专项鲁棒性评价。
+
+其中 Table 1 在最终报告中建议拆成：
+
+- **Table 1A：Track A — Unified Per-frame Geometry**
+- **Table 1B：Track B — Low-FPS Coarse Geometry**
+
+因此：
+
+\[
+\boxed{5\ 张主表}
+\]
+
+如果按最终论文 / 报告中实际展示的结果表块计算，则为：
+
+\[
+\boxed{6\ 个结果表块}
+\]
+
+即：
+
+~~~text
+Table 0   GT Renderer Comparison
+
+Table 1A  Synthetic Track A
+Table 1B  Synthetic Track B
+
+Table 2   DAVIS Real-world
+
+Table 3   Efficiency
+
+Table 4   OPPO-style Low-FPS Depth Robustness
+~~~
