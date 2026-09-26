@@ -1,0 +1,447 @@
+{
+  "date": "2026-09-26",
+  "status": "E6_PREPARATION_AND_INITIAL_CALIBRATION_COMPLETE_NOT_E6_PASSED",
+  "config": "configs/renderer-e6.json",
+  "output": "outputs/renderer-e6-preparation-20260926",
+  "environment": "magicbokeh; existing Blender 4.5.13 LTS / OptiX GPU 0; no new dependencies",
+  "scene_manifest": {
+    "AM-2k": 12,
+    "VideoMatte240K": 12,
+    "calibration": 12
+  },
+  "mapping": {
+    "disparity": "1 / axial_depth_m; no per-scene normalization",
+    "radius_px": "K * abs(1/z_m - 1/focus_m)",
+    "aperture_fstop": "f_m**2 * width_px / (2 * sensor_width_m * K)",
+    "primary_scale": 1.0,
+    "historical_crosscheck_scale": 0.945244,
+    "scope": "Cycles perspective, horizontal sensor fit, square pixels, circular aperture; object/focus distance affects CoC, cancels out of K-to-fstop coefficient",
+    "sources": [
+      "https://github.com/blender/blender/blob/v4.5.13/intern/cycles/blender/camera.cpp",
+      "https://github.com/blender/blender/blob/v4.5.13/intern/cycles/kernel/camera/camera.h"
+    ],
+    "note": "Validate primary physical mapping and historical fixed factor separately. Dr discrete kernel adds 1px support; not an independent ground-truth definition."
+  },
+  "calibration": {
+    "method": "2*sqrt(edge derivative variance minus same-case pinhole variance), linear light, central rows; diagnostic effective disk radius",
+    "criteria": {
+      "status": "engineering thresholds specified before E6 results; not literature standards",
+      "calibration_radius_tolerance_px": 0.35,
+      "calibration_radius_tolerance_relative": 0.05,
+      "calibration_rule": "abs error <= max(0.35px, 5% target); target radius <2px is resolution-limited and reported separately",
+      "in_focus_excess_radius_max_px": 0.5,
+      "independent_seed_psnr_min_db": 45.0,
+      "independent_seed_mae_max": 0.002,
+      "static_repeated_render_mean_temporal_L1_max": 0.003,
+      "noise_scope": "static duplicate scene separates sampling noise from motion; dynamic clips also require edge/crop visual review",
+      "alignment_pinhole_psnr_min_db": 45.0,
+      "alpha_checks": "finite [0,1], matched timestamps/dimensions; no systematic halo/leakage on black/white/checker backgrounds or occlusion reversal",
+      "reproducibility": "same source list/seed produces identical input arrays; record decoder versions; GPU render assessed statistically",
+      "split": "exclude every E1-E6 source foreground, background and whole VM video from formal test",
+      "FVD": "not enabled automatically for 24 clips"
+    },
+    "cases": [
+      {
+        "id": "cal_00",
+        "K": 4,
+        "focus_distance_m": 2,
+        "object_depth_m": 6,
+        "nominal_radius_px": 1.3333333333333335,
+        "physical_radius_px": 1.5556918067096233,
+        "physical_error_px": 0.22235847337628978,
+        "historical_radius_px": 1.6233721485959736,
+        "historical_error_px": 0.2900388152626401,
+        "dr_radius_px": 2.0331760636140417,
+        "dr_error_px": 0.6998427302807082,
+        "tolerance_px": 0.35,
+        "physical_status": "resolution_limited"
+      },
+      {
+        "id": "cal_01",
+        "K": 8,
+        "focus_distance_m": 2,
+        "object_depth_m": 6,
+        "nominal_radius_px": 2.666666666666667,
+        "physical_radius_px": 2.787809754622712,
+        "physical_error_px": 0.12114308795604511,
+        "historical_radius_px": 2.937417771584481,
+        "historical_error_px": 0.2707511049178142,
+        "dr_radius_px": 3.1877992728819553,
+        "dr_error_px": 0.5211326062152883,
+        "tolerance_px": 0.35,
+        "physical_status": "pass"
+      },
+      {
+        "id": "cal_02",
+        "K": 16,
+        "focus_distance_m": 2,
+        "object_depth_m": 6,
+        "nominal_radius_px": 5.333333333333334,
+        "physical_radius_px": 5.394368342864675,
+        "physical_error_px": 0.061035009531341444,
+        "historical_radius_px": 5.701031499228465,
+        "historical_error_px": 0.36769816589513127,
+        "dr_radius_px": 5.707866458781118,
+        "dr_error_px": 0.37453312544778417,
+        "tolerance_px": 0.35,
+        "physical_status": "pass"
+      },
+      {
+        "id": "cal_03",
+        "K": 32,
+        "focus_distance_m": 2,
+        "object_depth_m": 6,
+        "nominal_radius_px": 10.666666666666668,
+        "physical_radius_px": 10.698670732913262,
+        "physical_error_px": 0.032004066246594576,
+        "historical_radius_px": 11.312034204429889,
+        "historical_error_px": 0.6453675377632209,
+        "dr_radius_px": 10.987302146799154,
+        "dr_error_px": 0.320635480132486,
+        "tolerance_px": 0.5333333333333334,
+        "physical_status": "pass"
+      },
+      {
+        "id": "cal_04",
+        "K": 16,
+        "focus_distance_m": 2,
+        "object_depth_m": 3,
+        "nominal_radius_px": 2.666666666666667,
+        "physical_radius_px": 2.787809635440147,
+        "physical_error_px": 0.12114296877347996,
+        "historical_radius_px": 2.9374037823220505,
+        "historical_error_px": 0.2707371156553835,
+        "dr_radius_px": 3.1877992728819553,
+        "dr_error_px": 0.5211326062152883,
+        "tolerance_px": 0.35,
+        "physical_status": "pass"
+      },
+      {
+        "id": "cal_05",
+        "K": 16,
+        "focus_distance_m": 2,
+        "object_depth_m": 4,
+        "nominal_radius_px": 4.0,
+        "physical_radius_px": 4.083818112068166,
+        "physical_error_px": 0.08381811206816625,
+        "historical_radius_px": 4.3092373091422145,
+        "historical_error_px": 0.3092373091422145,
+        "dr_radius_px": 4.455515148207508,
+        "dr_error_px": 0.4555151482075077,
+        "tolerance_px": 0.35,
+        "physical_status": "pass"
+      },
+      {
+        "id": "cal_06",
+        "K": 16,
+        "focus_distance_m": 2,
+        "object_depth_m": 8,
+        "nominal_radius_px": 6.0,
+        "physical_radius_px": 6.05026922172079,
+        "physical_error_px": 0.05026922172079029,
+        "historical_radius_px": 6.395878830485246,
+        "historical_error_px": 0.39587883048524564,
+        "dr_radius_px": 6.363826432733243,
+        "dr_error_px": 0.36382643273324344,
+        "tolerance_px": 0.35,
+        "physical_status": "pass"
+      },
+      {
+        "id": "cal_07",
+        "K": 16,
+        "focus_distance_m": 3,
+        "object_depth_m": 6,
+        "nominal_radius_px": 2.6666666666666665,
+        "physical_radius_px": 2.787819462864034,
+        "physical_error_px": 0.12115279619736752,
+        "historical_radius_px": 2.9373806799907776,
+        "historical_error_px": 0.27071401332411105,
+        "dr_radius_px": 3.1877992728819553,
+        "dr_error_px": 0.5211326062152888,
+        "tolerance_px": 0.35,
+        "physical_status": "pass"
+      },
+      {
+        "id": "cal_08",
+        "K": 16,
+        "focus_distance_m": 6,
+        "object_depth_m": 2,
+        "nominal_radius_px": 5.333333333333334,
+        "physical_radius_px": 5.393521415473384,
+        "physical_error_px": 0.06018808214005045,
+        "historical_radius_px": 5.701587686889532,
+        "historical_error_px": 0.36825435355619796,
+        "dr_radius_px": 5.707870023558566,
+        "dr_error_px": 0.3745366902252325,
+        "tolerance_px": 0.35,
+        "physical_status": "pass"
+      },
+      {
+        "id": "cal_09",
+        "K": 16,
+        "focus_distance_m": 4,
+        "object_depth_m": 2,
+        "nominal_radius_px": 4.0,
+        "physical_radius_px": 4.08433231602691,
+        "physical_error_px": 0.08433231602691027,
+        "historical_radius_px": 4.309125056644464,
+        "historical_error_px": 0.3091250566444641,
+        "dr_radius_px": 4.455515148207508,
+        "dr_error_px": 0.4555151482075077,
+        "tolerance_px": 0.35,
+        "physical_status": "pass"
+      },
+      {
+        "id": "cal_10",
+        "K": 16,
+        "focus_distance_m": 2,
+        "object_depth_m": 2,
+        "nominal_radius_px": 0.0,
+        "physical_radius_px": 0.0052086273303960755,
+        "physical_error_px": 0.0052086273303960755,
+        "historical_radius_px": 0.003683061951619402,
+        "historical_error_px": 0.003683061951619402,
+        "dr_radius_px": 0.4826460244020281,
+        "dr_error_px": 0.4826460244020281,
+        "tolerance_px": 0.35,
+        "physical_status": "pass"
+      },
+      {
+        "id": "cal_11",
+        "K": 32,
+        "focus_distance_m": 6,
+        "object_depth_m": 2,
+        "nominal_radius_px": 10.666666666666668,
+        "physical_radius_px": 10.69774842858754,
+        "physical_error_px": 0.031081761920871642,
+        "historical_radius_px": 11.314057863882818,
+        "historical_error_px": 0.6473911972161499,
+        "dr_radius_px": 10.987303998689454,
+        "dr_error_px": 0.32063733202278577,
+        "tolerance_px": 0.5333333333333334,
+        "physical_status": "pass"
+      }
+    ],
+    "scope": "Calibration only; does not establish dynamic stability or complete E6",
+    "physical_failures": []
+  },
+  "input_preflight": {
+    "opencv": "4.8.0",
+    "videos": [
+      {
+        "scene": "vm_00",
+        "video": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0000.mp4",
+        "properties": {
+          "width": 1920.0,
+          "height": 1080.0,
+          "fps": 30.0,
+          "frames": 339.0
+        },
+        "decoded_pairs": 25,
+        "mean_alpha_change": 0.0012748189716755103,
+        "coverage": "pending visual review"
+      },
+      {
+        "scene": "vm_01",
+        "video": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0001.mp4",
+        "properties": {
+          "width": 1920.0,
+          "height": 1080.0,
+          "fps": 30.0,
+          "frames": 360.0
+        },
+        "decoded_pairs": 25,
+        "mean_alpha_change": 0.003400145214982331,
+        "coverage": "pending visual review"
+      },
+      {
+        "scene": "vm_02",
+        "video": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0002.mp4",
+        "properties": {
+          "width": 1920.0,
+          "height": 1080.0,
+          "fps": 30.0,
+          "frames": 360.0
+        },
+        "decoded_pairs": 25,
+        "mean_alpha_change": 0.019773664767853916,
+        "coverage": "pending visual review"
+      },
+      {
+        "scene": "vm_03",
+        "video": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0003.mp4",
+        "properties": {
+          "width": 1920.0,
+          "height": 1080.0,
+          "fps": 30.0,
+          "frames": 360.0
+        },
+        "decoded_pairs": 25,
+        "mean_alpha_change": 0.002457017049891874,
+        "coverage": "pending visual review"
+      },
+      {
+        "scene": "vm_04",
+        "video": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0004.mp4",
+        "properties": {
+          "width": 1920.0,
+          "height": 1080.0,
+          "fps": 30.0,
+          "frames": 360.0
+        },
+        "decoded_pairs": 25,
+        "mean_alpha_change": 0.0014618537922312196,
+        "coverage": "pending visual review"
+      },
+      {
+        "scene": "vm_05",
+        "video": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0005.mp4",
+        "properties": {
+          "width": 1920.0,
+          "height": 1080.0,
+          "fps": 30.0,
+          "frames": 350.0
+        },
+        "decoded_pairs": 25,
+        "mean_alpha_change": 0.0017400740762241185,
+        "coverage": "pending visual review"
+      },
+      {
+        "scene": "vm_06",
+        "video": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0006.mp4",
+        "properties": {
+          "width": 1920.0,
+          "height": 1080.0,
+          "fps": 30.0,
+          "frames": 298.0
+        },
+        "decoded_pairs": 25,
+        "mean_alpha_change": 0.014140693199199935,
+        "coverage": "pending visual review"
+      },
+      {
+        "scene": "vm_07",
+        "video": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0007.mp4",
+        "properties": {
+          "width": 1920.0,
+          "height": 1080.0,
+          "fps": 30.0,
+          "frames": 313.0
+        },
+        "decoded_pairs": 25,
+        "mean_alpha_change": 0.004369076748844236,
+        "coverage": "pending visual review"
+      },
+      {
+        "scene": "vm_08",
+        "video": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0008.mp4",
+        "properties": {
+          "width": 1920.0,
+          "height": 1080.0,
+          "fps": 30.0,
+          "frames": 313.0
+        },
+        "decoded_pairs": 25,
+        "mean_alpha_change": 0.003548086213413626,
+        "coverage": "pending visual review"
+      },
+      {
+        "scene": "vm_09",
+        "video": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0009.mp4",
+        "properties": {
+          "width": 1920.0,
+          "height": 1080.0,
+          "fps": 30.0,
+          "frames": 240.0
+        },
+        "decoded_pairs": 25,
+        "mean_alpha_change": 0.0035883146726215878,
+        "coverage": "pending visual review"
+      },
+      {
+        "scene": "vm_10",
+        "video": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0010.mp4",
+        "properties": {
+          "width": 1920.0,
+          "height": 1080.0,
+          "fps": 30.0,
+          "frames": 360.0
+        },
+        "decoded_pairs": 25,
+        "mean_alpha_change": 0.006201777626605083,
+        "coverage": "pending visual review"
+      },
+      {
+        "scene": "vm_11",
+        "video": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0011.mp4",
+        "properties": {
+          "width": 1920.0,
+          "height": 1080.0,
+          "fps": 30.0,
+          "frames": 348.0
+        },
+        "decoded_pairs": 25,
+        "mean_alpha_change": 0.04596797609701753,
+        "coverage": "pending visual review"
+      }
+    ],
+    "calibration_cases": 12
+  },
+  "short_render": {
+    "scenes": [
+      "am_00",
+      "vm_02",
+      "vm_11"
+    ],
+    "sampled_timeline_frames": [
+      0,
+      12,
+      24
+    ],
+    "rendered_frames": 9,
+    "note": "Nonconsecutive sampled frames, not a continuous temporal-stability validation",
+    "alignment": [
+      {
+        "scene": "am_00",
+        "pinhole_psnr_db": [
+          65.08966816807092,
+          66.49086321879997,
+          65.09046472515567
+        ],
+        "pass_alignment": true
+      },
+      {
+        "scene": "vm_02",
+        "pinhole_psnr_db": [
+          62.57196875411146,
+          63.58954275661791,
+          62.928335866223286
+        ],
+        "pass_alignment": true
+      },
+      {
+        "scene": "vm_11",
+        "pinhole_psnr_db": [
+          58.22516108840703,
+          58.831902871399144,
+          60.878715842773104
+        ],
+        "pass_alignment": true
+      }
+    ]
+  },
+  "reproducibility": {
+    "reproduced_input_arrays": 19,
+    "all_equal": true,
+    "foreground_depth_pair_rgb_alpha_mask_textures_equal": true,
+    "foreground_depth_pair_depth_changed": true
+  },
+  "pending": [
+    "Continuous motion and edge-quality review of full clips",
+    "Sampling-noise stability at E6 geometry/K conditions",
+    "Full 24-scene generation and evaluation after checks",
+    "Any-to-Bokeh E6 input/output adapter validation; existing runner selects scene_* folders",
+    "Resolution-limited radius below 2px requires separate validation or restricted quantitative scope",
+    "Formal source-level split selection and overlap check when E7 list exists"
+  ]
+}

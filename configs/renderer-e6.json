@@ -1,0 +1,716 @@
+{
+  "status": "E6_PREPARATION_AND_INITIAL_CALIBRATION_COMPLETE_NOT_E6_PASSED",
+  "width": 1024,
+  "height": 576,
+  "frames": 25,
+  "seed": 20260926,
+  "focal_length_mm": 50.0,
+  "sensor_width_mm": 36.0,
+  "cycles_samples": 1024,
+  "geometry": "dynamic layered planar synthesis",
+  "mapping": {
+    "disparity": "1 / axial_depth_m; no per-scene normalization",
+    "radius_px": "K * abs(1/z_m - 1/focus_m)",
+    "aperture_fstop": "f_m**2 * width_px / (2 * sensor_width_m * K)",
+    "primary_scale": 1.0,
+    "historical_crosscheck_scale": 0.945244,
+    "scope": "Cycles perspective, horizontal sensor fit, square pixels, circular aperture; object/focus distance affects CoC, cancels out of K-to-fstop coefficient",
+    "sources": [
+      "https://github.com/blender/blender/blob/v4.5.13/intern/cycles/blender/camera.cpp",
+      "https://github.com/blender/blender/blob/v4.5.13/intern/cycles/kernel/camera/camera.h"
+    ],
+    "note": "Validate primary physical mapping and historical fixed factor separately. Dr discrete kernel adds 1px support; not an independent ground-truth definition."
+  },
+  "criteria": {
+    "status": "engineering thresholds specified before E6 results; not literature standards",
+    "calibration_radius_tolerance_px": 0.35,
+    "calibration_radius_tolerance_relative": 0.05,
+    "calibration_rule": "abs error <= max(0.35px, 5% target); target radius <2px is resolution-limited and reported separately",
+    "in_focus_excess_radius_max_px": 0.5,
+    "independent_seed_psnr_min_db": 45.0,
+    "independent_seed_mae_max": 0.002,
+    "static_repeated_render_mean_temporal_L1_max": 0.003,
+    "noise_scope": "static duplicate scene separates sampling noise from motion; dynamic clips also require edge/crop visual review",
+    "alignment_pinhole_psnr_min_db": 45.0,
+    "alpha_checks": "finite [0,1], matched timestamps/dimensions; no systematic halo/leakage on black/white/checker backgrounds or occlusion reversal",
+    "reproducibility": "same source list/seed produces identical input arrays; record decoder versions; GPU render assessed statistically",
+    "split": "exclude every E1-E6 source foreground, background and whole VM video from formal test",
+    "FVD": "not enabled automatically for 24 clips"
+  },
+  "scenes": [
+    {
+      "id": "am_00",
+      "group": "am_pair_0",
+      "changed_factor": "reference",
+      "foreground_files": [
+        "data/raw/AM-2k/train/fg/m_00b28969.png"
+      ],
+      "background_file": "data/raw/BG-20k/train/h_0000947b.jpg",
+      "foreground_depths_m": [
+        2.0
+      ],
+      "background_depth_m": 6.0,
+      "focus_distance_m": 2.0,
+      "K": 16.0,
+      "motion": {
+        "type": "fixed_affine_sequence",
+        "seed": 20260926,
+        "translation_x_amplitude_px": 35,
+        "translation_y_amplitude_px": 12,
+        "rotation_amplitude_degrees": 3
+      },
+      "screen_space_size_fixed": true
+    },
+    {
+      "id": "am_01",
+      "group": "am_pair_0",
+      "changed_factor": "foreground_depth",
+      "foreground_files": [
+        "data/raw/AM-2k/train/fg/m_00b28969.png"
+      ],
+      "background_file": "data/raw/BG-20k/train/h_0000947b.jpg",
+      "foreground_depths_m": [
+        3.0
+      ],
+      "background_depth_m": 6.0,
+      "focus_distance_m": 2.0,
+      "K": 16.0,
+      "motion": {
+        "type": "fixed_affine_sequence",
+        "seed": 20260926,
+        "translation_x_amplitude_px": 35,
+        "translation_y_amplitude_px": 12,
+        "rotation_amplitude_degrees": 3
+      },
+      "screen_space_size_fixed": true
+    },
+    {
+      "id": "am_02",
+      "group": "am_pair_0",
+      "changed_factor": "background_depth",
+      "foreground_files": [
+        "data/raw/AM-2k/train/fg/m_00b28969.png"
+      ],
+      "background_file": "data/raw/BG-20k/train/h_0000947b.jpg",
+      "foreground_depths_m": [
+        2.0
+      ],
+      "background_depth_m": 4.0,
+      "focus_distance_m": 2.0,
+      "K": 16.0,
+      "motion": {
+        "type": "fixed_affine_sequence",
+        "seed": 20260926,
+        "translation_x_amplitude_px": 35,
+        "translation_y_amplitude_px": 12,
+        "rotation_amplitude_degrees": 3
+      },
+      "screen_space_size_fixed": true
+    },
+    {
+      "id": "am_03",
+      "group": "am_pair_0",
+      "changed_factor": "focus",
+      "foreground_files": [
+        "data/raw/AM-2k/train/fg/m_00b28969.png"
+      ],
+      "background_file": "data/raw/BG-20k/train/h_0000947b.jpg",
+      "foreground_depths_m": [
+        2.0
+      ],
+      "background_depth_m": 6.0,
+      "focus_distance_m": 6.0,
+      "K": 16.0,
+      "motion": {
+        "type": "fixed_affine_sequence",
+        "seed": 20260926,
+        "translation_x_amplitude_px": 35,
+        "translation_y_amplitude_px": 12,
+        "rotation_amplitude_degrees": 3
+      },
+      "screen_space_size_fixed": true
+    },
+    {
+      "id": "am_04",
+      "group": "am_pair_0",
+      "changed_factor": "K",
+      "foreground_files": [
+        "data/raw/AM-2k/train/fg/m_00b28969.png"
+      ],
+      "background_file": "data/raw/BG-20k/train/h_0000947b.jpg",
+      "foreground_depths_m": [
+        2.0
+      ],
+      "background_depth_m": 6.0,
+      "focus_distance_m": 2.0,
+      "K": 8.0,
+      "motion": {
+        "type": "fixed_affine_sequence",
+        "seed": 20260926,
+        "translation_x_amplitude_px": 35,
+        "translation_y_amplitude_px": 12,
+        "rotation_amplitude_degrees": 3
+      },
+      "screen_space_size_fixed": true
+    },
+    {
+      "id": "am_05",
+      "group": "am_pair_0",
+      "changed_factor": "occlusion_layer",
+      "foreground_files": [
+        "data/raw/AM-2k/train/fg/m_00b28969.png",
+        "data/raw/AM-2k/train/fg/m_00bc1c49.png"
+      ],
+      "background_file": "data/raw/BG-20k/train/h_0000947b.jpg",
+      "foreground_depths_m": [
+        2.0,
+        3.0
+      ],
+      "background_depth_m": 6.0,
+      "focus_distance_m": 2.0,
+      "K": 16.0,
+      "motion": {
+        "type": "fixed_affine_sequence",
+        "seed": 20260926,
+        "translation_x_amplitude_px": 35,
+        "translation_y_amplitude_px": 12,
+        "rotation_amplitude_degrees": 3
+      },
+      "screen_space_size_fixed": true
+    },
+    {
+      "id": "am_06",
+      "group": "am_pair_1",
+      "changed_factor": "reference",
+      "foreground_files": [
+        "data/raw/AM-2k/train/fg/m_00da5380.png"
+      ],
+      "background_file": "data/raw/BG-20k/train/h_0008b529.jpg",
+      "foreground_depths_m": [
+        2.0
+      ],
+      "background_depth_m": 6.0,
+      "focus_distance_m": 2.0,
+      "K": 16.0,
+      "motion": {
+        "type": "fixed_affine_sequence",
+        "seed": 20260927,
+        "translation_x_amplitude_px": 35,
+        "translation_y_amplitude_px": 12,
+        "rotation_amplitude_degrees": 3
+      },
+      "screen_space_size_fixed": true
+    },
+    {
+      "id": "am_07",
+      "group": "am_pair_1",
+      "changed_factor": "foreground_depth",
+      "foreground_files": [
+        "data/raw/AM-2k/train/fg/m_00da5380.png"
+      ],
+      "background_file": "data/raw/BG-20k/train/h_0008b529.jpg",
+      "foreground_depths_m": [
+        3.0
+      ],
+      "background_depth_m": 6.0,
+      "focus_distance_m": 2.0,
+      "K": 16.0,
+      "motion": {
+        "type": "fixed_affine_sequence",
+        "seed": 20260927,
+        "translation_x_amplitude_px": 35,
+        "translation_y_amplitude_px": 12,
+        "rotation_amplitude_degrees": 3
+      },
+      "screen_space_size_fixed": true
+    },
+    {
+      "id": "am_08",
+      "group": "am_pair_1",
+      "changed_factor": "background_depth",
+      "foreground_files": [
+        "data/raw/AM-2k/train/fg/m_00da5380.png"
+      ],
+      "background_file": "data/raw/BG-20k/train/h_0008b529.jpg",
+      "foreground_depths_m": [
+        2.0
+      ],
+      "background_depth_m": 4.0,
+      "focus_distance_m": 2.0,
+      "K": 16.0,
+      "motion": {
+        "type": "fixed_affine_sequence",
+        "seed": 20260927,
+        "translation_x_amplitude_px": 35,
+        "translation_y_amplitude_px": 12,
+        "rotation_amplitude_degrees": 3
+      },
+      "screen_space_size_fixed": true
+    },
+    {
+      "id": "am_09",
+      "group": "am_pair_1",
+      "changed_factor": "focus",
+      "foreground_files": [
+        "data/raw/AM-2k/train/fg/m_00da5380.png"
+      ],
+      "background_file": "data/raw/BG-20k/train/h_0008b529.jpg",
+      "foreground_depths_m": [
+        2.0
+      ],
+      "background_depth_m": 6.0,
+      "focus_distance_m": 6.0,
+      "K": 16.0,
+      "motion": {
+        "type": "fixed_affine_sequence",
+        "seed": 20260927,
+        "translation_x_amplitude_px": 35,
+        "translation_y_amplitude_px": 12,
+        "rotation_amplitude_degrees": 3
+      },
+      "screen_space_size_fixed": true
+    },
+    {
+      "id": "am_10",
+      "group": "am_pair_1",
+      "changed_factor": "K",
+      "foreground_files": [
+        "data/raw/AM-2k/train/fg/m_00da5380.png"
+      ],
+      "background_file": "data/raw/BG-20k/train/h_0008b529.jpg",
+      "foreground_depths_m": [
+        2.0
+      ],
+      "background_depth_m": 6.0,
+      "focus_distance_m": 2.0,
+      "K": 32.0,
+      "motion": {
+        "type": "fixed_affine_sequence",
+        "seed": 20260927,
+        "translation_x_amplitude_px": 35,
+        "translation_y_amplitude_px": 12,
+        "rotation_amplitude_degrees": 3
+      },
+      "screen_space_size_fixed": true
+    },
+    {
+      "id": "am_11",
+      "group": "am_pair_1",
+      "changed_factor": "occlusion_layer",
+      "foreground_files": [
+        "data/raw/AM-2k/train/fg/m_00da5380.png",
+        "data/raw/AM-2k/train/fg/m_01173901.png"
+      ],
+      "background_file": "data/raw/BG-20k/train/h_0008b529.jpg",
+      "foreground_depths_m": [
+        2.0,
+        3.0
+      ],
+      "background_depth_m": 6.0,
+      "focus_distance_m": 2.0,
+      "K": 16.0,
+      "motion": {
+        "type": "fixed_affine_sequence",
+        "seed": 20260927,
+        "translation_x_amplitude_px": 35,
+        "translation_y_amplitude_px": 12,
+        "rotation_amplitude_degrees": 3
+      },
+      "screen_space_size_fixed": true
+    },
+    {
+      "id": "vm_00",
+      "source_video": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0000.mp4",
+      "source_alpha": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/pha/0000.mp4",
+      "start_frame": 30,
+      "frame_stride": 1,
+      "background_file": "data/raw/BG-20k/train/h_00099398.jpg",
+      "foreground_depths_m": [
+        2.0
+      ],
+      "background_depth_m": 6.0,
+      "focus_distance_m": 2.0,
+      "K": 4.0,
+      "motion": {
+        "type": "source_video_only"
+      },
+      "coverage_status": "three-frame visual screening complete; continuous playback and edge quality pending",
+      "observed_screening_tags": [
+        "body_motion",
+        "clothing_boundary"
+      ]
+    },
+    {
+      "id": "vm_01",
+      "source_video": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0001.mp4",
+      "source_alpha": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/pha/0001.mp4",
+      "start_frame": 30,
+      "frame_stride": 1,
+      "background_file": "data/raw/BG-20k/train/h_000f939a.jpg",
+      "foreground_depths_m": [
+        2.0
+      ],
+      "background_depth_m": 6.0,
+      "focus_distance_m": 2.0,
+      "K": 8.0,
+      "motion": {
+        "type": "source_video_only"
+      },
+      "coverage_status": "three-frame visual screening complete; continuous playback and edge quality pending",
+      "observed_screening_tags": [
+        "body_turn",
+        "clothing_boundary"
+      ]
+    },
+    {
+      "id": "vm_02",
+      "source_video": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0002.mp4",
+      "source_alpha": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/pha/0002.mp4",
+      "start_frame": 30,
+      "frame_stride": 1,
+      "background_file": "data/raw/BG-20k/train/h_0010eba8.jpg",
+      "foreground_depths_m": [
+        2.0
+      ],
+      "background_depth_m": 6.0,
+      "focus_distance_m": 2.0,
+      "K": 16.0,
+      "motion": {
+        "type": "source_video_only"
+      },
+      "coverage_status": "three-frame visual screening complete; continuous playback and edge quality pending",
+      "observed_screening_tags": [
+        "hair_motion",
+        "arm_motion",
+        "pose_change"
+      ]
+    },
+    {
+      "id": "vm_03",
+      "source_video": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0003.mp4",
+      "source_alpha": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/pha/0003.mp4",
+      "start_frame": 30,
+      "frame_stride": 1,
+      "background_file": "data/raw/BG-20k/train/h_001533ba.jpg",
+      "foreground_depths_m": [
+        2.0
+      ],
+      "background_depth_m": 6.0,
+      "focus_distance_m": 6.0,
+      "K": 32.0,
+      "motion": {
+        "type": "source_video_only"
+      },
+      "coverage_status": "three-frame visual screening complete; continuous playback and edge quality pending",
+      "observed_screening_tags": [
+        "arm_motion"
+      ]
+    },
+    {
+      "id": "vm_04",
+      "source_video": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0004.mp4",
+      "source_alpha": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/pha/0004.mp4",
+      "start_frame": 30,
+      "frame_stride": 1,
+      "background_file": "data/raw/BG-20k/train/h_00168a88.jpg",
+      "foreground_depths_m": [
+        2.0
+      ],
+      "background_depth_m": 6.0,
+      "focus_distance_m": 2.0,
+      "K": 4.0,
+      "motion": {
+        "type": "source_video_only"
+      },
+      "coverage_status": "three-frame visual screening complete; continuous playback and edge quality pending",
+      "observed_screening_tags": [
+        "arm_motion",
+        "clothing_boundary"
+      ]
+    },
+    {
+      "id": "vm_05",
+      "source_video": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0005.mp4",
+      "source_alpha": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/pha/0005.mp4",
+      "start_frame": 30,
+      "frame_stride": 1,
+      "background_file": "data/raw/BG-20k/train/h_001820b0.jpg",
+      "foreground_depths_m": [
+        2.0
+      ],
+      "background_depth_m": 6.0,
+      "focus_distance_m": 2.0,
+      "K": 8.0,
+      "motion": {
+        "type": "source_video_only"
+      },
+      "coverage_status": "three-frame visual screening complete; continuous playback and edge quality pending",
+      "observed_screening_tags": [
+        "pose_change"
+      ]
+    },
+    {
+      "id": "vm_06",
+      "source_video": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0006.mp4",
+      "source_alpha": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/pha/0006.mp4",
+      "start_frame": 30,
+      "frame_stride": 1,
+      "background_file": "data/raw/BG-20k/train/h_0018ac2a.jpg",
+      "foreground_depths_m": [
+        2.0
+      ],
+      "background_depth_m": 6.0,
+      "focus_distance_m": 2.0,
+      "K": 16.0,
+      "motion": {
+        "type": "source_video_only"
+      },
+      "coverage_status": "three-frame visual screening complete; continuous playback and edge quality pending",
+      "observed_screening_tags": [
+        "hair_motion",
+        "thin_structure"
+      ]
+    },
+    {
+      "id": "vm_07",
+      "source_video": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0007.mp4",
+      "source_alpha": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/pha/0007.mp4",
+      "start_frame": 30,
+      "frame_stride": 1,
+      "background_file": "data/raw/BG-20k/train/h_001a0f0f.jpg",
+      "foreground_depths_m": [
+        2.0
+      ],
+      "background_depth_m": 6.0,
+      "focus_distance_m": 6.0,
+      "K": 32.0,
+      "motion": {
+        "type": "source_video_only"
+      },
+      "coverage_status": "three-frame visual screening complete; continuous playback and edge quality pending",
+      "observed_screening_tags": [
+        "arm_motion",
+        "pose_change"
+      ]
+    },
+    {
+      "id": "vm_08",
+      "source_video": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0008.mp4",
+      "source_alpha": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/pha/0008.mp4",
+      "start_frame": 30,
+      "frame_stride": 1,
+      "background_file": "data/raw/BG-20k/train/h_001a4755.jpg",
+      "foreground_depths_m": [
+        2.0
+      ],
+      "background_depth_m": 6.0,
+      "focus_distance_m": 2.0,
+      "K": 4.0,
+      "motion": {
+        "type": "source_video_only"
+      },
+      "coverage_status": "three-frame visual screening complete; continuous playback and edge quality pending",
+      "observed_screening_tags": [
+        "arm_motion",
+        "pose_change"
+      ]
+    },
+    {
+      "id": "vm_09",
+      "source_video": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0009.mp4",
+      "source_alpha": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/pha/0009.mp4",
+      "start_frame": 30,
+      "frame_stride": 1,
+      "background_file": "data/raw/BG-20k/train/h_001bc6c5.jpg",
+      "foreground_depths_m": [
+        2.0
+      ],
+      "background_depth_m": 6.0,
+      "focus_distance_m": 2.0,
+      "K": 8.0,
+      "motion": {
+        "type": "source_video_only"
+      },
+      "coverage_status": "three-frame visual screening complete; continuous playback and edge quality pending",
+      "observed_screening_tags": [
+        "arm_motion",
+        "object_motion"
+      ]
+    },
+    {
+      "id": "vm_10",
+      "source_video": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0010.mp4",
+      "source_alpha": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/pha/0010.mp4",
+      "start_frame": 30,
+      "frame_stride": 1,
+      "background_file": "data/raw/BG-20k/train/h_001decae.jpg",
+      "foreground_depths_m": [
+        2.0
+      ],
+      "background_depth_m": 6.0,
+      "focus_distance_m": 2.0,
+      "K": 16.0,
+      "motion": {
+        "type": "source_video_only"
+      },
+      "coverage_status": "three-frame visual screening complete; continuous playback and edge quality pending",
+      "observed_screening_tags": [
+        "hair_motion",
+        "clothing_boundary"
+      ]
+    },
+    {
+      "id": "vm_11",
+      "source_video": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0011.mp4",
+      "source_alpha": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/pha/0011.mp4",
+      "start_frame": 30,
+      "frame_stride": 1,
+      "background_file": "data/raw/BG-20k/train/h_002088cc.jpg",
+      "foreground_depths_m": [
+        2.0
+      ],
+      "background_depth_m": 6.0,
+      "focus_distance_m": 6.0,
+      "K": 32.0,
+      "motion": {
+        "type": "source_video_only"
+      },
+      "coverage_status": "three-frame visual screening complete; continuous playback and edge quality pending",
+      "observed_screening_tags": [
+        "multiple_people",
+        "occlusion_change",
+        "alpha_change"
+      ]
+    }
+  ],
+  "calibration_cases": [
+    {
+      "id": "cal_00",
+      "K": 4,
+      "focus_distance_m": 2,
+      "object_depth_m": 6
+    },
+    {
+      "id": "cal_01",
+      "K": 8,
+      "focus_distance_m": 2,
+      "object_depth_m": 6
+    },
+    {
+      "id": "cal_02",
+      "K": 16,
+      "focus_distance_m": 2,
+      "object_depth_m": 6
+    },
+    {
+      "id": "cal_03",
+      "K": 32,
+      "focus_distance_m": 2,
+      "object_depth_m": 6
+    },
+    {
+      "id": "cal_04",
+      "K": 16,
+      "focus_distance_m": 2,
+      "object_depth_m": 3
+    },
+    {
+      "id": "cal_05",
+      "K": 16,
+      "focus_distance_m": 2,
+      "object_depth_m": 4
+    },
+    {
+      "id": "cal_06",
+      "K": 16,
+      "focus_distance_m": 2,
+      "object_depth_m": 8
+    },
+    {
+      "id": "cal_07",
+      "K": 16,
+      "focus_distance_m": 3,
+      "object_depth_m": 6
+    },
+    {
+      "id": "cal_08",
+      "K": 16,
+      "focus_distance_m": 6,
+      "object_depth_m": 2
+    },
+    {
+      "id": "cal_09",
+      "K": 16,
+      "focus_distance_m": 4,
+      "object_depth_m": 2
+    },
+    {
+      "id": "cal_10",
+      "K": 16,
+      "focus_distance_m": 2,
+      "object_depth_m": 2
+    },
+    {
+      "id": "cal_11",
+      "K": 32,
+      "focus_distance_m": 6,
+      "object_depth_m": 2
+    }
+  ],
+  "development_exclusions": {
+    "AM-2k": [
+      "data/raw/AM-2k/train/fg/m_00308c60.png",
+      "data/raw/AM-2k/train/fg/m_003d01f4.png",
+      "data/raw/AM-2k/train/fg/m_00420d1e.png",
+      "data/raw/AM-2k/train/fg/m_004fa5c7.png",
+      "data/raw/AM-2k/train/fg/m_008cd4af.png",
+      "data/raw/AM-2k/train/fg/m_00b28969.png",
+      "data/raw/AM-2k/train/fg/m_00bc1c49.png",
+      "data/raw/AM-2k/train/fg/m_00da5380.png",
+      "data/raw/AM-2k/train/fg/m_01173901.png"
+    ],
+    "BG-20k": [
+      "data/raw/BG-20k/testval/h_0006a281.jpg",
+      "data/raw/BG-20k/testval/h_00226e0d.jpg",
+      "data/raw/BG-20k/testval/h_00241c18.jpg",
+      "data/raw/BG-20k/testval/h_0029c18d.jpg",
+      "data/raw/BG-20k/testval/h_00577a09.jpg",
+      "data/raw/BG-20k/train/h_0000947b.jpg",
+      "data/raw/BG-20k/train/h_0008b529.jpg",
+      "data/raw/BG-20k/train/h_00099398.jpg",
+      "data/raw/BG-20k/train/h_000f939a.jpg",
+      "data/raw/BG-20k/train/h_0010eba8.jpg",
+      "data/raw/BG-20k/train/h_001533ba.jpg",
+      "data/raw/BG-20k/train/h_00168a88.jpg",
+      "data/raw/BG-20k/train/h_001820b0.jpg",
+      "data/raw/BG-20k/train/h_0018ac2a.jpg",
+      "data/raw/BG-20k/train/h_001a0f0f.jpg",
+      "data/raw/BG-20k/train/h_001a4755.jpg",
+      "data/raw/BG-20k/train/h_001bc6c5.jpg",
+      "data/raw/BG-20k/train/h_001decae.jpg",
+      "data/raw/BG-20k/train/h_002088cc.jpg"
+    ],
+    "VideoMatte240K": [
+      "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0000.mp4",
+      "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0001.mp4",
+      "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0002.mp4",
+      "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0003.mp4",
+      "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0004.mp4",
+      "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0005.mp4",
+      "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0006.mp4",
+      "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0007.mp4",
+      "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0008.mp4",
+      "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0009.mp4",
+      "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0010.mp4",
+      "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0011.mp4"
+    ]
+  },
+  "pending": [
+    "Continuous motion and edge-quality review of full clips",
+    "Sampling-noise stability at E6 geometry/K conditions",
+    "Full 24-scene generation and evaluation after checks",
+    "Any-to-Bokeh E6 input/output adapter validation; existing runner selects scene_* folders",
+    "Resolution-limited radius below 2px requires separate validation or restricted quantitative scope",
+    "Formal source-level split selection and overlap check when E7 list exists"
+  ]
+}
