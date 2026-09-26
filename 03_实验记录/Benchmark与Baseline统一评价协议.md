@@ -636,6 +636,37 @@ Any-to-Bokeh 对同一批输入只产生一份 prediction，再分别以两种 r
 
 不能与原论文官方 200-video test set 的 paper-reported numbers 直接混为同一测试集结果。
 
+
+### E7 AM-2k 前景颜色恢复：修正版验证协议
+
+AM-2k 官方说明表明，训练集提供的 `fg` / `bg` 本身也是由闭式方法估计得到，并非对真实前景颜色的独立物理真值。因此，E7 **不得再把 AM-2k train/fg 当作 foreground-color ground truth 来证明某种恢复方法的真实准确性**。
+
+当前改用三层证据后再决定是否冻结 foreground-color estimator：
+
+1. **官方 FG 一致性评价（proxy consistency）**
+   - 在 AM-2k train 上，以 `original + alpha` 作为 estimator 输入；
+   - 与官方提供的 `fg` 比较，仅用于衡量与 AM-2k 官方代理前景的数值一致性；
+   - 可报告全前景区和 soft-alpha 边界区的 MAE / PSNR / gradient 等，但必须标注为 **proxy-reference consistency**，不能称为真实 foreground-color accuracy；
+   - 官方 `fg` / `bg` 的闭式估计误差可能同时影响该比较。
+
+2. **已知 FG 构造输入的可控恢复实验（controlled synthetic recovery）**
+   - 选定一个已知前景 `F_known`、Alpha `alpha` 和已知背景 `B_known`，按冻结的色彩空间/合成规则显式构造：
+   - `I_syn = alpha * F_known + (1 - alpha) * B_known`；
+   - estimator 只接收 `I_syn + alpha`，再恢复 `F_hat`；
+   - 因为 `F_known` 是该合成输入的构造源，所以在**这一受控合成条件内**可以把 `F_known` 作为精确参考，量化恢复误差；
+   - 如果 `F_known` 来自 AM-2k 官方 `fg`，结论仍只说明“对由该代理 FG 构造的数据的可恢复性”，不外推为真实自然图像的物理颜色真值。
+
+3. **换背景视觉检查（re-compositing visual check）**
+   - 将恢复的 foreground 与黑 / 白 / 中灰 / checker / 代表性 BG-20K 背景重新合成；
+   - 固定检查发丝、毛发、半透明边缘、衣物细边及高对比区域的旧背景残色、halo、color bleeding；
+   - 对 AM-2k validation 只能做结构/视觉合理性检查，不因没有独立颜色 GT 而伪造定量 accuracy。
+
+候选方法（例如 naive original-as-FG、foreground estimation 的不同颜色空间/算法）应在同一开发子集和预先固定的合成/评价规则下比较。最终冻结依据必须综合以上三层证据，而不是只看与官方 `fg` 的单一 PSNR，也不能根据正式 E7 test 上 Any-to-Bokeh 或其他 baseline 的得分反向选择方法。
+
+若最终冻结某一方法，报告中的结论必须限定为：
+
+> 该 foreground-color estimator 在 AM-2k 官方代理 FG 的一致性检查、已知 FG 构造的可控恢复实验和换背景视觉检查中通过预定标准，因此作为 E7 synthetic construction 的固定工程步骤；这不等价于证明其恢复了真实场景中的物理前景颜色。
+
 ### E7 冻结后的 Any-to-Bokeh 外部参考检查
 
 正式 Reproduced Any-to-Bokeh-style Synthetic Benchmark 的场景清单、源素材、Geometry / Focus / \(K\)、Renderer 和指标配置**全部冻结后**，再使用官方公开的 Any-to-Bokeh 权重在该冻结测试集上运行一次，作为外部 **sanity check（合理性检查）**。
