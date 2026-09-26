@@ -1,0 +1,94 @@
+{
+  "date": "2026-09-26",
+  "status": "E6_PASSED_WITH_DECLARED_SCOPE",
+  "E7_status": "OFFICIAL_SOURCE_POOL_RESERVED_SCENE_CONFIG_NOT_FROZEN",
+  "acceptance_basis": {
+    "E1_E5": "03_实验记录/records/renderer-pilot-20260926.json",
+    "calibration": "03_实验记录/records/renderer-e6-preparation-20260926.json",
+    "construction_fix_and_noise": "03_实验记录/records/renderer-e6-validation-20260926-v2.json",
+    "full_24_scenes": "03_实验记录/records/renderer-e6-full-20260926.json"
+  },
+  "radius_claim_policy": {
+    "decision": "Keep weak-defocus scenes; restrict quantitative radius-precision claims instead of adding supersampling experiments",
+    "nonzero_quantitative_claim_min_px": 2.0,
+    "necessary_not_sufficient": "R>=2 is a reporting floor, not validation of every radius, camera or geometry combination",
+    "empirically_checked_nonzero_radius_range_px": [
+      2.6666666666666665,
+      10.666666666666668
+    ],
+    "verified_case_ids": [
+      "cal_01",
+      "cal_02",
+      "cal_03",
+      "cal_04",
+      "cal_05",
+      "cal_06",
+      "cal_07",
+      "cal_08",
+      "cal_09",
+      "cal_11"
+    ],
+    "evidence": "03_实验记录/records/renderer-e6-preparation-20260926.json",
+    "camera_scope": {
+      "width": 1024,
+      "height": 576,
+      "focal_length_mm": 50,
+      "sensor_width_mm": 36,
+      "projection": "Cycles perspective; horizontal sensor fit; square pixels; circular aperture",
+      "samples": 1024,
+      "fstop_scale": 1.0
+    },
+    "parameter_scope": "The recorded E6 calibration cases and construction checks; no extrapolated precision promise for new cameras, resolutions or untested parameter combinations",
+    "zero_radius": "Separate in-focus check; not part of the weak positive-radius group",
+    "weak_positive_radius": "0<R<2 may remain in benchmark and receive model-distance scores, but is not counted as quantitatively validated physical radius precision",
+    "weak_scene_ids": [
+      "vm_00",
+      "vm_04",
+      "vm_08"
+    ],
+    "existing_thresholds_unchanged": true,
+    "small_radius_results_relabelled_as_pass": false
+  },
+  "source_manifest": "configs/benchmark-source-isolation.json",
+  "source_isolation": {
+    "development_counts": {
+      "AM-2k": 12,
+      "BG-20k": 19,
+      "VideoMatte240K": 12
+    },
+    "test_pool_counts": {
+      "AM-2k": 33,
+      "BG-20k": 4995,
+      "VideoMatte240K": 5
+    },
+    "intersection_count": 0,
+    "development_documents_rechecked": 98,
+    "missing_observed_development_sources": [],
+    "local_paths_checked": true,
+    "source_id_overlap_pass": true,
+    "regression_checks": {
+      "development_video_rejected": true,
+      "AM_roles_share_identity": true,
+      "different_segment_same_video_rejected": true,
+      "development_AM_and_BG_images_rejected": true,
+      "omitted_replaced_source_rejected": true,
+      "foreground_alpha_video_share_identity": true,
+      "official_split_name_collision_handled": true,
+      "unknown_derived_path_rejected": true
+    }
+  },
+  "acceptance_interpretation": "E6 protocol/construction development acceptance within declared scope; not official benchmark scores, no final E7 scene freeze and no proof of real 3D geometry",
+  "FD_outlier": "vm_11 retained with original FD and diagnostic uncertainty; no new FD acceptance threshold",
+  "no_new_rendering_or_baseline_inference": true,
+  "next_E7_tasks": [
+    "Fix AM validation foreground-color extraction using Alpha; original RGB is not separated foreground",
+    "Choose final scene count, source-video segments, source combinations and geometry/focus/K within explicit scope",
+    "Freeze scene/config and metric versions; preserve per-source grouping and recheck all derived scenes against source IDs",
+    "Adapt each baseline to the common protocol before formal Table 1A/1B runs"
+  ],
+  "limits": [
+    "Source-ID/known-provenance isolation only, not a content-hash deduplication audit",
+    "Does not prove pretrained baselines never trained on these datasets",
+    "Only five independent official VideoMatte test source files; multiple segments do not become independent sources"
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "status": "FULL_24_PIPELINE_AND_REVIEW_COMPLETE_E6_CLOSURE_PENDING",
+  "status": "E6_PASSED_WITH_DECLARED_SCOPE",
   "width": 1024,
   "height": 576,
   "frames": 25,
@@ -708,12 +708,51 @@
       "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/fgr/0011.mp4"
     ]
   },
-  "pending": [
-    "Resolve sub-2px physical-radius measurement scope or explicitly limit quantitative calibration claims",
-    "Create formal test source list and verify source-level isolation from all development and rejected assets",
-    "Only then assess E6 final acceptance and E7 freeze"
-  ],
-  "validation_record": "03_\u5b9e\u9a8c\u8bb0\u5f55/records/renderer-e6-full-20260926.json",
+  "pending": [],
+  "validation_record": "03_\u5b9e\u9a8c\u8bb0\u5f55/records/e6-closure-20260926.json",
   "dynamic_foreground_layout": "cover_canvas_centered",
-  "AM_foreground_selection": "alpha is zero on all four source-image borders; old rejected development assets remain excluded from formal test"
+  "AM_foreground_selection": "alpha is zero on all four source-image borders; old rejected development assets remain excluded from formal test",
+  "radius_claim_policy": {
+    "decision": "Keep weak-defocus scenes; restrict quantitative radius-precision claims instead of adding supersampling experiments",
+    "nonzero_quantitative_claim_min_px": 2.0,
+    "necessary_not_sufficient": "R>=2 is a reporting floor, not validation of every radius, camera or geometry combination",
+    "empirically_checked_nonzero_radius_range_px": [
+      2.6666666666666665,
+      10.666666666666668
+    ],
+    "verified_case_ids": [
+      "cal_01",
+      "cal_02",
+      "cal_03",
+      "cal_04",
+      "cal_05",
+      "cal_06",
+      "cal_07",
+      "cal_08",
+      "cal_09",
+      "cal_11"
+    ],
+    "evidence": "03_\u5b9e\u9a8c\u8bb0\u5f55/records/renderer-e6-preparation-20260926.json",
+    "camera_scope": {
+      "width": 1024,
+      "height": 576,
+      "focal_length_mm": 50,
+      "sensor_width_mm": 36,
+      "projection": "Cycles perspective; horizontal sensor fit; square pixels; circular aperture",
+      "samples": 1024,
+      "fstop_scale": 1.0
+    },
+    "parameter_scope": "The recorded E6 calibration cases and construction checks; no extrapolated precision promise for new cameras, resolutions or untested parameter combinations",
+    "zero_radius": "Separate in-focus check; not part of the weak positive-radius group",
+    "weak_positive_radius": "0<R<2 may remain in benchmark and receive model-distance scores, but is not counted as quantitatively validated physical radius precision",
+    "weak_scene_ids": [
+      "vm_00",
+      "vm_04",
+      "vm_08"
+    ],
+    "existing_thresholds_unchanged": true,
+    "small_radius_results_relabelled_as_pass": false
+  },
+  "source_isolation_manifest": "configs/benchmark-source-isolation.json",
+  "next_stage": "E7_SCENE_CONFIG_AND_INPUT_PREPARATION"
 }
