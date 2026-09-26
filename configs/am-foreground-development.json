@@ -1,0 +1,659 @@
+{
+  "status": "COLOR_CONVENTION_DIAGNOSTIC_ONLY_ESTIMATOR_SELECTION_PENDING",
+  "seed": 20260926,
+  "selection": "3 per official animal category from train; excludes all E1-E6 sources; no score-based filtering",
+  "reference_status": "Official train fg/bg are closed-form estimates, not independent foreground/background ground truth",
+  "source_readme": "data/raw/AM-2k/readme.txt",
+  "samples": [
+    {
+      "name": "m_204972b7",
+      "category": "alpaca",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_204972b7.jpg",
+        "data/raw/AM-2k/train/mask/m_204972b7.png",
+        "data/raw/AM-2k/train/fg/m_204972b7.png",
+        "data/raw/AM-2k/train/bg/m_204972b7.jpg"
+      ]
+    },
+    {
+      "name": "m_190c3511",
+      "category": "alpaca",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_190c3511.jpg",
+        "data/raw/AM-2k/train/mask/m_190c3511.png",
+        "data/raw/AM-2k/train/fg/m_190c3511.png",
+        "data/raw/AM-2k/train/bg/m_190c3511.jpg"
+      ]
+    },
+    {
+      "name": "m_0dbb7ee9",
+      "category": "alpaca",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_0dbb7ee9.jpg",
+        "data/raw/AM-2k/train/mask/m_0dbb7ee9.png",
+        "data/raw/AM-2k/train/fg/m_0dbb7ee9.png",
+        "data/raw/AM-2k/train/bg/m_0dbb7ee9.jpg"
+      ]
+    },
+    {
+      "name": "m_da2fc2f8",
+      "category": "antelope",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_da2fc2f8.jpg",
+        "data/raw/AM-2k/train/mask/m_da2fc2f8.png",
+        "data/raw/AM-2k/train/fg/m_da2fc2f8.png",
+        "data/raw/AM-2k/train/bg/m_da2fc2f8.jpg"
+      ]
+    },
+    {
+      "name": "m_4825818d",
+      "category": "antelope",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_4825818d.jpg",
+        "data/raw/AM-2k/train/mask/m_4825818d.png",
+        "data/raw/AM-2k/train/fg/m_4825818d.png",
+        "data/raw/AM-2k/train/bg/m_4825818d.jpg"
+      ]
+    },
+    {
+      "name": "m_a78ed787",
+      "category": "antelope",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_a78ed787.jpg",
+        "data/raw/AM-2k/train/mask/m_a78ed787.png",
+        "data/raw/AM-2k/train/fg/m_a78ed787.png",
+        "data/raw/AM-2k/train/bg/m_a78ed787.jpg"
+      ]
+    },
+    {
+      "name": "m_422ed135",
+      "category": "bear",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_422ed135.jpg",
+        "data/raw/AM-2k/train/mask/m_422ed135.png",
+        "data/raw/AM-2k/train/fg/m_422ed135.png",
+        "data/raw/AM-2k/train/bg/m_422ed135.jpg"
+      ]
+    },
+    {
+      "name": "m_e549c5cf",
+      "category": "bear",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_e549c5cf.jpg",
+        "data/raw/AM-2k/train/mask/m_e549c5cf.png",
+        "data/raw/AM-2k/train/fg/m_e549c5cf.png",
+        "data/raw/AM-2k/train/bg/m_e549c5cf.jpg"
+      ]
+    },
+    {
+      "name": "m_0fad4cf3",
+      "category": "bear",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_0fad4cf3.jpg",
+        "data/raw/AM-2k/train/mask/m_0fad4cf3.png",
+        "data/raw/AM-2k/train/fg/m_0fad4cf3.png",
+        "data/raw/AM-2k/train/bg/m_0fad4cf3.jpg"
+      ]
+    },
+    {
+      "name": "m_2ac2ec17",
+      "category": "camel",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_2ac2ec17.jpg",
+        "data/raw/AM-2k/train/mask/m_2ac2ec17.png",
+        "data/raw/AM-2k/train/fg/m_2ac2ec17.png",
+        "data/raw/AM-2k/train/bg/m_2ac2ec17.jpg"
+      ]
+    },
+    {
+      "name": "m_72b29bf5",
+      "category": "camel",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_72b29bf5.jpg",
+        "data/raw/AM-2k/train/mask/m_72b29bf5.png",
+        "data/raw/AM-2k/train/fg/m_72b29bf5.png",
+        "data/raw/AM-2k/train/bg/m_72b29bf5.jpg"
+      ]
+    },
+    {
+      "name": "m_a4d6381c",
+      "category": "camel",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_a4d6381c.jpg",
+        "data/raw/AM-2k/train/mask/m_a4d6381c.png",
+        "data/raw/AM-2k/train/fg/m_a4d6381c.png",
+        "data/raw/AM-2k/train/bg/m_a4d6381c.jpg"
+      ]
+    },
+    {
+      "name": "m_6fd00588",
+      "category": "cat",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_6fd00588.jpg",
+        "data/raw/AM-2k/train/mask/m_6fd00588.png",
+        "data/raw/AM-2k/train/fg/m_6fd00588.png",
+        "data/raw/AM-2k/train/bg/m_6fd00588.jpg"
+      ]
+    },
+    {
+      "name": "m_5bee2afa",
+      "category": "cat",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_5bee2afa.jpg",
+        "data/raw/AM-2k/train/mask/m_5bee2afa.png",
+        "data/raw/AM-2k/train/fg/m_5bee2afa.png",
+        "data/raw/AM-2k/train/bg/m_5bee2afa.jpg"
+      ]
+    },
+    {
+      "name": "m_372ba8f4",
+      "category": "cat",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_372ba8f4.jpg",
+        "data/raw/AM-2k/train/mask/m_372ba8f4.png",
+        "data/raw/AM-2k/train/fg/m_372ba8f4.png",
+        "data/raw/AM-2k/train/bg/m_372ba8f4.jpg"
+      ]
+    },
+    {
+      "name": "m_ff740e91",
+      "category": "cattle",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_ff740e91.jpg",
+        "data/raw/AM-2k/train/mask/m_ff740e91.png",
+        "data/raw/AM-2k/train/fg/m_ff740e91.png",
+        "data/raw/AM-2k/train/bg/m_ff740e91.jpg"
+      ]
+    },
+    {
+      "name": "m_93bc62a7",
+      "category": "cattle",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_93bc62a7.jpg",
+        "data/raw/AM-2k/train/mask/m_93bc62a7.png",
+        "data/raw/AM-2k/train/fg/m_93bc62a7.png",
+        "data/raw/AM-2k/train/bg/m_93bc62a7.jpg"
+      ]
+    },
+    {
+      "name": "m_237d9206",
+      "category": "cattle",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_237d9206.jpg",
+        "data/raw/AM-2k/train/mask/m_237d9206.png",
+        "data/raw/AM-2k/train/fg/m_237d9206.png",
+        "data/raw/AM-2k/train/bg/m_237d9206.jpg"
+      ]
+    },
+    {
+      "name": "m_7776ba19",
+      "category": "deer",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_7776ba19.jpg",
+        "data/raw/AM-2k/train/mask/m_7776ba19.png",
+        "data/raw/AM-2k/train/fg/m_7776ba19.png",
+        "data/raw/AM-2k/train/bg/m_7776ba19.jpg"
+      ]
+    },
+    {
+      "name": "m_cd96453f",
+      "category": "deer",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_cd96453f.jpg",
+        "data/raw/AM-2k/train/mask/m_cd96453f.png",
+        "data/raw/AM-2k/train/fg/m_cd96453f.png",
+        "data/raw/AM-2k/train/bg/m_cd96453f.jpg"
+      ]
+    },
+    {
+      "name": "m_dcfc69fb",
+      "category": "deer",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_dcfc69fb.jpg",
+        "data/raw/AM-2k/train/mask/m_dcfc69fb.png",
+        "data/raw/AM-2k/train/fg/m_dcfc69fb.png",
+        "data/raw/AM-2k/train/bg/m_dcfc69fb.jpg"
+      ]
+    },
+    {
+      "name": "m_3ef3e7ec",
+      "category": "dog",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_3ef3e7ec.jpg",
+        "data/raw/AM-2k/train/mask/m_3ef3e7ec.png",
+        "data/raw/AM-2k/train/fg/m_3ef3e7ec.png",
+        "data/raw/AM-2k/train/bg/m_3ef3e7ec.jpg"
+      ]
+    },
+    {
+      "name": "m_d159b101",
+      "category": "dog",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_d159b101.jpg",
+        "data/raw/AM-2k/train/mask/m_d159b101.png",
+        "data/raw/AM-2k/train/fg/m_d159b101.png",
+        "data/raw/AM-2k/train/bg/m_d159b101.jpg"
+      ]
+    },
+    {
+      "name": "m_d4cd9115",
+      "category": "dog",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_d4cd9115.jpg",
+        "data/raw/AM-2k/train/mask/m_d4cd9115.png",
+        "data/raw/AM-2k/train/fg/m_d4cd9115.png",
+        "data/raw/AM-2k/train/bg/m_d4cd9115.jpg"
+      ]
+    },
+    {
+      "name": "m_9f148432",
+      "category": "elephant",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_9f148432.jpg",
+        "data/raw/AM-2k/train/mask/m_9f148432.png",
+        "data/raw/AM-2k/train/fg/m_9f148432.png",
+        "data/raw/AM-2k/train/bg/m_9f148432.jpg"
+      ]
+    },
+    {
+      "name": "m_2d701b75",
+      "category": "elephant",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_2d701b75.jpg",
+        "data/raw/AM-2k/train/mask/m_2d701b75.png",
+        "data/raw/AM-2k/train/fg/m_2d701b75.png",
+        "data/raw/AM-2k/train/bg/m_2d701b75.jpg"
+      ]
+    },
+    {
+      "name": "m_3928c616",
+      "category": "elephant",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_3928c616.jpg",
+        "data/raw/AM-2k/train/mask/m_3928c616.png",
+        "data/raw/AM-2k/train/fg/m_3928c616.png",
+        "data/raw/AM-2k/train/bg/m_3928c616.jpg"
+      ]
+    },
+    {
+      "name": "m_316b00e8",
+      "category": "giraffe",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_316b00e8.jpg",
+        "data/raw/AM-2k/train/mask/m_316b00e8.png",
+        "data/raw/AM-2k/train/fg/m_316b00e8.png",
+        "data/raw/AM-2k/train/bg/m_316b00e8.jpg"
+      ]
+    },
+    {
+      "name": "m_a6226178",
+      "category": "giraffe",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_a6226178.jpg",
+        "data/raw/AM-2k/train/mask/m_a6226178.png",
+        "data/raw/AM-2k/train/fg/m_a6226178.png",
+        "data/raw/AM-2k/train/bg/m_a6226178.jpg"
+      ]
+    },
+    {
+      "name": "m_606c0171",
+      "category": "giraffe",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_606c0171.jpg",
+        "data/raw/AM-2k/train/mask/m_606c0171.png",
+        "data/raw/AM-2k/train/fg/m_606c0171.png",
+        "data/raw/AM-2k/train/bg/m_606c0171.jpg"
+      ]
+    },
+    {
+      "name": "m_9b68628c",
+      "category": "horse",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_9b68628c.jpg",
+        "data/raw/AM-2k/train/mask/m_9b68628c.png",
+        "data/raw/AM-2k/train/fg/m_9b68628c.png",
+        "data/raw/AM-2k/train/bg/m_9b68628c.jpg"
+      ]
+    },
+    {
+      "name": "m_7d455e37",
+      "category": "horse",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_7d455e37.jpg",
+        "data/raw/AM-2k/train/mask/m_7d455e37.png",
+        "data/raw/AM-2k/train/fg/m_7d455e37.png",
+        "data/raw/AM-2k/train/bg/m_7d455e37.jpg"
+      ]
+    },
+    {
+      "name": "m_78f57315",
+      "category": "horse",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_78f57315.jpg",
+        "data/raw/AM-2k/train/mask/m_78f57315.png",
+        "data/raw/AM-2k/train/fg/m_78f57315.png",
+        "data/raw/AM-2k/train/bg/m_78f57315.jpg"
+      ]
+    },
+    {
+      "name": "m_9404a746",
+      "category": "kangaroo",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_9404a746.jpg",
+        "data/raw/AM-2k/train/mask/m_9404a746.png",
+        "data/raw/AM-2k/train/fg/m_9404a746.png",
+        "data/raw/AM-2k/train/bg/m_9404a746.jpg"
+      ]
+    },
+    {
+      "name": "m_0b9901e1",
+      "category": "kangaroo",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_0b9901e1.jpg",
+        "data/raw/AM-2k/train/mask/m_0b9901e1.png",
+        "data/raw/AM-2k/train/fg/m_0b9901e1.png",
+        "data/raw/AM-2k/train/bg/m_0b9901e1.jpg"
+      ]
+    },
+    {
+      "name": "m_abf6099f",
+      "category": "kangaroo",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_abf6099f.jpg",
+        "data/raw/AM-2k/train/mask/m_abf6099f.png",
+        "data/raw/AM-2k/train/fg/m_abf6099f.png",
+        "data/raw/AM-2k/train/bg/m_abf6099f.jpg"
+      ]
+    },
+    {
+      "name": "m_7a6113c3",
+      "category": "leopard",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_7a6113c3.jpg",
+        "data/raw/AM-2k/train/mask/m_7a6113c3.png",
+        "data/raw/AM-2k/train/fg/m_7a6113c3.png",
+        "data/raw/AM-2k/train/bg/m_7a6113c3.jpg"
+      ]
+    },
+    {
+      "name": "m_c8ce1ddc",
+      "category": "leopard",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_c8ce1ddc.jpg",
+        "data/raw/AM-2k/train/mask/m_c8ce1ddc.png",
+        "data/raw/AM-2k/train/fg/m_c8ce1ddc.png",
+        "data/raw/AM-2k/train/bg/m_c8ce1ddc.jpg"
+      ]
+    },
+    {
+      "name": "m_56af2f31",
+      "category": "leopard",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_56af2f31.jpg",
+        "data/raw/AM-2k/train/mask/m_56af2f31.png",
+        "data/raw/AM-2k/train/fg/m_56af2f31.png",
+        "data/raw/AM-2k/train/bg/m_56af2f31.jpg"
+      ]
+    },
+    {
+      "name": "m_09d89abf",
+      "category": "lion",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_09d89abf.jpg",
+        "data/raw/AM-2k/train/mask/m_09d89abf.png",
+        "data/raw/AM-2k/train/fg/m_09d89abf.png",
+        "data/raw/AM-2k/train/bg/m_09d89abf.jpg"
+      ]
+    },
+    {
+      "name": "m_200636a7",
+      "category": "lion",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_200636a7.jpg",
+        "data/raw/AM-2k/train/mask/m_200636a7.png",
+        "data/raw/AM-2k/train/fg/m_200636a7.png",
+        "data/raw/AM-2k/train/bg/m_200636a7.jpg"
+      ]
+    },
+    {
+      "name": "m_3af5fe04",
+      "category": "lion",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_3af5fe04.jpg",
+        "data/raw/AM-2k/train/mask/m_3af5fe04.png",
+        "data/raw/AM-2k/train/fg/m_3af5fe04.png",
+        "data/raw/AM-2k/train/bg/m_3af5fe04.jpg"
+      ]
+    },
+    {
+      "name": "m_cda0be35",
+      "category": "monkey",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_cda0be35.jpg",
+        "data/raw/AM-2k/train/mask/m_cda0be35.png",
+        "data/raw/AM-2k/train/fg/m_cda0be35.png",
+        "data/raw/AM-2k/train/bg/m_cda0be35.jpg"
+      ]
+    },
+    {
+      "name": "m_8d9a502a",
+      "category": "monkey",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_8d9a502a.jpg",
+        "data/raw/AM-2k/train/mask/m_8d9a502a.png",
+        "data/raw/AM-2k/train/fg/m_8d9a502a.png",
+        "data/raw/AM-2k/train/bg/m_8d9a502a.jpg"
+      ]
+    },
+    {
+      "name": "m_f820db9a",
+      "category": "monkey",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_f820db9a.jpg",
+        "data/raw/AM-2k/train/mask/m_f820db9a.png",
+        "data/raw/AM-2k/train/fg/m_f820db9a.png",
+        "data/raw/AM-2k/train/bg/m_f820db9a.jpg"
+      ]
+    },
+    {
+      "name": "m_c702b36b",
+      "category": "rabbit",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_c702b36b.jpg",
+        "data/raw/AM-2k/train/mask/m_c702b36b.png",
+        "data/raw/AM-2k/train/fg/m_c702b36b.png",
+        "data/raw/AM-2k/train/bg/m_c702b36b.jpg"
+      ]
+    },
+    {
+      "name": "m_622b7561",
+      "category": "rabbit",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_622b7561.jpg",
+        "data/raw/AM-2k/train/mask/m_622b7561.png",
+        "data/raw/AM-2k/train/fg/m_622b7561.png",
+        "data/raw/AM-2k/train/bg/m_622b7561.jpg"
+      ]
+    },
+    {
+      "name": "m_ba9e77c5",
+      "category": "rabbit",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_ba9e77c5.jpg",
+        "data/raw/AM-2k/train/mask/m_ba9e77c5.png",
+        "data/raw/AM-2k/train/fg/m_ba9e77c5.png",
+        "data/raw/AM-2k/train/bg/m_ba9e77c5.jpg"
+      ]
+    },
+    {
+      "name": "m_f3ed7aff",
+      "category": "rhinocero",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_f3ed7aff.jpg",
+        "data/raw/AM-2k/train/mask/m_f3ed7aff.png",
+        "data/raw/AM-2k/train/fg/m_f3ed7aff.png",
+        "data/raw/AM-2k/train/bg/m_f3ed7aff.jpg"
+      ]
+    },
+    {
+      "name": "m_21177011",
+      "category": "rhinocero",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_21177011.jpg",
+        "data/raw/AM-2k/train/mask/m_21177011.png",
+        "data/raw/AM-2k/train/fg/m_21177011.png",
+        "data/raw/AM-2k/train/bg/m_21177011.jpg"
+      ]
+    },
+    {
+      "name": "m_d0b04562",
+      "category": "rhinocero",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_d0b04562.jpg",
+        "data/raw/AM-2k/train/mask/m_d0b04562.png",
+        "data/raw/AM-2k/train/fg/m_d0b04562.png",
+        "data/raw/AM-2k/train/bg/m_d0b04562.jpg"
+      ]
+    },
+    {
+      "name": "m_3f290810",
+      "category": "sheep",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_3f290810.jpg",
+        "data/raw/AM-2k/train/mask/m_3f290810.png",
+        "data/raw/AM-2k/train/fg/m_3f290810.png",
+        "data/raw/AM-2k/train/bg/m_3f290810.jpg"
+      ]
+    },
+    {
+      "name": "m_880efe0f",
+      "category": "sheep",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_880efe0f.jpg",
+        "data/raw/AM-2k/train/mask/m_880efe0f.png",
+        "data/raw/AM-2k/train/fg/m_880efe0f.png",
+        "data/raw/AM-2k/train/bg/m_880efe0f.jpg"
+      ]
+    },
+    {
+      "name": "m_430b6105",
+      "category": "sheep",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_430b6105.jpg",
+        "data/raw/AM-2k/train/mask/m_430b6105.png",
+        "data/raw/AM-2k/train/fg/m_430b6105.png",
+        "data/raw/AM-2k/train/bg/m_430b6105.jpg"
+      ]
+    },
+    {
+      "name": "m_36052716",
+      "category": "tiger",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_36052716.jpg",
+        "data/raw/AM-2k/train/mask/m_36052716.png",
+        "data/raw/AM-2k/train/fg/m_36052716.png",
+        "data/raw/AM-2k/train/bg/m_36052716.jpg"
+      ]
+    },
+    {
+      "name": "m_37a0d7e0",
+      "category": "tiger",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_37a0d7e0.jpg",
+        "data/raw/AM-2k/train/mask/m_37a0d7e0.png",
+        "data/raw/AM-2k/train/fg/m_37a0d7e0.png",
+        "data/raw/AM-2k/train/bg/m_37a0d7e0.jpg"
+      ]
+    },
+    {
+      "name": "m_1e7e2619",
+      "category": "tiger",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_1e7e2619.jpg",
+        "data/raw/AM-2k/train/mask/m_1e7e2619.png",
+        "data/raw/AM-2k/train/fg/m_1e7e2619.png",
+        "data/raw/AM-2k/train/bg/m_1e7e2619.jpg"
+      ]
+    },
+    {
+      "name": "m_7e771633",
+      "category": "zebra",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_7e771633.jpg",
+        "data/raw/AM-2k/train/mask/m_7e771633.png",
+        "data/raw/AM-2k/train/fg/m_7e771633.png",
+        "data/raw/AM-2k/train/bg/m_7e771633.jpg"
+      ]
+    },
+    {
+      "name": "m_0e9ad9f2",
+      "category": "zebra",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_0e9ad9f2.jpg",
+        "data/raw/AM-2k/train/mask/m_0e9ad9f2.png",
+        "data/raw/AM-2k/train/fg/m_0e9ad9f2.png",
+        "data/raw/AM-2k/train/bg/m_0e9ad9f2.jpg"
+      ]
+    },
+    {
+      "name": "m_c80d8869",
+      "category": "zebra",
+      "raw_paths": [
+        "data/raw/AM-2k/train/original/m_c80d8869.jpg",
+        "data/raw/AM-2k/train/mask/m_c80d8869.png",
+        "data/raw/AM-2k/train/fg/m_c80d8869.png",
+        "data/raw/AM-2k/train/bg/m_c80d8869.jpg"
+      ]
+    }
+  ],
+  "metrics": "Per-image equal-weight MAE/MSE/PSNR in stored sRGB for recomposition against original, full image and 0.05<alpha<0.95; native resolution; no resizing",
+  "methods": [
+    "alpha*F_srgb+(1-alpha)*B_srgb",
+    "linear_to_srgb(alpha*F_linear+(1-alpha)*B_linear)"
+  ],
+  "prior_development_ids": [
+    "AM-2k:m_00308c60",
+    "AM-2k:m_003d01f4",
+    "AM-2k:m_00420d1e",
+    "AM-2k:m_004fa5c7",
+    "AM-2k:m_008cd4af",
+    "AM-2k:m_00b28969",
+    "AM-2k:m_00bc1c49",
+    "AM-2k:m_00da5380",
+    "AM-2k:m_01173901",
+    "AM-2k:m_011bff78",
+    "AM-2k:m_025b9477",
+    "AM-2k:m_028248d0",
+    "BG-20k:h_0000947b",
+    "BG-20k:h_0006a281",
+    "BG-20k:h_0008b529",
+    "BG-20k:h_00099398",
+    "BG-20k:h_000f939a",
+    "BG-20k:h_0010eba8",
+    "BG-20k:h_001533ba",
+    "BG-20k:h_00168a88",
+    "BG-20k:h_001820b0",
+    "BG-20k:h_0018ac2a",
+    "BG-20k:h_001a0f0f",
+    "BG-20k:h_001a4755",
+    "BG-20k:h_001bc6c5",
+    "BG-20k:h_001decae",
+    "BG-20k:h_002088cc",
+    "BG-20k:h_00226e0d",
+    "BG-20k:h_00241c18",
+    "BG-20k:h_0029c18d",
+    "BG-20k:h_00577a09",
+    "VideoMatte240K:train:0000",
+    "VideoMatte240K:train:0001",
+    "VideoMatte240K:train:0002",
+    "VideoMatte240K:train:0003",
+    "VideoMatte240K:train:0004",
+    "VideoMatte240K:train:0005",
+    "VideoMatte240K:train:0006",
+    "VideoMatte240K:train:0007",
+    "VideoMatte240K:train:0008",
+    "VideoMatte240K:train:0009",
+    "VideoMatte240K:train:0010",
+    "VideoMatte240K:train:0011"
+  ]
+}

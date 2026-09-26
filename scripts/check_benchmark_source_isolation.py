@@ -1,4 +1,4 @@
-"""Build/check an E1–E6 exclusion list and reserved official test source pool.
+"""Build/check development exclusions and reserved official test source pool.
 
 Identity is the author's raw source, never a crop name or a video frame range.
 This checks registered source IDs, not image hashes or baseline training corpora.
@@ -48,6 +48,9 @@ def raw_references(value):
 
 def collect_development():
     documents = [ROOT/'configs/renderer-pilot.json', ROOT/'configs/renderer-e6.json']
+    foreground_development = ROOT/'configs/am-foreground-development.json'
+    if foreground_development.exists():
+        documents.append(foreground_development)
     for pattern in ['renderer-pilot-*', 'renderer-e6-*']:
         for folder in sorted((ROOT/'outputs').glob(pattern)):
             for name in ['metadata.json', 'config.json']:
