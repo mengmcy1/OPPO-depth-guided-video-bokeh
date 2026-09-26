@@ -114,6 +114,47 @@ Benchmark Suite
 - blur strength；
 - renderer；
 - train / test 隔离规则。
+### 3.1.1 E7 的 VideoMatte 动态源策略与 Any-to-Bokeh 公开代码证据
+
+Any-to-Bokeh 的公开材料不足以证明论文最终 200-video synthetic test set 使用了怎样的 source-level split，因此本项目不把“复现其公开生成脚本”与“复现其最终测试源划分”混为一谈。
+
+当前可核实的官方代码证据来自 `vivoCameraResearch/any-to-bokeh` 的 `dataset_synthsis.py`：
+
+- test-generation 配置中启用了 `BG_test`、`merge_f25_test.json` 和 `gen_test_flag=True`；
+- 同一文件给出的 `merge_f25_test.json` 格式示例明确出现 `AM-2k/train/fg`、`AM-2k/train/mask`；
+- 视频 matting 示例明确出现 `VideoMatte240K_JPEG_HD/train/fgr` 与 `train/pha`；
+- 文件中还保留了直接指向 `VideoMatte240K_JPEG_HD/test/clip/clip_f25.json` 的注释路径，但实际启用的是未公开的 `merge_f25_test.json`；
+- 公开脚本当前写有 `synthsis_images_num=300`，而论文报告的是 200 个 test videos，进一步说明该脚本是生成工具的公开版本，不能视为论文最终 test manifest 的逐项冻结副本。
+
+因此，目前只能得到以下有边界的判断：
+
+> Any-to-Bokeh 公开 test-generation 代码存在使用原始数据集 `train` source 生成 synthetic test 的明显痕迹；但关键的 `merge_f25_test.json` 未公开，不能据此断言论文最终 200 个 test videos 的具体 source 列表，也不能证明其训练/测试在 VideoMatte 或 AM-2k 层面实现了 source-level disjoint。
+
+基于这一不确定性，E7 的动态前景建议采用两层设计，**当前仅作为待冻结方案，不代表正式场景清单已经确定**：
+
+1. **Strict Held-out Dynamic Subset（主测试动态子集）**
+   - 使用 VideoMatte240K 官方 `test` split 的 5 个独立源视频；
+   - 每个源视频可以生成多个 25-frame clip、背景、Focus、Depth 和 \(K\) 条件，但必须始终保留原始 `source_video_id`；
+   - 同一源视频的多个 clip / 多个光学条件不能当作新的独立动态源；
+   - 动态子集统计至少保留 per-source-video grouping，必要时先在同一 source 内聚合，再对 5 个 source 求均值，避免某个源因派生 scene 更多而获得更高权重；
+   - 这提供更清晰的官方 split provenance，但**不等价于证明任一预训练 baseline 从未见过这些人物或素材**。
+
+2. **Dynamic Extended Stress Set（可选扩展压力测试）**
+   - 若 5 个独立动态 source 对运动类型、发丝、衣物、遮挡覆盖不足，可从 VideoMatte `train` 中选择 E1–E6 未使用的额外源视频扩展动态场景；
+   - 该扩展集必须与主 held-out 动态子集分开报告，并明确标注：Any-to-Bokeh 的公开 synthetic generation 使用过 VideoMatte `train` source，因此无法保证其预训练阶段未见过这些源；
+   - 扩展集主要用于增加动态/边缘/遮挡压力覆盖，不作为最严格 source-held-out 结论的唯一依据；
+   - 不按 Any-to-Bokeh 或其他 baseline 的测试分数选择 train source。
+
+如果后续需要更强的“独立真实动态源”覆盖，优先考虑增加另一个具有明确 held-out test split、可提供前景与 Alpha 的视频 matting 数据源，而不是简单把大量 VideoMatte train source 混入主测试并当作独立 held-out 样本。
+
+最终 E7 冻结时必须明确记录：
+
+- 哪些结果属于 Strict Held-out Dynamic Subset；
+- 哪些属于可选 Dynamic Extended Stress Set；
+- 每个派生 scene 对应的原始 source ID；
+- source-level 统计与 scene-level 统计的区别；
+- Any-to-Bokeh 公开代码只能支持上述“生成方式迹象”，不能支持对其论文最终 200-video source split 的更强断言。
+
 
 ---
 
