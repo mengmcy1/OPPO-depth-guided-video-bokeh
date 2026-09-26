@@ -9,9 +9,9 @@ import time
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--output-dir", type=Path, required=True)
-# The author's 576x1024 setting exceeds this 32 GiB GPU during VAE encoding.
-parser.add_argument("--height", type=int, default=256)
-parser.add_argument("--width", type=int, default=448)
+# Author resolution, verified on the current 96 GB GPU.
+parser.add_argument("--height", type=int, default=576)
+parser.add_argument("--width", type=int, default=1024)
 args = parser.parse_args()
 root = Path(__file__).resolve().parents[1]
 out = args.output_dir.resolve()

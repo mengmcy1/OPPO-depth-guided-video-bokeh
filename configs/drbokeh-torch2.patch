@@ -1,0 +1,14 @@
+--- a/scatter_cuda_kernel.cu
++++ b/scatter_cuda_kernel.cu
+@@ -705 +705 @@
+-    AT_DISPATCH_FLOATING_TYPES(x.type(), "scatter_forward_cuda", ([&] {
++    AT_DISPATCH_FLOATING_TYPES(x.scalar_type(), "scatter_forward_cuda", ([&] {
+@@ -737 +737 @@
+-    AT_DISPATCH_FLOATING_TYPES(x.type(), "scatter_forward_cuda", ([&] {
++    AT_DISPATCH_FLOATING_TYPES(x.scalar_type(), "scatter_forward_cuda", ([&] {
+@@ -767 +767 @@
+-    AT_DISPATCH_FLOATING_TYPES(x.type(), "scatter_forward_cuda", ([&] {
++    AT_DISPATCH_FLOATING_TYPES(x.scalar_type(), "scatter_forward_cuda", ([&] {
+@@ -797 +797 @@
+-    AT_DISPATCH_FLOATING_TYPES(x.type(), "scatter_forward_cuda", ([&] {
++    AT_DISPATCH_FLOATING_TYPES(x.scalar_type(), "scatter_forward_cuda", ([&] {

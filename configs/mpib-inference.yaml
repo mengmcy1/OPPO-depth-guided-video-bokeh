@@ -1,0 +1,27 @@
+aupnet:
+  bins: 32
+inpnet:
+  downsample_conv_kwargs:
+    enable_lfu: false
+    ratio_gin: 0
+    ratio_gout: 0
+  init_conv_kwargs:
+    enable_lfu: false
+    ratio_gin: 0
+    ratio_gout: 0
+  input_nc: 4
+  n_blocks: 9
+  output_nc: 3
+  resnet_conv_kwargs:
+    enable_lfu: false
+    ratio_gin: 0.75
+    ratio_gout: 0.75
+mpinet:
+  bins: 32
+  decoder_use_alpha: true
+  encoder_layers: 18
+  encoder_pretrained: false
+  num_output_channels: 2
+renderer:
+  K_max: 200
+  bins: 32
