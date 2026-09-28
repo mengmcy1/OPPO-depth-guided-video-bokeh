@@ -1,0 +1,1528 @@
+{
+  "status": "PROVISIONAL_EXTERNAL_GEOMETRY_40_KEYFRAMES_CPU_COMPLETE",
+  "load": {
+    "source_commit": "3dbc1b04ba082b3b6b1dc0d944b3d18fa542ae2c",
+    "runtime": "2.15.1",
+    "device": "CPU",
+    "checkpoint_tensors": 488,
+    "restored_tensors": 210,
+    "restored_elements": 2044303,
+    "scopes": [
+      "Feature",
+      "Lensblur",
+      "SR"
+    ],
+    "all_restored_finite": true,
+    "no_uninitialized_variables": true,
+    "DepthNet_built_or_executed": false,
+    "compatibility_files": [
+      {
+        "file": "network/network.py",
+        "modified": true
+      },
+      {
+        "file": "network/kernel_net.py",
+        "modified": true
+      },
+      {
+        "file": "network/feature_net.py",
+        "modified": false
+      },
+      {
+        "file": "network/srnet.py",
+        "modified": true
+      },
+      {
+        "file": "core/build_lensblur.py",
+        "modified": true
+      },
+      {
+        "file": "core/build_sr.py",
+        "modified": true
+      }
+    ],
+    "native_SR_uint8_intermediate_preserved": true,
+    "limitation": "TF2 compat.v1 CPU execution; numerical parity against a native TF1 binary is not established."
+  },
+  "rows": [
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_000-00000.npz",
+      "focus": 0.46039845,
+      "aperture": 1.0,
+      "K": 32,
+      "forward_seconds": 1.7302027363330126,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          0.9686274528503418
+        ],
+        "signed_disparity_range": [
+          -0.4525552988052368,
+          0.5082290172576904
+        ],
+        "raw_output_range": [
+          0.0,
+          1.0161769390106201
+        ],
+        "output_clip_fraction": 0.0012031837745949073
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_000-00006.npz",
+      "focus": 0.45683813,
+      "aperture": 1.0,
+      "K": 32,
+      "forward_seconds": 1.5050221420824528,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          1.0
+        ],
+        "signed_disparity_range": [
+          -0.4489949941635132,
+          0.5431618690490723
+        ],
+        "raw_output_range": [
+          0.0,
+          1.01481294631958
+        ],
+        "output_clip_fraction": 0.0008273654513888889
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_000-00012.npz",
+      "focus": 0.47077316,
+      "aperture": 1.0,
+      "K": 32,
+      "forward_seconds": 1.4826052971184254,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.003921568859368563,
+          1.0
+        ],
+        "signed_disparity_range": [
+          -0.4668515920639038,
+          0.5292268395423889
+        ],
+        "raw_output_range": [
+          0.0,
+          1.0076322555541992
+        ],
+        "output_clip_fraction": 0.0008544921875
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_000-00018.npz",
+      "focus": 0.40290888,
+      "aperture": 1.0,
+      "K": 32,
+      "forward_seconds": 1.52772275544703,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.003921568859368563,
+          1.0
+        ],
+        "signed_disparity_range": [
+          -0.3989873230457306,
+          0.5970910787582397
+        ],
+        "raw_output_range": [
+          0.0,
+          1.0079628229141235
+        ],
+        "output_clip_fraction": 0.0022939046223958335
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_000-00024.npz",
+      "focus": 0.4158856,
+      "aperture": 1.0,
+      "K": 32,
+      "forward_seconds": 1.5579069256782532,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.003921568859368563,
+          1.0
+        ],
+        "signed_disparity_range": [
+          -0.4119640290737152,
+          0.5841144323348999
+        ],
+        "raw_output_range": [
+          0.0,
+          1.0092285871505737
+        ],
+        "output_clip_fraction": 0.001918086299189815
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_001-00000.npz",
+      "focus": 0.20965247,
+      "aperture": 1.0,
+      "K": 32,
+      "forward_seconds": 1.5200766269117594,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          1.0
+        ],
+        "signed_disparity_range": [
+          -0.2018093317747116,
+          0.7903475165367126
+        ],
+        "raw_output_range": [
+          0.0,
+          1.003466248512268
+        ],
+        "output_clip_fraction": 2.430103443287037e-05
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_001-00006.npz",
+      "focus": 0.20892286,
+      "aperture": 1.0,
+      "K": 32,
+      "forward_seconds": 1.5464590284973383,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          1.0
+        ],
+        "signed_disparity_range": [
+          -0.20107972621917725,
+          0.7910771369934082
+        ],
+        "raw_output_range": [
+          0.0,
+          1.0034723281860352
+        ],
+        "output_clip_fraction": 9.04224537037037e-05
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_001-00012.npz",
+      "focus": 0.2,
+      "aperture": 1.0,
+      "K": 32,
+      "forward_seconds": 1.5351767763495445,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.003921568859368563,
+          0.8823529481887817
+        ],
+        "signed_disparity_range": [
+          -0.19607843458652496,
+          0.6823529601097107
+        ],
+        "raw_output_range": [
+          0.0,
+          1.0034188032150269
+        ],
+        "output_clip_fraction": 2.9952437789351853e-05
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_001-00018.npz",
+      "focus": 0.20671345,
+      "aperture": 1.0,
+      "K": 32,
+      "forward_seconds": 1.5480546802282333,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.003921568859368563,
+          1.0
+        ],
+        "signed_disparity_range": [
+          -0.20279188454151154,
+          0.7932865619659424
+        ],
+        "raw_output_range": [
+          0.0,
+          1.0066237449645996
+        ],
+        "output_clip_fraction": 9.889955873842593e-05
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_001-00024.npz",
+      "focus": 0.20259015,
+      "aperture": 1.0,
+      "K": 32,
+      "forward_seconds": 1.5293694697320461,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.003921568859368563,
+          0.8549019694328308
+        ],
+        "signed_disparity_range": [
+          -0.19866858422756195,
+          0.6523118019104004
+        ],
+        "raw_output_range": [
+          0.0,
+          1.0
+        ],
+        "output_clip_fraction": 0.0
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_003-00000.npz",
+      "focus": 0.2029004,
+      "aperture": 0.5,
+      "K": 16,
+      "forward_seconds": 1.524498162791133,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          1.0
+        ],
+        "signed_disparity_range": [
+          -0.09752862900495529,
+          0.39854979515075684
+        ],
+        "raw_output_range": [
+          0.0,
+          1.0087735652923584
+        ],
+        "output_clip_fraction": 0.0004046404803240741
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_003-00006.npz",
+      "focus": 0.2,
+      "aperture": 0.5,
+      "K": 16,
+      "forward_seconds": 1.5329795610159636,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          0.9764705896377563
+        ],
+        "signed_disparity_range": [
+          -0.09607843309640884,
+          0.38823530077934265
+        ],
+        "raw_output_range": [
+          0.0,
+          1.0328047275543213
+        ],
+        "output_clip_fraction": 0.0008092809606481482
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_003-00012.npz",
+      "focus": 0.20384707,
+      "aperture": 0.5,
+      "K": 16,
+      "forward_seconds": 1.532231755554676,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          1.0
+        ],
+        "signed_disparity_range": [
+          -0.09800196439027786,
+          0.39807647466659546
+        ],
+        "raw_output_range": [
+          0.0002274732105433941,
+          1.0391987562179565
+        ],
+        "output_clip_fraction": 0.0020740650318287037
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_003-00018.npz",
+      "focus": 0.2,
+      "aperture": 0.5,
+      "K": 16,
+      "forward_seconds": 1.5227833483368158,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.003921568859368563,
+          0.8745098114013672
+        ],
+        "signed_disparity_range": [
+          -0.09803921729326248,
+          0.33725491166114807
+        ],
+        "raw_output_range": [
+          0.00012039509601891041,
+          1.0224339962005615
+        ],
+        "output_clip_fraction": 0.0026702880859375
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_003-00024.npz",
+      "focus": 0.2,
+      "aperture": 0.5,
+      "K": 16,
+      "forward_seconds": 1.5218179821968079,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.003921568859368563,
+          0.9254902005195618
+        ],
+        "signed_disparity_range": [
+          -0.09803921729326248,
+          0.36274510622024536
+        ],
+        "raw_output_range": [
+          0.0,
+          1.011541724205017
+        ],
+        "output_clip_fraction": 0.002667462384259259
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_004-00000.npz",
+      "focus": 0.2,
+      "aperture": 0.125,
+      "K": 4,
+      "forward_seconds": 1.3459487240761518,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.003921568859368563,
+          0.8823529481887817
+        ],
+        "signed_disparity_range": [
+          -0.02450980432331562,
+          0.08529412001371384
+        ],
+        "raw_output_range": [
+          0.0,
+          1.003892421722412
+        ],
+        "output_clip_fraction": 5.651403356481481e-06
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_004-00006.npz",
+      "focus": 0.2,
+      "aperture": 0.125,
+      "K": 4,
+      "forward_seconds": 1.1623001527041197,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.003921568859368563,
+          0.9215686321258545
+        ],
+        "signed_disparity_range": [
+          -0.02450980432331562,
+          0.09019608050584793
+        ],
+        "raw_output_range": [
+          0.0,
+          1.0087584257125854
+        ],
+        "output_clip_fraction": 7.911964699074074e-06
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_004-00012.npz",
+      "focus": 0.20541758,
+      "aperture": 0.125,
+      "K": 4,
+      "forward_seconds": 1.4248495902866125,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          1.0
+        ],
+        "signed_disparity_range": [
+          -0.024696804583072662,
+          0.09932280331850052
+        ],
+        "raw_output_range": [
+          0.0,
+          1.004174828529358
+        ],
+        "output_clip_fraction": 7.3468243634259255e-06
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_004-00018.npz",
+      "focus": 0.2,
+      "aperture": 0.125,
+      "K": 4,
+      "forward_seconds": 1.5372650176286697,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          0.9176470637321472
+        ],
+        "signed_disparity_range": [
+          -0.02401960827410221,
+          0.08970588445663452
+        ],
+        "raw_output_range": [
+          0.0,
+          1.0037108659744263
+        ],
+        "output_clip_fraction": 6.216543692129629e-06
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_004-00024.npz",
+      "focus": 0.20053171,
+      "aperture": 0.125,
+      "K": 4,
+      "forward_seconds": 1.550105094909668,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          0.9490196108818054
+        ],
+        "signed_disparity_range": [
+          -0.02408607117831707,
+          0.09356098622083664
+        ],
+        "raw_output_range": [
+          0.0,
+          1.0041285753250122
+        ],
+        "output_clip_fraction": 8.477105034722223e-06
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_006-00000.npz",
+      "focus": 0.42344679,
+      "aperture": 0.25,
+      "K": 8,
+      "forward_seconds": 1.5345302149653435,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.003921568859368563,
+          0.8588235378265381
+        ],
+        "signed_disparity_range": [
+          -0.10488130897283554,
+          0.10884418338537216
+        ],
+        "raw_output_range": [
+          0.0,
+          1.0007996559143066
+        ],
+        "output_clip_fraction": 2.2605613425925925e-06
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_006-00006.npz",
+      "focus": 0.39454013,
+      "aperture": 0.25,
+      "K": 8,
+      "forward_seconds": 1.545627724379301,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.003921568859368563,
+          1.0
+        ],
+        "signed_disparity_range": [
+          -0.09765464067459106,
+          0.15136496722698212
+        ],
+        "raw_output_range": [
+          0.0,
+          1.000794768333435
+        ],
+        "output_clip_fraction": 2.2605613425925925e-06
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_006-00012.npz",
+      "focus": 0.46983106,
+      "aperture": 0.25,
+      "K": 8,
+      "forward_seconds": 1.551799651235342,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          0.9137254953384399
+        ],
+        "signed_disparity_range": [
+          -0.11549697816371918,
+          0.11097361147403717
+        ],
+        "raw_output_range": [
+          0.0,
+          1.0007903575897217
+        ],
+        "output_clip_fraction": 2.2605613425925925e-06
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_006-00018.npz",
+      "focus": 0.43944036,
+      "aperture": 0.25,
+      "K": 8,
+      "forward_seconds": 1.5607721526175737,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.003921568859368563,
+          0.8313725590705872
+        ],
+        "signed_disparity_range": [
+          -0.1088797003030777,
+          0.09798304736614227
+        ],
+        "raw_output_range": [
+          0.0,
+          1.0008009672164917
+        ],
+        "output_clip_fraction": 2.2605613425925925e-06
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_006-00024.npz",
+      "focus": 0.4568978,
+      "aperture": 0.25,
+      "K": 8,
+      "forward_seconds": 1.5453971028327942,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          1.0
+        ],
+        "signed_disparity_range": [
+          -0.11226366460323334,
+          0.13577555119991302
+        ],
+        "raw_output_range": [
+          0.0,
+          1.0004113912582397
+        ],
+        "output_clip_fraction": 1.6954210069444444e-06
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_007-00000.npz",
+      "focus": 0.80493218,
+      "aperture": 0.125,
+      "K": 4,
+      "forward_seconds": 1.570057449862361,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          0.8039215803146362
+        ],
+        "signed_disparity_range": [
+          -0.09963613003492355,
+          -0.0001263245940208435
+        ],
+        "raw_output_range": [
+          0.0,
+          0.98591548204422
+        ],
+        "output_clip_fraction": 0.0
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_007-00006.npz",
+      "focus": 0.86537842,
+      "aperture": 0.125,
+      "K": 4,
+      "forward_seconds": 1.554986508563161,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          0.8666666746139526
+        ],
+        "signed_disparity_range": [
+          -0.10719191282987595,
+          0.0001610293984413147
+        ],
+        "raw_output_range": [
+          0.0,
+          0.9857982397079468
+        ],
+        "output_clip_fraction": 0.0
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_007-00012.npz",
+      "focus": 1.0,
+      "aperture": 0.125,
+      "K": 4,
+      "forward_seconds": 1.5250355396419764,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          1.0
+        ],
+        "signed_disparity_range": [
+          -0.12401960790157318,
+          0.0
+        ],
+        "raw_output_range": [
+          0.0,
+          0.9843137264251709
+        ],
+        "output_clip_fraction": 0.0
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_007-00018.npz",
+      "focus": 1.0,
+      "aperture": 0.125,
+      "K": 4,
+      "forward_seconds": 1.544279357418418,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          1.0
+        ],
+        "signed_disparity_range": [
+          -0.12401960790157318,
+          0.0
+        ],
+        "raw_output_range": [
+          0.0,
+          0.9843137264251709
+        ],
+        "output_clip_fraction": 0.0
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_007-00024.npz",
+      "focus": 0.9269387,
+      "aperture": 0.125,
+      "K": 4,
+      "forward_seconds": 1.525472279638052,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          0.9254902005195618
+        ],
+        "signed_disparity_range": [
+          -0.11488694697618484,
+          -0.00018106400966644287
+        ],
+        "raw_output_range": [
+          0.0,
+          0.9856243133544922
+        ],
+        "output_clip_fraction": 0.0
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_008-00000.npz",
+      "focus": 0.40838167,
+      "aperture": 0.5,
+      "K": 16,
+      "forward_seconds": 1.5446400009095669,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.003921568859368563,
+          0.9411764740943909
+        ],
+        "signed_disparity_range": [
+          -0.2022300511598587,
+          0.2663974165916443
+        ],
+        "raw_output_range": [
+          0.003141416236758232,
+          1.0005731582641602
+        ],
+        "output_clip_fraction": 5.651403356481481e-07
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_008-00006.npz",
+      "focus": 0.40876268,
+      "aperture": 0.5,
+      "K": 16,
+      "forward_seconds": 1.4375605750828981,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          1.0
+        ],
+        "signed_disparity_range": [
+          -0.2004597783088684,
+          0.2956186532974243
+        ],
+        "raw_output_range": [
+          0.002655918011441827,
+          0.9976489543914795
+        ],
+        "output_clip_fraction": 0.0
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_008-00012.npz",
+      "focus": 0.39137368,
+      "aperture": 0.5,
+      "K": 16,
+      "forward_seconds": 1.2169577274471521,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          0.9058823585510254
+        ],
+        "signed_disparity_range": [
+          -0.19176527857780457,
+          0.25725433230400085
+        ],
+        "raw_output_range": [
+          0.002925993874669075,
+          0.9983975291252136
+        ],
+        "output_clip_fraction": 0.0
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_008-00018.npz",
+      "focus": 0.39103741,
+      "aperture": 0.5,
+      "K": 16,
+      "forward_seconds": 1.2090480756014585,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.003921568859368563,
+          0.8313725590705872
+        ],
+        "signed_disparity_range": [
+          -0.19355791807174683,
+          0.22016757726669312
+        ],
+        "raw_output_range": [
+          0.0026598789263516665,
+          1.0001137256622314
+        ],
+        "output_clip_fraction": 5.651403356481481e-07
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_008-00024.npz",
+      "focus": 0.45314179,
+      "aperture": 0.5,
+      "K": 16,
+      "forward_seconds": 1.1985158640891314,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          1.0
+        ],
+        "signed_disparity_range": [
+          -0.22264932096004486,
+          0.27342909574508667
+        ],
+        "raw_output_range": [
+          0.0029665210749953985,
+          0.9984942674636841
+        ],
+        "output_clip_fraction": 0.0
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_017-00000.npz",
+      "focus": 0.87293131,
+      "aperture": 0.25,
+      "K": 8,
+      "forward_seconds": 1.1901606786996126,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          0.8745098114013672
+        ],
+        "signed_disparity_range": [
+          -0.2162720412015915,
+          0.0003946274518966675
+        ],
+        "raw_output_range": [
+          0.0,
+          1.0030041933059692
+        ],
+        "output_clip_fraction": 3.955982349537037e-06
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_017-00006.npz",
+      "focus": 0.98369769,
+      "aperture": 0.25,
+      "K": 8,
+      "forward_seconds": 1.172625657171011,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          0.9843137264251709
+        ],
+        "signed_disparity_range": [
+          -0.24396364390850067,
+          0.00015400350093841553
+        ],
+        "raw_output_range": [
+          0.0,
+          1.0025616884231567
+        ],
+        "output_clip_fraction": 5.086263020833333e-06
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_017-00012.npz",
+      "focus": 0.92031241,
+      "aperture": 0.25,
+      "K": 8,
+      "forward_seconds": 1.2194395158439875,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          0.9215686321258545
+        ],
+        "signed_disparity_range": [
+          -0.22811731696128845,
+          0.0003140568733215332
+        ],
+        "raw_output_range": [
+          0.0,
+          1.002206802368164
+        ],
+        "output_clip_fraction": 2.2605613425925925e-06
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_017-00018.npz",
+      "focus": 0.83005639,
+      "aperture": 0.25,
+      "K": 8,
+      "forward_seconds": 1.2073892951011658,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          0.8313725590705872
+        ],
+        "signed_disparity_range": [
+          -0.2055533081293106,
+          0.00032904744148254395
+        ],
+        "raw_output_range": [
+          0.0,
+          1.0040712356567383
+        ],
+        "output_clip_fraction": 7.911964699074074e-06
+      }
+    },
+    {
+      "input_file": "outputs/deeplens-keyframes-20260928/inputs/repro_017-00024.npz",
+      "focus": 1.0,
+      "aperture": 0.25,
+      "K": 8,
+      "forward_seconds": 1.2121067196130753,
+      "result": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          1.0
+        ],
+        "signed_disparity_range": [
+          -0.24803921580314636,
+          0.0
+        ],
+        "raw_output_range": [
+          0.0,
+          1.0015645027160645
+        ],
+        "output_clip_fraction": 3.3908420138888887e-06
+      }
+    }
+  ],
+  "frames": 40,
+  "threads": 8,
+  "scope": "Proposed raw disparity / K32 engineering candidate only, not a frozen adapter or paper reproduction. No DepthNet/mask, no metrics, no GPU.",
+  "single_frame_runtime": {
+    "status": "EXTERNAL_LENSBLUR_GUIDED_SR_CPU_FORWARD_PASSED",
+    "load": {
+      "source_commit": "3dbc1b04ba082b3b6b1dc0d944b3d18fa542ae2c",
+      "runtime": "2.15.1",
+      "device": "CPU",
+      "checkpoint_tensors": 488,
+      "restored_tensors": 210,
+      "restored_elements": 2044303,
+      "scopes": [
+        "Feature",
+        "Lensblur",
+        "SR"
+      ],
+      "all_restored_finite": true,
+      "no_uninitialized_variables": true,
+      "DepthNet_built_or_executed": false,
+      "compatibility_files": [
+        {
+          "file": "network/network.py",
+          "modified": true
+        },
+        {
+          "file": "network/kernel_net.py",
+          "modified": true
+        },
+        {
+          "file": "network/feature_net.py",
+          "modified": false
+        },
+        {
+          "file": "network/srnet.py",
+          "modified": true
+        },
+        {
+          "file": "core/build_lensblur.py",
+          "modified": true
+        },
+        {
+          "file": "core/build_sr.py",
+          "modified": true
+        }
+      ],
+      "native_SR_uint8_intermediate_preserved": true,
+      "limitation": "TF2 compat.v1 CPU execution; numerical parity against a native TF1 binary is not established."
+    },
+    "input_file": "outputs/deeplens-runtime-20260928/input.npz",
+    "focus": 0.46039845,
+    "aperture": 0.5,
+    "load_seconds": 1.0551652647554874,
+    "forward_seconds": 1.6902856044471264,
+    "result": {
+      "low_output_shape": [
+        1,
+        288,
+        512,
+        3
+      ],
+      "high_output_shape": [
+        1,
+        576,
+        1024,
+        3
+      ],
+      "low_disparity_range": [
+        0.007843137718737125,
+        0.9686274528503418
+      ],
+      "signed_disparity_range": [
+        -0.2262776494026184,
+        0.2541145086288452
+      ],
+      "raw_output_range": [
+        0.0,
+        1.0166288614273071
+      ],
+      "output_clip_fraction": 0.0024425365306712963
+    },
+    "threads": 8,
+    "scope": "Runtime feasibility only; public demo aperture0.5, no K mapping chosen, no metrics, no DepthNet or mask. Existing GPU jobs untouched."
+  },
+  "mean_forward_seconds": 1.4550944479648025,
+  "visual_review": {
+    "frames": [
+      0,
+      6,
+      12,
+      18,
+      24
+    ],
+    "scenes": [
+      "repro_000",
+      "repro_001",
+      "repro_003",
+      "repro_004",
+      "repro_006",
+      "repro_007",
+      "repro_008",
+      "repro_017"
+    ],
+    "reviewed": true,
+    "scope": "40 input/prediction thumbnail pairs; no gross BGR swap, wrong frame, black block or focus reversal observed. Strong blur retains border/texture artifacts; no temporal-video acceptance or physical-radius calibration."
+  },
+  "open_decisions": [
+    "Raw shared disparity is a project candidate, not proven equivalent to the min-max convention described for depth prediction in paper section3.1; synthetic training section4.2 also describes sampled [0,1] layers.",
+    "K/32 is a proposed aperture-ratio map, not recovered Any-to-Bokeh adapter or established radius equivalence.",
+    "TF2.15 compat.v1 CPU uses the original TensorFlow graph operators and checkpoint; native TF1 numeric comparison and current-GPU compatibility remain unverified.",
+    "24-26 dB is not an acceptance threshold; high/low paper discrepancy is a diagnostic observation, not proof of implementation failure."
+  ],
+  "source_urls": [
+    "https://github.com/scott89/deeplens_eval/tree/3dbc1b04ba082b3b6b1dc0d944b3d18fa542ae2c",
+    "https://arxiv.org/pdf/1810.08100",
+    "https://arxiv.org/html/2505.21593v2",
+    "https://www.tensorflow.org/install/source#gpu",
+    "https://docs.nvidia.com/cuda/archive/12.8.0/blackwell-compatibility-guide/index.html"
+  ]
+}
