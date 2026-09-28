@@ -547,9 +547,9 @@ Track A / Track B 不意味着所有 Benchmark 都机械重复两遍。
 
 # 11. 最终结果表模板
 
-## Table 0：GT Renderer Comparison
+## Table 0：GT Renderer Comparison（历史开发验证）
 
-这张表用于在正式构建 Synthetic Benchmark 前，比较两种 Bokeh GT 生成方案：
+这张表记录 E1–E6 阶段对两种 Bokeh GT 生成方案的开发验证。**它不再代表当前 Baseline Benchmark Sweep 的 GT 选择。** 当前 200-video 公开代理复现与后续 baseline sweep 固定使用 **sRGB + MPIB-public proxy**；linear RGB + Cycles 分支暂停并保留为独立物理参考。
 
 1. **Dr.Bokeh Renderer**：作为快速、易接入的物理渲染方案；
 2. **Blender Cycles**：作为独立于参赛 baseline 的物理光线追踪方案。
@@ -569,16 +569,16 @@ Any-to-Bokeh 对同一批输入只产生一份 prediction，再分别以两种 r
 | GT Renderer | PSNR ↑ | SSIM ↑ | LPIPS ↓ | FVD ↓ | FD ↓ | RM ↓ | Rendering Time ↓ | Visual Quality | Fairness |
 |---|---:|---:|---:|---:|---:|---:|---:|---|---|
 | Dr.Bokeh Renderer | 33.0620 | 0.97600 | 0.02769 | — | 0.02281 | 0.003588 | 3.24 s/帧* | 图层渲染通过，保留交叉检查 | 与参赛 baseline 同源 |
-| Blender Cycles（OptiX，1024 spp） | 32.8592 | 0.97510 | 0.03120 | — | 0.02199 | 0.003942 | 2.43 s/帧* | 对齐、标定、采样收敛检查通过 | 独立参考，选为后续主 GT |
+| Blender Cycles（OptiX，1024 spp） | 32.8592 | 0.97510 | 0.03120 | — | 0.02199 | 0.003942 | 2.43 s/帧* | 对齐、标定、采样收敛检查通过 | E1–E6 独立物理参考；当前暂停 |
 
 **2026-09-26 首轮实测：5 个开发场景 × 25 帧，1024×576，K=16。** 这些数字衡量同一份 Any-to-Bokeh 预测与两种候选参考的差异，不是 renderer 本身的准确率，也不等于官方测试集成绩。逐场景结果、指标定义、输入来源和检查证据见 [小型结果记录](records/renderer-pilot-20260926.json)。
 
-- 本阶段选择 **Blender Cycles 4.5.13 LTS / OptiX / 1024 spp** 为后续主 GT 生成器；Dr.Bokeh 保留为交叉检查，正式 benchmark 尚未冻结。
+- **历史阶段结论**：E1–E6 曾选择 Blender Cycles 4.5.13 LTS / OptiX / 1024 spp 作为独立物理参考，Dr.Bokeh 作为交叉检查。该结论已被后续 Any-to-Bokeh 公开代理复现的实证结果覆盖：当前 baseline sweep 固定使用 MPIB-public/sRGB reference，Cycles 分支暂停但不删除。
 - 已知 RGBA 图层绕过学习式深度/分割/修复，采用线性光照合成与 sRGB 输出。关闭景深对齐 PSNR 60.57 dB；参考深度组合为对焦 2 m、背景 6 m，K=16，50 mm 焦距 / 36 mm 传感器宽度，对应 f/2.10054。光圈由明暗边界扩散标定，半径差约 0.1%；此映射尚不外推到所有深度或 K。
 - Cycles 同帧独立随机种子差异 PSNR 57.16 dB、MAE 0.000698；1024 与 4096 spp 差异 PSNR 59.21 dB。低采样初版和 CPU 回退初版均不作为本表最终 Cycles 结果。
 - LPIPS 使用 squeeze v0.1；FD 使用 torchvision RAFT-large C_T_SKHT_V2 的完整分辨率光流差；RM 对全部 24 对相邻帧计算变化差。5 段视频不足以稳定比较视频分布，本阶段 **不报告 FVD**，不以替代指标冒名填入。
 - *耗时为试验成本：Dr.Bokeh 包含核心渲染/传输、不含 PNG 写盘，部分帧与校验任务交错；Cycles 包含渲染与 PNG 写盘。二者口径不同，不能直接作为统一速度排名或 Table 3 成绩。Cycles 的 125 帧总计约 303 秒，当前生成成本可接受。
-- 素材为 AM-2k 训练前景及 BG-20k 背景，运动为构造的平面仿射运动。全部试验素材后续应从正式留出集排除；不据此声称覆盖真实三维几何、真实人发动态或全场景泛化。下一步按 E6 扩到 20–30 场景并引入 VideoMatte 动态素材后再冻结数据与配置。
+- 素材为 AM-2k 训练前景及 BG-20k 背景，运动为构造的平面仿射运动。该 5-scene 试验只保留为 renderer 开发证据。后续 E6 24-scene 验证与 200-video MPIB-public proxy 复现均已完成，不再以本表决定当前 sweep 的 renderer。
 
 除数值指标外，还固定观察：
 
@@ -612,7 +612,7 @@ Any-to-Bokeh 对同一批输入只产生一份 prediction，再分别以两种 r
 \boxed{GT\ Generator \neq Compared\ Baseline}
 \]
 
-因此 Dr.Bokeh Renderer 可以作为快速验证方案，但如果 Blender 的质量与成本可接受，则 Blender 更适合作为正式 Benchmark GT 的候选。
+因此本表保留用于解释早期 renderer 选型过程；**当前不再从 Dr.Bokeh / Cycles 两者中重新选主 GT**。Baseline Benchmark Sweep 统一沿用已经完成 200-video 定量验证的 MPIB-public/sRGB reference。
 
 
 ## Table 1：Any-to-Bokeh Synthetic / Reproduced Synthetic
@@ -626,7 +626,7 @@ Any-to-Bokeh 对同一批输入只产生一份 prediction，再分别以两种 r
 | BokehMe |  |  |  |  |  |  |
 | MPIB |  |  |  |  |  |  |
 | BokehDiff |  |  |  |  |  |  |
-| Any-to-Bokeh |  |  |  |  |  |  |
+| Any-to-Bokeh | **39.7116** | **0.986305** | **0.01515** | **8.93752** | **0.44496** | **0.005645** |
 | BokehCrafter* |  |  |  |  |  |  |
 | Ours |  |  |  |  |  |  |
 
@@ -636,10 +636,33 @@ Any-to-Bokeh 对同一批输入只产生一份 prediction，再分别以两种 r
 
 不能与原论文官方 200-video test set 的 paper-reported numbers 直接混为同一测试集结果。
 
+### Table V：Benchmark Validation — 与论文 Table 1 的性能版图对照
 
-### E7 AM-2k 前景颜色恢复：修正版验证协议
+这张表是**辅助验证表**，不替代 Table 1A / 1B。目的不是要求每个方法逐项复刻论文绝对值，而是检查当前固定 200-video MPIB-public benchmark 是否能够恢复论文中的**总体量级、相对排序和方法间性能间隔**。随着 baseline sweep 完成逐行填写。
 
-AM-2k 官方说明表明，训练集提供的 `fg` / `bg` 本身也是由闭式方法估计得到，并非对真实前景颜色的独立物理真值。因此，E7 **不得再把 AM-2k train/fg 当作 foreground-color ground truth 来证明某种恢复方法的真实准确性**。
+| Method | Paper PSNR ↑ | Our Bench PSNR ↑ | ΔPSNR | Paper SSIM ↑ | Our Bench SSIM ↑ | Paper FVD ↓ | Our Bench FVD ↓ | Sweep Status |
+|---|---:|---:|---:|---:|---:|---:|---:|---|
+| DeepLens | 24.574 |  |  | 0.819 |  | 125.338 |  | 待跑 |
+| BokehDiff | 27.525 |  |  | 0.834 |  | 65.678 |  | 待跑 |
+| BokehMe | 27.992 |  |  | 0.936 |  | 39.102 |  | 待跑 |
+| Dr.Bokeh | 31.273 |  |  | 0.950 |  | 32.710 |  | 待跑 |
+| MPIB | 31.390 |  |  | 0.950 |  | 35.766 |  | 待跑 |
+| **Any-to-Bokeh** | **38.899** | **39.7116** | **+0.8126 dB** | **0.974** | **0.986305** | **9.005** | **8.93752** | ✅ 完成 |
+
+Validation 重点依次观察：
+
+1. **绝对量级**：每种方法是否落在与论文可解释的性能区间；
+2. **相对排序**：baseline performance landscape 是否总体保持；
+3. **方法间 gap**：例如 Any-to-Bokeh 与 MPIB / Dr.Bokeh 的优势间隔是否仍然显著；
+4. **难度趋势**：统一保留按 (K=4/8/16/32) 的分组结果，观察强虚化条件下各方法的退化趋势。
+
+只修复客观实现错误；**不根据与论文数字的接近程度修改 scene、GT、Focus、K、素材或评价参数。**
+
+
+
+### E7 AM-2k 前景颜色恢复：历史方案（当前停止）
+
+> **当前决策已更新**：本项目当前 baseline sweep 不再推进 AM validation / foreground estimator 选择。AM-2k train/fg 直接作为固定 composition asset 使用，并明确不把它称为独立物理 foreground-color GT。下述三层验证协议与 60-source 开发实验保留为历史方法学证据。
 
 当前改用三层证据后再决定是否冻结 foreground-color estimator：
 
@@ -667,7 +690,7 @@ AM-2k 官方说明表明，训练集提供的 `fg` / `bg` 本身也是由闭式�
 
 > 该 foreground-color estimator 在 AM-2k 官方代理 FG 的一致性检查、已知 FG 构造的可控恢复实验和换背景视觉检查中通过预定标准，因此作为 E7 synthetic construction 的固定工程步骤；这不等价于证明其恢复了真实场景中的物理前景颜色。
 
-### E7 冻结后的 Any-to-Bokeh 外部参考检查
+### Any-to-Bokeh 外部参考检查（200-video public-proxy 版本已完成）
 
 正式 Reproduced Any-to-Bokeh-style Synthetic Benchmark 的场景清单、源素材、Geometry / Focus / \(K\)、Renderer 和指标配置**全部冻结后**，再使用官方公开的 Any-to-Bokeh 权重在该冻结测试集上运行一次，作为外部 **sanity check（合理性检查）**。
 
@@ -693,7 +716,7 @@ AM-2k 官方说明表明，训练集提供的 `fg` / `bg` 本身也是由闭式�
 
 > 本 Benchmark 受 Any-to-Bokeh 公开合成协议启发，但不是作者官方 Synthetic Test Set 的逐样本复现，因此 paper-reported numbers 仅作为外部参考，不与本项目 Table 1A / 1B 成绩混为同一评价结果。
 
-该 sanity check 应在 E7 冻结后、正式大规模 baseline Table 1A / 1B 比较前完成。
+当前 public-proxy sanity check 已完成，因此可以直接进入其他 baseline 的 Table 1A sweep；future held-out E7 仍需独立冻结和复跑。
 
 
 ---
@@ -974,37 +997,52 @@ output/
 
 ---
 
-# 16. 当前执行顺序
+# 16. 当前执行顺序：Baseline Benchmark Sweep
+
+当前优先目标是：**先把除 Ours 外的现有方法在同一 benchmark 上批量跑完，集中完成重复性实验，并用完整 baseline performance landscape 继续验证 benchmark 的合理性。**
 
 ~~~text
-1. Any-to-Bokeh
-   ├── 96 GB 上完整运行：已完成
-   ├── 记录效率
-   ├── 跑 DAVIS / VEPI
-   └── 核对 synthetic generation pipeline
-
-2. Any-to-Bokeh Synthetic
-   ├── 继续确认官方 test set
-   └── 并行准备 Reproduced Any-to-Bokeh-style Set
-
-3. 核对各 baseline 的真实输入接口
-   ├── BokehMe
+1. Synthetic Track A — 当前固定 200-video MPIB-public/sRGB benchmark
+   ├── Any-to-Bokeh：✅ 已完成，直接复用现有结果
    ├── MPIB
+   ├── BokehMe
    ├── Dr.Bokeh
-   ├── DeepLens
-   └── BokehDiff
+   ├── BokehDiff
+   └── DeepLens（旧 TF1/Python2 runtime，最后处理）
 
-4. 最终确定 Track A 的统一输入 adapter
+2. 更新 Table 1A + Table V Benchmark Validation
+   ├── 绝对量级
+   ├── 相对排序
+   ├── method gap
+   └── by-K 难度趋势
 
-5. 确定 Track B：
-   Low-FPS Coarse Depth → baseline 的公平适配方式
+3. Synthetic Track B — Low-FPS Coarse Geometry
+   ├── 固定统一 depth temporal downsampling / corruption
+   ├── 固定同一个 baseline depth adapter
+   └── 除 Ours 外全部方法先跑完
 
-6. 批量复现其他 baseline
+4. DAVIS Real-world
+   ├── VEPI
+   ├── Hair / Thin Structure
+   ├── Halo / Leakage
+   └── Temporal Flicker / qualitative video
+
+5. Efficiency
+   ├── 统一 1024×576 / 25 frames
+   ├── Core Time
+   ├── E2E Time
+   ├── Peak VRAM
+   └── Params（适用时）
+
+6. Ours
+   └── 上述表格除 Ours 外基本填满后，再开始方法实现与迭代
 ~~~
+
+BokehCrafter 继续保持 deferred：只有官方实现/checkpoint 可稳定复现后才补入 quantitative 主表，不阻塞本轮 sweep。
 
 当前阶段最重要的是：
 
-> **先把 Any-to-Bokeh 的 synthetic generation / evaluation 链路和 baseline 输入适配搞清楚，再冻结最终统一输入协议。**
+> **先固定 benchmark、填满 baseline，再开始 Ours；后续每个 Ours 版本都直接进入同一评价体系，不让 benchmark 协议被模型结果反向影响。**
 
 
 ---
@@ -1705,7 +1743,7 @@ Track B
 
 # 18. 当前最终表格数量
 
-当前实验方案共保留 **5 张主表**：
+当前实验方案共保留 **5 张主表 + 1 张辅助 Benchmark Validation 表**：
 
 1. **Table 0：GT Renderer Comparison**  
    用于选择正式 Synthetic Benchmark 的 Bokeh GT Renderer。
@@ -1730,22 +1768,19 @@ Track B
 因此：
 
 \[
-\boxed{5\ 张主表}
+\boxed{5\ 张主表 + 1\ 张辅助验证表}
 \]
 
-如果按最终论文 / 报告中实际展示的结果表块计算，则为：
-
-\[
-\boxed{6\ 个结果表块}
-\]
+其中 Table 1 拆成 A/B 后，最终实际展示为 **6 个主结果表块 + 1 个 Benchmark Validation 表**。
 
 即：
 
 ~~~text
-Table 0   GT Renderer Comparison
+Table 0   GT Renderer Comparison（历史开发验证）
 
 Table 1A  Synthetic Track A
 Table 1B  Synthetic Track B
+Table V   Benchmark Validation vs Paper Table 1（辅助）
 
 Table 2   DAVIS Real-world
 
