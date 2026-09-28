@@ -1,0 +1,94 @@
+{
+  "status": "PREFLIGHT_PASSED",
+  "completed_utc": "2026-09-28T12:56:20.918650+00:00",
+  "scene_ids": [
+    "repro_004",
+    "repro_007",
+    "repro_006",
+    "repro_017",
+    "repro_003",
+    "repro_008",
+    "repro_000",
+    "repro_001"
+  ],
+  "frames_per_candidate": 200,
+  "checks": {
+    "PNG_counts_dimensions_modes_integrity": true,
+    "all_modules_executed": true,
+    "focus_filename_metadata_match": true,
+    "defocus_formula_identity": true,
+    "all_returned_tensors_finite": true
+  },
+  "candidates": {
+    "shared_defocus": {
+      "peak_allocated_GiB": 0.31250429153442383,
+      "span_range": [
+        0.7921568742021918,
+        0.9960784311406314
+      ],
+      "focus_outside_range_count": 0
+    },
+    "normalized": {
+      "peak_allocated_GiB": 0.31250429153442383,
+      "span_range": [
+        0.7921568742021918,
+        0.9960784311406314
+      ],
+      "focus_outside_range_count": 10
+    }
+  },
+  "demo_equivalence": {
+    "scene": "repro_004",
+    "frame": 0,
+    "passed": true,
+    "results": {
+      "shared_defocus": {
+        "float_max_abs": 1.7881393432617188e-07,
+        "float_MAE": 6.1175775556421286e-09,
+        "PNG8_max_abs": 1,
+        "PNG8_different_values": 1,
+        "native_K": 3.5137255173176527,
+        "native_normalized_focus": 0.2232142837273368
+      },
+      "normalized": {
+        "float_max_abs": 3.5762786865234375e-07,
+        "float_MAE": 7.547106939398418e-09,
+        "PNG8_max_abs": 1,
+        "PNG8_different_values": 1,
+        "native_K": 4,
+        "native_normalized_focus": 0.2232142837273368
+      }
+    },
+    "tolerance": {
+      "float_max_abs": 0.0001,
+      "float_MAE": 1e-06,
+      "PNG8_max_abs": 1
+    },
+    "note": "Full unmodified demo via runpy, comparing returned float RGB before JPEG. Native K rescaled only to express A in normalized coordinates."
+  },
+  "visual_review": {
+    "scenes": 8,
+    "frames_per_scene": [
+      0,
+      6,
+      12,
+      18,
+      24
+    ],
+    "keyframe_groups": 40,
+    "panels": [
+      "RGB",
+      "GT",
+      "A",
+      "B"
+    ],
+    "observations": [
+      "No obvious focus inversion, missing frame, or frame-order mismatch in reviewed keyframes.",
+      "Normalized candidate increases blur; visible in repro_000, repro_003, repro_008.",
+      "Repro_001 has occlusion-edge differences against GT. Existing rectangular source boundaries remain part of fixed input.",
+      "Sparse keyframe review does not prove all-transition temporal stability; full FD/RM evaluation follows.",
+      "10 frames have mapped focus slightly >1 (maximum 1.00183491), from continuous focus versus PNG8 disparity quantization. Preserved without clamp as declared; no changed dataset control."
+    ],
+    "selection": "No candidate selected from preflight."
+  }
+}

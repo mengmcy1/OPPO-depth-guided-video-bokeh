@@ -644,7 +644,7 @@ Any-to-Bokeh 对同一批输入只产生一份 prediction，再分别以两种 r
 |---|---:|---:|---:|---:|---:|---:|---:|---|
 | DeepLens | 24.574 |  |  | 0.819 |  | 125.338 |  | 待跑 |
 | BokehDiff | 27.525 |  |  | 0.834 |  | 65.678 |  | 待跑 |
-| BokehMe | 27.992 |  |  | 0.936 |  | 39.102 |  | 待跑 |
+| BokehMe | 27.992 |  |  | 0.936 |  | 39.102 |  | 双候选运行中，未冻结 |
 | Dr.Bokeh | 31.273 |  |  | 0.950 |  | 32.710 |  | 待跑 |
 | MPIB（γ=2.2冻结） | 31.390 | **31.6195** | **+0.2295 dB** | 0.950 | **0.974408** | 35.766 | **24.95694** | ✅ 200段完成 |
 | **Any-to-Bokeh** | **38.899** | **39.7116** | **+0.8126 dB** | **0.974** | **0.986305** | **9.005** | **8.93752** | ✅ 完成 |
@@ -682,7 +682,7 @@ Validation 重点依次观察：
 LPIPS（非论文选择项）：γ=1为0.016910，γ=2.2为0.028355。RM主列使用完整24 transitions；作者公开2-transition诊断分别为0.005603/0.008238，另行保留。FVD/VFID-I采用此前同一评价适配及相同GT特征缓存。
 
 结果与by-K、检查及失败案例见`records/mpib-adapter-recovery-200-20260928.json`和现有复现汇报8.1。FVD/VFID-I仍未精确匹配论文，gamma=1结果完整保留。此MPIB行参与了候选选择，因此Table V在这里属于复现校准证据，不是独立held-out验证。后续不依据Ours成绩再调整该配置。
-### BokehMe adapter recovery：下一步协议
+### BokehMe adapter recovery：双候选执行协议
 
 Any-to-Bokeh 公开材料确认 BokehMe 是依赖输入 geometry 的逐帧 image baseline，并在 noisy-depth / DAVIS 实验中与其他方法共享 geometry/control 信息；**但没有公开 Synthetic Table 1 的 BokehMe inference adapter**。因此当前不能直接断言其 disparity normalization、focus/K 映射、gamma、highlight 或 preprocessing 细节。
 
@@ -701,6 +701,10 @@ Any-to-Bokeh 公开材料确认 BokehMe 是依赖输入 geometry 的逐帧 image
 - 官方 checkpoint；
 - 逐帧独立推理；
 - 输出 clamp [0,1] 后 PNG8。
+
+公开依据补充：作者[BLB dataset说明](https://github.com/JuewenPeng/BokehMe#blb-dataset)指出物理视差无需归一化；A与这一口径一致，B仅代表demo归一化候选。B中focus使用同一仿射变换且不夹紧，K不缩放，因此`S_B=S_A/(d_max-d_min)`，两者并非纯坐标等价。只有同步取`K′=K(d_max-d_min)`才与A等价，本轮不把该等价写法作为第三候选。实际pipeline接收`S/10`，内部再乘`defocus_scale=10`，避免重复放大。
+
+执行配置：`configs/bokehme-adapter-recovery.json`。2026-09-28固定8段检查已通过，双200段及指标在服务器后台运行；结果选择仍待全量证据。预检查记录见`records/bokehme-adapter-preflight-20260928.json`。
 
 先用固定8段 preflight 做实现检查，再双候选运行200段。外部参考为论文 BokehMe 行：PSNR27.992、SSIM0.936、FD0.536、RM0.013、FVD39.102、VFID-I8.633。若两个预定义候选中有一个在整体 metric signature 上一致更接近论文，则冻结为 reproduction adapter；若证据冲突，保留未决，不扩展为无约束参数搜索。
 

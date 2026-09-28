@@ -1,0 +1,36 @@
+{
+  "name": "BokehMe defocus convention recovery on fixed public-proxy development scenes",
+  "author_commit": "8b3ed556dc146207c9bb39fccd078a113f8d1bd8",
+  "input": "outputs/any2bokeh-mpib-public-proxy-200-20260928/clips",
+  "candidates": ["shared_defocus", "normalized"],
+  "preflight_scenes": ["repro_004", "repro_007", "repro_006", "repro_017", "repro_003", "repro_008", "repro_000", "repro_001"],
+  "geometry": "PNG8 disparity / 255; focus from filename, checked against metadata; manifest K unchanged",
+  "shared_defocus": "S = K*(d-df)",
+  "normalized": "lo=min(d); span=max(d)-lo; S=K*((d-lo)/span-(df-lo)/span), per frame; no focus clamp",
+  "pipeline_input": "defocus = S / 10; official pipeline multiplies by defocus_scale for the classical renderer",
+  "gamma": 2.2,
+  "highlight": false,
+  "defocus_scale": 10.0,
+  "aperture": "circular ModuleRenderScatter",
+  "models": ["ARNet", "IUNet"],
+  "precision": "FP32, TF32 disabled",
+  "output": "official pipeline clamp [0,1], round to PNG8; independent frames, no temporal filtering",
+  "demo_equivalence_tolerance": {"float_max_abs": 0.0001, "float_MAE": 0.000001, "PNG8_max_abs": 1},
+  "paper_BokehMe": {"PSNR": 27.992, "SSIM": 0.936, "FD": 0.536, "RM": 0.013, "FVD": 39.102, "VFID_I": 8.633},
+  "paper_reference": "https://arxiv.org/html/2505.21593v2#S4.T1",
+  "sources": {
+    "demo": "https://github.com/JuewenPeng/BokehMe/blob/8b3ed556dc146207c9bb39fccd078a113f8d1bd8/demo.py",
+    "physical_disparity_note": "https://github.com/JuewenPeng/BokehMe#blb-dataset",
+    "gamma": "BokehMe CVPR 2022 paper, quantitative evaluation: circular aperture and gamma 2.2"
+  },
+  "selection": "Compare both predeclared candidates with the paper BokehMe metric profile, not highest scores on current GT. Freeze only if overall evidence consistently favors one. If mixed, leave unresolved; no post-hoc weighted loss or expanded sweep.",
+  "limits": [
+    "Author BLB instructions explicitly skip normalization for physical disparity; normalized candidate derives from demo, not a published Any-to-Bokeh evaluation adapter.",
+    "Keeping K unchanged after normalization changes physical blur by 1/span; this is not a coordinate-only transform.",
+    "Replaced scenes and proxy GT cannot uniquely identify the unpublished author adapter.",
+    "This is reproduction development, not held-out benchmark validation; freezing before Ours does not remove selection bias.",
+    "RM with 24 transitions and author-public 2-transition behavior are separately labeled.",
+    "No paper by-K values are available; by-K is diagnostic, not a paper-match threshold.",
+    "CuPy scatter uses floating atomicAdd; repeated outputs can differ at floating rounding level. No claim of bitwise CUDA reproducibility."
+  ]
+}
