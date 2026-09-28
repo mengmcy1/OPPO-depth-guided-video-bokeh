@@ -8,7 +8,7 @@
 > 补充指标：2026-09-28完成TorchMetrics PSNR/SSIM、VideoMAE FVD、I3D VFID-I，见下表及第七节。
 >
 > 核心方案：Any-to-Bokeh 公开场景生成逻辑 + MPIB 官方 ray-tracing renderer proxy + Any-to-Bokeh 官方权重
-> 新增MPIB baseline：两种gamma各200段已完成，按论文MPIB行的六指标一致性冻结gamma=2.2；详见8.1。
+> 新增MPIB与BokehMe baseline：各自双候选200段及全部指标已完成，分别冻结gamma=2.2与Normalized/gamma=2.2；详见8.1–8.2。BokehMe与MPIB的部分排序尚未恢复，不宣称整体性能版图已对齐。
 
 ---
 
@@ -362,7 +362,7 @@ python scripts/evaluate_author_public_metrics.py \
 
 本轮完成不改变原有复现边界：测试素材、proxy GT、PNG编码及部分loader/样本计数与作者入口不同。FVD接近论文9.005、VFID-I低于论文1.479，只能作为外部参考，不能证明官方测试指标被严格复现。
 
-后续MPIB双候选运行及冻结已完成，见8.1；其他baseline下一项为BokehMe。未来公平Benchmark仍需单独确定源划分、renderer与指标，Cycles及AM validation恢复线保持暂停。
+后续MPIB、BokehMe双候选运行及冻结已完成，见8.1–8.2；下一项为Dr.Bokeh。未来公平Benchmark仍需单独确定源划分、renderer与指标，Cycles及AM validation恢复线保持暂停。
 
 ---
 
@@ -411,7 +411,58 @@ CUDA_VISIBLE_DEVICES=0 python scripts/run_mpib_recovery.py \
   --output outputs/mpib-track-a-repeat
 ```
 
-上述为独立复跑示例，当前5000帧冻结结果已齐全，无需重跑。未将本轮共享图层、并发评价的计时填入正式Efficiency表。GPU显存已释放；下一项为BokehMe Track A适配与验证。
+上述为独立复跑示例，当前5000帧冻结结果已齐全，无需重跑。未将本轮共享图层、并发评价的计时填入正式Efficiency表。该阶段GPU显存已释放；随后完成的BokehMe见8.2。
+
+### 8.2 BokehMe：双候选200段完成，冻结Normalized / gamma=2.2
+
+**自动汇总完成：2026-09-28 13:45:29 UTC。** A（Shared-Defocus）和B（Normalized）各5000张prediction，完整PSNR/SSIM/LPIPS/FD/RM、VideoMAE FVD、I3D VFID-I均完成。对照目标为论文BokehMe行；差值为“本次−论文”。
+
+| 指标 | 论文BokehMe | A：Shared-Defocus | B：Normalized（冻结） | A−论文 | B−论文 |
+|---|---:|---:|---:|---:|---:|
+| PSNR ↑ / dB | 27.992 | 33.842835 | **33.334003** | +5.850835 | +5.342003 |
+| SSIM ↑ | 0.936 | 0.983270 | **0.979418** | +0.047270 | +0.043418 |
+| FD ↓ | 0.536 | 0.415701 | **0.539533** | -0.120299 | +0.003533 |
+| RM ↓（24 transitions） | 0.013 | 0.006061 | **0.007394** | -0.006939 | -0.005606 |
+| FVD ↓ / VideoMAE | 39.102 | 15.366611 | **18.546370** | -23.735389 | -20.555630 |
+| VFID-I ↓ / I3D | 8.633 | 2.321887 | **2.814896** | -6.311113 | -5.818104 |
+
+**选择B的依据与边界**：六项绝对偏差一致指向B，故按运行前约定冻结B，没有临时加权或增加gamma/highlight搜索。A的本地GT重建分数更好，仍完整保留。这个选择只说明B在两个预定候选中更像论文行，不证明找回未公开的作者adapter。
+
+最终控制为`d′=(d−min(d))/span`、`df′=(df−min(d))/span`、K不变、pipeline输入`K(d′−df′)/10`，内部再乘10。gamma=2.2、highlight=false、圆形scatter、官方ARNet/IUNet及误差图融合、逐帧独立推理。仅调用renderer或使用GT分层均不属于本次baseline。A遵循共享物理defocus；B来自demo式归一化。官方BLB的物理视差说明支持A无需归一化，因此不能把B包装为普适物理约定。
+
+**剩余复现差距很大**：B的PSNR比论文高5.3420 dB、FVD低20.5556、VFID-I低5.8181；只有FD数值非常接近（0.53953对0.536）。当前BokehMe PSNR33.3340高于冻结MPIB31.6195，而论文BokehMe27.992低于MPIB31.390；当前BokehMe FVD18.5464低于MPIB24.9569，而论文为39.102高于35.766。SSIM、RM、VFID-I的BokehMe/MPIB排序也相反，FD排序一致。**完整论文性能版图尚未恢复**，不能因为每个方法都挑了更接近论文的候选就宣布Benchmark已通过独立验证。
+
+替代场景、代理GT、未公开adapter和评价适配均可能贡献差异，目前不能唯一归因。不把论文排序当硬门槛；不为匹配排序继续改K/gamma/GT或删除异常场景。Any-to-Bokeh仍在PSNR、SSIM、FVD等主项上优于本次BokehMe，但这不是全部方法相对差距已复现的证据。当前方法选择使用同一200段，属于reproduction development；未来公平held-out Benchmark独立处理。
+
+补充指标：LPIPS A/B=0.021283/0.024698；公开代码前2对RM=0.006073/0.007504。主表使用完整24对RM，不混淆两种定义。FVD/VFID-I为整集合距离，不是逐scene均值。
+
+**按K分组**：
+
+| K | 段数 | PSNR A | PSNR B | SSIM B | FD A | FD B | RM B |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| 4 | 48 | 38.1717 | 37.7150 | 0.990502 | 0.094215 | 0.099758 | 0.004302 |
+| 8 | 43 | 35.6697 | 35.1165 | 0.984083 | 0.142203 | 0.160020 | 0.005607 |
+| 16 | 56 | 32.2239 | 31.6873 | 0.976011 | 0.360245 | 0.425723 | 0.008272 |
+| 32 | 53 | 30.1507 | 29.6601 | 0.969197 | 0.987347 | 1.365981 | 0.010715 |
+
+两候选在同一scene上配对，B的全局PSNR比A低0.50883 dB；各K组包含不同素材，不能把跨K统计当作只改变K的控制实验。论文没有对应by-K结果，分组仅用于内部诊断。
+
+**完整性与视觉检查**：10000张PNG名称/数量/1024×576/RGB模式/完整性通过；400条逐scene指标有限；FVD每侧200×1408、VFID-I每侧400×1024，GT特征与已有Any-to-Bokeh缓存逐值一致，by-K加权均值与总体一致。每帧均调用classical/ARNet/IUNet。与未改动官方demo的预检查最大float差异3.58e-7、PNG8最多1色阶，符合事先容差；scatter浮点atomicAdd不保证逐位一致。
+
+固定8段40关键帧后，额外查看repro_068（最低PSNR，B=22.2461）、repro_012（最高FD，B=4.30462）、repro_193（最高RM，B=0.021732）的0/6/12/18/24帧。斑马高频条纹/混合虚化、暗场强虚化、运动遮挡分别存在差异；未见明显错帧或焦点对象反转，不能据静态关键帧唯一解释FD/RM异常。累计11段55关键帧，未声称人工检查全部视频，未删除任何场景。
+
+全量span范围0.792157–0.996078，B对A的实际模糊放大约1.004–1.262倍。289帧变换后focus略高于1，最大1.002413，来自连续focus与PNG8上界量化差；按预先协议保留、不夹紧，不改变已有数据控制。
+
+**复用入口**：`configs/bokehme-track-a-frozen.json`；小型记录`records/bokehme-adapter-recovery-200-20260928.json`；选定输出`outputs/bokehme-adapter-recovery-20260928/normalized/clips/<scene>/pred_bokehme/`。另一候选及原恢复配置保留。复跑时使用新输出目录：
+
+```bash
+conda activate magicbokeh
+CUDA_VISIBLE_DEVICES=0 python scripts/run_bokehme_recovery.py \
+  --protocol configs/bokehme-track-a-frozen.json \
+  --output outputs/bokehme-track-a-repeat
+```
+
+冻结配置单帧复查（repro_004第0帧）与原候选PNG逐像素一致。当前5000帧选定结果已经齐全，无需重跑；后台进程全部结束，GPU显存已释放。本轮并发计时不填Efficiency表。下一项为Dr.Bokeh Track A输入适配；其1024×576单帧容量测试已通过，正式200段尚未开始。
 
 ## 九、对后续 Benchmark 的价值
 

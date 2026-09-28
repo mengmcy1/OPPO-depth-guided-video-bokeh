@@ -623,7 +623,7 @@ Any-to-Bokeh 对同一批输入只产生一份 prediction，再分别以两种 r
 |---|---:|---:|---:|---:|---:|---:|
 | DeepLens |  |  |  |  |  |  |
 | Dr.Bokeh |  |  |  |  |  |  |
-| BokehMe |  |  |  |  |  |  |
+| BokehMe（Normalized，γ=2.2） | **33.3340** | **0.979418** | **0.02470** | **18.54637** | **0.53953** | **0.007394** |
 | MPIB（γ=2.2冻结） | **31.6195** | **0.974408** | **0.02835** | **24.95694** | **0.44985** | **0.008184** |
 | BokehDiff |  |  |  |  |  |  |
 | Any-to-Bokeh | **39.7116** | **0.986305** | **0.01515** | **8.93752** | **0.44496** | **0.005645** |
@@ -644,7 +644,7 @@ Any-to-Bokeh 对同一批输入只产生一份 prediction，再分别以两种 r
 |---|---:|---:|---:|---:|---:|---:|---:|---|
 | DeepLens | 24.574 |  |  | 0.819 |  | 125.338 |  | 待跑 |
 | BokehDiff | 27.525 |  |  | 0.834 |  | 65.678 |  | 待跑 |
-| BokehMe | 27.992 |  |  | 0.936 |  | 39.102 |  | 双候选运行中，未冻结 |
+| BokehMe（Normalized，γ=2.2） | 27.992 | **33.3340** | **+5.3420 dB** | 0.936 | **0.979418** | 39.102 | **18.54637** | ✅ 双200段完成；与MPIB排序差异保留 |
 | Dr.Bokeh | 31.273 |  |  | 0.950 |  | 32.710 |  | 待跑 |
 | MPIB（γ=2.2冻结） | 31.390 | **31.6195** | **+0.2295 dB** | 0.950 | **0.974408** | 35.766 | **24.95694** | ✅ 200段完成 |
 | **Any-to-Bokeh** | **38.899** | **39.7116** | **+0.8126 dB** | **0.974** | **0.986305** | **9.005** | **8.93752** | ✅ 完成 |
@@ -682,11 +682,11 @@ Validation 重点依次观察：
 LPIPS（非论文选择项）：γ=1为0.016910，γ=2.2为0.028355。RM主列使用完整24 transitions；作者公开2-transition诊断分别为0.005603/0.008238，另行保留。FVD/VFID-I采用此前同一评价适配及相同GT特征缓存。
 
 结果与by-K、检查及失败案例见`records/mpib-adapter-recovery-200-20260928.json`和现有复现汇报8.1。FVD/VFID-I仍未精确匹配论文，gamma=1结果完整保留。此MPIB行参与了候选选择，因此Table V在这里属于复现校准证据，不是独立held-out验证。后续不依据Ours成绩再调整该配置。
-### BokehMe adapter recovery：双候选执行协议
+### BokehMe adapter recovery：双候选完成，Normalized已冻结
 
 Any-to-Bokeh 公开材料确认 BokehMe 是依赖输入 geometry 的逐帧 image baseline，并在 noisy-depth / DAVIS 实验中与其他方法共享 geometry/control 信息；**但没有公开 Synthetic Table 1 的 BokehMe inference adapter**。因此当前不能直接断言其 disparity normalization、focus/K 映射、gamma、highlight 或 preprocessing 细节。
 
-下一步首先只恢复 **signed defocus convention**：
+本轮只比较两个预定义的 **signed defocus convention**：
 
 1. **Shared-Defocus**：直接使用当前 PNG8 disparity / 255、文件名 focus 和原 K，保持 `K(d-d_f)`；
 2. **BokehMe-Normalized**：按官方 demo 对 disparity 做 per-frame min-max，同时对 focus 做同一变换，K 首轮不缩放。
@@ -704,11 +704,23 @@ Any-to-Bokeh 公开材料确认 BokehMe 是依赖输入 geometry 的逐帧 image
 
 公开依据补充：作者[BLB dataset说明](https://github.com/JuewenPeng/BokehMe#blb-dataset)指出物理视差无需归一化；A与这一口径一致，B仅代表demo归一化候选。B中focus使用同一仿射变换且不夹紧，K不缩放，因此`S_B=S_A/(d_max-d_min)`，两者并非纯坐标等价。只有同步取`K′=K(d_max-d_min)`才与A等价，本轮不把该等价写法作为第三候选。实际pipeline接收`S/10`，内部再乘`defocus_scale=10`，避免重复放大。
 
-执行配置：`configs/bokehme-adapter-recovery.json`。2026-09-28固定8段检查已通过，双200段及指标在服务器后台运行；结果选择仍待全量证据。预检查记录见`records/bokehme-adapter-preflight-20260928.json`。
+候选配置`configs/bokehme-adapter-recovery.json`保持原样。2026-09-28固定8段检查、双200段及全部指标均完成；B在六项与论文行的绝对偏差上均小于A，因此按原规则冻结B，执行配置为`configs/bokehme-track-a-frozen.json`。预检查记录见`records/bokehme-adapter-preflight-20260928.json`。
 
-先用固定8段 preflight 做实现检查，再双候选运行200段。外部参考为论文 BokehMe 行：PSNR27.992、SSIM0.936、FD0.536、RM0.013、FVD39.102、VFID-I8.633。若两个预定义候选中有一个在整体 metric signature 上一致更接近论文，则冻结为 reproduction adapter；若证据冲突，保留未决，不扩展为无约束参数搜索。
+执行顺序为固定8段 preflight 后双候选200段。外部参考为论文 BokehMe 行：PSNR27.992、SSIM0.936、FD0.536、RM0.013、FVD39.102、VFID-I8.633。若两个预定义候选中有一个在整体 metric signature 上一致更接近论文，则冻结为 reproduction adapter；若证据冲突，保留未决，不扩展为无约束参数搜索。
 
-冻结后 Table 1A 只填唯一正式 BokehMe 行，Table V 保留恢复证据；后续 Track B / DAVIS / Efficiency 复用冻结版本，Ours 开始后不依据 Ours 结果调整。
+Table 1A已填唯一冻结B行，Table V保留差值。完整双候选指标、by-K及视觉诊断见`records/bokehme-adapter-recovery-200-20260928.json`和现有复现汇报8.2。后续使用冻结版本时须声明新输入域的转换条件，不依据Ours结果调整。
+
+| 指标 | 论文BokehMe | A：Shared-Defocus | B：Normalized（冻结） | A−论文 | B−论文 |
+|---|---:|---:|---:|---:|---:|
+| PSNR ↑ / dB | 27.992 | 33.842835 | **33.334003** | +5.850835 | +5.342003 |
+| SSIM ↑ | 0.936 | 0.983270 | **0.979418** | +0.047270 | +0.043418 |
+| FD ↓ | 0.536 | 0.415701 | **0.539533** | -0.120299 | +0.003533 |
+| RM ↓（24 transitions） | 0.013 | 0.006061 | **0.007394** | -0.006939 | -0.005606 |
+| FVD ↓ / VideoMAE | 39.102 | 15.366611 | **18.546370** | -23.735389 | -20.555630 |
+| VFID-I ↓ / I3D | 8.633 | 2.321887 | **2.814896** | -6.311113 | -5.818104 |
+
+B的LPIPS=0.024698，公开前2对RM=0.007504；主表RM采用24对。B虽逐项比A更接近论文，但PSNR仍高5.3420 dB，FVD低20.5556；BokehMe相对冻结MPIB的PSNR/SSIM/RM/FVD/VFID-I排序与论文相反，FD排序一致。故Table V仍显示未恢复的性能版图；这些差距是观察结果，既不作为实现通过的硬门槛，也不通过继续调参强行消除。当前集合参与候选选择，不能称为独立held-out验证。
+
 
 
 ### E7 AM-2k 前景颜色恢复：历史方案（当前停止）
@@ -1050,7 +1062,7 @@ output/
 1. Synthetic Track A — 当前固定 200-video MPIB-public/sRGB benchmark
    ├── Any-to-Bokeh：✅ 已完成，直接复用现有结果
    ├── MPIB：✅ gamma=2.2冻结，200段已完成
-   ├── BokehMe：当前进行 adapter recovery
+   ├── BokehMe：Normalized、gamma=2.2已完成并冻结
    ├── Dr.Bokeh
    ├── BokehDiff
    └── DeepLens（旧 TF1/Python2 runtime，最后处理）
