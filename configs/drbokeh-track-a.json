@@ -1,0 +1,148 @@
+{
+  "name": "Dr.Bokeh full-pipeline implementation preflight, then single-adapter Track A",
+  "author_commit": "24d96e4fb76a698494e86835c84a7c45ae2ebc10",
+  "input": "outputs/any2bokeh-mpib-public-proxy-200-20260928/clips",
+  "preflight_scenes": [
+    "repro_004",
+    "repro_007",
+    "repro_006",
+    "repro_017",
+    "repro_003",
+    "repro_008",
+    "repro_000",
+    "repro_001"
+  ],
+  "allowed_inputs": [
+    "RGB PNG8",
+    "full-FPS disparity PNG8 / 255",
+    "focus scalar from filename",
+    "manifest K"
+  ],
+  "oracle_alpha": false,
+  "oracle_layers_or_hidden_RGB": false,
+  "predicted_alpha": "Official LDF model-40, from RGB only; official resize/normalization and sigmoid",
+  "layer_pipeline": "Official RGBAD2layers; two layers; foreground cv2 depth inpaint, background LaMa RGB AND depth inpaint; Multi_Layer_Renderer",
+  "normalization": "lo=min(d); span=max(d)-lo; d_prime=(d-lo)/span; focus_prime=(focus-lo)/span; no focus clamp",
+  "K_mapping": "K_Dr = K_manifest * span; preserves K_Dr*(d_prime-focus_prime)=K_manifest*(d-focus) BEFORE layer preprocessing",
+  "constant_disparity_policy": "Stop and report; no silent fallback or per-scene parameter change",
+  "gamma": 2.2,
+  "highlight": false,
+  "offset": 0.0,
+  "lens": 71,
+  "gpu_occlusion": true,
+  "preprocessing": {
+    "Salient": "LDF",
+    "fg_erode": 5,
+    "fg_iters": 2,
+    "inpaint_kernel": 7,
+    "threshold": 0.1,
+    "Occlusion": true
+  },
+  "precision": "FP32 render/model, TF32 disabled; preserve official NumPy/OpenCV preprocessing dtypes",
+  "output": "Independent frames; clamp only final RGB to [0,1], record out-of-range fraction before clamp, round to RGB PNG8",
+  "kernel_check": {
+    "lens_candidates_for_coverage_check_only": [
+      41,
+      71,
+      101
+    ],
+    "nominal_radii_px": [
+      0.0,
+      1.3333333333333333,
+      2.0,
+      4.0,
+      8.0,
+      16.0,
+      32.0,
+      32.1
+    ],
+    "impulse_size": 129,
+    "lens71_vs101_impulse_L1_tolerance": 0.0001,
+    "omitted_radial_scatter_weight_mass_tolerance": 0.0001,
+    "scope": "Engineering tolerance declared before probe; not a paper score threshold or proof for arbitrary occlusion normalization"
+  },
+  "preflight_checks": [
+    "Same 8 scenes, 25 frames each, 1024x576; filename focus matches metadata",
+    "Before layers, signed CoC algebra matches existing input control after K compensation",
+    "Record LDF coverage and empty/full masks; poor segmentation is a retained method failure unless the pipeline becomes undefined.",
+    "Foreground/background RGBAD finite; inspect LaMa RGB and depth fills separately",
+    "Record actual layer disparity range and maximum nominal radius after preprocessing",
+    "Check radial tail coverage for actual post-preprocessing radius; if failed, stop without clipping",
+    "Check final output shape/range and focus-region visual behavior",
+    "Inspect 0/6/12/18/24 frame diagnostics; compare 71 versus 101 on identical saved layers from the fixed K32 scenes, because near-zero normalization weights can amplify small kernel tails"
+  ],
+  "limits": [
+    "No public evidence located that Any-to-Bokeh gives Dr.Bokeh GT alpha or oracle layers; absence of disclosure is not proof of their actual private settings.",
+    "Dr.Bokeh CVPR 2024 section 5.2 replaces predicted occluded pixels by GT pixels for MPIB/Dr.Bokeh and searches blur kernels. This is a different experiment and does not establish Any-to-Bokeh's unpublished adapter.",
+    "Official demo does not transform its focal argument for the caller; adapter must transform it consistently.",
+    "CUDA scatter_dis=abs(relative_disparity)*K_Dr+1 with a softstep edge, not an ideal hard disk of exactly the nominal radius.",
+    "lens is a kernel side length; circular mask uses distance < floor(lens/2); soft tails never have exactly finite support.",
+    "K compensation preserves nominal input CoC, not full-pipeline equivalence: depth inpainting and fixed disparity-domain occlusion thresholds are not affine invariant.",
+    "A single oracle-alpha image would still not reveal all hidden RGBA layers and is not a pure-renderer ground truth test.",
+    "The native soft kernel has nonzero residual spread at nominal radius zero; do not demand exact identity as an implementation pass condition.",
+    "User authorized the full 200 scenes only after the fixed 8-scene implementation checks pass; no paper-score selection or additional candidates."
+  ],
+  "layered_lens_check": {
+    "scenes": [
+      "repro_000",
+      "repro_001"
+    ],
+    "frames": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24
+    ],
+    "compare": [
+      71,
+      101
+    ],
+    "whole_MAE_max": 1e-06,
+    "edge_MAE_max": 1e-06,
+    "pixel_max_abs_max": 0.0001,
+    "PNG8_max_abs_max": 1,
+    "edge_definition": "5x5 morphological gradient of LDF alpha>0.1, OR input normalized disparity local range>1/255",
+    "selection": "If 71/101 differences exceed tolerance on the same saved layers, use 101 as coverage correction; no paper metrics consulted."
+  },
+  "mapping_tolerance": {
+    "float64_max_abs": 1e-10,
+    "float32_max_abs": 1e-05
+  },
+  "diagnostic_keyframes": [
+    0,
+    6,
+    12,
+    18,
+    24
+  ],
+  "paper_DrBokeh": {
+    "PSNR": 31.273,
+    "SSIM": 0.95,
+    "FD": 0.522,
+    "RM": 0.011,
+    "FVD": 32.71,
+    "VFID_I": 6.097
+  },
+  "paper_reference": "https://arxiv.org/html/2505.21593v2#S4.T1"
+}
