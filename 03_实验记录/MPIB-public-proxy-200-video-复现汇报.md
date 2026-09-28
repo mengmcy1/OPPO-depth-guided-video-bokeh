@@ -5,6 +5,7 @@
 > 当前状态：✅ **200/200 已完成**（2026-09-28 06:26 UTC（北京时间14:26））
 > 运行记录：sRGB输入配置落盘至全量汇总约170.3分钟，含并发和中断恢复，不含此前图层/几何构造。
 > 数据规模：200 场景 × 25 帧 = 5000 帧（RGB + GT + Prediction 完整）
+> 补充指标：2026-09-28完成TorchMetrics PSNR/SSIM、VideoMAE FVD、I3D VFID-I，见下表及第七节。
 >
 > 核心方案：Any-to-Bokeh 公开场景生成逻辑 + MPIB 官方 ray-tracing renderer proxy + Any-to-Bokeh 官方权重
 
@@ -14,28 +15,32 @@
 
 已完成固定 200 段的公开代理复现：MPIB-public/sRGB GT 与官方 Any-to-Bokeh 权重形成完整 5000 帧评价链路。
 
-**最终结果**（200 场景，5000 帧）：
+**论文原文与本次结果逐项对照**（200场景，差值统一为“本次−论文”）：
 
-| 指标 | 论文 Table 1 | 当前复现 | 差异 | 标准差 | 一致性 |
-|---|---:|---:|---:|---:|---:|
-| **PSNR ↑** | **38.899 dB** | **39.73 dB** | **+0.83 dB** | ±1.87 | 外部量级对照 |
-| **SSIM ↑** | **0.974** | **0.9866** | **+0.0126** | ±0.0066 | 外部量级对照 |
-| **FD ↓** | **0.431** | **0.4450** | **+0.014** | ±0.502 | 外部量级对照 |
-| **RM ↓** | **0.007** | **0.0056** | **-0.0014** | ±0.0013 | 外部量级对照 |
-| **LPIPS ↓** | 未报告 | **0.0152** | - | ±0.0085 | 额外指标 |
+| 指标 | 论文Table 1 | 本次结果 | 差值（本次−论文） | 结果来源 |
+|---|---:|---:|---:|---|
+| PSNR ↑ / dB | 38.899 | **39.711601** | +0.812601 | 本轮：作者公开函数 / TorchMetrics |
+| SSIM ↑ | 0.974 | **0.986305** | +0.012305 | 本轮：作者公开函数 / TorchMetrics |
+| FVD ↓ | 9.005 | **8.937519** | -0.067481 | 本轮：VideoMAE，200段集合 |
+| VFID-I ↓ | 1.479 | **0.808557** | -0.670443 | 本轮：I3D，400个连续10帧窗口 |
+| FD ↓ | 0.431 | **0.444956** | +0.013956 | 沿用原项目RAFT结果，未重算作者入口 |
+| RM ↓ | 0.007 | **0.005645** | -0.001355 | 沿用原项目24-transition结果 |
+| LPIPS ↓ | 未报告 | **0.015153** | 不适用 | 项目额外指标，论文Table 1未报告 |
 
-上述 ± 为 200 个 scene 均值的描述性标准差（ddof=0），不是置信区间；scene 之间可能复用源素材，不视为独立抽样。
+↑指标的正差、↓指标的负差仅表示本次数值更优；由于测试素材、proxy GT及公开指标适配存在差异，**不能解释为同一测试条件下优于论文**。论文数值来自[原文v2 Table 1](https://arxiv.org/html/2505.21593v2#S4.T1)。
+
+PSNR/SSIM主对照采用本轮TorchMetrics补算；原逐帧PSNR **39.73197 dB**、skimage SSIM **0.986575**继续保留在第四节。FVD/VFID-I为集合级距离，不填写逐scene标准差或范围。
 
 **核心结论**：
 
-1. ✅ **与论文 Table 1 作外部量级对照**：PSNR 绝对差异为 **+0.83 dB**；当前五项指标实现和测试素材与作者公开评价仍有差异，不构成等价性证明
+1. ✅ **与论文Table 1逐项对照**：本轮TorchMetrics PSNR差 **+0.81260 dB**，SSIM差 **+0.012305**，FVD差 **-0.06748**，VFID-I差 **-0.67044**；这些是实际数值差，不能当作测试条件等价的证明
 2. ✅ **验证了 MPIB-public proxy 的运行可行性**：论文引用、公开接口和独立 renderer probe 支持代理实现的选择，不能证明其等同于作者私有 renderer
 3. ✅ **形成完整可复现链路**：从场景生成 → GT渲染 → 模型推理 → 评价，全流程可追溯
 4. ⚠️ **定位明确**：这是公开代理复现的工程验证，不是作者官方测试集的逐样本复现，也不是未来 held-out 公平 Benchmark
 
 选择 MPIB-public 的依据是论文引用、公开接口和独立 renderer probe，不以接近论文分数证明 renderer 更准确。未公开的 test manifest、背景清单和内部 kernel 意味着，不能由分数接近推出场景分布或实现完全一致。
 
-当前已经验证的是：固定公开参数与代理素材下，官方 checkpoint 能够完成 200 段推理，产生完整、可评价的输出，且指标量级与论文一致。
+当前已经验证的是：固定公开参数与代理素材下，官方checkpoint能完成200段推理和本轮四项补算。数值接近论文不证明恢复了官方测试集、私有renderer或历史评价环境；VFID-I更低也不能解释为模型优于论文。
 
 ---
 
@@ -123,13 +128,13 @@ ModuleRenderRT(images, alphas, coffs, K, depth_focus, samples_per_side)
 
 ## 四、最终200/200定量结果
 
-### 4.1 本项目指标与论文Table1外部参考
+### 4.1 保留的项目诊断指标与新增集合指标
 
 **完成时间**：2026-09-28 06:26 UTC（北京时间14:26）
 **运行记录**：从sRGB输入配置落盘至全量汇总完成约170.3分钟，包含并发和中断恢复；不包含此前图层/几何构造，不作为标准化效率成绩。
 **数据规模**：200 场景 × 25 帧 = 5000 帧（RGB + GT + Prediction）
 
-主PSNR采用逐帧PSNR平均；`PSNR_clip_mse` 为 39.71 dB。此表为本项目标准指标实现，author-public metrics 同口径重算列为后续计划。PSNR以dB绝对差异报告，不计算百分比差异。
+下面保留原五项诊断口径，其中PSNR为逐帧平均，`PSNR_clip_mse`为39.71159 dB。与论文的主对照表见第一节，采用本轮TorchMetrics PSNR/SSIM；这里的旧结果不被覆盖。±为原200个scene均值的描述性标准差（ddof=0），不是置信区间，scene可能共享素材。FVD/VFID-I不适用逐scene统计。PSNR仅报告dB绝对差异。
 
 | 指标 | 论文Table1 | 最终200场景 | 差异 | 标准差 | 范围 | 说明 |
 |---|---:|---:|---:|---:|---:|---:|
@@ -138,10 +143,17 @@ ModuleRenderRT(images, alphas, coffs, K, depth_focus, samples_per_side)
 | **FD ↓** | **0.431** | **0.4450** | **+0.014** | ±0.502 | [0.023, 2.983] | 外部量级对照 |
 | **RM ↓** | **0.007** | **0.0056** | **-0.0014** | ±0.0013 | [0.0027, 0.0095] | 外部量级对照 |
 | **LPIPS ↓** | 未报告 | **0.0152** | - | ±0.0085 | [0.0053, 0.0627] | 额外指标 |
-| **FVD ↓** | 9.005 | 待补充* | - | - | - | 后续计划 |
-| **VFID-I ↓** | 1.479 | 待补充* | - | - | - | 后续计划 |
+| **FVD ↓（VideoMAE）** | 9.005 | **8.93752** | -0.06748 | 不适用 | 不适用 | 200段集合级距离 |
+| **VFID-I ↓（I3D）** | 1.479 | **0.80856** | -0.67044 | 不适用 | 不适用 | 400个10帧片段集合级距离 |
 
-*注：作者公开FVD入口使用VideoMAE/cdfvd及对应checkpoint；VFID-I使用I3D特征路径。具体版本、权重与预处理需分别核对，列为第八节后续任务，目前均未计算。
+补充对照（同一200段、原始1024×576 PNG）：
+
+| 指标 | 原项目口径 | 作者公开函数 / TorchMetrics 1.9.0 | 差异解释 |
+|---|---:|---:|---|
+| PSNR | 39.73197 dB（逐帧平均） | **39.71160 dB** | 作者按整段MSE计算再按scene平均；独立的PSNR_clip_mse=39.71159，与新值仅差0.00001 dB |
+| SSIM | 0.986575（skimage） | **0.986305** | 同一图像，差异来自评价实现/边界处理；不表示模型变化 |
+
+FVD使用VideoMAE/cdfvd，VFID-I使用I3D，不能都标为I3D。两者不是逐视频分数平均；模型权重、样本计数及PNG适配详见第七节。
 
 ### 4.1.1 按K分组
 
@@ -215,7 +227,7 @@ ModuleRenderRT(images, alphas, coffs, K, depth_focus, samples_per_side)
 
 ### 5.1 相近量级，不是等价性证明
 
-本轮 PSNR 比论文报告高约 **0.83 dB**（39.73 vs 38.899），FD 高约 **0.014**（0.445 vs 0.431），SSIM/RM 也略有差异。
+以本轮补算口径比较：PSNR **39.71160 vs 38.899**（差+0.81260 dB）、SSIM **0.986305 vs 0.974**（差+0.012305）、FVD **8.93752 vs 9.005**（差-0.06748）、VFID-I **0.80856 vs 1.479**（差-0.67044）。FD/RM沿用原结果，完整差值见第一节。FVD接近原文、VFID-I较低均是本次测量事实，不说明代理测试集与原测试集等价。
 
 **差异可能来源**：
 1. 素材/参数分布（未公开的 test manifest、背景清单）
@@ -273,164 +285,83 @@ Cycles 分支保留且暂停，未来独立公平 Benchmark 仍单独决定参�
 
 ---
 
-## 七、指标口径核对：哪些保留，哪些重算
+## 七、作者公开指标补算：已完成及适配边界
 
-这里的目标不是重跑实验，而是让最终“论文数字 vs 当前数字”的比较尽可能使用作者公开指标实现。
+### 7.1 本轮实际范围
 
-### 7.1 可以直接保留，不需要重新 render / inference
+200段GT/prediction保持原样，只读取已有PNG，未重新生成场景、渲染GT或推理Any-to-Bokeh。完成TorchMetrics PSNR/SSIM、VideoMAE FVD、I3D VFID-I；原五项诊断指标和按K/素材分组全部保留。
 
-以下内容已经完成且可继续作为最终汇报证据：
+证据：`records/any2bokeh-author-public-metrics-200-20260928.json`；代码：`scripts/evaluate_author_public_metrics.py`。原始特征与阶段JSON保存在本机`outputs/author-public-metrics-20260928/`。
 
-- **200-scene manifest**
-- 所有 foreground/background/source ID、运动、depth、Focus、K 配置
-- sRGB 输入生成结果
-- MPIB-public proxy GT
-- Any-to-Bokeh 官方 checkpoint 预测结果
-- Renderer probe（MPIB / BokehDiff / Cycles）
-- 当前 PSNR / SSIM / LPIPS / FD / RM，作为本项目统一诊断指标
-- 完整性检查、输入 CoC 量化误差检查
-- 现有 timing 作为工程运行记录
-- 按 K、AM/VM 类型进行分组分析的原始结果
+### 7.2 TorchMetrics PSNR/SSIM
 
-因此后续指标核对：
+直接执行Any-to-Bokeh提交`f7a16959`中`metrics/vid_metrics.py`的`psnr`、`ssim`函数体。上游模块顶层依赖未发布的`metrics.utils`和遗留`z_train`路径，因此仅按AST提取两函数及所需依赖；没有改动计算公式。
 
-[
-oxed{	ext{不需要重新生成场景，不需要重新渲染 GT，也不需要重新跑 Any-to-Bokeh}}
-]
+使用现有TorchMetrics **1.9.0**，`data_range=1.0`，batch_size=1 clip，25帧展开后计算，每段等权汇总。RGB PNG除以255，无缩放、无重新编码。结果为 **39.71160 dB / 0.986305**。PSNR与独立整段MSE结果差 **0.00000967 dB**，验证聚合一致。作者未锁定的历史依赖版本不能由本次结果反推。
 
-只需要对已经生成的 GT / prediction 重新评价。
+### 7.3 FVD：VideoMAE，200段各计一次
 
-### 7.2 建议用作者公开 metric implementation 再算一次
+调用cdfvd提交`a1e037ab`的VideoMAE模型、预处理、FeatureStats及Frechet距离公式；FP32，关闭TF32，seed=42，batch_size=16。
 
-#### PSNR
+- 权重：OpenGVLab官方`VideoMAE2/mae-g/vit_g_hybrid_pt_1200e_ssv2_ft.pth`，约2.02GB。
+- 先按公开video预处理缩放短边至256并中心裁剪，再按公开特征预处理缩放224×224；保留其byte转换和[0,1]输入口径。
+- 200个GT和200个prediction分别得到 **200×1408** 特征，每段输入25帧。公开模型tubelet_size=2，末尾无法配对的一帧不会进入特征。
+- 显式使用`n_real='full', n_fake='full'`。cdfvd默认n_fake=2048会重复这200段；本次不把重复采样当作新增样本。
+- 使用原PNG解码替代MP4解码，避免额外有损编码；这与作者MP4入口存在明确适配差异。
 
-当前使用 **mean per-frame PSNR**。
+最终 **FVD=8.93752**。这是VideoMAE特征空间中的集合距离，不是传统I3D-FVD，也不是200个逐scene距离的平均。
 
-作者公开 `vid_metrics.py` 使用 TorchMetrics `PeakSignalNoiseRatio(data_range=1.0)`。
+### 7.4 VFID-I：作者I3D内核，保持scene边界
 
-最终建议同时保留：
+使用作者指定的`zhengchong/VFID/i3d.pt`（约51MB），权重严格加载，无missing/unexpected keys；复用其`InceptionI3d.extract_features`、`ImageSequenceDataset`图像变换和`calculate_fid`。
 
-- 当前 mean-frame PSNR：便于项目内部统一比较；
-- **author-public PSNR**：用于和 Table 1 做最直接对照；
-- 已保存的 `PSNR_clip_mse`：作为聚合方式诊断。
+- `sequence_length=10`、224×224、RGB、输入[-1,1]，batch_size=4。
+- 每段取0–9、10–19两个连续不重叠窗口；最后5帧不参与本项。200段对应 **400×1024** 特征/侧。
+- 公开图片loader会将多目录帧展平再切片，可能跨scene；本项目对每段分别构造公开dataset，再合并dataset。
+- 公开VideoDataset的累计索引减法会产生负帧索引，且OpenCV路径未做BGR→RGB；本次使用其RGB图片路径，绕开该问题。
 
-PSNR 的汇报统一使用 **dB 绝对差异**，不计算百分比差异。
+最终 **VFID-I=0.80856**。这是公开模型/公式下、明确采样适配后的结果，不能声称原封不动复刻作者视频loader或论文运行环境。相邻窗口共享源视频，也不能称为400个独立视频样本。
 
-#### SSIM
+### 7.5 检查、运行成本与保留项
 
-当前实现：
+GT/预测场景ID与固定manifest一致；FVD两侧200×1408、VFID-I两侧400×1024特征全部有限。GT与自身比较距离接近0（浮点误差绝对值小于0.001）；已从保存特征独立重算FVD，与正式输出一致。
 
-- skimage
-- Gaussian sigma=1.5
-- population covariance
+正式三阶段合计 **337.4秒（约5.6分钟）**，不含下载、小测试和文档整理；最高PyTorch allocated显存 **23.63 GiB**。该计时仅为本机指标补算成本，不是论文中的Any-to-Bokeh模型推理效率。
 
-作者公开实现：
+FD **0.44496**、完整24-transition RM **0.005645**及LPIPS继续使用原项目实现。作者FD/RM原入口本轮未重算，未将其标成完成；公开RM存在按通道数读取时序长度的问题，若后续核对应另列，不能覆盖现有完整24-transition结果。VFID-ResNeXt不属于本轮VFID-I任务，未下载该权重或计算。
 
-- TorchMetrics `StructuralSimilarityIndexMeasure(data_range=1.0)`
+### 7.6 环境、权重与复跑入口
 
-因此最终 Table 1 对照应增加一列或直接采用 **author-public SSIM**。最终 0.98658 保留为项目内部指标，不作废。
+复用`magicbokeh`（Python 3.10、torch 2.8.0+cu128），仅补装cd-fvd 0.1.0的固定Git版本（`--no-deps`），没有升级其他包。依赖记录在`configs/requirements-author-public-metrics.txt`。
 
-#### FD
+| 用途 | 本机权重路径 | 来源 |
+|---|---|---|
+| VFID-I | `models/metrics/VFID/i3d.pt` | 作者指定zhengchong/VFID，revision `dca26ff3` |
+| FVD | `models/metrics/VideoMAE2/mae-g/vit_g_hybrid_pt_1200e_ssv2_ft.pth` | OpenGVLab/VideoMAE2，revision `706cc172` |
 
-当前使用 torchvision RAFT-large，并对 24 个相邻 transition 计算 flow L1 difference。
+```bash
+conda activate magicbokeh
+CUDA_VISIBLE_DEVICES=0 OMP_NUM_THREADS=8 OPENBLAS_NUM_THREADS=8 \
+python scripts/evaluate_author_public_metrics.py \
+  --output outputs/author-public-metrics-20260928
+```
 
-作者公开实现同样采用 torchvision `raft_large` + RAFT weights transforms，因此最终 **0.44496** 可作为同类定义下的外部量级对照。
+上述目录已有完整结果，再运行会校验协议并复用。独立重复计算时指定新的output目录。数据、权重、特征数组和大型日志不进入Git。
 
-为彻底消除 torchvision / weight alias / preprocessing 版本差异，最终可以再用作者公开 `compute_flow_error` 路径重算一次；这属于低成本确认，不涉及模型重跑。
+## 八、完成状态与后续讨论
 
-### 7.3 RM：保留我们的完整 24-transition 版本，并单独记录作者公开代码口径
+本轮用户要求的四项已完成并填表：
 
-当前 RM：
+| 补充项 | 状态 | 最终值 |
+|---|---|---:|
+| TorchMetrics PSNR | 200段完成 | 39.71160 dB |
+| TorchMetrics SSIM | 200段完成 | 0.986305 |
+| FVD / VideoMAE | 200段集合，适配已声明 | 8.93752 |
+| VFID-I / I3D | 400个10帧窗口，保持scene边界 | 0.80856 |
 
-[
-0.005645
-]
+本轮完成不改变原有复现边界：测试素材、proxy GT、PNG编码及部分loader/样本计数与作者入口不同。FVD接近论文9.005、VFID-I低于论文1.479，只能作为外部参考，不能证明官方测试指标被严格复现。
 
-计算全部 24 个相邻帧 transition，定义清楚、适合作为后续项目统一时序指标。
-
-作者公开 `temporal_consistency` 代码中，transition 数量的维度读取存在与其 `B,C,T,H,W` 数据布局不完全匹配的迹象。因此最终建议：
-
-- **主项目继续保留 24-transition RM**；
-- 如需严格复刻 Table 1 数字，可额外运行作者 public code 原样口径并单列；
-- 两者不互相覆盖。
-
-这样既保留了当前更完整的时序评价，也能完成论文表格的公开代码对照。
-
-### 7.4 LPIPS
-
-当前 `LPIPS squeeze v0.1` 可直接保留。
-
-论文 Table 1 未直接给 LPIPS，因此它属于本项目额外的 perceptual-quality 诊断指标，不需要为论文数值对齐而修改。
-
-### 7.5 FVD / VFID-I
-
-这是全量 200-video 完成后的主要补充项：
-
-- **FVD：论文 9.005**
-- **VFID-I：论文 1.479**
-
-优先按照作者公开 `vid_metrics.py` / VFID 路径和对应权重配置计算。
-
-如果这两项同样进入论文相近量级，将形成：
-
-[
-	ext{spatial fidelity}
-+
-	ext{optical-flow temporal consistency}
-+
-	ext{video distribution quality}
-]
-
-三类证据的完整闭环。
-
----
-
-## 八、完成状态与后续指标计划
-
-### ✅ 第一优先级：已完成（2026-09-28 06:26 UTC（北京时间14:26））
-
-**完成项**：
-- [x] 200 场景 / 5000 帧 RGB、GT、prediction 完整验证
-- [x] 最终 PSNR / SSIM / LPIPS / FD / RM 汇总
-- [x] K=4/8/16/32 分组结果
-- [x] AM / VideoMatte 混合分组结果
-- [x] 代表性高分、中位和困难样例识别
-
-**数据规模**：
-- 200 场景 × 25 帧 = 5000 帧
-- 正式RGB/GT/prediction共15,000 PNG；另保留11张中断时的GT归档，不参与评价
-- 20 批次 metrics JSON
-- sRGB输入配置落盘至全量汇总约170.3分钟（范围及限制见4.1）
-
-**核心结论**：
-> 基于 MPIB-public proxy 的200-video实验中，Any-to-Bokeh官方权重达到 **PSNR 39.73 dB**、**SSIM 0.9866**、**FD 0.445**、**RM 0.0056**。这些结果完成公开代理链路的工程验证，可与论文Table 1作外部量级对照；尚不能声称严格复现论文指标，作者公开指标口径重算仍待执行。
-
-### 🔄 第二优先级：作者公开 metric 同口径重算（待执行）
-
-**目标**：使用 Any-to-Bokeh 作者公开的指标实现重新计算现有输出，不重新生成场景或推理。
-
-**计划任务**：
-1. [ ] **TorchMetrics PSNR**（对照本项目 mean-frame PSNR 39.73 dB）
-2. [ ] **TorchMetrics SSIM**（对照本项目 skimage SSIM 0.9866）
-3. [ ] **作者公开 RAFT FD**（验证本项目 RAFT-large FD 0.445）
-4. [ ] **作者 public-code RM**（对照本项目 24-transition RM 0.0056）
-5. [ ] **FVD**（论文 9.005，作者公开入口为VideoMAE/cdfvd；需核对版本、权重和预处理）⭐
-6. [ ] **VFID-I**（论文 1.479，需 I3D feature extractor）⭐
-
-**预计耗时**：尚未测量；核对现有依赖与权重后，以少量视频计时再估算全量，不把4–5小时当成已验证用时。
-
-**重要原则**：
-- 结果应与本项目指标**并列保留**，不能覆盖原结果
-- 用于验证指标实现差异，不改变已完成的场景/推理
-- FVD/VFID 是 video distribution quality 的关键补充
-
-### 📋 第三优先级：视觉质量分析（按需执行）
-
-**可选任务**：
-- [ ] 生成代表性场景的视觉对照（高分 / 中位 / 困难场景）
-- [ ] 分析 K 值对虚化效果的影响
-- [ ] 失败案例的详细诊断（repro_068, repro_174, repro_092）
-- [ ] 边界、遮挡、高频纹理区域的局部质量分析
+后续可讨论作者FD/RM口径核对、困难案例分析和其他baseline统一比较；这些不是本轮已完成内容。未来公平Benchmark仍需单独确定源划分、renderer与指标，Cycles及AM validation恢复线保持暂停。
 
 ---
 
@@ -484,7 +415,8 @@ ightarrow
 - 配置：`configs/any2bokeh-mpib-public-proxy.json`
 - 启动记录：`03_实验记录/records/any2bokeh-reproduction-200-start-20260928.json`
 - Renderer probe：`03_实验记录/records/public-ray-renderer-probe-20260928.json`
-- 全量结果记录：`03_实验记录/records/any2bokeh-mpib-public-proxy-200-20260928.json`（已生成，含总体/分组/逐段及恢复记录）
+- 全量结果记录：`03_实验记录/records/any2bokeh-mpib-public-proxy-200-20260928.json`（原五项指标及恢复记录）
+- 本轮补算：`03_实验记录/records/any2bokeh-author-public-metrics-200-20260928.json`（TorchMetrics、FVD、VFID-I及适配/验证）
 - 方法论：`03_实验记录/当前实验进度与方法论.md`
 - 评价协议：`03_实验记录/Benchmark与Baseline统一评价协议.md`
 
@@ -500,3 +432,5 @@ ightarrow
 
 **最后更新**：2026-09-28
 **状态**：200/200全量完成，本项目最终指标已更新；author-public metrics / FVD / VFID-I重算计划保留，尚未执行。
+
+补算实现及权重来源：[作者公开指标代码](https://github.com/vivoCameraResearch/any-to-bokeh/blob/f7a16959dd219080fb8eec0d32bb9602d8970c22/metrics/vid_metrics.py)、[cdfvd固定版本](https://github.com/songweige/content-debiased-fvd/tree/a1e037ab7cb087debd2221d14ae4a001ec054201)、[作者指定I3D权重](https://huggingface.co/zhengchong/VFID)、[官方VideoMAE2权重](https://huggingface.co/OpenGVLab/VideoMAE2)。
