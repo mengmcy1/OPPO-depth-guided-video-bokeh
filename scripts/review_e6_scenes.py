@@ -40,11 +40,12 @@ def main():
         draw = ImageDraw.Draw(sheet)
         for row,index in enumerate([0,6,12,18,24]):
             name = f'{index:05d}.png'
+            focus = meta['frames'][index]['focus_distance_m']
             source = rgb(folder/'rgb'/name)
             alpha = rgb(folder/'alpha'/name)
             if a.stage == 'inputs':
                 depth = np.load(folder/'depth'/f'{index:05d}.npy')
-                radius = scene['K']*np.abs(1/depth-1/scene['focus_distance_m'])
+                radius = scene['K']*np.abs(1/depth-1/focus)
                 heat = cv2.applyColorMap(np.uint8(np.clip(radius/12,0,1)*255),cv2.COLORMAP_TURBO)[...,::-1]
                 panels = [source,alpha,heat,source]
                 labels = 'RGB / Alpha / nominal CoC (0..12px) / edge crop'
@@ -66,7 +67,7 @@ def main():
             panels[-1] = panels[-1][y:y+180,x:x+320]
             for col,panel in enumerate(panels):
                 sheet.paste(Image.fromarray(panel).resize((320,180)),(col*320,row*210+30))
-            draw.text((3,row*210+4),f'{folder.name} frame {index} K={scene["K"]} focus={scene["focus_distance_m"]}m | {labels}',fill='black')
+            draw.text((3,row*210+4),f'{folder.name} frame {index} K={scene["K"]} focus={focus:.4f}m | {labels}',fill='black')
         sheet.save(dest,quality=92)
         print(dest,flush=True)
 

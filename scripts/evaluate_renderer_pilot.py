@@ -6,7 +6,7 @@ from skimage.metrics import structural_similarity
 root=Path(__file__).resolve().parents[1];os.environ.setdefault('TORCH_HOME',str(root/'models/metrics'))
 import lpips
 from torchvision.models.optical_flow import raft_large,Raft_Large_Weights
-p=argparse.ArgumentParser();p.add_argument('--input',type=Path,required=True);p.add_argument('--only',default='');p.add_argument('--cycles',default='cycles_optix_s1024_f0.945244');p.add_argument('--references',choices=['both','cycles'],default='both');p.add_argument('--per-frame',action='store_true');p.add_argument('--report',type=Path);a=p.parse_args();report_path=a.report or a.input/'metrics.json'
+p=argparse.ArgumentParser();p.add_argument('--input',type=Path,required=True);p.add_argument('--only',default='');p.add_argument('--cycles',default='cycles_optix_s1024_f0.945244');p.add_argument('--references',choices=['both','cycles'],default='both');p.add_argument('--per-frame',action='store_true');p.add_argument('--scope',default='');p.add_argument('--report',type=Path);a=p.parse_args();report_path=a.report or a.input/'metrics.json'
 sys.path.insert(0,str(root/'src'))
 from synthetic.any2bokeh_input import discover
 folders=discover(a.input,a.only)
@@ -35,10 +35,12 @@ with torch.inference_mode():
     x=tensor(np.stack([pred[j-1],gt[j-1]]));y=tensor(np.stack([pred[j],gt[j]]));x,y=preprocess(x,y);f=flow(x,y)[-1];fd.append(float((f[0]-f[1]).abs().mean().item()))
     if a.per_frame:flow_details.append({'from':j-1,'to':j,'FD':fd[-1],'mean_flow_magnitude_prediction_px':float(f[0].norm(dim=0).mean().item()),'mean_flow_magnitude_reference_px':float(f[1].norm(dim=0).mean().item())})
    rm=float(np.mean(np.abs(np.diff(pred,axis=0)-np.diff(gt,axis=0))))
-   row=dict(scene=folder.name,renderer=label,PSNR=float(np.mean(ps)),SSIM=float(np.mean(ss)),LPIPS=float(np.mean(lp)),FD=float(np.mean(fd)),RM=rm,FVD=None)
+   row=dict(scene=folder.name,renderer=label,PSNR=float(np.mean(ps)),PSNR_clip_mse=float(-10*np.log10(max(float(np.mean((pred-gt)**2)),1e-12))),SSIM=float(np.mean(ss)),LPIPS=float(np.mean(lp)),FD=float(np.mean(fd)),RM=rm,FVD=None)
    if a.per_frame:row['per_frame']={'PSNR':ps,'SSIM':ss,'LPIPS':lp,'flow_transitions':flow_details,'temporal_difference_error':np.abs(np.diff(pred,axis=0)-np.diff(gt,axis=0)).mean(axis=(1,2,3)).tolist()}
    rows.append(row);print(json.dumps(row),flush=True)
 report={'scope':f'{len(folders)} development scenes; prediction/reference distances, not renderer accuracy or official test scores','metrics':{'PSNR':'mean frame PSNR, RGB sRGB [0,1]','SSIM':'Gaussian sigma1.5, RGB, skimage population covariance','LPIPS':'squeeze v0.1, RGB [-1,1]','FD':'torchvision RAFT-large C_T_SKHT_V2, full resolution, mean L1 flow difference over 24 transitions','RM':'mean absolute difference of predicted and reference frame differences over all 24 transitions','FVD':'not reported: distribution-estimator stability not established for this development set'},'rows':rows,'mean':{}}
+if a.scope:report['scope']=a.scope
+report['metrics']['PSNR_clip_mse']='PSNR from pooled MSE over the 25-frame clip; separate from mean frame PSNR'
 for label,_ in references:
  report['mean'][label]={k:float(np.mean([r[k] for r in rows if r['renderer']==label])) for k in ['PSNR','SSIM','LPIPS','FD','RM']}
 report_path.write_text(json.dumps(report,indent=2));print(json.dumps(report['mean']),flush=True)

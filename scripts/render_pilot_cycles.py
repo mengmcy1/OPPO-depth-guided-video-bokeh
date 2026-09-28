@@ -59,10 +59,16 @@ for folder in sorted(a.input.glob('*')):
  times=json.loads((out/'timing.json').read_text())['seconds'] if a.resume and (out/'timing.json').exists() else []
  for frame in meta['frames'][:a.frames or None]:
   if a.resume and (out/f"{frame['index']:05d}.png").exists():continue
+  # Public-generator-style reproduction varies axial depth per frame while
+  # preserving image-space layer placement. Uniform XYZ scale preserves projection.
+  bg_scale=frame.get('background_depth_m',c['background_depth_m'])/c['background_depth_m']
+  bpy.data.objects['Background'].scale=(bg_scale,)*3
+  for li,(z,z0) in enumerate(zip(frame['foreground_depths_m'],first['foreground_depths_m'])):
+   bpy.data.objects['Foreground'+str(li)].scale=(z/z0,)*3
   for tex,file in zip(materials,frame['foreground_files']):
    old=tex.image;tex.image=bpy.data.images.load(str(folder/file),check_existing=True)
    if old.users==0:bpy.data.images.remove(old)
   camera.dof.focus_distance=frame['focus_distance_m'];s.cycles.seed=c['seed']+frame['index']+a.seed_offset;s.render.filepath=str(out/f"{frame['index']:05d}.png")
   start=time.perf_counter();bpy.ops.render.render(write_still=True);times.append(time.perf_counter()-start)
- (out/'timing.json').write_text(json.dumps({'seconds':times,'total_seconds':sum(times),'samples':a.samples,'aperture_fstop':camera.dof.aperture_fstop,'gpu':devices,'compute_device_type':preferences.compute_device_type,'blender':bpy.app.version_string,'scope':'render + PNG IO; includes first scene update; no denoising'},indent=2))
+ (out/'timing.json').write_text(json.dumps({'seconds':times,'total_seconds':sum(times),'samples':a.samples,'aperture_fstop':camera.dof.aperture_fstop,'gpu':devices,'compute_device_type':preferences.compute_device_type,'blender':bpy.app.version_string,'per_frame_layer_depths':True,'scope':'render + PNG IO; includes first scene update; no denoising'},indent=2))
  print('SCENE_DONE',folder.name,tag,sum(times),flush=True)

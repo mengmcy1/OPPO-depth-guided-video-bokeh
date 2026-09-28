@@ -1,0 +1,107 @@
+{
+  "status": "INPUT_GENERATION_AND_BATCH_PIPELINE_RUNNING",
+  "config": "configs/any2bokeh-reproduction-200.json",
+  "name": "Reproduced Any-to-Bokeh-style 200-video Test Set",
+  "role": "quick reproduction, not official test and not future fair benchmark",
+  "paper_reference": {
+    "source": "https://arxiv.org/html/2505.21593v2#S4.T1",
+    "PSNR": 38.899,
+    "SSIM": 0.974,
+    "FD": 0.431,
+    "RM": 0.007,
+    "LPIPS": null
+  },
+  "first_clip": {
+    "input_frames": 25,
+    "GT_frames": 25,
+    "prediction_frames": 25,
+    "pinhole_alignment": {
+      "per_frame_PSNR": [
+        63.820349971022864,
+        63.70672631176191,
+        63.52808342178524,
+        63.67411542554898,
+        63.59625636414421,
+        63.39086745013028,
+        62.863473958151474,
+        62.79024737237908,
+        63.219740186322674,
+        62.85583849460728,
+        63.002987060632734,
+        63.32193538105828,
+        63.08510012609606,
+        62.492272112520624,
+        62.45796674912178,
+        62.961848055909584,
+        62.69333815889678,
+        62.653697606263876,
+        62.939837140455566,
+        63.25704664195493,
+        62.91406533016661,
+        63.38820657139252,
+        63.136908945533214,
+        63.12917512533615,
+        62.64301671669001
+      ],
+      "min_PSNR": 62.45796674912178,
+      "mean_PSNR": 63.100924027115305,
+      "frames": 25
+    },
+    "renderer_timing": {
+      "seconds": [
+        3.6528058890253305,
+        3.510808115825057,
+        3.538076164200902,
+        3.589055297896266,
+        3.648552980273962,
+        3.7312250044196844,
+        10.427451025694609,
+        8.415258012712002,
+        3.398726224899292,
+        3.415845924988389,
+        3.3650239910930395,
+        3.3933460768312216,
+        3.3606975954025984,
+        3.4242482017725706,
+        3.3445803821086884,
+        3.3326155953109264,
+        3.4627324249595404,
+        3.354201400652528,
+        3.4401518777012825,
+        3.4747932124882936,
+        3.4007930252701044,
+        3.5211983397603035,
+        3.387046342715621,
+        3.4187478478997946,
+        3.450393347069621
+      ],
+      "total_seconds": 98.45837430097163,
+      "samples": 1024,
+      "aperture_fstop": 1.1111111640930176,
+      "gpu": [
+        "NVIDIA RTX PRO 6000 Blackwell Server Edition"
+      ],
+      "compute_device_type": "OPTIX",
+      "blender": "4.5.13 LTS",
+      "per_frame_layer_depths": true,
+      "scope": "render + PNG IO; includes first scene update; no denoising"
+    },
+    "inference_timing": {
+      "seconds": [
+        5.455533139407635,
+        5.083557024598122,
+        6.983761508017778
+      ],
+      "total_seconds": 17.522851672023535,
+      "frames": 25,
+      "peak_allocated_GiB": 34.34483051300049,
+      "peak_reserved_GiB": 42.294921875,
+      "note": "pilot only; not repeated standardized efficiency benchmark"
+    },
+    "visual_review": "frames0/6/12/18/24 reviewed; public-generator-style source crop cuts retained, not E6 boundary policy"
+  },
+  "source_isolation": "All new quick-reproduction sources registered as development; preserved official test pools untouched. This does not establish author checkpoint training exclusion.",
+  "outputs": "outputs/any2bokeh-reproduction-200-20260928",
+  "paused": "AM validation/foreground estimator and E7 fair benchmark freeze",
+  "completed": false
+}

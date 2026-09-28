@@ -48,7 +48,7 @@ def raw_references(value):
 
 def collect_development():
     documents = [ROOT/'configs/renderer-pilot.json', ROOT/'configs/renderer-e6.json']
-    for name in ['am-foreground-development.json', 'am-foreground-estimation.json']:
+    for name in ['am-foreground-development.json', 'am-foreground-estimation.json', 'any2bokeh-reproduction-200.json']:
         foreground_development = ROOT/'configs'/name
         if foreground_development.exists():
             documents.append(foreground_development)
