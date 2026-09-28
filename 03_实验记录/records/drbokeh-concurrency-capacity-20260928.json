@@ -1,0 +1,52 @@
+{
+  "status": "FULL_OFFICIAL_SINGLE_FRAME_CAPACITY_PROBE_PASSED",
+  "input": {
+    "rgb": "outputs/any2bokeh-mpib-public-proxy-200-20260928/clips/repro_000/rgb/00000.png",
+    "disp": "outputs/drbokeh-concurrency-probe-20260928/disparity.npz",
+    "scene": "repro_000",
+    "frame": 0,
+    "K": 32,
+    "focus_original": 0.46039845,
+    "focus_native_normalized": 0.4710269569911469,
+    "disparity_span": 0.9607843151316047,
+    "scope": "Single-frame capacity probe using official demo normalization; not frozen Track A adapter or benchmark score"
+  },
+  "author_commit": "24d96e4fb76a698494e86835c84a7c45ae2ebc10",
+  "gamma": 2.2,
+  "lens": 71,
+  "highlight": false,
+  "elapsed_seconds_including_model_loading_and_PNG": 23.720186119899154,
+  "torch_peak_allocated_GiB": 26.004926681518555,
+  "torch_peak_reserved_GiB": 26.138671875,
+  "output_shape": [
+    576,
+    1024,
+    3
+  ],
+  "output_range": [
+    0.0025121045764535666,
+    0.9995578527450562
+  ],
+  "pipeline": "LDF predicted alpha + official RGBAD2layers (LaMa RGB/depth inpainting) + two-layer Dr.Bokeh renderer; supplied disparity",
+  "limits": [
+    "Concurrent BokehMe work; not standardized efficiency.",
+    "PyTorch memory excludes some CUDA context/extension overhead.",
+    "Native demo initializes MiDaS on import but does not run it with supplied disparity.",
+    "Single-frame probe does not establish worst-case memory or freeze geometry/color protocol."
+  ],
+  "recorded_utc": "2026-09-28T13:37:44.323780+00:00",
+  "concurrency_context": {
+    "existing_work": "BokehMe dual candidate inference and two metric workers remained running; no process stopped",
+    "gpu_total_MiB": 97887,
+    "observed_existing_memory_MiB": [
+      1497,
+      8424,
+      15351
+    ],
+    "observed_gpu_utilization_percent_range": [
+      0,
+      89
+    ],
+    "limits": "Short samples at different batch phases; not a whole-run utilization average. The native Dr.Bokeh probe finished before additional per-process sampling, so its measured peak is PyTorch allocated/reserved memory, not sampled nvidia-smi peak."
+  }
+}
