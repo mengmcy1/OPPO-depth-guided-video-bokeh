@@ -1,4 +1,4 @@
-"""Full official MPIB demo pipeline; two predeclared gamma outputs per frame."""
+"""Full official MPIB demo pipeline with predeclared gamma settings per frame."""
 import argparse
 import json
 import os
@@ -94,12 +94,13 @@ def predict_layers(image, disp, K, nets):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--protocol', type=Path, default=Path('configs/mpib-adapter-recovery.json'))
     p.add_argument('--output', type=Path, default=Path('outputs/mpib-adapter-recovery-20260928'))
     p.add_argument('--only', default='')
     p.add_argument('--max-frames', type=int, default=25)
     args = p.parse_args()
     assert os.environ.get('CUDA_VISIBLE_DEVICES') == '0'
-    protocol = json.loads((ROOT / 'configs/mpib-adapter-recovery.json').read_text())
+    protocol = json.loads((ROOT / args.protocol).read_text())
     head = subprocess.check_output(['git', '-C', str(ROOT.parent/'MPIB'), 'rev-parse', 'HEAD'], text=True).strip()
     assert head == protocol['author_commit']
     clips = ROOT / protocol['input']
@@ -181,7 +182,7 @@ def main():
             del layers, alpha, value
             print('FRAME',sid,t,'seconds',round(row['shared_layer_seconds']+sum(x['render_seconds'] for x in row['gamma'].values()),3),flush=True)
         if len(rows) == 25:
-            save_json(complete, dict(scene=sid,frames=25,parameters=counts,shared_layer_seconds=sum(x['shared_layer_seconds'] for x in rows),peak_allocated_GiB=max(x['peak_allocated_GiB'] for x in rows),scope='Shared layers for two gamma candidates; no temporal cache; not standardized efficiency'))
+            save_json(complete, dict(scene=sid,frames=25,parameters=counts,shared_layer_seconds=sum(x['shared_layer_seconds'] for x in rows),peak_allocated_GiB=max(x['peak_allocated_GiB'] for x in rows),scope=f'Shared layers for {len(dirs)} gamma value(s); no temporal cache; not standardized efficiency'))
             print('DONE',sid,flush=True)
 
 
