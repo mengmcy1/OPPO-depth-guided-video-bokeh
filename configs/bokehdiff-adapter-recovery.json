@@ -1,0 +1,78 @@
+{
+  "name": "BokehDiff two-candidate adapter recovery with continuous global RNG",
+  "author_commit": "38ff9372ab146ab20468832a0424fa0b2888dffd",
+  "input": "outputs/any2bokeh-mpib-public-proxy-200-20260928/clips",
+  "preflight_scenes": [
+    "repro_004",
+    "repro_007",
+    "repro_006",
+    "repro_017",
+    "repro_003",
+    "repro_008",
+    "repro_000",
+    "repro_001"
+  ],
+  "allowed_inputs": [
+    "RGB PNG8",
+    "full-FPS disparity PNG8 / 255",
+    "focus scalar from filename",
+    "manifest K"
+  ],
+  "conditioning": "[d_candidate, abs(d_candidate-focus_candidate)*K/10]",
+  "basis": "A follows shared synthetic geometry and public BLB input semantics. B is min-max adaptation inspired by the real-image loader, without morphology or GT-dependent operations.",
+  "resolution": [
+    1024,
+    576
+  ],
+  "RGB": "sRGB PNG8/255 -> 2*RGB-1; no GT-dependent brightness adjustment",
+  "oracle_inputs": false,
+  "model": "RealVisXL_V5.0 + author BokehDiff small LoRA and VAE",
+  "precision": "FP32; TF32 off; no xformers",
+  "timestep": 499,
+  "guidance_scale": 1,
+  "upsample": 1,
+  "TILE_SIZE": 64,
+  "PISA": {
+    "hard": 10000000,
+    "supersampling_num": 5,
+    "segment_num": 7,
+    "train": false
+  },
+  "seed_policy": "One global seed before loading each candidate model; one process per candidate; manifest scene order and frames 0..24. Never reset global RNG per frame. Preserve public per-call scheduler generator seeded 42; PISA global rand/dropout advance normally. Separate probes and preflight consume independent streams; do not reuse their PNGs in full runs.",
+  "output": "Decoder postprocessed float [0,1] -> round(255*x) -> lossless PNG8; never JPEG. Public pre-quantization float is captured without changing forward.",
+  "limits": [
+    "K/10 preserves the public conditioning convention, not a proof of exact rendered blur radius or equivalence to the benchmark renderer.",
+    "PISA uses disparity for occlusion as well as defocus magnitude; changing its coordinate range would not be an innocuous CoC-only transformation.",
+    "Native PISA divides by 1-d; inspect d=1 behavior and finite output without silently clamping supplied disparity.",
+    "Capacity/keyframe checks do not establish full temporal quality or freeze the final adapter.",
+    "Synthetic training K_adapt=K*times/max(df,1-df) for GT; K_strength=K*ratio*times for conditioning. K/10 is a declared public input convention, not proven pixel-radius equivalence.",
+    "Choosing by this reproduced data/paper profile is protocol reconstruction on development data, not independent benchmark validation or proof of the private author adapter.",
+    "Historical seed-0-per-frame outputs are capacity evidence only, excluded from recovery candidates."
+  ],
+  "seed": 42,
+  "candidates": {
+    "shared_geometry": {
+      "disparity": "d",
+      "focus": "focus",
+      "K": "K"
+    },
+    "normalized": {
+      "disparity": "(d-min)/span",
+      "focus": "(focus-min)/span",
+      "K": "K",
+      "note": "Official-style min-max adaptation, NOT exact reproduction of every loader branch. No morphology, inversion, clipping of focus, or K compensation."
+    }
+  },
+  "constant_disparity": "Stop and report; no fallback",
+  "selection": "Compare absolute discrepancies in the six paper-reported BokehDiff metrics. Freeze only a clear overall result, not highest local score; if metrics conflict retain both and discuss. No continuous K/gamma/seed sweep or third candidate triggered solely by score disagreement.",
+  "paper_BokehDiff": {
+    "PSNR": 27.525,
+    "SSIM": 0.834,
+    "FD": 0.66,
+    "RM": 0.021,
+    "FVD": 65.678,
+    "VFID_I": 7.395
+  },
+  "preflight_order": "Manifest order restricted to the same eight scenes, each 0..24; fixed 0/6/12/18/24 reviewed after generation without skipping RNG draws.",
+  "boundary_policy": "Preserve native PISA arithmetic. Dedicated actual-layer diagnostic records nonfinite sampling coordinates but finite native sampled values, finite attention/decoded RGB and zero occlusion for d=1 source columns on the bounded [0,1] probe. This is a declared native numerical limitation, not proof of all geometry. No clamp or formula/dropout rewrite."
+}

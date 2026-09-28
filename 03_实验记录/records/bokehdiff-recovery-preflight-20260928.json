@@ -1,0 +1,175 @@
+{
+  "status": "PREFLIGHT_PASSED",
+  "protocol": {
+    "name": "BokehDiff two-candidate adapter recovery with continuous global RNG",
+    "author_commit": "38ff9372ab146ab20468832a0424fa0b2888dffd",
+    "input": "outputs/any2bokeh-mpib-public-proxy-200-20260928/clips",
+    "preflight_scenes": [
+      "repro_004",
+      "repro_007",
+      "repro_006",
+      "repro_017",
+      "repro_003",
+      "repro_008",
+      "repro_000",
+      "repro_001"
+    ],
+    "allowed_inputs": [
+      "RGB PNG8",
+      "full-FPS disparity PNG8 / 255",
+      "focus scalar from filename",
+      "manifest K"
+    ],
+    "conditioning": "[d_candidate, abs(d_candidate-focus_candidate)*K/10]",
+    "basis": "A follows shared synthetic geometry and public BLB input semantics. B is min-max adaptation inspired by the real-image loader, without morphology or GT-dependent operations.",
+    "resolution": [
+      1024,
+      576
+    ],
+    "RGB": "sRGB PNG8/255 -> 2*RGB-1; no GT-dependent brightness adjustment",
+    "oracle_inputs": false,
+    "model": "RealVisXL_V5.0 + author BokehDiff small LoRA and VAE",
+    "precision": "FP32; TF32 off; no xformers",
+    "timestep": 499,
+    "guidance_scale": 1,
+    "upsample": 1,
+    "TILE_SIZE": 64,
+    "PISA": {
+      "hard": 10000000,
+      "supersampling_num": 5,
+      "segment_num": 7,
+      "train": false
+    },
+    "seed_policy": "One global seed before loading each candidate model; one process per candidate; manifest scene order and frames 0..24. Never reset global RNG per frame. Preserve public per-call scheduler generator seeded 42; PISA global rand/dropout advance normally. Separate probes and preflight consume independent streams; do not reuse their PNGs in full runs.",
+    "output": "Decoder postprocessed float [0,1] -> round(255*x) -> lossless PNG8; never JPEG. Public pre-quantization float is captured without changing forward.",
+    "limits": [
+      "K/10 preserves the public conditioning convention, not a proof of exact rendered blur radius or equivalence to the benchmark renderer.",
+      "PISA uses disparity for occlusion as well as defocus magnitude; changing its coordinate range would not be an innocuous CoC-only transformation.",
+      "Native PISA divides by 1-d; inspect d=1 behavior and finite output without silently clamping supplied disparity.",
+      "Capacity/keyframe checks do not establish full temporal quality or freeze the final adapter.",
+      "Synthetic training K_adapt=K*times/max(df,1-df) for GT; K_strength=K*ratio*times for conditioning. K/10 is a declared public input convention, not proven pixel-radius equivalence.",
+      "Choosing by this reproduced data/paper profile is protocol reconstruction on development data, not independent benchmark validation or proof of the private author adapter.",
+      "Historical seed-0-per-frame outputs are capacity evidence only, excluded from recovery candidates."
+    ],
+    "seed": 42,
+    "candidates": {
+      "shared_geometry": {
+        "disparity": "d",
+        "focus": "focus",
+        "K": "K"
+      },
+      "normalized": {
+        "disparity": "(d-min)/span",
+        "focus": "(focus-min)/span",
+        "K": "K",
+        "note": "Official-style min-max adaptation, NOT exact reproduction of every loader branch. No morphology, inversion, clipping of focus, or K compensation."
+      }
+    },
+    "constant_disparity": "Stop and report; no fallback",
+    "selection": "Compare absolute discrepancies in the six paper-reported BokehDiff metrics. Freeze only a clear overall result, not highest local score; if metrics conflict retain both and discuss. No continuous K/gamma/seed sweep or third candidate triggered solely by score disagreement.",
+    "paper_BokehDiff": {
+      "PSNR": 27.525,
+      "SSIM": 0.834,
+      "FD": 0.66,
+      "RM": 0.021,
+      "FVD": 65.678,
+      "VFID_I": 7.395
+    },
+    "preflight_order": "Manifest order restricted to the same eight scenes, each 0..24; fixed 0/6/12/18/24 reviewed after generation without skipping RNG draws.",
+    "boundary_policy": "Preserve native PISA arithmetic. Dedicated actual-layer diagnostic records nonfinite sampling coordinates but finite native sampled values, finite attention/decoded RGB and zero occlusion for d=1 source columns on the bounded [0,1] probe. This is a declared native numerical limitation, not proof of all geometry. No clamp or formula/dropout rewrite."
+  },
+  "candidates": {
+    "shared_geometry": {
+      "frames": 200,
+      "peak_allocated_GiB": 14.871714115142822,
+      "median_seconds_concurrent": 3.106621528044343,
+      "max_mapping_error_float64": 0.0,
+      "input_d1_frames": 98,
+      "focus_outside_01_frames": 0,
+      "by_K_max_defocus_condition": {
+        "4": 0.3984313905239105,
+        "8": 0.796862781047821,
+        "16": 1.28000009059906,
+        "32": 2.56000018119812
+      },
+      "PISA_processors": [
+        "down_blocks.1.attentions.0.transformer_blocks.0.attn1.processor",
+        "down_blocks.1.attentions.0.transformer_blocks.0.attn2.processor",
+        "down_blocks.1.attentions.0.transformer_blocks.1.attn1.processor",
+        "down_blocks.1.attentions.0.transformer_blocks.1.attn2.processor"
+      ],
+      "LoRA_parameter_count": 24593920,
+      "PNG_counts_dimensions_modes_integrity": true,
+      "all_output_ranges_finite": true,
+      "focus_range": [
+        0.2,
+        1.0
+      ]
+    },
+    "normalized": {
+      "frames": 200,
+      "peak_allocated_GiB": 14.869760990142822,
+      "median_seconds_concurrent": 3.1202552104368806,
+      "max_mapping_error_float64": 6.661338147750939e-16,
+      "input_d1_frames": 200,
+      "focus_outside_01_frames": 10,
+      "by_K_max_defocus_condition": {
+        "4": 0.4006313979625702,
+        "8": 0.8014678955078125,
+        "16": 1.2927058935165405,
+        "32": 2.5802371501922607
+      },
+      "PISA_processors": [
+        "down_blocks.1.attentions.0.transformer_blocks.0.attn1.processor",
+        "down_blocks.1.attentions.0.transformer_blocks.0.attn2.processor",
+        "down_blocks.1.attentions.0.transformer_blocks.1.attn1.processor",
+        "down_blocks.1.attentions.0.transformer_blocks.1.attn2.processor"
+      ],
+      "LoRA_parameter_count": 24593920,
+      "PNG_counts_dimensions_modes_integrity": true,
+      "all_output_ranges_finite": true,
+      "focus_range": [
+        0.19205883988095238,
+        1.0018349229268293
+      ]
+    }
+  },
+  "matched_CPU_CUDA_RNG_after_all_8_scenes": true,
+  "stochastic_evidence": "03_\u5b9e\u9a8c\u8bb0\u5f55/records/bokehdiff-stochastic-review-20260928.json",
+  "scope": "No GT metrics or paper-score selection used for preflight; PNGs cannot be reused in full scene order.",
+  "accepted_utc": "2026-09-28T17:25:55.915508+00:00",
+  "visual_review": {
+    "frames": [
+      0,
+      6,
+      12,
+      18,
+      24
+    ],
+    "scope": "Both candidates, input/A/B contact sheets; implementation/focus direction only; no paper scores.",
+    "scenes": {
+      "repro_000": "Both retain intended lion-plane focus while blurring closer person; B has somewhat wider blur. No gross frame mismatch, black blocks or focus reversal.",
+      "repro_001": "Both retain the intended person/helmet focus and blur rabbit; B is somewhat stronger. Native reconstruction/detail changes retained.",
+      "repro_003": "Both blur the hooded person while bear/deer remain relatively sharp; no gross focus or channel error.",
+      "repro_004": "Weak K4 outputs remain close to input in both candidates, with native texture changes retained; no input alignment error.",
+      "repro_006": "Both preserve the chosen alpaca plane with mild K8 blur elsewhere; local texture changes remain, no gross focus reversal or black block.",
+      "repro_007": "Both weak K4 outputs preserve intended leopard/horse detail; no mismatched frame or abnormal global color. Native reconstruction differences retained.",
+      "repro_008": "Both blur the closer animal while keeping the selected ram/bear plane relatively sharp. B stronger in several boundary regions; no gross focus reversal or wrong frame.",
+      "repro_017": "Both keep intended kangaroo planes relatively focused while softening deeper background/person/animals. Native texture shifts retained; no black block or gross channel error."
+    }
+  },
+  "full_run_prefix_replay_check": {
+    "scene": "repro_000",
+    "frames": [
+      0,
+      6,
+      12
+    ],
+    "candidates": [
+      "shared_geometry",
+      "normalized"
+    ],
+    "PNG8_bitwise_equal": true,
+    "note": "Fresh full processes independently regenerated these frames; no preflight PNGs reused."
+  }
+}

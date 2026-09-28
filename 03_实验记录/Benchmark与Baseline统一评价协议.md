@@ -776,6 +776,27 @@ lens是窗口边长；41/71/101的圆形mask分别为`ρ<20/35/50`。softstep存
 **实现加速**：只修改独立CUDA扩展occlusion-aware forward的线程块分配，由6块改为2304块，不改每像素算术、循环、模型或控制。对全部200帧相同保存图层，新旧float输出逐值一致；完整pipeline复查PNG一致。`records/drbokeh-cuda-launch-check-20260928.json`与`configs/drbokeh-grid2d-launch.patch`记录证据。200段复用8段原预检，其余使用等价加速扩展；并行计时不用于Efficiency主表。全量质量指标完成后再填Table 1A/V。
 
 
+### BokehDiff adapter recovery：共享几何与min-max双候选
+
+依据[原论文§3](https://arxiv.org/html/2507.18060v1#S3)、[inference_hf.py](https://github.com/FreeButUselessSoul/bokehdiff/blob/38ff9372ab146ab20468832a0424fa0b2888dffd/inference_hf.py)及[dataset.py](https://github.com/FreeButUselessSoul/bokehdiff/blob/38ff9372ab146ab20468832a0424fa0b2888dffd/dataset.py)，统一输入为RGB、PNG8/255 disparity、文件名focus、manifest K。mask在相关loader分支只参与focus估计；已知focus时不运行Depth-Anything/BiRefNet，不提供GT mask，不执行GT曝光校正或demo三焦点输出循环。完整RealVisXL V5.0 + 官方small LoRA/VAE + PISA单步推理，不能拿classical数据renderer代替baseline。
+
+| 候选 | disparity / focus | K | 第二条件通道 |
+|---|---|---|---|
+| A Shared-Geometry | 原d、df | 不变 | abs(d−df)K/10 |
+| B Official-style Normalized | (d−min)/span、(df−min)/span | 不变 | abs(d−df)K/(10span) |
+
+B只表示借鉴公开推理的min-max适配；官方npy分支通常还有3×3形态学范围重估/clamp，不能写成完全复刻loader。span=0报错，df不夹紧；B同时改变PISA的occlusion坐标及CoC幅度，不是单纯坐标换算。限定A/B，不因不能恢复论文排序就自动加入第三候选或倍率搜索。
+
+训练代码无逐图最终min-max，但`K_adapt=K×times/max(df,1-df)`生成GT，`K_strength=K×ratio×times`生成网络条件；故公开K/10支持输入约定，不证明我们的像素虚化半径或隐藏作者adapter等价。1024×576、upsample1、T499、guidance1、固定prompt、FP32/TF32-off、原TILE_SIZE64、PISA hard1e7/supersampling5/segment7不搜索。
+
+**随机协议**：公开PISA的torch.rand及p=0.1、train=True dropout原样保留。每候选单进程，加载模型前全局seed42一次，manifest scene顺序、每段0..24顺序，不逐帧reset。公开log_validation中的独立scheduler generator每次seed42照旧；它不控制PISA全局随机流。A/B使用相同运行顺序。中断按已完成scene的CPU/CUDA RNG状态恢复，不能跳过已生成帧而漏掉随机数消耗。预检和正式200段分别从头开始，不复用随机流位置不同的PNG。旧seed0逐帧重置产物仅为容量证据。
+
+**输出与验证**：直接捕获公开JPEG编码前postprocessed float，clamp/round保存PNG8。固定repro_003首帧，A/B分别与官方函数float逐值一致；相同随机状态复跑差0；42/43敏感性只记录、不选择seed。d=1会造成无效grid坐标，但实际probe的sampled输出、occlusion及RGBfinite，源列occlusion为0；保留公开行为并记录依赖当前runtime的数值边界，不据最终finite宣称所有几何正确，不做隐式clamp/公式修改。见`records/bokehdiff-stochastic-review-20260928.json`。
+
+执行配置`configs/bokehdiff-adapter-recovery.json`，先A/B各8×25完整预检，固定0/6/12/18/24做视觉实现检查。通过后各200×25，统一PSNR/SSIM/LPIPS/FD/RM/FVD/VFID-I/by-K。选择看与[Any-to-Bokeh Table 1](https://arxiv.org/html/2505.21593v2#S4.T1) BokehDiff行的整体一致性；指标明显冲突则不强行冻结，不因某候选本地分数更好而选它。当前数据参与选择，是protocol reconstruction开发证据，不是独立benchmark验收；Ours未开始不消除这一选择偏差。
+
+**2026-09-28执行状态**：A/B各200帧预检通过，全部8段末CPU/CUDA RNG匹配，80组关键帧已检查；B的10帧focus略高于1（最大1.001834923）保留不夹紧。验收`records/bokehdiff-recovery-preflight-20260928.json`。双200段已后台启动，未选择最终候选，未填最终质量分。
+
 ### E7 AM-2k 前景颜色恢复：历史方案（当前停止）
 
 > **当前决策已更新**：本项目当前 baseline sweep 不再推进 AM validation / foreground estimator 选择。AM-2k train/fg 直接作为固定 composition asset 使用，并明确不把它称为独立物理 foreground-color GT。下述三层验证协议与 60-source 开发实验保留为历史方法学证据。
