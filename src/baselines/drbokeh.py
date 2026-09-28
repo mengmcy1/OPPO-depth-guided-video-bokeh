@@ -43,6 +43,12 @@ class OfficialDrBokeh:
         spec=importlib.util.spec_from_file_location('official_drbokeh_inference',repository/'app/Render/Inference.py')
         self.module=importlib.util.module_from_spec(spec);spec.loader.exec_module(self.module)
         import image_preprocessing as prep
+        if protocol.get('cuda_launch','author_legacy')=='grid2d_16x16':
+            from .drbokeh_cuda import load_grid2d
+            import GPU_scatter
+            GPU_scatter.scatter_cuda=load_grid2d()
+        else:
+            assert protocol.get('cuda_launch','author_legacy')=='author_legacy'
         self.prep=prep;self.protocol=protocol
         self.model=self.module.DrBokeh(protocol['lens'],highlight=protocol['highlight'])
         # Depth_Inference changes cudnn.benchmark while importing; restore declared mode AFTER loading.
@@ -105,7 +111,7 @@ class OfficialDrBokeh:
 
     @torch.no_grad()
     def predict(self,rgb,dn,fn,kn):
-        self.row={'calls':{'MiDaS':0}};self.arrays={}
+        self.row={'calls':{'MiDaS':0},'cuda_launch':self.protocol.get('cuda_launch','author_legacy')};self.arrays={}
         alpha=self.module.salient_segmentation(rgb)
         alpha=cv2.resize(alpha,(rgb.shape[1],rgb.shape[0]))[...,None]
         assert np.isfinite(alpha).all() and 0<=alpha.min()<=alpha.max()<=1

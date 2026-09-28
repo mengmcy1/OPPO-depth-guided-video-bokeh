@@ -1,0 +1,1411 @@
+{
+  "status": "KEYFRAME_AND_CAPACITY_CHECKS_PASSED_CONTINUOUS_8_SCENES_PENDING",
+  "scope": "No paper-score selection; no GT or oracle inputs; not a frozen 200-video adapter",
+  "protocol": {
+    "name": "BokehDiff public inference Track A preparation, shared supplied geometry",
+    "author_commit": "38ff9372ab146ab20468832a0424fa0b2888dffd",
+    "input": "outputs/any2bokeh-mpib-public-proxy-200-20260928/clips",
+    "preflight_scenes": [
+      "repro_004",
+      "repro_007",
+      "repro_006",
+      "repro_017",
+      "repro_003",
+      "repro_008",
+      "repro_000",
+      "repro_001"
+    ],
+    "allowed_inputs": [
+      "RGB PNG8",
+      "full-FPS disparity PNG8 / 255",
+      "focus scalar from filename",
+      "manifest K"
+    ],
+    "conditioning": "[d, abs(d-focus)*K/10]; raw supplied disparity, no per-frame min-max, no focus shifts",
+    "basis": "Public TestDataset blb path preserves 1/depth and supplied focus; public inference_hf uses abs(defocus_strength)*K*upsample/10. This is an external-input adapter, not recovery of Any-to-Bokeh's private adapter.",
+    "resolution": [
+      1024,
+      576
+    ],
+    "RGB": "sRGB PNG8/255 -> 2*RGB-1; no GT-dependent brightness adjustment",
+    "oracle_inputs": false,
+    "model": "RealVisXL_V5.0 + author BokehDiff small LoRA and VAE",
+    "precision": "FP32; TF32 off; no xformers",
+    "timestep": 499,
+    "guidance_scale": 1,
+    "upsample": 1,
+    "TILE_SIZE": 64,
+    "PISA": {
+      "hard": 10000000,
+      "supersampling_num": 5,
+      "segment_num": 7,
+      "train": false
+    },
+    "seed_per_frame": 0,
+    "seed_policy": "Reset global torch RNG and the pipeline generator to 0 for every frame; public PISA draws from global torch.rand. No seed search.",
+    "output": "Public log_validation quantization (uint8 truncation), save lossless PNG instead of demo JPEG",
+    "limits": [
+      "K/10 preserves the public conditioning convention, not a proof of exact rendered blur radius or equivalence to the benchmark renderer.",
+      "PISA uses disparity for occlusion as well as defocus magnitude; changing its coordinate range would not be an innocuous CoC-only transformation.",
+      "Native PISA divides by 1-d; inspect d=1 behavior and finite output without silently clamping supplied disparity.",
+      "Capacity/keyframe checks do not establish full temporal quality or freeze the final adapter."
+    ]
+  },
+  "rows": [
+    {
+      "decoded_range": [
+        -1.0691139698028564,
+        1.0227917432785034
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        1.0
+      ],
+      "disparity_range": [
+        0.007843137718737125,
+        0.9686274528503418
+      ],
+      "defocus_condition_range": [
+        0.005039691925048828,
+        1.6263328790664673
+      ],
+      "disparity_equal_one_fraction": 0.0,
+      "focus": 0.46039845,
+      "K": 32,
+      "seed": 0,
+      "scene": "repro_000",
+      "frame": 0,
+      "seconds": 2.093156011775136,
+      "peak_allocated_GiB": 14.877207279205322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.0858588218688965,
+        1.0148227214813232
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        1.0
+      ],
+      "disparity_range": [
+        0.007843137718737125,
+        1.0
+      ],
+      "defocus_condition_range": [
+        0.006195736117660999,
+        1.738118052482605
+      ],
+      "disparity_equal_one_fraction": 0.1273295134305954,
+      "focus": 0.45683813,
+      "K": 32,
+      "seed": 0,
+      "scene": "repro_000",
+      "frame": 6,
+      "seconds": 2.3636114094406366,
+      "peak_allocated_GiB": 14.877207279205322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.0770701169967651,
+        1.0152792930603027
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        1.0
+      ],
+      "disparity_range": [
+        0.003921568859368563,
+        1.0
+      ],
+      "defocus_condition_range": [
+        0.0005917549133300781,
+        1.6935259103775024
+      ],
+      "disparity_equal_one_fraction": 0.1225569024682045,
+      "focus": 0.47077316,
+      "K": 32,
+      "seed": 0,
+      "scene": "repro_000",
+      "frame": 12,
+      "seconds": 2.456193692982197,
+      "peak_allocated_GiB": 14.877451419830322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.0823512077331543,
+        1.028279423713684
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        1.0
+      ],
+      "disparity_range": [
+        0.003921568859368563,
+        1.0
+      ],
+      "defocus_condition_range": [
+        0.0032405853271484375,
+        1.910691499710083
+      ],
+      "disparity_equal_one_fraction": 0.1154344379901886,
+      "focus": 0.40290888,
+      "K": 32,
+      "seed": 0,
+      "scene": "repro_000",
+      "frame": 18,
+      "seconds": 1.3146540224552155,
+      "peak_allocated_GiB": 14.877207279205322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.088714361190796,
+        1.0240164995193481
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        1.0
+      ],
+      "disparity_range": [
+        0.003921568859368563,
+        1.0
+      ],
+      "defocus_condition_range": [
+        0.0006378173711709678,
+        1.8691662549972534
+      ],
+      "disparity_equal_one_fraction": 0.1184302419424057,
+      "focus": 0.4158856,
+      "K": 32,
+      "seed": 0,
+      "scene": "repro_000",
+      "frame": 24,
+      "seconds": 1.6010928116738796,
+      "peak_allocated_GiB": 14.877451419830322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.019788146018982,
+        1.0612068176269531
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        1.0
+      ],
+      "disparity_range": [
+        0.007843137718737125,
+        1.0
+      ],
+      "defocus_condition_range": [
+        0.005789852235466242,
+        2.5291121006011963
+      ],
+      "disparity_equal_one_fraction": 0.19183349609375,
+      "focus": 0.20965247,
+      "K": 32,
+      "seed": 0,
+      "scene": "repro_001",
+      "frame": 0,
+      "seconds": 1.4024465531110764,
+      "peak_allocated_GiB": 14.877207279205322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.021773099899292,
+        1.0496162176132202
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        1.0
+      ],
+      "disparity_range": [
+        0.007843137718737125,
+        1.0
+      ],
+      "defocus_condition_range": [
+        0.0034551143180578947,
+        2.531446933746338
+      ],
+      "disparity_equal_one_fraction": 0.19183349609375,
+      "focus": 0.20892286,
+      "K": 32,
+      "seed": 0,
+      "scene": "repro_001",
+      "frame": 6,
+      "seconds": 1.3996595051139593,
+      "peak_allocated_GiB": 14.877451419830322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -0.9867395162582397,
+        1.0827419757843018
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.006630241870880127,
+        1.0
+      ],
+      "disparity_range": [
+        0.003921568859368563,
+        0.8823529481887817
+      ],
+      "defocus_condition_range": [
+        0.0,
+        2.1835296154022217
+      ],
+      "disparity_equal_one_fraction": 0.0,
+      "focus": 0.2,
+      "K": 32,
+      "seed": 0,
+      "scene": "repro_001",
+      "frame": 12,
+      "seconds": 2.353746498003602,
+      "peak_allocated_GiB": 14.877207279205322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.109499216079712,
+        1.1126327514648438
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        1.0
+      ],
+      "disparity_range": [
+        0.003921568859368563,
+        1.0
+      ],
+      "defocus_condition_range": [
+        0.0036149979569017887,
+        2.5385169982910156
+      ],
+      "disparity_equal_one_fraction": 0.19183349609375,
+      "focus": 0.20671345,
+      "K": 32,
+      "seed": 0,
+      "scene": "repro_001",
+      "frame": 18,
+      "seconds": 1.9993852525949478,
+      "peak_allocated_GiB": 14.877451419830322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.2127844095230103,
+        1.1188044548034668
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        1.0
+      ],
+      "disparity_range": [
+        0.003921568859368563,
+        0.8549019694328308
+      ],
+      "defocus_condition_range": [
+        0.004260540008544922,
+        2.087397813796997
+      ],
+      "disparity_equal_one_fraction": 0.0,
+      "focus": 0.20259015,
+      "K": 32,
+      "seed": 0,
+      "scene": "repro_001",
+      "frame": 24,
+      "seconds": 1.6700221858918667,
+      "peak_allocated_GiB": 14.877207279205322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.0462028980255127,
+        1.007312536239624
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        1.0
+      ],
+      "disparity_range": [
+        0.007843137718737125,
+        1.0
+      ],
+      "defocus_condition_range": [
+        0.0016338825225830078,
+        1.2753593921661377
+      ],
+      "disparity_equal_one_fraction": 0.1449228972196579,
+      "focus": 0.2029004,
+      "K": 16,
+      "seed": 0,
+      "scene": "repro_003",
+      "frame": 0,
+      "seconds": 1.536612855270505,
+      "peak_allocated_GiB": 14.877451419830322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -0.9789446592330933,
+        1.0385860204696655
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.01052767038345337,
+        1.0
+      ],
+      "disparity_range": [
+        0.007843137718737125,
+        0.9764705896377563
+      ],
+      "defocus_condition_range": [
+        0.0,
+        1.2423529624938965
+      ],
+      "disparity_equal_one_fraction": 0.0,
+      "focus": 0.2,
+      "K": 16,
+      "seed": 0,
+      "scene": "repro_003",
+      "frame": 6,
+      "seconds": 1.3848929032683372,
+      "peak_allocated_GiB": 14.877207279205322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -0.9906940460205078,
+        1.0422987937927246
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.004652976989746094,
+        1.0
+      ],
+      "disparity_range": [
+        0.007843137718737125,
+        1.0
+      ],
+      "defocus_condition_range": [
+        0.00011920928955078125,
+        1.2738447189331055
+      ],
+      "disparity_equal_one_fraction": 0.0976240411400795,
+      "focus": 0.20384707,
+      "K": 16,
+      "seed": 0,
+      "scene": "repro_003",
+      "frame": 12,
+      "seconds": 1.9647405445575714,
+      "peak_allocated_GiB": 14.877451419830322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -0.9825700521469116,
+        1.0876145362854004
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.00871497392654419,
+        1.0
+      ],
+      "disparity_range": [
+        0.003921568859368563,
+        0.8745098114013672
+      ],
+      "defocus_condition_range": [
+        0.0,
+        1.0792157649993896
+      ],
+      "disparity_equal_one_fraction": 0.0,
+      "focus": 0.2,
+      "K": 16,
+      "seed": 0,
+      "scene": "repro_003",
+      "frame": 18,
+      "seconds": 2.2726835925132036,
+      "peak_allocated_GiB": 14.877207279205322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -0.9893321990966797,
+        1.039729356765747
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.005333900451660156,
+        1.0
+      ],
+      "disparity_range": [
+        0.003921568859368563,
+        0.9254902005195618
+      ],
+      "defocus_condition_range": [
+        0.0,
+        1.160784363746643
+      ],
+      "disparity_equal_one_fraction": 0.0,
+      "focus": 0.2,
+      "K": 16,
+      "seed": 0,
+      "scene": "repro_003",
+      "frame": 24,
+      "seconds": 1.948224725201726,
+      "peak_allocated_GiB": 14.877451419830322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.123464584350586,
+        0.9878892302513123
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        0.9939446449279785
+      ],
+      "disparity_range": [
+        0.003921568859368563,
+        0.8823529481887817
+      ],
+      "defocus_condition_range": [
+        0.0,
+        0.2729412019252777
+      ],
+      "disparity_equal_one_fraction": 0.0,
+      "focus": 0.2,
+      "K": 4,
+      "seed": 0,
+      "scene": "repro_004",
+      "frame": 0,
+      "seconds": 1.7048260997980833,
+      "peak_allocated_GiB": 14.877207279205322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.1627224683761597,
+        0.9920623302459717
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        0.9960311651229858
+      ],
+      "disparity_range": [
+        0.003921568859368563,
+        0.9215686321258545
+      ],
+      "defocus_condition_range": [
+        0.0,
+        0.2886274755001068
+      ],
+      "disparity_equal_one_fraction": 0.0,
+      "focus": 0.2,
+      "K": 4,
+      "seed": 0,
+      "scene": "repro_004",
+      "frame": 6,
+      "seconds": 1.3865719512104988,
+      "peak_allocated_GiB": 14.877451419830322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.1893951892852783,
+        0.985639750957489
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        0.9928199052810669
+      ],
+      "disparity_range": [
+        0.007843137718737125,
+        1.0
+      ],
+      "defocus_condition_range": [
+        0.0005984008312225342,
+        0.31783297657966614
+      ],
+      "disparity_equal_one_fraction": 0.1638844758272171,
+      "focus": 0.20541758,
+      "K": 4,
+      "seed": 0,
+      "scene": "repro_004",
+      "frame": 12,
+      "seconds": 1.716662459075451,
+      "peak_allocated_GiB": 14.877207279205322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.1803288459777832,
+        0.9914184808731079
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        0.995709240436554
+      ],
+      "disparity_range": [
+        0.007843137718737125,
+        0.9176470637321472
+      ],
+      "defocus_condition_range": [
+        0.0,
+        0.28705883026123047
+      ],
+      "disparity_equal_one_fraction": 0.0,
+      "focus": 0.2,
+      "K": 4,
+      "seed": 0,
+      "scene": "repro_004",
+      "frame": 18,
+      "seconds": 2.7744267843663692,
+      "peak_allocated_GiB": 14.877451419830322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.1658587455749512,
+        1.0153822898864746
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        1.0
+      ],
+      "disparity_range": [
+        0.007843137718737125,
+        0.9490196108818054
+      ],
+      "defocus_condition_range": [
+        0.00021268129057716578,
+        0.2993951737880707
+      ],
+      "disparity_equal_one_fraction": 0.0,
+      "focus": 0.20053171,
+      "K": 4,
+      "seed": 0,
+      "scene": "repro_004",
+      "frame": 24,
+      "seconds": 1.8319424912333488,
+      "peak_allocated_GiB": 14.877207279205322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.225016713142395,
+        1.1805492639541626
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        1.0
+      ],
+      "disparity_range": [
+        0.003921568859368563,
+        0.8588235378265381
+      ],
+      "defocus_condition_range": [
+        6.608963303733617e-05,
+        0.34830138087272644
+      ],
+      "disparity_equal_one_fraction": 0.0,
+      "focus": 0.42344679,
+      "K": 8,
+      "seed": 0,
+      "scene": "repro_006",
+      "frame": 0,
+      "seconds": 1.7114266157150269,
+      "peak_allocated_GiB": 14.877451419830322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.2268319129943848,
+        1.0999865531921387
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        1.0
+      ],
+      "disparity_range": [
+        0.003921568859368563,
+        1.0
+      ],
+      "defocus_condition_range": [
+        0.0012306452263146639,
+        0.48436790704727173
+      ],
+      "disparity_equal_one_fraction": 0.0902370885014534,
+      "focus": 0.39454013,
+      "K": 8,
+      "seed": 0,
+      "scene": "repro_006",
+      "frame": 6,
+      "seconds": 1.6831741351634264,
+      "peak_allocated_GiB": 14.877207279205322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.2255980968475342,
+        1.063531756401062
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        1.0
+      ],
+      "disparity_range": [
+        0.007843137718737125,
+        0.9137254953384399
+      ],
+      "defocus_condition_range": [
+        0.0006057500722818077,
+        0.3695903420448303
+      ],
+      "disparity_equal_one_fraction": 0.0,
+      "focus": 0.46983106,
+      "K": 8,
+      "seed": 0,
+      "scene": "repro_006",
+      "frame": 12,
+      "seconds": 1.3111249599605799,
+      "peak_allocated_GiB": 14.877451419830322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.2454322576522827,
+        1.0468158721923828
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        1.0
+      ],
+      "disparity_range": [
+        0.003921568859368563,
+        0.8313725590705872
+      ],
+      "defocus_condition_range": [
+        0.00017974377260543406,
+        0.3484150469303131
+      ],
+      "disparity_equal_one_fraction": 0.0,
+      "focus": 0.43944036,
+      "K": 8,
+      "seed": 0,
+      "scene": "repro_006",
+      "frame": 18,
+      "seconds": 1.696120347827673,
+      "peak_allocated_GiB": 14.877207279205322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.2506623268127441,
+        1.0655759572982788
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        1.0
+      ],
+      "disparity_range": [
+        0.007843137718737125,
+        1.0
+      ],
+      "defocus_condition_range": [
+        0.0015405893791466951,
+        0.43448176980018616
+      ],
+      "disparity_equal_one_fraction": 0.0902370885014534,
+      "focus": 0.4568978,
+      "K": 8,
+      "seed": 0,
+      "scene": "repro_006",
+      "frame": 24,
+      "seconds": 1.6748637314885855,
+      "peak_allocated_GiB": 14.877451419830322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.0931992530822754,
+        0.9855158925056458
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        0.9927579164505005
+      ],
+      "disparity_range": [
+        0.007843137718737125,
+        0.8039215803146362
+      ],
+      "defocus_condition_range": [
+        0.0004042387008666992,
+        0.31883561611175537
+      ],
+      "disparity_equal_one_fraction": 0.0,
+      "focus": 0.80493218,
+      "K": 4,
+      "seed": 0,
+      "scene": "repro_007",
+      "frame": 0,
+      "seconds": 1.258786192163825,
+      "peak_allocated_GiB": 14.877207279205322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.226147174835205,
+        0.938372015953064
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        0.969186007976532
+      ],
+      "disparity_range": [
+        0.007843137718737125,
+        0.8666666746139526
+      ],
+      "defocus_condition_range": [
+        0.0005152940866537392,
+        0.343014121055603
+      ],
+      "disparity_equal_one_fraction": 0.0,
+      "focus": 0.86537842,
+      "K": 4,
+      "seed": 0,
+      "scene": "repro_007",
+      "frame": 6,
+      "seconds": 1.7016355004161596,
+      "peak_allocated_GiB": 14.877451419830322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.0638796091079712,
+        0.9555473923683167
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        0.9777736663818359
+      ],
+      "disparity_range": [
+        0.007843137718737125,
+        1.0
+      ],
+      "defocus_condition_range": [
+        0.0,
+        0.3968627452850342
+      ],
+      "disparity_equal_one_fraction": 0.2092573344707489,
+      "focus": 1.0,
+      "K": 4,
+      "seed": 0,
+      "scene": "repro_007",
+      "frame": 12,
+      "seconds": 1.7977158464491367,
+      "peak_allocated_GiB": 14.877207279205322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.1311566829681396,
+        0.9712954759597778
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        0.9856477379798889
+      ],
+      "disparity_range": [
+        0.007843137718737125,
+        1.0
+      ],
+      "defocus_condition_range": [
+        0.0,
+        0.3968627452850342
+      ],
+      "disparity_equal_one_fraction": 0.2092573344707489,
+      "focus": 1.0,
+      "K": 4,
+      "seed": 0,
+      "scene": "repro_007",
+      "frame": 18,
+      "seconds": 1.317732848227024,
+      "peak_allocated_GiB": 14.877451419830322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.1103763580322266,
+        0.9418843984603882
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        0.9709421992301941
+      ],
+      "disparity_range": [
+        0.007843137718737125,
+        0.9254902005195618
+      ],
+      "defocus_condition_range": [
+        0.000579404819291085,
+        0.3676382303237915
+      ],
+      "disparity_equal_one_fraction": 0.0,
+      "focus": 0.9269387,
+      "K": 4,
+      "seed": 0,
+      "scene": "repro_007",
+      "frame": 24,
+      "seconds": 1.1914958208799362,
+      "peak_allocated_GiB": 14.877207279205322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -0.9974980354309082,
+        0.964301347732544
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0012509822845458984,
+        0.982150673866272
+      ],
+      "disparity_range": [
+        0.003921568859368563,
+        0.9411764740943909
+      ],
+      "defocus_condition_range": [
+        0.0008616447448730469,
+        0.8524717688560486
+      ],
+      "disparity_equal_one_fraction": 0.0,
+      "focus": 0.40838167,
+      "K": 16,
+      "seed": 0,
+      "scene": "repro_008",
+      "frame": 0,
+      "seconds": 1.6338825523853302,
+      "peak_allocated_GiB": 14.877451419830322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.0011018514633179,
+        1.0003163814544678
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        1.0
+      ],
+      "disparity_range": [
+        0.007843137718737125,
+        1.0
+      ],
+      "defocus_condition_range": [
+        0.0014712810516357422,
+        0.9459797143936157
+      ],
+      "disparity_equal_one_fraction": 0.1372053325176239,
+      "focus": 0.40876268,
+      "K": 16,
+      "seed": 0,
+      "scene": "repro_008",
+      "frame": 6,
+      "seconds": 1.0607952065765858,
+      "peak_allocated_GiB": 14.877207279205322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.0003241300582886,
+        1.0103368759155273
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        1.0
+      ],
+      "disparity_range": [
+        0.007843137718737125,
+        0.9058823585510254
+      ],
+      "defocus_condition_range": [
+        0.0012530804378911853,
+        0.8232138752937317
+      ],
+      "disparity_equal_one_fraction": 0.0,
+      "focus": 0.39137368,
+      "K": 16,
+      "seed": 0,
+      "scene": "repro_008",
+      "frame": 12,
+      "seconds": 1.48761704005301,
+      "peak_allocated_GiB": 14.877451419830322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.0011177062988281,
+        1.0097167491912842
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        1.0
+      ],
+      "disparity_range": [
+        0.003921568859368563,
+        0.8313725590705872
+      ],
+      "defocus_condition_range": [
+        0.0017911434406414628,
+        0.7045362591743469
+      ],
+      "disparity_equal_one_fraction": 0.0,
+      "focus": 0.39103741,
+      "K": 16,
+      "seed": 0,
+      "scene": "repro_008",
+      "frame": 18,
+      "seconds": 1.377693995833397,
+      "peak_allocated_GiB": 14.877207279205322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -0.9930174350738525,
+        0.99753338098526
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0034912824630737305,
+        0.9987666606903076
+      ],
+      "disparity_range": [
+        0.007843137718737125,
+        1.0
+      ],
+      "defocus_condition_range": [
+        0.0028162957169115543,
+        0.8749731183052063
+      ],
+      "disparity_equal_one_fraction": 0.1372053325176239,
+      "focus": 0.45314179,
+      "K": 16,
+      "seed": 0,
+      "scene": "repro_008",
+      "frame": 24,
+      "seconds": 1.429353678599,
+      "peak_allocated_GiB": 14.877451419830322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.2263190746307373,
+        1.0636208057403564
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        1.0
+      ],
+      "disparity_range": [
+        0.007843137718737125,
+        0.8745098114013672
+      ],
+      "defocus_condition_range": [
+        0.0012628078693524003,
+        0.6920705437660217
+      ],
+      "disparity_equal_one_fraction": 0.0,
+      "focus": 0.87293131,
+      "K": 8,
+      "seed": 0,
+      "scene": "repro_017",
+      "frame": 0,
+      "seconds": 1.7457321900874376,
+      "peak_allocated_GiB": 14.877207279205322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.109022617340088,
+        0.9927504658699036
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        0.9963752031326294
+      ],
+      "disparity_range": [
+        0.007843137718737125,
+        0.9843137264251709
+      ],
+      "defocus_condition_range": [
+        0.0004928112030029297,
+        0.780683696269989
+      ],
+      "disparity_equal_one_fraction": 0.0,
+      "focus": 0.98369769,
+      "K": 8,
+      "seed": 0,
+      "scene": "repro_017",
+      "frame": 6,
+      "seconds": 1.7037266455590725,
+      "peak_allocated_GiB": 14.877451419830322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.130056619644165,
+        1.0217931270599365
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        1.0
+      ],
+      "disparity_range": [
+        0.007843137718737125,
+        0.9215686321258545
+      ],
+      "defocus_condition_range": [
+        0.001004982041195035,
+        0.7299754023551941
+      ],
+      "disparity_equal_one_fraction": 0.0,
+      "focus": 0.92031241,
+      "K": 8,
+      "seed": 0,
+      "scene": "repro_017",
+      "frame": 12,
+      "seconds": 1.3760120794177055,
+      "peak_allocated_GiB": 14.877207279205322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.144287109375,
+        1.0439425706863403
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        1.0
+      ],
+      "disparity_range": [
+        0.007843137718737125,
+        0.8313725590705872
+      ],
+      "defocus_condition_range": [
+        0.0010529517894610763,
+        0.657770574092865
+      ],
+      "disparity_equal_one_fraction": 0.0,
+      "focus": 0.83005639,
+      "K": 8,
+      "seed": 0,
+      "scene": "repro_017",
+      "frame": 18,
+      "seconds": 1.495222583413124,
+      "peak_allocated_GiB": 14.877451419830322,
+      "peak_reserved_GiB": 17.669921875
+    },
+    {
+      "decoded_range": [
+        -1.0961233377456665,
+        0.9995609521865845
+      ],
+      "output_shape": [
+        1,
+        3,
+        576,
+        1024
+      ],
+      "output_range": [
+        0.0,
+        0.9997804760932922
+      ],
+      "disparity_range": [
+        0.007843137718737125,
+        1.0
+      ],
+      "defocus_condition_range": [
+        0.0,
+        0.7937254905700684
+      ],
+      "disparity_equal_one_fraction": 0.0834994837641716,
+      "focus": 1.0,
+      "K": 8,
+      "seed": 0,
+      "scene": "repro_017",
+      "frame": 24,
+      "seconds": 1.4138457495719194,
+      "peak_allocated_GiB": 14.877207279205322,
+      "peak_reserved_GiB": 17.669921875
+    }
+  ],
+  "visual_review": {
+    "frames": [
+      0,
+      6,
+      12,
+      18,
+      24
+    ],
+    "scenes": {
+      "repro_000": "Focus remains on intended lion plane; nearest moving person blurred. Hair/edges and generative texture changes remain method limitations.",
+      "repro_001": "Low-disparity person/helmet plane stays comparatively sharp; rabbit strongly blurred; no gross reversed control.",
+      "repro_003": "Bear/deer remain relatively focused and person blurred; some border texture changes, no black blocks.",
+      "repro_004": "Weak K4 output nearly preserves input, with local texture/color reconstruction changes.",
+      "repro_006": "K8 mild blur and texture changes; no gross input alignment or color-channel error.",
+      "repro_007": "Weak K4 case largely preserves focused leopard/horse detail; retain reconstruction changes.",
+      "repro_008": "K16 front animal region blurred while intended ram/bear plane stays sharper; no gross focus reversal.",
+      "repro_017": "High-disparity kangaroos remain focused, deeper person/animals/background softer; no gross layer/focus inversion."
+    },
+    "scope": "40 input/prediction thumbnail pairs inspected for gross implementation errors, not quality acceptance or temporal flicker."
+  },
+  "capacity": {
+    "peak_allocated_GiB": 14.877451419830322,
+    "peak_reserved_GiB": 17.669921875,
+    "median_seconds_concurrent": 1.672442958690226
+  },
+  "weight_loading": {
+    "vae_missing_count": 218,
+    "vae_unexpected": [],
+    "explanation": "Official train_lora_otf.py saves only trainable VAE parameters. Missing keys retain weights from the fully loaded RealVisXL base, not random initialization."
+  },
+  "native_disparity_limit": {
+    "frames_containing_d_equal_1": 17,
+    "finite_decoded_outputs_all": true,
+    "note": "Native PISA 1-d division can produce invalid sampling coordinates; finite RGB alone does not prove occlusion correctness. No input clamp or renderer change applied; retain as a public-implementation limitation for protocol review."
+  }
+}

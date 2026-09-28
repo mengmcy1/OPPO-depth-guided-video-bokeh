@@ -533,3 +533,23 @@ ightarrow
 **状态**：200/200全量完成，本项目最终指标已更新；author-public metrics / FVD / VFID-I重算计划保留，尚未执行。
 
 补算实现及权重来源：[作者公开指标代码](https://github.com/vivoCameraResearch/any-to-bokeh/blob/f7a16959dd219080fb8eec0d32bb9602d8970c22/metrics/vid_metrics.py)、[cdfvd固定版本](https://github.com/songweige/content-debiased-fvd/tree/a1e037ab7cb087debd2221d14ae4a001ec054201)、[作者指定I3D权重](https://huggingface.co/zhengchong/VFID)、[官方VideoMAE2权重](https://huggingface.co/OpenGVLab/VideoMAE2)。
+
+
+### 8.3 Dr.Bokeh预检通过及实现加速（200段运行中）
+
+固定8段共200帧完整执行官方LDF、RGBAD2layers、前景cv2深度修复、背景LaMa RGB/depth、双层renderer。不给GT alpha或隐藏颜色层；40组关键帧已检查，分割漏主体、LaMa残影等方法失败保留。
+
+| 实现检查 | 实测 |
+|---|---:|
+| 输入CoC恒等式最大误差，float64 / FP32 | 7.11e-15 / 1.58e-6 |
+| 修复后层最大名义虚化半径 | 25.6 px |
+| 空 / 全满LDF mask帧数 | 0 / 0 |
+| 两段K32共50帧，同层lens71/101最大float差 | 0 |
+| 加速启动与原版：200帧同保存图层最大float差 | 0 |
+| 完整pipeline重复：PNG8最大差 | 0 |
+
+据实现/覆盖检查冻结lens71、gamma2.2、highlight=false、offset0及既定K补偿，不看论文分数选择。CUDA作者启动网格在1024×576下只有6块，改为16×16线程二维网格2304块后利用更多SM；每像素运算不变，200帧同层输出位级一致。原版和加速版完整重算LaMa都出现约1.19e-7最终float变化，不能将整体网络称为位级确定性。历史GPU-util100%只代表kernel活跃时间，不证明吞吐饱和；原12–15小时估计撤回。
+
+16:44:09 UTC已启动两路200段推理及流水评价/自动汇总，复用8段已验收输出；当前约1.1秒/帧的模型调用时间不含PNG/NPZ写盘，受并发影响，不进入Efficiency表。BokehDiff的1024×576容量及固定40关键帧已通过，峰值allocated14.877 GiB；连续8段×25帧正在并行补齐。PISA公开实现的d=1采样分母边界仍需界定，尚不冻结其200段adapter。此时Dr.Bokeh全量指标尚未完成，不将预检表当作Table 1A质量成绩。最终按PSNR/SSIM/LPIPS/FD/RM/FVD/VFID-I及by-K填表，再与论文Dr.Bokeh的31.273 / 0.950 / 0.522 / 0.011 / 32.710 / 6.097作外部对照；不为排序追加候选。
+
+证据：`records/drbokeh-full-preflight-20260928.json`、`records/drbokeh-cuda-launch-check-20260928.json`；冻结配置`configs/drbokeh-track-a-frozen.json`；输出`outputs/drbokeh-track-a-20260928/`。

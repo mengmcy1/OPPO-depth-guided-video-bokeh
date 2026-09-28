@@ -1,0 +1,28 @@
+{
+  "name": "BokehDiff public inference Track A preparation, shared supplied geometry",
+  "author_commit": "38ff9372ab146ab20468832a0424fa0b2888dffd",
+  "input": "outputs/any2bokeh-mpib-public-proxy-200-20260928/clips",
+  "preflight_scenes": ["repro_004", "repro_007", "repro_006", "repro_017", "repro_003", "repro_008", "repro_000", "repro_001"],
+  "allowed_inputs": ["RGB PNG8", "full-FPS disparity PNG8 / 255", "focus scalar from filename", "manifest K"],
+  "conditioning": "[d, abs(d-focus)*K/10]; raw supplied disparity, no per-frame min-max, no focus shifts",
+  "basis": "Public TestDataset blb path preserves 1/depth and supplied focus; public inference_hf uses abs(defocus_strength)*K*upsample/10. This is an external-input adapter, not recovery of Any-to-Bokeh's private adapter.",
+  "resolution": [1024, 576],
+  "RGB": "sRGB PNG8/255 -> 2*RGB-1; no GT-dependent brightness adjustment",
+  "oracle_inputs": false,
+  "model": "RealVisXL_V5.0 + author BokehDiff small LoRA and VAE",
+  "precision": "FP32; TF32 off; no xformers",
+  "timestep": 499,
+  "guidance_scale": 1,
+  "upsample": 1,
+  "TILE_SIZE": 64,
+  "PISA": {"hard": 10000000, "supersampling_num": 5, "segment_num": 7, "train": false},
+  "seed_per_frame": 0,
+  "seed_policy": "Reset global torch RNG and the pipeline generator to 0 for every frame; public PISA draws from global torch.rand. No seed search.",
+  "output": "Public log_validation quantization (uint8 truncation), save lossless PNG instead of demo JPEG",
+  "limits": [
+    "K/10 preserves the public conditioning convention, not a proof of exact rendered blur radius or equivalence to the benchmark renderer.",
+    "PISA uses disparity for occlusion as well as defocus magnitude; changing its coordinate range would not be an innocuous CoC-only transformation.",
+    "Native PISA divides by 1-d; inspect d=1 behavior and finite output without silently clamping supplied disparity.",
+    "Capacity/keyframe checks do not establish full temporal quality or freeze the final adapter."
+  ]
+}

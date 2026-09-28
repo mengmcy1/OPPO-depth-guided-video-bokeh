@@ -1,0 +1,8 @@
+--- a/scatter_cuda_kernel.cu
++++ b/scatter_cuda_kernel.cu
+@@ -699,2 +699,3 @@
+-    const int threads = 512;
+-    const dim3 blocks((w + threads - 1) / threads, (h+threads-1)/threads, batch_size);
++    const dim3 threads(16, 16);
++    const dim3 blocks((w - ksize + 1 + threads.x - 1) / threads.x,
++                      (h - ksize + 1 + threads.y - 1) / threads.y, batch_size);

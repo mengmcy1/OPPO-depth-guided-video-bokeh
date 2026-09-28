@@ -723,9 +723,9 @@ B的LPIPS=0.024698，公开前2对RM=0.007504；主表RM采用24对。B虽逐项
 
 
 
-### Dr.Bokeh adapter：固定8段完整预检通过后，直接单一协议跑200段
+### Dr.Bokeh adapter：固定8段验收通过，单一协议200段运行中
 
-**2026-09-28规范/核尺度核验完成，完整8段预检已启动。** 原规范文件`configs/drbokeh-track-a-preflight.json`；本轮执行配置`configs/drbokeh-track-a.json`；结果记录`records/drbokeh-adapter-specification-20260928.json`。BokehMe已关账，不通过回调其参数强行恢复论文方法排序。
+**2026-09-28完整8段预检已通过，lens71/单一adapter已冻结，200段已启动。** 原规范文件`configs/drbokeh-track-a-preflight.json`；本轮执行配置`configs/drbokeh-track-a.json`；结果记录`records/drbokeh-adapter-specification-20260928.json`。BokehMe已关账，不通过回调其参数强行恢复论文方法排序。
 
 **输入证据和权限**：
 
@@ -770,6 +770,11 @@ lens是窗口边长；41/71/101的圆形mask分别为`ρ<20/35/50`。softstep存
 固定8段原始PNG8输入共200帧的坐标换算已验证：float64最大误差7.11e-15，最大名义输入半径25.6 px。**这些不是200帧完整pipeline结果**。lens71可以进入预检，41不采用。预检还需逐帧检查实际修复后RGBAD层的disparity和CoC范围，并在固定K32场景对同一组预测图层比较71/101；近零归一化分母可能放大很小的尾权重，不能仅凭常平面结论保证全部场景。
 
 **本轮预检范围**：运行原固定8段×25帧、1024×576；记录LDF mask及其覆盖、前/背景RGBAD、LaMa RGB/深度补全、实际CoC/lens覆盖、输出范围和有限值，检查0/6/12/18/24关键帧。分割差或对焦边缘差先作为baseline失败案例保留，不能按视觉/分数删场景或换成GT alpha。 本轮真实图层对照固定repro_000/001的全部25帧；同一保存RGBAD分别render71/101，检查整体MAE≤1e-6、边缘MAE≤1e-6、最大float差≤1e-4、PNG8最大差≤1，记录weight/visibility及小分母区域误差。若71未通过而101覆盖足够，则按实现覆盖修正选择101，重新从保存图层渲染预检结果，不重新分割、不看论文分数。固定8段检查通过后，用户已授权直接冻结单一adapter并跑200段，不扩展为alpha×normalization×gamma×lens组合搜索。届时按原指标补Table 1A/Table V，论文Dr.Bokeh六项外部参考依次为PSNR31.273、SSIM0.950、FD0.522、RM0.011、FVD32.710、VFID-I6.097，排序差异保留，不用于再调参。
+
+**完整预检验收结果**：200帧输入映射、实际LDF/LaMa/layer调用、finite及完整性均通过；40组关键帧未见客观实现错误，原生分割/补全失败保留。修复后最大名义半径25.6 px；固定K32两段50帧同层71/101差异全部为0，冻结71。`configs/drbokeh-track-a-frozen.json`与`records/drbokeh-full-preflight-20260928.json`为执行/验收入口。
+
+**实现加速**：只修改独立CUDA扩展occlusion-aware forward的线程块分配，由6块改为2304块，不改每像素算术、循环、模型或控制。对全部200帧相同保存图层，新旧float输出逐值一致；完整pipeline复查PNG一致。`records/drbokeh-cuda-launch-check-20260928.json`与`configs/drbokeh-grid2d-launch.patch`记录证据。200段复用8段原预检，其余使用等价加速扩展；并行计时不用于Efficiency主表。全量质量指标完成后再填Table 1A/V。
+
 
 ### E7 AM-2k 前景颜色恢复：历史方案（当前停止）
 
