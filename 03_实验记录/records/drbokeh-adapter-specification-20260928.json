@@ -1,0 +1,568 @@
+{
+  "status": "DRBOKEH_SPEC_AND_KERNEL_CHECK_COMPLETE_FULL_PREFLIGHT_PENDING",
+  "completed_utc": "2026-09-28T14:27:18.064153+00:00",
+  "protocol": {
+    "status": "ADAPTER_SPECIFICATION_FOR_PREFLIGHT_NOT_FINAL_200_VIDEO_ADAPTER",
+    "name": "Dr.Bokeh Track A: equal external inputs, native preprocessing, nominal CoC preserved",
+    "author_commit": "24d96e4fb76a698494e86835c84a7c45ae2ebc10",
+    "input": "outputs/any2bokeh-mpib-public-proxy-200-20260928/clips",
+    "preflight_scenes": [
+      "repro_004",
+      "repro_007",
+      "repro_006",
+      "repro_017",
+      "repro_003",
+      "repro_008",
+      "repro_000",
+      "repro_001"
+    ],
+    "allowed_inputs": [
+      "RGB PNG8",
+      "full-FPS disparity PNG8 / 255",
+      "focus scalar from filename",
+      "manifest K"
+    ],
+    "oracle_alpha": false,
+    "oracle_layers_or_hidden_RGB": false,
+    "predicted_alpha": "Official LDF model-40, from RGB only; official resize/normalization and sigmoid",
+    "layer_pipeline": "Official RGBAD2layers; two layers; foreground cv2 depth inpaint, background LaMa RGB AND depth inpaint; Multi_Layer_Renderer",
+    "normalization": "lo=min(d); span=max(d)-lo; d_prime=(d-lo)/span; focus_prime=(focus-lo)/span; no focus clamp",
+    "K_mapping": "K_Dr = K_manifest * span; preserves K_Dr*(d_prime-focus_prime)=K_manifest*(d-focus) BEFORE layer preprocessing",
+    "constant_disparity_policy": "Stop and report; no silent fallback or per-scene parameter change",
+    "gamma": 2.2,
+    "highlight": false,
+    "offset": 0.0,
+    "lens": 71,
+    "gpu_occlusion": true,
+    "preprocessing": {
+      "Salient": "LDF",
+      "fg_erode": 5,
+      "fg_iters": 2,
+      "inpaint_kernel": 7,
+      "threshold": 0.1,
+      "Occlusion": true
+    },
+    "precision": "FP32 render/model, TF32 disabled; preserve official NumPy/OpenCV preprocessing dtypes",
+    "output": "Independent frames; clamp only final RGB to [0,1], record out-of-range fraction before clamp, round to RGB PNG8",
+    "kernel_check": {
+      "lens_candidates_for_coverage_check_only": [
+        41,
+        71,
+        101
+      ],
+      "nominal_radii_px": [
+        0.0,
+        1.3333333333333333,
+        2.0,
+        4.0,
+        8.0,
+        16.0,
+        32.0,
+        32.1
+      ],
+      "impulse_size": 129,
+      "lens71_vs101_impulse_L1_tolerance": 0.0001,
+      "omitted_radial_scatter_weight_mass_tolerance": 0.0001,
+      "scope": "Engineering tolerance declared before probe; not a paper score threshold or proof for arbitrary occlusion normalization"
+    },
+    "preflight_checks": [
+      "Same 8 scenes, 25 frames each, 1024x576; filename focus matches metadata",
+      "Before layers, signed CoC algebra matches existing input control after K compensation",
+      "LDF mask finite and nondegenerate; record its coverage, no replacement by GT",
+      "Foreground/background RGBAD finite; inspect LaMa RGB and depth fills separately",
+      "Record actual layer disparity range and maximum nominal radius after preprocessing",
+      "Check radial tail coverage for actual post-preprocessing radius; if failed, stop without clipping",
+      "Check final output shape/range and focus-region visual behavior",
+      "Inspect 0/6/12/18/24 frame diagnostics; compare 71 versus 101 on identical saved layers from the fixed K32 scenes, because near-zero normalization weights can amplify small kernel tails"
+    ],
+    "limits": [
+      "No public evidence located that Any-to-Bokeh gives Dr.Bokeh GT alpha or oracle layers; absence of disclosure is not proof of their actual private settings.",
+      "Dr.Bokeh CVPR 2024 section 5.2 replaces predicted occluded pixels by GT pixels for MPIB/Dr.Bokeh and searches blur kernels. This is a different experiment and does not establish Any-to-Bokeh's unpublished adapter.",
+      "Official demo does not transform its focal argument for the caller; adapter must transform it consistently.",
+      "CUDA scatter_dis=abs(relative_disparity)*K_Dr+1 with a softstep edge, not an ideal hard disk of exactly the nominal radius.",
+      "lens is a kernel side length; circular mask uses distance < floor(lens/2); soft tails never have exactly finite support.",
+      "K compensation preserves nominal input CoC, not full-pipeline equivalence: depth inpainting and fixed disparity-domain occlusion thresholds are not affine invariant.",
+      "A single oracle-alpha image would still not reveal all hidden RGBA layers and is not a pure-renderer ground truth test.",
+      "The native soft kernel has nonzero residual spread at nominal radius zero; do not demand exact identity as an implementation pass condition.",
+      "This specification covers a single fixed 8-scene preflight. It does not include a 200-video run, gamma sweep, oracle-alpha candidate, or paper-score-based adapter selection."
+    ]
+  },
+  "source_review": {
+    "any2bokeh_commit": "f7a16959dd219080fb8eec0d32bb9602d8970c22",
+    "drbokeh_commit": "24d96e4fb76a698494e86835c84a7c45ae2ebc10",
+    "checked_scope": "Any-to-Bokeh paper v2 sections 4.2/A.3/A.4/A.6, current public main tree, remote refs (main only, no tags), all 5 public issue bodies and dataset/evaluation issues 3/5 replies; Dr.Bokeh CVPR 2024 final paper and pinned public code",
+    "any2bokeh_oracle_alpha_or_layers": "Not disclosed in checked materials; not evidence that the private evaluation did or did not use them.",
+    "any2bokeh_evaluation_reply": "https://github.com/vivoCameraResearch/any-to-bokeh/issues/3#issuecomment-3712982533",
+    "drbokeh_paper": "https://openaccess.thecvf.com/content/CVPR2024/papers/Sheng_Dr._Bokeh_DiffeRentiable_Occlusion-aware_Bokeh_Rendering_CVPR_2024_paper.pdf",
+    "drbokeh_original_quantitative_protocol": "Section 5.2 replaces predicted occluded pixels with GT for MPIB/Dr.Bokeh and searches blur kernels; do not transfer that permission to Any-to-Bokeh without evidence.",
+    "continuous_layer_depth": "Public RGBAD layers carry per-pixel disparity, not one fixed scalar per layer. Generic Any-to-Bokeh wording cannot determine the Dr.Bokeh adapter.",
+    "code_sources": {
+      "inference": "https://github.com/ShengCN/DrBokeh-Src/blob/24d96e4fb76a698494e86835c84a7c45ae2ebc10/app/Render/Inference.py",
+      "preprocessing": "https://github.com/ShengCN/DrBokeh-Src/blob/24d96e4fb76a698494e86835c84a7c45ae2ebc10/app/Render/image_preprocessing.py",
+      "CUDA": "https://github.com/ShengCN/DrBokeh-Src/blob/24d96e4fb76a698494e86835c84a7c45ae2ebc10/app/cuda-src/scatter_cuda_kernel.cu",
+      "aperture_mask": "https://github.com/ShengCN/DrBokeh-Src/blob/24d96e4fb76a698494e86835c84a7c45ae2ebc10/app/Render/DScatter/CPU_scatter.py"
+    }
+  },
+  "kernel_probe": {
+    "radiometric_space": "Linear unit-impulse control without gamma; isolates the author renderer kernel, not a benchmark prediction",
+    "results": [
+      {
+        "nominal_radius": 0.0,
+        "kernel_scatter_dis": 1.0,
+        "lenses": {
+          "41": {
+            "impulse_mass": 0.9999998211860657,
+            "second_moment_equivalent_disk_radius": 0.5135198474244907,
+            "central_value": 0.915100634098053,
+            "omitted_radial_weight_mass": 8.318128822328429e-25
+          },
+          "71": {
+            "impulse_mass": 0.9999998211860657,
+            "second_moment_equivalent_disk_radius": 0.5135198474244907,
+            "central_value": 0.915100634098053,
+            "omitted_radial_weight_mass": 3.545179825578317e-44
+          },
+          "101": {
+            "impulse_mass": 0.9999998211860657,
+            "second_moment_equivalent_disk_radius": 0.5135198474244907,
+            "central_value": 0.915100634098053,
+            "omitted_radial_weight_mass": 1.6472229189402914e-63
+          }
+        },
+        "difference_to_lens101": {
+          "41": {
+            "L1": 1.6135681430133322e-25,
+            "max_abs": 2.8737436257083594e-27
+          },
+          "71": {
+            "L1": 0.0,
+            "max_abs": 0.0
+          }
+        },
+        "positive_negative_defocus_max_abs": 0.0,
+        "lens71_passed": true
+      },
+      {
+        "nominal_radius": 1.3333333333333333,
+        "kernel_scatter_dis": 2.333333333333333,
+        "lenses": {
+          "41": {
+            "impulse_mass": 1.0000007152557373,
+            "second_moment_equivalent_disk_radius": 2.0532284922110997,
+            "central_value": 0.11235067993402481,
+            "omitted_radial_weight_mass": 6.0899015785135576e-24
+          },
+          "71": {
+            "impulse_mass": 1.0000007152557373,
+            "second_moment_equivalent_disk_radius": 2.0532284922110997,
+            "central_value": 0.11235067993402481,
+            "omitted_radial_weight_mass": 2.5955111632739223e-43
+          },
+          "101": {
+            "impulse_mass": 1.0000007152557373,
+            "second_moment_equivalent_disk_radius": 2.0532284922110997,
+            "central_value": 0.11235067993402481,
+            "omitted_radial_weight_mass": 1.205971399155394e-62
+          }
+        },
+        "difference_to_lens101": {
+          "41": {
+            "L1": 6.0870061502836556e-24,
+            "max_abs": 1.084086675581252e-25
+          },
+          "71": {
+            "L1": 0.0,
+            "max_abs": 0.0
+          }
+        },
+        "positive_negative_defocus_max_abs": 0.0,
+        "lens71_passed": true
+      },
+      {
+        "nominal_radius": 2.0,
+        "kernel_scatter_dis": 3.0,
+        "lenses": {
+          "41": {
+            "impulse_mass": 1.0000004768371582,
+            "second_moment_equivalent_disk_radius": 2.609045974601925,
+            "central_value": 0.059327833354473114,
+            "omitted_radial_weight_mass": 2.3665542696058357e-23
+          },
+          "71": {
+            "impulse_mass": 1.0000004768371582,
+            "second_moment_equivalent_disk_radius": 2.609045974601925,
+            "central_value": 0.059327833354473114,
+            "omitted_radial_weight_mass": 1.0086235296358788e-42
+          },
+          "101": {
+            "impulse_mass": 1.0000004768371582,
+            "second_moment_equivalent_disk_radius": 2.609045974601925,
+            "central_value": 0.059327833354473114,
+            "omitted_radial_weight_mass": 4.686441524380635e-62
+          }
+        },
+        "difference_to_lens101": {
+          "41": {
+            "L1": 2.36655620993662e-23,
+            "max_abs": 4.2148059165814755e-25
+          },
+          "71": {
+            "L1": 0.0,
+            "max_abs": 0.0
+          }
+        },
+        "positive_negative_defocus_max_abs": 0.0,
+        "lens71_passed": true
+      },
+      {
+        "nominal_radius": 4.0,
+        "kernel_scatter_dis": 5.0,
+        "lenses": {
+          "41": {
+            "impulse_mass": 1.000000238418579,
+            "second_moment_equivalent_disk_radius": 4.444628344195861,
+            "central_value": 0.017403624951839447,
+            "omitted_radial_weight_mass": 2.7972581130046943e-21
+          },
+          "71": {
+            "impulse_mass": 1.000000238418579,
+            "second_moment_equivalent_disk_radius": 4.444628344195861,
+            "central_value": 0.017403624951839447,
+            "omitted_radial_weight_mass": 1.1921891618869622e-40
+          },
+          "101": {
+            "impulse_mass": 1.000000238418579,
+            "second_moment_equivalent_disk_radius": 4.444628344195861,
+            "central_value": 0.017403624951839447,
+            "omitted_radial_weight_mass": 5.539355992617586e-60
+          }
+        },
+        "difference_to_lens101": {
+          "41": {
+            "L1": 2.7972610870547316e-21,
+            "max_abs": 4.9818853861332036e-23
+          },
+          "71": {
+            "L1": 0.0,
+            "max_abs": 0.0
+          }
+        },
+        "positive_negative_defocus_max_abs": 0.0,
+        "lens71_passed": true
+      },
+      {
+        "nominal_radius": 8.0,
+        "kernel_scatter_dis": 9.0,
+        "lenses": {
+          "41": {
+            "impulse_mass": 1.0,
+            "second_moment_equivalent_disk_radius": 8.343884681220361,
+            "central_value": 0.00467049703001976,
+            "omitted_radial_weight_mass": 1.2217671644362356e-16
+          },
+          "71": {
+            "impulse_mass": 1.0,
+            "second_moment_equivalent_disk_radius": 8.343884681220368,
+            "central_value": 0.00467049703001976,
+            "omitted_radial_weight_mass": 5.2071618454460514e-36
+          },
+          "101": {
+            "impulse_mass": 1.0,
+            "second_moment_equivalent_disk_radius": 8.343884681220368,
+            "central_value": 0.00467049703001976,
+            "omitted_radial_weight_mass": 2.4194418214176075e-55
+          }
+        },
+        "difference_to_lens101": {
+          "41": {
+            "L1": 1.2217681317045853e-16,
+            "max_abs": 2.1759529884460147e-18
+          },
+          "71": {
+            "L1": 5.207047520889621e-36,
+            "max_abs": 6.228706093155681e-38
+          }
+        },
+        "positive_negative_defocus_max_abs": 0.0,
+        "lens71_passed": true
+      },
+      {
+        "nominal_radius": 16.0,
+        "kernel_scatter_dis": 17.0,
+        "lenses": {
+          "41": {
+            "impulse_mass": 1.0000007152557373,
+            "second_moment_equivalent_disk_radius": 16.28937810594324,
+            "central_value": 0.0012062840396538377,
+            "omitted_radial_weight_mass": 8.358696447126304e-07
+          },
+          "71": {
+            "impulse_mass": 1.0000011920928955,
+            "second_moment_equivalent_disk_radius": 16.2893925835987,
+            "central_value": 0.0012062836904078722,
+            "omitted_radial_weight_mass": 3.562497031968623e-26
+          },
+          "101": {
+            "impulse_mass": 1.0000011920928955,
+            "second_moment_equivalent_disk_radius": 16.2893925835987,
+            "central_value": 0.0012062836904078722,
+            "omitted_radial_weight_mass": 1.6552691396291028e-45
+          }
+        },
+        "difference_to_lens101": {
+          "41": {
+            "L1": 1.1538272701727692e-06,
+            "max_abs": 1.4886687438320223e-08
+          },
+          "71": {
+            "L1": 3.5625020109539114e-26,
+            "max_abs": 4.261394928456321e-28
+          }
+        },
+        "positive_negative_defocus_max_abs": 0.0,
+        "lens71_passed": true
+      },
+      {
+        "nominal_radius": 32.0,
+        "kernel_scatter_dis": 33.0,
+        "lenses": {
+          "41": {
+            "impulse_mass": 0.9999957084655762,
+            "second_moment_equivalent_disk_radius": 19.9079000344418,
+            "central_value": 0.000803209375590086,
+            "omitted_radial_weight_mass": 0.6186989932039046
+          },
+          "71": {
+            "impulse_mass": 1.0000274181365967,
+            "second_moment_equivalent_disk_radius": 32.26115402688645,
+            "central_value": 0.00030627622618339956,
+            "omitted_radial_weight_mass": 6.345688287523667e-06
+          },
+          "101": {
+            "impulse_mass": 1.0000287294387817,
+            "second_moment_equivalent_disk_radius": 32.26129544515342,
+            "central_value": 0.0003062746545765549,
+            "omitted_radial_weight_mass": 2.948854953126463e-25
+          }
+        },
+        "difference_to_lens101": {
+          "41": {
+            "L1": 1.2374005317687988,
+            "max_abs": 0.0004969347501173615
+          },
+          "71": {
+            "L1": 1.146623799286317e-05,
+            "max_abs": 7.58998410788081e-08
+          }
+        },
+        "positive_negative_defocus_max_abs": 0.0,
+        "lens71_passed": true
+      },
+      {
+        "nominal_radius": 32.1,
+        "kernel_scatter_dis": 33.1,
+        "lenses": {
+          "41": {
+            "impulse_mass": 1.0000064373016357,
+            "second_moment_equivalent_disk_radius": 19.907900721025655,
+            "central_value": 0.0008032180485315621,
+            "omitted_radial_weight_mass": 0.6210574390819131
+          },
+          "71": {
+            "impulse_mass": 1.0000343322753906,
+            "second_moment_equivalent_disk_radius": 32.3611575774964,
+            "central_value": 0.00030438462272286415,
+            "omitted_radial_weight_mass": 8.5123863349713e-06
+          },
+          "101": {
+            "impulse_mass": 1.0000360012054443,
+            "second_moment_equivalent_disk_radius": 32.36134590955886,
+            "central_value": 0.0003043824981432408,
+            "omitted_radial_weight_mass": 3.955917169186205e-25
+          }
+        },
+        "difference_to_lens101": {
+          "41": {
+            "L1": 1.2421300411224365,
+            "max_abs": 0.0004988355794921517
+          },
+          "71": {
+            "L1": 1.5470835933228955e-05,
+            "max_abs": 1.0181180698509706e-07
+          }
+        },
+        "positive_negative_defocus_max_abs": 0.0,
+        "lens71_passed": true
+      }
+    ],
+    "lens71_passed_predeclared_tolerance": true,
+    "scope": "Constant opaque planar layer. Radial tail bound is not a bound on every occlusion-normalized pixel or final full pipeline."
+  },
+  "input_mapping_check": {
+    "frames": 200,
+    "source": "Original 8 scenes PNG8 disparity and focus filenames, checked against metadata",
+    "nominal_radius_max": 25.6,
+    "signed_CoC_identity_max_abs_float64": 7.105427357601002e-15,
+    "by_scene": {
+      "repro_004": {
+        "frames": 25,
+        "K_manifest": 4,
+        "span_range": [
+          0.7921568627450981,
+          0.996078431372549
+        ],
+        "K_Dr_range": [
+          3.1686274509803924,
+          3.984313725490196
+        ],
+        "focus_prime_range": [
+          0.19367588932806323,
+          0.2540603158415841
+        ],
+        "nominal_radius_max": 3.2,
+        "mapping_max_abs": 4.440892098500626e-16
+      },
+      "repro_007": {
+        "frames": 25,
+        "K_manifest": 4,
+        "span_range": [
+          0.7960784313725491,
+          0.996078431372549
+        ],
+        "K_Dr_range": [
+          3.1843137254901963,
+          3.984313725490196
+        ],
+        "focus_prime_range": [
+          0.9984999867579908,
+          1.0015784978632478
+        ],
+        "nominal_radius_max": 3.984313725490196,
+        "mapping_max_abs": 8.881784197001252e-16
+      },
+      "repro_006": {
+        "frames": 25,
+        "K_manifest": 8,
+        "span_range": [
+          0.7960784313725491,
+          0.996078431372549
+        ],
+        "K_Dr_range": [
+          6.368627450980393,
+          7.968627450980392
+        ],
+        "focus_prime_range": [
+          0.3894526968503937,
+          0.5653697990147784
+        ],
+        "nominal_radius_max": 4.8652239999999995,
+        "mapping_max_abs": 8.881784197001252e-16
+      },
+      "repro_017": {
+        "frames": 25,
+        "K_manifest": 8,
+        "span_range": [
+          0.803921568627451,
+          0.996078431372549
+        ],
+        "K_Dr_range": [
+          6.431372549019608,
+          7.968627450980392
+        ],
+        "focus_prime_range": [
+          0.9976937624401915,
+          1.0018349229268293
+        ],
+        "nominal_radius_max": 7.968627450980392,
+        "mapping_max_abs": 1.7763568394002505e-15
+      },
+      "repro_003": {
+        "frames": 25,
+        "K_manifest": 16,
+        "span_range": [
+          0.807843137254902,
+          0.996078431372549
+        ],
+        "K_Dr_range": [
+          12.925490196078432,
+          15.937254901960785
+        ],
+        "focus_prime_range": [
+          0.19205883988095238,
+          0.23923444976076558
+        ],
+        "nominal_radius_max": 12.8,
+        "mapping_max_abs": 1.7763568394002505e-15
+      },
+      "repro_008": {
+        "frames": 25,
+        "K_manifest": 16,
+        "span_range": [
+          0.7960784313725491,
+          0.996078431372549
+        ],
+        "K_Dr_range": [
+          12.737254901960785,
+          15.937254901960785
+        ],
+        "focus_prime_range": [
+          0.3847450308300396,
+          0.5863348940886699
+        ],
+        "nominal_radius_max": 9.76687104,
+        "mapping_max_abs": 1.7763568394002505e-15
+      },
+      "repro_000": {
+        "frames": 25,
+        "K_manifest": 32,
+        "span_range": [
+          0.8156862745098039,
+          0.996078431372549
+        ],
+        "K_Dr_range": [
+          26.101960784313725,
+          31.87450980392157
+        ],
+        "focus_prime_range": [
+          0.3861726679841897,
+          0.5498915028846154
+        ],
+        "nominal_radius_max": 19.488416,
+        "mapping_max_abs": 7.105427357601002e-15
+      },
+      "repro_001": {
+        "frames": 25,
+        "K_manifest": 32,
+        "span_range": [
+          0.803921568627451,
+          0.996078431372549
+        ],
+        "K_Dr_range": [
+          25.725490196078432,
+          31.87450980392157
+        ],
+        "focus_prime_range": [
+          0.19367588932806323,
+          0.24390243902439027
+        ],
+        "nominal_radius_max": 25.6,
+        "mapping_max_abs": 3.552713678800501e-15
+      }
+    }
+  },
+  "pending": [
+    "Full LDF/LaMa/two-layer processing on all 8x25 frames",
+    "Layer disparity and CoC range after inpainting",
+    "Same-layer 71 versus 101 check on fixed K32 scenes",
+    "Intermediate layer/mask and focus-region visual checks",
+    "No 200-video baseline run started"
+  ],
+  "outputs": "outputs/drbokeh-scale-probe-20260928",
+  "no_new_dependencies_or_weights": true,
+  "environment": {
+    "name": "magicbokeh",
+    "python": "3.10.21",
+    "torch": "2.8.0+cu128",
+    "CUDA_extension": "existing Dr.Bokeh scalar_type compatibility build; configs/drbokeh-torch2.patch; algorithms unchanged"
+  }
+}

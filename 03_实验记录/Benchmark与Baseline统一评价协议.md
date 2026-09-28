@@ -723,6 +723,54 @@ B的LPIPS=0.024698，公开前2对RM=0.007504；主表RM采用24对。B虽逐项
 
 
 
+### Dr.Bokeh adapter specification：先定输入权限和数学尺度，不启动200段
+
+**2026-09-28核验完成，完整8段预检待执行。** 规范文件`configs/drbokeh-track-a-preflight.json`；结果记录`records/drbokeh-adapter-specification-20260928.json`。BokehMe已关账，不通过回调其参数强行恢复论文方法排序。
+
+**输入证据和权限**：
+
+- [Any-to-Bokeh正文§4.2及附录](https://arxiv.org/html/2505.21593v2)没有披露Dr.Bokeh是否获得GT alpha、oracle layers、LDF/LaMa设置及K/focal传参。DAVIS masks作为VEPI评价ROI，不能据此推断它们也是baseline推理输入。已核对当前公开main、远程refs及公开issues；[Issue #3作者回复](https://github.com/vivoCameraResearch/any-to-bokeh/issues/3#issuecomment-3712982533)曾说明评价代码/数据尚待审批。结论限定为已查材料未披露，不是证明私有实验没有oracle。
+- [Dr.Bokeh CVPR 2024正文§5.2](https://openaccess.thecvf.com/content/CVPR2024/papers/Sheng_Dr._Bokeh_DiffeRentiable_Occlusion-aware_Bokeh_Rendering_CVPR_2024_paper.pdf#page=6)自身合成定量实验，给所有方法相同GT depth，为MPIB/Dr.Bokeh把预测遮挡像素替换为GT，并搜索blur kernel后取最佳结果。不能把这一100-scene、rendering-step评价协议移植成Any-to-Bokeh的200-video协议。
+- 当前采用讨论中的A：只给RGB、PNG8 disparity/255、focus和K；使用官方LDF预测alpha及官方inpainting。B（额外给benchmark alpha）不进入本轮主表/预检，也不默认为第二个全量候选。单独给alpha仍不能提供所有隐藏图层颜色，故那也不等于纯renderer真值测试。
+- Any-to-Bokeh对固定深度层的概括不能替代具体代码：Dr.Bokeh官方前/背景RGBAD保留逐像素视差、允许层内深度变化，不人为将每层压成一个固定深度值。
+
+**固定的完整处理链**：RGB→[LDF](https://github.com/ShengCN/DrBokeh-Src/blob/24d96e4fb76a698494e86835c84a7c45ae2ebc10/app/Render/salient.py)→[RGBAD2layers](https://github.com/ShengCN/DrBokeh-Src/blob/24d96e4fb76a698494e86835c84a7c45ae2ebc10/app/Render/image_preprocessing.py)→Multi_Layer_Renderer。前景深度用OpenCV Telea inpainting；背景RGB和深度都用LaMa。统一输入depth不等于内部修复后的depth逐像素不变，需要记录差异。提供视差时不重新预测MiDaS；原模块导入时仍会载入它，但不调用其预测。固定gamma=2.2、highlight=false、offset=0、官方threshold=0.1/fg_erode=5/fg_iters=2/inpaint_kernel=7、圆形镜头和CUDA遮挡分支。所有帧独立运行，不读GT alpha、分层资产或隐藏背景，不新增时序平滑。
+
+**输入坐标与名义CoC**：官方[Inference.py](https://github.com/ShengCN/DrBokeh-Src/blob/24d96e4fb76a698494e86835c84a7c45ae2ebc10/app/Render/Inference.py#L235)会归一化视差，却不会替调用者变换CLI focal。令
+
+\[
+ s=d_{\max}-d_{\min},\quad
+ d'=\frac{d-d_{\min}}s,\quad
+ d_f'=\frac{d_f-d_{\min}}s,\quad
+ K_{Dr}=K_{manifest}\,s.
+\]
+
+则分层预处理前
+
+\[
+ K_{Dr}(d'-d_f')=K_{manifest}(d-d_f).
+\]
+
+这是保持输入名义pixel CoC的换算，没有从论文分数反推参数。`s=0`时停止并记录，不静默取任意范围；focus不夹紧，保留连续scalar对PNG8量化范围的轻微越界。K不补偿将使CoC放大`1/s`倍，不与当前设置混称等价。补偿后也不保证整个pipeline坐标等价：LaMa/uint16深度修复和occlusion的固定视差阈值均不具仿射不变性。
+
+**真实CUDA核与lens覆盖**：[scatter_cuda_kernel.cu](https://github.com/ShengCN/DrBokeh-Src/blob/24d96e4fb76a698494e86835c84a7c45ae2ebc10/app/cuda-src/scatter_cuda_kernel.cu#L250)使用`scatter_dis=K_Dr*abs(relative_disp)+1`、softstep及面积归一化；[distance_kernel/lens_shape_mask](https://github.com/ShengCN/DrBokeh-Src/blob/24d96e4fb76a698494e86835c84a7c45ae2ebc10/app/Render/DScatter/CPU_scatter.py#L30)的距离单位就是pixel。没有额外全局2倍或10倍因子，`+1`也不能简单当成最终有效硬圆盘半径。另一个`floor(scatter_dis/2)`用于层间alpha可见性邻域，不是颜色散射半径。
+
+lens是窗口边长；41/71/101的圆形mask分别为`ρ<20/35/50`。softstep存在非零尾部，不能声称数学上绝对无截断。预先采用工程容差：71对101的单位脉冲L1差及被截径向权重质量均≤1e-4。这不是文献规定或论文指标门槛。
+
+| 名义R / px | 71核的二阶矩等效圆盘半径 / px | 41遗漏径向权重 | 71遗漏径向权重 | 71对101的单位脉冲L1差 |
+|---|---:|---:|---:|---:|
+| 0 | 0.51352 | 8.32e-25 | 3.55e-44 | 0 |
+| 1.33333 | 2.05323 | 6.09e-24 | 2.60e-43 | 0 |
+| 16 | 16.28939 | 8.36e-7 | 3.56e-26 | 3.56e-26 |
+| 32 | 32.26115 | 0.618699 | 6.35e-6 | 1.15e-5 |
+| 32.1 | 32.36116 | 0.621057 | 8.51e-6 | 1.55e-5 |
+
+上述是常深度不透明平面的原始线性renderer单像素脉冲测试；未执行LDF/LaMa、未用benchmark oracle层、未计算模型质量分数。等效半径由`√(2 E[ρ²])`给出，不声称为理想物理半径。原核在R=0仍有小残余扩散，因此不将“对焦输出逐像素等于输入”作为实现门槛。正负离焦测试一致。完整结果包含0/1.333/2/4/8/16/32/32.1 px。
+
+固定8段原始PNG8输入共200帧的坐标换算已验证：float64最大误差7.11e-15，最大名义输入半径25.6 px。**这些不是200帧完整pipeline结果**。lens71可以进入预检，41不采用。预检还需逐帧检查实际修复后RGBAD层的disparity和CoC范围，并在固定K32场景对同一组预测图层比较71/101；近零归一化分母可能放大很小的尾权重，不能仅凭常平面结论保证全部场景。
+
+**下一步范围**：只运行原固定8段×25帧、1024×576；记录LDF mask及其覆盖、前/背景RGBAD、LaMa RGB/深度补全、实际CoC/lens覆盖、输出范围和有限值，检查0/6/12/18/24关键帧。分割差或对焦边缘差先作为baseline失败案例保留，不能按视觉/分数删场景或换成GT alpha。协议/实现问题修复后再决定200段，不扩展为alpha×normalization×gamma×lens组合搜索。本阶段不填Dr.Bokeh Table 1A/Table V成绩。
+
 ### E7 AM-2k 前景颜色恢复：历史方案（当前停止）
 
 > **当前决策已更新**：本项目当前 baseline sweep 不再推进 AM validation / foreground estimator 选择。AM-2k train/fg 直接作为固定 composition asset 使用，并明确不把它称为独立物理 foreground-color GT。下述三层验证协议与 60-source 开发实验保留为历史方法学证据。

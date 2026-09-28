@@ -1,0 +1,52 @@
+{
+  "status": "ADAPTER_SPECIFICATION_FOR_PREFLIGHT_NOT_FINAL_200_VIDEO_ADAPTER",
+  "name": "Dr.Bokeh Track A: equal external inputs, native preprocessing, nominal CoC preserved",
+  "author_commit": "24d96e4fb76a698494e86835c84a7c45ae2ebc10",
+  "input": "outputs/any2bokeh-mpib-public-proxy-200-20260928/clips",
+  "preflight_scenes": ["repro_004", "repro_007", "repro_006", "repro_017", "repro_003", "repro_008", "repro_000", "repro_001"],
+  "allowed_inputs": ["RGB PNG8", "full-FPS disparity PNG8 / 255", "focus scalar from filename", "manifest K"],
+  "oracle_alpha": false,
+  "oracle_layers_or_hidden_RGB": false,
+  "predicted_alpha": "Official LDF model-40, from RGB only; official resize/normalization and sigmoid",
+  "layer_pipeline": "Official RGBAD2layers; two layers; foreground cv2 depth inpaint, background LaMa RGB AND depth inpaint; Multi_Layer_Renderer",
+  "normalization": "lo=min(d); span=max(d)-lo; d_prime=(d-lo)/span; focus_prime=(focus-lo)/span; no focus clamp",
+  "K_mapping": "K_Dr = K_manifest * span; preserves K_Dr*(d_prime-focus_prime)=K_manifest*(d-focus) BEFORE layer preprocessing",
+  "constant_disparity_policy": "Stop and report; no silent fallback or per-scene parameter change",
+  "gamma": 2.2,
+  "highlight": false,
+  "offset": 0.0,
+  "lens": 71,
+  "gpu_occlusion": true,
+  "preprocessing": {"Salient": "LDF", "fg_erode": 5, "fg_iters": 2, "inpaint_kernel": 7, "threshold": 0.1, "Occlusion": true},
+  "precision": "FP32 render/model, TF32 disabled; preserve official NumPy/OpenCV preprocessing dtypes",
+  "output": "Independent frames; clamp only final RGB to [0,1], record out-of-range fraction before clamp, round to RGB PNG8",
+  "kernel_check": {
+    "lens_candidates_for_coverage_check_only": [41, 71, 101],
+    "nominal_radii_px": [0.0, 1.3333333333333333, 2.0, 4.0, 8.0, 16.0, 32.0, 32.1],
+    "impulse_size": 129,
+    "lens71_vs101_impulse_L1_tolerance": 0.0001,
+    "omitted_radial_scatter_weight_mass_tolerance": 0.0001,
+    "scope": "Engineering tolerance declared before probe; not a paper score threshold or proof for arbitrary occlusion normalization"
+  },
+  "preflight_checks": [
+    "Same 8 scenes, 25 frames each, 1024x576; filename focus matches metadata",
+    "Before layers, signed CoC algebra matches existing input control after K compensation",
+    "LDF mask finite and nondegenerate; record its coverage, no replacement by GT",
+    "Foreground/background RGBAD finite; inspect LaMa RGB and depth fills separately",
+    "Record actual layer disparity range and maximum nominal radius after preprocessing",
+    "Check radial tail coverage for actual post-preprocessing radius; if failed, stop without clipping",
+    "Check final output shape/range and focus-region visual behavior",
+    "Inspect 0/6/12/18/24 frame diagnostics; compare 71 versus 101 on identical saved layers from the fixed K32 scenes, because near-zero normalization weights can amplify small kernel tails"
+  ],
+  "limits": [
+    "No public evidence located that Any-to-Bokeh gives Dr.Bokeh GT alpha or oracle layers; absence of disclosure is not proof of their actual private settings.",
+    "Dr.Bokeh CVPR 2024 section 5.2 replaces predicted occluded pixels by GT pixels for MPIB/Dr.Bokeh and searches blur kernels. This is a different experiment and does not establish Any-to-Bokeh's unpublished adapter.",
+    "Official demo does not transform its focal argument for the caller; adapter must transform it consistently.",
+    "CUDA scatter_dis=abs(relative_disparity)*K_Dr+1 with a softstep edge, not an ideal hard disk of exactly the nominal radius.",
+    "lens is a kernel side length; circular mask uses distance < floor(lens/2); soft tails never have exactly finite support.",
+    "K compensation preserves nominal input CoC, not full-pipeline equivalence: depth inpainting and fixed disparity-domain occlusion thresholds are not affine invariant.",
+    "A single oracle-alpha image would still not reveal all hidden RGBA layers and is not a pure-renderer ground truth test.",
+    "The native soft kernel has nonzero residual spread at nominal radius zero; do not demand exact identity as an implementation pass condition.",
+    "This specification covers a single fixed 8-scene preflight. It does not include a 200-video run, gamma sweep, oracle-alpha candidate, or paper-score-based adapter selection."
+  ]
+}
