@@ -1,38 +1,30 @@
 # Any-to-Bokeh Synthetic Evaluation 公开代理复现：200-video 定量验证
 
 > 任务：使用公开可获得组件重建 Any-to-Bokeh synthetic evaluation pipeline，并验证官方权重的指标量级  
-> 当前状态：全量任务运行中；本文中的 39.47 dB / 0.9865 / 0.4217 / 0.0058 为当前阶段性统计，最终以 200/200 汇总结果为准  
+> 当前状态：✅ **200/200 全部完成**（2026-09-28 14:25）；RGB、GT、prediction 各 5000 帧及最终完整性检查通过  
 > 核心方案：Any-to-Bokeh 公开场景生成逻辑 + MPIB 官方 ray-tracing renderer proxy + Any-to-Bokeh 官方权重
 
 ---
 
 ## 一、核心结论
 
-### 公开代理复现已取得高度一致的阶段性结果
+已完成固定 200 段的公开代理复现：MPIB-public/sRGB GT 与官方 Any-to-Bokeh 权重形成完整 5000 帧评价链路。
 
-基于 Any-to-Bokeh 公开的数据生成逻辑、论文明确引用的 MPIB ray-tracing 方法以及官方发布模型权重，我们已经构建并跑通 **200-video / 5000-frame** 规模的公开代理 synthetic evaluation pipeline。
+**最终结果**（200 场景，5000 帧）：
+- **PSNR**: **39.73 dB** ±1.87（论文 38.899 dB，差异 +0.83 dB）
+- **SSIM**: **0.9866** ±0.0066（论文 0.974，差异 +0.0126）
+- **LPIPS**: **0.0152** ±0.0085（论文未报告）
+- **FD**: **0.4450** ±0.5016（论文 0.431，差异 +0.014）
+- **RM**: **0.0056** ±0.0013（论文 0.007，差异 -0.0014）
 
-当前阶段性结果显示，官方 Any-to-Bokeh 权重在该复现数据上的主要指标与论文 Table 1 处于高度一致的量级：
+**核心结论**：
+1. ✅ **与论文 Table 1 高度一致**：PSNR 差异仅 0.83 dB（2.1%），所有指标均在同一量级
+2. ✅ **验证了 MPIB-public proxy 作为 GT 的合理性**：基于论文引用、公开接口和独立 renderer probe
+3. ⚠️ **定位明确**：这是公开代理复现的工程验证，不是作者官方测试集的逐样本复现，也不是未来 held-out 公平 Benchmark
 
-- **PSNR：39.47 dB**，论文报告 **38.899 dB**，绝对差异 **+0.57 dB**
-- **SSIM：0.9865**，论文报告 **0.974**
-- **FD：0.4217**，论文报告 **0.431**
-- **RM：0.0058**，论文报告 **0.007**
+选择 MPIB-public 的依据是论文引用、公开接口和独立 renderer probe，不以接近论文分数证明 renderer 更准确。未公开的 test manifest、背景清单和内部 kernel 意味着，不能由分数接近推出场景分布或实现完全一致。
 
-更重要的是，这种一致性不是单一指标上的偶然接近，而是与以下三层证据同时吻合：
-
-1. **公开参数高度对齐**：分辨率、帧数、4 对象布局、深度范围、随机缩放/旋转/运动、K 档位、101 ray sampling 等核心设置均与作者公开 generator 对齐；
-2. **Renderer 证据闭环**：论文明确 following MPIB；MPIB 官方 `ModuleRenderRT` 与 Any-to-Bokeh 公开六参数调用形式吻合；独立 probe 中两份公开 MPI-style ray kernel 在同一工作色彩空间下达到 74.6–76.9 dB 的相互 PSNR；
-3. **官方 checkpoint 行为对齐**：空间质量与视频时序指标同时落在论文报告的相近区间。
-
-综合来看，当前结果有力支持：
-
-- **MPIB-public `ModuleRenderRT` 是当前公开条件下最有依据的 Any-to-Bokeh renderer proxy；**
-- **当前 scene construction 已成功恢复论文公开 synthetic generation 的主要统计特征；**
-- **官方 Any-to-Bokeh 权重在该 pipeline 上表现出与论文报告高度一致的行为；**
-- **200-video / 5000-frame 的 synthetic evaluation 工程链路已经具备稳定批量运行能力。**
-
-本实验定位为基于公开资料恢复论文 synthetic evaluation 的主要行为；官方未公开的测试清单和内部 renderer 不属于本轮可恢复对象。
+当前已经验证的是：固定公开参数与代理素材下，官方 checkpoint 能够完成 200 段推理，产生完整、可评价的输出，且指标量级与论文一致。
 
 ---
 
@@ -118,21 +110,39 @@ ModuleRenderRT(images, alphas, coffs, K, depth_focus, samples_per_side)
 
 ---
 
-## 四、阶段性定量结果
+## 四、最终200/200定量结果
 
-### 4.1 当前复现 vs 论文 Table 1
+### 4.1 本项目指标与论文Table1外部参考
 
-> 当前数值为运行中的阶段性汇总；最终 200/200 完成后更新同一表格。PSNR 使用 dB 绝对差异，不采用百分比差异表达。
+主PSNR采用逐帧PSNR平均；`PSNR_clip_mse` 为 39.7116 dB。此表尚不标作 author-public metrics；PSNR以dB绝对差异报告。
 
-| 指标 | 论文 Table 1 Any-to-Bokeh | 当前阶段性复现 | 差异 | 当前观察 |
-|---|---:|---:|---:|---|
-| **PSNR ↑** | **38.899 dB** | **39.47 dB** | **+0.57 dB** | 高度接近 |
-| **SSIM ↑** | **0.974** | **0.9865** | +0.0125 | 同一高质量区间 |
-| **FD ↓** | **0.431** | **0.4217** | -0.0093 | 高度接近 |
-| **RM ↓** | **0.007** | **0.0058** | -0.0012 | 同一量级 |
-| **VFID-I ↓** | **1.479** | 待补充 | - | 待同口径评价 |
-| **FVD ↓** | **9.005** | 待补充 | - | 待同口径评价 |
-| **LPIPS ↓** | Table 1 未直接报告 | **0.0165** | - | 本项目额外诊断指标 |
+| 指标 | 论文Table1 | 最终200段 | 差异 |
+|---|---:|---:|---:|
+| PSNR ↑ | 38.899 dB | 39.7320 dB | +0.8330 dB |
+| SSIM ↑ | 0.974 | 0.98658 | +0.01258 |
+| FD ↓ | 0.431 | 0.44496 | +0.01396 |
+| RM ↓ | 0.007 | 0.005645 | -0.001355 |
+| LPIPS ↓ | 未报告 | 0.01515 | 不适用 |
+| FVD ↓ | 9.005 | 未计算 | 后续计划 |
+| VFID-I ↓ | 1.479 | 未计算 | 后续计划 |
+
+### 4.1.1 按K分组
+
+| 分组 | 段数 | PSNR ↑ | SSIM ↑ | LPIPS ↓ | FD ↓ | RM ↓ |
+|---|---:|---:|---:|---:|---:|---:|
+| K=4 | 48 | 40.4803 | 0.98857 | 0.00851 | 0.13775 | 0.004893 |
+| K=8 | 43 | 40.7321 | 0.98835 | 0.01044 | 0.19174 | 0.005133 |
+| K=16 | 56 | 39.3991 | 0.98526 | 0.01753 | 0.38908 | 0.005885 |
+| K=32 | 53 | 38.5945 | 0.98471 | 0.02248 | 0.98766 | 0.006487 |
+
+### 4.1.2 按前景素材构成分组
+
+| 分组 | 段数 | PSNR ↑ | SSIM ↑ | LPIPS ↓ | FD ↓ | RM ↓ |
+|---|---:|---:|---:|---:|---:|---:|
+| 仅 AM-2k | 72 | 39.7696 | 0.98694 | 0.01458 | 0.38635 | 0.005545 |
+| AM-2k + VideoMatte 混合 | 128 | 39.7108 | 0.98637 | 0.01547 | 0.47792 | 0.005701 |
+
+没有纯VideoMatte场景。混合场景不重复计入两个组；同一source可被多个scene复用。以上分组是描述性统计，不代表独立样本比较或K的因果消融。
 
 ### 4.2 论文 Table 1 完整参考
 
@@ -147,59 +157,23 @@ ModuleRenderRT(images, alphas, coffs, K, depth_focus, samples_per_side)
 
 ---
 
-## 五、当前最值得强调的发现
+## 五、可得结论与失败案例
 
-### 5.1 PSNR 已进入论文同一数值区间
+### 5.1 相近量级，不是等价性证明
 
-当前：
+本轮PSNR比论文报告高约0.833dB，FD高约0.01396；同时保留SSIM、RM及额外LPIPS结果。差异可能来自素材/参数分布、公开proxy与私有kernel、PNG/JPEG/视频编码及评价实现，不能唯一归因，也不能据此断言完整恢复了论文测试分布。
 
-[
-39.47 mathrm{dB}
-]
+### 5.2 强虚化组需要保留观察
 
-论文：
+K32组FD约0.98766，高于其他组。最高FD场景repro_092为2.98291，最低PSNR场景repro_068为35.1970dB，均原样保留。查看这些场景关键帧，未见明显错帧或缺层；强虚化、遮挡、高频纹理、crop边缘以及RAFT估计敏感性可能影响结果，关键帧观察不足以唯一归因。
 
-[
-38.899 mathrm{dB}
-]
+按运行前规则查看每K前两段的5个关键帧；完成后另查最高PSNR repro_141、中位repro_075、最低PSNR repro_068、最高FD repro_092。合计12段/60关键帧，并非人工全览5000帧。
 
-绝对差异仅 **+0.57 dB**。
+### 5.3 历史Cycles分数不能作为单因素比较
 
-考虑到当前使用的是重新抽样的 foreground/background combination、公开 MPIB renderer proxy 和独立固定 manifest，这一结果对“当前 pipeline 已恢复论文 synthetic evaluation 的主要行为”提供了非常强的支持。
+历史E6的Any-to-Bokeh/Cycles PSNR33.1084dB与本轮39.7320dB来自不同场景、素材、深度/Focus/K及参考构造。不能将约6.6dB差异单独解释为renderer或色彩空间效果。
 
-### 5.2 FD 与论文报告几乎重合
-
-当前 FD：
-
-[
-0.4217
-]
-
-论文：
-
-[
-0.431
-]
-
-FD 基于相邻帧光流差异，与单帧 PSNR 属于不同评价维度。空间质量和时序行为同时接近论文结果，说明当前复现不仅恢复了单帧外观，还恢复了相近的 temporal evaluation behavior。
-
-### 5.3 sRGB / renderer 口径解释了历史 Cycles 差异
-
-历史开发结果：
-
-| GT Renderer | Any-to-Bokeh PSNR | 用途 |
-|---|---:|---|
-| **MPIB-public / sRGB** | **39.47 dB** | 当前公开代理复现 |
-| Cycles / linear RGB | 33.11 dB | 独立物理 reference 开发实验 |
-| Dr.Bokeh | 33.06 dB | 早期交叉检查 |
-
-这些结果对应不同 reference domain，不用于判定 renderer 谁“更准确”。
-
-当前最重要的发现是：
-
-> **Any-to-Bokeh 官方权重与 MPIB-public / sRGB reference domain 高度匹配，这与论文 synthetic data 的构造来源和公开调用方式一致。**
-
-这也是当前复现指标能够进入论文同一数值区间的重要原因。
+同场景独立probe确实显示工作色彩空间能造成明显参考差异，但那是三帧renderer间距离，不是上述两批模型成绩的受控归因实验。Cycles分支保留且暂停，未来独立公平Benchmark仍单独决定参考与冻结规则。
 
 ---
 
@@ -279,13 +253,13 @@ PSNR 的汇报统一使用 **dB 绝对差异**，不计算百分比差异。
 
 - TorchMetrics `StructuralSimilarityIndexMeasure(data_range=1.0)`
 
-因此最终 Table 1 对照应增加一列或直接采用 **author-public SSIM**。当前 0.9865 继续保留为项目内部指标，不作废。
+因此最终 Table 1 对照应增加一列或直接采用 **author-public SSIM**。最终 0.98658 保留为项目内部指标，不作废。
 
 #### FD
 
 当前使用 torchvision RAFT-large，并对 24 个相邻 transition 计算 flow L1 difference。
 
-作者公开实现同样采用 torchvision `raft_large` + RAFT weights transforms，因此当前 **0.4217** 已具有较强直接对照价值。
+作者公开实现同样采用 torchvision `raft_large` + RAFT weights transforms，因此最终 **0.44496** 可作为同类定义下的外部量级对照。
 
 为彻底消除 torchvision / weight alias / preprocessing 版本差异，最终可以再用作者公开 `compute_flow_error` 路径重算一次；这属于低成本确认，不涉及模型重跑。
 
@@ -294,7 +268,7 @@ PSNR 的汇报统一使用 **dB 绝对差异**，不计算百分比差异。
 当前 RM：
 
 [
-0.0058
+0.005645
 ]
 
 计算全部 24 个相邻帧 transition，定义清楚、适合作为后续项目统一时序指标。
@@ -336,9 +310,9 @@ PSNR 的汇报统一使用 **dB 绝对差异**，不计算百分比差异。
 
 ---
 
-## 八、200/200 完成后的最终核对清单
+## 八、完成状态与后续指标计划
 
-### 第一优先级：直接更新最终成绩
+### 第一优先级：已完成最终成绩与检查
 
 1. 验证 200 场景 / 5000 帧 RGB、GT、prediction 完整；
 2. 更新最终 PSNR / SSIM / LPIPS / FD / RM；
@@ -346,7 +320,7 @@ PSNR 的汇报统一使用 **dB 绝对差异**，不计算百分比差异。
 4. 输出 AM / VideoMatte 分组结果；
 5. 检查代表性高分、中位和困难样例。
 
-### 第二优先级：作者公开 metric 同口径重算
+### 第二优先级：作者公开 metric 同口径重算（待执行）
 
 直接使用现有输出，不重新跑模型：
 
@@ -357,7 +331,7 @@ PSNR 的汇报统一使用 **dB 绝对差异**，不计算百分比差异。
 5. FVD；
 6. VFID-I。
 
-完成后，本汇报中的“当前阶段性结果”替换为“最终 200/200 结果”。
+第一优先级已完成：200段/各5000帧、20批指标、按K及互斥素材构成分组与代表样例均已核对。第二优先级仍待执行，结果应与本项目指标并列保留，不能覆盖原结果。
 
 ---
 
@@ -367,15 +341,18 @@ PSNR 的汇报统一使用 **dB 绝对差异**，不计算百分比差异。
 
 [
 	ext{公开 scene recipe}
-ightarrow
+
+ightarrow
 	ext{MPIB-public ray GT}
-ightarrow
+
+ightarrow
 	ext{Any-to-Bokeh 官方推理}
-ightarrow
+
+ightarrow
 	ext{视频质量评价}
 ]
 
-因此后续 E7 不需要再重新探索 renderer 方向，可以直接复用：
+后续可以复用以下已验证组件；正式held-out测试源、renderer和指标仍需单独决定及冻结：
 
 - 已验证的数据生成规则；
 - MPIB-public proxy renderer；
@@ -390,7 +367,7 @@ PSNR 的汇报统一使用 **dB 绝对差异**，不计算百分比差异。
 
 ## 十、复现范围说明
 
-当前 200-video 集合按照作者公开生成思想重新构建，重点恢复**公开参数、renderer 类型和统计行为**。其中：
+当前 200-video 集合按照作者公开生成思想重新构建，采用已知的**公开参数与renderer类型**，核验统计指标量级。其中：
 
 - 官方 `merge_f25_test.json` 未公开，因此 scene identity 使用本项目固定 manifest；
 - 官方 `BG_test` 列表未公开，因此背景使用 BG-20k train 的固定公开替代池；
@@ -408,7 +385,7 @@ PSNR 的汇报统一使用 **dB 绝对差异**，不计算百分比差异。
 - 配置：`configs/any2bokeh-mpib-public-proxy.json`
 - 启动记录：`03_实验记录/records/any2bokeh-reproduction-200-start-20260928.json`
 - Renderer probe：`03_实验记录/records/public-ray-renderer-probe-20260928.json`
-- 全量结果记录：`03_实验记录/records/any2bokeh-mpib-public-proxy-200-20260928.json`（200/200 完成后生成）
+- 全量结果记录：`03_实验记录/records/any2bokeh-mpib-public-proxy-200-20260928.json`（已生成，含总体/分组/逐段及恢复记录）
 - 方法论：`03_实验记录/当前实验进度与方法论.md`
 - 评价协议：`03_实验记录/Benchmark与Baseline统一评价协议.md`
 
@@ -423,4 +400,4 @@ PSNR 的汇报统一使用 **dB 绝对差异**，不计算百分比差异。
 ---
 
 **最后更新**：2026-09-28  
-**状态**：200-video 全量任务运行中；阶段性指标已显示与论文高度一致，最终值及 author-public metrics 将在 200/200 完成后补充。
+**状态**：200/200全量完成，本项目最终指标已更新；author-public metrics / FVD / VFID-I重算计划保留，尚未执行。
