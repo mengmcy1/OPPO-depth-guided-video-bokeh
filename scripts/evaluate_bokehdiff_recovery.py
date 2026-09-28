@@ -17,7 +17,10 @@ ids = [x['id'] for x in json.loads((INPUT/'config.json').read_text())['scenes']]
 
 
 def run(cmd, path):
-    with path.open('x') as log:
+    # Completed reports are reused above. Preserve an interrupted attempt's log on resume.
+    with path.open('a') as log:
+        log.write(f'\nATTEMPT_START_UTC {time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}\n')
+        log.flush()
         print('START',path,flush=True)
         subprocess.run([sys.executable,*cmd],stdout=log,stderr=subprocess.STDOUT,check=True)
         print('DONE',path,flush=True)
