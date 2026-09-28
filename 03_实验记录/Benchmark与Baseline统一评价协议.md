@@ -947,21 +947,15 @@ output/
 
 ## 仍需继续确认
 
-### 1. Any-to-Bokeh Synthetic 的最终来源
+### 1. Any-to-Bokeh Synthetic 的当前执行版本
 
-优先级：
+官方 200-video test manifest、`BG_test` 列表和 Any-to-Bokeh 内部 `ModuleRenderRT` 文件仍未公开。当前已经不再等待这些缺失组件作为实验前置条件，而是固定使用：
 
-1. 继续确认官方 200-video test set 是否能获取；
-2. 若不可获取，基于公开 \`dataset_synthsis.py\` 和论文协议构建可复现测试集。
+> **200-video MPIB-public/sRGB public-proxy benchmark**
 
-需要核对公开脚本中尚缺失或依赖作者本地路径的：
+该版本已完成 Any-to-Bokeh 官方权重 200×25 全量评价，并补齐 TorchMetrics PSNR/SSIM、VideoMAE FVD 和 I3D VFID-I。Baseline Benchmark Sweep 期间**不修改 scene manifest、RGB、GT、Geometry、Focus、K 或指标口径**。
 
-- ModuleRenderRT；
-- 前景 JSON；
-- Background 集；
-- AM-2k / VideoMatte240K 具体组织；
-- test split；
-- renderer 依赖。
+如果未来官方 test set 真正公开，可新增 Official 路径做额外复现；future strict held-out E7 也保留为独立版本，但二者都不阻塞当前 baseline sweep。
 
 ### 2. Baseline 输入适配细节
 
