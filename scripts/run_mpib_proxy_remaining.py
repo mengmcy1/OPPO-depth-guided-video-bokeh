@@ -3,8 +3,8 @@ import argparse,json,os,subprocess,time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
-p=argparse.ArgumentParser();p.add_argument('--run',type=Path,required=True);a=p.parse_args()
-run=a.run.resolve();clips=run/'clips';cfg=json.loads((clips/'config.json').read_text());logs=ROOT/'logs'/run.name;logs.mkdir(exist_ok=True)
+p=argparse.ArgumentParser();p.add_argument('--run',type=Path,required=True);p.add_argument('--log-dir',type=Path);a=p.parse_args()
+run=a.run.resolve();clips=run/'clips';cfg=json.loads((clips/'config.json').read_text());logs=a.log_dir or ROOT/'logs'/run.name;logs.mkdir(parents=True,exist_ok=True)
 env=os.environ.copy();env['CUDA_VISIBLE_DEVICES']='0'
 def wait(paths):
     start=time.monotonic()
@@ -25,6 +25,13 @@ def inference():
 def metrics():
     for i in range(0,200,10):
         group=cfg['scenes'][i:i+10]
+        report=run/f'metrics-{i//10:02d}.json'
+        if report.exists():
+            rows=json.loads(report.read_text())['rows']
+            assert len(rows)==len(group) and {r['scene'] for r in rows}=={s['id'] for s in group}
+            assert all(r['renderer']=='MPIB-public proxy' for r in rows)
+            print('REUSE',report.name,flush=True)
+            continue
         wait([clips/s['id']/f for s in group for f in ['pred_any2bokeh/timing.json','gt_mpib_public_srgb/timing.json']])
         execute(['/root/miniconda3/envs/magicbokeh/bin/python','scripts/evaluate_renderer_pilot.py','--input',str(clips),'--only',','.join(s['id'] for s in group),'--reference-dir','gt_mpib_public_srgb','--reference-label','MPIB-public proxy','--scope','200-video non-held-out MPIB-public proxy reproduction; not official test set or future fair benchmark','--report',str(run/f'metrics-{i//10:02d}.json')],f'metrics-{i//10:02d}.log')
 with ThreadPoolExecutor(max_workers=3) as pool:
