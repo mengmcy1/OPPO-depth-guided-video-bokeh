@@ -1,0 +1,27 @@
+{
+  "name": "MPIB photometric convention recovery on fixed public-proxy development set",
+  "author_commit": "d77d93dd29b9ae75bcd18b3b70d89d715c1b56f8",
+  "input": "outputs/any2bokeh-mpib-public-proxy-200-20260928/clips",
+  "gamma_candidates": [1.0, 2.2],
+  "preflight_scenes": ["repro_004", "repro_007", "repro_006", "repro_017", "repro_003", "repro_008", "repro_000", "repro_001"],
+  "geometry": "same PNG8 disparity / 255, no normalization; focus parsed from existing filenames and checked against metadata",
+  "K": "unchanged manifest K, no scaling",
+  "bins": 32,
+  "norm": true,
+  "increase_focus_range": true,
+  "inpaint_size": 1024,
+  "inpaint_mask_dilate_size": 5,
+  "blend_weight_dilate_size": 5,
+  "precision": "FP32, TF32 disabled",
+  "output": "clamp [0,1], round to PNG8; each frame independent",
+  "paper_MPIB": {"PSNR": 31.390, "SSIM": 0.950, "FD": 0.481, "RM": 0.011, "FVD": 35.766, "VFID_I": 5.444},
+  "paper_reference": "https://arxiv.org/html/2505.21593v2#S4.T1",
+  "selection": "Compare the full metric profile with the paper MPIB row, not Any-to-Bokeh's row and not maximum PSNR. Only two gamma candidates. Report every metric and both results. If evidence conflicts, leave selection unresolved; no post-hoc weighted score or intermediate gamma search.",
+  "limits": [
+    "Closeness on replacement scenes cannot identify the author's unpublished adapter uniquely.",
+    "This set is reproduction development data, not a held-out fairness test.",
+    "Project 24-transition RM and public-code 2-transition RM must be labeled separately; the historical paper implementation is not fully known.",
+    "No paper by-K breakdown is available; by-K and qualitative checks are internal diagnostics, not paper-match thresholds.",
+    "Freezing before Ours does not eliminate selection bias. Transfer to other color domains requires declared applicability."
+  ]
+}

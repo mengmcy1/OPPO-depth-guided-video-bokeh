@@ -660,6 +660,14 @@ Validation 重点依次观察：
 
 
 
+### MPIB adapter recovery：本轮授权的两候选复现校准
+
+固定200段public-proxy开发集，完整运行MPIB官方模型，仅比较gamma=1.0与2.2。两个值分别有当前GT积分工作空间与MPIB官方demo默认值的独立依据，均属于原论文训练支持范围。输入、K、focus、checkpoint、planes、dilation及所有指标保持不变。
+
+本轮允许根据与论文MPIB行的整体指标一致性选择候选，并同时保留两套结果和逐项偏差；该授权是对“不得按论文分数选择设置”的限范围更新，不授权改场景/GT或连续gamma搜索。不按本数据集最高分选，不按Any-to-Bokeh行选。没有预设的跨单位加权loss；若各指标证据相互冲突，保留未决，不强行冻结。论文未发布by-K分组值，不能声称这些分组也被精确复现。
+
+该选择属于reproduction protocol reconstruction的经验依据，不证明找回真实作者配置，也不把当前200段升级为held-out公平测试。冻结于Ours之前应如实记录，但不等于没有选择偏差。未来独立测试和不同工作空间的数据仍需声明适配条件。最终确定后，Table 1A放明确命名的冻结版本，Table V及实验记录保留双候选证据；未确定时不提前填写最终MPIB行。
+
 ### E7 AM-2k 前景颜色恢复：历史方案（当前停止）
 
 > **当前决策已更新**：本项目当前 baseline sweep 不再推进 AM validation / foreground estimator 选择。AM-2k train/fg 直接作为固定 composition asset 使用，并明确不把它称为独立物理 foreground-color GT。下述三层验证协议与 60-source 开发实验保留为历史方法学证据。

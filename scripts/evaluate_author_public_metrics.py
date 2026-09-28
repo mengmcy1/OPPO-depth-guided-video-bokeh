@@ -39,16 +39,17 @@ def read_clip(directory):
 
 
 class Pairs(Dataset):
-    def __init__(self, clips, ids):
+    def __init__(self, clips, ids, prediction_root=None, prediction_dir='pred_any2bokeh'):
         self.clips, self.ids = clips, ids
+        self.prediction_root, self.prediction_dir = prediction_root or clips, prediction_dir
 
     def __len__(self):
         return len(self.ids)
 
     def __getitem__(self, index):
         scene = self.clips / self.ids[index]
-        return tuple(torch.from_numpy(read_clip(scene / role)).permute(3, 0, 1, 2).float() / 255
-                     for role in ('gt_mpib_public_srgb', 'pred_any2bokeh'))
+        paths = [scene / 'gt_mpib_public_srgb', self.prediction_root / self.ids[index] / self.prediction_dir]
+        return tuple(torch.from_numpy(read_clip(path)).permute(3, 0, 1, 2).float() / 255 for path in paths)
 
 
 class FVDFrames(Dataset):
@@ -88,7 +89,7 @@ def public_image_functions(author):
 
 def torchmetrics_scores(args, ids):
     funcs = public_image_functions(args.author)
-    loader = DataLoader(Pairs(args.clips, ids), batch_size=1, shuffle=False,
+    loader = DataLoader(Pairs(args.clips, ids, args.prediction_root, args.prediction_dir), batch_size=1, shuffle=False,
                         num_workers=args.workers, prefetch_factor=2 if args.workers else None)
     values = {name.upper(): float(funcs[name](loader).cpu()) for name in ('psnr', 'ssim')}
     return dict(values=values, video_count=len(ids), frame_count=25 * len(ids),
@@ -103,10 +104,15 @@ def vfid_scores(args, ids):
     assert args.i3d.is_file() and args.i3d.stat().st_size == 50883138, 'Finish the specified I3D download first'
     model = build_inception3d(str(args.i3d)).cuda().eval()
     features = []
-    for role in ('gt_mpib_public_srgb', 'pred_any2bokeh'):
+    for base, role in [(args.clips, 'gt_mpib_public_srgb'), (args.prediction_root or args.clips, args.prediction_dir)]:
+        if role == 'gt_mpib_public_srgb' and args.reference_features:
+            cached = np.load(args.reference_features / 'vfid-i-features.npz')
+            assert list(cached['scene_ids']) == ids and cached['gt'].shape == (2*len(ids), 1024)
+            features.append(cached['gt'])
+            continue
         # One public dataset per scene: no cross-scene windows. Public defaults
         # remain sequence_length=10, resize=(224,224), no_overlap=True.
-        datasets = [ImageSequenceDataset(str(args.clips / sid / role), sequence_length=10,
+        datasets = [ImageSequenceDataset(str(base / sid / role), sequence_length=10,
                                         resize_shape=(224, 224)) for sid in ids]
         assert all(len(ds) == 2 for ds in datasets)
         loader = DataLoader(ConcatDataset(datasets), batch_size=4, shuffle=False, num_workers=args.workers)
@@ -134,9 +140,14 @@ def fvd_scores(args, ids):
     assert args.videomae.is_file() and args.videomae.stat().st_size == 2023804201, 'Finish the specified VideoMAE download first'
     evaluator = fvd.cdfvd('videomae', ckpt_path=str(args.videomae), n_real='full', n_fake='full',
                           seed=42, compute_feats=True, half_precision=False, device='cuda')
-    for role, function in [('gt_mpib_public_srgb', evaluator.compute_real_stats),
-                           ('pred_any2bokeh', evaluator.compute_fake_stats)]:
-        loader = DataLoader(FVDFrames(args.clips, ids, role), batch_size=16, shuffle=False,
+    for base, role, function in [(args.clips, 'gt_mpib_public_srgb', evaluator.compute_real_stats),
+                                (args.prediction_root or args.clips, args.prediction_dir, evaluator.compute_fake_stats)]:
+        if role == 'gt_mpib_public_srgb' and args.reference_features:
+            cached = np.load(args.reference_features / 'fvd-videomae-features.npz')
+            assert list(cached['scene_ids']) == ids and cached['gt'].shape == (len(ids), 1408)
+            evaluator.real_stats.append(cached['gt'])
+            continue
+        loader = DataLoader(FVDFrames(base, ids, role), batch_size=16, shuffle=False,
                             num_workers=args.workers)
         function(loader)
     assert evaluator.real_stats.num_items == evaluator.fake_stats.num_items == len(ids)
@@ -164,6 +175,9 @@ def main():
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--limit', type=int)
     p.add_argument('--workers', type=int, default=4)
+    p.add_argument('--prediction-root', type=Path)
+    p.add_argument('--prediction-dir', default='pred_any2bokeh')
+    p.add_argument('--reference-features', type=Path, help='Reuse verified GT features on identical scenes and preprocessing')
     p.add_argument('--phase', choices=['all', 'torchmetrics', 'vfid', 'fvd'], default='all')
     args = p.parse_args()
     assert os.environ.get('CUDA_VISIBLE_DEVICES') == '0', 'Select the authorized GPU explicitly'
@@ -187,6 +201,13 @@ def main():
                     torchmetrics=importlib.metadata.version('torchmetrics'), torch=torch.__version__,
                     torchvision=importlib.metadata.version('torchvision'), precision='float32; TF32 disabled',
                     inputs=str(args.clips), scope='public metric kernels with documented PNG/count/scene-boundary adapters; not exact paper replication')
+    if args.prediction_root is not None or args.prediction_dir != 'pred_any2bokeh':
+        protocol.update(prediction_root=str(args.prediction_root or args.clips), prediction_dir=args.prediction_dir)
+    if args.reference_features:
+        previous = json.loads((args.reference_features/'protocol.json').read_text())
+        for key in ('scene_ids','author_commit','cdfvd_commit','torchmetrics','torch','torchvision','precision','inputs'):
+            assert previous[key] == protocol[key], f'GT feature protocol mismatch: {key}'
+        protocol['reference_features'] = str(args.reference_features)
     plan = args.output / 'protocol.json'
     if plan.exists():
         assert json.loads(plan.read_text()) == protocol

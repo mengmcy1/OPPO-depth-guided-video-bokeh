@@ -1,0 +1,61 @@
+{
+  "status": "FIXED_8_SCENE_PREFLIGHT_PASSED",
+  "scenes": [
+    "repro_004",
+    "repro_007",
+    "repro_006",
+    "repro_017",
+    "repro_003",
+    "repro_008",
+    "repro_000",
+    "repro_001"
+  ],
+  "frames_per_candidate": 200,
+  "candidate_gammas": [
+    1,
+    2.2
+  ],
+  "resolution": [
+    1024,
+    576
+  ],
+  "all_three_networks_called": true,
+  "runtime_assertions_finite": true,
+  "official_demo_equivalence": {
+    "scene": "repro_004",
+    "frame": 0,
+    "gamma": 2.2,
+    "comparison": "official demo pre-JPEG float output rounded to PNG8 vs adapter PNG8",
+    "max_uint8_difference": 0,
+    "matching_pixels": true
+  },
+  "visual_review": {
+    "keyframes": [
+      0,
+      6,
+      12,
+      18,
+      24
+    ],
+    "scenes_reviewed": [
+      "repro_004",
+      "repro_007",
+      "repro_006",
+      "repro_017",
+      "repro_003",
+      "repro_008",
+      "repro_000",
+      "repro_001"
+    ],
+    "observations": "No gross frame/focus mismatch in 40 paired keyframes. Strong-blur occlusion reconstruction differs from known-layer GT (notably repro_000); source crop edges retained. No result-based parameter change."
+  },
+  "median_shared_plus_two_render_seconds": 0.28090632148087025,
+  "peak_allocated_GiB": 1.1084823608398438,
+  "public_rm_equivalence": {
+    "scene": "repro_004",
+    "public": 0.006032241508364677,
+    "adapter_equivalent": 0.006032240577042103,
+    "abs_error": 9.313225746154785e-10
+  },
+  "protocol": "configs/mpib-adapter-recovery.json"
+}
