@@ -24,6 +24,8 @@ def main():
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--stage',choices=['inputs','reference','complete'],default='inputs')
     p.add_argument('--only',default='')
+    p.add_argument('--reference-dir',default='cycles_optix_s1024_f1')
+    p.add_argument('--reference-label',default='Cycles')
     a = p.parse_args()
     a.output.mkdir(parents=True,exist_ok=True)
     config = json.loads((a.input/'config.json').read_text())
@@ -50,9 +52,9 @@ def main():
                 panels = [source,alpha,heat,source]
                 labels = 'RGB / Alpha / nominal CoC (0..12px) / edge crop'
             else:
-                reference = rgb(folder/'cycles_optix_s1024_f1'/name)
+                reference = rgb(folder/a.reference_dir/name)
                 panels = [source,reference,alpha if a.stage=='reference' else rgb(folder/'pred_any2bokeh'/name),reference]
-                labels = 'RGB / Cycles / '+('Alpha' if a.stage=='reference' else 'Any-to-Bokeh')+' / Cycles edge crop'
+                labels = 'RGB / '+a.reference_label+' / '+('Alpha' if a.stage=='reference' else 'Any-to-Bokeh')+' / reference edge crop'
             # Crop around the strongest Alpha boundary row near the upper half of the subject.
             mask = alpha[:,:,0]
             band = cv2.dilate(mask,np.ones((3,3),np.uint8)) != cv2.erode(mask,np.ones((3,3),np.uint8))
