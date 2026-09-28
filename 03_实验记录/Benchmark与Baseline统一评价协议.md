@@ -682,6 +682,30 @@ Validation 重点依次观察：
 LPIPS（非论文选择项）：γ=1为0.016910，γ=2.2为0.028355。RM主列使用完整24 transitions；作者公开2-transition诊断分别为0.005603/0.008238，另行保留。FVD/VFID-I采用此前同一评价适配及相同GT特征缓存。
 
 结果与by-K、检查及失败案例见`records/mpib-adapter-recovery-200-20260928.json`和现有复现汇报8.1。FVD/VFID-I仍未精确匹配论文，gamma=1结果完整保留。此MPIB行参与了候选选择，因此Table V在这里属于复现校准证据，不是独立held-out验证。后续不依据Ours成绩再调整该配置。
+### BokehMe adapter recovery：下一步协议
+
+Any-to-Bokeh 公开材料确认 BokehMe 是依赖输入 geometry 的逐帧 image baseline，并在 noisy-depth / DAVIS 实验中与其他方法共享 geometry/control 信息；**但没有公开 Synthetic Table 1 的 BokehMe inference adapter**。因此当前不能直接断言其 disparity normalization、focus/K 映射、gamma、highlight 或 preprocessing 细节。
+
+下一步首先只恢复 **signed defocus convention**：
+
+1. **Shared-Defocus**：直接使用当前 PNG8 disparity / 255、文件名 focus 和原 K，保持 `K(d-d_f)`；
+2. **BokehMe-Normalized**：按官方 demo 对 disparity 做 per-frame min-max，同时对 focus 做同一变换，K 首轮不缩放。
+
+共同固定：
+
+- 完整 classical renderer + ARNet + IUNet + error-map fusion；
+- gamma=2.2；
+- highlight=false；
+- defocus_scale=10；
+- circular aperture；
+- 官方 checkpoint；
+- 逐帧独立推理；
+- 输出 clamp [0,1] 后 PNG8。
+
+先用固定8段 preflight 做实现检查，再双候选运行200段。外部参考为论文 BokehMe 行：PSNR27.992、SSIM0.936、FD0.536、RM0.013、FVD39.102、VFID-I8.633。若两个预定义候选中有一个在整体 metric signature 上一致更接近论文，则冻结为 reproduction adapter；若证据冲突，保留未决，不扩展为无约束参数搜索。
+
+冻结后 Table 1A 只填唯一正式 BokehMe 行，Table V 保留恢复证据；后续 Track B / DAVIS / Efficiency 复用冻结版本，Ours 开始后不依据 Ours 结果调整。
+
 
 ### E7 AM-2k 前景颜色恢复：历史方案（当前停止）
 
@@ -1022,7 +1046,7 @@ output/
 1. Synthetic Track A — 当前固定 200-video MPIB-public/sRGB benchmark
    ├── Any-to-Bokeh：✅ 已完成，直接复用现有结果
    ├── MPIB：✅ gamma=2.2冻结，200段已完成
-   ├── BokehMe
+   ├── BokehMe：当前进行 adapter recovery
    ├── Dr.Bokeh
    ├── BokehDiff
    └── DeepLens（旧 TF1/Python2 runtime，最后处理）
