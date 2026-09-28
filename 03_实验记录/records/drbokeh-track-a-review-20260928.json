@@ -1,0 +1,68 @@
+{
+  "status": "FULL_200_REVIEW_COMPLETE_WITH_PAPER_DISCREPANCY_RETAINED",
+  "reviewed_utc": "2026-09-28T19:12:46.740857+00:00",
+  "automatic_summary": "03_\u5b9e\u9a8c\u8bb0\u5f55/records/drbokeh-track-a-200-20260928.json",
+  "fvd_numerical_check": {
+    "reported_FVD": 143.28968784984045,
+    "independent_population_covariance_low_rank_SVD_FVD": 143.28991795703394,
+    "absolute_difference": 0.00023010719348803832,
+    "mean_term": 48.15963518700721,
+    "covariance_term": 95.13028277002672,
+    "GT_cached_features_equal": true,
+    "feature_shape": [
+      200,
+      1408
+    ],
+    "feature_pair_squared_L2_top": [
+      {
+        "scene": "repro_143",
+        "squared_L2": 775.7390467956941
+      },
+      {
+        "scene": "repro_182",
+        "squared_L2": 752.3605278446154
+      },
+      {
+        "scene": "repro_071",
+        "squared_L2": 721.5063250376024
+      },
+      {
+        "scene": "repro_151",
+        "squared_L2": 702.3634100306443
+      },
+      {
+        "scene": "repro_154",
+        "squared_L2": 692.2609375010757
+      },
+      {
+        "scene": "repro_050",
+        "squared_L2": 660.1526723523664
+      },
+      {
+        "scene": "repro_183",
+        "squared_L2": 658.6307387083682
+      },
+      {
+        "scene": "repro_014",
+        "squared_L2": 643.4445419015699
+      }
+    ],
+    "scope": "Independent algebra check on same stored features, no new feature extraction or metric settings. Paired feature distance is diagnostic, not per-scene FVD or additive FVD contribution."
+  },
+  "visual_review": {
+    "frames": [
+      0,
+      6,
+      12,
+      18,
+      24
+    ],
+    "scenes": {
+      "repro_068": "Lowest PSNR. Large blurred zebra region is brighter and has weaker stripe contrast than GT; keep photometric/blur differences. No gross wrong frame or channel swap observed.",
+      "repro_143": "Largest paired VideoMAE feature distance. Strongly blurred lion and subject boundaries differ from GT; no missing output or gross focus reversal in reviewed keyframes.",
+      "repro_012": "Highest FD. Predicted background contains pronounced blur spots/texture differences; focused man remains sharp. Keyframes alone do not establish a unique cause of FD/FVD discrepancy."
+    }
+  },
+  "conclusion": "Declared single protocol completed. FVD=143.28969 is retained after cached-feature/independent algebra review. No scene removal, GT changes, parameter search, or unique attribution. Paper row is not recovered.",
+  "numerical_metrics_unchanged": true
+}

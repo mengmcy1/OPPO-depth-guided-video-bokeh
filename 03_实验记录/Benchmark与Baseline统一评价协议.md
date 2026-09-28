@@ -622,7 +622,7 @@ Any-to-Bokeh 对同一批输入只产生一份 prediction，再分别以两种 r
 | Method | PSNR ↑ | SSIM ↑ | LPIPS ↓ | FVD ↓ | FD ↓ | RM ↓ |
 |---|---:|---:|---:|---:|---:|---:|
 | DeepLens |  |  |  |  |  |  |
-| Dr.Bokeh |  |  |  |  |  |  |
+| Dr.Bokeh（LDF/LaMa，γ=2.2） | **29.1077** | **0.963207** | **0.03800** | **143.28969** | **0.56177** | **0.012391** |
 | BokehMe（Normalized，γ=2.2） | **33.3340** | **0.979418** | **0.02470** | **18.54637** | **0.53953** | **0.007394** |
 | MPIB（γ=2.2冻结） | **31.6195** | **0.974408** | **0.02835** | **24.95694** | **0.44985** | **0.008184** |
 | BokehDiff |  |  |  |  |  |  |
@@ -645,7 +645,7 @@ Any-to-Bokeh 对同一批输入只产生一份 prediction，再分别以两种 r
 | DeepLens | 24.574 |  |  | 0.819 |  | 125.338 |  | 待跑 |
 | BokehDiff | 27.525 |  |  | 0.834 |  | 65.678 |  | 待跑 |
 | BokehMe（Normalized，γ=2.2） | 27.992 | **33.3340** | **+5.3420 dB** | 0.936 | **0.979418** | 39.102 | **18.54637** | ✅ 双200段完成；与MPIB排序差异保留 |
-| Dr.Bokeh | 31.273 |  |  | 0.950 |  | 32.710 |  | 待跑 |
+| Dr.Bokeh（LDF/LaMa，γ=2.2） | 31.273 | **29.1077** | **−2.1653 dB** | 0.950 | **0.963207** | 32.710 | **143.28969** | ✅ 完成；FVD偏离已核查并保留 |
 | MPIB（γ=2.2冻结） | 31.390 | **31.6195** | **+0.2295 dB** | 0.950 | **0.974408** | 35.766 | **24.95694** | ✅ 200段完成 |
 | **Any-to-Bokeh** | **38.899** | **39.7116** | **+0.8126 dB** | **0.974** | **0.986305** | **9.005** | **8.93752** | ✅ 完成 |
 
@@ -723,9 +723,9 @@ B的LPIPS=0.024698，公开前2对RM=0.007504；主表RM采用24对。B虽逐项
 
 
 
-### Dr.Bokeh adapter：固定8段验收通过，单一协议200段运行中
+### Dr.Bokeh adapter：单一协议200段完成，论文差异保留
 
-**2026-09-28完整8段预检已通过，lens71/单一adapter已冻结，200段已启动。** 原规范文件`configs/drbokeh-track-a-preflight.json`；本轮执行配置`configs/drbokeh-track-a.json`；结果记录`records/drbokeh-adapter-specification-20260928.json`。BokehMe已关账，不通过回调其参数强行恢复论文方法排序。
+**2026-09-28完整8段预检及单一协议200段、全部指标已完成。** 原规范文件`configs/drbokeh-track-a-preflight.json`；本轮执行配置`configs/drbokeh-track-a.json`；结果记录`records/drbokeh-adapter-specification-20260928.json`。BokehMe已关账，不通过回调其参数强行恢复论文方法排序。
 
 **输入证据和权限**：
 
@@ -775,6 +775,8 @@ lens是窗口边长；41/71/101的圆形mask分别为`ρ<20/35/50`。softstep存
 
 **实现加速**：只修改独立CUDA扩展occlusion-aware forward的线程块分配，由6块改为2304块，不改每像素算术、循环、模型或控制。对全部200帧相同保存图层，新旧float输出逐值一致；完整pipeline复查PNG一致。`records/drbokeh-cuda-launch-check-20260928.json`与`configs/drbokeh-grid2d-launch.patch`记录证据。200段复用8段原预检，其余使用等价加速扩展；并行计时不用于Efficiency主表。全量质量指标完成后再填Table 1A/V。
 
+
+**200段终审**：5000帧完整、finite、全量半径覆盖通过，最大实际R31.87451 px，无空/全满LDF mask。FVD143.289688经同缓存特征独立SVD复算为143.289918；差0.000230，保留原公开计算。VFID-I5.760450；相对论文FVD32.710存在显著差异，未因此改协议或删数据。完整数值/by-K及困难场景见现有复现汇报8.3，机器证据`records/drbokeh-track-a-200-20260928.json`与`records/drbokeh-track-a-review-20260928.json`。Table 1A/V已填当前实测结果，不能称恢复了作者私有adapter或验证了独立held-out benchmark。
 
 ### BokehDiff adapter recovery：共享几何与min-max双候选
 
