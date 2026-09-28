@@ -937,7 +937,7 @@ output/
 - 核心 Benchmark：Any-to-Bokeh Synthetic / Reproduced Synthetic、DAVIS、OPPO-style；
 - 核心 baseline：DeepLens、Dr.Bokeh、BokehMe、MPIB、BokehDiff、Any-to-Bokeh、BokehCrafter*、Ours；
 - Any-to-Bokeh 已在 96 GB GPU 上完整跑通；
-- Any-to-Bokeh Synthetic 保留 Official / Reproduced 两种路径；
+- Any-to-Bokeh Synthetic 当前以 Reproduced public-proxy 路径为执行主线；Official 路径仅在未来可验证数据真正公开时补充；
 - DAVIS 负责真实泛化；
 - OPPO-style 负责 Low-FPS Coarse Depth 专项；
 - paired synthetic benchmark 统一 PSNR / SSIM / LPIPS / FVD / FD / RM；
