@@ -5,6 +5,7 @@ from pathlib import Path
 import subprocess
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor
 
 ROOT = Path(__file__).resolve().parents[1]
 os.chdir(ROOT)
@@ -22,14 +23,14 @@ def run(cmd, path):
         print('DONE',path,flush=True)
 
 
-for batch in range(20):
-    chosen = ids[batch*10:(batch+1)*10]
-    start = time.monotonic()
-    while not all((RUN/'timing'/sid/'complete.json').exists() for sid in chosen):
-        if time.monotonic()-start > 7200:
-            raise TimeoutError(f'Inference has not completed batch {batch}')
-        time.sleep(10)
-    for gamma in ('1','2.2'):
+def evaluate_candidate(gamma):
+    for batch in range(20):
+        chosen = ids[batch*10:(batch+1)*10]
+        start = time.monotonic()
+        while not all((RUN/'timing'/sid/'complete.json').exists() for sid in chosen):
+            if time.monotonic()-start > 7200:
+                raise TimeoutError(f'Inference has not completed batch {batch}')
+            time.sleep(10)
         path = RUN/f'gamma_{gamma}'/'metrics'/f'batch_{batch:02d}.json'
         path.parent.mkdir(parents=True,exist_ok=True)
         if path.exists():
@@ -43,6 +44,11 @@ for batch in range(20):
              '--prediction-root',str(RUN/f'gamma_{gamma}'/'clips'),'--prediction-dir','pred_mpib',
              '--author-rm','--torchmetrics','--scope',f'MPIB gamma={gamma} recovery; not official test',
              '--report',str(path)],LOG/f'metrics-gamma{gamma}-{batch:02d}.log')
+
+with ThreadPoolExecutor(max_workers=2) as pool:
+    futures = [pool.submit(evaluate_candidate, gamma) for gamma in ('1','2.2')]
+    for future in futures:
+        future.result()
 
 for gamma in ('1','2.2'):
     for phase in ('vfid','fvd'):
