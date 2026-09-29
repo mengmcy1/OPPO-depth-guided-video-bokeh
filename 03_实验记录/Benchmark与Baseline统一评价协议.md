@@ -622,7 +622,7 @@ Any-to-Bokeh 对同一批输入只产生一份 prediction，再分别以两种 r
 | Method | PSNR ↑ | SSIM ↑ | LPIPS ↓ | FVD ↓ | FD ↓ | RM ↓ |
 |---|---:|---:|---:|---:|---:|---:|
 | DeepLens（单级SR，aperture饱和） | **28.1669** | **0.943710** | **0.06333** | **40.12120** | **0.58263** | **0.012364** |
-| Dr.Bokeh（LDF/LaMa，γ=2.2） | **29.1077** | **0.963207** | **0.03800** | **143.28969** | **0.56177** | **0.012391** |
+| Dr.Bokeh（GT Alpha reconstruction adapter） | **31.5885** | **0.973475** | **0.02938** | **25.85901** | **0.47862** | **0.008393** |
 | BokehMe（Normalized，γ=2.2） | **33.3340** | **0.979418** | **0.02470** | **18.54637** | **0.53953** | **0.007394** |
 | MPIB（γ=2.2冻结） | **31.6195** | **0.974408** | **0.02835** | **24.95694** | **0.44985** | **0.008184** |
 | BokehDiff-B（Normalized，主表） | **27.0627** | **0.843751** | **0.13202** | **65.99693** | **0.80225** | **0.021633** |
@@ -646,13 +646,17 @@ Any-to-Bokeh 对同一批输入只产生一份 prediction，再分别以两种 r
 | BokehDiff-A：Shared-Geometry | 27.525 | **27.1560** | **-0.3690 dB** | 0.834 | **0.841752** | 65.678 | **67.92665** | ✅ 200段及视觉复核完成；作为protocol-recovery alternative保留 |
 | BokehDiff-B：Normalized | 27.525 | **27.0627** | **-0.4623 dB** | 0.834 | **0.843751** | 65.678 | **65.99693** | ✅ 200段及视觉复核完成；选为主表展示配置 |
 | BokehMe（Normalized，γ=2.2） | 27.992 | **33.3340** | **+5.3420 dB** | 0.936 | **0.979418** | 39.102 | **18.54637** | ✅ 双200段完成；与MPIB排序差异保留 |
-| Dr.Bokeh（LDF/LaMa，γ=2.2） | 31.273 | **29.1077** | **−2.1653 dB** | 0.950 | **0.963207** | 32.710 | **143.28969** | ✅ 完成；FVD偏离已核查并保留 |
-| Dr.Bokeh（GT union alpha+LaMa，诊断） | 31.273 | **31.5885** | **+0.3155 dB** | 0.950 | **0.973475** | 32.710 | **25.85901** | ✅ 同200段输入协议实验完成；额外信息权限，不自动替换主表 |
-| Dr.Bokeh（Known 4FG+1BG，诊断） | 31.273 | **32.2599** | **+0.9869 dB** | 0.950 | **0.978147** | 32.710 | **21.10796** | ✅ 同200段输入协议实验完成；额外信息权限，不自动替换主表 |
+| Dr.Bokeh（GT union alpha+LaMa，Track A reproduction主表） | 31.273 | **31.5885** | **+0.3155 dB** | 0.950 | **0.973475** | 32.710 | **25.85901** | ✅ 200段完成；选为ATB reproduction reported configuration，不声称恢复私有adapter |
+| Dr.Bokeh（Full-public：LDF+LaMa，诊断/未来公平benchmark候选） | 31.273 | **29.1077** | **−2.1653 dB** | 0.950 | **0.963207** | 32.710 | **143.28969** | ✅ 完成；公开完整pipeline保留，不作为当前复现主行 |
+| Dr.Bokeh（Known 4FG+1BG，诊断） | 31.273 | **32.2599** | **+0.9869 dB** | 0.950 | **0.978147** | 32.710 | **21.10796** | ✅ 同200段输入协议实验完成；额外隐藏层信息，不进入主表 |
 | MPIB（γ=2.2冻结） | 31.390 | **31.6195** | **+0.2295 dB** | 0.950 | **0.974408** | 35.766 | **24.95694** | ✅ 200段完成 |
 | **Any-to-Bokeh** | **38.899** | **39.7116** | **+0.8126 dB** | **0.974** | **0.986305** | **9.005** | **8.93752** | ✅ 完成 |
 
 **论文版本补充（2026-09-29）**：[ICLR2026正式版Table1](https://proceedings.iclr.cc/paper_files/paper/2026/file/a0dca56ad0aceeb4eab4d35630e9a0ed-Paper-Conference.pdf#page=7)另有LPIPS列，DeepLens/BokehDiff/BokehMe/Dr.Bokeh/MPIB/Any-to-Bokeh分别为0.183/0.127/0.060/0.046/0.040/0.019；arXiv v2未列出。上表原六项数值一致。补充引用不追溯修改已完成候选选择，不把项目LPIPS实现默称为作者入口逐值复现。DeepLens精确视差/自带深度两处叙述来自v1不同数据域，公开材料仍未披露完整私有adapter。按原始几何保持CoC时，minmax后的DeepLens控制需包含span补偿`alpha_req=K*span/c`；当前独立标定范围及超限处理仍待确定。详见现有汇报8.6及`records/deeplens-protocol-source-review-20260929.json`。
+
+**当前Track A阶段边界与冻结规则**：本表当前首先服务于 **Any-to-Bokeh Synthetic/Table 1 reproduction**，不是最终统一信息权限的独立benchmark。Dr.Bokeh因此采用完整200段protocol-recovery后选定的GT Alpha reconstruction adapter作为reported主行；Full-public公开完整pipeline保留为诊断证据，并计划在后续自建公平benchmark时重新优先评估。该选择只表示“当前复现展示配置”，不证明ATB私有实验使用GT alpha。
+
+在Ours正式评价前，本表中DeepLens、BokehDiff、BokehMe、Dr.Bokeh、MPIB与Any-to-Bokeh的reported配置全部冻结。**Ours出现结果后不得为了扩大/缩小差距回调baseline adapter或benchmark构造。** 后续研究顺序为：先在当前ATB-style reproduction benchmark上比较Ours与Any-to-Bokeh；再设计独立的本项目benchmark，统一RGB/低帧率粗深度/focus/control的信息权限和退化协议，并重新确定适用于该公平设置的baseline adapter。两阶段结果分表、分名报告。
 
 Validation 重点依次观察：
 
