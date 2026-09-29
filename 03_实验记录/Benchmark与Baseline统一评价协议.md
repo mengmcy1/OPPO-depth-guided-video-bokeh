@@ -642,11 +642,13 @@ Any-to-Bokeh 对同一批输入只产生一份 prediction，再分别以两种 r
 
 | Method | Paper PSNR ↑ | Our Bench PSNR ↑ | ΔPSNR | Paper SSIM ↑ | Our Bench SSIM ↑ | Paper FVD ↓ | Our Bench FVD ↓ | Sweep Status |
 |---|---:|---:|---:|---:|---:|---:|---:|---|
-| DeepLens | 24.574 |  |  | 0.819 |  | 125.338 |  | 待跑 |
+| DeepLens | 24.574 |  |  | 0.819 |  | 125.338 |  | 独立标定完成；单级SR控制范围待定，200段未启动 |
 | BokehDiff-A：Shared-Geometry | 27.525 | **27.1560** | **-0.3690 dB** | 0.834 | **0.841752** | 65.678 | **67.92665** | ✅ 200段及视觉复核完成；作为protocol-recovery alternative保留 |
 | BokehDiff-B：Normalized | 27.525 | **27.0627** | **-0.4623 dB** | 0.834 | **0.843751** | 65.678 | **65.99693** | ✅ 200段及视觉复核完成；选为主表展示配置 |
 | BokehMe（Normalized，γ=2.2） | 27.992 | **33.3340** | **+5.3420 dB** | 0.936 | **0.979418** | 39.102 | **18.54637** | ✅ 双200段完成；与MPIB排序差异保留 |
 | Dr.Bokeh（LDF/LaMa，γ=2.2） | 31.273 | **29.1077** | **−2.1653 dB** | 0.950 | **0.963207** | 32.710 | **143.28969** | ✅ 完成；FVD偏离已核查并保留 |
+| Dr.Bokeh（GT union alpha+LaMa，诊断） | 31.273 | **31.5885** | **+0.3155 dB** | 0.950 | **0.973475** | 32.710 | **25.85901** | ✅ 同200段输入协议实验完成；额外信息权限，不自动替换主表 |
+| Dr.Bokeh（Known 4FG+1BG，诊断） | 31.273 | **32.2599** | **+0.9869 dB** | 0.950 | **0.978147** | 32.710 | **21.10796** | ✅ 同200段输入协议实验完成；额外信息权限，不自动替换主表 |
 | MPIB（γ=2.2冻结） | 31.390 | **31.6195** | **+0.2295 dB** | 0.950 | **0.974408** | 35.766 | **24.95694** | ✅ 200段完成 |
 | **Any-to-Bokeh** | **38.899** | **39.7116** | **+0.8126 dB** | **0.974** | **0.986305** | **9.005** | **8.93752** | ✅ 完成 |
 
@@ -779,13 +781,17 @@ lens是窗口边长；41/71/101的圆形mask分别为`ρ<20/35/50`。softstep存
 
 **200段终审**：5000帧完整、finite、全量半径覆盖通过，最大实际R31.87451 px，无空/全满LDF mask。FVD143.289688经同缓存特征独立SVD复算为143.289918；差0.000230，保留原公开计算。VFID-I5.760450；相对论文FVD32.710存在显著差异，未因此改协议或删数据。完整数值/by-K及困难场景见现有复现汇报8.3，机器证据`records/drbokeh-track-a-200-20260928.json`与`records/drbokeh-track-a-review-20260928.json`。Table 1A/V已填当前实测结果，不能称恢复了作者私有adapter或验证了独立held-out benchmark。
 
-### Dr.Bokeh input-protocol recovery：视觉终审后扩到同200段（2026-09-29）
+### Dr.Bokeh input-protocol recovery：同200段实验已收尾（2026-09-29）
 
 用户已确认分阶段顺序：固定11段视觉终审 → GT-alpha补齐189段 → known-layer补齐189段 → 同200段统一评价；geometry/gamma/blur-strength只在这轮完整结果出来后另行决定。原full-public的200段与主表完整保留，不按11段分数替换。
 
 55组（11×{0,6,12,18,24}）AIF/GT/LDF alpha/GT union alpha/三组prediction及对应FG depth repair、LaMa mask、BG depth/RGB已查看，未发现新的实现阻塞。明显漏检会让前景残留在背景RGB/depth中；GT alpha后仍有LaMa残影与光度/边缘差异。repro_000的PSNR改善、FD恶化反例保留。稀疏关键帧不能排除未采样的相邻帧闪烁，不能据11段直接宣称解释了完整200段FVD主因。证据`records/drbokeh-input-visual-review-20260929.json`。
 
 执行配置`configs/drbokeh-input-recovery-200.json`。GT alpha是四个前景的union，只替换LDF，官方cv2/LaMa保留；known-layer直接输入四个FG+一个BG，同时改变隐藏信息和层结构，不是纯LaMa消融。复用11段原结果与25帧记录，剩余各4725帧独立写入`outputs/drbokeh-input-recovery-200-20260929/`。gamma=2.2、lens71、highlight=false、offset0、PNG8 disparity、Focus/K、scene/GT/metric不变；先GT-alpha、再known-layer，最后PSNR/SSIM/LPIPS/FD/RM/VFID-I/FVD与by-K。结果目标`records/drbokeh-input-recovery-200-20260929.json`。
+
+**完整200段结果已收尾**：PSNR Full/Alpha/Known=29.107707/31.588505/32.259896，FVD=143.289689/25.859006/21.107962。Alpha相对Full的PSNR胜率99%、FD90.5%；K4/8/16/32的PSNR增益3.1561/3.4937/2.1775/1.3678dB，并未随K递增。Known相对Alpha仍有39段PSNR和44段FD退步，不是逐段上限。全部七项指标、配对/by-K和论文差值见现有复现汇报8.5。新增三个事后退化案例与原55组记录共同审查，未发现新增明显实现阻塞；15000张PNG和特征/控制检查通过。机器证据`records/drbokeh-input-recovery-200-20260929.json`、`records/drbokeh-input-effect-analysis-20260929.json`、`records/drbokeh-input-final-review-20260929.json`。
+
+**当前决定**：本轮输入协议实验关账，不自动追加geometry/gamma/强度实验；残余差值不能证明需要哪一种修正。Table V并列三种输入权限，Table 1A原Full-public行不变。改善不证明Any-to-Bokeh私有adapter使用了oracle；Known共同改变多个因素，不能叫纯LaMa消融，也不能与无oracle方法不加说明地混成同一输入权限比较。
 
 坐标关系明确为：令s=d_max−d_min，d′=(d−d_min)/s、df′=(df−d_min)/s，则K|d−df|=Ks|d′−df′|=R；若归一化后仍用K，则K|d′−df′|=R/s。后者改变散焦强度，不是纯坐标变换。当前只运行Ks补偿的固定版本；未来known-layer raw/归一化+Ks只先做小规模等价性检查，不立刻扩为全量候选。lens是覆盖窗口，不能拿它调虚化强度。
 

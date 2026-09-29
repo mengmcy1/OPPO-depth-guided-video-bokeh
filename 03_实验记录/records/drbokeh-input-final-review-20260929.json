@@ -1,0 +1,79 @@
+{
+  "status": "FULL_200_INPUT_PROTOCOL_RECOVERY_CLOSED_NO_PARAMETER_SEARCH",
+  "closed_utc": "2026-09-29T08:21:02.067299+00:00",
+  "metrics_record": "03_实验记录/records/drbokeh-input-recovery-200-20260929.json",
+  "paired_record": "03_实验记录/records/drbokeh-input-effect-analysis-20260929.json",
+  "input_checks": {
+    "gt_alpha": {
+      "scenes": 200,
+      "frames": 5000,
+      "coverage_failures": 0,
+      "max_radius_px": 31.87450980392157,
+      "max_tail_mass": 4.389326743136824e-06,
+      "max_CoC_error_float32": 3.548779872630803e-06,
+      "max_CoC_error_float64": 1.0658141036401503e-14,
+      "max_output_clip_fraction": 0.0
+    },
+    "oracle_layers": {
+      "scenes": 200,
+      "frames": 5000,
+      "coverage_failures": 0,
+      "max_radius_px": 31.87450980392157,
+      "max_tail_mass": 4.389326743136824e-06,
+      "max_CoC_error_float32": 3.548779872630803e-06,
+      "max_CoC_error_float64": 1.0658141036401503e-14,
+      "max_output_clip_fraction": 0.0
+    }
+  },
+  "final_PNG_integrity": {
+    "scenes_per_branch": 200,
+    "frames_per_branch": 5000,
+    "branches": 3,
+    "total": 15000,
+    "size": [
+      1024,
+      576
+    ],
+    "mode": "RGB",
+    "passed": true,
+    "source": "Successful final assertions in run_drbokeh_protocol_recovery.evaluation before summary creation"
+  },
+  "feature_checks": "All GT caches match original features exactly; prediction features finite and scene order matches all200; FVD/VFID remain whole-set.",
+  "prior_visual_review": "03_实验记录/records/drbokeh-input-visual-review-20260929.json",
+  "additional_posthoc_scene_selection": {
+    "repro_193": "Largest PSNR regression, GTalpha versus full-public",
+    "repro_160": "Largest PSNR regression, known layers versus GTalpha",
+    "repro_101": "Largest FD regression, known layers versus GTalpha and full-public"
+  },
+  "additional_frames": [
+    0,
+    6,
+    12,
+    18,
+    24
+  ],
+  "total_reviewed_unique_scenes": 14,
+  "total_keyframe_groups": 70,
+  "additional_observations": {
+    "repro_193": "GT alpha cleans background disparity/fragments and changes foreground depth repair and LaMa fill. Final PSNR nevertheless decreases0.337257dB versus full-public and FD worsens0.105294. No gross focus reversal or channel swap seen; retain the regression, not a monotone benefit claim.",
+    "repro_160": "Person stays sharp and lion stays defocused in all three outputs at sampled frames. Known-layer output changes sheep/lion appearance and blur-boundary mixing; PSNR drops2.475994dB versus GTalpha. No new gross frame/order failure observed. The changed layer structure/hidden information and renderer response prevent unique attribution.",
+    "repro_101": "Focused man and strongly defocused animals remain correctly ordered at sampled frames. Masks, repaired depths and LaMa backgrounds visibly differ; known layers retain contrast/blur/occlusion differences from reference. FD worsens0.154335 versus GTalpha and0.456109 versus full-public. Five keyframes do not identify the cause of flow-metric differences or rule out unsampled flicker."
+  },
+  "artifact_directories": [
+    "outputs/drbokeh-input-recovery-200-20260929/posthoc-review-20260929",
+    "outputs/drbokeh-input-recovery-200-20260929/posthoc-known-review-20260929"
+  ],
+  "aggregation_index_fix": "Final check initially stopped on absent full_public/repro_143 symlink. Original25PNGs were intact. Register all200 original baseline links even when inference shards skip reused diagnostic scenes; final check passed. No inference or feature extraction rerun.",
+  "decisions": {
+    "input_protocol_experiment": "closed",
+    "geometry_gamma_blur_strength_search": "not started; no new implementation defect identified",
+    "main_table_input_protocol": "unchanged full-public; oracle alternatives remain explicitly labelled diagnostics",
+    "DeepLens": "independent controls complete; range policy pending, no preflight or200inference"
+  },
+  "limits": [
+    "No claim to recover Any-to-Bokeh private adapter.",
+    "Known layers are not a guaranteed per-scene upper bound or pure LaMa ablation.",
+    "K groups have different content; descriptive improvements are not an isolated causal test.",
+    "Fixed200 reproduction development, not an official/held-out benchmark."
+  ]
+}

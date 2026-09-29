@@ -1,13 +1,21 @@
-"""Prepare the fixed 55 visual groups and paired intermediate diagnostics; no inference."""
+"""Prepare selected visual groups and paired intermediate diagnostics; no inference."""
+import argparse
 import json
 from pathlib import Path
 import numpy as np
 from PIL import Image,ImageDraw
 
 ROOT=Path(__file__).resolve().parents[1]
-config=json.loads((ROOT/'configs/drbokeh-protocol-recovery-v2.json').read_text())
+p=argparse.ArgumentParser(description=__doc__)
+p.add_argument('--config',default='configs/drbokeh-protocol-recovery-v2.json')
+p.add_argument('--only',default='',help='Comma-separated scene IDs, for explicitly labelled posthoc review')
+p.add_argument('--output',type=Path)
+args=p.parse_args()
+config=json.loads((ROOT/args.config).read_text())
 base=json.loads((ROOT/config['base_protocol']).read_text())
-run=ROOT/config['output'];out=run/'visual-review-20260929';out.mkdir(exist_ok=True)
+selected=args.only.split(',') if args.only else config['scene_ids']
+assert len(set(selected))==len(selected) and set(selected)<=set(config['scene_ids'])
+run=ROOT/config['output'];out=ROOT/args.output if args.output else run/'visual-review-20260929';out.mkdir(exist_ok=True)
 rows=[]
 
 
@@ -19,7 +27,7 @@ def thumbnail(x,size=(256,144)):
     return im.resize(size,Image.Resampling.LANCZOS)
 
 
-for sid in config['scene_ids']:
+for sid in selected:
     final=Image.new('RGB',(7*256,5*168),'white');fd=ImageDraw.Draw(final)
     layers=Image.new('RGB',(8*224,5*150),'white');ld=ImageDraw.Draw(layers)
     for row,t in enumerate([0,6,12,18,24]):
@@ -54,4 +62,4 @@ for sid in config['scene_ids']:
         with (out/f'{sid}-{kind}.jpg').open('xb') as f:im.save(f,format='JPEG',quality=95)
     print('PREPARED',sid,flush=True)
 with (out/'intermediate-comparison.json').open('x') as f:
-    json.dump(dict(scene_count=11,groups=55,rows=rows,scope='Paired changes, not independent layer accuracy; visual depth clamped to [0,1] only for display'),f,indent=2)
+    json.dump(dict(scene_count=len(selected),groups=len(rows),rows=rows,scope='Paired changes, not independent layer accuracy; visual depth clamped to [0,1] only for display'),f,indent=2)

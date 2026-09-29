@@ -362,7 +362,7 @@ python scripts/evaluate_author_public_metrics.py \
 
 本轮完成不改变原有复现边界：测试素材、proxy GT、PNG编码及部分loader/样本计数与作者入口不同。FVD接近论文9.005、VFID-I低于论文1.479，只能作为外部参考，不能证明官方测试指标被严格复现。
 
-后续MPIB、BokehMe及Dr.Bokeh已完成，见8.1–8.3；BokehDiff双候选200段及视觉复核完成，结果见8.4；Dr.Bokeh新增输入协议对照正在扩到200段，见8.5；DeepLens原生TF1 CPU已跑通但兼容数值有差异，见8.6。未来公平Benchmark仍需单独确定源划分、renderer与指标，Cycles及AM validation恢复线保持暂停。
+后续MPIB、BokehMe及Dr.Bokeh已完成，见8.1–8.3；BokehDiff双候选200段及视觉复核完成，结果见8.4；Dr.Bokeh新增输入协议200段及配对分析已收尾，见8.5；DeepLens原生TF1 CPU已跑通但兼容数值有差异，见8.6。未来公平Benchmark仍需单独确定源划分、renderer与指标，Cycles及AM validation恢复线保持暂停。
 
 ---
 
@@ -541,33 +541,65 @@ LPIPS A/B=0.134406/0.132024；主RM为24 transitions，作者公开前2对版本
 
 **当前结论**：论文贴近程度为4项偏A、2项偏B。预登记阶段没有设置指标权重，因此当时未用投票或相对误差平均强行冻结；在完整200段与定性复核均结束后，用户选择B（Normalized）作为主表展示配置。理由是PSNR/SSIM/FD/RM上A虽更接近论文，但A/B差距相对有限；B在FVD/VFID-I上更接近，尤其FVD=65.996926与论文65.678仅差0.318926。Table V继续并列A/B，A作为protocol-recovery alternative保留。该选择用于复现展示，不证明Any-to-Bokeh作者私有adapter就是B；本轮不新增模型推理、第三候选或K搜索。完整结果与复核：`records/bokehdiff-adapter-recovery-200-20260928.json`、`records/bokehdiff-final-review-20260929.json`。
 
-### 8.5 Dr.Bokeh：固定输入协议对照，两分支200段推理完成、指标计算中
+### 8.5 Dr.Bokeh：同200段输入协议实验已收尾（2026-09-29）
 
-在固定的11段诊断集合上，用合成GT union alpha替换LDF后，11/11段PSNR均改善，FVD/VFID-I显著下降；说明分割输入及其引起的分层、深度修复和背景补全是差异的重要来源。含3个事后失败案例，尚不能直接外推为完整200段FVD=143.29的主要原因。repro_000的FD反而变差，保留反例。
+三组均为同一200×25=5000帧，1024×576。Full-public复用原结果，GT-alpha与known-layer各新增/复用5000帧。全部PSNR/SSIM/LPIPS/FD/RM/FVD/VFID-I、by-K及逐段配对分析完成；没有运行geometry/gamma/blur-strength新候选，原主表输入协议未替换。
+
+| 同200段输入协议 | PSNR ↑ | SSIM ↑ | LPIPS ↓ | FD ↓ | RM ↓ | FVD ↓ | VFID-I ↓ |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Full-public：LDF+LaMa | 29.107707 | 0.963207 | 0.037996 | 0.561774 | 0.012391 | 143.289689 | 5.760450 |
+| GT union alpha+LaMa | 31.588505 | 0.973475 | 0.029383 | 0.478618 | 0.008393 | 25.859006 | 3.732668 |
+| Known 4FG+1BG | 32.259896 | 0.978147 | 0.025926 | 0.443133 | 0.007250 | 21.107962 | 3.311429 |
+| 论文Dr.Bokeh（不同测试集） | 31.273 | 0.950 | — | 0.522 | 0.011 | 32.710 | 6.097 |
+
+PSNR/SSIM为TorchMetrics；RM主列为全部24个transition，公开前2对诊断RM分别为0.012609 / 0.008483 / 0.007298（Full/Alpha/Known）。FVD、VFID-I为完整集合距离，不能给它们定义逐段胜率。Full-public复用原预测/逐段指标，同200段缓存特征重算FVD与旧记录仅有不足1e-6的数值差，历史成绩未改。
+
+| 配对改善（正值表示改善） | PSNR增加/dB | FD减少 | FVD减少 | PSNR胜率 | FD胜率 |
+|---|---:|---:|---:|---:|---:|
+| Full→GT alpha | 2.480798 | 0.083156 | 117.430682 | 198/200（99.0%） | 181/200（90.5%） |
+| GT alpha→Known | 0.671391 | 0.035485 | 4.751044 | 161/200（80.5%） | 156/200（78.0%） |
+| Full→Known | 3.152189 | 0.118641 | 122.181727 | 193/200（96.5%） | 194/200（97.0%） |
+
+GT-alpha相对Full-public的PSNR中位增益2.287867dB，PSNR/FD同时改善180/200段。因此改善在完整200段上成立，非只依赖原11段诊断。2段PSNR退步和19段FD退步均保留；Known相对Alpha仍有39段PSNR、44段FD退步，**不能称为逐场景性能上限**。这些是描述性配对统计，没有把源素材相关的场景当独立样本进行显著性检验。
+
+| K | n | Full→Alpha ΔPSNR ↑ | Full→Alpha FD减少 | PSNR胜数 | FD胜数 | Alpha→Known ΔPSNR ↑ | Alpha→Known FD减少 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| 4 | 48 | 3.156101 | 0.098549 | 48/48 | 48/48 | 1.177192 | 0.018622 |
+| 8 | 43 | 3.493732 | 0.101116 | 43/43 | 43/43 | 0.579213 | 0.013328 |
+| 16 | 56 | 2.177549 | 0.086635 | 56/56 | 50/56 | 0.485600 | 0.017811 |
+| 32 | 53 | 1.367801 | 0.050968 | 51/53 | 40/53 | 0.484401 | 0.087408 |
+
+**K趋势没有支持预设的简单解释**：Full→Alpha的PSNR/FD改善量没有随K单调增加，K32的平均改善反而最小。Alpha→Known的FD改善在K32较大，但整体也不是单调序列，且PSNR不呈同样趋势。不同K组内容并不相同；既不能据本表确认“强虚化必然放大输入修正收益”，也不能反向证明强虚化不会放大误差。完整三组by-K原始均值见机器记录。
+
+| 本项目−论文（带符号差值） | Full-public | GT alpha | Known layers |
+|---|---:|---:|---:|
+| PSNR | -2.165293 | +0.315505 | +0.986896 |
+| SSIM | +0.013207 | +0.023475 | +0.028147 |
+| FD | +0.039774 | -0.043382 | -0.078867 |
+| RM | +0.001391 | -0.002607 | -0.003750 |
+| FVD | +110.579689 | -6.850994 | -11.602038 |
+| VFID_I | -0.336550 | -2.364332 | -2.785571 |
+
+**收尾判断**：GT alpha使原来FVD143.29的大幅偏离降到25.86，分割输入及其引起的分层、深度修复、背景补全过程是当前结果的重要影响因素；不能只归因renderer本体。与论文相比，GT-alpha的PSNR高0.3155dB、FVD低6.8510，Known分别高0.9869dB、低11.6020；新协议的SSIM/RM/VFID等也整体优于论文，仍有代理数据/渲染/输入及评价适配差异。Full-public的SSIM与VFID-I反而更接近论文，因此不存在“oracle后六项都更接近”的结论。更接近某几项或改善原排序，不证明作者使用了oracle。**本轮输入实验关账；没有新的客观实现错误要求继续搜索，暂不追加geometry/gamma/强度，也不根据剩余差值自动选主表版本。**
+
+**实现与反例检查**：三组共15000张PNG通过完整性/尺寸/模式验证；新增两分支10000帧素材重建与lens覆盖全部通过，最大实际R31.87451px，遗漏径向权重质量最大4.3893e-6，CoC变换误差float64≤1.07e-14/float32≤3.55e-6，无输出裁剪。原11段55组视觉记录保留；追加查看GT-alpha最大PSNR退步193，以及Known相对Alpha最大PSNR退步160、最大FD退步101，各0/6/12/18/24帧和中间层。累计14段70组，未发现新的明显错层/通道/帧序实现阻塞；稀疏关键帧不能排除未采样时序问题。
+
+- repro_193：Alpha相对Full的PSNR−0.337257dB、FD+0.105294；mask、前景深度修复、LaMa补全均改变，边界更完整不保证最终分数单调改善。
+- repro_160：Known相对Alpha的PSNR−2.475994dB；人物保持清晰、狮子保持离焦，但羊/狮子的外观和边缘混合与参考仍有差异，不唯一归因某个组件。
+- repro_101：Known相对Alpha的FD+0.154335，相对Full+0.456109；强虚化动物及遮挡/背景仍有差异，不能仅凭FD和5个关键帧认定时序模块错误。
+- repro_000的Alpha FD恶化反例继续保留；不删除任何scene或调整参数。
+
+**执行收尾**：推理使用原四路场景调度。逐段指标保留串行已完成46段后改四路互斥分片，函数不变，按manifest顺序float64汇总；FVD/VFID不拆分。最后检查曾因复用场景`repro_143`缺少Full-public目录软链接而停止，原25帧完整。补齐所有复用场景的索引后检查通过，未重跑推理/特征，原日志保留。当前所有后台计算已结束。
+
+结果`records/drbokeh-input-recovery-200-20260929.json`，配对分析`records/drbokeh-input-effect-analysis-20260929.json`，收尾与反例记录`records/drbokeh-input-final-review-20260929.json`；入口`scripts/run_drbokeh_protocol_recovery.py`、`scripts/analyze_drbokeh_input_recovery.py`和`scripts/review_drbokeh_inputs.py`。自动结果中的REVIEW_PENDING保留生成时状态，最终收尾状态以final-review为准。Known同时改变隐藏RGB、alpha、几何和层数，不能叫纯LaMa消融；本集合仍是复现开发集，不是held-out验证。
+
+**保留的历史11段诊断**（与上方200段不可混算）：
 
 | 同11段 | PSNR ↑ | SSIM ↑ | LPIPS ↓ | FD ↓ | RM ↓ | FVD ↓ | VFID-I ↓ |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | LDF+LaMa | 28.251015 | 0.958056 | 0.043572 | 0.978921 | 0.013668 | 293.721479 | 14.740562 |
 | GT union alpha+LaMa | 30.212765 | 0.969182 | 0.034304 | 0.932069 | 0.009422 | 48.065288 | 7.087483 |
 | Known 4FG+1BG | 30.816634 | 0.974313 | 0.029478 | 0.833600 | 0.008149 | 40.349377 | 6.159460 |
-
-55组最终图与中间层视觉终审完成，证据`records/drbokeh-input-visual-review-20260929.json`。006/017/143可见漏检前景残留在背景RGB/depth；GT alpha改善mask但没有消除所有LaMa残影。068斑马偏亮等失配在known-layer下仍存在，不据此调gamma。本组6.159与论文6.097接近不能反推作者输入协议。
-
-**已启动的下一步**：保持gamma2.2/lens71/K×span映射及全部scene/GT/metric不变，GT-alpha先补189段，known-layer再补189段，已有11段各275帧直接复用。原full-public结果保留。13:43:48北京时间脱离终端启动，14:43:38按用户要求改为同分支四路互斥场景调度，分支顺序不变；当前主日志`logs/drbokeh-input-recovery-200-20260929/parallel4-supervisor-20260929.log`，worker分配见输出目录`scheduling-*.json`；配置`configs/drbokeh-input-recovery-200.json`。生产吞吐由约0.538提升到2.038帧/s（约3.79×，不同scene窗口，非Efficiency成绩）。固定两帧并发复查float最大差约1.19e-7，一张PNG只有一个通道差1级，与已有LaMa重复差异量级一致；不声称全局bitwise相等。证据`records/drbokeh-scheduling-20260929.json`。
-
-| 完整200段 | Full-public | GT Alpha | Known Layers | 论文 |
-|---|---:|---:|---:|---:|
-| PSNR ↑ | 29.107707 | 5000帧完成，指标计算中 | 5000帧完成，指标待算 | 31.273 |
-| SSIM ↑ | 0.963207 | 待汇总 | 待汇总 | 0.950 |
-| LPIPS ↓ | 0.037996 | 待汇总 | 待汇总 | — |
-| FD ↓ | 0.561774 | 待汇总 | 待汇总 | 0.522 |
-| RM ↓ | 0.012391 | 待汇总 | 待汇总 | 0.011 |
-| FVD ↓ | 143.289688 | 待汇总 | 待汇总 | 32.710 |
-| VFID-I ↓ | 5.760450 | 待汇总 | 待汇总 | 6.097 |
-
-两分支推理均已完成，各200段/5000帧。逐段指标改为四路互斥场景分片，46段已完成前缀保留；按manifest顺序汇总，FVD/VFID仍按完整集合计算。完整指标汇总后自动补充GT-alpha相对Full-public的逐段PSNR/FD胜率，以及K=4/8/16/32的配对改善；同时保留Full→Known及Alpha→Known差值。不同K组内容并不相同，随K增加的趋势最多支持强虚化放大输入误差的解释，不单独构成因果证据。
-
-此表只在同200段指标齐全后填入新值；不把上面的11段分数移入。本轮研究输入协议效应，known-layer还同时改变隐藏RGB/层数/几何，不单独归因LaMa。结果出来后再决定是否做geometry → gamma1/2.2 → 必要的统一强度标定，不要求论文小数点或排序成为通过门槛。
 
 ### 8.6 DeepLens：原生TF1 CPU可运行，TF2兼容数值不能记作等价
 
@@ -656,6 +688,6 @@ ightarrow
 ---
 
 **最后更新**：2026-09-29
-**状态**：Any-to-Bokeh公开代理复现及author-public指标已完成；MPIB/BokehMe/Dr.Bokeh Track A已填真实结果，BokehDiff双200段及A/B复核完成且Normalized已选为主表展示配置；Dr.Bokeh新输入协议200段正在运行，DeepLens原生TF1 CPU验证与控制证据见8.6。
+**状态**：Any-to-Bokeh公开代理复现及author-public指标已完成；MPIB/BokehMe/Dr.Bokeh Track A已填真实结果，BokehDiff双200段及A/B复核完成且Normalized已选为主表展示配置；Dr.Bokeh新输入协议200段已收尾，DeepLens独立控制标定发现范围限制、正式200段未启动，证据见8.6。
 
 补算实现及权重来源：[作者公开指标代码](https://github.com/vivoCameraResearch/any-to-bokeh/blob/f7a16959dd219080fb8eec0d32bb9602d8970c22/metrics/vid_metrics.py)、[cdfvd固定版本](https://github.com/songweige/content-debiased-fvd/tree/a1e037ab7cb087debd2221d14ae4a001ec054201)、[作者指定I3D权重](https://huggingface.co/zhengchong/VFID)、[官方VideoMAE2权重](https://huggingface.co/OpenGVLab/VideoMAE2)。

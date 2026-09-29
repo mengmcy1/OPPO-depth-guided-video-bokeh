@@ -308,6 +308,15 @@ def main():
     if expected==200:
         manifest=json.loads((ROOT/base['input']/'config.json').read_text())
         assert config['scene_ids']==[s['id'] for s in manifest['scenes']]
+        # Reused diagnostic scenes can be omitted from every inference shard.
+        # Register their original full-public outputs before final integrity checks too.
+        for sid in config['scene_ids']:
+            src=ROOT/config['baseline_output']/'clips'/sid
+            dst=run/'full_public/clips'/sid
+            assert src.is_dir()
+            dst.parent.mkdir(parents=True,exist_ok=True)
+            if dst.exists():assert dst.resolve()==src.resolve()
+            else:dst.symlink_to(src,target_is_directory=True)
         review=json.loads((ROOT/config['visual_review']).read_text())
         assert review['status']=='FIXED_55_VISUAL_REVIEW_COMPLETE_NO_NEW_IMPLEMENTATION_BLOCKER'
         source=ROOT/config['reuse_diagnostic'];previous=json.loads((source/'protocol.json').read_text())
