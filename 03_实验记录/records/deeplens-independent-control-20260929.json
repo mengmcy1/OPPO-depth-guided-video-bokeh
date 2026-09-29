@@ -1,0 +1,467 @@
+{
+  "status": "SINGLE_SR_CONTROL_MEASURED_TARGET_SUPPORT_DECISION_PENDING",
+  "source": "outputs/deeplens-control-calibration-20260929/result.json",
+  "protocol": {
+    "resolution": [
+      1024,
+      576
+    ],
+    "low_resolution": [
+      512,
+      288
+    ],
+    "levels": [
+      0.25,
+      0.75
+    ],
+    "orientations": [
+      "vertical",
+      "horizontal"
+    ],
+    "signed_disparities": [
+      -1.0,
+      -0.5,
+      0.5,
+      1.0
+    ],
+    "apertures": [
+      0.0,
+      0.25,
+      0.5,
+      1.0
+    ],
+    "geometry": "One constant-disparity plane. Delta+1: d=1/focus=0; -1: d=0/focus=1; +.5: d=.75/focus=.25; -.5: d=.25/focus=.75.",
+    "preprocessing": "Original BGR float32, INTER_AREA half resolution, original single guided SR to1024x576",
+    "measurement": "Signed edge-derivative second moment in central160px window, averaged along edge; subtract same-orientation aperture0 variance; equivalent uniform-disk radius=2*sqrt(max(var-var0,0)). Also record negative LSF mass and10-90width.",
+    "planned_mapping": "If response is sufficiently coherent, fit one zero-intercept image-space scale R_eff=c*abs(delta)*aperture, using all predeclared nonzero controls. Inspect monotonicity, orientation/sign and delta=.5 residuals before freezing. Report any target K outside measured native support; no silent saturation or parameter sweep.",
+    "scope": "Independent constructed control images only; no AM/VM/benchmark predictions, PSNR or FVD used for calibration."
+  },
+  "runtime": {
+    "source_commit": "3dbc1b04ba082b3b6b1dc0d944b3d18fa542ae2c",
+    "runtime": "1.15.0",
+    "device": "CPU",
+    "checkpoint_tensors": 488,
+    "restored_tensors": 210,
+    "restored_elements": 2044303,
+    "scopes": [
+      "Feature",
+      "Lensblur",
+      "SR"
+    ],
+    "all_restored_finite": true,
+    "no_uninitialized_variables": true,
+    "DepthNet_built_or_executed": false,
+    "compatibility_files": [
+      {
+        "file": "network/network.py",
+        "modified": true
+      },
+      {
+        "file": "network/kernel_net.py",
+        "modified": false
+      },
+      {
+        "file": "network/feature_net.py",
+        "modified": false
+      },
+      {
+        "file": "network/srnet.py",
+        "modified": false
+      },
+      {
+        "file": "core/build_lensblur.py",
+        "modified": false
+      },
+      {
+        "file": "core/build_sr.py",
+        "modified": false
+      }
+    ],
+    "native_SR_uint8_intermediate_preserved": true,
+    "limitation": "Native TF1 CPU reference; no claim of original GPU numerical parity."
+  },
+  "rejected_measurement": "Signed LSF second moment is not a nonnegative PSF variance: neural ringing gives negative variance/increments. The original max(variance,0) radius and fitted scale are diagnostic only, not a valid frozen mapping.",
+  "replacement_measurement": "Previously recorded10-90edge width / analytic uniform-disk factor. Reports an equivalent width, not exact physical kernel support. No subtraction of the small aperture0 pixel-transition width.",
+  "disk_edge_width_per_radius": 1.374097652265081,
+  "positive_disk_validation": [
+    {
+      "radius_px": 2,
+      "measured_radius_px": 2.073921209655954,
+      "error_px": 0.07392120965595383
+    },
+    {
+      "radius_px": 4,
+      "measured_radius_px": 4.083279908199714,
+      "error_px": 0.08327990819971376
+    },
+    {
+      "radius_px": 8,
+      "measured_radius_px": 8.010393358300606,
+      "error_px": 0.010393358300605726
+    },
+    {
+      "radius_px": 16,
+      "measured_radius_px": 16.01981582673552,
+      "error_px": 0.019815826735520403
+    },
+    {
+      "radius_px": 32,
+      "measured_radius_px": 32.00987876832174,
+      "error_px": 0.00987876832174095
+    }
+  ],
+  "aperture0_width_range_px": [
+    0.8000026687979584,
+    0.8000048428773994
+  ],
+  "response_monotonic": {
+    "('vertical', -1.0)": true,
+    "('vertical', -0.5)": true,
+    "('vertical', 0.5)": true,
+    "('vertical', 1.0)": true,
+    "('horizontal', -1.0)": true,
+    "('horizontal', -0.5)": true,
+    "('horizontal', 0.5)": true,
+    "('horizontal', 1.0)": true
+  },
+  "rows": [
+    {
+      "orientation": "vertical",
+      "delta": -1.0,
+      "aperture": 0.0,
+      "width_px": 0.8000026687979584,
+      "disk_edge_equivalent_radius_px": 0.5822021946396774,
+      "signed_variance_px2": 0.02262664563491872,
+      "variance_above_zero": 0.0,
+      "negative_lsf_mass_ratio": 0.00033438775907230876
+    },
+    {
+      "orientation": "vertical",
+      "delta": -1.0,
+      "aperture": 0.25,
+      "width_px": 4.522442086205658,
+      "disk_edge_equivalent_radius_px": 3.291208655186044,
+      "signed_variance_px2": 0.91063166075279,
+      "variance_above_zero": 0.8880050151178713,
+      "negative_lsf_mass_ratio": 0.017340772931126725
+    },
+    {
+      "orientation": "vertical",
+      "delta": -1.0,
+      "aperture": 0.5,
+      "width_px": 8.563454060271212,
+      "disk_edge_equivalent_radius_px": 6.232056394358217,
+      "signed_variance_px2": 12.339545385817107,
+      "variance_above_zero": 12.316918740182189,
+      "negative_lsf_mass_ratio": 0.013688108512277421
+    },
+    {
+      "orientation": "vertical",
+      "delta": -1.0,
+      "aperture": 1.0,
+      "width_px": 16.272704377317197,
+      "disk_edge_equivalent_radius_px": 11.842465745060442,
+      "signed_variance_px2": 25.467710864026596,
+      "variance_above_zero": 25.445084218391678,
+      "negative_lsf_mass_ratio": 0.023463092902102193
+    },
+    {
+      "orientation": "vertical",
+      "delta": -0.5,
+      "aperture": 0.0,
+      "width_px": 0.8000026687979584,
+      "disk_edge_equivalent_radius_px": 0.5822021946396774,
+      "signed_variance_px2": 0.02262664563491872,
+      "variance_above_zero": 0.0,
+      "negative_lsf_mass_ratio": 0.00033438775907230876
+    },
+    {
+      "orientation": "vertical",
+      "delta": -0.5,
+      "aperture": 0.25,
+      "width_px": 2.6815945022275685,
+      "disk_edge_equivalent_radius_px": 1.9515312451099762,
+      "signed_variance_px2": -1.1447588043819503,
+      "variance_above_zero": -1.167385450016869,
+      "negative_lsf_mass_ratio": 0.02731503086515158
+    },
+    {
+      "orientation": "vertical",
+      "delta": -0.5,
+      "aperture": 0.5,
+      "width_px": 4.522442086205658,
+      "disk_edge_equivalent_radius_px": 3.291208655186044,
+      "signed_variance_px2": 0.91063166075279,
+      "variance_above_zero": 0.8880050151178713,
+      "negative_lsf_mass_ratio": 0.017340772931126725
+    },
+    {
+      "orientation": "vertical",
+      "delta": -0.5,
+      "aperture": 1.0,
+      "width_px": 8.563454060271212,
+      "disk_edge_equivalent_radius_px": 6.232056394358217,
+      "signed_variance_px2": 12.339545385817107,
+      "variance_above_zero": 12.316918740182189,
+      "negative_lsf_mass_ratio": 0.013688108512277421
+    },
+    {
+      "orientation": "vertical",
+      "delta": 0.5,
+      "aperture": 0.0,
+      "width_px": 0.8000026687979584,
+      "disk_edge_equivalent_radius_px": 0.5822021946396774,
+      "signed_variance_px2": 0.02262664563491872,
+      "variance_above_zero": 0.0,
+      "negative_lsf_mass_ratio": 0.00033438775907230876
+    },
+    {
+      "orientation": "vertical",
+      "delta": 0.5,
+      "aperture": 0.25,
+      "width_px": 2.7690618221539296,
+      "disk_edge_equivalent_radius_px": 2.015185614784634,
+      "signed_variance_px2": -0.5341733582429583,
+      "variance_above_zero": -0.556800003877877,
+      "negative_lsf_mass_ratio": 0.02276619645350817
+    },
+    {
+      "orientation": "vertical",
+      "delta": 0.5,
+      "aperture": 0.5,
+      "width_px": 4.426908521707162,
+      "disk_edge_equivalent_radius_px": 3.2216840734789023,
+      "signed_variance_px2": 1.6470972246983637,
+      "variance_above_zero": 1.624470579063445,
+      "negative_lsf_mass_ratio": 0.011705332057862476
+    },
+    {
+      "orientation": "vertical",
+      "delta": 0.5,
+      "aperture": 1.0,
+      "width_px": 8.471159137017537,
+      "disk_edge_equivalent_radius_px": 6.16488873483887,
+      "signed_variance_px2": 10.926118511230477,
+      "variance_above_zero": 10.903491865595559,
+      "negative_lsf_mass_ratio": 0.013078148768499801
+    },
+    {
+      "orientation": "vertical",
+      "delta": 1.0,
+      "aperture": 0.0,
+      "width_px": 0.8000026687979584,
+      "disk_edge_equivalent_radius_px": 0.5822021946396774,
+      "signed_variance_px2": 0.02262664563491872,
+      "variance_above_zero": 0.0,
+      "negative_lsf_mass_ratio": 0.00033438775907230876
+    },
+    {
+      "orientation": "vertical",
+      "delta": 1.0,
+      "aperture": 0.25,
+      "width_px": 4.426908521707162,
+      "disk_edge_equivalent_radius_px": 3.2216840734789023,
+      "signed_variance_px2": 1.6470972246983637,
+      "variance_above_zero": 1.624470579063445,
+      "negative_lsf_mass_ratio": 0.011705332057862476
+    },
+    {
+      "orientation": "vertical",
+      "delta": 1.0,
+      "aperture": 0.5,
+      "width_px": 8.471159137017537,
+      "disk_edge_equivalent_radius_px": 6.16488873483887,
+      "signed_variance_px2": 10.926118511230477,
+      "variance_above_zero": 10.903491865595559,
+      "negative_lsf_mass_ratio": 0.013078148768499801
+    },
+    {
+      "orientation": "vertical",
+      "delta": 1.0,
+      "aperture": 1.0,
+      "width_px": 18.111452094155666,
+      "disk_edge_equivalent_radius_px": 13.180614976163088,
+      "signed_variance_px2": 26.042021855478986,
+      "variance_above_zero": 26.019395209844067,
+      "negative_lsf_mass_ratio": 0.02202118502859592
+    },
+    {
+      "orientation": "horizontal",
+      "delta": -1.0,
+      "aperture": 0.0,
+      "width_px": 0.8000048428773994,
+      "disk_edge_equivalent_radius_px": 0.5822037768266766,
+      "signed_variance_px2": 0.013139548841608943,
+      "variance_above_zero": 0.0,
+      "negative_lsf_mass_ratio": 0.00014329807507388833
+    },
+    {
+      "orientation": "horizontal",
+      "delta": -1.0,
+      "aperture": 0.25,
+      "width_px": 4.670998672744446,
+      "disk_edge_equivalent_radius_px": 3.3993207579131726,
+      "signed_variance_px2": -0.9547523488142886,
+      "variance_above_zero": -0.9678918976558976,
+      "negative_lsf_mass_ratio": 0.01462351144338548
+    },
+    {
+      "orientation": "horizontal",
+      "delta": -1.0,
+      "aperture": 0.5,
+      "width_px": 8.584288462941302,
+      "disk_edge_equivalent_radius_px": 6.2472186374751795,
+      "signed_variance_px2": 10.374020870534993,
+      "variance_above_zero": 10.360881321693384,
+      "negative_lsf_mass_ratio": 0.013600029239007775
+    },
+    {
+      "orientation": "horizontal",
+      "delta": -1.0,
+      "aperture": 1.0,
+      "width_px": 16.51874631878856,
+      "disk_edge_equivalent_radius_px": 12.021522845598954,
+      "signed_variance_px2": 25.62676327567386,
+      "variance_above_zero": 25.61362372683225,
+      "negative_lsf_mass_ratio": 0.016655978655265965
+    },
+    {
+      "orientation": "horizontal",
+      "delta": -0.5,
+      "aperture": 0.0,
+      "width_px": 0.8000048428773994,
+      "disk_edge_equivalent_radius_px": 0.5822037768266766,
+      "signed_variance_px2": 0.013139548841608943,
+      "variance_above_zero": 0.0,
+      "negative_lsf_mass_ratio": 0.00014329807507388833
+    },
+    {
+      "orientation": "horizontal",
+      "delta": -0.5,
+      "aperture": 0.25,
+      "width_px": 2.628312318464239,
+      "disk_edge_equivalent_radius_px": 1.9127551190642775,
+      "signed_variance_px2": -1.7030405966079154,
+      "variance_above_zero": -1.7161801454495242,
+      "negative_lsf_mass_ratio": 0.029268891649105355
+    },
+    {
+      "orientation": "horizontal",
+      "delta": -0.5,
+      "aperture": 0.5,
+      "width_px": 4.670998672744446,
+      "disk_edge_equivalent_radius_px": 3.3993207579131726,
+      "signed_variance_px2": -0.9547523488142886,
+      "variance_above_zero": -0.9678918976558976,
+      "negative_lsf_mass_ratio": 0.01462351144338548
+    },
+    {
+      "orientation": "horizontal",
+      "delta": -0.5,
+      "aperture": 1.0,
+      "width_px": 8.584288462941302,
+      "disk_edge_equivalent_radius_px": 6.2472186374751795,
+      "signed_variance_px2": 10.374020870534993,
+      "variance_above_zero": 10.360881321693384,
+      "negative_lsf_mass_ratio": 0.013600029239007775
+    },
+    {
+      "orientation": "horizontal",
+      "delta": 0.5,
+      "aperture": 0.0,
+      "width_px": 0.8000048428773994,
+      "disk_edge_equivalent_radius_px": 0.5822037768266766,
+      "signed_variance_px2": 0.013139548841608943,
+      "variance_above_zero": 0.0,
+      "negative_lsf_mass_ratio": 0.00014329807507388833
+    },
+    {
+      "orientation": "horizontal",
+      "delta": 0.5,
+      "aperture": 0.25,
+      "width_px": 2.6977027304281904,
+      "disk_edge_equivalent_radius_px": 1.96325401326555,
+      "signed_variance_px2": 0.6312347047588039,
+      "variance_above_zero": 0.618095155917195,
+      "negative_lsf_mass_ratio": 0.025232613824361077
+    },
+    {
+      "orientation": "horizontal",
+      "delta": 0.5,
+      "aperture": 0.5,
+      "width_px": 4.630821000177704,
+      "disk_edge_equivalent_radius_px": 3.3700814440256095,
+      "signed_variance_px2": 1.651127365096321,
+      "variance_above_zero": 1.6379878162547121,
+      "negative_lsf_mass_ratio": 0.00802029450520232
+    },
+    {
+      "orientation": "horizontal",
+      "delta": 0.5,
+      "aperture": 1.0,
+      "width_px": 8.53541611024582,
+      "disk_edge_equivalent_radius_px": 6.211651767380524,
+      "signed_variance_px2": 15.369786959823836,
+      "variance_above_zero": 15.356647410982227,
+      "negative_lsf_mass_ratio": 0.010107145006709338
+    },
+    {
+      "orientation": "horizontal",
+      "delta": 1.0,
+      "aperture": 0.0,
+      "width_px": 0.8000048428773994,
+      "disk_edge_equivalent_radius_px": 0.5822037768266766,
+      "signed_variance_px2": 0.013139548841608943,
+      "variance_above_zero": 0.0,
+      "negative_lsf_mass_ratio": 0.00014329807507388833
+    },
+    {
+      "orientation": "horizontal",
+      "delta": 1.0,
+      "aperture": 0.25,
+      "width_px": 4.630821000177704,
+      "disk_edge_equivalent_radius_px": 3.3700814440256095,
+      "signed_variance_px2": 1.651127365096321,
+      "variance_above_zero": 1.6379878162547121,
+      "negative_lsf_mass_ratio": 0.00802029450520232
+    },
+    {
+      "orientation": "horizontal",
+      "delta": 1.0,
+      "aperture": 0.5,
+      "width_px": 8.53541611024582,
+      "disk_edge_equivalent_radius_px": 6.211651767380524,
+      "signed_variance_px2": 15.369786959823836,
+      "variance_above_zero": 15.356647410982227,
+      "negative_lsf_mass_ratio": 0.010107145006709338
+    },
+    {
+      "orientation": "horizontal",
+      "delta": 1.0,
+      "aperture": 1.0,
+      "width_px": 17.08050845466549,
+      "disk_edge_equivalent_radius_px": 12.430345417234177,
+      "signed_variance_px2": 29.469259842141405,
+      "variance_above_zero": 29.456120293299797,
+      "negative_lsf_mass_ratio": 0.014812933762456971
+    }
+  ],
+  "descriptive_zero_intercept_scale_px": 12.487962321133619,
+  "fit_RMSE_px": 0.2979548019103614,
+  "max_control_edge_equivalent_radius_range_px": [
+    11.842465745060442,
+    13.180614976163088
+  ],
+  "target_K_outside_measured_range": [
+    16,
+    32
+  ],
+  "mapping_frozen": false,
+  "benchmark_inference_started": false,
+  "limits": [
+    "Mapping has not been selected from paper or benchmark scores.",
+    "The width estimator was retained in the initial protocol; second moment failure is disclosed rather than hidden.",
+    "Uniform-plane edge response does not establish textured/occlusion behavior or a strict support bound.",
+    "Choosing saturation or altering the native SR scale policy requires an explicit protocol decision."
+  ]
+}

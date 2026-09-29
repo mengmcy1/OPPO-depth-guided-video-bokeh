@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor
 
 import numpy as np
 from PIL import Image
@@ -144,7 +145,54 @@ def means(rows):
     return {key:float(np.mean([r[key] for r in rows])) for key in KEYS}
 
 
-def evaluation(config,base,run):
+def clip_metrics(config,base,run,branch,workers):
+    """Schedule disjoint scene evaluations; preserve the existing per-clip metric implementation."""
+    dest=run/branch;report=dest/'metrics.json'
+    if report.exists():return
+    parts=dest/'metrics-parts';parts.mkdir(exist_ok=True)
+    prediction_root=str((dest/'clips').relative_to(ROOT))
+    ids=config['scene_ids'];seen=set();saved=[]
+    for path in sorted(parts.glob('*.json')):
+        data=json.loads(path.read_text())
+        assert data['prediction_root']==prediction_root and data['prediction_dir']=='pred_drbokeh'
+        chosen=[r['scene'] for r in data['rows']]
+        assert len(set(chosen))==len(chosen) and set(chosen)<=set(ids) and not seen.intersection(chosen)
+        seen.update(chosen);saved.append(data)
+    pending=[sid for sid in ids if sid not in seen]
+    logs=ROOT/config['logs'];stamp=datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
+    def worker(index,chosen):
+        path=parts/f'{stamp}-part{index}.json'
+        command=['scripts/evaluate_renderer_pilot.py','--input',base['input'],'--only',','.join(chosen),
+            '--reference-dir','gt_mpib_public_srgb','--reference-label','MPIB-public proxy',
+            '--prediction-root',prediction_root,'--prediction-dir','pred_drbokeh','--author-rm','--torchmetrics',
+            '--scope',config['name']+'; input-permission recovery, not an automatically selected main-table baseline','--report',str(path)]
+        with (logs/f'{branch}-metrics-{stamp}-part{index}.log').open('x') as f:
+            subprocess.run([sys.executable,*command],stdout=f,stderr=subprocess.STDOUT,check=True,cwd=ROOT)
+        data=json.loads(path.read_text());assert [r['scene'] for r in data['rows']]==chosen
+        return data
+    shards=[pending[i::workers] for i in range(workers)]
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        futures=[pool.submit(worker,i,s) for i,s in enumerate(shards) if s]
+        for future in futures:saved.append(future.result())
+    assert saved
+    template=saved[0]
+    for data in saved:
+        assert data['metrics']==template['metrics'] and data['scope']==template['scope']
+        assert data['prediction_root']==prediction_root and data['prediction_dir']=='pred_drbokeh'
+    rows=[r for data in saved for r in data['rows']]
+    assert len(rows)==len(ids) and {r['scene'] for r in rows}==set(ids)
+    by_id={r['scene']:r for r in rows};template['rows']=[by_id[sid] for sid in ids]
+    for label,values in template['mean'].items():
+        for key in values:
+            vals=[r[key] for r in rows if r['renderer']==label];assert np.isfinite(vals).all()
+            # Match the original manifest order and float64 aggregation.
+            template['mean'][label][key]=float(np.mean([r[key] for r in template['rows'] if r['renderer']==label]))
+    template['scheduling']='Disjoint scene processes; identical metric functions; manifest-order float64 aggregation; no distribution metrics split into chunks.'
+    write_json(report,template)
+    print('CLIP_METRICS_COMPLETE',branch,len(rows),flush=True)
+
+
+def evaluation(config,base,run,metric_workers=1):
     """Reuse old predictions/features, compute all branches on the same manifest."""
     os.chdir(ROOT)
     sys.path.insert(0,str(ROOT.parent/'any-to-bokeh'))
@@ -191,6 +239,7 @@ def evaluation(config,base,run):
     for branch in ('gt_alpha','oracle_layers'):
         dest=run/branch;metrics=dest/'metrics.json'
         prediction_root=str((dest/'clips').relative_to(ROOT))
+        if metric_workers>1:clip_metrics(config,base,run,branch,metric_workers)
         if not metrics.exists():
             execute(['scripts/evaluate_renderer_pilot.py','--input',base['input'],'--only',','.join(ids),
                 '--reference-dir','gt_mpib_public_srgb','--reference-label','MPIB-public proxy',
@@ -243,11 +292,13 @@ def main():
     p.add_argument('--only',default='');p.add_argument('--max-frames',type=int,default=25)
     p.add_argument('--branch',choices=['both','gt_alpha','oracle_layers'],default='both')
     p.add_argument('--workers',type=int,default=1,help='Disjoint scene processes within each input branch; branches remain sequential')
+    p.add_argument('--metric-workers',type=int,default=1,help='Disjoint scene processes for per-clip metrics only; FVD/VFID remain whole-set')
     args=p.parse_args();os.chdir(ROOT)
     config=json.loads((ROOT/args.config).read_text());base=json.loads((ROOT/config['base_protocol']).read_text())
     for key in ('gamma','highlight','offset','lens'):assert base[key]==config['fixed'][key]
     assert 1<=args.max_frames<=25
     assert 1<=args.workers<=4
+    assert 1<=args.metric_workers<=4
     expected=config.get('scene_count',11)
     assert expected in (11,200) and len(config['scene_ids'])==len(set(config['scene_ids']))==expected
     run=ROOT/config['output'];run.mkdir(parents=True,exist_ok=True)
@@ -273,13 +324,13 @@ def main():
                     if dst.exists():assert dst.resolve()==src.resolve()
                     else:dst.symlink_to(src,target_is_directory=True)
     if args.phase=='inference':inference(args,config,base,run)
-    elif args.phase=='evaluate':evaluation(config,base,run)
+    elif args.phase=='evaluate':evaluation(config,base,run,args.metric_workers)
     else:
         assert not args.only and args.max_frames==25 and args.branch=='both'
         # Separate processes release LDF/LaMa/CUDA allocations before metric extraction.
         stages=[('inference','gt_alpha'),('inference','oracle_layers'),('evaluate','both')] if expected==200 else [('inference','both'),('evaluate','both')]
         for phase,branch in stages:
-            command=[sys.executable,'-u',str(Path(__file__).resolve()),'--config',args.config,'--phase',phase,'--branch',branch]
+            command=[sys.executable,'-u',str(Path(__file__).resolve()),'--config',args.config,'--phase',phase,'--branch',branch,'--metric-workers',str(args.metric_workers)]
             if phase!='inference' or args.workers==1:
                 subprocess.run(command,check=True,cwd=ROOT)
                 continue

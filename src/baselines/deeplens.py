@@ -5,9 +5,14 @@ import subprocess
 import sys
 
 import numpy as np
-import tensorflow.compat.v1 as tf
+import tensorflow as tensorflow_runtime
 
-tf.disable_v2_behavior()
+NATIVE_TF1=tensorflow_runtime.__version__.startswith('1.')
+if NATIVE_TF1:
+    tf=tensorflow_runtime
+else:
+    import tensorflow.compat.v1 as tf
+    tf.disable_v2_behavior()
 ROOT = Path(__file__).resolve().parents[2]
 AUTHOR_COMMIT = '3dbc1b04ba082b3b6b1dc0d944b3d18fa542ae2c'
 
@@ -15,17 +20,18 @@ AUTHOR_COMMIT = '3dbc1b04ba082b3b6b1dc0d944b3d18fa542ae2c'
 def load_builders(repository):
     assert subprocess.check_output(['git', '-C', str(repository), 'rev-parse', 'HEAD'], text=True).strip() == AUTHOR_COMMIT
     assert not subprocess.check_output(['git', '-C', str(repository), 'diff', '--', 'network', 'core'], text=True)
-    target = ROOT / 'logs/deeplens-runtime-20260928/compat-source'
+    target = ROOT / ('logs/deeplens-tf-parity-20260929/native_tf1/source' if NATIVE_TF1 else 'logs/deeplens-runtime-20260928/compat-source')
     files = ['network/network.py', 'network/kernel_net.py', 'network/feature_net.py',
              'network/srnet.py', 'core/build_lensblur.py', 'core/build_sr.py']
     changes = []
     for relative in files:
         original = (repository / relative).read_text()
-        text = original.replace('import tensorflow as tf', 'import tensorflow.compat.v1 as tf')
+        text = original if NATIVE_TF1 else original.replace('import tensorflow as tf', 'import tensorflow.compat.v1 as tf')
         if relative == 'network/network.py':
             # Only syntax/API compatibility. All variables are restored; no initializer is run.
             assert 'tf.contrib.layers.xavier_initializer()' in text
-            text = text.replace('tf.contrib.layers.xavier_initializer()', 'tf.glorot_uniform_initializer()')
+            if not NATIVE_TF1:
+                text = text.replace('tf.contrib.layers.xavier_initializer()', 'tf.glorot_uniform_initializer()')
             text = text.replace('basestring', 'str').replace('.iteritems()', '.items()')
             text = text.replace('c_i / group', 'int(c_i) // group').replace('c_o/group', 'c_o//group')
         path = target / relative
@@ -84,7 +90,8 @@ class DeepLensExternal:
                 all_restored_finite=True, no_uninitialized_variables=True,
                 DepthNet_built_or_executed=False, compatibility_files=changes,
                 native_SR_uint8_intermediate_preserved=True,
-                limitation='TF2 compat.v1 CPU execution; numerical parity against a native TF1 binary is not established.')
+                limitation=('Native TF1 CPU reference; no claim of original GPU numerical parity.' if NATIVE_TF1 else
+                            'TF2 compat.v1 CPU; known SR uint8 out-of-range differences versus native TF1.'))
 
     def predict(self, bgr_low, bgr_high, disparity_full, focus, aperture):
         assert bgr_high.shape[:2] == disparity_full.shape

@@ -1,0 +1,148 @@
+{
+  "status": "NATIVE_ADAPTER_MATCHES_PREVIOUS_NATIVE_TF1_PROBE",
+  "load": {
+    "source_commit": "3dbc1b04ba082b3b6b1dc0d944b3d18fa542ae2c",
+    "runtime": "1.15.0",
+    "device": "CPU",
+    "checkpoint_tensors": 488,
+    "restored_tensors": 210,
+    "restored_elements": 2044303,
+    "scopes": [
+      "Feature",
+      "Lensblur",
+      "SR"
+    ],
+    "all_restored_finite": true,
+    "no_uninitialized_variables": true,
+    "DepthNet_built_or_executed": false,
+    "compatibility_files": [
+      {
+        "file": "network/network.py",
+        "modified": true
+      },
+      {
+        "file": "network/kernel_net.py",
+        "modified": false
+      },
+      {
+        "file": "network/feature_net.py",
+        "modified": false
+      },
+      {
+        "file": "network/srnet.py",
+        "modified": false
+      },
+      {
+        "file": "core/build_lensblur.py",
+        "modified": false
+      },
+      {
+        "file": "core/build_sr.py",
+        "modified": false
+      }
+    ],
+    "native_SR_uint8_intermediate_preserved": true,
+    "limitation": "Native TF1 CPU reference; no claim of original GPU numerical parity."
+  },
+  "rows": [
+    {
+      "input": "outputs/deeplens-keyframes-20260928/inputs/repro_000-00000.npz",
+      "bitwise_equal": true,
+      "max_abs": 0.0,
+      "mean_abs": 0.0,
+      "audit": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          0.9686274528503418
+        ],
+        "signed_disparity_range": [
+          -0.4525552988052368,
+          0.5082290172576904
+        ],
+        "raw_output_range": [
+          0.0,
+          1.0437743663787842
+        ],
+        "output_clip_fraction": 0.001239917896412037
+      }
+    },
+    {
+      "input": "outputs/deeplens-keyframes-20260928/inputs/repro_004-00012.npz",
+      "bitwise_equal": true,
+      "max_abs": 0.0,
+      "mean_abs": 0.0,
+      "audit": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          1.0
+        ],
+        "signed_disparity_range": [
+          -0.024696804583072662,
+          0.09932280331850052
+        ],
+        "raw_output_range": [
+          0.0,
+          1.0041747093200684
+        ],
+        "output_clip_fraction": 7.3468243634259255e-06
+      }
+    },
+    {
+      "input": "outputs/deeplens-keyframes-20260928/inputs/repro_017-00024.npz",
+      "bitwise_equal": true,
+      "max_abs": 0.0,
+      "mean_abs": 0.0,
+      "audit": {
+        "low_output_shape": [
+          1,
+          288,
+          512,
+          3
+        ],
+        "high_output_shape": [
+          1,
+          576,
+          1024,
+          3
+        ],
+        "low_disparity_range": [
+          0.007843137718737125,
+          1.0
+        ],
+        "signed_disparity_range": [
+          -0.24803921580314636,
+          0.0
+        ],
+        "raw_output_range": [
+          0.0,
+          1.001564383506775
+        ],
+        "output_clip_fraction": 3.3908420138888887e-06
+      }
+    }
+  ]
+}

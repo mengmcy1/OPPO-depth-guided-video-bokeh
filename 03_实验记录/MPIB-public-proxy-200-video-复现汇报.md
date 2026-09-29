@@ -541,7 +541,7 @@ LPIPS A/B=0.134406/0.132024；主RM为24 transitions，作者公开前2对版本
 
 **当前结论**：论文贴近程度为4项偏A、2项偏B。预登记阶段没有设置指标权重，因此当时未用投票或相对误差平均强行冻结；在完整200段与定性复核均结束后，用户选择B（Normalized）作为主表展示配置。理由是PSNR/SSIM/FD/RM上A虽更接近论文，但A/B差距相对有限；B在FVD/VFID-I上更接近，尤其FVD=65.996926与论文65.678仅差0.318926。Table V继续并列A/B，A作为protocol-recovery alternative保留。该选择用于复现展示，不证明Any-to-Bokeh作者私有adapter就是B；本轮不新增模型推理、第三候选或K搜索。完整结果与复核：`records/bokehdiff-adapter-recovery-200-20260928.json`、`records/bokehdiff-final-review-20260929.json`。
 
-### 8.5 Dr.Bokeh：固定输入协议对照，200段正在补齐
+### 8.5 Dr.Bokeh：固定输入协议对照，两分支200段推理完成、指标计算中
 
 在固定的11段诊断集合上，用合成GT union alpha替换LDF后，11/11段PSNR均改善，FVD/VFID-I显著下降；说明分割输入及其引起的分层、深度修复和背景补全是差异的重要来源。含3个事后失败案例，尚不能直接外推为完整200段FVD=143.29的主要原因。repro_000的FD反而变差，保留反例。
 
@@ -557,13 +557,15 @@ LPIPS A/B=0.134406/0.132024；主RM为24 transitions，作者公开前2对版本
 
 | 完整200段 | Full-public | GT Alpha | Known Layers | 论文 |
 |---|---:|---:|---:|---:|
-| PSNR ↑ | 29.107707 | 5000帧完成，指标待算 | 推理运行中 | 31.273 |
+| PSNR ↑ | 29.107707 | 5000帧完成，指标计算中 | 5000帧完成，指标待算 | 31.273 |
 | SSIM ↑ | 0.963207 | 待汇总 | 待汇总 | 0.950 |
 | LPIPS ↓ | 0.037996 | 待汇总 | 待汇总 | — |
 | FD ↓ | 0.561774 | 待汇总 | 待汇总 | 0.522 |
 | RM ↓ | 0.012391 | 待汇总 | 待汇总 | 0.011 |
 | FVD ↓ | 143.289688 | 待汇总 | 待汇总 | 32.710 |
 | VFID-I ↓ | 5.760450 | 待汇总 | 待汇总 | 6.097 |
+
+两分支推理均已完成，各200段/5000帧。逐段指标改为四路互斥场景分片，46段已完成前缀保留；按manifest顺序汇总，FVD/VFID仍按完整集合计算。完整指标汇总后自动补充GT-alpha相对Full-public的逐段PSNR/FD胜率，以及K=4/8/16/32的配对改善；同时保留Full→Known及Alpha→Known差值。不同K组内容并不相同，随K增加的趋势最多支持强虚化放大输入误差的解释，不单独构成因果证据。
 
 此表只在同200段指标齐全后填入新值；不把上面的11段分数移入。本轮研究输入协议效应，known-layer还同时改变隐藏RGB/层数/几何，不单独归因LaMa。结果出来后再决定是否做geometry → gamma1/2.2 → 必要的统一强度标定，不要求论文小数点或排序成为通过门槛。
 
@@ -582,6 +584,11 @@ LPIPS A/B=0.134406/0.132024；主RM为24 transitions，作者公开前2对版本
 **运行选择**：后续adapter开发优先用已跑通的原生TF1 CPU，不给官方SR擅自加clamp、不把原兼容40帧冒充原生结果；不宣称与原论文GPU逐数值一致。代码`scripts/probe_deeplens_tf_parity.py`，依赖`configs/requirements-deeplens-tf1-cpu.txt`，证据`records/deeplens-tf-parity-20260929.json`和`records/deeplens-control-runtime-20260929.json`。
 
 **控制口径仍未冻结**：[原论文§3.2.2](https://arxiv.org/pdf/1810.08100)定义的是目标/训练最大光圈的比值；[官方交互入口](https://github.com/scott89/deeplens_eval/blob/3dbc1b04ba082b3b6b1dc0d944b3d18fa542ae2c/core/evaluator_interactive.py)使用`(inverse_depth-focus)*aperture`及slider/10。proto默认的max_aperture_radius=16/max_kernel_radius=8没有在此forward中用于把本benchmark K变成输出像素半径，不能直接当映射依据。3帧×aperture{0,.25,.5,1}共12次原生CPU控制检查均finite、尺寸正确、输出随控制变化；这不是物理半径标定，也未依据论文分数挑参数。`K/32`仍仅是临时UI范围假设，训练最大光圈及分辨率尺度对应证据未确认，正式200段尚未启动。
+
+
+**独立控制标定（2026-09-29）**：固定简单阶跃RGB/均匀平面，2方向×4有符号离焦差×4aperture，共32次原生TF1单级SR运行完成。初始二阶矩半径估计受振铃影响，出现负方差/增量，不能用截零后的拟合值冻结。初始协议同时记录的10–90%边缘宽度对八组控制均单调；按理想圆盘的1.37409765×R换算，aperture1/最大离焦差的等效半径为11.8425–13.1806 px。圆盘解析参考的像素积分验证误差最大0.0833 px。所有非零控制的描述性线性系数12.4880 px（RMSE0.2980 px）仅用于报告响应，不是已冻结mapping，也不证明该学习算子是圆盘卷积。
+
+这说明当前原生单级路径不能覆盖K16/32的目标响应。**待明确采用上限饱和并披露覆盖不足，还是先检查官方递归SR**；后者涉及输出尺度策略，不能冒称1024默认入口。正式8段预检与200段尚未启动，不按论文PSNR/FVD选择。独立标定记录`records/deeplens-independent-control-20260929.json`；原生adapter三帧与此前native probe逐值相等，记录`records/deeplens-native-adapter-regression-20260929.json`。
 
 ## 九、对后续 Benchmark 的价值
 
