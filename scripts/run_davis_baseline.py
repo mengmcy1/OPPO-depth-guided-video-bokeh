@@ -1,6 +1,7 @@
 """DAVIS native inputs with frozen baseline adapters and resumable scene prefixes."""
 import argparse
 import csv
+import fcntl
 import json
 import math
 import os
@@ -290,9 +291,17 @@ def main():
         gate=json.loads((ROOT/'03_实验记录/records/davis-baseline-preflight-20260929.json').read_text())
         assert gate['status']=='ALL_FIVE_PREFLIGHTS_PASSED'
     out=ROOT/p['output']/args.method
-    write(out/'protocol.json',dict(configuration=p,data_protocol=c,scene_order=order,method=args.method))
-    if args.method=='any2bokeh':run_any2bokeh(p,c,out,order,names)
-    else:run_frame_method(args.method,p,c,out,order,names)
+    out.mkdir(parents=True,exist_ok=True)
+    # A separately scheduled method may finish before the original supervisor
+    # reaches it. Serialize that method and reuse its complete outputs.
+    with (out/'run.lock').open('a') as lock:
+        fcntl.flock(lock,fcntl.LOCK_EX)
+        write(out/'protocol.json',dict(configuration=p,data_protocol=c,scene_order=order,method=args.method))
+        complete=all((out/'audit'/n/'complete.json').exists() and
+                     len(list((out/'predictions'/n).glob('*.png')))==25 for n in names)
+        if complete:print('REUSE_COMPLETE_METHOD',args.method,len(names),flush=True)
+        elif args.method=='any2bokeh':run_any2bokeh(p,c,out,order,names)
+        else:run_frame_method(args.method,p,c,out,order,names)
     print('METHOD_INFERENCE_COMPLETE',args.method,args.stage,flush=True)
 
 
