@@ -9,20 +9,20 @@
       "frames": 5000,
       "coverage_failures": 0,
       "max_radius_px": 31.87450980392157,
-      "max_tail_mass": 4.389326743136824e-06,
-      "max_CoC_error_float32": 3.548779872630803e-06,
+      "max_tail_mass": 0.000004389326743136824,
+      "max_CoC_error_float32": 0.000003548779872630803,
       "max_CoC_error_float64": 1.0658141036401503e-14,
-      "max_output_clip_fraction": 0.0
+      "max_output_clip_fraction": 0
     },
     "oracle_layers": {
       "scenes": 200,
       "frames": 5000,
       "coverage_failures": 0,
       "max_radius_px": 31.87450980392157,
-      "max_tail_mass": 4.389326743136824e-06,
-      "max_CoC_error_float32": 3.548779872630803e-06,
+      "max_tail_mass": 0.000004389326743136824,
+      "max_CoC_error_float32": 0.000003548779872630803,
       "max_CoC_error_float64": 1.0658141036401503e-14,
-      "max_output_clip_fraction": 0.0
+      "max_output_clip_fraction": 0
     }
   },
   "final_PNG_integrity": {
@@ -75,5 +75,20 @@
     "Known layers are not a guaranteed per-scene upper bound or pure LaMa ablation.",
     "K groups have different content; descriptive improvements are not an isolated causal test.",
     "Fixed200 reproduction development, not an official/held-out benchmark."
-  ]
+  ],
+  "post_review_reporting_selection": {
+    "selected_for_track_a_reproduction_main_table": "gt_alpha",
+    "display_name": "Dr.Bokeh (GT Alpha reconstruction adapter)",
+    "retained_public_pipeline": "full_public",
+    "retained_oracle_diagnostic": "oracle_layers",
+    "rationale": "Current stage prioritizes reconstruction of the Any-to-Bokeh synthetic/Table1 performance landscape. On the fixed same200 scenes, GT-alpha robustly improves the full-public result and restores the reported Dr.Bokeh metric scale much more closely (PSNR 31.588505 vs paper 31.273; FVD 25.859006 vs paper 32.710).",
+    "scope": "Reporting/reproduction selection only. It does not establish that the Any-to-Bokeh private Dr.Bokeh adapter used GT alpha. Full-public remains the public complete-pipeline result and is the preferred starting candidate when constructing a future fair benchmark with unified information permissions. Known layers remain diagnostic.",
+    "freeze_rule": "Selected before Ours evaluation. Do not change the Dr.Bokeh Track A reporting adapter based on Ours results; only objective implementation errors may trigger correction.",
+    "future_stage_logic": [
+      "First evaluate Ours against Any-to-Bokeh on the frozen ATB-style reproduction benchmark.",
+      "Then construct an independent project benchmark with unified RGB/low-FPS coarse-depth/focus/control permissions and OPPO-style degradations.",
+      "Re-select fair baseline adapters for that independent benchmark; do not automatically carry GT-alpha privileges into it."
+    ],
+    "selected_date": "2026-09-29"
+  }
 }
