@@ -1,0 +1,74 @@
+{
+  "status": "BLOCK_A_COMPLETE_DEEPLENS_NATIVE_DEFAULT_FROZEN_REMAINING_ADAPTER_PREFLIGHT",
+  "completed_utc": "2026-09-29T14:28:53.254331+00:00",
+  "configuration": "configs/davis-eval-v2.json",
+  "source_sequences": 50,
+  "source_frames": 3455,
+  "evaluation_frames": 1250,
+  "geometry_record": "03_实验记录/records/davis-v2-geometry-20260929.json",
+  "geometry_preview": "outputs/davis-v2-preparation-review-20260929/geometry.jpg",
+  "viewed_geometry_frames": {
+    "bear": 12,
+    "blackswan": 12,
+    "bmx-trees": 12,
+    "breakdance": 12,
+    "dog": 12,
+    "horsejump-high": 12,
+    "kite-surf": 12,
+    "soapbox": 12
+  },
+  "geometry_visual": "Eight fixed native RGB/mask/quantized depth/CoC previews checked; no frame/channel misalignment identified; not a GT depth accuracy claim.",
+  "normalized_adapter_source_q_span_range": [
+    0.2196078431372549,
+    1.0
+  ],
+  "normalized_adapter_native_q_strength_multiplier_range": [
+    1.0,
+    4.553571428571429
+  ],
+  "normalization_scope": "Descriptive source q before model-specific resize; BokehMe/BokehDiff frozen rescaling behavior is unchanged, not a complete DAVIS model preflight.",
+  "environment": {
+    "common": "magicbokeh: Python3.10.21, torch2.8.0+cu128, xformers0.0.32.post2",
+    "deeplens": "deeplens-tf1-cpu: Python3.7, tensorflow-cpu1.15.0",
+    "installation": [
+      "imageio-ffmpeg0.4.7 added",
+      "setuptools83.0.0 ->80.9.0 for required pkg_resources"
+    ],
+    "pip_check": "passed"
+  },
+  "compatibility": {
+    "vda": "Existing Blackwell FA3 dispatch workaround reused; original upstream model/checkpoint unchanged",
+    "initial_failed_attempts": "logs/davis-v2-20260929/vda.log and codec.log retained",
+    "native_tf1": "Only previously documented Python3 syntax/import compatibility; DepthNet source copied unchanged"
+  },
+  "weight": {
+    "path": "models/Video-Depth-Anything/video_depth_anything_vitl.pth",
+    "bytes": 1538392012,
+    "strict_load": true,
+    "hf_repository": "depth-anything/Video-Depth-Anything-Large",
+    "revision": "7aafbcb5c6af0bac741aad2b6471894fb4761afa"
+  },
+  "peak_VDA_allocated_GiB": 10.804974555969238,
+  "codec_selftest": {
+    "VEPI_png": 1.0,
+    "VEPI_public_mp4": 0.9975190615950151,
+    "delta": -0.0024809384049847474,
+    "range": [
+      -0.010015822711228695,
+      -0.000760718621987122
+    ],
+    "worst_sequence": "dog-agility",
+    "all_public_entrance_equal": true
+  },
+  "source_boundary_notes": [
+    "bmx-bumps14 and surf1 later context frames have empty foreground; retained for VDA, no focus required outside first25.",
+    "tennis has label255 in13 source frames; explicit author single-object !=0 rule retained, rather than silently assigning label semantics or dropping pixels."
+  ],
+  "deeplens_review": "03_实验记录/records/deeplens-davis-native-review-20260929.json",
+  "formal_baseline_results": false,
+  "next": [
+    "Complete remaining real-world adapter preflight with shared q/f/K and frozen per-method transformations.",
+    "Then run formal50x25 baseline predictions and MP4-primary/PNG-diagnostic VEPI plus qualitative review; reuse DeepLens preflight aperture0.5 outputs."
+  ],
+  "deeplens_selected_aperture": 0.5
+}

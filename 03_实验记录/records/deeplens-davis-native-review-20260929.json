@@ -1,0 +1,248 @@
+{
+  "status": "EIGHT_SEQUENCE_NATIVE_PREFLIGHT_PASSED_NATIVE_DEFAULT_0_5_USER_FROZEN",
+  "reviewed_utc": "2026-09-29T14:27:17.216987+00:00",
+  "record": "03_实验记录/records/deeplens-davis-native-preflight-20260929.json",
+  "scenes": 8,
+  "input_frames": 200,
+  "prediction_frames": 600,
+  "keyframe_groups_viewed": 40,
+  "checkpoint_restored_tensors": 488,
+  "DepthNet_tensors": 278,
+  "max_signed_input_error": 0.0,
+  "max_mean_matched_focus_error": 0.00045299530029296875,
+  "all_depth_repeats_bitwise_equal": true,
+  "max_final_clip_fraction": 0.005659880461516204,
+  "aperture_candidates": [
+    0.25,
+    0.5,
+    1.0
+  ],
+  "selected_aperture": 0.5,
+  "proposal": "Native UI initial value0.5 is an independently sourced simple convention; maximum1.0 is a distinct allowed convention. User decision requested, neither identified with private ATB K16.",
+  "sources": {
+    "native_graph": "https://github.com/scott89/deeplens_eval/blob/3dbc1b04ba082b3b6b1dc0d944b3d18fa542ae2c/core/evaluator_interactive.py",
+    "normalization": "https://github.com/scott89/deeplens_eval/blob/3dbc1b04ba082b3b6b1dc0d944b3d18fa542ae2c/core/build_depth_resnet.py",
+    "paper": "https://arxiv.org/pdf/1810.08100"
+  },
+  "no_VEPI_for_candidate_selection": true,
+  "visual_limits": "Sparse fixed keyframes do not establish temporal stability. Depth and focus fluctuations are retained baseline behavior, not parameter-selection signals.",
+  "by_sequence": [
+    {
+      "id": "bear",
+      "viewed_frames": [
+        0,
+        6,
+        12,
+        18,
+        24
+      ],
+      "note": "Increasing aperture visibly softens rear stone wall; main bear remains comparatively sharp.",
+      "maximum_adjacent_focus_step": 0.030507385730743408,
+      "maximum_step_transition": [
+        23,
+        24
+      ],
+      "depth_min_range": [
+        0.0,
+        0.0
+      ],
+      "depth_max_range": [
+        0.9999998807907104,
+        1.0
+      ],
+      "mean_foreground_depth": 0.8955515027046204,
+      "mean_background_depth": 0.41206436276435854
+    },
+    {
+      "id": "blackswan",
+      "viewed_frames": [
+        0,
+        6,
+        12,
+        18,
+        24
+      ],
+      "note": "Bank/vegetation blur increases; feather/neck boundary imperfections retained.",
+      "maximum_adjacent_focus_step": 0.041288793087005615,
+      "maximum_step_transition": [
+        14,
+        15
+      ],
+      "depth_min_range": [
+        0.0,
+        0.0
+      ],
+      "depth_max_range": [
+        0.9999999403953552,
+        1.0
+      ],
+      "mean_foreground_depth": 0.8443394064903259,
+      "mean_background_depth": 0.34005450963974
+    },
+    {
+      "id": "bmx-trees",
+      "viewed_frames": [
+        0,
+        6,
+        12,
+        18,
+        24
+      ],
+      "note": "Native depth foreground separation weakens under tree occlusion near frames18/24; thin bike structure and variable focus retained.",
+      "maximum_adjacent_focus_step": 0.16980397701263428,
+      "maximum_step_transition": [
+        2,
+        3
+      ],
+      "depth_min_range": [
+        0.0,
+        0.0
+      ],
+      "depth_max_range": [
+        0.9999998807907104,
+        1.0
+      ],
+      "mean_foreground_depth": 0.6844705092906952,
+      "mean_background_depth": 0.43722257256507874
+    },
+    {
+      "id": "breakdance",
+      "viewed_frames": [
+        0,
+        6,
+        12,
+        18,
+        24
+      ],
+      "note": "Different body parts occupy different predicted depths; background crowd blur and some body-part softness retained.",
+      "maximum_adjacent_focus_step": 0.08509421348571777,
+      "maximum_step_transition": [
+        11,
+        12
+      ],
+      "depth_min_range": [
+        0.0,
+        0.0
+      ],
+      "depth_max_range": [
+        0.9999998807907104,
+        1.0
+      ],
+      "mean_foreground_depth": 0.8069486689567565,
+      "mean_background_depth": 0.420455310344696
+    },
+    {
+      "id": "dog",
+      "viewed_frames": [
+        0,
+        6,
+        12,
+        18,
+        24
+      ],
+      "note": "Coarse leg/ground separation and source motion blur retained; no repair to improve score.",
+      "maximum_adjacent_focus_step": 0.15783512592315674,
+      "maximum_step_transition": [
+        23,
+        24
+      ],
+      "depth_min_range": [
+        0.0,
+        0.0
+      ],
+      "depth_max_range": [
+        0.9999998807907104,
+        1.0
+      ],
+      "mean_foreground_depth": 0.7897403240203857,
+      "mean_background_depth": 0.4740652775764465
+    },
+    {
+      "id": "horsejump-high",
+      "viewed_frames": [
+        0,
+        6,
+        12,
+        18,
+        24
+      ],
+      "note": "Horse/rider remains main focus; obstacle bars and foreground plant share some predicted depth and remain partly sharp.",
+      "maximum_adjacent_focus_step": 0.130901038646698,
+      "maximum_step_transition": [
+        16,
+        17
+      ],
+      "depth_min_range": [
+        0.0,
+        0.0
+      ],
+      "depth_max_range": [
+        0.9999998807907104,
+        1.0
+      ],
+      "mean_foreground_depth": 0.7860213994979859,
+      "mean_background_depth": 0.4276241207122803
+    },
+    {
+      "id": "kite-surf",
+      "viewed_frames": [
+        0,
+        6,
+        12,
+        18,
+        24
+      ],
+      "note": "Thin ropes and water-spray depth incomplete; different wave regions respond differently to aperture.",
+      "maximum_adjacent_focus_step": 0.04680269956588745,
+      "maximum_step_transition": [
+        13,
+        14
+      ],
+      "depth_min_range": [
+        0.0,
+        0.0
+      ],
+      "depth_max_range": [
+        0.9999998807907104,
+        1.0
+      ],
+      "mean_foreground_depth": 0.6316269516944886,
+      "mean_background_depth": 0.5285545659065246
+    },
+    {
+      "id": "soapbox",
+      "viewed_frames": [
+        0,
+        6,
+        12,
+        18,
+        24
+      ],
+      "note": "Nearby ramp blurs strongly while distant background can stay relatively sharp near selected foreground depth.",
+      "maximum_adjacent_focus_step": 0.04680478572845459,
+      "maximum_step_transition": [
+        13,
+        14
+      ],
+      "depth_min_range": [
+        0.0,
+        0.0
+      ],
+      "depth_max_range": [
+        0.9999998807907104,
+        1.0
+      ],
+      "mean_foreground_depth": 0.345893446803093,
+      "mean_background_depth": 0.44009600758552553
+    }
+  ],
+  "post_review_user_decision": {
+    "selected_aperture": 0.5,
+    "display_name": "DeepLens native-default (DepthNet, single-SR, aperture0.5)",
+    "source": "Official evaluator_interactive.py UI valinit=5, aperture=slider.val/10",
+    "scope": "User-selected reproduction convention; no claim of physical equivalence to K16 or recovery of ATB private settings",
+    "selection_used_VEPI": false,
+    "reuse": "The8-scene aperture0.5 outputs may be reused for formal evaluation; other apertures remain diagnostic",
+    "selected_utc": "2026-09-29T14:34:08.589930+00:00"
+  }
+}

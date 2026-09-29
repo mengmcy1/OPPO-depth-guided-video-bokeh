@@ -241,6 +241,19 @@ DAVIS 每段视频固定观察：
 
 不自行构造没有文献依据的“1～5 分稳定性指标”。
 
+## 4.4 DAVIS v2：公共数据规则固定，方法预检完成后再批量评价
+
+用户已确认本轮先完成Block A公共预处理，并单独检查DeepLens native DepthNet；配置为`configs/davis-eval-v2.json`。这是**Reproduced DAVIS-2016 25-frame evaluation protocol**，不声称获得缺失的作者`davis_k16.csv`。正式版§4.1提到25帧评价/计时、A.4写DAVIS所有视频，但不能据此恢复确切作者窗口。
+
+- **数据**：沿官方2016 train30+val20清单复用本机TrainVal包的50段，全源3455帧；不重新下载。原始JPEG和索引标注只读。按[DAVIS作者single-object loader](https://github.com/fperazzi/davis-2017/blob/main/python/lib/davis/dataset/base.py)的`annotation != 0`合并前景，派生PNG值域必须为`{0,255}`；不能保存为0/1再交给ATB灰度阈值。前25帧1250张必须具备非空ROI；后续上下文帧可因主体出画而mask为空，仍全部送入VDA，不给这些非评价帧强行定义focus。
+- **几何**：VDA-Large/ViT-L相对深度，`input_size=518, fp32=False`。50个sequence**各自**完整推理、各自求一次T/H/W联合min/max；不跨视频合并，也不逐帧归一化。复用[ATB公开预处理](https://github.com/vivoCameraResearch/any-to-bokeh/blob/main/utils/pre_process.py)的截断量化`q=((d-min)/(max-min)*255).astype(uint8)`；前25帧focus由量化q在原分辨率二值mask内求均值/255，再以`{:.5f}`写入文件名。非finite、零span、缺帧/错配或评价ROI为空即报错，不静默跳过。
+- **评价输入**：各段前25连续帧，K16，目标1024×576。普通geometry-driven方法共享RGB/q/f/K来源；BokehMe/BokehDiff保持已冻结Normalized行为，记录逐帧span及控制缩放，不临时补偿K。因此共享外部输入**不等于**各内部adapter的CoC物理等价。所有方法仍需相应real-world输入检查，不能把Synthetic通过自动当作DAVIS通过。
+- **Dr.Bokeh**：DAVIS使用Full-public LDF+LaMa及共享VDA；GT mask只定义focus与VEPI ROI，不作为alpha/hidden layers。Synthetic reproduction主行仍是GT-alpha，不更改其历史配置。
+- **DeepLens**：native TF1.15 CPU，原DepthNet→pixel focal depth→LensBlur→single SR。固定8段bear/blackswan/bmx-trees/breakdance/dog/horsejump-high/kite-surf/soapbox，前25帧；RGB在本预检用OpenCV线性resize到1024×576，AREA到512×288，原生BGR/uint8 SR行为保留。mask以nearest映射到原生512×288深度网格；选前景内最接近前景平均预测深度的真实像素，同值取row-major第一个，保持原graph的像素取焦接口。该自动选点是本项目reproduction adapter，非ATB私有协议证据；mask只参与控制选点，不输入DepthNet/renderer分割分支。
+- **DeepLens aperture已冻结（用户确认）**：固定`aperture=0.5`，命名**native-default**，来源为官方UI的`valinit=5`再除10；不声称与共享K16物理等价或恢复ATB私有映射。8段预检已检查`0.25/0.5/1.0`及原生前/背景深度、离焦响应，没有计算VEPI选参数；另两档仅保留诊断，0.5结果可复用。官方DepthNet自身逐帧minmax，实际最大值接近1；不使用VDA span或把K/32当作有证据的映射。其他方法DAVIS预检完成后，再开始50段正式评价。
+- **VEPI入口**：主列`VEPI-public-mp4`，按[demo](https://github.com/vivoCameraResearch/any-to-bokeh/blob/main/test/inference_demo.py)采用imageio/libx264、quality8、20fps，显式固定yuv420p、macro_block_size16、2个编码线程及imageio-ffmpeg0.4.7。OpenCV解码25帧后调用[原edge_batch.py](https://github.com/vivoCameraResearch/any-to-bokeh/blob/main/metrics/edge_batch.py)：BGR灰度、Sobel3幅值、参考RGB/mask线性resize、mask矩形5×5膨胀后>127、ROI Pearson、帧均值再视频等权均值。另报`VEPI-png`和MP4−PNG的codec delta作诊断，主列不因数值不同更换；不采用论文文字版Laplacian另选高分。
+- **解释边界**：AIF原样输出可以在PNG自比达到VEPI=1，故VEPI只衡量前景边缘保留，不能单独决定虚化质量。Table2保留固定场景/关键帧与连续视频定性复核：背景失焦、焦点泄漏、halo/边界和时序闪烁；本轮不扩展BER等新指标。
+
 ---
 
 # 5. Benchmark 3：OPPO-style Low-FPS Coarse Depth
@@ -899,7 +912,7 @@ A的PSNR/SSIM/FD/RM更接近论文，B的FVD/VFID-I更接近。完整200段与�
 
 ## Table 2：DAVIS Real-world
 
-| Method | VEPI ↑ | Hair / Thin Structure | Halo / Leakage | Temporal Flicker | Qualitative Video |
+| Method | VEPI-public-mp4 ↑ | Background Defocus | Focus Leakage | Halo / Boundary | Temporal Flicker / Video |
 |---|---:|---|---|---|---|
 | DeepLens |  |  |  |  |  |
 | Dr.Bokeh |  |  |  |  |  |

@@ -1,0 +1,7 @@
+# Reuse magicbokeh (Python3.10, torch2.8.0+cu128, torchvision0.23.0,
+# numpy1.26.0, OpenCV4.8.0, xformers0.0.32.post2, einops0.7.0).
+# VDA model-only entry does not require decord/OpenEXR/video-reader dependencies.
+# Only this previously missing codec package was installed; no bulk upgrades.
+imageio-ffmpeg==0.4.7
+# imageio-ffmpeg0.4.7 imports pkg_resources; installed setuptools83 removed it.
+setuptools==80.9.0
