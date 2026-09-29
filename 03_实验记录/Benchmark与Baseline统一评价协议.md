@@ -927,6 +927,8 @@ A的PSNR/SSIM/FD/RM更接近论文，B的FVD/VFID-I更接近。完整200段与�
 
 ## Table 4：OPPO-style Low-FPS Depth Robustness
 
+**当前执行边界**：Table 4完整OPPO-style corruption依赖真实或有依据的stereo depth退化统计，暂不作为Ours前置。Ours前先完成Table 1B的 **Clean Low-FPS Geometry（30/15/10/5/2 fps）** baseline；Mild/Medium/Severe、hole、confidence、boundary corruption在未来自建独立benchmark阶段再冻结。
+
 | Depth FPS | Depth Quality | PSNR ↑ | LPIPS ↓ | FVD ↓ | FD ↓ | RM ↓ | Depth AbsRel ↓ |
 |---:|---|---:|---:|---:|---:|---:|---:|
 | 30 | Clean |  |  |  |  |  |  |
@@ -1133,19 +1135,18 @@ output/
 
 ### 2. Baseline 输入适配细节
 
-需要继续核对：
+**Track A主要方法已经冻结**：DeepLens、Dr.Bokeh、BokehMe、MPIB、BokehDiff、Any-to-Bokeh均已有200×25结果和明确reported adapter；后续除客观实现错误外不再回调。BokehCrafter继续deferred。
 
-- DeepLens；
-- Dr.Bokeh；
-- BokehMe；
-- MPIB；
-- BokehDiff；
-- Any-to-Bokeh；
-- BokehCrafter。
+当前真正需要继续冻结的是：
+
+- DAVIS各baseline的real-world输入/控制适配；
+- DAVIS评价ROI与baseline推理输入权限的边界；
+- Track B统一的Low-FPS Geometry temporal adapter；
+- Efficiency的Core/E2E计时边界。
 
 尤其需要确认：
 
-> 各方法如何在 Track A 下公平使用 Geometry / Focus / Alpha；在 Track B 下如何公平接入 Low-FPS Coarse Depth。
+> Track B下所有baseline如何接入同一份30/15/10/5/2 fps Clean Geometry，并确保temporal补齐策略一致；未来OPPO-style真实噪声则另建独立阶段。
 
 ### 3. BokehCrafter 可复现性
 
@@ -1165,53 +1166,80 @@ output/
 
 ---
 
-# 16. 当前执行顺序：Baseline Benchmark Sweep
+# 16. 当前执行顺序：Ours前的Baseline表格收尾
 
-当前优先目标是：**先把除 Ours 外的现有方法在同一 benchmark 上批量跑完，集中完成重复性实验，并用完整 baseline performance landscape 继续验证 benchmark 的合理性。**
+当前优先目标是：**把所有不依赖Ours、且已有依据可以冻结的重复性实验一次性完成。** Ours的工程实现条件已经具备，但正式方法迭代暂缓到这些baseline表格基本填满以后，以避免开发过程中反复返回补测并防止评价协议受Ours结果反向影响。
 
 ~~~text
-1. Synthetic Track A — 当前固定 200-video MPIB-public/sRGB benchmark
-   ├── Any-to-Bokeh：✅ 已完成，直接复用现有结果
-   ├── MPIB：✅ gamma=2.2冻结，200段已完成
-   ├── BokehMe：Normalized、gamma=2.2已完成并冻结
-   ├── Dr.Bokeh
-   ├── BokehDiff
-   └── DeepLens（旧 TF1/Python2 runtime，最后处理）
+1. Synthetic Track A — Reproduced Any-to-Bokeh-style Synthetic
+   ├── Any-to-Bokeh：✅ 200×25完成
+   ├── MPIB：✅ gamma=2.2冻结，200×25完成
+   ├── BokehMe：✅ Normalized + gamma=2.2冻结，200×25完成
+   ├── Dr.Bokeh：✅ GT Alpha reconstruction adapter作为当前复现主行
+   │              Full-public / Known Layers保留诊断
+   ├── BokehDiff：✅ Normalized-B主表，A保留protocol-recovery证据
+   ├── DeepLens：✅ native TF1.15 CPU + single-SR saturation完成
+   ├── BokehCrafter：deferred
+   └── Ours：待后续填写
 
-2. 更新 Table 1A + Table V Benchmark Validation
-   ├── 绝对量级
-   ├── 相对排序
-   ├── method gap
-   └── by-K 难度趋势
+2. DAVIS Real-world — 下一主任务
+   ├── 冻结DAVIS scene / frame / target-instance manifest
+   ├── palette/object-ID mask显式转换为评价ROI
+   ├── 优先采用ATB public-code VEPI operational definition
+   │   （Sobel + dilated ROI + Pearson correlation）
+   ├── 论文文字版Laplacian描述仅作差异记录，不按论文分数反选
+   ├── 冻结各baseline的depth/focus/K/resize输入协议
+   └── 先跑除Ours外所有可复现baseline
 
-3. Synthetic Track B — Low-FPS Coarse Geometry
-   ├── 固定统一 depth temporal downsampling / corruption
-   ├── 固定同一个 baseline depth adapter
-   └── 除 Ours 外全部方法先跑完
-
-4. DAVIS Real-world
-   ├── VEPI
-   ├── Hair / Thin Structure
-   ├── Halo / Leakage
-   └── Temporal Flicker / qualitative video
-
-5. Efficiency
-   ├── 统一 1024×576 / 25 frames
+3. Efficiency — DAVIS后立即批量测
+   ├── 统一1024×576 / 25 frames / batch=1
+   ├── warm-up + ≥5次正式重复
    ├── Core Time
    ├── E2E Time
+   ├── FPS
    ├── Peak VRAM
-   └── Params（适用时）
+   ├── Params
+   └── DeepLens native CPU单独标记，不与GPU FPS无条件硬排名
+
+4. Synthetic Track B — Clean Low-FPS Geometry
+   ├── 仅改变Geometry FPS：30 / 15 / 10 / 5 / 2
+   ├── 暂不叠加hole/noise/boundary corruption
+   ├── 先冻结统一、简单、非学习式temporal geometry adapter
+   ├── 所有baseline使用同一补齐规则
+   └── 除Ours外全部方法批量跑完
+
+5. Baseline Table Freeze
+   ├── Table 1A Track A：baseline完成
+   ├── Table 1B Track B-Clean：填满baseline
+   ├── Table 2 DAVIS：填满baseline
+   ├── Table 3 Efficiency：填满baseline
+   ├── Table V：保持冻结
+   └── 之后除客观实现错误外不根据Ours成绩回调
 
 6. Ours
-   └── 上述表格除 Ours 外基本填满后，再开始方法实现与迭代
+   ├── 开始正式实现 / 训练 / 迭代
+   └── 每个版本只需补上述冻结评价体系中的Ours行
 ~~~
 
-BokehCrafter 继续保持 deferred：只有官方实现/checkpoint 可稳定复现后才补入 quantitative 主表，不阻塞本轮 sweep。
+### 16.1 DAVIS先做的原因
+
+DAVIS数据本身已经齐全，当前缺的是协议而不是下载。它同时补足ATB论文中的真实视频评价，并且不依赖Ours，因此最适合先完成。公开 edge_batch.py 实际操作与论文文字版VEPI存在差异，当前优先冻结**作者公开代码的可执行定义**，并把差异作为复现限制记录；不能为了接近论文VEPI数值反选算法定义。
+
+### 16.2 Efficiency统一口径
+
+Efficiency只记录可重复的标准化测量，不把此前四路调度吞吐、完整生产耗时或混合CPU/GPU流水当正式成绩。GPU方法尽量使用同一96GB GPU；Core与E2E分别计时。DeepLens当前冻结实现是native TF1.15 CPU，因此保留CPU设备标签，避免伪装成同GPU速度比较。当前Track A reproduction阶段的Dr.Bokeh效率跟随GT Alpha主表adapter；未来独立公平benchmark再补Full-public效率。
+
+### 16.3 Track B先只做Clean Low-FPS
+
+Track B当前首先回答一个单一问题：**当每帧完整Geometry变成越来越低帧率的Clean Geometry时，各方法如何退化。** 因此第一版只使用30/15/10/5/2 fps，不同时叠加噪声、hole或边界错误。先冻结一个公共、简单、非学习式temporal adapter，再给全部baseline使用，避免每个方法各自引入不同补全能力。
+
+完整OPPO-style Mild/Medium/Severe corruption不作为Ours前置门槛。真实hole、confidence、boundary error、scale/noise应依据OPPO stereo sensor或可说明的数据统计后再设计，属于未来本项目独立benchmark；不能为了把Table 4填满而现在主观制造参数。
+
+BokehCrafter继续保持deferred：只有官方实现/checkpoint可稳定复现后才补入quantitative主表，不阻塞本轮收尾。
 
 当前阶段最重要的是：
 
-> **先固定 benchmark、填满 baseline，再开始 Ours；后续每个 Ours 版本都直接进入同一评价体系，不让 benchmark 协议被模型结果反向影响。**
-
+> **先把DAVIS、Efficiency和Track B Clean的baseline一次测完并冻结；随后再开始Ours。此后Ours只补自己的行，不允许模型结果反向改变baseline或benchmark协议。**
 
 ---
 
