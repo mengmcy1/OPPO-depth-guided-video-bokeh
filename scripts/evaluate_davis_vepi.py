@@ -75,6 +75,12 @@ def scores(c,name,pred,video,author):
 
 def run(c,predictions,out,self_test):
     cv2.setNumThreads(2);author=author_module(c)
+    # The running full supervisor launches this entry only after all six sets exist.
+    # Validate persisted inference records before any encoding of this frozen run.
+    frozen=ROOT/'outputs/davis-baselines-20260929'
+    if not self_test and predictions.parent.parent==frozen:
+        from check_davis_full import check_all
+        check_all()
     assert imageio_ffmpeg.__version__==c['vepi']['codec']['imageio_ffmpeg']
     manifest=json.loads((ROOT/c['derived']/'source-manifest.json').read_text());rows=[]
     for scene in manifest['sequences']:
