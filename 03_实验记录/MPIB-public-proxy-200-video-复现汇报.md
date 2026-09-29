@@ -545,7 +545,7 @@ LPIPS A/B=0.134406/0.132024；主RM为24 transitions，作者公开前2对版本
 
 ### 8.5 Dr.Bokeh：同200段输入协议实验已收尾（2026-09-29）
 
-三组均为同一200×25=5000帧，1024×576。Full-public复用原结果，GT-alpha与known-layer各新增/复用5000帧。全部PSNR/SSIM/LPIPS/FD/RM/FVD/VFID-I、by-K及逐段配对分析完成；没有运行geometry/gamma/blur-strength新候选，原主表输入协议未替换。
+三组均为同一200×25=5000帧，1024×576。Full-public复用原结果，GT-alpha与known-layer各新增/复用5000帧。全部PSNR/SSIM/LPIPS/FD/RM/FVD/VFID-I、by-K及逐段配对分析完成；没有运行geometry/gamma/blur-strength新候选。实验完成当时未自动替换主表；随后用户基于“当前阶段优先复现Any-to-Bokeh Table 1性能版图”的目标，选择GT-alpha作为Track A reproduction reported configuration。
 
 | 同200段输入协议 | PSNR ↑ | SSIM ↑ | LPIPS ↓ | FD ↓ | RM ↓ | FVD ↓ | VFID-I ↓ |
 |---|---:|---:|---:|---:|---:|---:|---:|
@@ -583,7 +583,11 @@ GT-alpha相对Full-public的PSNR中位增益2.287867dB，PSNR/FD同时改善180/
 | VFID_I | -0.336550 | -2.364332 | -2.785571 |
 | LPIPS（ICLR2026新增参考列） | -0.008004 | -0.016617 | -0.020074 |
 
-**收尾判断**：GT alpha使原来FVD143.29的大幅偏离降到25.86，分割输入及其引起的分层、深度修复、背景补全过程是当前结果的重要影响因素；不能只归因renderer本体。与论文相比，GT-alpha的PSNR高0.3155dB、FVD低6.8510，Known分别高0.9869dB、低11.6020；新协议的SSIM/RM/VFID等也整体优于论文，仍有代理数据/渲染/输入及评价适配差异。Full-public的SSIM与VFID-I反而更接近论文，因此不存在“oracle后六项都更接近”的结论。更接近某几项或改善原排序，不证明作者使用了oracle。**本轮输入实验关账；没有新的客观实现错误要求继续搜索，暂不追加geometry/gamma/强度，也不根据剩余差值自动选主表版本。**
+**收尾判断**：GT alpha使原来FVD143.29的大幅偏离降到25.86，分割输入及其引起的分层、深度修复、背景补全过程是当前结果的重要影响因素；不能只归因renderer本体。与论文相比，GT-alpha的PSNR高0.3155dB、FVD低6.8510，Known分别高0.9869dB、低11.6020；新协议的SSIM/RM/VFID等也整体优于论文，仍有代理数据/渲染/输入及评价适配差异。Full-public的SSIM与VFID-I反而更接近论文，因此不存在“oracle后六项都更接近”的结论。更接近某几项或改善原排序，不证明作者使用了oracle。**本轮输入实验关账；没有新的客观实现错误要求继续搜索，暂不追加geometry/gamma/强度。后续用户明确将GT-alpha选为当前ATB reproduction主表配置；这是阶段性reporting选择，不是私有adapter归因。**
+
+**后续主表报告选择（Ours开始前冻结）**：当前阶段的任务是尽可能恢复ATB Synthetic benchmark及其Table 1 performance landscape，而不是建立最终统一信息权限的公平benchmark。基于完整200段结果，GT-alpha被选为Dr.Bokeh的Track A主表 **reconstruction adapter**；Full-public继续保留为公开完整pipeline诊断结果，Known Layers继续作为额外隐藏层信息诊断。该选择发生在Ours正式评价前，之后不允许根据Ours成绩重新回调Dr.Bokeh协议。
+
+下一阶段先在这套已冻结的ATB-style reproduction benchmark上比较Ours与Any-to-Bokeh；完成这一层证据后，再建立本项目自己的独立benchmark。后者将重新统一baseline的信息权限与低帧率粗深度输入，届时Dr.Bokeh应优先重新评估Full-public等不读取GT alpha/hidden layers的公开完整pipeline，而不能默认沿用本阶段GT-alpha权限。两套benchmark承担不同目的，结果必须分开命名和报告。
 
 **实现与反例检查**：三组共15000张PNG通过完整性/尺寸/模式验证；新增两分支10000帧素材重建与lens覆盖全部通过，最大实际R31.87451px，遗漏径向权重质量最大4.3893e-6，CoC变换误差float64≤1.07e-14/float32≤3.55e-6，无输出裁剪。原11段55组视觉记录保留；追加查看GT-alpha最大PSNR退步193，以及Known相对Alpha最大PSNR退步160、最大FD退步101，各0/6/12/18/24帧和中间层。累计14段70组，未发现新的明显错层/通道/帧序实现阻塞；稀疏关键帧不能排除未采样时序问题。
 
