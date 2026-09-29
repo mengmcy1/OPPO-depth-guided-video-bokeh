@@ -1,0 +1,102 @@
+{
+  "status": "SOURCES_AND_NORMALIZATION_SCALE_CHECKED_RANGE_POLICY_STILL_PENDING",
+  "checked_utc": "2026-09-29T08:31:20.865779+00:00",
+  "sources": {
+    "atb_v1": "https://arxiv.org/html/2505.21593v1",
+    "atb_v2": "https://arxiv.org/html/2505.21593v2",
+    "atb_iclr2026": "https://proceedings.iclr.cc/paper_files/paper/2026/file/a0dca56ad0aceeb4eab4d35630e9a0ed-Paper-Conference.pdf",
+    "deeplens_paper": "https://arxiv.org/pdf/1810.08100",
+    "deeplens_interactive": "https://github.com/scott89/deeplens_eval/blob/3dbc1b04ba082b3b6b1dc0d944b3d18fa542ae2c/core/evaluator_interactive.py",
+    "deeplens_depth": "https://github.com/scott89/deeplens_eval/blob/3dbc1b04ba082b3b6b1dc0d944b3d18fa542ae2c/core/build_depth_resnet.py"
+  },
+  "version_findings": {
+    "precise_disparity_statement": "ATB arXiv v1 section4.2 qualitative synthetic discussion. Supports external precise geometry for the synthetic baseline group, not an exact private adapter specification.",
+    "builtin_depth_statement": "ATB arXiv v1 AppendixD describes DeepLens real-world examples using its built-in depth model. The statement is absent from the reviewed v2/final wording; do not generalize it into a verified current full DAVIS protocol.",
+    "LPIPS": "Official ICLR2026 proceedings PDF Table1 includes LPIPS. arXiv v2 Table1 and the existing repository PDF omit the column. Prior unqualified not-reported claims are corrected; frozen six-metric selection histories are not retrospectively changed."
+  },
+  "paper_LPIPS": {
+    "DeepLens": 0.183,
+    "BokehDiff": 0.127,
+    "BokehMe": 0.06,
+    "Dr.Bokeh": 0.046,
+    "MPIB": 0.04,
+    "Any-to-Bokeh": 0.019
+  },
+  "derivation": {
+    "span": "s=dmax-dmin",
+    "normalized": "D=(d-dmin)/s; Df=(df-dmin)/s",
+    "measured_model": "R_eff approximately c*aperture*abs(D-Df), fixed native single-SR/output resolution",
+    "required_aperture": "K*s/c",
+    "raw_disparity_equivalent": "Without another minmax transform: aperture=K/c. Unsaturated signed inputs are algebraically identical after affine compensation.",
+    "warning": "K/c applied after per-frame minmax increases effective raw-disparity blur scale by1/s. Compensation is a fixed unit conversion, not per-scene score tuning.",
+    "limits": "c is an empirical edge-width coefficient, not the physical training aperture or a strict kernel support bound; saturation breaks exact raw/normalized equivalence."
+  },
+  "descriptive_scale_px": 12.487962321133619,
+  "geometry_only_scope": {
+    "4": {
+      "frames": 1200,
+      "span_range": [
+        0.7921568627450981,
+        0.996078431372549
+      ],
+      "descriptive_required_aperture_range": [
+        0.25373454607707,
+        0.3190523500177019
+      ],
+      "required_over1": 0
+    },
+    "8": {
+      "frames": 1075,
+      "span_range": [
+        0.7921568627450981,
+        0.996078431372549
+      ],
+      "descriptive_required_aperture_range": [
+        0.50746909215414,
+        0.6381047000354038
+      ],
+      "required_over1": 0
+    },
+    "16": {
+      "frames": 1400,
+      "span_range": [
+        0.7921568627450981,
+        0.996078431372549
+      ],
+      "descriptive_required_aperture_range": [
+        1.01493818430828,
+        1.2762094000708075
+      ],
+      "required_over1": 1400
+    },
+    "32": {
+      "frames": 1325,
+      "span_range": [
+        0.7921568627450981,
+        0.996078431372549
+      ],
+      "descriptive_required_aperture_range": [
+        2.02987636861656,
+        2.552418800141615
+      ],
+      "required_over1": 1325
+    }
+  },
+  "focus_prime_range": [
+    0.19047619047619047,
+    1.0024129280788177
+  ],
+  "calibration_scope": "Existing32controls measure the LensBlur/SR operator after canonical geometry inputs. They do not minmax a constant-depth image. A complete adapter must explicitly reject zero span or use a predeclared separate case, not silently divide by zero. Avoid colocating a depth discontinuity with the measured RGB edge when estimating single-plane blur width.",
+  "status_of_choices": {
+    "normalization_and_mapping_frozen": false,
+    "saturation_or_recursive_SR_selected": false,
+    "formal_8_preflight_started": false,
+    "formal200_started": false
+  },
+  "limits": [
+    "K/32 has no verified author-adapter evidence and does not match this measured single-SR edge response.",
+    "No change to dataset, predictions, evaluation metrics, checkpoints, Dr.Bokeh geometry/gamma, or main-table adapter selection.",
+    "Geometry statistics use only saved input min/max values, never prediction scores. Required-aperture ranges are descriptive estimates under the not-yet-frozen linear fit.",
+    "LPIPS paper references are now available; the current project implementation remains lpips squeeze v0.1. Public code also names squeeze, but no new numerical-parity claim is made."
+  ]
+}
