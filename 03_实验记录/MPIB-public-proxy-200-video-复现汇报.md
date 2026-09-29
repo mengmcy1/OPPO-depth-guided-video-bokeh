@@ -511,7 +511,7 @@ FVD/VFID-I为200段分布距离，不把它们分摊成每scene分数或按K加�
 
 全量/终审证据：`records/drbokeh-track-a-200-20260928.json`、`records/drbokeh-track-a-review-20260928.json`。
 
-### 8.4 BokehDiff：双200段完成，保留A/B并列报告
+### 8.4 BokehDiff：双200段完成，B选为主表、A保留
 
 两侧各5000帧、全部逐段指标和FVD/VFID-I于2026-09-29 05:07北京时间完成；PNG完整性、GT特征一致性与随机恢复检查通过。A保留共享原始几何；B对d/df做min-max而K不变，控制幅度放大1/span。其他checkpoint/seed42连续随机流/PISA/输出PNG8规则相同。
 
@@ -539,7 +539,7 @@ LPIPS A/B=0.134406/0.132024；主RM为24 transitions，作者公开前2对版本
 
 **定性复核**：原8段及全量后repro_012/193/197，共55组/110张候选关键帧已查看。两侧最低PSNR均为193：较GT更强的背景/人物/动物平滑；最高FD均为012：强虚化及边界形态差异。197为最大配对VideoMAE特征距离，保持作为分布差异定位场景，不称逐段FVD。弱虚化场景004/006/007存在较GT更清晰的细节，017的A部分时刻虚化不足；两候选均有纹理重绘。未见需重跑的新增实现阻塞，不将少量关键帧当作视频无闪烁证明。
 
-**当前结论**：论文贴近程度发生4项对2项分歧，没有预先权重或优先级，不能投票、平均相对误差或临时让FVD优先来选唯一赢家。Table V并列A/B；主表标Adapter under review。本轮不新增模型推理、第三候选或K搜索，不阻塞Dr.Bokeh与DeepLens。完整结果与复核：`records/bokehdiff-adapter-recovery-200-20260928.json`、`records/bokehdiff-final-review-20260929.json`。
+**当前结论**：论文贴近程度为4项偏A、2项偏B。预登记阶段没有设置指标权重，因此当时未用投票或相对误差平均强行冻结；在完整200段与定性复核均结束后，用户选择B（Normalized）作为主表展示配置。理由是PSNR/SSIM/FD/RM上A虽更接近论文，但A/B差距相对有限；B在FVD/VFID-I上更接近，尤其FVD=65.996926与论文65.678仅差0.318926。Table V继续并列A/B，A作为protocol-recovery alternative保留。该选择用于复现展示，不证明Any-to-Bokeh作者私有adapter就是B；本轮不新增模型推理、第三候选或K搜索。完整结果与复核：`records/bokehdiff-adapter-recovery-200-20260928.json`、`records/bokehdiff-final-review-20260929.json`。
 
 ### 8.5 Dr.Bokeh：固定输入协议对照，200段正在补齐
 
@@ -649,6 +649,6 @@ ightarrow
 ---
 
 **最后更新**：2026-09-29
-**状态**：Any-to-Bokeh公开代理复现及author-public指标已完成；MPIB/BokehMe/Dr.Bokeh Track A已填真实结果，BokehDiff双200段及A/B复核完成；Dr.Bokeh新输入协议200段正在运行，DeepLens原生TF1 CPU验证与控制证据见8.6。
+**状态**：Any-to-Bokeh公开代理复现及author-public指标已完成；MPIB/BokehMe/Dr.Bokeh Track A已填真实结果，BokehDiff双200段及A/B复核完成且Normalized已选为主表展示配置；Dr.Bokeh新输入协议200段正在运行，DeepLens原生TF1 CPU验证与控制证据见8.6。
 
 补算实现及权重来源：[作者公开指标代码](https://github.com/vivoCameraResearch/any-to-bokeh/blob/f7a16959dd219080fb8eec0d32bb9602d8970c22/metrics/vid_metrics.py)、[cdfvd固定版本](https://github.com/songweige/content-debiased-fvd/tree/a1e037ab7cb087debd2221d14ae4a001ec054201)、[作者指定I3D权重](https://huggingface.co/zhengchong/VFID)、[官方VideoMAE2权重](https://huggingface.co/OpenGVLab/VideoMAE2)。
