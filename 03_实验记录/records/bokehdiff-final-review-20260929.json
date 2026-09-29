@@ -1,0 +1,57 @@
+{
+  "status": "VISUAL_REVIEW_COMPLETE_DUAL_CANDIDATES_RETAINED_NO_RERUN",
+  "reviewed_utc": "2026-09-29T05:51:43.004363+00:00",
+  "scene_ids": [
+    "repro_000",
+    "repro_001",
+    "repro_003",
+    "repro_004",
+    "repro_006",
+    "repro_007",
+    "repro_008",
+    "repro_012",
+    "repro_017",
+    "repro_193",
+    "repro_197"
+  ],
+  "frames": [
+    0,
+    6,
+    12,
+    18,
+    24
+  ],
+  "groups": 55,
+  "candidate_keyframes": 110,
+  "selection": {
+    "shared_geometry": {
+      "lowest_PSNR": "repro_193",
+      "highest_FD": "repro_012",
+      "largest_paired_feature_distance": "repro_197"
+    },
+    "normalized": {
+      "lowest_PSNR": "repro_193",
+      "highest_FD": "repro_012",
+      "largest_paired_feature_distance": "repro_197"
+    }
+  },
+  "artifacts": "outputs/bokehdiff-adapter-recovery-20260928/review-final-20260929",
+  "observations": {
+    "repro_000": "Both candidates keep lion focus but change fur/detail and boundary appearance; surrounding subjects have strong blur; A/B differences are modest at sampled frames.",
+    "repro_001": "Rabbit blur extent and shape vary relative to GT; foreground overlap/bird edges differ. Both candidates preserve broad focus direction, without isolated black-frame failure.",
+    "repro_003": "Focused bear/deer detail and contrast are regenerated; person remains blurred. Neither candidate is uniformly favored by the sampled appearance.",
+    "repro_004": "Weak-blur outputs remain near sharp input and often preserve more high-frequency background detail than GT; no gross decoding/channel error.",
+    "repro_006": "Weak-blur scene retains much sharper tree texture than GT in both candidates; preserve model behavior.",
+    "repro_007": "Both outputs sharpen/redraw cat and globe detail compared with GT; small people differ. No new rerun or strength correction.",
+    "repro_008": "Expected foreground goat blur is present, with differences in depth-edge mixing and texture.",
+    "repro_012": "Highest FD scene for both candidates; strong blur/background and dog/face appearance differ, B often more diffuse. No unique temporal cause inferred from five keyframes.",
+    "repro_017": "A sometimes keeps woman/dog/tiger areas sharper than GT; B changes blur response and reduces some mismatch but not uniformly across sampled times.",
+    "repro_193": "Lowest PSNR for both: background, kangaroo silhouette, monkey and person are substantially more blurred than GT; focused camel remains sharp. Black kangaroo is already in input, not a generated black-block bug.",
+    "repro_197": "Largest paired VideoMAE feature distance for both: background/people/far animals are over-smoothed relative to GT and have different silhouettes; focused small giraffe remains sharp."
+  },
+  "decision": {
+    "candidate": null,
+    "reason": "Four metrics favor A in paper closeness, two favor B; no predeclared priority, no voting/weights/new candidate. Report A/B in Table V and leave main adapter under review."
+  },
+  "scope": "Review of existing complete-200 outputs; no model execution, metric changes or new parameter search. Five keyframes per clip cannot exclude unsampled flicker; paired feature distance is not per-video FVD."
+}

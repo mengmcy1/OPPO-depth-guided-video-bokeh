@@ -79,6 +79,7 @@ def inference(args,config,base,run):
     renderer=Multi_Layer_Renderer(base['lens'],gpu_occlusion=True).cuda().eval()
     clips=ROOT/base['input'];scenes={s['id']:s for s in json.loads((clips/'config.json').read_text())['scenes']}
     selected=args.only.split(',') if args.only else config['scene_ids']
+    branches=['gt_alpha','oracle_layers'] if args.branch=='both' else [args.branch]
     assert set(selected)<=set(config['scene_ids'])
     for sid in config['scene_ids']:
         if sid not in selected:continue
@@ -89,7 +90,7 @@ def inference(args,config,base,run):
         if dst.exists():assert dst.resolve()==baseline.resolve()
         else:dst.symlink_to(baseline,target_is_directory=True)
         for t,path in enumerate(paths[:args.max_frames]):
-            records={branch:run/branch/'timing'/sid/f'{t:05d}.json' for branch in ('gt_alpha','oracle_layers')}
+            records={branch:run/branch/'timing'/sid/f'{t:05d}.json' for branch in branches}
             if all(p.exists() for p in records.values()):
                 for branch in records:assert (run/branch/'clips'/sid/'pred_drbokeh'/f'{t:05d}.png').exists()
                 continue
@@ -131,7 +132,7 @@ def inference(args,config,base,run):
                     audit['diagnostics']=str(diagnostic.relative_to(run))
                 write_json(record,audit)
                 print('FRAME',branch,sid,t,'seconds',round(audit['seconds'],3),flush=True)
-        for branch in ('gt_alpha','oracle_layers'):
+        for branch in branches:
             timing=run/branch/'timing'/sid
             rows=[json.loads(p.read_text()) for p in sorted(timing.glob('[0-9]*.json'))]
             if len(rows)==25 and not (timing/'complete.json').exists():
@@ -144,7 +145,7 @@ def means(rows):
 
 
 def evaluation(config,base,run):
-    """Reuse old predictions/features, recompute distribution metrics on SAME 11 scenes."""
+    """Reuse old predictions/features, compute all branches on the same manifest."""
     os.chdir(ROOT)
     sys.path.insert(0,str(ROOT.parent/'any-to-bokeh'))
     sys.path.insert(0,str(ROOT.parent/'content-debiased-fvd'))
@@ -182,7 +183,7 @@ def evaluation(config,base,run):
         else:value=float(calculate_fid(gt,pred))
         assert np.isfinite(value)
         comparison['full_public']['distributions'][phase]=value
-    logs=ROOT/'logs/drbokeh-protocol-recovery-v2-20260928';logs.mkdir(exist_ok=True)
+    logs=ROOT/config.get('logs','logs/drbokeh-protocol-recovery-v2-20260928');logs.mkdir(exist_ok=True)
     def execute(command,name):
         with (logs/name).open('a') as f:
             f.write('\nATTEMPT '+datetime.now(timezone.utc).isoformat()+'\n');f.flush()
@@ -194,7 +195,7 @@ def evaluation(config,base,run):
             execute(['scripts/evaluate_renderer_pilot.py','--input',base['input'],'--only',','.join(ids),
                 '--reference-dir','gt_mpib_public_srgb','--reference-label','MPIB-public proxy',
                 '--prediction-root',prediction_root,'--prediction-dir','pred_drbokeh','--author-rm','--torchmetrics',
-                '--scope','Selected 11-scene input-permission diagnostic; not a new main-table baseline','--report',str(metrics)],branch+'-metrics.log')
+                '--scope',config['name']+'; input-permission recovery, not an automatically selected main-table baseline','--report',str(metrics)],branch+'-metrics.log')
         data=json.loads(metrics.read_text());assert [r['scene'] for r in data['rows']]==ids
         assert data['prediction_root']==prediction_root and data['prediction_dir']=='pred_drbokeh'
         comparison[branch]=dict(rows=data['rows'],mean=means(data['rows']),distributions={})
@@ -204,7 +205,7 @@ def evaluation(config,base,run):
                      '--reference-features',str(cache.relative_to(ROOT)),'--output',str((dest/'author-public').relative_to(ROOT)),
                      '--phase',phase],branch+'-'+phase+'.log')
             score=json.loads((dest/'author-public'/f'{phase}.json').read_text())
-            assert score['protocol']['scene_ids']==ids and score['video_count']==11
+            assert score['protocol']['scene_ids']==ids and score['video_count']==len(ids)
             comparison[branch]['distributions'][phase]=next(iter(score['values'].values()))
             filename='fvd-videomae-features.npz' if phase=='fvd' else 'vfid-i-features.npz'
             features=np.load(dest/'author-public'/filename)
@@ -213,12 +214,23 @@ def evaluation(config,base,run):
         assert all(np.isfinite(v) for v in result['mean'].values())
         result['groups']={group:dict(n=len(chosen),mean=means([r for r in result['rows'] if r['scene'] in chosen]))
                           for group,chosen in [('original_preflight_8',config['original_preflight']),('posthoc_failures_3',config['posthoc_failure_cases'])]}
+        manifest=json.loads((ROOT/base['input']/'config.json').read_text())
+        K={s['id']:s['K'] for s in manifest['scenes']}
+        result['by_K']={str(k):dict(n=sum(K[r['scene']]==k for r in result['rows']),
+            mean=means([r for r in result['rows'] if K[r['scene']]==k])) for k in (4,8,16,32)}
+        if len(ids)==200:
+            remaining=set(ids)-set(config['original_preflight'])-set(config['posthoc_failure_cases'])
+            result['groups']['remaining_189']=dict(n=len(remaining),mean=means([r for r in result['rows'] if r['scene'] in remaining]))
+            m=result['mean'];dist=result['distributions']
+            result['paper_comparison']=dict(PSNR=m['PSNR_TorchMetrics'],SSIM=m['SSIM_TorchMetrics'],FD=m['FD'],RM=m['RM'],FVD=dist['fvd'],VFID_I=dist['vfid'])
+            result['signed_difference_to_paper']={k:v-base['paper_DrBokeh'][k] for k,v in result['paper_comparison'].items()}
         for sid in ids:
             paths=sorted((run/branch/'clips'/sid/'pred_drbokeh').glob('*.png'))
             assert [p.name for p in paths]==[f'{t:05d}.png' for t in range(25)]
             for p in paths:
                 with Image.open(p) as im:assert im.size==(1024,576) and im.mode=='RGB';im.verify()
-    write_json(ROOT/config['report'],dict(status='FIXED_11_INPUT_DIAGNOSTIC_METRICS_COMPLETE_VISUAL_REVIEW_PENDING',
+    status='FULL_200_INPUT_PROTOCOL_RECOVERY_COMPLETE_REVIEW_PENDING' if len(ids)==200 else 'FIXED_11_INPUT_DIAGNOSTIC_METRICS_COMPLETE_VISUAL_REVIEW_PENDING'
+    write_json(ROOT/config['report'],dict(status=status,
         completed_utc=datetime.now(timezone.utc).isoformat(),config=config,base_protocol=base,
         comparison=comparison,limits=config['limits']))
     print('DRBOKEH_PROTOCOL_DIAGNOSTIC_COMPLETE',config['report'],flush=True)
@@ -229,22 +241,43 @@ def main():
     p.add_argument('--config',default='configs/drbokeh-protocol-recovery-v2.json')
     p.add_argument('--phase',choices=['all','inference','evaluate'],default='all')
     p.add_argument('--only',default='');p.add_argument('--max-frames',type=int,default=25)
+    p.add_argument('--branch',choices=['both','gt_alpha','oracle_layers'],default='both')
     args=p.parse_args();os.chdir(ROOT)
     config=json.loads((ROOT/args.config).read_text());base=json.loads((ROOT/config['base_protocol']).read_text())
     for key in ('gamma','highlight','offset','lens'):assert base[key]==config['fixed'][key]
     assert 1<=args.max_frames<=25
-    assert len(config['scene_ids'])==11 and len(set(config['scene_ids']))==11
+    expected=config.get('scene_count',11)
+    assert expected in (11,200) and len(config['scene_ids'])==len(set(config['scene_ids']))==expected
     run=ROOT/config['output'];run.mkdir(parents=True,exist_ok=True)
     protocol=dict(config=config,base_protocol=base)
     if (run/'protocol.json').exists():assert json.loads((run/'protocol.json').read_text())==protocol
     else:write_json(run/'protocol.json',protocol)
+    if expected==200:
+        manifest=json.loads((ROOT/base['input']/'config.json').read_text())
+        assert config['scene_ids']==[s['id'] for s in manifest['scenes']]
+        review=json.loads((ROOT/config['visual_review']).read_text())
+        assert review['status']=='FIXED_55_VISUAL_REVIEW_COMPLETE_NO_NEW_IMPLEMENTATION_BLOCKER'
+        source=ROOT/config['reuse_diagnostic'];previous=json.loads((source/'protocol.json').read_text())
+        assert previous['base_protocol']==base
+        for key in ('branches','fixed','oracle_disparity','asset_checks'):
+            assert previous['config'][key]==config[key], 'Cannot reuse frames across changed input protocols'
+        assert review['scene_ids']==previous['config']['scene_ids']
+        for sid in previous['config']['scene_ids']:
+            for branch in ('gt_alpha','oracle_layers'):
+                assert json.loads((source/branch/'timing'/sid/'complete.json').read_text())['frames']==25
+                assert len(list((source/branch/'clips'/sid/'pred_drbokeh').glob('*.png')))==25
+                for category in ('clips','timing'):
+                    dst=run/branch/category/sid;src=source/branch/category/sid;dst.parent.mkdir(parents=True,exist_ok=True)
+                    if dst.exists():assert dst.resolve()==src.resolve()
+                    else:dst.symlink_to(src,target_is_directory=True)
     if args.phase=='inference':inference(args,config,base,run)
     elif args.phase=='evaluate':evaluation(config,base,run)
     else:
-        assert not args.only and args.max_frames==25
+        assert not args.only and args.max_frames==25 and args.branch=='both'
         # Separate processes release LDF/LaMa/CUDA allocations before metric extraction.
-        for phase in ('inference','evaluate'):
-            subprocess.run([sys.executable,'-u',str(Path(__file__).resolve()),'--config',args.config,'--phase',phase],check=True,cwd=ROOT)
+        stages=[('inference','gt_alpha'),('inference','oracle_layers'),('evaluate','both')] if expected==200 else [('inference','both'),('evaluate','both')]
+        for phase,branch in stages:
+            subprocess.run([sys.executable,'-u',str(Path(__file__).resolve()),'--config',args.config,'--phase',phase,'--branch',branch],check=True,cwd=ROOT)
 
 
 if __name__=='__main__':main()

@@ -362,7 +362,7 @@ python scripts/evaluate_author_public_metrics.py \
 
 本轮完成不改变原有复现边界：测试素材、proxy GT、PNG编码及部分loader/样本计数与作者入口不同。FVD接近论文9.005、VFID-I低于论文1.479，只能作为外部参考，不能证明官方测试指标被严格复现。
 
-后续MPIB、BokehMe及Dr.Bokeh已完成，见8.1–8.3；BokehDiff双候选200段运行中，DeepLens处于控制/兼容性验证。未来公平Benchmark仍需单独确定源划分、renderer与指标，Cycles及AM validation恢复线保持暂停。
+后续MPIB、BokehMe及Dr.Bokeh已完成，见8.1–8.3；BokehDiff双候选200段及视觉复核完成，结果见8.4；Dr.Bokeh新增输入协议对照正在扩到200段，见8.5；DeepLens原生TF1 CPU已跑通但兼容数值有差异，见8.6。未来公平Benchmark仍需单独确定源划分、renderer与指标，Cycles及AM validation恢复线保持暂停。
 
 ---
 
@@ -505,11 +505,83 @@ FVD/VFID-I为200段分布距离，不把它们分摊成每scene分数或按K加�
 
 终审查看repro_068（PSNR20.65848，最低）、repro_143（最大配对VideoMAE特征距离）、repro_012（FD3.25892，最高）的0/6/12/18/24关键帧。068斑马虚化区明显偏亮、条纹对比改变；143强虚化主体及边界与参考存在差异；012背景模糊纹理不同。未见明显错帧、整体颜色通道反转或空输出，但这些观察不能唯一解释FVD高值。配对特征距离仅为场景诊断，不叫单场景FVD或对总FVD的贡献。
 
-**复现结论**：PSNR低于论文2.1653 dB，FVD高110.5797；当前Dr.Bokeh与BokehMe在六项论文可比指标上的两方法排序全部反转，Dr与MPIB的FVD排序也反转。已经完成当前单一Track A协议的评价，但论文方法性能版图仍未完整恢复。可能关联输入/renderer/光度约定及分割补全差异，不能据现有结果唯一归因。当前协议在查看指标前按实现/覆盖冻结，后续不为追分再搜索gamma/lens/oracle，不改场景或GT。并发计时仍不填Efficiency表。
+**复现结论**：PSNR低于论文2.1653 dB，FVD高110.5797；当前Dr.Bokeh与BokehMe在六项论文可比指标上的两方法排序全部反转，Dr与MPIB的FVD排序也反转。已经完成当前单一Track A协议的评价，但论文方法性能版图仍未完整恢复。可能关联输入/renderer/光度约定及分割补全差异，不能据现有结果唯一归因。当前协议在查看指标前按实现/覆盖冻结，该历史200段协议与结果继续保留；用户随后授权的新输入协议诊断另列8.5，不改场景或GT。并发计时仍不填Efficiency表。
 
 证据：`records/drbokeh-full-preflight-20260928.json`、`records/drbokeh-cuda-launch-check-20260928.json`；冻结配置`configs/drbokeh-track-a-frozen.json`；输出`outputs/drbokeh-track-a-20260928/`。
 
 全量/终审证据：`records/drbokeh-track-a-200-20260928.json`、`records/drbokeh-track-a-review-20260928.json`。
+
+### 8.4 BokehDiff：双200段完成，保留A/B并列报告
+
+两侧各5000帧、全部逐段指标和FVD/VFID-I于2026-09-29 05:07北京时间完成；PNG完整性、GT特征一致性与随机恢复检查通过。A保留共享原始几何；B对d/df做min-max而K不变，控制幅度放大1/span。其他checkpoint/seed42连续随机流/PISA/输出PNG8规则相同。
+
+| 指标 | 论文 | A Shared-Geometry | B Normalized | 更接近论文 |
+|---|---:|---:|---:|---|
+| PSNR | 27.525000 | 27.156036 | 27.062699 | A |
+| SSIM | 0.834000 | 0.841752 | 0.843751 | A |
+| FD | 0.660000 | 0.768883 | 0.802247 | A |
+| RM | 0.021000 | 0.021068 | 0.021633 | A |
+| FVD | 65.678000 | 67.926652 | 65.996926 | B |
+| VFID_I | 7.395000 | 5.943235 | 6.501893 | B |
+
+LPIPS A/B=0.134406/0.132024；主RM为24 transitions，作者公开前2对版本分别0.021282/0.022043。
+
+| 候选 | K | scenes | PSNR ↑ | SSIM ↑ | LPIPS ↓ | FD ↓ | RM ↓ |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| A | 4 | 48 | 27.3245 | 0.805400 | 0.120598 | 0.278166 | 0.020730 |
+| A | 8 | 43 | 27.9153 | 0.826076 | 0.147148 | 0.340665 | 0.020600 |
+| A | 16 | 56 | 27.1921 | 0.845329 | 0.150816 | 0.716362 | 0.020148 |
+| A | 32 | 53 | 26.3494 | 0.883615 | 0.119233 | 1.616222 | 0.022727 |
+| B | 4 | 48 | 27.3329 | 0.805695 | 0.120189 | 0.277920 | 0.020732 |
+| B | 8 | 43 | 28.0600 | 0.832283 | 0.138133 | 0.329123 | 0.019694 |
+| B | 16 | 56 | 27.1271 | 0.849632 | 0.145217 | 0.698400 | 0.021314 |
+| B | 32 | 53 | 25.9408 | 0.881308 | 0.123847 | 1.770692 | 0.024359 |
+
+**定性复核**：原8段及全量后repro_012/193/197，共55组/110张候选关键帧已查看。两侧最低PSNR均为193：较GT更强的背景/人物/动物平滑；最高FD均为012：强虚化及边界形态差异。197为最大配对VideoMAE特征距离，保持作为分布差异定位场景，不称逐段FVD。弱虚化场景004/006/007存在较GT更清晰的细节，017的A部分时刻虚化不足；两候选均有纹理重绘。未见需重跑的新增实现阻塞，不将少量关键帧当作视频无闪烁证明。
+
+**当前结论**：论文贴近程度发生4项对2项分歧，没有预先权重或优先级，不能投票、平均相对误差或临时让FVD优先来选唯一赢家。Table V并列A/B；主表标Adapter under review。本轮不新增模型推理、第三候选或K搜索，不阻塞Dr.Bokeh与DeepLens。完整结果与复核：`records/bokehdiff-adapter-recovery-200-20260928.json`、`records/bokehdiff-final-review-20260929.json`。
+
+### 8.5 Dr.Bokeh：固定输入协议对照，200段正在补齐
+
+在固定的11段诊断集合上，用合成GT union alpha替换LDF后，11/11段PSNR均改善，FVD/VFID-I显著下降；说明分割输入及其引起的分层、深度修复和背景补全是差异的重要来源。含3个事后失败案例，尚不能直接外推为完整200段FVD=143.29的主要原因。repro_000的FD反而变差，保留反例。
+
+| 同11段 | PSNR ↑ | SSIM ↑ | LPIPS ↓ | FD ↓ | RM ↓ | FVD ↓ | VFID-I ↓ |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| LDF+LaMa | 28.251015 | 0.958056 | 0.043572 | 0.978921 | 0.013668 | 293.721479 | 14.740562 |
+| GT union alpha+LaMa | 30.212765 | 0.969182 | 0.034304 | 0.932069 | 0.009422 | 48.065288 | 7.087483 |
+| Known 4FG+1BG | 30.816634 | 0.974313 | 0.029478 | 0.833600 | 0.008149 | 40.349377 | 6.159460 |
+
+55组最终图与中间层视觉终审完成，证据`records/drbokeh-input-visual-review-20260929.json`。006/017/143可见漏检前景残留在背景RGB/depth；GT alpha改善mask但没有消除所有LaMa残影。068斑马偏亮等失配在known-layer下仍存在，不据此调gamma。本组6.159与论文6.097接近不能反推作者输入协议。
+
+**已启动的下一步**：保持gamma2.2/lens71/K×span映射及全部scene/GT/metric不变，GT-alpha先补189段，known-layer再补189段，已有11段各275帧直接复用。原full-public结果保留。13:43:48北京时间脱离终端启动，日志`logs/drbokeh-input-recovery-200-20260929/pipeline.log`；配置`configs/drbokeh-input-recovery-200.json`。
+
+| 完整200段 | Full-public | GT Alpha | Known Layers | 论文 |
+|---|---:|---:|---:|---:|
+| PSNR ↑ | 29.107707 | 运行中 | 排队补齐 | 31.273 |
+| SSIM ↑ | 0.963207 | 待汇总 | 待汇总 | 0.950 |
+| LPIPS ↓ | 0.037996 | 待汇总 | 待汇总 | — |
+| FD ↓ | 0.561774 | 待汇总 | 待汇总 | 0.522 |
+| RM ↓ | 0.012391 | 待汇总 | 待汇总 | 0.011 |
+| FVD ↓ | 143.289688 | 待汇总 | 待汇总 | 32.710 |
+| VFID-I ↓ | 5.760450 | 待汇总 | 待汇总 | 6.097 |
+
+此表只在同200段指标齐全后填入新值；不把上面的11段分数移入。本轮研究输入协议效应，known-layer还同时改变隐藏RGB/层数/几何，不单独归因LaMa。结果出来后再决定是否做geometry → gamma1/2.2 → 必要的统一强度标定，不要求论文小数点或排序成为通过门槛。
+
+### 8.6 DeepLens：原生TF1 CPU可运行，TF2兼容数值不能记作等价
+
+新增隔离Python3.7/TF1.15 CPU环境，与已有Python3.10/TF2.15 compat.v1在相同3帧、原checkpoint、外部几何、LensBlur+Feature+一次SR上对照。两侧均恢复210个变量；disparity resize及signed输入逐值一致；TF2新probe与此前adapter结果逐值一致。
+
+| 对照帧 | low输出MAE | 最终float最大差 | PNG8最大差 | PNG通道差异比例 |
+|---|---:|---:|---:|---:|
+| repro_000/0 | 6.329e-7 | 0.046681 | 11 | 0.23075% |
+| repro_004/12 | 3.622e-7 | 0.002045 | 1 | 0.00746% |
+| repro_017/24 | 1.747e-6 | 0.003317 | 1 | 0.06996% |
+
+预先设定的FP32对照范围未全部通过，原判定保留，不放宽阈值。定位到官方SR内部`tf.cast(low*255, uint8)`：本机原生TF1与TF2 CPU对越界值行为不同；同一个约256.195的值分别得到0和255。固定完全相同的native low输入后，仍有65个中间通道相差255，最终最大差仍约0.046681，故不只是上游浮点舍入噪声。
+
+**运行选择**：后续adapter开发优先用已跑通的原生TF1 CPU，不给官方SR擅自加clamp、不把原兼容40帧冒充原生结果；不宣称与原论文GPU逐数值一致。代码`scripts/probe_deeplens_tf_parity.py`，依赖`configs/requirements-deeplens-tf1-cpu.txt`，证据`records/deeplens-tf-parity-20260929.json`和`records/deeplens-control-runtime-20260929.json`。
+
+**控制口径仍未冻结**：[原论文§3.2.2](https://arxiv.org/pdf/1810.08100)定义的是目标/训练最大光圈的比值；[官方交互入口](https://github.com/scott89/deeplens_eval/blob/3dbc1b04ba082b3b6b1dc0d944b3d18fa542ae2c/core/evaluator_interactive.py)使用`(inverse_depth-focus)*aperture`及slider/10。proto默认的max_aperture_radius=16/max_kernel_radius=8没有在此forward中用于把本benchmark K变成输出像素半径，不能直接当映射依据。3帧×aperture{0,.25,.5,1}共12次原生CPU控制检查均finite、尺寸正确、输出随控制变化；这不是物理半径标定，也未依据论文分数挑参数。`K/32`仍仅是临时UI范围假设，训练最大光圈及分辨率尺度对应证据未确认，正式200段尚未启动。
 
 ## 九、对后续 Benchmark 的价值
 
@@ -576,7 +648,7 @@ ightarrow
 
 ---
 
-**最后更新**：2026-09-28
-**状态**：Any-to-Bokeh公开代理复现及author-public指标已完成；MPIB/BokehMe/Dr.Bokeh Track A已填真实结果，BokehDiff双200段运行中。
+**最后更新**：2026-09-29
+**状态**：Any-to-Bokeh公开代理复现及author-public指标已完成；MPIB/BokehMe/Dr.Bokeh Track A已填真实结果，BokehDiff双200段及A/B复核完成；Dr.Bokeh新输入协议200段正在运行，DeepLens原生TF1 CPU验证与控制证据见8.6。
 
 补算实现及权重来源：[作者公开指标代码](https://github.com/vivoCameraResearch/any-to-bokeh/blob/f7a16959dd219080fb8eec0d32bb9602d8970c22/metrics/vid_metrics.py)、[cdfvd固定版本](https://github.com/songweige/content-debiased-fvd/tree/a1e037ab7cb087debd2221d14ae4a001ec054201)、[作者指定I3D权重](https://huggingface.co/zhengchong/VFID)、[官方VideoMAE2权重](https://huggingface.co/OpenGVLab/VideoMAE2)。

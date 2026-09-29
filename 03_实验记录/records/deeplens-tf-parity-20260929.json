@@ -1,0 +1,372 @@
+{
+  "status": "THREE_FRAME_PARITY_DIFFERENCES_REQUIRE_REVIEW",
+  "completed_utc": "2026-09-29T05:46:16.495599+00:00",
+  "protocol": {
+    "inputs": [
+      "repro_000-00000",
+      "repro_004-00012",
+      "repro_017-00024"
+    ],
+    "selection": "Three fixed existing probes spanning low/high K and focus conditions, before native results; no score selection",
+    "tolerances": {
+      "resized_disparity_max_abs": 1e-06,
+      "signed_max_abs": 1e-06,
+      "low_MAE": 1e-05,
+      "low_max_abs": 0.0001,
+      "high_MAE": 0.0001,
+      "high_max_abs": 0.005,
+      "PNG8_max_abs": 2,
+      "PNG8_changed_channel_fraction": 0.01
+    },
+    "scope": "Engineering FP32 parity limits, not bitwise equality or proof on every frame. Inspect native SR uint8 threshold crossings if present."
+  },
+  "rows": [
+    {
+      "frame": "repro_000-00000",
+      "values": {
+        "resized_disparity": {
+          "MAE": 0.0,
+          "max_abs": 0.0,
+          "changed_fraction": 0.0
+        },
+        "signed": {
+          "MAE": 0.0,
+          "max_abs": 0.0,
+          "changed_fraction": 0.0
+        },
+        "low": {
+          "MAE": 6.329211475249226e-07,
+          "max_abs": 0.00010830163955688477,
+          "changed_fraction": 0.7061202437789352
+        },
+        "high": {
+          "MAE": 1.4809014934383445e-05,
+          "max_abs": 0.046680569648742676,
+          "changed_fraction": 0.6930468523943866
+        },
+        "sr_uint8": {
+          "MAE": 0.037638346354166664,
+          "max_abs": 255.0,
+          "changed_fraction": 0.00035038700810185184
+        }
+      },
+      "PNG8": {
+        "max_abs": 11,
+        "changed_channel_fraction": 0.002307467990451389
+      },
+      "compat_vs_existing_adapter_max_abs": 0.0,
+      "passed": false
+    },
+    {
+      "frame": "repro_004-00012",
+      "values": {
+        "resized_disparity": {
+          "MAE": 0.0,
+          "max_abs": 0.0,
+          "changed_fraction": 0.0
+        },
+        "signed": {
+          "MAE": 0.0,
+          "max_abs": 0.0,
+          "changed_fraction": 0.0
+        },
+        "low": {
+          "MAE": 3.6222965443177795e-07,
+          "max_abs": 7.209181785583496e-05,
+          "changed_fraction": 0.3860609266493056
+        },
+        "high": {
+          "MAE": 3.2879298633098654e-07,
+          "max_abs": 0.0020445585250854492,
+          "changed_fraction": 0.6134027551721644
+        },
+        "sr_uint8": {
+          "MAE": 8.364076967592593e-05,
+          "max_abs": 1.0,
+          "changed_fraction": 8.364076967592593e-05
+        }
+      },
+      "PNG8": {
+        "max_abs": 1,
+        "changed_channel_fraction": 7.459852430555556e-05
+      },
+      "compat_vs_existing_adapter_max_abs": 0.0,
+      "passed": true
+    },
+    {
+      "frame": "repro_017-00024",
+      "values": {
+        "resized_disparity": {
+          "MAE": 0.0,
+          "max_abs": 0.0,
+          "changed_fraction": 0.0
+        },
+        "signed": {
+          "MAE": 0.0,
+          "max_abs": 0.0,
+          "changed_fraction": 0.0
+        },
+        "low": {
+          "MAE": 1.7473435900977196e-06,
+          "max_abs": 0.0001437664031982422,
+          "changed_fraction": 0.9022736725983797
+        },
+        "high": {
+          "MAE": 2.813992056819068e-06,
+          "max_abs": 0.0033171772956848145,
+          "changed_fraction": 0.8525531910083912
+        },
+        "sr_uint8": {
+          "MAE": 0.0004227249710648148,
+          "max_abs": 1.0,
+          "changed_fraction": 0.0004227249710648148
+        }
+      },
+      "PNG8": {
+        "max_abs": 1,
+        "changed_channel_fraction": 0.0006996437355324075
+      },
+      "compat_vs_existing_adapter_max_abs": 0.0,
+      "passed": false
+    }
+  ],
+  "runtimes": {
+    "native_tf1": {
+      "runtime": "native_tf1",
+      "tensorflow": "1.15.0",
+      "python": "3.7.12 | packaged by conda-forge | (default, Oct 26 2021, 06:08:21) \n[GCC 9.4.0]",
+      "numpy": "1.18.5",
+      "restored_variables": 210,
+      "rows": [
+        {
+          "input": "outputs/deeplens-keyframes-20260928/inputs/repro_000-00000.npz",
+          "seconds": 2.4156267270445824,
+          "shapes": {
+            "resized_disparity": [
+              1,
+              288,
+              512,
+              1
+            ],
+            "signed": [
+              1,
+              288,
+              512,
+              1
+            ],
+            "low": [
+              1,
+              288,
+              512,
+              3
+            ],
+            "high": [
+              1,
+              576,
+              1024,
+              3
+            ],
+            "sr_uint8": [
+              1,
+              288,
+              512,
+              3
+            ]
+          }
+        },
+        {
+          "input": "outputs/deeplens-keyframes-20260928/inputs/repro_004-00012.npz",
+          "seconds": 2.024792930111289,
+          "shapes": {
+            "resized_disparity": [
+              1,
+              288,
+              512,
+              1
+            ],
+            "signed": [
+              1,
+              288,
+              512,
+              1
+            ],
+            "low": [
+              1,
+              288,
+              512,
+              3
+            ],
+            "high": [
+              1,
+              576,
+              1024,
+              3
+            ],
+            "sr_uint8": [
+              1,
+              288,
+              512,
+              3
+            ]
+          }
+        },
+        {
+          "input": "outputs/deeplens-keyframes-20260928/inputs/repro_017-00024.npz",
+          "seconds": 2.079445395618677,
+          "shapes": {
+            "resized_disparity": [
+              1,
+              288,
+              512,
+              1
+            ],
+            "signed": [
+              1,
+              288,
+              512,
+              1
+            ],
+            "low": [
+              1,
+              288,
+              512,
+              3
+            ],
+            "high": [
+              1,
+              576,
+              1024,
+              3
+            ],
+            "sr_uint8": [
+              1,
+              288,
+              512,
+              3
+            ]
+          }
+        }
+      ],
+      "scope": "CPU external disparity LensBlur + Feature + one guided SR; no DepthNet, training, benchmark metric or aperture mapping choice"
+    },
+    "compat_tf2": {
+      "runtime": "compat_tf2",
+      "tensorflow": "2.15.1",
+      "python": "3.10.21 (main, Aug 27 2026, 14:42:07) [GCC 14.3.0]",
+      "numpy": "1.26.4",
+      "restored_variables": 210,
+      "rows": [
+        {
+          "input": "outputs/deeplens-keyframes-20260928/inputs/repro_000-00000.npz",
+          "seconds": 1.9834271129220724,
+          "shapes": {
+            "resized_disparity": [
+              1,
+              288,
+              512,
+              1
+            ],
+            "signed": [
+              1,
+              288,
+              512,
+              1
+            ],
+            "low": [
+              1,
+              288,
+              512,
+              3
+            ],
+            "high": [
+              1,
+              576,
+              1024,
+              3
+            ],
+            "sr_uint8": [
+              1,
+              288,
+              512,
+              3
+            ]
+          }
+        },
+        {
+          "input": "outputs/deeplens-keyframes-20260928/inputs/repro_004-00012.npz",
+          "seconds": 1.7702529970556498,
+          "shapes": {
+            "resized_disparity": [
+              1,
+              288,
+              512,
+              1
+            ],
+            "signed": [
+              1,
+              288,
+              512,
+              1
+            ],
+            "low": [
+              1,
+              288,
+              512,
+              3
+            ],
+            "high": [
+              1,
+              576,
+              1024,
+              3
+            ],
+            "sr_uint8": [
+              1,
+              288,
+              512,
+              3
+            ]
+          }
+        },
+        {
+          "input": "outputs/deeplens-keyframes-20260928/inputs/repro_017-00024.npz",
+          "seconds": 1.8690082039684057,
+          "shapes": {
+            "resized_disparity": [
+              1,
+              288,
+              512,
+              1
+            ],
+            "signed": [
+              1,
+              288,
+              512,
+              1
+            ],
+            "low": [
+              1,
+              288,
+              512,
+              3
+            ],
+            "high": [
+              1,
+              576,
+              1024,
+              3
+            ],
+            "sr_uint8": [
+              1,
+              288,
+              512,
+              3
+            ]
+          }
+        }
+      ],
+      "scope": "CPU external disparity LensBlur + Feature + one guided SR; no DepthNet, training, benchmark metric or aperture mapping choice"
+    }
+  },
+  "scope": "FP32 CPU LensBlur/Feature/one guided SR with original weights, fixed external input; no claim of native GPU compatibility, full200 parity, depth prediction or K mapping verification."
+}

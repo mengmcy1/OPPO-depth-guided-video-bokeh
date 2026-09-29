@@ -1,0 +1,1841 @@
+{
+  "status": "FIXED_55_VISUAL_REVIEW_COMPLETE_NO_NEW_IMPLEMENTATION_BLOCKER",
+  "reviewed_utc": "2026-09-29T05:42:18.125801+00:00",
+  "scene_ids": [
+    "repro_000",
+    "repro_001",
+    "repro_003",
+    "repro_004",
+    "repro_006",
+    "repro_007",
+    "repro_008",
+    "repro_012",
+    "repro_017",
+    "repro_068",
+    "repro_143"
+  ],
+  "frames": [
+    0,
+    6,
+    12,
+    18,
+    24
+  ],
+  "groups": 55,
+  "artifacts": "outputs/drbokeh-protocol-recovery-v2-20260928/visual-review-20260929",
+  "observations": {
+    "repro_000": {
+      "segmentation": "LDF misses the upper/right kangaroo at multiple keyframes and fills some inter-object holes.",
+      "layers": "Missed kangaroo remains in LDF background RGB/depth at frame24; GT alpha removes it from the inpainting input. Both foreground depth repairs change around overlaps.",
+      "render": "Focused lion remains consistent; woman and background differ in blur/edge mixing. Preserve the GT-alpha FD worsening; visual keyframes alone do not explain its cause."
+    },
+    "repro_001": {
+      "segmentation": "LDF has holes/missed parts in moving human and right bird, with boundary leakage.",
+      "layers": "LDF background retains bird/person fragments; GT-alpha background fill still contains changing structures.",
+      "render": "Expected rabbit blur and subject focus persist; edge/hidden-background differences remain."
+    },
+    "repro_003": {
+      "segmentation": "LDF changes at the lower deer and small appendages, sometimes treating them as background.",
+      "layers": "Missed source fragments appear in background RGB/depth; GT-alpha removes more fragments but LaMa texture remains synthetic.",
+      "render": "Focused bear and blurred human are correctly ordered; known layers differ at overlap boundaries."
+    },
+    "repro_004": {
+      "segmentation": "Mostly captures large objects; soft fur and interior boundaries differ.",
+      "layers": "Both backgrounds are largely cleared; foreground depth repair and mountain fill differ near mask boundaries.",
+      "render": "Weak blur makes visual differences small; no new gross implementation error."
+    },
+    "repro_006": {
+      "segmentation": "Large dark upper-right animal is almost entirely omitted by LDF across the five keyframes.",
+      "layers": "The missed animal is retained as background RGB and nonzero background disparity; GT alpha includes it in inpainting.",
+      "render": "Small blur does not make the severe segmentation failure equally obvious in final RGB; retain as diagnostic example."
+    },
+    "repro_007": {
+      "segmentation": "Small moving people below/beside big cats are frequently missing or broken in LDF.",
+      "layers": "LDF leaves people in the repaired background; GT alpha improves masks but some LaMa residual silhouettes remain.",
+      "render": "Large subjects keep focus direction; fine people and occlusion boundaries differ. Remaining inpaint artifacts are method failures."
+    },
+    "repro_008": {
+      "segmentation": "Small upper pig is missed at frames6/12; gaps and fur outlines differ.",
+      "layers": "LDF background retains pig and object fragments; GT alpha changes both depth repair and colored background structures.",
+      "render": "Foreground goat remains blurred; edge leakage/texture differs across branches."
+    },
+    "repro_012": {
+      "segmentation": "LDF misses parts of hat and soft dark bear boundary.",
+      "layers": "LDF background depth contains retained near-object fragments; GT-alpha background is closer to a uniform far plane. LaMa bright/dark fill still varies.",
+      "render": "Focused man remains sharp; strong bear/dog blur and dark background texture differ. No isolated black block or channel swap seen."
+    },
+    "repro_017": {
+      "segmentation": "Central-right kangaroo is missed throughout all sampled LDF masks.",
+      "layers": "It persists visibly in LDF background RGB/depth and is removed with GT alpha; foreground repair changes.",
+      "render": "Weak/mid blur output remains broadly consistent; keep missed-object case rather than modifying masks."
+    },
+    "repro_068": {
+      "segmentation": "LDF joins gaps and misses thin antlers/parts of people, with changing stray patches.",
+      "layers": "LDF background keeps some animal fragments; GT alpha changes fill substantially but does not recover an independently perfect background.",
+      "render": "Brightened blurred zebra stripes persist even with known layers; input correction does not remove all photometric/kernel discrepancy."
+    },
+    "repro_143": {
+      "segmentation": "LDF repeatedly omits large face/cat regions and parts of moving people.",
+      "layers": "Large foreground fragments remain in LDF background RGB/depth; GT-alpha LaMa removes them but changes stadium fill.",
+      "render": "Strong lion blur remains in all branches; known layers improve some overlaps but do not establish paper-adapter identity."
+    }
+  },
+  "intermediate_changes": [
+    {
+      "scene": "repro_000",
+      "frame": 0,
+      "alpha_MAE": 0.011422812007367611,
+      "missed_union_fraction_of_image": 0.004099527994791667,
+      "extra_LDF_fraction_of_image": 0.008826361762152778,
+      "inpaint_mask_changed_fraction": 0.013429429796006944,
+      "FG_repaired_disparity_change_MAE": 0.014909452084883078,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.00031880508738419165,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.7903698086738586
+        ],
+        [
+          0.0,
+          0.009156850166618824
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.020327558740973473
+    },
+    {
+      "scene": "repro_000",
+      "frame": 6,
+      "alpha_MAE": 0.01943300850689411,
+      "missed_union_fraction_of_image": 0.010852389865451388,
+      "extra_LDF_fraction_of_image": 0.008924696180555556,
+      "inpaint_mask_changed_fraction": 0.021787855360243056,
+      "FG_repaired_disparity_change_MAE": 0.03607253671954641,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.00967612103464995,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.8090289831161499
+        ],
+        [
+          0.0,
+          0.005157055798918009
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.01341124065220356
+    },
+    {
+      "scene": "repro_000",
+      "frame": 12,
+      "alpha_MAE": 0.029484907165169716,
+      "missed_union_fraction_of_image": 0.012066311306423612,
+      "extra_LDF_fraction_of_image": 0.008928087022569444,
+      "inpaint_mask_changed_fraction": 0.019237942165798612,
+      "FG_repaired_disparity_change_MAE": 0.025199281133007546,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.01638662676693961,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.8300226926803589
+        ],
+        [
+          0.0,
+          0.006319411564618349
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.017271392047405243
+    },
+    {
+      "scene": "repro_000",
+      "frame": 18,
+      "alpha_MAE": 0.01699053682386875,
+      "missed_union_fraction_of_image": 0.003991021050347222,
+      "extra_LDF_fraction_of_image": 0.0094757080078125,
+      "inpaint_mask_changed_fraction": 0.014578925238715278,
+      "FG_repaired_disparity_change_MAE": 0.037050107753803435,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.0007131361244041944,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.765378475189209
+        ],
+        [
+          0.0,
+          0.0072934431955218315
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.013942999765276909
+    },
+    {
+      "scene": "repro_000",
+      "frame": 24,
+      "alpha_MAE": 0.06793475896120071,
+      "missed_union_fraction_of_image": 0.060248480902777776,
+      "extra_LDF_fraction_of_image": 0.006464640299479167,
+      "inpaint_mask_changed_fraction": 0.0734066433376736,
+      "FG_repaired_disparity_change_MAE": 0.06830250059084005,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.030064281560162234,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.00927808042615652
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.024096015840768814
+    },
+    {
+      "scene": "repro_001",
+      "frame": 0,
+      "alpha_MAE": 0.0463329553604126,
+      "missed_union_fraction_of_image": 0.0335540771484375,
+      "extra_LDF_fraction_of_image": 0.007970174153645834,
+      "inpaint_mask_changed_fraction": 0.039540608723958336,
+      "FG_repaired_disparity_change_MAE": 0.05662440747732805,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.013729009859890994,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.32909494638442993
+        ],
+        [
+          0.0,
+          0.00864078663289547
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.05847068503499031
+    },
+    {
+      "scene": "repro_001",
+      "frame": 6,
+      "alpha_MAE": 0.05767682567238808,
+      "missed_union_fraction_of_image": 0.03764682345920139,
+      "extra_LDF_fraction_of_image": 0.004713270399305556,
+      "inpaint_mask_changed_fraction": 0.039728800455729164,
+      "FG_repaired_disparity_change_MAE": 0.0243116105640563,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.019994912763718783,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.00546357873827219
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.028089119121432304
+    },
+    {
+      "scene": "repro_001",
+      "frame": 12,
+      "alpha_MAE": 0.04810219258069992,
+      "missed_union_fraction_of_image": 0.023893568250868056,
+      "extra_LDF_fraction_of_image": 0.021706475151909724,
+      "inpaint_mask_changed_fraction": 0.04443020290798611,
+      "FG_repaired_disparity_change_MAE": 0.09692589934039994,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.009290336344168544,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.32472753524780273
+        ],
+        [
+          0.0,
+          0.01126379519701004
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.046075720340013504
+    },
+    {
+      "scene": "repro_001",
+      "frame": 18,
+      "alpha_MAE": 0.05119219794869423,
+      "missed_union_fraction_of_image": 0.03599717881944445,
+      "extra_LDF_fraction_of_image": 0.003868950737847222,
+      "inpaint_mask_changed_fraction": 0.03324551052517361,
+      "FG_repaired_disparity_change_MAE": 0.022499631594212133,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.02098617485645315,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.013648495078086853
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.022269053384661674
+    },
+    {
+      "scene": "repro_001",
+      "frame": 24,
+      "alpha_MAE": 0.04888569191098213,
+      "missed_union_fraction_of_image": 0.005079481336805556,
+      "extra_LDF_fraction_of_image": 0.04074435763888889,
+      "inpaint_mask_changed_fraction": 0.045893351236979164,
+      "FG_repaired_disparity_change_MAE": 0.09067867174891768,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.005024944649924522,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.4328739643096924
+        ],
+        [
+          0.0,
+          0.008241408504545689
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.025305891409516335
+    },
+    {
+      "scene": "repro_003",
+      "frame": 0,
+      "alpha_MAE": 0.010152686387300491,
+      "missed_union_fraction_of_image": 0.0015004475911458333,
+      "extra_LDF_fraction_of_image": 0.008978949652777778,
+      "inpaint_mask_changed_fraction": 0.007544623480902778,
+      "FG_repaired_disparity_change_MAE": 0.009840015706850017,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 3.687698455604907e-05,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.006249474361538887
+        ],
+        [
+          0.0,
+          0.006337819620966911
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.015064192935824394
+    },
+    {
+      "scene": "repro_003",
+      "frame": 6,
+      "alpha_MAE": 0.009679359383881092,
+      "missed_union_fraction_of_image": 0.001385158962673611,
+      "extra_LDF_fraction_of_image": 0.009969075520833334,
+      "inpaint_mask_changed_fraction": 0.010618421766493056,
+      "FG_repaired_disparity_change_MAE": 0.02466293022833762,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 2.3586974843369623e-05,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.004321754910051823
+        ],
+        [
+          0.0,
+          0.005378712434321642
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.010230813175439835
+    },
+    {
+      "scene": "repro_003",
+      "frame": 12,
+      "alpha_MAE": 0.057702407240867615,
+      "missed_union_fraction_of_image": 0.025251600477430556,
+      "extra_LDF_fraction_of_image": 0.050389607747395836,
+      "inpaint_mask_changed_fraction": 0.07997979058159722,
+      "FG_repaired_disparity_change_MAE": 0.05757009119575301,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.014390737947588765,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.34962907433509827
+        ],
+        [
+          0.0,
+          0.007487619295716286
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.03432753309607506
+    },
+    {
+      "scene": "repro_003",
+      "frame": 18,
+      "alpha_MAE": 0.01685592159628868,
+      "missed_union_fraction_of_image": 0.0019022623697916667,
+      "extra_LDF_fraction_of_image": 0.006264580620659722,
+      "inpaint_mask_changed_fraction": 0.006786770290798611,
+      "FG_repaired_disparity_change_MAE": 0.007294073784200675,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.0009464409692372064,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.683874785900116
+        ],
+        [
+          0.0,
+          0.005073410924524069
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.01224175188690424
+    },
+    {
+      "scene": "repro_003",
+      "frame": 24,
+      "alpha_MAE": 0.03700542449951172,
+      "missed_union_fraction_of_image": 0.023062811957465276,
+      "extra_LDF_fraction_of_image": 0.00262451171875,
+      "inpaint_mask_changed_fraction": 0.025319417317708332,
+      "FG_repaired_disparity_change_MAE": 0.017554000402147087,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.023260410091980082,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.006263075862079859
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.02354125864803791
+    },
+    {
+      "scene": "repro_004",
+      "frame": 0,
+      "alpha_MAE": 0.009530683048069477,
+      "missed_union_fraction_of_image": 0.002838134765625,
+      "extra_LDF_fraction_of_image": 0.007388644748263889,
+      "inpaint_mask_changed_fraction": 0.012876722547743056,
+      "FG_repaired_disparity_change_MAE": 0.009901653567352686,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.00014775622286235728,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.5790955424308777
+        ],
+        [
+          0.0,
+          0.006049090065062046
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.02067747339606285
+    },
+    {
+      "scene": "repro_004",
+      "frame": 6,
+      "alpha_MAE": 0.01204631943255663,
+      "missed_union_fraction_of_image": 0.003136528862847222,
+      "extra_LDF_fraction_of_image": 0.008287217881944444,
+      "inpaint_mask_changed_fraction": 0.015140109592013888,
+      "FG_repaired_disparity_change_MAE": 0.010746413440665051,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.0001396515989145149,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.5400683283805847
+        ],
+        [
+          0.0,
+          0.004839455708861351
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.016770167276263237
+    },
+    {
+      "scene": "repro_004",
+      "frame": 12,
+      "alpha_MAE": 0.011692875064909458,
+      "missed_union_fraction_of_image": 0.0036417643229166665,
+      "extra_LDF_fraction_of_image": 0.007000393337673611,
+      "inpaint_mask_changed_fraction": 0.012630886501736112,
+      "FG_repaired_disparity_change_MAE": 0.009785348695224483,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.0002432361089093124,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.7339046597480774
+        ],
+        [
+          0.0,
+          0.00611220533028245
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.020909275859594345
+    },
+    {
+      "scene": "repro_004",
+      "frame": 18,
+      "alpha_MAE": 0.01025968138128519,
+      "missed_union_fraction_of_image": 0.0030381944444444445,
+      "extra_LDF_fraction_of_image": 0.007729424370659722,
+      "inpaint_mask_changed_fraction": 0.013846503363715278,
+      "FG_repaired_disparity_change_MAE": 0.009168027189313664,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.0001421990986306907,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.6707010865211487
+        ],
+        [
+          0.0,
+          0.007552257739007473
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.017565486952662468
+    },
+    {
+      "scene": "repro_004",
+      "frame": 24,
+      "alpha_MAE": 0.015209127217531204,
+      "missed_union_fraction_of_image": 0.003445095486111111,
+      "extra_LDF_fraction_of_image": 0.006040785047743056,
+      "inpaint_mask_changed_fraction": 0.012171427408854166,
+      "FG_repaired_disparity_change_MAE": 0.006678479416488444,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.0019937119520180395,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.5999201536178589
+        ],
+        [
+          0.0,
+          0.005622880533337593
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.022037195041775703
+    },
+    {
+      "scene": "repro_006",
+      "frame": 0,
+      "alpha_MAE": 0.15966421365737915,
+      "missed_union_fraction_of_image": 0.1506127251519097,
+      "extra_LDF_fraction_of_image": 0.005140516493055556,
+      "inpaint_mask_changed_fraction": 0.15785386827256945,
+      "FG_repaired_disparity_change_MAE": 0.10931315233001587,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.046934998648788286,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.44151389598846436
+        ],
+        [
+          0.0,
+          0.013136791065335274
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.12297523766756058
+    },
+    {
+      "scene": "repro_006",
+      "frame": 6,
+      "alpha_MAE": 0.15946920216083527,
+      "missed_union_fraction_of_image": 0.1394534640842014,
+      "extra_LDF_fraction_of_image": 0.0068206787109375,
+      "inpaint_mask_changed_fraction": 0.1448940700954861,
+      "FG_repaired_disparity_change_MAE": 0.10290708193831499,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.04060690868709766,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.35799941420555115
+        ],
+        [
+          0.0,
+          0.011087071150541306
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.12847912311553955
+    },
+    {
+      "scene": "repro_006",
+      "frame": 12,
+      "alpha_MAE": 0.15751764178276062,
+      "missed_union_fraction_of_image": 0.13972981770833334,
+      "extra_LDF_fraction_of_image": 0.005884806315104167,
+      "inpaint_mask_changed_fraction": 0.14543321397569445,
+      "FG_repaired_disparity_change_MAE": 0.12412952183050113,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.04304640484426898,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.3401745557785034
+        ],
+        [
+          0.0,
+          0.012333491817116737
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.12077425420284271
+    },
+    {
+      "scene": "repro_006",
+      "frame": 18,
+      "alpha_MAE": 0.1553635448217392,
+      "missed_union_fraction_of_image": 0.13609483506944445,
+      "extra_LDF_fraction_of_image": 0.004796346028645833,
+      "inpaint_mask_changed_fraction": 0.1423577202690972,
+      "FG_repaired_disparity_change_MAE": 0.09552749037862873,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.04838948364017364,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.45277246832847595
+        ],
+        [
+          0.0,
+          0.012790091335773468
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.1223236471414566
+    },
+    {
+      "scene": "repro_006",
+      "frame": 24,
+      "alpha_MAE": 0.1661657691001892,
+      "missed_union_fraction_of_image": 0.14914109971788195,
+      "extra_LDF_fraction_of_image": 0.015406290690104166,
+      "inpaint_mask_changed_fraction": 0.162384033203125,
+      "FG_repaired_disparity_change_MAE": 0.11773852747888898,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.03960182392803423,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.4644524157047272
+        ],
+        [
+          0.0,
+          0.008544976823031902
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.12365352362394333
+    },
+    {
+      "scene": "repro_007",
+      "frame": 0,
+      "alpha_MAE": 0.051178690046072006,
+      "missed_union_fraction_of_image": 0.0264739990234375,
+      "extra_LDF_fraction_of_image": 0.010414971245659722,
+      "inpaint_mask_changed_fraction": 0.039204915364583336,
+      "FG_repaired_disparity_change_MAE": 0.08943652909588838,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.014239230328844246,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.7985275983810425
+        ],
+        [
+          0.0,
+          0.007850658148527145
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.02708604745566845
+    },
+    {
+      "scene": "repro_007",
+      "frame": 6,
+      "alpha_MAE": 0.04629955440759659,
+      "missed_union_fraction_of_image": 0.027292887369791668,
+      "extra_LDF_fraction_of_image": 0.009772406684027778,
+      "inpaint_mask_changed_fraction": 0.040095011393229164,
+      "FG_repaired_disparity_change_MAE": 0.0758716577334084,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.019156730494757905,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.009753133170306683
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.031203417107462883
+    },
+    {
+      "scene": "repro_007",
+      "frame": 12,
+      "alpha_MAE": 0.044205695390701294,
+      "missed_union_fraction_of_image": 0.027431911892361112,
+      "extra_LDF_fraction_of_image": 0.009334988064236112,
+      "inpaint_mask_changed_fraction": 0.041890462239583336,
+      "FG_repaired_disparity_change_MAE": 0.05212611578907091,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.008355530510822448,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.008659514598548412
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.02158244512975216
+    },
+    {
+      "scene": "repro_007",
+      "frame": 18,
+      "alpha_MAE": 0.043688490986824036,
+      "missed_union_fraction_of_image": 0.029824150933159724,
+      "extra_LDF_fraction_of_image": 0.008970472547743056,
+      "inpaint_mask_changed_fraction": 0.04408094618055555,
+      "FG_repaired_disparity_change_MAE": 0.06700913286236997,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.008891085217095727,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.41348588466644287
+        ],
+        [
+          0.0,
+          0.006924035027623177
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.02214662730693817
+    },
+    {
+      "scene": "repro_007",
+      "frame": 24,
+      "alpha_MAE": 0.05157215893268585,
+      "missed_union_fraction_of_image": 0.03471204969618055,
+      "extra_LDF_fraction_of_image": 0.009758843315972222,
+      "inpaint_mask_changed_fraction": 0.05098130967881945,
+      "FG_repaired_disparity_change_MAE": 0.06714473195411214,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.010269864069422598,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.0068205432035028934
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.023056067526340485
+    },
+    {
+      "scene": "repro_008",
+      "frame": 0,
+      "alpha_MAE": 0.03431876376271248,
+      "missed_union_fraction_of_image": 0.0050811767578125,
+      "extra_LDF_fraction_of_image": 0.018366495768229168,
+      "inpaint_mask_changed_fraction": 0.020938449435763888,
+      "FG_repaired_disparity_change_MAE": 0.015604827710890414,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.0002648365797877849,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.5515902042388916
+        ],
+        [
+          0.0,
+          0.01766064576804638
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.029791032895445824
+    },
+    {
+      "scene": "repro_008",
+      "frame": 6,
+      "alpha_MAE": 0.07656016200780869,
+      "missed_union_fraction_of_image": 0.05520290798611111,
+      "extra_LDF_fraction_of_image": 0.013164944118923612,
+      "inpaint_mask_changed_fraction": 0.07124837239583333,
+      "FG_repaired_disparity_change_MAE": 0.03708929452517521,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.01787871402440551,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.5399076342582703
+        ],
+        [
+          0.0,
+          0.022273261100053787
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.0654214471578598
+    },
+    {
+      "scene": "repro_008",
+      "frame": 12,
+      "alpha_MAE": 0.06709478795528412,
+      "missed_union_fraction_of_image": 0.049933539496527776,
+      "extra_LDF_fraction_of_image": 0.020399305555555556,
+      "inpaint_mask_changed_fraction": 0.07659742567274305,
+      "FG_repaired_disparity_change_MAE": 0.01582366112141293,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.010594325376739534,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.3056768476963043
+        ],
+        [
+          0.0,
+          0.01946764998137951
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.040594737976789474
+    },
+    {
+      "scene": "repro_008",
+      "frame": 18,
+      "alpha_MAE": 0.033505842089653015,
+      "missed_union_fraction_of_image": 0.004380967881944444,
+      "extra_LDF_fraction_of_image": 0.03168911404079861,
+      "inpaint_mask_changed_fraction": 0.035851372612847224,
+      "FG_repaired_disparity_change_MAE": 0.06437633369497348,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.0016246868472322691,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.6838815212249756
+        ],
+        [
+          0.0,
+          0.01629353128373623
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.04903256893157959
+    },
+    {
+      "scene": "repro_008",
+      "frame": 24,
+      "alpha_MAE": 0.0367722325026989,
+      "missed_union_fraction_of_image": 0.007822672526041666,
+      "extra_LDF_fraction_of_image": 0.007978651258680556,
+      "inpaint_mask_changed_fraction": 0.017279730902777776,
+      "FG_repaired_disparity_change_MAE": 0.015939016650910933,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.0025520724689723695,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.5807682871818542
+        ],
+        [
+          0.0,
+          0.013843231834471226
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.03025936707854271
+    },
+    {
+      "scene": "repro_012",
+      "frame": 0,
+      "alpha_MAE": 0.04632572457194328,
+      "missed_union_fraction_of_image": 0.033135308159722224,
+      "extra_LDF_fraction_of_image": 0.008683946397569444,
+      "inpaint_mask_changed_fraction": 0.041054619683159724,
+      "FG_repaired_disparity_change_MAE": 0.024788806396871393,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.039332682134453206,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.0055084615014493465
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.014548392035067081
+    },
+    {
+      "scene": "repro_012",
+      "frame": 6,
+      "alpha_MAE": 0.028272543102502823,
+      "missed_union_fraction_of_image": 0.009969075520833334,
+      "extra_LDF_fraction_of_image": 0.010023328993055556,
+      "inpaint_mask_changed_fraction": 0.020014444986979168,
+      "FG_repaired_disparity_change_MAE": 0.03499510164969796,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.00631937813080043,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.41098394989967346
+        ],
+        [
+          0.0,
+          0.006794638466089964
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.015100245364010334
+    },
+    {
+      "scene": "repro_012",
+      "frame": 12,
+      "alpha_MAE": 0.027623942121863365,
+      "missed_union_fraction_of_image": 0.002960205078125,
+      "extra_LDF_fraction_of_image": 0.010581122504340278,
+      "inpaint_mask_changed_fraction": 0.012339274088541666,
+      "FG_repaired_disparity_change_MAE": 0.030723809513993536,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.0012542222000551024,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.24994005262851715
+        ],
+        [
+          0.0,
+          0.011486271396279335
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.00905850064009428
+    },
+    {
+      "scene": "repro_012",
+      "frame": 18,
+      "alpha_MAE": 0.018316293135285378,
+      "missed_union_fraction_of_image": 0.002322726779513889,
+      "extra_LDF_fraction_of_image": 0.008875528971354166,
+      "inpaint_mask_changed_fraction": 0.011189778645833334,
+      "FG_repaired_disparity_change_MAE": 0.019289705036492175,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.0018309218657847565,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.7957990169525146
+        ],
+        [
+          0.0,
+          0.013036021031439304
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.010514182038605213
+    },
+    {
+      "scene": "repro_012",
+      "frame": 24,
+      "alpha_MAE": 0.04470986872911453,
+      "missed_union_fraction_of_image": 0.009599473741319444,
+      "extra_LDF_fraction_of_image": 0.010816786024305556,
+      "inpaint_mask_changed_fraction": 0.020197550455729168,
+      "FG_repaired_disparity_change_MAE": 0.019887446945675628,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.05726508029450986,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.7398303747177124
+        ],
+        [
+          0.0,
+          0.013284377753734589
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.04239294305443764
+    },
+    {
+      "scene": "repro_017",
+      "frame": 0,
+      "alpha_MAE": 0.0542341023683548,
+      "missed_union_fraction_of_image": 0.036168416341145836,
+      "extra_LDF_fraction_of_image": 0.024666680230034724,
+      "inpaint_mask_changed_fraction": 0.06427171495225695,
+      "FG_repaired_disparity_change_MAE": 0.04870378535606935,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.034180212268582554,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.014237375929951668
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.053126897662878036
+    },
+    {
+      "scene": "repro_017",
+      "frame": 6,
+      "alpha_MAE": 0.05200265347957611,
+      "missed_union_fraction_of_image": 0.038274129231770836,
+      "extra_LDF_fraction_of_image": 0.0103912353515625,
+      "inpaint_mask_changed_fraction": 0.05357699924045139,
+      "FG_repaired_disparity_change_MAE": 0.08634380648661089,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.03460607303097784,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.008522641845047474
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.04438452795147896
+    },
+    {
+      "scene": "repro_017",
+      "frame": 12,
+      "alpha_MAE": 0.0545097179710865,
+      "missed_union_fraction_of_image": 0.0408782958984375,
+      "extra_LDF_fraction_of_image": 0.010804918077256944,
+      "inpaint_mask_changed_fraction": 0.05635240342881945,
+      "FG_repaired_disparity_change_MAE": 0.08807292180971536,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.03792864359337917,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.006170453503727913
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.04446938633918762
+    },
+    {
+      "scene": "repro_017",
+      "frame": 18,
+      "alpha_MAE": 0.05000675469636917,
+      "missed_union_fraction_of_image": 0.03961181640625,
+      "extra_LDF_fraction_of_image": 0.011913723415798612,
+      "inpaint_mask_changed_fraction": 0.057824028862847224,
+      "FG_repaired_disparity_change_MAE": 0.09831317461069625,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.037779550113528106,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.005591086111962795
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.04398404806852341
+    },
+    {
+      "scene": "repro_017",
+      "frame": 24,
+      "alpha_MAE": 0.07608775794506073,
+      "missed_union_fraction_of_image": 0.040608723958333336,
+      "extra_LDF_fraction_of_image": 0.043921576605902776,
+      "inpaint_mask_changed_fraction": 0.08762274848090278,
+      "FG_repaired_disparity_change_MAE": 0.12734121068438334,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.03563460888189976,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.006974160671234131
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.05922591686248779
+    },
+    {
+      "scene": "repro_068",
+      "frame": 0,
+      "alpha_MAE": 0.022263986989855766,
+      "missed_union_fraction_of_image": 0.002371893988715278,
+      "extra_LDF_fraction_of_image": 0.023644341362847224,
+      "inpaint_mask_changed_fraction": 0.025060017903645832,
+      "FG_repaired_disparity_change_MAE": 0.05443861954339297,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.002120254575288344,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.03885340690612793
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.033789653331041336
+    },
+    {
+      "scene": "repro_068",
+      "frame": 6,
+      "alpha_MAE": 0.058932431042194366,
+      "missed_union_fraction_of_image": 0.023981730143229168,
+      "extra_LDF_fraction_of_image": 0.047770182291666664,
+      "inpaint_mask_changed_fraction": 0.0771942138671875,
+      "FG_repaired_disparity_change_MAE": 0.05798790838414377,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.010056971755930856,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.039530348032712936
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.05802655220031738
+    },
+    {
+      "scene": "repro_068",
+      "frame": 12,
+      "alpha_MAE": 0.07634031027555466,
+      "missed_union_fraction_of_image": 0.038994683159722224,
+      "extra_LDF_fraction_of_image": 0.04046969943576389,
+      "inpaint_mask_changed_fraction": 0.08582051595052083,
+      "FG_repaired_disparity_change_MAE": 0.06454062639348679,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.017862872241902993,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.05503635108470917
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.0703519731760025
+    },
+    {
+      "scene": "repro_068",
+      "frame": 18,
+      "alpha_MAE": 0.05426354706287384,
+      "missed_union_fraction_of_image": 0.017327202690972224,
+      "extra_LDF_fraction_of_image": 0.028201633029513888,
+      "inpaint_mask_changed_fraction": 0.04444715711805555,
+      "FG_repaired_disparity_change_MAE": 0.03879959534472177,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.014904477321403872,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.033270213752985
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.07036244869232178
+    },
+    {
+      "scene": "repro_068",
+      "frame": 24,
+      "alpha_MAE": 0.054853085428476334,
+      "missed_union_fraction_of_image": 0.037251790364583336,
+      "extra_LDF_fraction_of_image": 0.017825656467013888,
+      "inpaint_mask_changed_fraction": 0.050994873046875,
+      "FG_repaired_disparity_change_MAE": 0.028537630651442675,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.025493176746948662,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.025433465838432312
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.05172812566161156
+    },
+    {
+      "scene": "repro_143",
+      "frame": 0,
+      "alpha_MAE": 0.10906121879816055,
+      "missed_union_fraction_of_image": 0.09524366590711805,
+      "extra_LDF_fraction_of_image": 0.015248616536458334,
+      "inpaint_mask_changed_fraction": 0.11409674750434028,
+      "FG_repaired_disparity_change_MAE": 0.08126413896005959,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.02766626284829727,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.005790836177766323
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.05444604530930519
+    },
+    {
+      "scene": "repro_143",
+      "frame": 6,
+      "alpha_MAE": 0.22222955524921417,
+      "missed_union_fraction_of_image": 0.16599019368489584,
+      "extra_LDF_fraction_of_image": 0.019700792100694444,
+      "inpaint_mask_changed_fraction": 0.1876797146267361,
+      "FG_repaired_disparity_change_MAE": 0.08010378775229542,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.08710305925562785,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.008719553239643574
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.07733815163373947
+    },
+    {
+      "scene": "repro_143",
+      "frame": 12,
+      "alpha_MAE": 0.16429449617862701,
+      "missed_union_fraction_of_image": 0.1342230902777778,
+      "extra_LDF_fraction_of_image": 0.018012152777777776,
+      "inpaint_mask_changed_fraction": 0.16143798828125,
+      "FG_repaired_disparity_change_MAE": 0.154965615299403,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.06873858599025137,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.013360200449824333
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.08413226157426834
+    },
+    {
+      "scene": "repro_143",
+      "frame": 18,
+      "alpha_MAE": 0.12486675381660461,
+      "missed_union_fraction_of_image": 0.0929836697048611,
+      "extra_LDF_fraction_of_image": 0.0073699951171875,
+      "inpaint_mask_changed_fraction": 0.0978240966796875,
+      "FG_repaired_disparity_change_MAE": 0.09264970216429091,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.06184495646388639,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          0.6321542859077454
+        ],
+        [
+          0.0,
+          0.009980536065995693
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.07261792570352554
+    },
+    {
+      "scene": "repro_143",
+      "frame": 24,
+      "alpha_MAE": 0.17559480667114258,
+      "missed_union_fraction_of_image": 0.1345248752170139,
+      "extra_LDF_fraction_of_image": 0.0029500325520833335,
+      "inpaint_mask_changed_fraction": 0.13977559407552084,
+      "FG_repaired_disparity_change_MAE": 0.14511373490518312,
+      "FG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "BG_repaired_disparity_change_MAE": 0.07632919206220731,
+      "BG_disparity_ranges": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.01088179461658001
+        ]
+      ],
+      "LaMa_RGB_change_MAE": 0.05322777479887009
+    }
+  ],
+  "counterexample_repro_000": {
+    "full_public": {
+      "scene": "repro_000",
+      "renderer": "MPIB-public proxy",
+      "PSNR": 31.348474407196044,
+      "PSNR_clip_mse": 31.297871939936908,
+      "SSIM": 0.9743082213401795,
+      "LPIPS": 0.03876488953828812,
+      "FD": 2.0232469166318574,
+      "RM": 0.013358522206544876,
+      "FVD": null,
+      "RM_author_public_2transitions": 0.013194316998124123,
+      "PSNR_TorchMetrics": 31.29787254333496,
+      "SSIM_TorchMetrics": 0.9746208190917969,
+      "K": 32
+    },
+    "gt_alpha": {
+      "scene": "repro_000",
+      "renderer": "MPIB-public proxy",
+      "PSNR": 31.930170345306397,
+      "PSNR_clip_mse": 31.880407177068687,
+      "SSIM": 0.9779798340797424,
+      "LPIPS": 0.037928298115730286,
+      "FD": 2.4469420288999877,
+      "RM": 0.012292081490159035,
+      "FVD": null,
+      "RM_author_public_2transitions": 0.012572549283504486,
+      "PSNR_TorchMetrics": 31.880409240722656,
+      "SSIM_TorchMetrics": 0.9782608151435852
+    },
+    "oracle_layers": {
+      "scene": "repro_000",
+      "renderer": "MPIB-public proxy",
+      "PSNR": 32.47541513442993,
+      "PSNR_clip_mse": 32.43153885741507,
+      "SSIM": 0.9838172459602356,
+      "LPIPS": 0.027701088711619377,
+      "FD": 1.931200700501601,
+      "RM": 0.011140401475131512,
+      "FVD": null,
+      "RM_author_public_2transitions": 0.011434376239776611,
+      "PSNR_TorchMetrics": 32.43153381347656,
+      "SSIM_TorchMetrics": 0.983976423740387
+    }
+  },
+  "decision": "Proceed to fixed-protocol 200-scene input comparison; retain all method failures and original results.",
+  "limits": [
+    "Visual review covers five sampled frames per scene; it cannot exclude unsampled frame-to-frame flicker.",
+    "No claim that 11 selected scenes establish the main cause of the original full-200 FVD.",
+    "Known layers change multiple input permissions jointly; they are not a pure LaMa ablation."
+  ]
+}
