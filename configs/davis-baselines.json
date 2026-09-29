@@ -1,0 +1,36 @@
+{
+  "data_protocol": "configs/davis-eval-v2.json",
+  "output": "outputs/davis-baselines-20260929",
+  "preflight_order": ["any2bokeh", "mpib", "bokehme", "drbokeh", "bokehdiff"],
+  "preflight_sequences": ["bear", "blackswan", "bmx-trees", "breakdance", "dog", "horsejump-high", "kite-surf", "soapbox"],
+  "scene_order_rule": "These8 sequences first in listed order; remaining42 in lexicographic order. Freeze before inference; preflight is the prefix of the formal run.",
+  "keyframes": [0, 6, 12, 18, 24],
+  "common_checks": ["200 complete preflight frames at1024x576", "finite float outputs and nonempty PNGs", "filename focus exactly matches prepared geometry", "K16", "RGB/channel/frame order", "no GT mask supplied to model", "frozen adapter unchanged", "40 fixed keyframe groups reviewed for implementation errors, not model quality"],
+  "any2bokeh": {
+    "author_commit": "f7a16959dd219080fb8eec0d32bb9602d8970c22",
+    "checkpoint": "models/any-to-bokeh/checkpoints",
+    "seed": 0,
+    "group_frames": 8,
+    "overlap_frames": 4,
+    "infer_clip_num": 2,
+    "input": "Unmodified author WholeVid loader on original JPEG RGB and original-size prepared PNG8 VDA q. No mask_folder is provided.",
+    "resize": "Author pixel_transforms and MPI resize; CoC/MPI built at source resolution before resize",
+    "rng": "Global torch seed0 before model loading; CPU generator seed0 per public pipeline call. VAE latent sampling also advances global RNG; save/restore CPU+CUDA state at scene boundaries for prefix reuse.",
+    "output": "Author postprocessed float, finite check, clamp/round RGB PNG8; existing project output convention"
+  },
+  "frame_methods": {
+    "RGB_resize": "cv2.INTER_LINEAR original JPEG to1024x576, uint8 then RGB float32/255; same declared resize as DeepLens DAVIS",
+    "disparity_resize": "cv2.INTER_LINEAR on float64 q/255 to1024x576; no second PNG quantization; focus remains the prepared source-resolution five-decimal scalar",
+    "mpib": "configs/mpib-track-a-frozen.json",
+    "bokehme": "configs/bokehme-track-a-frozen.json",
+    "drbokeh": "configs/drbokeh-track-a-frozen.json",
+    "bokehdiff": "configs/bokehdiff-adapter-recovery.json"
+  },
+  "bokehdiff": {
+    "candidate": "normalized",
+    "seed": 42,
+    "rng": "One global seed before model loading, never per-frame/per-scene reset. Same public per-call scheduler generator as Track A. Resume CPU+CUDA state after prefix; formal42 scenes continue after preflight8 in the declared DAVIS manifest order.",
+    "scope": "Track A model/PISA/seed policy unchanged; its separate Synthetic candidate runs are untouched. DAVIS explicitly uses one shared preflight-to-formal stream to make reuse valid."
+  },
+  "limits": ["No VEPI-based selection during preflight", "Model failures are retained unless an objective implementation error blocks the protocol", "Shared external sources do not imply identical internal CoC or resize kernels", "Formal all-method sweep starts after all five preflights and fixed visual reviews pass"]
+}

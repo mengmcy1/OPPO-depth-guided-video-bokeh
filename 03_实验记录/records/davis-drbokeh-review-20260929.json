@@ -1,0 +1,30 @@
+{
+  "status": "PREFLIGHT_PASSED",
+  "method": "drbokeh",
+  "frames": 200,
+  "keyframe_groups_viewed": 40,
+  "intermediate_keyframe_groups_viewed": 40,
+  "keyframes": [
+    0,
+    6,
+    12,
+    18,
+    24
+  ],
+  "VEPI_computed": false,
+  "objective_implementation_errors_found": false,
+  "LDF_calls": 200,
+  "LaMa_calls": 400,
+  "MiDaS_calls": 0,
+  "LDF_empty_frames": 0,
+  "LDF_full_frames": 0,
+  "max_actual_layer_radius": 13.299303529411763,
+  "max_CoC_float64_error": 3.552713678800501e-15,
+  "notes": [
+    "Full-public LDF+LaMa; RGBAD2layers receives actual predicted LDF alpha; DAVIS mask is not an inference argument.",
+    "LDF includes background spectators in breakdance, loses some bicycle parts under occlusion, and includes some ramp foreground in soapbox; preserved.",
+    "LaMa ghost structures and depth inpainting extrapolation retained; fixed output/intermediate sheets show no gross channel/order/coordinate error.",
+    "Sparse keyframes do not establish temporal stability."
+  ],
+  "reviewed_utc": "2026-09-29T15:10:33.837039+00:00"
+}

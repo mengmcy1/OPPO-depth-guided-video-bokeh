@@ -256,6 +256,18 @@ DAVIS 每段视频固定观察：
 
 ---
 
+## 4.5 DAVIS五方法预检与正式复用
+
+用户确认顺序为Any-to-Bokeh→MPIB→BokehMe→Dr.Bokeh→BokehDiff，每种固定复用上述8段的前25帧及0/6/12/18/24关键帧。配置`configs/davis-baselines.json`，入口`scripts/run_davis_baseline.py`；不重做Block A，不计算VEPI选参数。共同检查200帧完整、1024×576、float finite、非空PNG、RGB/帧序、focus/K16、GT mask权限、冻结adapter及40组视觉实现检查；效果不佳不构成调参理由。
+
+Any-to-Bokeh直接用原JPEG和原分辨率q进入作者WholeVid loader，CoC/MPI先在原分辨率构造，再走作者resize；对实际RGB/CoC/MPI张量和文件名focus逐帧核对。25帧分为起点0/4/8/12/16/20的六组，最后一组5帧加3个零padding；用作者实际decode_latents方法加identity VAE检查索引拼接，三次真实调用输出8+8+9帧，对应0–24连续顺序。
+
+其他四种逐帧方法沿用冻结模型/控制：原JPEG以OpenCV线性resize到1024×576再转RGB float32；q/255以float64线性resize、不再次量化，focus保持源分辨率五位小数值。MPIB/BokehMe网络输入转换为float32；Dr.Bokeh/BokehDiff控制映射保留已有float64→网络float32规则。BokehMe/BokehDiff记录resize后每帧span和K/span，保持K16、不补偿；Dr.Bokeh走Full-public LDF+LaMa，逐帧记录LDF和实际repair/layer结果，GT mask不作为alpha。分割失败、细节重绘、局部强虚化等保留，除客观实现错误外不改协议。
+
+**连续随机流与复用**：DAVIS处理顺序在输出前固定为这8段在前、其余42按名称排序；评价集合和视频等权平均不变。BokehDiff在加载前仅一次全局seed42，保留公开每次scheduler generator，PISA随机流不逐帧/逐段重置。Any-to-Bokeh保留项目既有全局seed0与公开每次CPU generator0；VAE latent sampling还会消耗全局随机流，也保存并恢复CPU/CUDA状态。两者都在每段结束保存RNG checkpoint，正式42段接续第8段状态，因此8段预检可作为同一正式流的前缀复用；不套用Synthetic历史独立candidate/preflight流的复用结论。
+
+五种预检及视觉复核全部通过后，再执行六方法×50×25。DeepLens固定native-default0.5，复用已有200帧；其余五种同样只新增42段。全部方法完整输出后统一编码H.264并计算MP4主VEPI与PNG codec诊断；正式并发吞吐不填写Efficiency表。
+
 # 5. Benchmark 3：OPPO-style Low-FPS Coarse Depth
 
 ## 5.1 定位

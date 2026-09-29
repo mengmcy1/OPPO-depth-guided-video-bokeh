@@ -1,0 +1,60 @@
+{
+  "status": "ALL_FIVE_PREFLIGHTS_PASSED",
+  "scenes": [
+    "bear",
+    "blackswan",
+    "bmx-trees",
+    "breakdance",
+    "dog",
+    "horsejump-high",
+    "kite-surf",
+    "soapbox"
+  ],
+  "frames_per_method": 200,
+  "total_new_preflight_frames": 1000,
+  "keyframes": [
+    0,
+    6,
+    12,
+    18,
+    24
+  ],
+  "keyframe_groups_per_method": 40,
+  "methods": {
+    "any2bokeh": {
+      "numerical_record": "davis-any2bokeh-preflight-20260929.json",
+      "visual_review": "davis-any2bokeh-review-20260929.json"
+    },
+    "mpib": {
+      "numerical_record": "davis-mpib-preflight-20260929.json",
+      "visual_review": "davis-mpib-review-20260929.json"
+    },
+    "bokehme": {
+      "numerical_record": "davis-bokehme-preflight-20260929.json",
+      "visual_review": "davis-bokehme-review-20260929.json"
+    },
+    "drbokeh": {
+      "numerical_record": "davis-drbokeh-preflight-20260929.json",
+      "visual_review": "davis-drbokeh-review-20260929.json"
+    },
+    "bokehdiff": {
+      "numerical_record": "davis-bokehdiff-preflight-20260929.json",
+      "visual_review": "davis-bokehdiff-review-20260929.json"
+    }
+  },
+  "deeplens": {
+    "review": "deeplens-davis-native-review-20260929.json",
+    "selected_aperture": 0.5,
+    "reusable_frames": 200
+  },
+  "VEPI_computed_for_selection": false,
+  "formal_run": {
+    "scenes_per_method": 50,
+    "frames_per_method": 1250,
+    "new_frames_per_method": 1050,
+    "configuration": "configs/davis-baselines.json",
+    "entry": "scripts/run_davis_full.py --phase all"
+  },
+  "scope": "Implementation gates only; no paper score or visual-quality threshold. Retain model failures; no adapter changes.",
+  "completed_utc": "2026-09-29T15:20:21.057341+00:00"
+}

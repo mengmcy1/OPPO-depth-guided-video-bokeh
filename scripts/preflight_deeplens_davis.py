@@ -28,7 +28,7 @@ def worker(c,names,limit):
         for i in range(limit or 25):
             record=dest/f'{i:05d}.json'
             if record.exists():
-                r=json.loads(record.read_text());assert r['sequence']==name and len(r['apertures'])==3
+                r=json.loads(record.read_text());assert r['sequence']==name and len(r['apertures'])==len(cfg['aperture_probe'])
                 for a in r['apertures']:assert (dest/f"aperture-{a['aperture']:g}"/f'{i:05d}.png').exists()
                 continue
             high=cv2.resize(cv2.imread(str(inputs/'rgb'/f'{i:05d}.jpg')),(1024,576),interpolation=cv2.INTER_LINEAR).astype(np.float32)/255
