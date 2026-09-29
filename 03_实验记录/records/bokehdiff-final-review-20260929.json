@@ -1,5 +1,5 @@
 {
-  "status": "VISUAL_REVIEW_COMPLETE_DUAL_CANDIDATES_RETAINED_NO_RERUN",
+  "status": "VISUAL_REVIEW_COMPLETE_DUAL_CANDIDATES_RETAINED_NORMALIZED_SELECTED_FOR_MAIN_TABLE_NO_RERUN",
   "reviewed_utc": "2026-09-29T05:51:43.004363+00:00",
   "scene_ids": [
     "repro_000",
@@ -53,5 +53,13 @@
     "candidate": null,
     "reason": "Four metrics favor A in paper closeness, two favor B; no predeclared priority, no voting/weights/new candidate. Report A/B in Table V and leave main adapter under review."
   },
-  "scope": "Review of existing complete-200 outputs; no model execution, metric changes or new parameter search. Five keyframes per clip cannot exclude unsampled flicker; paired feature distance is not per-video FVD."
+  "scope": "Review of existing complete-200 outputs; no model execution, metric changes or new parameter search. Five keyframes per clip cannot exclude unsampled flicker; paired feature distance is not per-video FVD.",
+  "post_review_reporting_selection": {
+    "selected_for_main_table": "normalized",
+    "display_name": "BokehDiff-B: Normalized",
+    "retained_alternative": "shared_geometry",
+    "rationale": "After the complete 200-scene metrics and qualitative review, the user selected the Normalized candidate for the main reproduction table. A is closer to the Any-to-Bokeh BokehDiff row on PSNR/SSIM/FD/RM, but the A/B gaps on those four metrics are relatively small; B is closer on FVD and VFID-I, with FVD 65.996926 versus paper 65.678 (absolute difference 0.318926).",
+    "scope": "Reporting/reproduction selection only. This does not establish that Any-to-Bokeh used the Normalized private adapter. Both complete candidates remain retained in Table V; no rerun, third candidate, K-scale search, metric weighting, or benchmark change.",
+    "selected_date": "2026-09-29"
+  }
 }
