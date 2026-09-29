@@ -242,10 +242,12 @@ def main():
     p.add_argument('--phase',choices=['all','inference','evaluate'],default='all')
     p.add_argument('--only',default='');p.add_argument('--max-frames',type=int,default=25)
     p.add_argument('--branch',choices=['both','gt_alpha','oracle_layers'],default='both')
+    p.add_argument('--workers',type=int,default=1,help='Disjoint scene processes within each input branch; branches remain sequential')
     args=p.parse_args();os.chdir(ROOT)
     config=json.loads((ROOT/args.config).read_text());base=json.loads((ROOT/config['base_protocol']).read_text())
     for key in ('gamma','highlight','offset','lens'):assert base[key]==config['fixed'][key]
     assert 1<=args.max_frames<=25
+    assert 1<=args.workers<=4
     expected=config.get('scene_count',11)
     assert expected in (11,200) and len(config['scene_ids'])==len(set(config['scene_ids']))==expected
     run=ROOT/config['output'];run.mkdir(parents=True,exist_ok=True)
@@ -277,7 +279,33 @@ def main():
         # Separate processes release LDF/LaMa/CUDA allocations before metric extraction.
         stages=[('inference','gt_alpha'),('inference','oracle_layers'),('evaluate','both')] if expected==200 else [('inference','both'),('evaluate','both')]
         for phase,branch in stages:
-            subprocess.run([sys.executable,'-u',str(Path(__file__).resolve()),'--config',args.config,'--phase',phase,'--branch',branch],check=True,cwd=ROOT)
+            command=[sys.executable,'-u',str(Path(__file__).resolve()),'--config',args.config,'--phase',phase,'--branch',branch]
+            if phase!='inference' or args.workers==1:
+                subprocess.run(command,check=True,cwd=ROOT)
+                continue
+            assert expected==200 and branch!='both'
+            pending=[sid for sid in config['scene_ids'] if not (run/branch/'timing'/sid/'complete.json').exists()]
+            if not pending:
+                print('BRANCH_ALREADY_COMPLETE',branch,flush=True);continue
+            count=min(args.workers,len(pending))
+            shards=[pending[i::count] for i in range(count)]
+            assert len({sid for shard in shards for sid in shard})==sum(map(len,shards))==len(pending)
+            stamp=datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
+            logs=ROOT/config.get('logs','logs/drbokeh-protocol-recovery-v2-20260928')/('parallel-'+stamp)
+            logs.mkdir(parents=True)
+            workers=[];jobs=[]
+            for i,shard in enumerate(shards):
+                logfile=logs/f'{branch}-worker{i}.log'
+                with logfile.open('x') as f:
+                    child=subprocess.Popen(command+['--only',','.join(shard)],cwd=ROOT,stdin=subprocess.DEVNULL,stdout=f,stderr=subprocess.STDOUT)
+                workers.append(child);jobs.append(dict(pid=child.pid,scenes=shard,log=str(logfile.relative_to(ROOT))))
+            write_json(run/f'scheduling-{stamp}.json',dict(branch=branch,supervisor=os.getpid(),workers=jobs,
+                scope='Scene scheduling only; unchanged protocol, each scene has exactly one producer; no standardized efficiency claim'))
+            print('PARALLEL_BRANCH_START',branch,'workers',count,'scenes',len(pending),'logs',str(logs.relative_to(ROOT)),flush=True)
+            codes=[child.wait() for child in workers]
+            assert all(code==0 for code in codes), ('Worker failed; completed outputs preserved; inspect worker logs',codes)
+            assert all((run/branch/'timing'/sid/'complete.json').exists() for sid in config['scene_ids'])
+            print('PARALLEL_BRANCH_COMPLETE',branch,flush=True)
 
 
 if __name__=='__main__':main()

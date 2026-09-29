@@ -553,7 +553,7 @@ LPIPS A/B=0.134406/0.132024；主RM为24 transitions，作者公开前2对版本
 
 55组最终图与中间层视觉终审完成，证据`records/drbokeh-input-visual-review-20260929.json`。006/017/143可见漏检前景残留在背景RGB/depth；GT alpha改善mask但没有消除所有LaMa残影。068斑马偏亮等失配在known-layer下仍存在，不据此调gamma。本组6.159与论文6.097接近不能反推作者输入协议。
 
-**已启动的下一步**：保持gamma2.2/lens71/K×span映射及全部scene/GT/metric不变，GT-alpha先补189段，known-layer再补189段，已有11段各275帧直接复用。原full-public结果保留。13:43:48北京时间脱离终端启动，日志`logs/drbokeh-input-recovery-200-20260929/pipeline.log`；配置`configs/drbokeh-input-recovery-200.json`。
+**已启动的下一步**：保持gamma2.2/lens71/K×span映射及全部scene/GT/metric不变，GT-alpha先补189段，known-layer再补189段，已有11段各275帧直接复用。原full-public结果保留。13:43:48北京时间脱离终端启动，14:43:38按用户要求改为同分支四路互斥场景调度，分支顺序不变；当前主日志`logs/drbokeh-input-recovery-200-20260929/parallel4-supervisor-20260929.log`，worker分配见输出目录`scheduling-*.json`；配置`configs/drbokeh-input-recovery-200.json`。生产吞吐由约0.538提升到2.038帧/s（约3.79×，不同scene窗口，非Efficiency成绩）。固定两帧并发复查float最大差约1.19e-7，一张PNG只有一个通道差1级，与已有LaMa重复差异量级一致；不声称全局bitwise相等。证据`records/drbokeh-scheduling-20260929.json`。
 
 | 完整200段 | Full-public | GT Alpha | Known Layers | 论文 |
 |---|---:|---:|---:|---:|

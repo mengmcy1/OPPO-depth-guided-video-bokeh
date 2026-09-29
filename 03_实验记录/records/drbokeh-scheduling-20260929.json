@@ -1,0 +1,245 @@
+{
+  "status": "FOUR_SCENE_WORKERS_RUNNING_WITH_MEASURED_SPEEDUP",
+  "measured_utc": "2026-09-29T06:46:30.299677+00:00",
+  "serial": {
+    "frames": 250,
+    "window_seconds": 463.16438341140747,
+    "fps": 0.5376061046965799,
+    "mean_model_and_audit_seconds": 0.9723198667764664,
+    "scene_ids": [
+      "repro_061",
+      "repro_062",
+      "repro_063",
+      "repro_064",
+      "repro_065",
+      "repro_066",
+      "repro_067",
+      "repro_069",
+      "repro_070",
+      "repro_071",
+      "repro_072"
+    ]
+  },
+  "two_workers": {
+    "workers": 2,
+    "frames": 161,
+    "window_seconds": 153.95714235305786,
+    "fps": 1.0392502585757568,
+    "mean_model_seconds": 1.041847911356769,
+    "scope": "Production throughput after initial 15s; different scenes from serial reference, not standardized efficiency"
+  },
+  "four_workers": {
+    "frames": 320,
+    "window_seconds": 156.5179591178894,
+    "fps": 2.0381047759492508,
+    "mean_model_and_audit_seconds": 1.1280788404284976,
+    "scene_ids": [
+      "repro_092",
+      "repro_093",
+      "repro_094",
+      "repro_095",
+      "repro_096",
+      "repro_097",
+      "repro_098",
+      "repro_099",
+      "repro_100",
+      "repro_101",
+      "repro_102",
+      "repro_103",
+      "repro_104",
+      "repro_105",
+      "repro_106",
+      "repro_107"
+    ]
+  },
+  "speedup_four_over_serial": 3.7910744653830504,
+  "speedup_two_over_serial": 1.9331072498931172,
+  "concurrent_probe": {
+    "rows": [
+      {
+        "scene": "repro_011",
+        "PNG_max_abs": 0,
+        "PNG_changed_fraction": 0.0,
+        "float_max_abs": 1.1920928955078125e-07,
+        "float_MAE": 2.598223303174052e-10
+      },
+      {
+        "scene": "repro_002",
+        "PNG_max_abs": 1,
+        "PNG_changed_fraction": 5.651403356481481e-07,
+        "float_max_abs": 1.1920928955078125e-07,
+        "float_MAE": 2.6051127921533634e-10
+      }
+    ],
+    "scope": "Two fixed completed frames, K4/K32, two probe processes concurrent with original worker; scheduling equivalence only, no score tuning"
+  },
+  "handoffs": [
+    "outputs/drbokeh-input-recovery-200-20260929/sequential-handoff-20260929.json",
+    "outputs/drbokeh-input-recovery-200-20260929/parallel2-handoff-20260929.json"
+  ],
+  "current_job": {
+    "started_utc": "2026-09-29T06:43:38.330808+00:00",
+    "pid": 13627,
+    "command": [
+      "/root/miniconda3/envs/magicbokeh/bin/python",
+      "-u",
+      "scripts/run_drbokeh_protocol_recovery.py",
+      "--config",
+      "configs/drbokeh-input-recovery-200.json",
+      "--workers",
+      "4"
+    ],
+    "workers_per_branch": 4,
+    "stages": [
+      "gt_alpha_200",
+      "oracle_layers_200",
+      "all_metrics_and_summary"
+    ],
+    "log": "logs/drbokeh-input-recovery-200-20260929/parallel4-supervisor-20260929.log",
+    "previous": "parallel2-handoff-20260929.json"
+  },
+  "current_scene_assignments": {
+    "branch": "gt_alpha",
+    "supervisor": 13627,
+    "workers": [
+      {
+        "pid": 13632,
+        "scenes": [
+          "repro_092",
+          "repro_096",
+          "repro_100",
+          "repro_104",
+          "repro_108",
+          "repro_112",
+          "repro_116",
+          "repro_120",
+          "repro_124",
+          "repro_128",
+          "repro_132",
+          "repro_136",
+          "repro_140",
+          "repro_145",
+          "repro_149",
+          "repro_153",
+          "repro_157",
+          "repro_161",
+          "repro_165",
+          "repro_169",
+          "repro_173",
+          "repro_177",
+          "repro_181",
+          "repro_185",
+          "repro_189",
+          "repro_193",
+          "repro_197"
+        ],
+        "log": "logs/drbokeh-input-recovery-200-20260929/parallel-20260929T064338461460Z/gt_alpha-worker0.log"
+      },
+      {
+        "pid": 13633,
+        "scenes": [
+          "repro_093",
+          "repro_097",
+          "repro_101",
+          "repro_105",
+          "repro_109",
+          "repro_113",
+          "repro_117",
+          "repro_121",
+          "repro_125",
+          "repro_129",
+          "repro_133",
+          "repro_137",
+          "repro_141",
+          "repro_146",
+          "repro_150",
+          "repro_154",
+          "repro_158",
+          "repro_162",
+          "repro_166",
+          "repro_170",
+          "repro_174",
+          "repro_178",
+          "repro_182",
+          "repro_186",
+          "repro_190",
+          "repro_194",
+          "repro_198"
+        ],
+        "log": "logs/drbokeh-input-recovery-200-20260929/parallel-20260929T064338461460Z/gt_alpha-worker1.log"
+      },
+      {
+        "pid": 13634,
+        "scenes": [
+          "repro_094",
+          "repro_098",
+          "repro_102",
+          "repro_106",
+          "repro_110",
+          "repro_114",
+          "repro_118",
+          "repro_122",
+          "repro_126",
+          "repro_130",
+          "repro_134",
+          "repro_138",
+          "repro_142",
+          "repro_147",
+          "repro_151",
+          "repro_155",
+          "repro_159",
+          "repro_163",
+          "repro_167",
+          "repro_171",
+          "repro_175",
+          "repro_179",
+          "repro_183",
+          "repro_187",
+          "repro_191",
+          "repro_195",
+          "repro_199"
+        ],
+        "log": "logs/drbokeh-input-recovery-200-20260929/parallel-20260929T064338461460Z/gt_alpha-worker2.log"
+      },
+      {
+        "pid": 13635,
+        "scenes": [
+          "repro_095",
+          "repro_099",
+          "repro_103",
+          "repro_107",
+          "repro_111",
+          "repro_115",
+          "repro_119",
+          "repro_123",
+          "repro_127",
+          "repro_131",
+          "repro_135",
+          "repro_139",
+          "repro_144",
+          "repro_148",
+          "repro_152",
+          "repro_156",
+          "repro_160",
+          "repro_164",
+          "repro_168",
+          "repro_172",
+          "repro_176",
+          "repro_180",
+          "repro_184",
+          "repro_188",
+          "repro_192",
+          "repro_196"
+        ],
+        "log": "logs/drbokeh-input-recovery-200-20260929/parallel-20260929T064338461460Z/gt_alpha-worker3.log"
+      }
+    ],
+    "scope": "Scene scheduling only; unchanged protocol, each scene has exactly one producer; no standardized efficiency claim"
+  },
+  "scope": "Scheduling only; no batching, precision, gamma, geometry, checkpoint, lens or input change. Input branches remain sequential, metric extraction afterward. Different scene windows are operational throughput, not standardized Efficiency Table results.",
+  "limits": [
+    "The two probes have float max difference 1.1920929e-7; one PNG channel differs by one level, consistent with previously observed full-pipeline LaMa repeat variation. Not bitwise equivalence on every future frame.",
+    "Measured speedup is GT-alpha inference; known-layer and metric durations may scale differently.",
+    "Existing completed frames and historical timing remain unchanged."
+  ]
+}
