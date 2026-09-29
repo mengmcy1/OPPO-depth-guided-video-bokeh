@@ -630,6 +630,8 @@ Any-to-Bokeh 对同一批输入只产生一份 prediction，再分别以两种 r
 | BokehCrafter* |  |  |  |  |  |  |
 | Ours |  |  |  |  |  |  |
 
+注：Dr.Bokeh 主行读取 GT union alpha，其余方法只接收 RGB + PNG8 disparity + focus + K，信息权限不同；不读取 GT alpha 的公开完整 pipeline（LDF+LaMa）为 PSNR 29.1077 / FVD 143.28969，见 Table V。
+
 若使用自建版本，表题必须明确写：
 
 > Reproduced Any-to-Bokeh-style Synthetic Benchmark
@@ -652,7 +654,7 @@ Any-to-Bokeh 对同一批输入只产生一份 prediction，再分别以两种 r
 | MPIB（γ=2.2冻结） | 31.390 | **31.6195** | **+0.2295 dB** | 0.950 | **0.974408** | 35.766 | **24.95694** | ✅ 200段完成 |
 | **Any-to-Bokeh** | **38.899** | **39.7116** | **+0.8126 dB** | **0.974** | **0.986305** | **9.005** | **8.93752** | ✅ 完成 |
 
-**论文版本补充（2026-09-29）**：[ICLR2026正式版Table1](https://proceedings.iclr.cc/paper_files/paper/2026/file/a0dca56ad0aceeb4eab4d35630e9a0ed-Paper-Conference.pdf#page=7)另有LPIPS列，DeepLens/BokehDiff/BokehMe/Dr.Bokeh/MPIB/Any-to-Bokeh分别为0.183/0.127/0.060/0.046/0.040/0.019；arXiv v2未列出。上表原六项数值一致。补充引用不追溯修改已完成候选选择，不把项目LPIPS实现默称为作者入口逐值复现。DeepLens精确视差/自带深度两处叙述来自v1不同数据域，公开材料仍未披露完整私有adapter。按原始几何保持CoC时，minmax后的DeepLens控制需包含span补偿`alpha_req=K*span/c`；当前独立标定范围及超限处理仍待确定。详见现有汇报8.6及`records/deeplens-protocol-source-review-20260929.json`。
+**论文版本补充（2026-09-29）**：[ICLR2026正式版Table1](https://proceedings.iclr.cc/paper_files/paper/2026/file/a0dca56ad0aceeb4eab4d35630e9a0ed-Paper-Conference.pdf#page=7)另有LPIPS列，DeepLens/BokehDiff/BokehMe/Dr.Bokeh/MPIB/Any-to-Bokeh分别为0.183/0.127/0.060/0.046/0.040/0.019；arXiv v2未列出。上表原六项数值一致。补充引用不追溯修改已完成候选选择，不把项目LPIPS实现默称为作者入口逐值复现。DeepLens精确视差/自带深度两处叙述来自v1不同数据域，公开材料仍未披露完整私有adapter。按原始几何保持CoC时，minmax后的DeepLens控制需包含span补偿`alpha_req=K*span/c`；该映射后续已冻结为单级SR + `aperture=min(K*span/c,1)` 饱和（c=12.488），K16/32 全部饱和（2725/5000帧）并已披露。详见现有汇报8.6–8.7及`records/deeplens-protocol-source-review-20260929.json`。
 
 **当前Track A阶段边界与冻结规则**：本表当前首先服务于 **Any-to-Bokeh Synthetic/Table 1 reproduction**，不是最终统一信息权限的独立benchmark。Dr.Bokeh因此采用完整200段protocol-recovery后选定的GT Alpha reconstruction adapter作为reported主行；Full-public公开完整pipeline保留为诊断证据，并计划在后续自建公平benchmark时重新优先评估。该选择只表示“当前复现展示配置”，不证明ATB私有实验使用GT alpha。
 

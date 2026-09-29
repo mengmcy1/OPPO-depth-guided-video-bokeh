@@ -2,13 +2,13 @@
 
 > 任务：使用公开可获得组件重建 Any-to-Bokeh synthetic evaluation pipeline，并验证官方权重的指标量级
 >
-> 当前状态：✅ **200/200 已完成**（2026-09-28 06:26 UTC（北京时间14:26））
+> 当前状态：✅ Any-to-Bokeh **200/200 已完成**（2026-09-28 06:26 UTC（北京时间14:26））；✅ Track A 六个方法（Any-to-Bokeh、MPIB、BokehMe、Dr.Bokeh、BokehDiff、DeepLens）200×25 及全部指标完成，主表配置已冻结（2026-09-29）
 > 运行记录：sRGB输入配置落盘至全量汇总约170.3分钟，含并发和中断恢复，不含此前图层/几何构造。
 > 数据规模：200 场景 × 25 帧 = 5000 帧（RGB + GT + Prediction 完整）
 > 补充指标：2026-09-28完成TorchMetrics PSNR/SSIM、VideoMAE FVD、I3D VFID-I，见下表及第七节。
 >
 > 核心方案：Any-to-Bokeh 公开场景生成逻辑 + MPIB 官方 ray-tracing renderer proxy + Any-to-Bokeh 官方权重
-> 新增MPIB与BokehMe baseline：各自双候选200段及全部指标已完成，分别冻结gamma=2.2与Normalized/gamma=2.2；详见8.1–8.2。BokehMe与MPIB的部分排序尚未恢复，不宣称整体性能版图已对齐。
+> Baseline：六个方法与论文 Table 1 的总对照见 1.1，各方法候选、选择依据与失败案例见 8.1–8.7。中间方法排序未完全恢复，不宣称整体性能版图已对齐。
 
 ---
 
@@ -42,6 +42,27 @@ PSNR/SSIM主对照采用本轮TorchMetrics补算；原逐帧PSNR **39.73197 dB**
 选择 MPIB-public 的依据是论文引用、公开接口和独立 renderer probe，不以接近论文分数证明 renderer 更准确。未公开的 test manifest、背景清单和内部 kernel 意味着，不能由分数接近推出场景分布或实现完全一致。
 
 当前已经验证的是：固定公开参数与代理素材下，官方checkpoint能完成200段推理和本轮四项补算。数值接近论文不证明恢复了官方测试集、私有renderer或历史评价环境；VFID-I更低也不能解释为模型优于论文。
+
+### 1.1 六个方法与论文 Table 1 总对照（Track A，200×25）
+
+单元格为「本项目 / 论文」。PSNR/SSIM 为 TorchMetrics；LPIPS 为项目 squeeze v0.1 实现，论文值取 ICLR2026 正式版；FVD 为 VideoMAE 集合距离；RM 为完整 24-transition。本项目测试素材与 GT 为公开代理，论文值来自作者未公开的测试集，只作量级与排序参考。完整精度数值见协议文档 Table 1A / Table V。
+
+| 方法（冻结主表配置） | PSNR ↑ | SSIM ↑ | LPIPS ↓ | FVD ↓ | FD ↓ | RM ↓ |
+|---|---:|---:|---:|---:|---:|---:|
+| Any-to-Bokeh（官方权重） | 39.712 / 38.899 | 0.9863 / 0.974 | 0.0152 / 0.019 | 8.94 / 9.005 | 0.445 / 0.431 | 0.0056 / 0.007 |
+| MPIB（γ=2.2） | 31.619 / 31.390 | 0.9744 / 0.950 | 0.0284 / 0.040 | 24.96 / 35.766 | 0.450 / 0.481 | 0.0082 / 0.011 |
+| Dr.Bokeh（GT alpha + LaMa）\* | 31.589 / 31.273 | 0.9735 / 0.950 | 0.0294 / 0.046 | 25.86 / 32.710 | 0.479 / 0.522 | 0.0084 / 0.011 |
+| BokehMe（Normalized，γ=2.2） | 33.334 / 27.992 | 0.9794 / 0.936 | 0.0247 / 0.060 | 18.55 / 39.102 | 0.540 / 0.536 | 0.0074 / 0.013 |
+| BokehDiff（Normalized） | 27.063 / 27.525 | 0.8438 / 0.834 | 0.1320 / 0.127 | 66.00 / 65.678 | 0.802 / 0.660 | 0.0216 / 0.021 |
+| DeepLens（单级SR，aperture饱和） | 28.167 / 24.574 | 0.9437 / 0.819 | 0.0633 / 0.183 | 40.12 / 125.338 | 0.583 / 1.162 | 0.0124 / 0.030 |
+
+\* **Dr.Bokeh 主行读取 GT union alpha**（真实前景 alpha 的并集），其他方法只接收 RGB + PNG8 disparity + focus + K，信息权限不同。不读取 GT alpha 的公开完整 pipeline（LDF+LaMa）为 PSNR 29.108 / FVD 143.29，保留在 8.5 与 Table V。该选择服务于当前 ATB 复现，不声称作者私有 adapter 使用了 GT alpha；未来自建公平 benchmark 优先重新评估公开完整 pipeline。
+
+**可以得出的结论**：
+
+- **已复现**：Any-to-Bokeh 在六项指标上均排第一，量级与论文接近；它领先 MPIB 的 PSNR 差距为 8.09 dB，论文为 7.51 dB。
+- **未复现**：中间方法的排序。按 PSNR，论文为 ATB > MPIB > Dr.Bokeh > BokehMe > BokehDiff > DeepLens，本项目为 ATB > BokehMe > MPIB > Dr.Bokeh > DeepLens > BokehDiff；FVD 排序也只部分一致。BokehMe 和 DeepLens 的绝对值明显优于论文行。
+- **选择偏差**：MPIB、BokehMe、BokehDiff 的主表配置是在这 200 段上从预设候选中按“整体更接近论文行”选定的；Dr.Bokeh 的 GT-alpha 配置也在看过 200 段结果后选定。这些行接近论文，有一部分来自选择本身，不是独立验证。Any-to-Bokeh 行未经候选选择；DeepLens 的控制映射在正式分数出现前冻结，但 K16/32 全部触发 aperture 饱和（2725/5000 帧）。
 
 ---
 
@@ -700,18 +721,9 @@ K增大时PSNR下降，K32的LPIPS/FD/RM明显更大，与已知饱和限制相�
 
 本轮最重要的价值不是简单得到一个接近 38.899 dB 的数字，而是已经验证了一套完整可复现链路：
 
-[
-	ext{公开 scene recipe}
-
-ightarrow
-	ext{MPIB-public ray GT}
-
-ightarrow
-	ext{Any-to-Bokeh 官方推理}
-
-ightarrow
-	ext{视频质量评价}
-]
+```text
+公开 scene recipe → MPIB-public ray GT → Any-to-Bokeh 官方推理 → 视频质量评价
+```
 
 后续可以复用以下已验证组件；正式held-out测试源、renderer和指标仍需单独决定及冻结：
 
