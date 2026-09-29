@@ -17,6 +17,29 @@ ROOT = Path(__file__).resolve().parents[2]
 AUTHOR_COMMIT = '3dbc1b04ba082b3b6b1dc0d944b3d18fa542ae2c'
 
 
+def map_geometry(disparity, focus, strength, response_scale=12.488):
+    """Fixed affine unit conversion plus the explicitly authorized native aperture cap."""
+    d=np.asarray(disparity,dtype=np.float64)
+    assert np.isfinite(d).all() and np.isfinite(focus)
+    assert strength in (4,8,16,32) and response_scale>0
+    lo=float(d.min());hi=float(d.max());span=hi-lo
+    assert span>0, 'Constant disparity has no defined minmax mapping; no silent fallback'
+    normalized=(d-lo)/span;focus_prime=(focus-lo)/span
+    required=strength*span/response_scale;aperture=min(required,1.)
+    effective_K=response_scale*aperture/span
+    signed=(normalized-focus_prime)*aperture
+    equivalent=(d-focus)*effective_K/response_scale
+    error=float(np.max(np.abs(signed-equivalent)))
+    assert error<1e-12
+    return normalized.astype(np.float32),focus_prime,aperture,dict(
+        min=lo,max=hi,span=span,focus=focus,focus_prime=focus_prime,K=strength,
+        response_scale=response_scale,aperture_required=required,aperture=aperture,
+        saturated=required>1,estimated_effective_K=effective_K,
+        estimated_strength_fraction=effective_K/strength,signed_equivalence_error_float64=error,
+        desired_radius_max_px=float((strength*np.abs(d-focus)).max()),
+        estimated_radius_max_px=float((effective_K*np.abs(d-focus)).max()))
+
+
 def load_builders(repository):
     assert subprocess.check_output(['git', '-C', str(repository), 'rev-parse', 'HEAD'], text=True).strip() == AUTHOR_COMMIT
     assert not subprocess.check_output(['git', '-C', str(repository), 'diff', '--', 'network', 'core'], text=True)
@@ -103,8 +126,13 @@ class DeepLensExternal:
              self.focus: focus, self.aperture: aperture})
         assert all(np.isfinite(x).all() for x in [value, low, disparity, signed])
         assert value.shape == (1, *bgr_high.shape) and low.shape == (1, *bgr_low.shape)
+        # Integer x2 downsampling with legacy TF1 align_corners=False samples even pixels.
+        expected=(np.asarray(disparity_full,dtype=np.float32)[::2,::2]-np.float32(focus))*np.float32(aperture)
+        signed_error=float(np.max(np.abs(signed[0,...,0]-expected)))
+        assert signed_error<=1e-6, 'Actual network signed input disagrees with geometry/control'
         return value[0], dict(low_output_shape=list(low.shape), high_output_shape=list(value.shape),
             low_disparity_range=[float(disparity.min()), float(disparity.max())],
             signed_disparity_range=[float(signed.min()), float(signed.max())],
+            signed_input_max_abs_error=signed_error,
             raw_output_range=[float(value.min()), float(value.max())],
             output_clip_fraction=float(((value < 0) | (value > 1)).mean()))

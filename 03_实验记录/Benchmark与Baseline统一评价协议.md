@@ -642,7 +642,7 @@ Any-to-Bokeh 对同一批输入只产生一份 prediction，再分别以两种 r
 
 | Method | Paper PSNR ↑ | Our Bench PSNR ↑ | ΔPSNR | Paper SSIM ↑ | Our Bench SSIM ↑ | Paper FVD ↓ | Our Bench FVD ↓ | Sweep Status |
 |---|---:|---:|---:|---:|---:|---:|---:|---|
-| DeepLens | 24.574 |  |  | 0.819 |  | 125.338 |  | 独立标定完成；单级SR控制范围待定，200段未启动 |
+| DeepLens | 24.574 |  |  | 0.819 |  | 125.338 |  | 单级SR+饱和已冻结；8段预检通过，200段运行中 |
 | BokehDiff-A：Shared-Geometry | 27.525 | **27.1560** | **-0.3690 dB** | 0.834 | **0.841752** | 65.678 | **67.92665** | ✅ 200段及视觉复核完成；作为protocol-recovery alternative保留 |
 | BokehDiff-B：Normalized | 27.525 | **27.0627** | **-0.4623 dB** | 0.834 | **0.843751** | 65.678 | **65.99693** | ✅ 200段及视觉复核完成；选为主表展示配置 |
 | BokehMe（Normalized，γ=2.2） | 27.992 | **33.3340** | **+5.3420 dB** | 0.936 | **0.979418** | 39.102 | **18.54637** | ✅ 双200段完成；与MPIB排序差异保留 |
@@ -796,6 +796,14 @@ lens是窗口边长；41/71/101的圆形mask分别为`ρ<20/35/50`。softstep存
 **当前决定**：本轮输入协议实验关账，不自动追加geometry/gamma/强度实验；残余差值不能证明需要哪一种修正。Table V并列三种输入权限，Table 1A原Full-public行不变。改善不证明Any-to-Bokeh私有adapter使用了oracle；Known共同改变多个因素，不能叫纯LaMa消融，也不能与无oracle方法不加说明地混成同一输入权限比较。
 
 坐标关系明确为：令s=d_max−d_min，d′=(d−d_min)/s、df′=(df−d_min)/s，则K|d−df|=Ks|d′−df′|=R；若归一化后仍用K，则K|d′−df′|=R/s。后者改变散焦强度，不是纯坐标变换。当前只运行Ks补偿的固定版本；未来known-layer raw/归一化+Ks只先做小规模等价性检查，不立刻扩为全量候选。lens是覆盖窗口，不能拿它调虚化强度。
+
+### DeepLens冻结协议：原生单级SR+aperture饱和（2026-09-29）
+
+用户已确认：1024×576遵循官方interactive的scale2路径，512×288 LensBlur后一次guided SR，不为扩大blur范围改成两级SR。原生TF1.15 CPU、原checkpoint，外部PNG8 disparity与文件名focus；`s=max(d)-min(d)>0; D=(d-min)/s; Df=(df-min)/s; aperture=min(K*s/12.488,1)`。无DepthNet、oracle alpha/隐藏信息、焦点夹紧或aperture外推。c由独立control probe决定，与论文/benchmark分数无关。范围饱和作为方法约束披露，不删除K16/32场景、不反推作者私有adapter。
+
+执行配置`configs/deeplens-track-a-frozen.json`；固定8段完整preflight核对输入与饱和、same-scene K16/32平台、有限输出和40关键帧，通过后直接200×25及全部指标/by-K。K4/8预期不饱和，K16/32在当前输入范围预计全部饱和，最终记录实际逐帧统计。原生SR uint8中间转换和最终PNG输出口径保留；CPU时间不直接对照论文GPU时间。
+
+**预检实际通过**：200帧signed数值检查与40关键帧复核完成。K4/8控制等效半径约4.20–4.26/7.68–8.24px；固定同输入K16/32输出逐值一致，正确进入饱和平台。记录`records/deeplens-preflight-20260929.json`。已启动原生CPU八路完整200段及后续全指标，未按预检分数调整任何参数。
 
 ### BokehDiff adapter recovery：共享几何与min-max双候选
 

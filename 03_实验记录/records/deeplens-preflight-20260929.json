@@ -1,0 +1,1026 @@
+{
+  "status": "PREFLIGHT_PASSED",
+  "completed_utc": "2026-09-29T09:27:29.150426+00:00",
+  "protocol": {
+    "name": "DeepLens native single-SR Track A with independently calibrated aperture saturation",
+    "author_commit": "3dbc1b04ba082b3b6b1dc0d944b3d18fa542ae2c",
+    "input": "outputs/any2bokeh-mpib-public-proxy-200-20260928/clips",
+    "checkpoint": "models/DeepLens/model",
+    "runtime": "native TensorFlow1.15 CPU / Python3.7; oneDNN disabled",
+    "resolution": [
+      1024,
+      576
+    ],
+    "low_resolution": [
+      512,
+      288
+    ],
+    "SR_stages": 1,
+    "threads_per_worker": 8,
+    "response_scale": 12.488,
+    "calibration": "03_实验记录/records/deeplens-independent-control-20260929.json",
+    "geometry": "d=PNG8/255; s=max(d)-min(d)>0; D=(d-min)/s; Df=(focus_filename-min)/s; no depth reinversion or focus clamp",
+    "aperture": "min(K*s/12.488,1); record requested and actual aperture and saturation; no extrapolation",
+    "color": "Original BGR float32 [0,1], cv2.INTER_AREA half resolution; original SR uint8 intermediate preserved; final clamp/round PNG8 RGB",
+    "preflight_scenes": [
+      "repro_000",
+      "repro_001",
+      "repro_003",
+      "repro_004",
+      "repro_006",
+      "repro_007",
+      "repro_008",
+      "repro_017"
+    ],
+    "keyframes": [
+      0,
+      6,
+      12,
+      18,
+      24
+    ],
+    "preflight_output": "outputs/deeplens-preflight-20260929",
+    "output": "outputs/deeplens-track-a-20260929",
+    "logs": "logs/deeplens-track-a-20260929",
+    "report": "03_实验记录/records/deeplens-track-a-200-20260929.json",
+    "control_check": "Fixed uniform-depth edge with remote corner depth anchor, both edge orientations and depth signs; K4/8 response, identical saturated K16/32 output; no paper-score selection",
+    "paper_reference": "https://proceedings.iclr.cc/paper_files/paper/2026/file/a0dca56ad0aceeb4eab4d35630e9a0ed-Paper-Conference.pdf#page=7",
+    "paper": {
+      "PSNR": 24.574,
+      "SSIM": 0.819,
+      "LPIPS": 0.183,
+      "FD": 1.162,
+      "RM": 0.03,
+      "FVD": 125.338,
+      "VFID_I": 16.042
+    },
+    "limits": [
+      "User selected native single-SR and aperture saturation before formal metrics; c rounded from independent12.4879623fit to12.488.",
+      "Estimated effective K/radius derive from an approximate edge-width response, not a physically exact kernel model.",
+      "K16/32 targets exceed the measured native control range; saturation is disclosed, not removed from evaluation.",
+      "No DepthNet, GT alpha, hidden layers, training, recursive SR, aperture extrapolation or metric-based parameter selection.",
+      "Native TF1 CPU is not claimed bitwise equivalent to historical GPU execution; CPU timing is not compared to paper GPU time.",
+      "ATB private adapter may have used other input conventions or extrapolation; this implementation does not establish its identity."
+    ]
+  },
+  "numerical_checks": {
+    "status": "NUMERICAL_AND_PNG_CHECKS_PASSED",
+    "stage": "preflight",
+    "scene_count": 8,
+    "frames": 200,
+    "by_K": {
+      "4": {
+        "frames": 50,
+        "saturated_frames": 0,
+        "saturation_fraction": 0.0,
+        "aperture_required_range": [
+          0.25373378050771883,
+          0.31905138737109195
+        ],
+        "achieved_aperture_range": [
+          0.25373378050771883,
+          0.31905138737109195
+        ]
+      },
+      "8": {
+        "frames": 50,
+        "saturated_frames": 0,
+        "saturation_fraction": 0.0,
+        "aperture_required_range": [
+          0.5099797766640289,
+          0.6381027747421839
+        ],
+        "achieved_aperture_range": [
+          0.5099797766640289,
+          0.6381027747421839
+        ]
+      },
+      "16": {
+        "frames": 50,
+        "saturated_frames": 50,
+        "saturation_fraction": 1.0,
+        "aperture_required_range": [
+          1.0199595533280579,
+          1.2762055494843678
+        ],
+        "achieved_aperture_range": [
+          1.0,
+          1.0
+        ]
+      },
+      "32": {
+        "frames": 50,
+        "saturated_frames": 50,
+        "saturation_fraction": 1.0,
+        "aperture_required_range": [
+          2.0600168318448455,
+          2.5524110989687356
+        ],
+        "achieved_aperture_range": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    "max_signed_input_error": 0.0,
+    "focus_prime_range": [
+      0.19205883988095238,
+      1.0018349229268293
+    ],
+    "max_output_clip_fraction": 0.0028788248697916665,
+    "visual_review_complete": false
+  },
+  "control_check": {
+    "status": "CONTROL_MAPPING_AND_SATURATION_PASSED",
+    "rows": [
+      {
+        "orientation": "vertical",
+        "sign": -1,
+        "K": 4,
+        "geometry": {
+          "min": 0.0,
+          "max": 1.0,
+          "span": 1.0,
+          "focus": 1.0,
+          "focus_prime": 1.0,
+          "K": 4,
+          "response_scale": 12.488,
+          "aperture_required": 0.3203074951953876,
+          "aperture": 0.3203074951953876,
+          "saturated": false,
+          "estimated_effective_K": 4.0,
+          "estimated_strength_fraction": 1.0,
+          "signed_equivalence_error_float64": 0.0,
+          "desired_radius_max_px": 4.0,
+          "estimated_radius_max_px": 4.0
+        },
+        "output": {
+          "low_output_shape": [
+            1,
+            288,
+            512,
+            3
+          ],
+          "high_output_shape": [
+            1,
+            576,
+            1024,
+            3
+          ],
+          "low_disparity_range": [
+            0.0,
+            1.0
+          ],
+          "signed_disparity_range": [
+            -0.32030749320983887,
+            0.0
+          ],
+          "signed_input_max_abs_error": 0.0,
+          "raw_output_range": [
+            0.24170133471488953,
+            0.7588014602661133
+          ],
+          "output_clip_fraction": 0.0
+        },
+        "edge_width_px": 5.858480442378024,
+        "disk_edge_equivalent_radius_px": 4.263510990445859
+      },
+      {
+        "orientation": "vertical",
+        "sign": -1,
+        "K": 8,
+        "geometry": {
+          "min": 0.0,
+          "max": 1.0,
+          "span": 1.0,
+          "focus": 1.0,
+          "focus_prime": 1.0,
+          "K": 8,
+          "response_scale": 12.488,
+          "aperture_required": 0.6406149903907752,
+          "aperture": 0.6406149903907752,
+          "saturated": false,
+          "estimated_effective_K": 8.0,
+          "estimated_strength_fraction": 1.0,
+          "signed_equivalence_error_float64": 0.0,
+          "desired_radius_max_px": 8.0,
+          "estimated_radius_max_px": 8.0
+        },
+        "output": {
+          "low_output_shape": [
+            1,
+            288,
+            512,
+            3
+          ],
+          "high_output_shape": [
+            1,
+            576,
+            1024,
+            3
+          ],
+          "low_disparity_range": [
+            0.0,
+            1.0
+          ],
+          "signed_disparity_range": [
+            -0.6406149864196777,
+            0.0
+          ],
+          "signed_input_max_abs_error": 0.0,
+          "raw_output_range": [
+            0.24598535895347595,
+            0.7600746750831604
+          ],
+          "output_clip_fraction": 0.0
+        },
+        "edge_width_px": 11.079102993309306,
+        "disk_edge_equivalent_radius_px": 8.062820699130345
+      },
+      {
+        "orientation": "vertical",
+        "sign": -1,
+        "K": 16,
+        "geometry": {
+          "min": 0.0,
+          "max": 1.0,
+          "span": 1.0,
+          "focus": 1.0,
+          "focus_prime": 1.0,
+          "K": 16,
+          "response_scale": 12.488,
+          "aperture_required": 1.2812299807815504,
+          "aperture": 1.0,
+          "saturated": true,
+          "estimated_effective_K": 12.488,
+          "estimated_strength_fraction": 0.7805,
+          "signed_equivalence_error_float64": 0.0,
+          "desired_radius_max_px": 16.0,
+          "estimated_radius_max_px": 12.488
+        },
+        "output": {
+          "low_output_shape": [
+            1,
+            288,
+            512,
+            3
+          ],
+          "high_output_shape": [
+            1,
+            576,
+            1024,
+            3
+          ],
+          "low_disparity_range": [
+            0.0,
+            1.0
+          ],
+          "signed_disparity_range": [
+            -1.0,
+            0.0
+          ],
+          "signed_input_max_abs_error": 0.0,
+          "raw_output_range": [
+            0.2365977168083191,
+            0.7654085755348206
+          ],
+          "output_clip_fraction": 0.0
+        },
+        "edge_width_px": 16.272704377317197,
+        "disk_edge_equivalent_radius_px": 11.842465745060442
+      },
+      {
+        "orientation": "vertical",
+        "sign": -1,
+        "K": 32,
+        "geometry": {
+          "min": 0.0,
+          "max": 1.0,
+          "span": 1.0,
+          "focus": 1.0,
+          "focus_prime": 1.0,
+          "K": 32,
+          "response_scale": 12.488,
+          "aperture_required": 2.5624599615631007,
+          "aperture": 1.0,
+          "saturated": true,
+          "estimated_effective_K": 12.488,
+          "estimated_strength_fraction": 0.39025,
+          "signed_equivalence_error_float64": 0.0,
+          "desired_radius_max_px": 32.0,
+          "estimated_radius_max_px": 12.488
+        },
+        "output": {
+          "low_output_shape": [
+            1,
+            288,
+            512,
+            3
+          ],
+          "high_output_shape": [
+            1,
+            576,
+            1024,
+            3
+          ],
+          "low_disparity_range": [
+            0.0,
+            1.0
+          ],
+          "signed_disparity_range": [
+            -1.0,
+            0.0
+          ],
+          "signed_input_max_abs_error": 0.0,
+          "raw_output_range": [
+            0.2365977168083191,
+            0.7654085755348206
+          ],
+          "output_clip_fraction": 0.0
+        },
+        "edge_width_px": 16.272704377317197,
+        "disk_edge_equivalent_radius_px": 11.842465745060442
+      },
+      {
+        "orientation": "vertical",
+        "sign": 1,
+        "K": 4,
+        "geometry": {
+          "min": 0.0,
+          "max": 1.0,
+          "span": 1.0,
+          "focus": 0.0,
+          "focus_prime": 0.0,
+          "K": 4,
+          "response_scale": 12.488,
+          "aperture_required": 0.3203074951953876,
+          "aperture": 0.3203074951953876,
+          "saturated": false,
+          "estimated_effective_K": 4.0,
+          "estimated_strength_fraction": 1.0,
+          "signed_equivalence_error_float64": 0.0,
+          "desired_radius_max_px": 4.0,
+          "estimated_radius_max_px": 4.0
+        },
+        "output": {
+          "low_output_shape": [
+            1,
+            288,
+            512,
+            3
+          ],
+          "high_output_shape": [
+            1,
+            576,
+            1024,
+            3
+          ],
+          "low_disparity_range": [
+            0.0,
+            1.0
+          ],
+          "signed_disparity_range": [
+            0.0,
+            0.32030749320983887
+          ],
+          "signed_input_max_abs_error": 0.0,
+          "raw_output_range": [
+            0.240897536277771,
+            0.760614275932312
+          ],
+          "output_clip_fraction": 0.0
+        },
+        "edge_width_px": 5.778358845023192,
+        "disk_edge_equivalent_radius_px": 4.2052024726904
+      },
+      {
+        "orientation": "vertical",
+        "sign": 1,
+        "K": 8,
+        "geometry": {
+          "min": 0.0,
+          "max": 1.0,
+          "span": 1.0,
+          "focus": 0.0,
+          "focus_prime": 0.0,
+          "K": 8,
+          "response_scale": 12.488,
+          "aperture_required": 0.6406149903907752,
+          "aperture": 0.6406149903907752,
+          "saturated": false,
+          "estimated_effective_K": 8.0,
+          "estimated_strength_fraction": 1.0,
+          "signed_equivalence_error_float64": 0.0,
+          "desired_radius_max_px": 8.0,
+          "estimated_radius_max_px": 8.0
+        },
+        "output": {
+          "low_output_shape": [
+            1,
+            288,
+            512,
+            3
+          ],
+          "high_output_shape": [
+            1,
+            576,
+            1024,
+            3
+          ],
+          "low_disparity_range": [
+            0.0,
+            1.0
+          ],
+          "signed_disparity_range": [
+            0.0,
+            0.6406149864196777
+          ],
+          "signed_input_max_abs_error": 0.0,
+          "raw_output_range": [
+            0.24551056325435638,
+            0.7562500238418579
+          ],
+          "output_clip_fraction": 0.0
+        },
+        "edge_width_px": 11.321593292337297,
+        "disk_edge_equivalent_radius_px": 8.239293090760057
+      },
+      {
+        "orientation": "vertical",
+        "sign": 1,
+        "K": 16,
+        "geometry": {
+          "min": 0.0,
+          "max": 1.0,
+          "span": 1.0,
+          "focus": 0.0,
+          "focus_prime": 0.0,
+          "K": 16,
+          "response_scale": 12.488,
+          "aperture_required": 1.2812299807815504,
+          "aperture": 1.0,
+          "saturated": true,
+          "estimated_effective_K": 12.488,
+          "estimated_strength_fraction": 0.7805,
+          "signed_equivalence_error_float64": 0.0,
+          "desired_radius_max_px": 16.0,
+          "estimated_radius_max_px": 12.488
+        },
+        "output": {
+          "low_output_shape": [
+            1,
+            288,
+            512,
+            3
+          ],
+          "high_output_shape": [
+            1,
+            576,
+            1024,
+            3
+          ],
+          "low_disparity_range": [
+            0.0,
+            1.0
+          ],
+          "signed_disparity_range": [
+            0.0,
+            1.0
+          ],
+          "signed_input_max_abs_error": 0.0,
+          "raw_output_range": [
+            0.24502697587013245,
+            0.7608147859573364
+          ],
+          "output_clip_fraction": 0.0
+        },
+        "edge_width_px": 18.111452094155666,
+        "disk_edge_equivalent_radius_px": 13.180614976163088
+      },
+      {
+        "orientation": "vertical",
+        "sign": 1,
+        "K": 32,
+        "geometry": {
+          "min": 0.0,
+          "max": 1.0,
+          "span": 1.0,
+          "focus": 0.0,
+          "focus_prime": 0.0,
+          "K": 32,
+          "response_scale": 12.488,
+          "aperture_required": 2.5624599615631007,
+          "aperture": 1.0,
+          "saturated": true,
+          "estimated_effective_K": 12.488,
+          "estimated_strength_fraction": 0.39025,
+          "signed_equivalence_error_float64": 0.0,
+          "desired_radius_max_px": 32.0,
+          "estimated_radius_max_px": 12.488
+        },
+        "output": {
+          "low_output_shape": [
+            1,
+            288,
+            512,
+            3
+          ],
+          "high_output_shape": [
+            1,
+            576,
+            1024,
+            3
+          ],
+          "low_disparity_range": [
+            0.0,
+            1.0
+          ],
+          "signed_disparity_range": [
+            0.0,
+            1.0
+          ],
+          "signed_input_max_abs_error": 0.0,
+          "raw_output_range": [
+            0.24502697587013245,
+            0.7608147859573364
+          ],
+          "output_clip_fraction": 0.0
+        },
+        "edge_width_px": 18.111452094155666,
+        "disk_edge_equivalent_radius_px": 13.180614976163088
+      },
+      {
+        "orientation": "horizontal",
+        "sign": -1,
+        "K": 4,
+        "geometry": {
+          "min": 0.0,
+          "max": 1.0,
+          "span": 1.0,
+          "focus": 1.0,
+          "focus_prime": 1.0,
+          "K": 4,
+          "response_scale": 12.488,
+          "aperture_required": 0.3203074951953876,
+          "aperture": 0.3203074951953876,
+          "saturated": false,
+          "estimated_effective_K": 4.0,
+          "estimated_strength_fraction": 1.0,
+          "signed_equivalence_error_float64": 0.0,
+          "desired_radius_max_px": 4.0,
+          "estimated_radius_max_px": 4.0
+        },
+        "output": {
+          "low_output_shape": [
+            1,
+            288,
+            512,
+            3
+          ],
+          "high_output_shape": [
+            1,
+            576,
+            1024,
+            3
+          ],
+          "low_disparity_range": [
+            0.0,
+            1.0
+          ],
+          "signed_disparity_range": [
+            -0.32030749320983887,
+            0.0
+          ],
+          "signed_input_max_abs_error": 0.0,
+          "raw_output_range": [
+            0.24315491318702698,
+            0.7588014602661133
+          ],
+          "output_clip_fraction": 0.0
+        },
+        "edge_width_px": 5.816596923795075,
+        "disk_edge_equivalent_radius_px": 4.2330302465817615
+      },
+      {
+        "orientation": "horizontal",
+        "sign": -1,
+        "K": 8,
+        "geometry": {
+          "min": 0.0,
+          "max": 1.0,
+          "span": 1.0,
+          "focus": 1.0,
+          "focus_prime": 1.0,
+          "K": 8,
+          "response_scale": 12.488,
+          "aperture_required": 0.6406149903907752,
+          "aperture": 0.6406149903907752,
+          "saturated": false,
+          "estimated_effective_K": 8.0,
+          "estimated_strength_fraction": 1.0,
+          "signed_equivalence_error_float64": 0.0,
+          "desired_radius_max_px": 8.0,
+          "estimated_radius_max_px": 8.0
+        },
+        "output": {
+          "low_output_shape": [
+            1,
+            288,
+            512,
+            3
+          ],
+          "high_output_shape": [
+            1,
+            576,
+            1024,
+            3
+          ],
+          "low_disparity_range": [
+            0.0,
+            1.0
+          ],
+          "signed_disparity_range": [
+            -0.6406149864196777,
+            0.0
+          ],
+          "signed_input_max_abs_error": 0.0,
+          "raw_output_range": [
+            0.24494493007659912,
+            0.760131299495697
+          ],
+          "output_clip_fraction": 0.0
+        },
+        "edge_width_px": 10.55770337342058,
+        "disk_edge_equivalent_radius_px": 7.683371961240979
+      },
+      {
+        "orientation": "horizontal",
+        "sign": -1,
+        "K": 16,
+        "geometry": {
+          "min": 0.0,
+          "max": 1.0,
+          "span": 1.0,
+          "focus": 1.0,
+          "focus_prime": 1.0,
+          "K": 16,
+          "response_scale": 12.488,
+          "aperture_required": 1.2812299807815504,
+          "aperture": 1.0,
+          "saturated": true,
+          "estimated_effective_K": 12.488,
+          "estimated_strength_fraction": 0.7805,
+          "signed_equivalence_error_float64": 0.0,
+          "desired_radius_max_px": 16.0,
+          "estimated_radius_max_px": 12.488
+        },
+        "output": {
+          "low_output_shape": [
+            1,
+            288,
+            512,
+            3
+          ],
+          "high_output_shape": [
+            1,
+            576,
+            1024,
+            3
+          ],
+          "low_disparity_range": [
+            0.0,
+            1.0
+          ],
+          "signed_disparity_range": [
+            -1.0,
+            0.0
+          ],
+          "signed_input_max_abs_error": 0.0,
+          "raw_output_range": [
+            0.2365977168083191,
+            0.7603195309638977
+          ],
+          "output_clip_fraction": 0.0
+        },
+        "edge_width_px": 16.51874631878856,
+        "disk_edge_equivalent_radius_px": 12.021522845598954
+      },
+      {
+        "orientation": "horizontal",
+        "sign": -1,
+        "K": 32,
+        "geometry": {
+          "min": 0.0,
+          "max": 1.0,
+          "span": 1.0,
+          "focus": 1.0,
+          "focus_prime": 1.0,
+          "K": 32,
+          "response_scale": 12.488,
+          "aperture_required": 2.5624599615631007,
+          "aperture": 1.0,
+          "saturated": true,
+          "estimated_effective_K": 12.488,
+          "estimated_strength_fraction": 0.39025,
+          "signed_equivalence_error_float64": 0.0,
+          "desired_radius_max_px": 32.0,
+          "estimated_radius_max_px": 12.488
+        },
+        "output": {
+          "low_output_shape": [
+            1,
+            288,
+            512,
+            3
+          ],
+          "high_output_shape": [
+            1,
+            576,
+            1024,
+            3
+          ],
+          "low_disparity_range": [
+            0.0,
+            1.0
+          ],
+          "signed_disparity_range": [
+            -1.0,
+            0.0
+          ],
+          "signed_input_max_abs_error": 0.0,
+          "raw_output_range": [
+            0.2365977168083191,
+            0.7603195309638977
+          ],
+          "output_clip_fraction": 0.0
+        },
+        "edge_width_px": 16.51874631878856,
+        "disk_edge_equivalent_radius_px": 12.021522845598954
+      },
+      {
+        "orientation": "horizontal",
+        "sign": 1,
+        "K": 4,
+        "geometry": {
+          "min": 0.0,
+          "max": 1.0,
+          "span": 1.0,
+          "focus": 0.0,
+          "focus_prime": 0.0,
+          "K": 4,
+          "response_scale": 12.488,
+          "aperture_required": 0.3203074951953876,
+          "aperture": 0.3203074951953876,
+          "saturated": false,
+          "estimated_effective_K": 4.0,
+          "estimated_strength_fraction": 1.0,
+          "signed_equivalence_error_float64": 0.0,
+          "desired_radius_max_px": 4.0,
+          "estimated_radius_max_px": 4.0
+        },
+        "output": {
+          "low_output_shape": [
+            1,
+            288,
+            512,
+            3
+          ],
+          "high_output_shape": [
+            1,
+            576,
+            1024,
+            3
+          ],
+          "low_disparity_range": [
+            0.0,
+            1.0
+          ],
+          "signed_disparity_range": [
+            0.0,
+            0.32030749320983887
+          ],
+          "signed_input_max_abs_error": 0.0,
+          "raw_output_range": [
+            0.2419567108154297,
+            0.7575393915176392
+          ],
+          "output_clip_fraction": 0.0
+        },
+        "edge_width_px": 5.7752664006802235,
+        "disk_edge_equivalent_radius_px": 4.202951945344057
+      },
+      {
+        "orientation": "horizontal",
+        "sign": 1,
+        "K": 8,
+        "geometry": {
+          "min": 0.0,
+          "max": 1.0,
+          "span": 1.0,
+          "focus": 0.0,
+          "focus_prime": 0.0,
+          "K": 8,
+          "response_scale": 12.488,
+          "aperture_required": 0.6406149903907752,
+          "aperture": 0.6406149903907752,
+          "saturated": false,
+          "estimated_effective_K": 8.0,
+          "estimated_strength_fraction": 1.0,
+          "signed_equivalence_error_float64": 0.0,
+          "desired_radius_max_px": 8.0,
+          "estimated_radius_max_px": 8.0
+        },
+        "output": {
+          "low_output_shape": [
+            1,
+            288,
+            512,
+            3
+          ],
+          "high_output_shape": [
+            1,
+            576,
+            1024,
+            3
+          ],
+          "low_disparity_range": [
+            0.0,
+            1.0
+          ],
+          "signed_disparity_range": [
+            0.0,
+            0.6406149864196777
+          ],
+          "signed_input_max_abs_error": 0.0,
+          "raw_output_range": [
+            0.2464706301689148,
+            0.7559404373168945
+          ],
+          "output_clip_fraction": 0.0
+        },
+        "edge_width_px": 10.819819390454882,
+        "disk_edge_equivalent_radius_px": 7.874126975342215
+      },
+      {
+        "orientation": "horizontal",
+        "sign": 1,
+        "K": 16,
+        "geometry": {
+          "min": 0.0,
+          "max": 1.0,
+          "span": 1.0,
+          "focus": 0.0,
+          "focus_prime": 0.0,
+          "K": 16,
+          "response_scale": 12.488,
+          "aperture_required": 1.2812299807815504,
+          "aperture": 1.0,
+          "saturated": true,
+          "estimated_effective_K": 12.488,
+          "estimated_strength_fraction": 0.7805,
+          "signed_equivalence_error_float64": 0.0,
+          "desired_radius_max_px": 16.0,
+          "estimated_radius_max_px": 12.488
+        },
+        "output": {
+          "low_output_shape": [
+            1,
+            288,
+            512,
+            3
+          ],
+          "high_output_shape": [
+            1,
+            576,
+            1024,
+            3
+          ],
+          "low_disparity_range": [
+            0.0,
+            1.0
+          ],
+          "signed_disparity_range": [
+            0.0,
+            1.0
+          ],
+          "signed_input_max_abs_error": 0.0,
+          "raw_output_range": [
+            0.24437130987644196,
+            0.758261501789093
+          ],
+          "output_clip_fraction": 0.0
+        },
+        "edge_width_px": 17.08050845466549,
+        "disk_edge_equivalent_radius_px": 12.430345417234177
+      },
+      {
+        "orientation": "horizontal",
+        "sign": 1,
+        "K": 32,
+        "geometry": {
+          "min": 0.0,
+          "max": 1.0,
+          "span": 1.0,
+          "focus": 0.0,
+          "focus_prime": 0.0,
+          "K": 32,
+          "response_scale": 12.488,
+          "aperture_required": 2.5624599615631007,
+          "aperture": 1.0,
+          "saturated": true,
+          "estimated_effective_K": 12.488,
+          "estimated_strength_fraction": 0.39025,
+          "signed_equivalence_error_float64": 0.0,
+          "desired_radius_max_px": 32.0,
+          "estimated_radius_max_px": 12.488
+        },
+        "output": {
+          "low_output_shape": [
+            1,
+            288,
+            512,
+            3
+          ],
+          "high_output_shape": [
+            1,
+            576,
+            1024,
+            3
+          ],
+          "low_disparity_range": [
+            0.0,
+            1.0
+          ],
+          "signed_disparity_range": [
+            0.0,
+            1.0
+          ],
+          "signed_input_max_abs_error": 0.0,
+          "raw_output_range": [
+            0.24437130987644196,
+            0.758261501789093
+          ],
+          "output_clip_fraction": 0.0
+        },
+        "edge_width_px": 17.08050845466549,
+        "disk_edge_equivalent_radius_px": 12.430345417234177
+      }
+    ],
+    "plateaus": [
+      {
+        "orientation": "vertical",
+        "sign": -1,
+        "K16_K32_float_bitwise_equal": true
+      },
+      {
+        "orientation": "vertical",
+        "sign": 1,
+        "K16_K32_float_bitwise_equal": true
+      },
+      {
+        "orientation": "horizontal",
+        "sign": -1,
+        "K16_K32_float_bitwise_equal": true
+      },
+      {
+        "orientation": "horizontal",
+        "sign": 1,
+        "K16_K32_float_bitwise_equal": true
+      }
+    ],
+    "scope": "Same RGB and geometry acrossK; remote16x16 depth anchor avoids zero span, away from measured edge. Edge-equivalent radii are descriptive, not physical PSF proofs. No benchmark scores."
+  },
+  "visual_review": {
+    "scenes": [
+      "repro_000",
+      "repro_001",
+      "repro_003",
+      "repro_004",
+      "repro_006",
+      "repro_007",
+      "repro_008",
+      "repro_017"
+    ],
+    "frames": [
+      0,
+      6,
+      12,
+      18,
+      24
+    ],
+    "groups": 40,
+    "artifacts": "outputs/deeplens-preflight-20260929/visual-review",
+    "observations": {
+      "repro_000": "Focused lion remains sharp; person/background/lioness blur is visibly weaker than reference underK32. Preserve undershoot and overlap/edge differences; no gross channel or focus reversal.",
+      "repro_001": "Focus/blur ordering retained around rabbit, bull and changing human; large rabbit remains less blurred than GT under saturation. No isolated corrupted keyframe.",
+      "repro_003": "Bear remains focused and human is defocused; human/occlusion boundaries differ from GT. Source-asset cut boundaries are also present in input, not introduced by the adapter.",
+      "repro_004": "WeakK4 changes are small; cat and focus-region texture preserved. Keep small rabbit/rock edge differences.",
+      "repro_006": "K8 produces visible smooth defocus of foreground alpaca while focused subjects retain texture; fine fur/background differences remain.",
+      "repro_007": "Focused leopards preserved, weak horse/person/background blur remains coherent at sampled frames. No gross color swap or black block.",
+      "repro_008": "Focus region around bear retained; blurred goat/background show local shape/blur deviations, demonstrating edge-response calibration is not a guarantee of disk-like rendering everywhere.",
+      "repro_017": "Focused kangaroos remain sharper than woman/tiger/background, matching requested focus ordering; boundary and texture differences remain."
+    },
+    "limitation": "Sparse keyframes rule out inspected gross implementation errors, not all temporal artifacts. Learned-image discrepancies and declared saturation retained; no score-based tuning."
+  },
+  "decision": "Proceed with this single frozen adapter to all200scenes; no recursive SR or extrapolation."
+}

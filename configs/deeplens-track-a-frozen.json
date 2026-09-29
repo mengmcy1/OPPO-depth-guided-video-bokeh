@@ -1,0 +1,62 @@
+{
+  "name": "DeepLens native single-SR Track A with independently calibrated aperture saturation",
+  "author_commit": "3dbc1b04ba082b3b6b1dc0d944b3d18fa542ae2c",
+  "input": "outputs/any2bokeh-mpib-public-proxy-200-20260928/clips",
+  "checkpoint": "models/DeepLens/model",
+  "runtime": "native TensorFlow1.15 CPU / Python3.7; oneDNN disabled",
+  "resolution": [
+    1024,
+    576
+  ],
+  "low_resolution": [
+    512,
+    288
+  ],
+  "SR_stages": 1,
+  "threads_per_worker": 8,
+  "response_scale": 12.488,
+  "calibration": "03_实验记录/records/deeplens-independent-control-20260929.json",
+  "geometry": "d=PNG8/255; s=max(d)-min(d)>0; D=(d-min)/s; Df=(focus_filename-min)/s; no depth reinversion or focus clamp",
+  "aperture": "min(K*s/12.488,1); record requested and actual aperture and saturation; no extrapolation",
+  "color": "Original BGR float32 [0,1], cv2.INTER_AREA half resolution; original SR uint8 intermediate preserved; final clamp/round PNG8 RGB",
+  "preflight_scenes": [
+    "repro_000",
+    "repro_001",
+    "repro_003",
+    "repro_004",
+    "repro_006",
+    "repro_007",
+    "repro_008",
+    "repro_017"
+  ],
+  "keyframes": [
+    0,
+    6,
+    12,
+    18,
+    24
+  ],
+  "preflight_output": "outputs/deeplens-preflight-20260929",
+  "output": "outputs/deeplens-track-a-20260929",
+  "logs": "logs/deeplens-track-a-20260929",
+  "report": "03_实验记录/records/deeplens-track-a-200-20260929.json",
+  "control_check": "Fixed uniform-depth edge with remote corner depth anchor, both edge orientations and depth signs; K4/8 response, identical saturated K16/32 output; no paper-score selection",
+  "paper_reference": "https://proceedings.iclr.cc/paper_files/paper/2026/file/a0dca56ad0aceeb4eab4d35630e9a0ed-Paper-Conference.pdf#page=7",
+  "paper": {
+    "PSNR": 24.574,
+    "SSIM": 0.819,
+    "LPIPS": 0.183,
+    "FD": 1.162,
+    "RM": 0.03,
+    "FVD": 125.338,
+    "VFID_I": 16.042
+  },
+  "limits": [
+    "User selected native single-SR and aperture saturation before formal metrics; c rounded from independent12.4879623fit to12.488.",
+    "Estimated effective K/radius derive from an approximate edge-width response, not a physically exact kernel model.",
+    "K16/32 targets exceed the measured native control range; saturation is disclosed, not removed from evaluation.",
+    "No DepthNet, GT alpha, hidden layers, training, recursive SR, aperture extrapolation or metric-based parameter selection.",
+    "Native TF1 CPU is not claimed bitwise equivalent to historical GPU execution; CPU timing is not compared to paper GPU time.",
+    "ATB private adapter may have used other input conventions or extrapolation; this implementation does not establish its identity."
+  ]
+}
