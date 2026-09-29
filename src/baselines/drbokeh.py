@@ -102,7 +102,7 @@ class OfficialDrBokeh:
 
     def _layers(self,rgb,alpha,disp,params):
         self.row['calls']['RGBAD2layers']=self.row['calls'].get('RGBAD2layers',0)+1
-        assert np.array_equal(alpha,self.expected_mask), 'RGBAD2layers did not receive this frame LDF mask'
+        assert np.array_equal(alpha,self.expected_mask), 'RGBAD2layers did not receive the selected frame mask'
         layers=self.original_layers(rgb,alpha,disp,params)
         assert np.array_equal(layers['fg_rgbad'][...,3:4],alpha)
         assert np.all(layers['bg_rgbad'][...,3]==1)
@@ -110,20 +110,28 @@ class OfficialDrBokeh:
         return layers
 
     @torch.no_grad()
-    def predict(self,rgb,dn,fn,kn):
+    def predict(self,rgb,dn,fn,kn,alpha_override=None):
         self.row={'calls':{'MiDaS':0},'cuda_launch':self.protocol.get('cuda_launch','author_legacy')};self.arrays={}
-        alpha=self.module.salient_segmentation(rgb)
-        alpha=cv2.resize(alpha,(rgb.shape[1],rgb.shape[0]))[...,None]
+        if alpha_override is None:
+            alpha=self.module.salient_segmentation(rgb)
+            alpha=cv2.resize(alpha,(rgb.shape[1],rgb.shape[0]))[...,None]
+        else:
+            alpha=np.asarray(alpha_override).copy()
+            assert alpha.shape==(*rgb.shape[:2],1)
+            self.row['calls']['LDF']=0
+            self.row['alpha_source']='provided synthetic foreground union alpha; LDF bypassed'
         assert np.isfinite(alpha).all() and 0<=alpha.min()<=alpha.max()<=1
         self.expected_mask=alpha.copy()
         hard=alpha>self.protocol['preprocessing']['threshold']
-        self.row['LDF_mask']=dict(**array_stats(alpha),mean=float(alpha.mean()),coverage=float(hard.mean()),
+        mask_key='LDF_mask' if alpha_override is None else 'provided_alpha_mask'
+        self.row[mask_key]=dict(**array_stats(alpha),mean=float(alpha.mean()),coverage=float(hard.mean()),
                                   all_zero=bool(np.all(alpha==0)),all_one=bool(np.all(alpha==1)),
                                   threshold_empty=bool(not hard.any()),threshold_full=bool(hard.all()))
         params=dict(self.protocol['preprocessing'],focal=fn,lens_effect=kn,gamma=self.protocol['gamma'],offset=self.protocol['offset'])
         ret=self.model.inference(rgb,dn[...,None],alpha,params)
         value=ret['bokeh'];assert value.shape==rgb.shape and np.isfinite(value).all()
-        self.arrays.update(ldf_alpha=alpha,input_disparity_normalized=dn)
+        self.arrays['ldf_alpha' if alpha_override is None else 'provided_alpha']=alpha
+        self.arrays['input_disparity_normalized']=dn
         self.row['actual_layers']={}
         for name,layer in ret['layers'].items():
             assert layer.shape==(*rgb.shape[:2],5) and np.isfinite(layer).all()
@@ -133,7 +141,7 @@ class OfficialDrBokeh:
                        radial_tail_mass_at_max=tail_mass(float(radius.max()),self.protocol['lens']))
             self.row['actual_layers'][name]=stats
             self.arrays[name+'_render']=layer.copy()
-        expected={'LDF':1,'LaMa':2,'MiDaS':0,'RGBAD2layers':1,'process_fg':1,'process_bg':1,
+        expected={'LDF':1 if alpha_override is None else 0,'LaMa':2,'MiDaS':0,'RGBAD2layers':1,'process_fg':1,'process_bg':1,
                   'RGB_inpainting':1,'depth_inpainting':1,'layer_renderer':2}
         assert self.row['calls']==expected,self.row['calls']
         self.row['output']=dict(**array_stats(value),clipped_fraction=float(((value<0)|(value>1)).mean()))

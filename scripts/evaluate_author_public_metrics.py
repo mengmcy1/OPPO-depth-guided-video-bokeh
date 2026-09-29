@@ -6,6 +6,7 @@ missing/private imports and broken video indexing, not metric/model formulas.
 """
 import argparse
 import ast
+import fcntl
 import importlib.metadata
 import json
 import os
@@ -174,6 +175,7 @@ def main():
     p.add_argument('--videomae', type=Path, default=Path('models/metrics/VideoMAE2/mae-g/vit_g_hybrid_pt_1200e_ssv2_ft.pth'))
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--limit', type=int)
+    p.add_argument('--only', help='Fixed scene subset, kept in original manifest order; mutually exclusive with --limit')
     p.add_argument('--workers', type=int, default=4)
     p.add_argument('--prediction-root', type=Path)
     p.add_argument('--prediction-dir', default='pred_any2bokeh')
@@ -194,6 +196,11 @@ def main():
     torch.backends.cudnn.benchmark = False
     ids = [s['id'] for s in json.loads((args.clips / 'config.json').read_text())['scenes']]
     assert len(ids) == len(set(ids)) == 200
+    if args.only:
+        assert args.limit is None
+        selected=args.only.split(',')
+        assert len(selected)==len(set(selected)) and set(selected)<=set(ids)
+        ids=[sid for sid in ids if sid in selected]
     if args.limit:
         ids = ids[:args.limit]
     args.output.mkdir(parents=True, exist_ok=True)
@@ -226,7 +233,16 @@ def main():
         torch.cuda.reset_peak_memory_stats()
         start = time.monotonic()
         print('START', name, 'scenes', len(ids), flush=True)
-        value = method(args, ids)
+        if name == 'fvd':
+            # The 24 GiB VideoMAE model must not overlap another FVD extraction
+            # while the two diffusion workers and image metrics are active.
+            lock=Path(__file__).resolve().parents[1]/'logs/fvd-gpu0.lock'
+            lock.parent.mkdir(exist_ok=True)
+            with lock.open('a') as handle:
+                fcntl.flock(handle,fcntl.LOCK_EX)
+                value = method(args, ids)
+        else:
+            value = method(args, ids)
         assert all(np.isfinite(x) for x in value['values'].values())
         value.update(protocol=protocol, elapsed_seconds=time.monotonic() - start,
                      peak_allocated_GiB=torch.cuda.max_memory_allocated() / 2**30)

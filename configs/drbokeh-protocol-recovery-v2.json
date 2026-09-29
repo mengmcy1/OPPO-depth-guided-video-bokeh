@@ -1,0 +1,28 @@
+{
+  "name": "Dr.Bokeh protocol recovery v2: fixed 11-scene input-permission diagnostic",
+  "base_protocol": "configs/drbokeh-track-a-frozen.json",
+  "baseline_output": "outputs/drbokeh-track-a-20260928",
+  "baseline_record": "03_实验记录/records/drbokeh-track-a-200-20260928.json",
+  "output": "outputs/drbokeh-protocol-recovery-v2-20260928",
+  "report": "03_实验记录/records/drbokeh-protocol-recovery-v2-20260928.json",
+  "scene_ids": ["repro_000", "repro_001", "repro_003", "repro_004", "repro_006", "repro_007", "repro_008", "repro_012", "repro_017", "repro_068", "repro_143"],
+  "original_preflight": ["repro_000", "repro_001", "repro_003", "repro_004", "repro_006", "repro_007", "repro_008", "repro_017"],
+  "posthoc_failure_cases": ["repro_012", "repro_068", "repro_143"],
+  "branches": {
+    "full_public": "Reuse saved LDF + LaMa two-layer outputs and metrics; no oracle inputs",
+    "gt_alpha": "Replace LDF only with existing PNG8 union alpha of all four synthetic foregrounds; retain official RGBAD2layers, cv2 foreground depth repair and LaMa RGB/depth repair",
+    "oracle_layers": "Four known RGBA foreground assets plus known background, front to back; bypass LDF and all inpainting; original Dr.Bokeh multi-layer renderer"
+  },
+  "fixed": {"gamma": 2.2, "highlight": false, "offset": 0.0, "lens": 71, "geometry": "Per-frame visible disparity min/max; focus transformed by the same values; K_Dr=K*span; no clamp"},
+  "oracle_disparity": "Quantize each known plane 1/z to PNG8/255 before applying the SAME visible-input min/max. Verify reconstructed visible disparity PNG exactly. Do not add continuous-depth precision as another factor.",
+  "asset_checks": "Known layers must reproduce the existing sRGB RGB PNG, foreground-union alpha PNG and thresholded visible disparity PNG exactly before rendering",
+  "limits": [
+    "Synthetic composition assets are not independent physical foreground color truth.",
+    "The five-layer branch jointly changes layer count, hidden RGB, alpha and geometry; it is not a pure LaMa ablation.",
+    "Oracle improvement does not establish what Any-to-Bokeh's unpublished adapter used.",
+    "Eleven-scene FVD/VFID must be compared on the identical eleven scenes, not against the paper's 200-scene numbers.",
+    "Eight prior preflight scenes and three posthoc failure cases are a selected development diagnostic, not held-out validation.",
+    "FVD covariance is across video feature vectors; it does not uniquely measure temporal flicker.",
+    "No gamma, geometry or blur-strength search in this stage; no automatic change to Table 1A or frozen 200-scene baseline."
+  ]
+}
