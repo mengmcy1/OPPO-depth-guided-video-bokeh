@@ -1,0 +1,195 @@
+{
+  "status": "FULL_200_DEEPLENS_SINGLE_SR_SATURATION_COMPLETE",
+  "closed_utc": "2026-09-29T10:18:41.788171+00:00",
+  "result": "03_实验记录/records/deeplens-track-a-200-20260929.json",
+  "preflight": "03_实验记录/records/deeplens-preflight-20260929.json",
+  "protocol_file": "configs/deeplens-track-a-frozen.json",
+  "verification": {
+    "status": "NUMERICAL_AND_PNG_CHECKS_PASSED",
+    "stage": "full",
+    "scene_count": 200,
+    "frames": 5000,
+    "by_K": {
+      "4": {
+        "frames": 1200,
+        "saturated_frames": 0,
+        "saturation_fraction": 0.0,
+        "aperture_required_range": [
+          0.25373378050771883,
+          0.31905138737109195
+        ],
+        "achieved_aperture_range": [
+          0.25373378050771883,
+          0.31905138737109195
+        ]
+      },
+      "8": {
+        "frames": 1075,
+        "saturated_frames": 0,
+        "saturation_fraction": 0.0,
+        "aperture_required_range": [
+          0.5074675610154377,
+          0.6381027747421839
+        ],
+        "achieved_aperture_range": [
+          0.5074675610154377,
+          0.6381027747421839
+        ]
+      },
+      "16": {
+        "frames": 1400,
+        "saturated_frames": 1400,
+        "saturation_fraction": 1.0,
+        "aperture_required_range": [
+          1.0149351220308753,
+          1.2762055494843678
+        ],
+        "achieved_aperture_range": [
+          1.0,
+          1.0
+        ]
+      },
+      "32": {
+        "frames": 1325,
+        "saturated_frames": 1325,
+        "saturation_fraction": 1.0,
+        "aperture_required_range": [
+          2.0298702440617507,
+          2.5524110989687356
+        ],
+        "achieved_aperture_range": [
+          1.0,
+          1.0
+        ]
+      }
+    },
+    "max_signed_input_error": 0.0,
+    "focus_prime_range": [
+      0.19047619047619047,
+      1.0024129280788177
+    ],
+    "max_output_clip_fraction": 0.04676253707320602,
+    "visual_review_complete": null
+  },
+  "GT_feature_cache_equality": true,
+  "by_K_weighted_means_match": true,
+  "all_8_native_workers_restore_same210tensors": true,
+  "official_eval_config_use_moving_average": false,
+  "saturation": {
+    "total_frames": 5000,
+    "saturated_frames": 2725,
+    "saturated_fraction": 0.545,
+    "by_K": {
+      "4": {
+        "frames": 1200,
+        "saturated_frames": 0,
+        "saturation_fraction": 0.0,
+        "aperture_required_range": [
+          0.25373378050771883,
+          0.31905138737109195
+        ],
+        "achieved_aperture_range": [
+          0.25373378050771883,
+          0.31905138737109195
+        ]
+      },
+      "8": {
+        "frames": 1075,
+        "saturated_frames": 0,
+        "saturation_fraction": 0.0,
+        "aperture_required_range": [
+          0.5074675610154377,
+          0.6381027747421839
+        ],
+        "achieved_aperture_range": [
+          0.5074675610154377,
+          0.6381027747421839
+        ]
+      },
+      "16": {
+        "frames": 1400,
+        "saturated_frames": 1400,
+        "saturation_fraction": 1.0,
+        "aperture_required_range": [
+          1.0149351220308753,
+          1.2762055494843678
+        ],
+        "achieved_aperture_range": [
+          1.0,
+          1.0
+        ]
+      },
+      "32": {
+        "frames": 1325,
+        "saturated_frames": 1325,
+        "saturation_fraction": 1.0,
+        "aperture_required_range": [
+          2.0298702440617507,
+          2.5524110989687356
+        ],
+        "achieved_aperture_range": [
+          1.0,
+          1.0
+        ]
+      }
+    }
+  },
+  "normalized_focus_outside_0_1_frames": 289,
+  "normalized_focus_clamped": false,
+  "visual_review": {
+    "preflight_groups": 40,
+    "posthoc_scenes": [
+      "repro_068",
+      "repro_012",
+      "repro_197"
+    ],
+    "frames": [
+      0,
+      6,
+      12,
+      18,
+      24
+    ],
+    "posthoc_groups": 15,
+    "extra_max_clipping_frame": [
+      "repro_067",
+      22
+    ],
+    "total_groups": 56,
+    "observations": {
+      "repro_068": "Lowest PSNR16.539732dB,K32. Zebra stripes retain too much structure and are visibly brighter than the reference; background also insufficiently blurred. Focus ordering is retained. This is not uniquely attributable to saturation; brightness and learned-renderer/reference differences remain.",
+      "repro_012": "Highest FD5.561933,K32. Focused man is retained while dog/bear/background are much sharper than the target. No frame-order/channel failure observed at0/6/12/18/24. High FD alone does not uniquely establish temporal flicker.",
+      "repro_197": "Largest paired VideoMAE feature MSE0.392973 (not per-scene FVD),K32. Focused giraffe neck stays clear; bridge, man, rabbit and other giraffe retain substantially more detail than strongly blurred GT. Retain range/appearance mismatch.",
+      "repro_067/frame22": "Largest raw output channel clipping fraction0.046762537,range[0,1.140146494],K8 unsaturated. Directly inspected AIF/GT/prediction on the snow-background scene: no gross black block or channel swap; original native SR behavior and final clamp preserved. No extra inference or internal-clamp change."
+    },
+    "artifacts": [
+      "outputs/deeplens-preflight-20260929/visual-review",
+      "outputs/deeplens-track-a-20260929/visual-review"
+    ]
+  },
+  "scheduling": {
+    "native_workers": 8,
+    "threads_per_worker": 8,
+    "container_CPU_quota": 25,
+    "inference_threads_nice": 5,
+    "metric_batches": 20,
+    "scenes_per_batch": 10,
+    "initial_metric_workers": 1,
+    "final_metric_workers": 2,
+    "disjoint_batches_and_one_evaluation_owner": true,
+    "formal_pipeline_wall_seconds": 2545.350041,
+    "scope": "Operational production cost with shared CPU/GPU work, not standardized efficiency or paper-time reproduction"
+  },
+  "decision": "Main table uses the user-frozen native single-SR saturation adapter; no parameter adjustment after results. Dr.Bokeh remains closed and its existing main-table row is unchanged.",
+  "limits": [
+    "User selected native single-SR and aperture saturation before formal metrics; c rounded from independent12.4879623fit to12.488.",
+    "Estimated effective K/radius derive from an approximate edge-width response, not a physically exact kernel model.",
+    "K16/32 targets exceed the measured native control range; saturation is disclosed, not removed from evaluation.",
+    "No DepthNet, GT alpha, hidden layers, training, recursive SR, aperture extrapolation or metric-based parameter selection.",
+    "Native TF1 CPU is not claimed bitwise equivalent to historical GPU execution; CPU timing is not compared to paper GPU time.",
+    "ATB private adapter may have used other input conventions or extrapolation; this implementation does not establish its identity.",
+    "All200fixed proxy scenes, not the official or held-out test set.",
+    "Saturation is observed, but grouped scores do not isolate its causal contribution.",
+    "Keyframe review does not exclude all unsampled temporal artifacts."
+  ]
+}

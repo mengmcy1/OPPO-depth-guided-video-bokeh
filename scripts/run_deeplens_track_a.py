@@ -1,5 +1,6 @@
 """Frozen native-TF1 DeepLens inference, preflight checks, and existing-metric evaluation."""
 import argparse
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime,timezone
 import json
 import os
@@ -185,9 +186,10 @@ def evaluate_locked(config,out,ids):
         assert data['prediction_root']==prediction_root and data['prediction_dir']=='pred_deeplens'
         print('METRIC_BATCH_COMPLETE',i,chosen[0],chosen[-1],flush=True)
         return data['rows']
-    # One metric process uses GPU while eight native CPU workers produce scenes.
+    # Two disjoint metric batches use GPU while native CPU workers produce scenes.
     # Keep the original per-clip metric implementation and manifest order.
-    chunks=[metric_part(i) for i in range(20)]
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        chunks=list(pool.map(metric_part,range(20)))
     allrows=[r for chunk in chunks for r in chunk];assert len(allrows)==200
     index={r['scene']:r for r in allrows};assert set(index)==set(ids);rows=[index[s] for s in ids]
     for phase in ['vfid','fvd']:

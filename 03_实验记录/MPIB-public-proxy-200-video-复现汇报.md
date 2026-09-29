@@ -364,7 +364,7 @@ python scripts/evaluate_author_public_metrics.py \
 
 本轮完成不改变原有复现边界：测试素材、proxy GT、PNG编码及部分loader/样本计数与作者入口不同。FVD接近论文9.005、VFID-I低于论文1.479，只能作为外部参考，不能证明官方测试指标被严格复现。
 
-后续MPIB、BokehMe及Dr.Bokeh已完成，见8.1–8.3；BokehDiff双候选200段及视觉复核完成，结果见8.4；Dr.Bokeh新增输入协议200段及配对分析已收尾，见8.5；DeepLens原生TF1 CPU已跑通但兼容数值有差异，见8.6。未来公平Benchmark仍需单独确定源划分、renderer与指标，Cycles及AM validation恢复线保持暂停。
+后续MPIB、BokehMe及Dr.Bokeh已完成，见8.1–8.3；BokehDiff双候选200段及视觉复核完成，结果见8.4；Dr.Bokeh新增输入协议200段及配对分析已收尾，见8.5；DeepLens单级SR+饱和200段已完成，见8.7；开发依据保留在8.6。未来公平Benchmark仍需单独确定源划分、renderer与指标，Cycles及AM validation恢复线保持暂停。
 
 ---
 
@@ -604,7 +604,7 @@ GT-alpha相对Full-public的PSNR中位增益2.287867dB，PSNR/FD同时改善180/
 | GT union alpha+LaMa | 30.212765 | 0.969182 | 0.034304 | 0.932069 | 0.009422 | 48.065288 | 7.087483 |
 | Known 4FG+1BG | 30.816634 | 0.974313 | 0.029478 | 0.833600 | 0.008149 | 40.349377 | 6.159460 |
 
-### 8.6 DeepLens：原生TF1 CPU可运行，TF2兼容数值不能记作等价
+### 8.6 DeepLens：原生环境与独立控制标定（开发历史）
 
 新增隔离Python3.7/TF1.15 CPU环境，与已有Python3.10/TF2.15 compat.v1在相同3帧、原checkpoint、外部几何、LensBlur+Feature+一次SR上对照。两侧均恢复210个变量；disparity resize及signed输入逐值一致；TF2新probe与此前adapter结果逐值一致。
 
@@ -618,12 +618,12 @@ GT-alpha相对Full-public的PSNR中位增益2.287867dB，PSNR/FD同时改善180/
 
 **运行选择**：后续adapter开发优先用已跑通的原生TF1 CPU，不给官方SR擅自加clamp、不把原兼容40帧冒充原生结果；不宣称与原论文GPU逐数值一致。代码`scripts/probe_deeplens_tf_parity.py`，依赖`configs/requirements-deeplens-tf1-cpu.txt`，证据`records/deeplens-tf-parity-20260929.json`和`records/deeplens-control-runtime-20260929.json`。
 
-**控制口径仍未冻结**：[原论文§3.2.2](https://arxiv.org/pdf/1810.08100)定义的是目标/训练最大光圈的比值；[官方交互入口](https://github.com/scott89/deeplens_eval/blob/3dbc1b04ba082b3b6b1dc0d944b3d18fa542ae2c/core/evaluator_interactive.py)使用`(inverse_depth-focus)*aperture`及slider/10。proto默认的max_aperture_radius=16/max_kernel_radius=8没有在此forward中用于把本benchmark K变成输出像素半径，不能直接当映射依据。3帧×aperture{0,.25,.5,1}共12次原生CPU控制检查均finite、尺寸正确、输出随控制变化；这不是物理半径标定，也未依据论文分数挑参数。`K/32`仍仅是临时UI范围假设，训练最大光圈及分辨率尺度对应证据未确认，正式200段尚未启动。
+**该阶段控制口径尚未冻结**：[原论文§3.2.2](https://arxiv.org/pdf/1810.08100)定义的是目标/训练最大光圈的比值；[官方交互入口](https://github.com/scott89/deeplens_eval/blob/3dbc1b04ba082b3b6b1dc0d944b3d18fa542ae2c/core/evaluator_interactive.py)使用`(inverse_depth-focus)*aperture`及slider/10。proto默认的max_aperture_radius=16/max_kernel_radius=8没有在此forward中用于把本benchmark K变成输出像素半径，不能直接当映射依据。3帧×aperture{0,.25,.5,1}共12次原生CPU控制检查均finite、尺寸正确、输出随控制变化；这不是物理半径标定，也未依据论文分数挑参数。`K/32`仍仅是临时UI范围假设，训练最大光圈及分辨率尺度对应证据未确认，正式200段尚未启动。
 
 
 **独立控制标定（2026-09-29）**：固定简单阶跃RGB/均匀平面，2方向×4有符号离焦差×4aperture，共32次原生TF1单级SR运行完成。初始二阶矩半径估计受振铃影响，出现负方差/增量，不能用截零后的拟合值冻结。初始协议同时记录的10–90%边缘宽度对八组控制均单调；按理想圆盘的1.37409765×R换算，aperture1/最大离焦差的等效半径为11.8425–13.1806 px。圆盘解析参考的像素积分验证误差最大0.0833 px。所有非零控制的描述性线性系数12.4880 px（RMSE0.2980 px）仅用于报告响应，不是已冻结mapping，也不证明该学习算子是圆盘卷积。
 
-这说明当前原生单级路径不能覆盖K16/32的目标响应。**待明确采用上限饱和并披露覆盖不足，还是先检查官方递归SR**；后者涉及输出尺度策略，不能冒称1024默认入口。正式8段预检与200段尚未启动，不按论文PSNR/FVD选择。独立标定记录`records/deeplens-independent-control-20260929.json`；原生adapter三帧与此前native probe逐值相等，记录`records/deeplens-native-adapter-regression-20260929.json`。
+这说明当前原生单级路径不能覆盖K16/32的目标响应。**待明确采用上限饱和并披露覆盖不足，还是先检查官方递归SR**；后者涉及输出尺度策略，不能冒称1024默认入口。该标定时点正式8段预检与200段尚未启动；后续完成结果见8.7，未按论文PSNR/FVD选择。独立标定记录`records/deeplens-independent-control-20260929.json`；原生adapter三帧与此前native probe逐值相等，记录`records/deeplens-native-adapter-regression-20260929.json`。
 
 
 **补充独立文献核验与尺度修正（2026-09-29）**：用户贴文中“precise disparity”依据为[ATB arXiv v1 §4.2](https://arxiv.org/html/2505.21593v1#S4.SS2)；“built-in depth model”依据为同版AppendixD。二者与[ICLR2026正式版](https://proceedings.iclr.cc/paper_files/paper/2026/file/a0dca56ad0aceeb4eab4d35630e9a0ed-Paper-Conference.pdf)新增LPIPS列不是同一版本文字。Synthetic采用外部精确视差有依据，但未公开具体DeepLens adapter；v1真实视频示例中自带DepthNet的描述，不能自动当作已确认的最新版完整DAVIS协议。DeepLens原论文§3.1/§3.2.2及官方代码支持normalized inverse depth、共同变换focus、signed×aperture和相对最大光圈比例；65×65的复杂度例子、未参与此forward换算的proto16/8，均不证明K/32。
@@ -644,11 +644,53 @@ s=d_{\max}-d_{\min},\quad D=(d-d_{\min})/s,\quad D_f=(d_f-d_{\min})/s.
 
 按现有描述性c=12.4880和5000帧已保存的几何范围推算（仅输入统计，无预测分数），K4/8/16/32所需aperture范围分别为0.2537–0.3191、0.5075–0.6381、1.0149–1.2762、2.0299–2.5524；K16的1400帧和K32的1325帧在此近似下均超过1。因此minmax本身没有消除超范围问题，范围处理仍待决定。这些值不是冻结映射，c也不是严格训练最大物理光圈。
 
-现有32次标定直接控制canonical disparity/signed输入，测LensBlur/SR响应，没有对常量深度执行minmax。用户提出把颜色edge与两层depth跳变放在一起，会混入遮挡边界效应；测单平面响应仍优先使用当前均匀深度控制。正式adapter预检另核对s>0以及整条坐标链，不重复已完成的32次probe。证据`records/deeplens-protocol-source-review-20260929.json`。当前只修正文献与数学口径，未选择饱和/递归SR、未开启正式推理。
+现有32次标定直接控制canonical disparity/signed输入，测LensBlur/SR响应，没有对常量深度执行minmax。用户提出把颜色edge与两层depth跳变放在一起，会混入遮挡边界效应；测单平面响应仍优先使用当前均匀深度控制。正式adapter预检另核对s>0以及整条坐标链，不重复已完成的32次probe。证据`records/deeplens-protocol-source-review-20260929.json`。该次核验只修正文献与数学口径，当时尚未选择饱和/递归SR；后续用户决定和正式结果见下文。
 
 **后续用户决定与启动（2026-09-29）**：采用官方1024×576单级SR，冻结c=12.488及`aperture=min(K*span/c,1)`，不再比较递归SR或外推；原生TF1CPU和原权重不变。此前“待范围决定”状态至此结束。预检为固定8×25帧和40关键帧；以相同控制画面/几何验证K4/8响应、K16/32饱和平台，统计实际饱和率，成功后直接200段。配置`configs/deeplens-track-a-frozen.json`、入口`scripts/run_deeplens_track_a.py`。不能把未饱和的理想K当实际达到的强度，也不能据范围受限单独解释论文DeepLens低分。
 
-**预检与正式启动结果**：固定8段200帧数值检查通过，实际signed误差0；40关键帧未发现明显实现阻塞，强虚化不足和边缘差异保留。K4/K8控制等效半径分别4.2030–4.2635/7.6834–8.2393px；四组固定方向/正负离焦下K16与K32输出逐值相等。预检实际饱和率0%/0%/100%/100%，记录`records/deeplens-preflight-20260929.json`。随后直接启动200×25原生CPU八路推理（复用预检200帧），完成后GPU0统一七项指标和by-K；当前正式分数尚未产生。
+**预检与正式启动结果**：固定8段200帧数值检查通过，实际signed误差0；40关键帧未发现明显实现阻塞，强虚化不足和边缘差异保留。K4/K8控制等效半径分别4.2030–4.2635/7.6834–8.2393px；四组固定方向/正负离焦下K16与K32输出逐值相等。预检实际饱和率0%/0%/100%/100%，记录`records/deeplens-preflight-20260929.json`。随后直接启动200×25原生CPU八路推理（复用预检200帧），完成后GPU0统一七项指标和by-K；该启动时点尚无正式分数；完成结果见8.7。
+
+### 8.7 DeepLens：单级SR+aperture饱和，200段及全部指标完成（2026-09-29）
+
+用户在正式分数出现前选定原生TF1.15 CPU、1024×576官方scale2路径（512×288 LensBlur后一次guided SR），固定c=12.488和`aperture=min(K*span/c,1)`。D/focus同一minmax变换，无DepthNet、GT alpha/隐藏层、递归SR或aperture外推。独立标定、完整8段200帧预检和40关键帧通过后，正式200×25运行完成，预检200帧按完全相同协议复用。
+
+| 指标 | 论文DeepLens | 本项目200段 | 本项目−论文 |
+|---|---:|---:|---:|
+| PSNR ↑ / dB | 24.574000 | **28.166875** | +3.592875 |
+| SSIM ↑ | 0.819000 | **0.943710** | +0.124710 |
+| LPIPS ↓ | 0.183000 | **0.063333** | -0.119667 |
+| FD ↓ | 1.162000 | **0.582632** | -0.579368 |
+| RM ↓（24 transitions） | 0.030000 | **0.012364** | -0.017636 |
+| FVD ↓ / VideoMAE | 125.338000 | **40.121195** | -85.216805 |
+| VFID-I ↓ / I3D | 16.042000 | **6.962586** | -9.079414 |
+
+论文引用为ICLR2026正式版Table1（含LPIPS）。PSNR/SSIM使用公开TorchMetrics函数；LPIPS沿用项目squeeze v0.1实现；主RM为24对，公开前2对诊断RM=0.012409。FVD/VFID是200视频/400窗口的集合距离，GT特征与原缓存逐值相同，不赋予逐段FVD，也不将不同测试条件下的更优数值当作方法改进。
+
+| K | scenes | PSNR ↑ | SSIM ↑ | LPIPS ↓ | FD ↓ | RM ↓ | 饱和帧率 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| 4 | 48 | 31.5369 | 0.972929 | 0.022356 | 0.151276 | 0.006941 | 0% |
+| 8 | 43 | 29.1239 | 0.956802 | 0.036992 | 0.230638 | 0.009817 | 0% |
+| 16 | 56 | 26.8638 | 0.952778 | 0.050477 | 0.456725 | 0.013037 | 100% |
+| 32 | 53 | 25.7151 | 0.897043 | 0.135401 | 1.391907 | 0.018633 | 100% |
+
+**实际范围披露**：K4/8分别1200/1075帧均未饱和；K16/32分别1400/1325帧全部饱和，共2725/5000帧（54.5%）。实际aperture范围依次0.253734–0.319051、0.507468–0.638103、1、1。所有场景都纳入评价，没有排除超范围K。独立同输入控制中K16/K32的float输出逐值相等；K4/K8的圆盘边缘等效半径约4.20–4.26/7.68–8.24px。c与估算有效K仅描述固定运行尺度的边缘响应，不保证所有纹理/遮挡均等价于物理圆盘卷积。
+
+**结果解释**：当前PSNR比论文高3.5929dB，FVD低85.2168，其他五项数值也更优；仍不能称精确恢复ATB私有adapter。当前DeepLens除VFID-I外优于本项目BokehDiff-B六项指标，而论文相应排序相反，说明整体论文性能版图尚未完全恢复。Any-to-Bokeh对DeepLens的PSNR优势为约11.54dB，论文为14.325dB；差距仍不一致。既不把这些差异当硬门槛，也不追加c、gamma、外推或递归SR搜索。
+
+K增大时PSNR下降，K32的LPIPS/FD/RM明显更大，与已知饱和限制相容；但K组内容不同，不能从分组均值唯一归因。未饱和K4/K8及定性案例也有亮度、纹理和边缘差异，因此不能声称所有误差均来自blur-range limitation。仍无法证明ATB私有adapter是否允许aperture>1。
+
+**检查与失败案例**：5000帧RGB PNG完整、尺寸/模式一致，全部输出finite，实际signed输入与包含饱和的解析预期误差0；按K加权均值与全量均值一致。289帧normalized focus略超1（最大1.002413），按已冻结输入口径保留，无focus clamp。8个native worker均恢复相同210个LensBlur/Feature/SR变量；官方eval.config的use_moving_average=False已核对，未加载DepthNet。
+
+- repro_068（最低PSNR16.5397dB，K32）：斑马条纹残留明显且偏亮，背景虚化不足；保留亮度/纹理失配，不唯一归因饱和。
+- repro_012（最高FD5.56193，K32）：焦内人物保持清晰，但熊/狗/背景明显比GT清晰；没有从关键帧发现明显错帧/通道错误，不能将高FD简单等同闪烁。
+- repro_197（最大配对VideoMAE特征MSE0.392973，非逐段FVD）：焦内长颈鹿颈部保留，人物、桥和其他对象的细节远多于强虚化GT。
+- 另查看repro_067第22帧（K8未饱和），raw输出最高1.140146、通道越界比例4.6763%；最终PNG未见明显黑块或通道异常。原生SR内部uint8行为及最终clamp保留，没有为改善分数额外修图或改clamp。
+
+原8段40组加事后3段15组、上述额外1帧，共56组检查；稀疏关键帧不证明无任何未采样时序问题。全部失败案例保留，未发现新的实现阻塞。
+
+**收尾与产物**：Table1A/TableV已填此单一冻结版本；Dr.Bokeh不再实验，原主表输入协议不变。推理在原生TF1CPU八路运行，逐段GPU评价从单路按完整批次安全接为双路，前3批复用；每批10scene，分布指标仍全量统一。只有本任务CPU线程调度优先级调整，没有修改模型/线程数/精度。生产流水约42.4分钟（含推理和指标重叠），不填标准化Efficiency或对照论文Time列。全部后台已结束。
+
+配置`configs/deeplens-track-a-frozen.json`；入口`scripts/run_deeplens_track_a.py`；完整结果`records/deeplens-track-a-200-20260929.json`，收尾`records/deeplens-track-a-final-review-20260929.json`。输出`outputs/deeplens-track-a-20260929/clips/<scene>/pred_deeplens/`；关键帧页在该目录的`visual-review`及原preflight目录。运行过程归档`历史阶段记录/2026-09-29_DeepLens单级SR饱和控制与200段评价.md`。自动结果中REVIEW_PENDING保留生成时状态，最终完成状态以final-review为准。
 
 ## 九、对后续 Benchmark 的价值
 
@@ -716,6 +758,6 @@ ightarrow
 ---
 
 **最后更新**：2026-09-29
-**状态**：Any-to-Bokeh公开代理复现及author-public指标已完成；MPIB/BokehMe/Dr.Bokeh Track A已填真实结果，BokehDiff双200段及A/B复核完成且Normalized已选为主表展示配置；Dr.Bokeh新输入协议200段已收尾，DeepLens独立控制标定发现范围限制、正式200段未启动，证据见8.6。
+**状态**：Any-to-Bokeh公开代理复现及author-public指标已完成；MPIB/BokehMe/Dr.Bokeh Track A已填真实结果，BokehDiff双200段及A/B复核完成且Normalized已选为主表展示配置；Dr.Bokeh新输入协议200段已收尾，DeepLens按用户冻结的单级SR+饱和协议完成200段，见8.7；范围与版本依据保留在8.6。
 
 补算实现及权重来源：[作者公开指标代码](https://github.com/vivoCameraResearch/any-to-bokeh/blob/f7a16959dd219080fb8eec0d32bb9602d8970c22/metrics/vid_metrics.py)、[cdfvd固定版本](https://github.com/songweige/content-debiased-fvd/tree/a1e037ab7cb087debd2221d14ae4a001ec054201)、[作者指定I3D权重](https://huggingface.co/zhengchong/VFID)、[官方VideoMAE2权重](https://huggingface.co/OpenGVLab/VideoMAE2)。
