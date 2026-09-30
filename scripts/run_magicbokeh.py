@@ -5,14 +5,8 @@ import runpy
 import sys
 
 
-def configure_attention():
-    import torch
-    if torch.cuda.is_available() and torch.cuda.get_device_capability()[0] >= 12:
-        # The pickled ControlNet contains XFormersAttnProcessor instances.
-        # xformers 0.0.32.post2 incorrectly selects its Hopper FA3 kernel here.
-        # Keep the model/attention processors intact and use the remaining dispatch backends.
-        from xformers.ops.fmha import _set_use_fa3
-        _set_use_fa3(False)
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+from baselines.magicbokeh import configure_attention
 
 
 if __name__ == "__main__":

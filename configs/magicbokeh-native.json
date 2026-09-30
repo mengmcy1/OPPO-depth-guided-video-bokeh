@@ -1,0 +1,17 @@
+{
+  "name": "MagicBokeh native reproduction and Table 3 generator cost",
+  "author_repository": "vivoCameraResearch/MagicBokeh",
+  "author_commit": "c672e63",
+  "native_input": "RGB -> author DAdepth.pth + LDF -> per-image normalized depth -> native LDF median focus",
+  "generator": "Author FP16 model_test, 512x512 tiles, stride256, original overlap reconstruction, PIL conversion and AdaIN",
+  "control": "abs(PNG8 predicted depth /255 - native focus) * (K/32); focus mask threshold0.1",
+  "efficiency_inputs": "Same four first-frame RGBs and K values as configs/efficiency-track-a.json; depth/focus predicted natively, not benchmark geometry",
+  "core": "Six native generator tile forwards plus author CUDA overlap reconstruction per1024x576 output frame; GPU input/control construction, DAdepth, LDF, transfer, CPU PIL/AdaIN and disk I/O excluded",
+  "parameters": "Unique learned parameters in actually invoked generator modules, including text encoder; DAdepth and LDF preprocessing parameters excluded with their time",
+  "seed": 0,
+  "warmups_per_scene": 1,
+  "repeats_per_scene": 5,
+  "memory_sample_seconds": 0.2,
+  "synthetic_status": "Not frozen: automatic LDF focus can differ from the benchmark target plane; do not insert a paired quality row yet",
+  "scope": "Table3 generator cost only, not whole RGB-to-bokeh latency; no claim of temporal modeling or physically equivalent K"
+}

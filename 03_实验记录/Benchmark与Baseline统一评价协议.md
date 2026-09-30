@@ -329,7 +329,11 @@ Video + Explicit\ Geometry + Temporal\ Modeling
 
 MagicBokeh 是 CVPR 2026 的单步扩散式 Bokeh 方法，将 Real-ISR、内部 disparity/depth estimation 与可控 Bokeh 统一到一个框架，并通过 U-Net block pruning 等设计强调效率。它不是原生视频方法，也不是与 Any-to-Bokeh 完全相同的外部 Geometry 输入范式，因此加入时必须保留其原生输入边界，不把它伪装成“同输入视频方法”。
 
-短期目标是先完成官方代码/checkpoint、native inference、输入输出与效率口径核验；能够稳定复现后，再补入 Synthetic / Efficiency 中**确实适用**的比较。是否进入 DAVIS 定量表取决于能否定义不扭曲其原始任务的协议，不为凑齐表格强行适配。
+2026-09-30已完成官方完整示例、RGB→DAdepth/LDF→虚化路径与Table 3。实际公开实现先在`prepare_data.py`离线预测深度/显著mask，再在`inference.py`用512×512重叠图块生成同尺寸输出；不是一次全分辨率forward。Synthetic目标选焦adapter仍待预检；是否进入DAVIS取决于能否定义不扭曲原任务的协议。
+
+官方batch以LDF非零mask内的深度中位数选焦，官方demo另支持点选焦。当前固定四张Synthetic输入的诊断表明自动选焦与目标平面点的原生预测深度不同，K32的repro_000目标平面最大连通区域约4.23%满足原生清晰条件。共享geometry仅用于标记诊断目标，不输入本轮生成器；这是条件覆盖检查，不是画质评价。下一步验证点选焦adapter，仍保留DAdepth、K/32、阈值0.1、原生分块与AdaIN，不直接把benchmark focus标量套入预测深度坐标。
+
+证据：[MagicBokeh原生复现与Table 3](records/magicbokeh-native-and-table3-20260930.json)。
 
 ## BokehCrafter
 
@@ -796,11 +800,15 @@ A的PSNR/SSIM/FD/RM更接近论文，B的FVD/VFID-I更接近。完整200段与�
 | BokehMe | RTX PRO 6000 Blackwell | 0.01503 | 1.164 | N/A† | ≈1.01 |
 | MPIB | RTX PRO 6000 Blackwell | 0.25277 | 41.528 | N/A† | ≈2.43 |
 | BokehDiff | RTX PRO 6000 Blackwell | 1.10397 | 3493.432 | N/A† | ≈18.37 |
-| **MagicBokeh** | GPU | pending | pending | pending | pending |
+| **MagicBokeh** | RTX PRO 6000 Blackwell | **1.17280** | **1398.545** | N/A‡ | **≈5.30** |
 | **Any-to-Bokeh** | RTX PRO 6000 Blackwell | **0.50464** | **2457.810** | N/A† | **≈38.47** |
 | Ours | GPU | later | later | later | later |
 
 **已完成部分（2026-09-30）**：原3A五种GPU方法各4个固定输入×5次正式重复，共100个计时样本；逐帧方法测第0帧，Any-to-Bokeh保留25帧原生调用再按实际输出帧数归一。表中 Time 为同步的核心模型/renderer段，不是完整25帧E2E。
+
+**MagicBokeh补测（2026-09-30）**：复用同四个RGB第0帧与K4/8/16/32，各预热1次、正式5次。每帧原生六个512×512图块、stride256；模型段包含六次生成器forward和GPU重叠拼接。DAdepth/LDF先由RGB独立生成条件，其时间和参数不进入生成器列；输入控制构造/传输及CPU PIL/AdaIN也不计。实际调用参数包含UNet、ControlNet、VAE和每图块调用的text encoder。Torch allocated/reserved峰值为3.89219/4.62695GiB，设备采样峰值为5.29980GiB。原生自动选焦与其他方法的focus/geometry权限不同，当前只测模型成本，未冻结Synthetic质量行。
+
+‡ MagicBokeh没有可信的完整算子覆盖，GFLOPs记N/A，未将部分计数报告为完整复杂度。证据：[20次原始计时与复核](records/magicbokeh-native-and-table3-20260930.json)；入口`scripts/measure_magicbokeh.py`、`configs/magicbokeh-native.json`。
 
 † GFLOPs已执行独立算子覆盖检查，但自定义CUDA、FFT、归一化、逐元素、插值及随机控制等没有完整覆盖，因此总GFLOPs继续标 N/A；不使用不完整计数冒充全路径复杂度。显存为0.2秒设备占用采样峰值，精确Torch allocated/reserved另存。Params按实际调用神经模块统计。
 
@@ -964,13 +972,9 @@ output/
 
 ### 1. MagicBokeh 的可复现接入
 
-需要确认：
+已确认官方代码`c672e63`、checkpoint、真实同尺寸输出、DAdepth/LDF预处理及六图块Table 3口径，完整原生验证与20次正式计时完成；当前公开checkout未见LICENSE文件，源码保持未修改。
 
-- 官方代码 / checkpoint / license 是否完整可用；
-- native demo 的真实输入输出与分辨率；
-- 内部 degradation-aware depth 是否默认启用；
-- 如何在不破坏原方法定义的前提下接入当前 Synthetic；
-- Table 3 的模型级计时执行单元、Params 与 Peak VRAM 口径。
+剩余问题：如何用官方点选焦路径对应Synthetic指定的目标平面，并保留RGB预测深度与原生控制？尚未冻结adapter或开始MagicBokeh的200×25质量评价；不将自动选焦结果直接解释为同目标焦平面的paired比较。
 
 ### 2. Any-to-Bokeh 的效率瓶颈
 
@@ -1008,14 +1012,14 @@ output/
 1. 已完成基础复现
    ├── Synthetic 六方法：✅
    ├── DAVIS 六方法：✅
-   └── Table 3 基础模型级效率：✅ 五种GPU方法
+   └── Table 3 模型级效率：✅ 六种GPU方法，含MagicBokeh
 
 2. MagicBokeh — 当前短期新增 baseline
-   ├── 核对官方代码 / checkpoint / license / native demo
-   ├── 跑通原生 inference，不先扭曲输入范式
-   ├── 明确 Synthetic 可比输入与输出域
+   ├── 官方代码 / checkpoint / 完整native demo：✅；checkout未见LICENSE
+   ├── 原生RGB→DAdepth/LDF→分块inference：✅
+   ├── Synthetic目标点选焦adapter：待预检
    ├── 补可成立的 Table 1 指标
-   └── 补 Table 3 Time / Params / Peak VRAM
+   └── Table 3 Time / Params / Peak VRAM：✅
 
 3. Any-to-Bokeh Efficiency Profiling
    ├── 分解 VAE / UNet / temporal / overlap / condition / decode 时间

@@ -814,7 +814,7 @@ K增大时PSNR下降，K32的LPIPS/FD/RM明显更大，与已知饱和限制相�
 
 ## Table 3 模型级计算成本（2026-09-30，当前正式效率主表）
 
-原 Table 3A 直接更名为 **Table 3**。固定 K4/8/16/32 的四个输入，每个预热1次、正式5次；逐帧方法使用第0帧，Any-to-Bokeh使用真实25帧 overlap 路径（每次8/8/9帧），按实际输出帧数归一。五种GPU方法各20次正式记录，没有挑选有利重复或更换输入。硬件为 RTX PRO6000 Blackwell Server Edition、590.44.01 驱动，GPU 独占串行。
+原 Table 3A 直接更名为 **Table 3**。固定 K4/8/16/32 的四个输入，每个预热1次、正式5次；逐帧方法使用第0帧，Any-to-Bokeh使用真实25帧 overlap 路径（每次8/8/9帧），按实际输出帧数归一。现有五种GPU方法及新增MagicBokeh各20次正式记录，没有挑选有利重复或更换RGB输入。硬件为 RTX PRO6000 Blackwell Server Edition、590.44.01 驱动，GPU 独占串行。
 
 | Method | Device | Time / output frame (s) ↓ | Params (M) ↓ | GFLOPs / output frame ↓ | Peak VRAM (GiB, sampled) ↓ |
 |---|---|---:|---:|---:|---:|
@@ -822,11 +822,13 @@ K增大时PSNR下降，K32的LPIPS/FD/RM明显更大，与已知饱和限制相�
 | BokehMe | RTX PRO 6000 Blackwell | 0.01503 | 1.164 | N/A† | ≈1.01 |
 | MPIB | RTX PRO 6000 Blackwell | 0.25277 | 41.528 | N/A† | ≈2.43 |
 | BokehDiff | RTX PRO 6000 Blackwell | 1.10397 | 3493.432 | N/A† | ≈18.37 |
-| **MagicBokeh** | GPU | pending | pending | pending | pending |
+| **MagicBokeh** | RTX PRO 6000 Blackwell | **1.17280** | **1398.545** | N/A‡ | **≈5.30** |
 | **Any-to-Bokeh** | RTX PRO 6000 Blackwell | **0.50464** | **2457.810** | N/A† | **≈38.47** |
 | Ours | GPU | later | later | later | later |
 
 表中 Time 是同步的核心模型/renderer执行，不是完整视频 E2E。Any-to-Bokeh 的 25 帧真实模型段约 12.616 s，再按输出帧数归一，因此 0.50464 s/output-frame 不能称为“独立单帧在线延迟”。
+
+MagicBokeh的1024×576原生输出由六个512×512重叠图块组成；1.17280s包含六次生成器forward与作者GPU拼接。DAdepth/LDF预处理、条件构造/传输、CPU PIL与AdaIN颜色校正不计入Time；其参数也不进入生成器Params。实际调用生成器参数包括UNet、ControlNet、VAE及每图块调用的text encoder。Torch allocated/reserved峰值为3.89219/4.62695GiB。该路径的显存低于ATB、全帧耗时高于ATB；其自动选焦与当前共享focus不同，不作为同输入画质比较。‡ 完整算子覆盖尚未建立，GFLOPs保持N/A。
 
 参数量按实际调用的神经模块中独立参数张量计数：ATB包含UNet、VAE和image encoder，排除未被forward调用的ff_k等权重；Dr包含LaMa，不把未调用的LDF/MiDaS算入。设备显存采用0.2秒监测与快速结束点采样，包含上下文与缓存，故标注≈；精确PyTorch allocated/reserved峰值另保存在记录中。
 
@@ -840,11 +842,12 @@ K增大时PSNR下降，K32的LPIPS/FD/RM明显更大，与已知饱和限制相�
 | BokehMe | 0.015025 | 0.001908 |
 | MPIB | 0.252766 | 0.004515 |
 | BokehDiff | 1.103966 | 0.010659 |
+| MagicBokeh | 1.172797 | 0.009547 |
 | Any-to-Bokeh | 0.504643 | 0.000449 |
 
 论文硬件和私有计时边界没有完全复原，因此本表只称 ATB-style reproduced cost，不将本轮与论文 Time 直接相除宣称同硬件加速比。
 
-证据：[原始计时](records/efficiency-3a-20260930.json)、[最终复核及覆盖边界](records/efficiency-3a-final-review-20260930.json)、[计时入口一致性](records/efficiency-entry-parity-20260930.json)。
+证据：[原五方法计时](records/efficiency-3a-20260930.json)、[最终复核及覆盖边界](records/efficiency-3a-final-review-20260930.json)、[计时入口一致性](records/efficiency-entry-parity-20260930.json)、[MagicBokeh补测及原生复现](records/magicbokeh-native-and-table3-20260930.json)。
 
 ### 历史25帧E2E测量的处理
 
@@ -862,7 +865,7 @@ K增大时PSNR下降，K32的LPIPS/FD/RM明显更大，与已知饱和限制相�
 
 短期顺序改为：
 
-1. **接入 MagicBokeh**：先保留其 native LQ-RGB → internal depth/defocus → single-step bokeh 路径，完成官方实现复现，再补可成立的 Synthetic / Table 3 项；
+1. **完成MagicBokeh的Synthetic适配**：完整原生RGB→DAdepth/LDF→虚化及Table 3已完成；下一步验证官方点选焦接口与目标焦平面对应，再补可成立的Table 1结果；
 2. **Any-to-Bokeh Efficiency Profiling**：分解 VAE、UNet、temporal/overlap、geometry conditioning、decode 等阶段，解释当前约0.50464 s/output-frame与≈38.47 GiB峰值的主要来源；
 3. **Any-to-Bokeh Failure Analysis**：基于现有200段Synthetic和DAVIS固定视频，系统筛选边界/遮挡/细结构、大运动、强虚化、focus/control变化等可重复失败；
 4. **冻结 Ours**：只选择有明确问题证据、可做受控消融且具有实际价值的方向，不再为了符合旧计划强行加入低帧率Depth completion、Token Merging或三头结构。
