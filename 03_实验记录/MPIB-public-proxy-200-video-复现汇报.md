@@ -45,7 +45,7 @@ PSNR/SSIM主对照采用本轮TorchMetrics补算；原逐帧PSNR **39.73197 dB**
 
 ### 1.1 六个方法与论文 Table 1 总对照（Track A，200×25）
 
-单元格为「本项目 / 论文」。PSNR/SSIM 为 TorchMetrics；LPIPS 为项目 squeeze v0.1 实现，论文值取 ICLR2026 正式版；FVD 为 VideoMAE 集合距离；RM 为完整 24-transition。本项目测试素材与 GT 为公开代理，论文值来自作者未公开的测试集，只作量级与排序参考。完整精度数值见协议文档 Table 1A / Table V。
+单元格为「本项目 / 论文」。PSNR/SSIM 为 TorchMetrics；LPIPS 为项目 squeeze v0.1 实现，论文值取 ICLR2026 正式版；FVD 为 VideoMAE 集合距离；RM 为完整 24-transition。本项目测试素材与 GT 为公开代理，论文值来自作者未公开的测试集，只作量级与排序参考。完整精度数值见协议文档当前 Table 1 / Table V；历史阶段仍称Track A。
 
 | 方法（冻结主表配置） | PSNR ↑ | SSIM ↑ | LPIPS ↓ | FVD ↓ | FD ↓ | RM ↓ |
 |---|---:|---:|---:|---:|---:|---:|
