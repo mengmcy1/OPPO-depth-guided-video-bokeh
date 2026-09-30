@@ -36,7 +36,7 @@ def tail_mass(radius,lens):
 
 
 class OfficialDrBokeh:
-    def __init__(self,repository,protocol):
+    def __init__(self,repository,protocol,*,instrument=True):
         os.environ['TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD']='1'
         os.chdir(repository)
         sys.path.insert(0,str(repository))
@@ -56,6 +56,10 @@ class OfficialDrBokeh:
         torch.backends.cudnn.allow_tf32=False
         torch.backends.cudnn.benchmark=False
         self.row={};self.arrays={};self.expected_mask=None
+        # Timing calls the unchanged public model directly, without diagnostic
+        # array copies or CPU statistics inside the renderer's forward method.
+        if not instrument:
+            return
         for name,net in [('LDF',prep.salient_inferencer.net),('LaMa',prep.rgb_inpainting_inferencer.model),('MiDaS',prep.depth_inferencer.model)]:
             net.register_forward_hook(self._hook(name))
         self.original_layers=self.module.RGBAD2layers

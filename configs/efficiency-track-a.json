@@ -1,10 +1,23 @@
 {
-  "name": "Frozen Track A single-video efficiency, given inputs",
+  "name": "Table3A model cost and Table3B given-input25-frame efficiency v2",
   "input": "outputs/any2bokeh-mpib-public-proxy-200-20260928/clips",
   "scene_selection": "First manifest scene of each K, selected without timing results; equal scene weight",
-  "scenes": ["repro_004", "repro_006", "repro_003", "repro_000"],
-  "K": [4, 8, 16, 32],
-  "resolution": [1024, 576],
+  "scenes": [
+    "repro_004",
+    "repro_006",
+    "repro_003",
+    "repro_000"
+  ],
+  "K": [
+    4,
+    8,
+    16,
+    32
+  ],
+  "resolution": [
+    1024,
+    576
+  ],
   "frames": 25,
   "batch": "One video; frame methods batch1, ATB retains its frozen two overlapping groups per internal call",
   "warmup_clips_per_scene": 1,
@@ -12,16 +25,28 @@
   "gpu": 0,
   "torch_threads": 4,
   "deeplens_threads": 8,
-  "core": "Prepared host-side model inputs through complete frozen method pipeline to float host RGB, including method-required layering/inpainting and internal transfers. Existing finite/control instrumentation retained; this is pipeline wall time, not isolated CUDA kernel time.",
+  "core": "Sum of explicitly named model/renderer regions, CUDA synchronize+wall clock. Outer decode/adapters, host/device transfers and final CPU uint8 conversion excluded; included in E2E.",
   "e2e": "E2E-given-inputs: input decode/read, geometry/control adaptation, full method pipeline, CPU output transfer and clamp/round RGB8. Excludes model loading, output file writing, video encoding, metrics, unavailable GT generation and external depth estimation.",
   "e2e_authorization": "User explicitly selected E2E-given-inputs on2026-09-29",
   "drbokeh": "Synthetic GT union alpha + LaMa reconstruction, frozen gamma2.2/lens71/grid2d; not DAVIS Full-public",
   "deeplens": "Frozen external-geometry TF1.15 CPU / single SR / aperture saturation, not DAVIS native DepthNet",
   "time": "perf_counter with GPU synchronize at clip/core boundaries; nested Core within E2E in the same repeat; no production jobs in parallel",
   "rng": "Separate timing process, initial seed0 (BokehDiff42), continuous stream across warmup/repeats; does not change saved quality outputs or their RNG states",
-  "peak_memory": "PyTorch allocated/reserved peaks plus nvidia-smi device memory sampled every0.2s on exclusive GPU; sampled total includes CuPy/context but is not an exact instantaneous maximum. CPU VRAM is N/A.",
+  "peak_memory": "Per-unit PyTorch allocated/reserved peaks after warmup; Table3B device total sampled0.2s (includes CUDA/CuPy); native CPU RSS sampled0.2s during repeats. Units GiB (2^30 bytes). Loading peak excluded.",
   "aggregation": "Per-scene mean/std over5 repeats, then equal mean over4 scenes; FPS=25/mean E2E seconds; preserve all raw repeats and by-K values",
-  "output": "outputs/efficiency-track-a-20260929",
-  "record": "03_实验记录/records/efficiency-track-a-20260929.json",
-  "gate": "DAVIS_2016_V2_SIX_BASELINES_COMPLETE_AND_FROZEN before formal timing"
+  "output": "outputs/efficiency-track-a-3ab-20260930",
+  "record": "03_实验记录/records/efficiency-track-a-3ab-20260930.json",
+  "gate": "DAVIS_2016_V2_SIX_BASELINES_COMPLETE_AND_FROZEN",
+  "core_regions": {
+    "any2bokeh": "Public video pipeline on already-CUDA RGB/CoC/MPI/K/weights through CUDA float output; three native calls emitting8/8/9frames, overlap assembly included. Host transfers outside.",
+    "mpib": "Official inpnet, mpinet, aupnet and MPI renderer forward calls on CUDA inputs; CPU mask construction/intermediate resize and transfers are E2E-only.",
+    "bokehme": "Official demo pipeline on already-CUDA RGB/defocus through CUDA output, including classical/neural branches and blend; transfers outside.",
+    "drbokeh": "LaMa model.forward twice and Multi_Layer_Renderer.forward on already-CUDA RGBAD. GT-alpha layer construction, cv2 repair, input/output transfer and photometric CPU postprocess are E2E-only.",
+    "bokehdiff": "Public VAE.encode plus TiledSDXL pipeline on CUDA RGB/condition through CUDA float output; no diagnostic CPU copy or PIL conversion in Core. Frozen PISA/seed retained.",
+    "deeplens": "Native TF1 session.run of LensBlur+singleSR graph; external geometry mapping, numpy validation and final RGB uint8 conversion outside Core. CPU only."
+  },
+  "unit": "Frame methods record each real single-frame unit; ATB records its real8/8/9-output calls. Table3A time is measured Core sum divided by actual emitted frames; no synthetic single-frame video entry.",
+  "core_timing_overhead": "Nested synchronized Core measurement adds synchronization overhead to E2E; no asynchronous unsynchronized timings.",
+  "GFLOPs": "After latency repeats, separate diagnostic dispatcher count perK. Preserve operator coverage and countable arithmetic; report N/A when full floating-point path is not covered, never label a partial count full-pipeline GFLOPs.",
+  "logs": "logs/efficiency-track-a-3ab-20260930"
 }

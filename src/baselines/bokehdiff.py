@@ -25,7 +25,7 @@ def map_controls(disparity, focus, K, candidate):
 
 
 class OfficialBokehDiff:
-    def __init__(self, repository, weights):
+    def __init__(self, repository, weights, *, instrument=True):
         sys.path.insert(0, str(repository))
         m = importlib.import_module('inference_hf')
         self.module = m
@@ -63,6 +63,9 @@ class OfficialBokehDiff:
         self.pipeline = p
         self.output_audit = {}
         self.output_float = None
+        # Keep tensor output on the GPU until the separately timed CPU transfer.
+        if not instrument:
+            return
         original = p.image_processor.postprocess
 
         def audited_postprocess(image, *args, **kwargs):

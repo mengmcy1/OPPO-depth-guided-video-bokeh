@@ -964,6 +964,7 @@ A的PSNR/SSIM/FD/RM更接近论文，B的FVD/VFID-I更接近。完整200段与�
 - `GFLOPs` 只统计实际执行路径中可可靠计算的浮点算子；遇到 renderer、自定义 CUDA、稀疏/动态控制流等无法可靠映射为 FLOPs 的部分，标记 `N/A` 并解释原因，不能用不完整数字冒充全流程 GFLOPs。
 - `Peak VRAM` 在模型已加载、warm-up 完成后重置峰值统计，再测一次标准执行；包含常驻模型参数、activation 与临时 buffer，不包含 checkpoint 加载时的瞬时复制峰值。
 - Any-to-Bokeh 论文使用的硬件与本项目当前 RTX PRO 6000 Blackwell Server Edition 不同，因此论文 Time/VRAM只作外部参考；**不同 GPU 上的绝对时间不能直接当作同硬件加速比**。
+- 本次3A优先测量：四段固定efficiency clips分别取第0帧作为逐帧方法输入，每帧预热1次、正式5次；ATB继续各25帧原生overlap执行，每段同样预热1次、正式5次。输入在计时结果出现前固定。入口`python scripts/measure_efficiency.py --all --table 3a`；3B另行执行，不用单帧pipeline耗时冒充25帧E2E。
 - DeepLens 未强行加入 3A 主表：其当前可复现冻结实现为 native TF1.15 CPU，而 ATB 的 computational-cost 主表没有给出与本项目当前 CPU 路径可直接同口径的行。DeepLens 的实际执行成本放到 Table 3B，并显式标记 CPU。若后续需要，可另列 CPU diagnostic，不与 GPU 3A 主排序混合。
 - BokehCrafter 继续 deferred，不阻塞本轮 3A。
 
@@ -1363,16 +1364,17 @@ DAVIS数据本身已经齐全，当前缺的是协议而不是下载。它同时
 
 ### 16.2 Efficiency统一口径
 
-Efficiency只记录可重复的标准化测量，不把此前四路调度吞吐、完整生产耗时或混合CPU/GPU流水当正式成绩。GPU方法尽量使用同一96GB GPU；Core与E2E分别计时。DeepLens当前冻结实现是native TF1.15 CPU，因此保留CPU设备标签，避免伪装成同GPU速度比较。当前Track A reproduction阶段的Dr.Bokeh效率跟随GT Alpha主表adapter；未来独立公平benchmark再补Full-public效率。
+当前按Table3A/3B及§12的新定义执行。配置`configs/efficiency-track-a.json`、入口`scripts/measure_efficiency.py`；此前尚未产出正式计时，旧配置将说明文字混入状态值的启动检查问题已修复。模型、checkpoint和Track A输入权限均不变。
 
-**本轮可执行边界（用户已确认E2E-given-inputs）**：配置`configs/efficiency-track-a.json`、入口`scripts/measure_efficiency.py`。主输入沿用Synthetic固定RGB/geometry/focus/K，Dr额外读取GT union alpha，DeepLens沿用external geometry + aperture saturation；不将DAVIS的native DepthNet或Full-public偷偷混入效率主行。E2E-given-inputs包含读取解码、几何适配、方法必需的分层/补全、推理、结果转回CPU和clamp/round RGB8；排除模型加载、写盘、MP4编码、指标、GT构造和外部估深。因此它是§12通用RGB起点E2E中的“输入已经给定”子范围，不代表包含VDA的全流程。
+**Core与E2E**：删除旧版“host输入到host输出整体算Core”的边界。Any-to-Bokeh按已经位于CUDA的RGB/CoC/MPI/K进入公开视频pipeline、到CUDA float输出为Core，三次原生调用输出8/8/9帧；BokehMe为已经CUDA输入的官方demo pipeline；BokehDiff为CUDA输入的VAE.encode加TiledSDXL到CUDA float输出。MPIB分段累计inpnet/mpinet/aupnet/renderer的forward；Dr分段累计两次LaMa forward和一次完整Multi_Layer_Renderer.forward（内部两层），CPU分层/cv2修复及传输只进E2E。DeepLens为native TF1 Session.run，输入adapter和最终CPU uint8转换在Core外。各段采用同步+wall-clock；外围读取、适配、传输、后处理和最终25张CPU RGB uint8全部进入E2E，写盘/编码在计时后。
 
-Core从准备好的host模型输入到float host RGB，包含方法必需的layer/inpainting和内部传输；保留现有finite/control检查开销，称**方法pipeline墙钟时间**，不包装成纯CUDA kernel时间。每次E2E内部嵌套同一次Core计时，两边均同步GPU；输入/输出检查和结果JSON写入在计时外（适配器内原有检查仍计入）。25帧单video batch；ATB内部保留冻结的两组overlap grouping调用，其余逐帧batch1。各方法不同环境保持原有版本，不为计时强行迁移。
+Table3A从实际单帧执行记录（逐帧方法）或原生视频调用记录（ATB）按实际输出帧数归一，不能使用3B的E2E除25冒充模型时间。固定repro_004/006/003/000分别覆盖K4/8/16/32，每段完整预热1次、正式5次；GPU方法串行独占，DeepLens TF1CPU8线程，其他Torch4线程。保留每次Core分段、原生执行单元、E2E、跨重复标准差和by-K，不重挑场景。
 
-固定manifest中每个K首次出现的scene：K4/8/16/32对应repro_004/006/003/000，按此顺序；每scene完整25帧预热1次、正式5次，保留每次Core/E2E、by-K均值/样本标准差、四scene等权均值，FPS=25/平均E2E秒数。GPU0独占、方法串行；DeepLens原生TF1CPU8线程，其他方法Torch4线程；CPUVRAM标N/A。记录PyTorch allocated/reserved精确峰值，并以0.2s采样的nvidia-smi设备占用补充CuPy/context，该值明确为采样峰值。Params统计实际执行的学习模块参数，Dr不把未执行的LDF/MiDaS算入active Params，其常驻显存仍包含在显存观测中。计时独立进程使用固定初始seed后连续流，不修改质量实验的状态或产物。
+**内存与参数**：CUDA每个真实执行单元重置PyTorch峰值并记录allocated/reserved，另在正式重复内每0.2秒采样设备总显存，涵盖CUDA/CuPy常驻内存；设备值明确是采样峰值，统一GiB。DeepLens按同周期采样实际进程RSS，CPU内存与GPU显存分设备报告，均不混入加载阶段峰值。神经网络以实际调用的模块记录learned parameters，排除未调用的网络、buffer和固定renderer核；Dr不调用LDF/MiDaS，其已加载但未调用的常驻显存仍如实保留。
 
-DAVIS完成定性终审并标记`DAVIS_2016_V2_SIX_BASELINES_COMPLETE_AND_FROZEN`后才放行正式计时；当前prepare-only检查不产生效率成绩。
+**GFLOPs**：在全部latency重复完成后，另走一次固定输入的dispatcher算子覆盖检查，避免profiling开销混进时间。保留可计卷积/矩阵乘法/attention算术及实际操作列表；自定义CUDA、FFT、归一化、逐元素、插值或随机控制等路径未完整覆盖时，3A总GFLOPs标N/A并注明缺口，部分计数只作诊断。不会把不完整算子计数标成整个方法的GFLOPs。
 
+计时专用入口移除Dr/BokehDiff的中间诊断数组拷贝，原生产adapter默认仍保留诊断，数学路径不变；先以固定输入核对输出一致性。产物放`outputs/efficiency-track-a-3ab-20260930/`，日志放`logs/efficiency-track-a-3ab-20260930/`，汇总写`records/efficiency-track-a-3ab-20260930.json`。DAVIS最终冻结状态与连续空闲检查通过后才测量；GPU当前已通过最小CUDA计算并恢复空闲，未更改驱动或放宽启动条件。
 
 ### 16.3 Track B先只做Clean Low-FPS
 

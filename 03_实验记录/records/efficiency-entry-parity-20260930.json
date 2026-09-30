@@ -1,0 +1,57 @@
+{
+  "status": "TIMING_ENTRY_PARITY_PASSED",
+  "verified_utc": "2026-09-30T05:44:41.746783+00:00",
+  "drbokeh": {
+    "method": "drbokeh",
+    "scene": "repro_004",
+    "frame": 0,
+    "max_abs_float_error": 1.1920928955078125e-07,
+    "mean_abs_float_error": 2.655775599436083e-10,
+    "original_call_counts": {
+      "MiDaS": 0,
+      "LDF": 0,
+      "RGBAD2layers": 1,
+      "process_fg": 1,
+      "process_bg": 1,
+      "RGB_inpainting": 1,
+      "LaMa": 2,
+      "depth_inpainting": 1,
+      "layer_renderer": 2
+    },
+    "core_call_counts": {
+      "LaMa": 4,
+      "Multi_Layer_Renderer": 1
+    },
+    "shape": [
+      576,
+      1024,
+      3
+    ],
+    "finite": true
+  },
+  "bokehdiff": {
+    "method": "bokehdiff",
+    "scene": "repro_004",
+    "frame": 0,
+    "max_abs_float_error": 0.0,
+    "mean_abs_float_error": 0.0,
+    "core_calls": {
+      "BokehDiff_VAE_TiledSDXL": 1
+    },
+    "global_CPU_RNG_equal": true,
+    "global_CUDA_RNG_equal": true,
+    "shape": [
+      576,
+      1024,
+      3
+    ],
+    "finite": true
+  },
+  "drbokeh_counter_note": "Timing path asserted LaMa2 and Multi_Layer_Renderer1 before the reference call. Raw final counter shows LaMa4 because the reference uses the same globally loaded LaMa instance; it is not4 calls per production frame.",
+  "scope": "Fixed repro_004 frame0 onGPU0. Dr same GT-alpha path with diagnostics disabled; BokehDiff same tensor forward and RNG state with final CPU conversion moved outsideCore. No adapter/weights/control changes.",
+  "max_allowed_float_difference": {
+    "drbokeh": 1e-06,
+    "bokehdiff": 1e-05
+  },
+  "formal_latency_samples_generated": 0
+}
