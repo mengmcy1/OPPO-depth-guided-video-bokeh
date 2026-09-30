@@ -837,74 +837,57 @@ A的PSNR/SSIM/FD/RM更接近论文，B的FVD/VFID-I更接近。完整200段与�
 
 # 13. Any-to-Bokeh 当前实验状态与下一步
 
-## A. Official Reproduction
+## A. Reproduction status
 
-当前状态：
+Any-to-Bokeh 已完成：
 
-> Any-to-Bokeh 已经在 96 GB GPU 上完整跑通。
+- Reproduced Synthetic 200×25；
+- DAVIS 50×25；
+- Table 3 模型级 Time / Params / Peak VRAM；
+- 对应定量与固定定性复核。
 
-接下来保存并统一记录：
+这些结果已经足够作为后续分析基线，当前不再通过新增 Low-FPS benchmark 扩大任务面。
 
-- predicted video；
-- comparison video；
-- runtime；
-- peak VRAM；
-- config；
-- 后续 Benchmark 对应 metrics。
+## B. Efficiency / VRAM profiling
 
-## B. Geometry Noise Robustness
+下一步针对现有冻结实现做**模块级 profile**，目标不是先改代码，而是回答：
 
-设置：
+- VAE encode / decode 分别占多少时间与显存；
+- UNet / temporal blocks 的主要 activation 峰值在哪里；
+- 8-frame group + overlap 是否造成明显重复计算；
+- geometry / CoC / MPI 条件构建成本有多大；
+- 哪些 tensor / feature 可以安全复用、压缩或延迟计算。
 
-- Clean；
-- Mild；
-- Medium；
-- Severe。
+输出至少包括：
 
-候选 corruption：
+- per-stage latency；
+- stage-level peak / delta VRAM；
+- 执行次数；
+- overlap 重复比例；
+- 可验证的优化假设。
 
-- blur / smooth perturbation；
-- elastic perturbation；
-- dilation / erosion；
-- boundary corruption；
-- missing geometry。
+## C. Failure analysis
 
-记录：
+从已有 Synthetic / DAVIS 结果中建立固定 case list，不按“想做什么创新”反向选场景。优先观察：
 
-- PSNR；
-- LPIPS；
-- FVD；
-- FD；
-- RM。
+- Hair / thin structures；
+- depth discontinuity / foreground boundary；
+- occlusion / disocclusion；
+- large motion；
+- strong bokeh；
+- focus/control transition；
+- highlight / complex texture；
+- chunk overlap / temporal consistency。
 
-## C. Dynamic Focus
+每类问题记录：
 
-控制：
+> 现象 → 可重复证据 → 可能机制 → 最小验证实验
 
-\[
-FocusDistance(t)
-\]
+只有能重复出现且有机制证据的问题，才进入 Ours 设计。
 
-观察：
+## D. Control / robustness stress tests
 
-- Focus transition；
-- FD；
-- RM；
-- Temporal Flicker。
-
-## D. Dynamic Blur Strength
-
-控制：
-
-\[
-K(t)
-\]
-
-观察：
-
-- blur change 是否连续；
-- foreground 是否稳定；
-- temporal artifact。
+Dynamic Focus、Dynamic Blur Strength、Geometry Noise 等仍可作为**按需专项实验**，但不再自动扩成新的主 benchmark。是否执行由 failure analysis 是否指向对应问题决定。
 
 ---
 
@@ -941,11 +924,15 @@ output/
 
 ## efficiency.json
 
-- core_time；
-- e2e_time；
-- fps；
+当前主表优先记录：
+
+- core_time / output frame；
 - peak_vram；
-- params。
+- params；
+- 可可靠获得时的 GFLOPs；
+- profiling阶段可附加 per-stage latency / memory。
+
+历史E2E/fps记录继续保留，但不再作为当前正式Table 3列。
 
 ## config.yaml
 
@@ -963,60 +950,53 @@ output/
 
 ## 已确定
 
-- VBS 暂时移出正式实验方案；
-- 核心 Benchmark：Any-to-Bokeh Synthetic / Reproduced Synthetic、DAVIS、OPPO-style；
-- 核心 baseline：DeepLens、Dr.Bokeh、BokehMe、MPIB、BokehDiff、Any-to-Bokeh、BokehCrafter*、Ours；
-- Any-to-Bokeh 已在 96 GB GPU 上完整跑通；
-- Any-to-Bokeh Synthetic 当前以 Reproduced public-proxy 路径为执行主线；Official 路径仅在未来可验证数据真正公开时补充；
-- DAVIS 负责真实泛化；
-- OPPO-style 负责 Low-FPS Coarse Depth 专项；
-- paired synthetic benchmark 统一 PSNR / SSIM / LPIPS / FVD / FD / RM；
-- Track A / Track B 两条评价线同时保留；
-- DAVIS 不机械做双 Track；
-- 效率必须区分 Core Time 与 E2E Time。
+- 当前主 Benchmark：Reproduced Any-to-Bokeh-style Synthetic + DAVIS；
+- 当前正式效率表：**Table 3 Model-level Computational Cost**；
+- 原 Table 3B 已完成但转为历史工程诊断，不占当前主表；
+- 原 Track B / OPPO-style Low-FPS benchmark / Table 4 从当前计划移除；
+- 当前已完成 baseline：DeepLens、Dr.Bokeh、BokehMe、MPIB、BokehDiff、Any-to-Bokeh；
+- **MagicBokeh 是当前短期优先新增 baseline**；
+- Any-to-Bokeh 是当前核心视频分析对象；
+- Ours 不预设低帧率 Depth completion、Token Merging 或三头结构，具体设计由 efficiency profiling 与 failure analysis 决定；
+- BokehCrafter继续 deferred，不阻塞当前推进。
 
 ## 仍需继续确认
 
-### 1. Any-to-Bokeh Synthetic 的当前执行版本
+### 1. MagicBokeh 的可复现接入
 
-官方 200-video test manifest、`BG_test` 列表和 Any-to-Bokeh 内部 `ModuleRenderRT` 文件仍未公开。当前已经不再等待这些缺失组件作为实验前置条件，而是固定使用：
+需要确认：
 
-> **200-video MPIB-public/sRGB public-proxy benchmark**
+- 官方代码 / checkpoint / license 是否完整可用；
+- native demo 的真实输入输出与分辨率；
+- 内部 degradation-aware depth 是否默认启用；
+- 如何在不破坏原方法定义的前提下接入当前 Synthetic；
+- Table 3 的模型级计时执行单元、Params 与 Peak VRAM 口径。
 
-该版本已完成 Any-to-Bokeh 官方权重 200×25 全量评价，并补齐 TorchMetrics PSNR/SSIM、VideoMAE FVD 和 I3D VFID-I。Baseline Benchmark Sweep 期间**不修改 scene manifest、RGB、GT、Geometry、Focus、K 或指标口径**。
+### 2. Any-to-Bokeh 的效率瓶颈
 
-如果未来官方 test set 真正公开，可新增 Official 路径做额外复现；future strict held-out E7 也保留为独立版本，但二者都不阻塞当前 baseline sweep。
+当前已有总量证据，但还没有模块级归因。需要 profile：
 
-### 2. Baseline 输入适配细节
+- VAE；
+- UNet；
+- temporal / overlap；
+- geometry/MPI condition；
+- decoder；
+- activation / workspace 峰值。
 
-**Track A主要方法已经冻结**：DeepLens、Dr.Bokeh、BokehMe、MPIB、BokehDiff、Any-to-Bokeh均已有200×25结果和明确reported adapter；后续除客观实现错误外不再回调。BokehCrafter继续deferred。
+### 3. Any-to-Bokeh 的稳定失败场景
 
-当前真正需要继续冻结的是：
+现有 DAVIS / Synthetic 已保留失败案例，但还没有形成“场景类别 → 失败模式 → 机制”的系统归纳。下一阶段需要固定 case list 和受控验证。
 
-- DAVIS各baseline的real-world输入/控制适配；
-- DAVIS评价ROI与baseline推理输入权限的边界；
-- Track B统一的Low-FPS Geometry temporal adapter；
-- Efficiency的Core/E2E计时边界。
+### 4. Ours 的最终研究问题
 
-尤其需要确认：
+只有在 1–3 完成后再冻结。优先选择：
 
-> Track B下所有baseline如何接入同一份30/15/10/5/2 fps Clean Geometry，并确保temporal补齐策略一致；未来OPPO-style真实噪声则另建独立阶段。
+- 有明确 baseline 缺口；
+- 能做单因素或清晰消融；
+- 能同时解释方法设计和实验收益；
+- 对视频虚化实际质量或效率有价值
 
-### 3. BokehCrafter 可复现性
-
-若无法获得稳定官方实现 / checkpoint，则不进入正式 quantitative 主表。
-
-### 4. OPPO-style Benchmark 的真实 Depth 退化模型
-
-最终需要根据真实 OPPO Stereo Depth 的：
-
-- FPS；
-- hole；
-- confidence；
-- boundary error；
-- scale / noise；
-
-重新确定 synthetic degradation。
+的方向。
 
 ---
 
@@ -1131,7 +1111,7 @@ scene_xxxx/
 RGB + Geometry + Focus + K + Bokeh\ GT
 \]
 
-这套数据既可以用于 Track A，也可以作为 Track B 的基础。
+这套数据是当前 Table 1 的 paired synthetic 基础；完整 geometry / alpha / metadata 也使未来按需扩展成为可能，但当前不再规划 Track B。
 
 ---
 
