@@ -329,11 +329,13 @@ Video + Explicit\ Geometry + Temporal\ Modeling
 
 MagicBokeh 是 CVPR 2026 的单步扩散式 Bokeh 方法，将 Real-ISR、内部 disparity/depth estimation 与可控 Bokeh 统一到一个框架，并通过 U-Net block pruning 等设计强调效率。它不是原生视频方法，也不是与 Any-to-Bokeh 完全相同的外部 Geometry 输入范式，因此加入时必须保留其原生输入边界，不把它伪装成“同输入视频方法”。
 
-2026-09-30已完成官方完整示例、RGB→DAdepth/LDF→虚化路径与Table 3。实际公开实现先在`prepare_data.py`离线预测深度/显著mask，再在`inference.py`用512×512重叠图块生成同尺寸输出；不是一次全分辨率forward。Synthetic目标选焦adapter仍待预检；是否进入DAVIS取决于能否定义不扭曲原任务的协议。
+2026-09-30已完成官方完整示例、RGB→DAdepth/LDF→虚化路径与原生Auto-LDF成本。官方自动选择路径先离线预测深度/mask，再用512×512重叠图块生成同尺寸输出。随后完成5000帧目标统计与40帧三候选预检；用户已选择并冻结 **Target-guided Depth-Medoid Point-Focus B**，200×25推理/评价运行中。DAVIS尚未扩展。
 
-官方batch以LDF非零mask内的深度中位数选焦，官方demo另支持点选焦。当前固定四张Synthetic输入的诊断表明自动选焦与目标平面点的原生预测深度不同，K32的repro_000目标平面最大连通区域约4.23%满足原生清晰条件。共享geometry仅用于标记诊断目标，不输入本轮生成器；这是条件覆盖检查，不是画质评价。下一步验证点选焦adapter，仍保留DAdepth、K/32、阈值0.1、原生分块与AdaIN，不直接把benchmark focus标量套入预测深度坐标。
+正式B从metadata指定的对象构造可见alpha（扣除更近层遮挡），按`>0.9→>0.5→>0`选安全最大8连通域；用模型自身PNG8深度找最接近该区域中位数的实际像素，多解取边界距离最大、再row-major。focus读取该像素深度/255，不直接使用区域中位数标量或benchmark深度标量。**GT可见目标区域与自身预测深度参与选点，这是一项额外的目标控制权限**；生成器仅接收RGB、原生预测depth形成的defocus/focus mask及demo固定提示词，GT深度/alpha/隐藏RGB不进入神经模型。逐帧无平滑，K/32、阈值0.1、512px分块和AdaIN保持原生。
 
-证据：[MagicBokeh原生复现与Table 3](records/magicbokeh-native-and-table3-20260930.json)。
+5000帧均有`alpha>0.9`安全目标区域，无不可见帧或实例切换。40帧Auto/A/B共120张输出已查看，没有计算Bokeh GT指标来选方案；A点击正确，但K32 repro_000覆盖均值6.50%，B61.98%。用户明确改用B并披露辅助选点，保留部分目标失焦等模型/代理数据边界。所有点击位于目标内部、输出finite，正式入口与B预检重放PNG逐值一致。配置`configs/magicbokeh-track-a-frozen.json`。
+
+证据：[原生复现与Auto-LDF成本](records/magicbokeh-native-and-table3-20260930.json)、[目标统计、三候选预检与B冻结](records/magicbokeh-point-focus-preflight-20260930.json)。正式B的同配置Table 3在GPU独占时补测，原Auto-LDF记录不删除。
 
 ## BokehCrafter
 
@@ -499,7 +501,7 @@ Any-to-Bokeh 对同一批输入只产生一份 prediction，再分别以两种 r
 | MPIB（γ=2.2冻结） | **31.6195** | **0.974408** | **0.02835** | **24.95694** | **0.44985** | **0.008184** |
 | BokehDiff-B（Normalized，主表） | **27.0627** | **0.843751** | **0.13202** | **65.99693** | **0.80225** | **0.021633** |
 | Any-to-Bokeh | **39.7116** | **0.986305** | **0.01515** | **8.93752** | **0.44496** | **0.005645** |
-| MagicBokeh | pending | pending | pending | pending | pending | pending |
+| MagicBokeh（Target-guided Depth-Medoid B，已冻结） | pending | pending | pending | pending | pending | pending |
 | BokehCrafter* |  |  |  |  |  |  |
 | Ours |  |  |  |  |  |  |
 
@@ -974,7 +976,7 @@ output/
 
 已确认官方代码`c672e63`、checkpoint、真实同尺寸输出、DAdepth/LDF预处理及六图块Table 3口径，完整原生验证与20次正式计时完成；当前公开checkout未见LICENSE文件，源码保持未修改。
 
-剩余问题：如何用官方点选焦路径对应Synthetic指定的目标平面，并保留RGB预测深度与原生控制？尚未冻结adapter或开始MagicBokeh的200×25质量评价；不将自动选焦结果直接解释为同目标焦平面的paired比较。
+目标选焦问题已完成预检，用户选择B，额外GT目标控制权限如上披露。当前任务为完成已启动的200×25质量评价，并补同一B配置的Table 3；不再扩展A/B/K/gamma/threshold搜索。
 
 ### 2. Any-to-Bokeh 的效率瓶颈
 
@@ -1017,9 +1019,9 @@ output/
 2. MagicBokeh — 当前短期新增 baseline
    ├── 官方代码 / checkpoint / 完整native demo：✅；checkout未见LICENSE
    ├── 原生RGB→DAdepth/LDF→分块inference：✅
-   ├── Synthetic目标点选焦adapter：待预检
-   ├── 补可成立的 Table 1 指标
-   └── Table 3 Time / Params / Peak VRAM：✅
+   ├── Synthetic目标点选焦adapter：✅ 用户冻结Depth-Medoid B
+   ├── 200×25 Table 1：推理/评价运行中
+   └── Table 3：Auto-LDF原生成本已测；B同配置待补
 
 3. Any-to-Bokeh Efficiency Profiling
    ├── 分解 VAE / UNet / temporal / overlap / condition / decode 时间

@@ -58,11 +58,20 @@ def focus_diagnostic(out, inputs_audit, common):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--focus-control", choices=["native-auto", "frozen-b"], default="native-auto")
     args = parser.parse_args()
     from measure_efficiency import assert_idle_gpu, gpu_processes, ParticipatingParameters
     assert os.environ.get("CUDA_VISIBLE_DEVICES") == "0"
     assert_idle_gpu()
     protocol = json.loads((ROOT / "configs/magicbokeh-native.json").read_text())
+    frozen = None
+    if args.focus_control == "frozen-b":
+        frozen = json.loads((ROOT / "configs/magicbokeh-track-a-frozen.json").read_text())
+        assert frozen["status"] == "FROZEN_TARGET_GUIDED_DEPTH_MEDOID_POINT_FOCUS"
+        protocol.update(name="MagicBokeh frozen medoid B Table3 generator cost", focus_control="frozen-b",
+            native_input=frozen["model_input_permission"], prompt=frozen["prompt"],
+            synthetic_status=frozen["status"], focus="Native PNG8 predicted depth at target-guided medoid click",
+            RNG="Separate timing process seed0 and continuous stream over warmups/repeats; does not change quality outputs")
     common = json.loads((ROOT / "configs/efficiency-track-a.json").read_text())
     out = args.output_dir.resolve()
     out.mkdir(parents=True, exist_ok=False)
@@ -74,13 +83,17 @@ def main():
     os.environ.setdefault("TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD", "1")
     os.environ.setdefault("HF_HUB_OFFLINE", "1")
     os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")
-    subprocess.run([
-        sys.executable, "prepare_data.py", "--input_dir", str(inputs),
-        "--depth_dir", str(depth), "--mask_dir", str(mask),
-        "--resnet_path", str(ROOT / "models/DrBokeh/resnet50-19c8e357.pth"),
-        "--model_path", str(ROOT / "models/DrBokeh/model-40"),
-        "--depth_ckpt", str(ROOT / "models/MagicBokeh/DAdepth.pth"),
-    ], cwd=ROOT.parent / "MagicBokeh", check=True)
+    if frozen is None:
+        subprocess.run([
+            sys.executable, "prepare_data.py", "--input_dir", str(inputs),
+            "--depth_dir", str(depth), "--mask_dir", str(mask),
+            "--resnet_path", str(ROOT / "models/DrBokeh/resnet50-19c8e357.pth"),
+            "--model_path", str(ROOT / "models/DrBokeh/model-40"),
+            "--depth_ckpt", str(ROOT / "models/MagicBokeh/DAdepth.pth"),
+        ], cwd=ROOT.parent / "MagicBokeh", check=True)
+    else:
+        for sid in common["scenes"]:
+            (depth / (sid + ".npy")).symlink_to((ROOT / frozen["preflight"] / "depth" / (sid + "-00000.npy")).resolve())
     assert_idle_gpu()
 
     import numpy as np
@@ -121,15 +134,29 @@ def main():
                 if image.size != (1024, 576) or d.shape != (576, 1024) or not np.isfinite(d).all():
                     raise ValueError(f"Invalid native timing input: {sid}")
                 q = Image.fromarray((d * 255).astype(np.uint8), mode="L")
-                m = Image.open(mask / (sid + ".png")).convert("L")
-                focus = adapter.module.adjust_depth_with_mask(q, m) / 255
+                point_info = {}
+                if frozen is None:
+                    m = Image.open(mask / (sid + ".png")).convert("L")
+                    focus = adapter.module.adjust_depth_with_mask(q, m) / 255
+                    point_info["mask_nonzero_fraction"] = float((np.asarray(m) > 0).mean())
+                else:
+                    from baselines.magicbokeh_focus import visible_target_alpha, safe_target_region, medoid_point
+                    folder = ROOT / common["input"] / sid
+                    metadata = json.loads((folder / "metadata.json").read_text())
+                    alpha, identity = visible_target_alpha(folder, metadata, metadata["frames"][0])
+                    region, distance, target = safe_target_region(alpha)
+                    if region is None:
+                        raise ValueError("Frozen target point unavailable")
+                    point, medoid = medoid_point(region, distance, np.asarray(q))
+                    focus = q.getpixel(tuple(point)) / 255
+                    point_info.update(point_B_xy=point, target_source_id=identity, target=target, medoid=medoid)
                 prepared = adapter.prepare(image, q, focus, K)
                 if len(prepared["positions"]) != 6:
                     raise ValueError("Expected six512px native tiles")
                 inputs_audit.append(dict(scene=sid, K=K, focus=focus, native_tiles=6,
                     positions=prepared["positions"], depth_range=[float(d.min()), float(d.max())],
-                    mask_nonzero_fraction=float((np.asarray(m) > 0).mean()),
-                    input_permission="RGB plus native automatic focus; no external geometry, GT alpha or hidden layers"))
+                    **point_info,
+                    input_permission="RGB plus native automatic focus; no external geometry, GT alpha or hidden layers" if frozen is None else frozen["model_input_permission"]))
                 for repeat in range(-protocol["warmups_per_scene"], protocol["repeats_per_scene"]):
                     if not set(gpu_processes()) <= {os.getpid()}:
                         raise RuntimeError("Foreign GPU process appeared; discard timing attempt")
@@ -137,7 +164,7 @@ def main():
                     torch.cuda.synchronize()
                     torch.cuda.reset_peak_memory_stats()
                     start = time.perf_counter()
-                    value = adapter.forward_cuda(prepared)
+                    value = adapter.forward_cuda(prepared, prompt=protocol.get("prompt", ""))
                     torch.cuda.synchronize()
                     seconds = time.perf_counter() - start
                     allocated = torch.cuda.max_memory_allocated() / 2**30
@@ -165,9 +192,9 @@ def main():
     parameters = tracker.summary()
     for handle in tracker.handles:
         handle.remove()
-    diagnostic = focus_diagnostic(out, inputs_audit, common)
+    diagnostic = focus_diagnostic(out, inputs_audit, common) if frozen is None else dict(status="FROZEN_B_POINT_CONTROL_USED", inputs=inputs_audit)
     (out / "focus-diagnostic.json").write_text(json.dumps(diagnostic, indent=2) + "\n")
-    summary = dict(status="MAGICBOKEH_NATIVE_TABLE3_COMPLETE", protocol=protocol,
+    summary = dict(status="MAGICBOKEH_NATIVE_TABLE3_COMPLETE" if frozen is None else "MAGICBOKEH_FROZEN_B_TABLE3_COMPLETE", protocol=protocol,
         common_scene_selection=common["scene_selection"], inputs=inputs_audit, rows=rows, warmups=warmups,
         runtime=dict(torch=torch.__version__, cuda=torch.version.cuda,
                      gpu=subprocess.check_output(["nvidia-smi", "--id=0", "--query-gpu=name,driver_version,memory.total", "--format=csv,noheader"], text=True).strip(),

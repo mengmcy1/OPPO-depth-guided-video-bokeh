@@ -1,0 +1,4386 @@
+{
+  "status": "PREFLIGHT_REVIEWED_USER_SELECTED_FROZEN_B_FULL_RUN_STARTED",
+  "created_UTC": "2026-09-30T10:43:52.098707+00:00",
+  "inventory": {
+    "status": "TARGET_VISIBILITY_INVENTORY_COMPLETE",
+    "scenes": 200,
+    "frames": 5000,
+    "focus_point_unavailable": 0,
+    "unavailable": [],
+    "alpha_fallback_counts": {
+      "0.9": 5000
+    },
+    "semantic_target_changes": [],
+    "visible_alpha": "Target layer alpha times product(1-alpha) of all nearer layers; numeric depth only verifies target identity",
+    "click_rule": "Largest8-connected component, exact Euclidean distance with zero-padded image boundary, maximal margin; ties row-major",
+    "no_models_or_metrics_run": true,
+    "seconds": 264.1066723354161
+  },
+  "preflight": {
+    "status": "THREE_CANDIDATE_PREFLIGHT_COMPLETE_AWAITING_VISUAL_REVIEW",
+    "protocol": {
+      "status": "PREFLIGHT_NOT_FROZEN",
+      "name": "Target-guided Point-Focus Adapter",
+      "input": "outputs/any2bokeh-mpib-public-proxy-200-20260928/clips",
+      "author_commit": "c672e63",
+      "preflight_scenes": [
+        "repro_004",
+        "repro_007",
+        "repro_006",
+        "repro_017",
+        "repro_003",
+        "repro_008",
+        "repro_000",
+        "repro_001"
+      ],
+      "preflight_frames": [
+        0,
+        6,
+        12,
+        18,
+        24
+      ],
+      "candidates": [
+        "auto_ldf",
+        "interior_A",
+        "medoid_B"
+      ],
+      "primary": "interior_A",
+      "target_visibility": "Designated target layer alpha times all nearer-layer transmittances; metadata identifies the same source object on each frame",
+      "click_region": "Visible alpha>0.9; if empty >0.5; if empty >0; largest8-connected component; zero-padded exact Euclidean distance; ties row-major",
+      "A": "Maximal interior distance, independent of predicted depth",
+      "B_diagnostic_only": "Native PNG8 depth nearest safe-region median; ties maximal interior distance then row-major",
+      "unavailable": "Mark focus_point_unavailable; no substitution, propagation, smoothing or exclusion policy before inventory",
+      "depth": "Official DAdepth.pth from RGB, original per-image normalization and PNG8 truncation; no GT depth supplied to generator",
+      "focus": "Native predicted PNG8 depth at one click /255",
+      "K": "Benchmark K4/8/16/32 unchanged; abs(predicted_depth-focus)*K/32; native focused condition<=0.1",
+      "prompt": "high quality,",
+      "prompt_reason": "Original official demo prompt, used equally for all three preflight candidates; previous native batch Table3 uses empty prompt",
+      "generator": "Unchanged author FP16 model;512px tiles, stride256, overlap reconstruction, original PIL/AdaIN conversion",
+      "RNG": "Seed42+25*manifest_scene_index+frame_index for every frame; same seed across candidates, independent of shard/order, no temporal smoothing",
+      "coverage_and_leakage": "Visible target alpha>0.5; GPU native focused mask; complement defines non-target; report separately byK",
+      "selection": "A preferred; B diagnostic, no PSNR/SSIM/LPIPS or bokeh-GT based selection; inspect correct visible click, margins, native control coverage/leakage and finite outputs",
+      "full_run_start": "After5000-frame visibility inventory,40-frame three-candidate review and explicit recorded adapter freeze; preserve all failures and information permissions"
+    },
+    "frames": 40,
+    "generated_outputs": 120,
+    "rows": [
+      {
+        "scene": "repro_004",
+        "frame": 0,
+        "K": 4,
+        "target_source_id": "AM-2k:m_8e4a045c",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 71944,
+          "visible_pixels_gt0": 74613,
+          "visible_pixels_gt05": 72833,
+          "point_A_xy": [
+            669,
+            356
+          ],
+          "point_A_margin_pixels": 122.0
+        },
+        "seed": 142,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.7450980392156863,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 1.0,
+            "focused_image_fraction": 1.0,
+            "target_eval_pixels": 72833,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.09313725680112839,
+            "finite": true,
+            "RGB8_range": [
+              2,
+              255
+            ],
+            "RGB8_std": 65.88778575487501,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.9254901960784314,
+            "click_xy": [
+              669,
+              356
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 122.0,
+            "magic_depth_at_click_png8": 236,
+            "target_focus_coverage": 0.9999176197602735,
+            "focus_leakage": 0.7036582841867653,
+            "focused_image_fraction": 0.7402411566840278,
+            "target_eval_pixels": 72833,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.11568627506494522,
+            "finite": true,
+            "RGB8_range": [
+              2,
+              255
+            ],
+            "RGB8_std": 65.89505404168287,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.8627450980392157,
+            "click_xy": [
+              631,
+              384
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 94.0,
+            "magic_depth_at_click_png8": 220,
+            "target_native_depth_median_png8": 220.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 0.8473338994295839,
+            "focused_image_fraction": 0.8661855061848959,
+            "target_eval_pixels": 72833,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.10784313827753067,
+            "finite": true,
+            "RGB8_range": [
+              2,
+              255
+            ],
+            "RGB8_std": 65.96144112076985,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_004",
+        "frame": 6,
+        "K": 4,
+        "target_source_id": "AM-2k:m_8e4a045c",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 73933,
+          "visible_pixels_gt0": 76571,
+          "visible_pixels_gt05": 74831,
+          "point_A_xy": [
+            738,
+            296
+          ],
+          "point_A_margin_pixels": 110.81967334368028
+        },
+        "seed": 148,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.7843137254901961,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 1.0,
+            "focused_image_fraction": 1.0,
+            "target_eval_pixels": 74831,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.09803921729326248,
+            "finite": true,
+            "RGB8_range": [
+              3,
+              255
+            ],
+            "RGB8_std": 65.73254068194858,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.803921568627451,
+            "click_xy": [
+              738,
+              296
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 110.81967334368028,
+            "magic_depth_at_click_png8": 205,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 0.9999941746781024,
+            "focused_image_fraction": 0.9999949137369791,
+            "target_eval_pixels": 74831,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.10049019753932953,
+            "finite": true,
+            "RGB8_range": [
+              3,
+              255
+            ],
+            "RGB8_std": 65.73570519285344,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.7607843137254902,
+            "click_xy": [
+              700,
+              318
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 91.67878707749138,
+            "magic_depth_at_click_png8": 194,
+            "target_native_depth_median_png8": 194.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 1.0,
+            "focused_image_fraction": 1.0,
+            "target_eval_pixels": 74831,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.09509804099798203,
+            "finite": true,
+            "RGB8_range": [
+              3,
+              255
+            ],
+            "RGB8_std": 65.7340369256308,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_004",
+        "frame": 12,
+        "K": 4,
+        "target_source_id": "AM-2k:m_8e4a045c",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 74591,
+          "visible_pixels_gt0": 76994,
+          "visible_pixels_gt05": 75394,
+          "point_A_xy": [
+            725,
+            288
+          ],
+          "point_A_margin_pixels": 114.27160627207444
+        },
+        "seed": 154,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.8117647058823529,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 0.9996015006900841,
+            "focused_image_fraction": 0.9996524386935763,
+            "target_eval_pixels": 75394,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.10147058963775635,
+            "finite": true,
+            "RGB8_range": [
+              3,
+              255
+            ],
+            "RGB8_std": 65.2940045148827,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.9333333333333333,
+            "click_xy": [
+              725,
+              288
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 114.27160627207444,
+            "magic_depth_at_click_png8": 238,
+            "target_focus_coverage": 0.9999734726901345,
+            "focus_leakage": 0.7672355811286278,
+            "focused_image_fraction": 0.7969852023654513,
+            "target_eval_pixels": 75394,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.11666666716337204,
+            "finite": true,
+            "RGB8_range": [
+              3,
+              255
+            ],
+            "RGB8_std": 65.29377690424685,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.8666666666666667,
+            "click_xy": [
+              678,
+              308
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 96.0,
+            "magic_depth_at_click_png8": 221,
+            "target_native_depth_median_png8": 221.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 0.8618159905137726,
+            "focused_image_fraction": 0.8794793023003472,
+            "target_eval_pixels": 75394,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.10833333432674408,
+            "finite": true,
+            "RGB8_range": [
+              3,
+              255
+            ],
+            "RGB8_std": 65.24301434084398,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_004",
+        "frame": 18,
+        "K": 4,
+        "target_source_id": "AM-2k:m_8e4a045c",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 79163,
+          "visible_pixels_gt0": 80925,
+          "visible_pixels_gt05": 79779,
+          "point_A_xy": [
+            745,
+            306
+          ],
+          "point_A_margin_pixels": 125.89678312014172
+        },
+        "seed": 160,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.7019607843137254,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 1.0,
+            "focused_image_fraction": 1.0,
+            "target_eval_pixels": 79779,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.08774510025978088,
+            "finite": true,
+            "RGB8_range": [
+              3,
+              255
+            ],
+            "RGB8_std": 64.93654292338293,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.8823529411764706,
+            "click_xy": [
+              745,
+              306
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 125.89678312014172,
+            "magic_depth_at_click_png8": 225,
+            "target_focus_coverage": 0.9999874653730931,
+            "focus_leakage": 0.7448636884980737,
+            "focused_image_fraction": 0.7793714735243056,
+            "target_eval_pixels": 79779,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.11029411852359772,
+            "finite": true,
+            "RGB8_range": [
+              3,
+              255
+            ],
+            "RGB8_std": 64.9318781552207,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.8823529411764706,
+            "click_xy": [
+              745,
+              306
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 125.89678312014172,
+            "magic_depth_at_click_png8": 225,
+            "target_native_depth_median_png8": 225.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.9999874653730931,
+            "focus_leakage": 0.7448636884980737,
+            "focused_image_fraction": 0.7793714735243056,
+            "target_eval_pixels": 79779,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.11029411852359772,
+            "finite": true,
+            "RGB8_range": [
+              3,
+              255
+            ],
+            "RGB8_std": 64.9318781552207,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_004",
+        "frame": 24,
+        "K": 4,
+        "target_source_id": "AM-2k:m_8e4a045c",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 72660,
+          "visible_pixels_gt0": 74546,
+          "visible_pixels_gt05": 73182,
+          "point_A_xy": [
+            793,
+            341
+          ],
+          "point_A_margin_pixels": 113.25193155085701
+        },
+        "seed": 166,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.7333333333333333,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 1.0,
+            "focused_image_fraction": 1.0,
+            "target_eval_pixels": 73182,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.09166666865348816,
+            "finite": true,
+            "RGB8_range": [
+              3,
+              255
+            ],
+            "RGB8_std": 64.65075768008303,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.8313725490196079,
+            "click_xy": [
+              793,
+              341
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 113.25193155085701,
+            "magic_depth_at_click_png8": 212,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 0.8336178630463648,
+            "focused_image_fraction": 0.8542616102430556,
+            "target_eval_pixels": 73182,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.1039215698838234,
+            "finite": true,
+            "RGB8_range": [
+              3,
+              255
+            ],
+            "RGB8_std": 64.63821470314527,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.8509803921568627,
+            "click_xy": [
+              804,
+              347
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 107.07474025184464,
+            "magic_depth_at_click_png8": 217,
+            "target_native_depth_median_png8": 217.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.9999590063130278,
+            "focus_leakage": 0.7723297757441323,
+            "focused_image_fraction": 0.8005727132161459,
+            "target_eval_pixels": 73182,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.10637255012989044,
+            "finite": true,
+            "RGB8_range": [
+              3,
+              255
+            ],
+            "RGB8_std": 64.6330588469779,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_007",
+        "frame": 0,
+        "K": 4,
+        "target_source_id": "AM-2k:m_a38666b1",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 120104,
+          "visible_pixels_gt0": 129116,
+          "visible_pixels_gt05": 123425,
+          "point_A_xy": [
+            882,
+            250
+          ],
+          "point_A_margin_pixels": 87.86353054595519
+        },
+        "seed": 217,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.4588235294117647,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 1.0,
+            "focused_image_fraction": 1.0,
+            "target_eval_pixels": 123425,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.0676470547914505,
+            "finite": true,
+            "RGB8_range": [
+              6,
+              251
+            ],
+            "RGB8_std": 65.58319786695864,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.48627450980392156,
+            "click_xy": [
+              882,
+              250
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 87.86353054595519,
+            "magic_depth_at_click_png8": 124,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 1.0,
+            "focused_image_fraction": 1.0,
+            "target_eval_pixels": 123425,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.06421568989753723,
+            "finite": true,
+            "RGB8_range": [
+              5,
+              251
+            ],
+            "RGB8_std": 65.5757099651123,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.45098039215686275,
+            "click_xy": [
+              716,
+              221
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 68.70953354520753,
+            "magic_depth_at_click_png8": 115,
+            "target_native_depth_median_png8": 115.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 1.0,
+            "focused_image_fraction": 1.0,
+            "target_eval_pixels": 123425,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.06862744688987732,
+            "finite": true,
+            "RGB8_range": [
+              6,
+              251
+            ],
+            "RGB8_std": 65.57976553681756,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_007",
+        "frame": 6,
+        "K": 4,
+        "target_source_id": "AM-2k:m_a38666b1",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 120104,
+          "visible_pixels_gt0": 129116,
+          "visible_pixels_gt05": 123425,
+          "point_A_xy": [
+            882,
+            250
+          ],
+          "point_A_margin_pixels": 87.86353054595519
+        },
+        "seed": 223,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.45098039215686275,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 1.0,
+            "focused_image_fraction": 1.0,
+            "target_eval_pixels": 123425,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.06862744688987732,
+            "finite": true,
+            "RGB8_range": [
+              5,
+              252
+            ],
+            "RGB8_std": 65.66509003572064,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.4823529411764706,
+            "click_xy": [
+              882,
+              250
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 87.86353054595519,
+            "magic_depth_at_click_png8": 123,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 1.0,
+            "focused_image_fraction": 1.0,
+            "target_eval_pixels": 123425,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.06470587849617004,
+            "finite": true,
+            "RGB8_range": [
+              5,
+              252
+            ],
+            "RGB8_std": 65.65930980233667,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.44313725490196076,
+            "click_xy": [
+              878,
+              199
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 68.94200461257273,
+            "magic_depth_at_click_png8": 113,
+            "target_native_depth_median_png8": 113.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 1.0,
+            "focused_image_fraction": 1.0,
+            "target_eval_pixels": 123425,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.06960783898830414,
+            "finite": true,
+            "RGB8_range": [
+              5,
+              252
+            ],
+            "RGB8_std": 65.66972063909552,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_007",
+        "frame": 12,
+        "K": 4,
+        "target_source_id": "AM-2k:m_a38666b1",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 120104,
+          "visible_pixels_gt0": 129116,
+          "visible_pixels_gt05": 123425,
+          "point_A_xy": [
+            852,
+            250
+          ],
+          "point_A_margin_pixels": 87.86353054595519
+        },
+        "seed": 229,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.49019607843137253,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 1.0,
+            "focused_image_fraction": 1.0,
+            "target_eval_pixels": 123425,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.06372548639774323,
+            "finite": true,
+            "RGB8_range": [
+              5,
+              250
+            ],
+            "RGB8_std": 66.13527951410325,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.5294117647058824,
+            "click_xy": [
+              852,
+              250
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 87.86353054595519,
+            "magic_depth_at_click_png8": 135,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 1.0,
+            "focused_image_fraction": 1.0,
+            "target_eval_pixels": 123425,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.06617647409439087,
+            "finite": true,
+            "RGB8_range": [
+              5,
+              250
+            ],
+            "RGB8_std": 66.15672833663919,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.49019607843137253,
+            "click_xy": [
+              684,
+              227
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 68.9492567037528,
+            "magic_depth_at_click_png8": 125,
+            "target_native_depth_median_png8": 125.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 1.0,
+            "focused_image_fraction": 1.0,
+            "target_eval_pixels": 123425,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.06372548639774323,
+            "finite": true,
+            "RGB8_range": [
+              5,
+              250
+            ],
+            "RGB8_std": 66.13527951410325,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_007",
+        "frame": 18,
+        "K": 4,
+        "target_source_id": "AM-2k:m_a38666b1",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 120104,
+          "visible_pixels_gt0": 129116,
+          "visible_pixels_gt05": 123425,
+          "point_A_xy": [
+            814,
+            250
+          ],
+          "point_A_margin_pixels": 87.86353054595519
+        },
+        "seed": 235,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.6509803921568628,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 1.0,
+            "focused_image_fraction": 1.0,
+            "target_eval_pixels": 123425,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.08137255162000656,
+            "finite": true,
+            "RGB8_range": [
+              5,
+              252
+            ],
+            "RGB8_std": 66.64973068095014,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.6666666666666666,
+            "click_xy": [
+              814,
+              250
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 87.86353054595519,
+            "magic_depth_at_click_png8": 170,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 1.0,
+            "focused_image_fraction": 1.0,
+            "target_eval_pixels": 123425,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.0833333358168602,
+            "finite": true,
+            "RGB8_range": [
+              5,
+              252
+            ],
+            "RGB8_std": 66.62066443309722,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.6196078431372549,
+            "click_xy": [
+              809,
+              206
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 71.19691004531025,
+            "magic_depth_at_click_png8": 158,
+            "target_native_depth_median_png8": 158.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 1.0,
+            "focused_image_fraction": 1.0,
+            "target_eval_pixels": 123425,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.07745098322629929,
+            "finite": true,
+            "RGB8_range": [
+              5,
+              252
+            ],
+            "RGB8_std": 66.66859940153107,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_007",
+        "frame": 24,
+        "K": 4,
+        "target_source_id": "AM-2k:m_a38666b1",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 120104,
+          "visible_pixels_gt0": 129116,
+          "visible_pixels_gt05": 123425,
+          "point_A_xy": [
+            797,
+            250
+          ],
+          "point_A_margin_pixels": 87.86353054595519
+        },
+        "seed": 241,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.48627450980392156,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 1.0,
+            "focused_image_fraction": 1.0,
+            "target_eval_pixels": 123425,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.06421568989753723,
+            "finite": true,
+            "RGB8_range": [
+              5,
+              252
+            ],
+            "RGB8_std": 66.1695238437677,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.5098039215686274,
+            "click_xy": [
+              797,
+              250
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 87.86353054595519,
+            "magic_depth_at_click_png8": 130,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 1.0,
+            "focused_image_fraction": 1.0,
+            "target_eval_pixels": 123425,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.06372549384832382,
+            "finite": true,
+            "RGB8_range": [
+              5,
+              252
+            ],
+            "RGB8_std": 66.17305340762653,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.4745098039215686,
+            "click_xy": [
+              792,
+              205
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 70.71067811865476,
+            "magic_depth_at_click_png8": 121,
+            "target_native_depth_median_png8": 121.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 1.0,
+            "focused_image_fraction": 1.0,
+            "target_eval_pixels": 123425,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.06568627059459686,
+            "finite": true,
+            "RGB8_range": [
+              5,
+              252
+            ],
+            "RGB8_std": 66.18748814167745,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_006",
+        "frame": 0,
+        "K": 8,
+        "target_source_id": "AM-2k:m_6039905e",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 68023,
+          "visible_pixels_gt0": 73926,
+          "visible_pixels_gt05": 69999,
+          "point_A_xy": [
+            861,
+            364
+          ],
+          "point_A_margin_pixels": 104.5609869884557
+        },
+        "seed": 192,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.5647058823529412,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.9475135359076559,
+            "focus_leakage": 0.42416005386428124,
+            "focused_image_fraction": 0.4862704806857639,
+            "target_eval_pixels": 69999,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.1411764770746231,
+            "finite": true,
+            "RGB8_range": [
+              4,
+              255
+            ],
+            "RGB8_std": 74.96779268205877,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.9176470588235294,
+            "click_xy": [
+              861,
+              364
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 104.5609869884557,
+            "magic_depth_at_click_png8": 234,
+            "target_focus_coverage": 0.9863712338747697,
+            "focus_leakage": 0.09976242004520752,
+            "focused_image_fraction": 0.2049831814236111,
+            "target_eval_pixels": 69999,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.2294117659330368,
+            "finite": true,
+            "RGB8_range": [
+              1,
+              255
+            ],
+            "RGB8_std": 75.00661836522505,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.8666666666666667,
+            "click_xy": [
+              814,
+              393
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 68.0294054067798,
+            "magic_depth_at_click_png8": 221,
+            "target_native_depth_median_png8": 221.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.992814183059758,
+            "focus_leakage": 0.11515606213629587,
+            "focused_image_fraction": 0.2193145751953125,
+            "target_eval_pixels": 69999,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.21666666865348816,
+            "finite": true,
+            "RGB8_range": [
+              2,
+              255
+            ],
+            "RGB8_std": 74.90519234454854,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_006",
+        "frame": 6,
+        "K": 8,
+        "target_source_id": "AM-2k:m_6039905e",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 68023,
+          "visible_pixels_gt0": 73926,
+          "visible_pixels_gt05": 69999,
+          "point_A_xy": [
+            861,
+            364
+          ],
+          "point_A_margin_pixels": 104.5609869884557
+        },
+        "seed": 198,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.5882352941176471,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.9923427477535394,
+            "focus_leakage": 0.3785947193767133,
+            "focused_image_fraction": 0.4514329698350694,
+            "target_eval_pixels": 69999,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.14705882966518402,
+            "finite": true,
+            "RGB8_range": [
+              4,
+              255
+            ],
+            "RGB8_std": 75.18555301068005,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.9098039215686274,
+            "click_xy": [
+              861,
+              364
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 104.5609869884557,
+            "magic_depth_at_click_png8": 232,
+            "target_focus_coverage": 0.984485492649895,
+            "focus_leakage": 0.10112826431972298,
+            "focused_image_fraction": 0.205963134765625,
+            "target_eval_pixels": 69999,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.22745098173618317,
+            "finite": true,
+            "RGB8_range": [
+              2,
+              255
+            ],
+            "RGB8_std": 75.1164424292495,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.8549019607843137,
+            "click_xy": [
+              811,
+              395
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 66.18912297349165,
+            "magic_depth_at_click_png8": 218,
+            "target_native_depth_median_png8": 218.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.9923856055086501,
+            "focus_leakage": 0.12159476746982158,
+            "focused_image_fraction": 0.2249382866753472,
+            "target_eval_pixels": 69999,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.2137254923582077,
+            "finite": true,
+            "RGB8_range": [
+              2,
+              255
+            ],
+            "RGB8_std": 75.19385655777944,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_006",
+        "frame": 12,
+        "K": 8,
+        "target_source_id": "AM-2k:m_6039905e",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 68023,
+          "visible_pixels_gt0": 73926,
+          "visible_pixels_gt05": 69999,
+          "point_A_xy": [
+            861,
+            364
+          ],
+          "point_A_margin_pixels": 104.5609869884557
+        },
+        "seed": 204,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.5019607843137255,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.7161245160645152,
+            "focus_leakage": 0.6884740056749867,
+            "focused_image_fraction": 0.6917555067274306,
+            "target_eval_pixels": 69999,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.125490203499794,
+            "finite": true,
+            "RGB8_range": [
+              5,
+              253
+            ],
+            "RGB8_std": 74.51981990763602,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.9019607843137255,
+            "click_xy": [
+              861,
+              364
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 104.5609869884557,
+            "magic_depth_at_click_png8": 230,
+            "target_focus_coverage": 0.9852569322418891,
+            "focus_leakage": 0.09952003077958929,
+            "focused_image_fraction": 0.20463731553819445,
+            "target_eval_pixels": 69999,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.22549019753932953,
+            "finite": true,
+            "RGB8_range": [
+              2,
+              255
+            ],
+            "RGB8_std": 74.42297387382393,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.8509803921568627,
+            "click_xy": [
+              812,
+              394
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 66.64082832618455,
+            "magic_depth_at_click_png8": 217,
+            "target_native_depth_median_png8": 217.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.9924284632637609,
+            "focus_leakage": 0.12426104939162218,
+            "focused_image_fraction": 0.22729322645399305,
+            "target_eval_pixels": 69999,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.21274510025978088,
+            "finite": true,
+            "RGB8_range": [
+              2,
+              255
+            ],
+            "RGB8_std": 74.45585135604003,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_006",
+        "frame": 18,
+        "K": 8,
+        "target_source_id": "AM-2k:m_6039905e",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 68023,
+          "visible_pixels_gt0": 73926,
+          "visible_pixels_gt05": 69999,
+          "point_A_xy": [
+            861,
+            364
+          ],
+          "point_A_margin_pixels": 104.5609869884557
+        },
+        "seed": 210,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.5803921568627451,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.980185431220446,
+            "focus_leakage": 0.3765978935218583,
+            "focused_image_fraction": 0.4482303195529514,
+            "target_eval_pixels": 69999,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.14509804546833038,
+            "finite": true,
+            "RGB8_range": [
+              4,
+              254
+            ],
+            "RGB8_std": 74.95383882214603,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.9019607843137255,
+            "click_xy": [
+              861,
+              364
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 104.5609869884557,
+            "magic_depth_at_click_png8": 230,
+            "target_focus_coverage": 0.9844426348947842,
+            "focus_leakage": 0.10087625643245322,
+            "focused_image_fraction": 0.20573594835069445,
+            "target_eval_pixels": 69999,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.22549019753932953,
+            "finite": true,
+            "RGB8_range": [
+              2,
+              255
+            ],
+            "RGB8_std": 74.96601300662303,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.8470588235294118,
+            "click_xy": [
+              809,
+              396
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 64.88451279003334,
+            "magic_depth_at_click_png8": 216,
+            "target_native_depth_median_png8": 216.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.9927284675495365,
+            "focus_leakage": 0.11708555763959025,
+            "focused_image_fraction": 0.2210049099392361,
+            "target_eval_pixels": 69999,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.21176470816135406,
+            "finite": true,
+            "RGB8_range": [
+              2,
+              255
+            ],
+            "RGB8_std": 74.9573733868236,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_006",
+        "frame": 24,
+        "K": 8,
+        "target_source_id": "AM-2k:m_6039905e",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 68023,
+          "visible_pixels_gt0": 73926,
+          "visible_pixels_gt05": 69999,
+          "point_A_xy": [
+            861,
+            363
+          ],
+          "point_A_margin_pixels": 104.5609869884557
+        },
+        "seed": 216,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.6431372549019608,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.9986428377548251,
+            "focus_leakage": 0.3262136295868802,
+            "focused_image_fraction": 0.4060160319010417,
+            "target_eval_pixels": 69999,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.16078431904315948,
+            "finite": true,
+            "RGB8_range": [
+              4,
+              255
+            ],
+            "RGB8_std": 75.95863718665396,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.9176470588235294,
+            "click_xy": [
+              861,
+              363
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 104.5609869884557,
+            "magic_depth_at_click_png8": 234,
+            "target_focus_coverage": 0.9870141002014314,
+            "focus_leakage": 0.11572163708940508,
+            "focused_image_fraction": 0.2191246880425347,
+            "target_eval_pixels": 69999,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.2294117659330368,
+            "finite": true,
+            "RGB8_range": [
+              3,
+              255
+            ],
+            "RGB8_std": 76.02677700206635,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.8666666666666667,
+            "click_xy": [
+              813,
+              393
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 67.26812023536856,
+            "magic_depth_at_click_png8": 221,
+            "target_native_depth_median_png8": 221.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.9925284646923528,
+            "focus_leakage": 0.1442466214591449,
+            "focused_image_fraction": 0.2449188232421875,
+            "target_eval_pixels": 69999,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.21666666865348816,
+            "finite": true,
+            "RGB8_range": [
+              3,
+              255
+            ],
+            "RGB8_std": 75.92118096699839,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_017",
+        "frame": 0,
+        "K": 8,
+        "target_source_id": "AM-2k:m_212c2d63",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 28286,
+          "visible_pixels_gt0": 51736,
+          "visible_pixels_gt05": 49250,
+          "point_A_xy": [
+            262,
+            234
+          ],
+          "point_A_margin_pixels": 60.14149981501958
+        },
+        "seed": 467,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.403921568627451,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 0.9558358337618902,
+            "focused_image_fraction": 0.9595235188802084,
+            "target_eval_pixels": 49250,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.14901959896087646,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 71.35894707400753,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.3254901960784314,
+            "click_xy": [
+              262,
+              234
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 60.14149981501958,
+            "magic_depth_at_click_png8": 83,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 0.937784651130095,
+            "focused_image_fraction": 0.9429796006944444,
+            "target_eval_pixels": 49250,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.16862744092941284,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 71.43250337655518,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.28627450980392155,
+            "click_xy": [
+              295,
+              219
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 53.08483775994799,
+            "magic_depth_at_click_png8": 73,
+            "target_native_depth_median_png8": 73.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 0.9247744064642399,
+            "focused_image_fraction": 0.9310557047526041,
+            "target_eval_pixels": 49250,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.17843136191368103,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 71.45173436353332,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_017",
+        "frame": 6,
+        "K": 8,
+        "target_source_id": "AM-2k:m_212c2d63",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 28286,
+          "visible_pixels_gt0": 51736,
+          "visible_pixels_gt05": 49250,
+          "point_A_xy": [
+            288,
+            311
+          ],
+          "point_A_margin_pixels": 60.14149981501958
+        },
+        "seed": 473,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.48627450980392156,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 0.9731304132274212,
+            "focused_image_fraction": 0.9753740098741319,
+            "target_eval_pixels": 49250,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.12843137979507446,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 72.50729692778144,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.5450980392156862,
+            "click_xy": [
+              288,
+              311
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 60.14149981501958,
+            "magic_depth_at_click_png8": 139,
+            "target_focus_coverage": 0.9998984771573604,
+            "focus_leakage": 0.9838763980509606,
+            "focused_image_fraction": 0.9852142333984375,
+            "target_eval_pixels": 49250,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.136274516582489,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 72.42650151864639,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.49411764705882355,
+            "click_xy": [
+              319,
+              297
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 53.823786563191554,
+            "magic_depth_at_click_png8": 126,
+            "target_native_depth_median_png8": 126.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 0.9739795106682896,
+            "focused_image_fraction": 0.9761522081163194,
+            "target_eval_pixels": 49250,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.12647059559822083,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 72.50137062966785,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_017",
+        "frame": 12,
+        "K": 8,
+        "target_source_id": "AM-2k:m_212c2d63",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 28286,
+          "visible_pixels_gt0": 51736,
+          "visible_pixels_gt05": 49250,
+          "point_A_xy": [
+            349,
+            290
+          ],
+          "point_A_margin_pixels": 60.14149981501958
+        },
+        "seed": 479,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.47058823529411764,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 0.967684350338714,
+            "focused_image_fraction": 0.9703826904296875,
+            "target_eval_pixels": 49250,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.13235294818878174,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 72.96067774576706,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.45098039215686275,
+            "click_xy": [
+              349,
+              290
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 60.14149981501958,
+            "magic_depth_at_click_png8": 115,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 0.9570216103623186,
+            "focused_image_fraction": 0.9606102837456597,
+            "target_eval_pixels": 49250,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.13725489377975464,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 72.99986729768202,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.40784313725490196,
+            "click_xy": [
+              383,
+              275
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 53.0,
+            "magic_depth_at_click_png8": 104,
+            "target_native_depth_median_png8": 104.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 0.9455467706548965,
+            "focused_image_fraction": 0.9500935872395834,
+            "target_eval_pixels": 49250,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.14803922176361084,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 73.06118222794252,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_017",
+        "frame": 18,
+        "K": 8,
+        "target_source_id": "AM-2k:m_212c2d63",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 28286,
+          "visible_pixels_gt0": 51736,
+          "visible_pixels_gt05": 49250,
+          "point_A_xy": [
+            368,
+            319
+          ],
+          "point_A_margin_pixels": 60.14149981501958
+        },
+        "seed": 485,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.4666666666666667,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 0.970562772164403,
+            "focused_image_fraction": 0.9730207655164931,
+            "target_eval_pixels": 49250,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.13333332538604736,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 73.09574803874035,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.45098039215686275,
+            "click_xy": [
+              368,
+              319
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 60.14149981501958,
+            "magic_depth_at_click_png8": 115,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 0.9617906151609216,
+            "focused_image_fraction": 0.9649810791015625,
+            "target_eval_pixels": 49250,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.13725489377975464,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 73.16396011947606,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.40784313725490196,
+            "click_xy": [
+              398,
+              305
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 54.0,
+            "magic_depth_at_click_png8": 104,
+            "target_native_depth_median_png8": 104.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 0.9484473911064905,
+            "focused_image_fraction": 0.9527520073784722,
+            "target_eval_pixels": 49250,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.14803922176361084,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 73.03883474587421,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_017",
+        "frame": 24,
+        "K": 8,
+        "target_source_id": "AM-2k:m_212c2d63",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 28286,
+          "visible_pixels_gt0": 51736,
+          "visible_pixels_gt05": 49250,
+          "point_A_xy": [
+            358,
+            357
+          ],
+          "point_A_margin_pixels": 60.14149981501958
+        },
+        "seed": 491,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.592156862745098,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.9998984771573604,
+            "focus_leakage": 0.9851250707581201,
+            "focused_image_fraction": 0.986358642578125,
+            "target_eval_pixels": 49250,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.14803922176361084,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 72.76582685288038,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.403921568627451,
+            "click_xy": [
+              358,
+              357
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 60.14149981501958,
+            "magic_depth_at_click_png8": 103,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 0.9484584904194431,
+            "focused_image_fraction": 0.9527621799045138,
+            "target_eval_pixels": 49250,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.14901959896087646,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 72.92998022729574,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.37254901960784315,
+            "click_xy": [
+              389,
+              343
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 53.823786563191554,
+            "magic_depth_at_click_png8": 95,
+            "target_native_depth_median_png8": 95.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 1.0,
+            "focus_leakage": 0.9407074702075942,
+            "focused_image_fraction": 0.9456583658854166,
+            "target_eval_pixels": 49250,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.15686273574829102,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 72.93238125462317,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_003",
+        "frame": 0,
+        "K": 16,
+        "target_source_id": "AM-2k:m_c898159d",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 46302,
+          "visible_pixels_gt0": 48119,
+          "visible_pixels_gt05": 46908,
+          "point_A_xy": [
+            552,
+            512
+          ],
+          "point_A_margin_pixels": 62.96824596572466
+        },
+        "seed": 117,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.6588235294117647,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.6239873795514624,
+            "focus_leakage": 0.32011766092728894,
+            "focused_image_fraction": 0.3442840576171875,
+            "target_eval_pixels": 46908,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.3294117748737335,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 68.73955826091078,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.8509803921568627,
+            "click_xy": [
+              552,
+              512
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 62.96824596572466,
+            "magic_depth_at_click_png8": 217,
+            "target_focus_coverage": 0.9821565617805065,
+            "focus_leakage": 0.19052671131445748,
+            "focused_image_fraction": 0.2534840901692708,
+            "target_eval_pixels": 46908,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.42549020051956177,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 68.5808208569101,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.8431372549019608,
+            "click_xy": [
+              548,
+              502
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 60.90155991434045,
+            "magic_depth_at_click_png8": 215,
+            "target_native_depth_median_png8": 215.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.9828813848384071,
+            "focus_leakage": 0.1978206573392569,
+            "focused_image_fraction": 0.2602556016710069,
+            "target_eval_pixels": 46908,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.4215686321258545,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 68.59225018817428,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_003",
+        "frame": 6,
+        "K": 16,
+        "target_source_id": "AM-2k:m_c898159d",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 46698,
+          "visible_pixels_gt0": 51563,
+          "visible_pixels_gt05": 49679,
+          "point_A_xy": [
+            559,
+            512
+          ],
+          "point_A_margin_pixels": 62.96824596572466
+        },
+        "seed": 123,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.6862745098039216,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.6413776444775459,
+            "focus_leakage": 0.3126475298299531,
+            "focused_image_fraction": 0.3403354220920139,
+            "target_eval_pixels": 49679,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.343137264251709,
+            "finite": true,
+            "RGB8_range": [
+              1,
+              255
+            ],
+            "RGB8_std": 68.59469706896782,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.8509803921568627,
+            "click_xy": [
+              559,
+              512
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 62.96824596572466,
+            "magic_depth_at_click_png8": 217,
+            "target_focus_coverage": 0.9380824895831237,
+            "focus_leakage": 0.19511612622536542,
+            "focused_image_fraction": 0.2576938205295139,
+            "target_eval_pixels": 49679,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.42549020051956177,
+            "finite": true,
+            "RGB8_range": [
+              1,
+              255
+            ],
+            "RGB8_std": 68.57505249961758,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.8549019607843137,
+            "click_xy": [
+              560,
+              513
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 62.39390995922599,
+            "magic_depth_at_click_png8": 218,
+            "target_native_depth_median_png8": 218.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.9377805511383079,
+            "focus_leakage": 0.1929667033852021,
+            "focused_image_fraction": 0.2557000054253472,
+            "target_eval_pixels": 49679,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.4274509847164154,
+            "finite": true,
+            "RGB8_range": [
+              1,
+              255
+            ],
+            "RGB8_std": 68.56775515160054,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_003",
+        "frame": 12,
+        "K": 16,
+        "target_source_id": "AM-2k:m_c898159d",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 57356,
+          "visible_pixels_gt0": 61007,
+          "visible_pixels_gt05": 58576,
+          "point_A_xy": [
+            542,
+            512
+          ],
+          "point_A_margin_pixels": 62.96824596572466
+        },
+        "seed": 129,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.7529411764705882,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.8662250751160885,
+            "focus_leakage": 0.28417989338312805,
+            "focused_image_fraction": 0.3419833713107639,
+            "target_eval_pixels": 58576,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.3764705955982208,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 68.77554833447184,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.8627450980392157,
+            "click_xy": [
+              542,
+              512
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 62.96824596572466,
+            "magic_depth_at_click_png8": 220,
+            "target_focus_coverage": 0.8882306746790495,
+            "focus_leakage": 0.22489684667048157,
+            "focused_image_fraction": 0.2907731797960069,
+            "target_eval_pixels": 58576,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.4313725531101227,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 68.69922653570893,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.8470588235294118,
+            "click_xy": [
+              537,
+              499
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 60.0,
+            "magic_depth_at_click_png8": 216,
+            "target_native_depth_median_png8": 216.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.8951276973504507,
+            "focus_leakage": 0.23382488028190224,
+            "focused_image_fraction": 0.29949951171875,
+            "target_eval_pixels": 58576,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.42352941632270813,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 68.7259552253245,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_003",
+        "frame": 18,
+        "K": 16,
+        "target_source_id": "AM-2k:m_c898159d",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 67193,
+          "visible_pixels_gt0": 70689,
+          "visible_pixels_gt05": 68341,
+          "point_A_xy": [
+            511,
+            512
+          ],
+          "point_A_margin_pixels": 62.96824596572466
+        },
+        "seed": 135,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.6980392156862745,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.9896255542061134,
+            "focus_leakage": 0.22691631366698434,
+            "focused_image_fraction": 0.3152889675564236,
+            "target_eval_pixels": 68341,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.3490196168422699,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 72.84513773982441,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.7058823529411765,
+            "click_xy": [
+              511,
+              512
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 62.96824596572466,
+            "magic_depth_at_click_png8": 180,
+            "target_focus_coverage": 0.9893621691224886,
+            "focus_leakage": 0.22796332766360553,
+            "focused_image_fraction": 0.3161841498480903,
+            "target_eval_pixels": 68341,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.3529411852359772,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 72.84978552746361,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.6980392156862745,
+            "click_xy": [
+              508,
+              505
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 61.5223536610881,
+            "magic_depth_at_click_png8": 178,
+            "target_native_depth_median_png8": 178.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.9896255542061134,
+            "focus_leakage": 0.22691631366698434,
+            "focused_image_fraction": 0.3152889675564236,
+            "target_eval_pixels": 68341,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.3490196168422699,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 72.84513773982441,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_003",
+        "frame": 24,
+        "K": 16,
+        "target_source_id": "AM-2k:m_c898159d",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 59997,
+          "visible_pixels_gt0": 63613,
+          "visible_pixels_gt05": 61202,
+          "point_A_xy": [
+            479,
+            512
+          ],
+          "point_A_margin_pixels": 62.96824596572466
+        },
+        "seed": 141,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.6901960784313725,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.5888533054475344,
+            "focus_leakage": 0.2328431279818093,
+            "focused_image_fraction": 0.2697838677300347,
+            "target_eval_pixels": 61202,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.3450980484485626,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 72.15702059403232,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.8784313725490196,
+            "click_xy": [
+              479,
+              512
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 62.96824596572466,
+            "magic_depth_at_click_png8": 224,
+            "target_focus_coverage": 0.8431423809679423,
+            "focus_leakage": 0.14321386548422124,
+            "focused_image_fraction": 0.21584065755208334,
+            "target_eval_pixels": 61202,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.43921568989753723,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 72.10558317054833,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.8549019607843137,
+            "click_xy": [
+              459,
+              407
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 57.0350769263968,
+            "magic_depth_at_click_png8": 218,
+            "target_native_depth_median_png8": 218.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.8546779517009248,
+            "focus_leakage": 0.1673634468485988,
+            "focused_image_fraction": 0.2386813693576389,
+            "target_eval_pixels": 61202,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.4274509847164154,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 72.17380339593305,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_008",
+        "frame": 0,
+        "K": 16,
+        "target_source_id": "AM-2k:m_4d5c30c8",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 107364,
+          "visible_pixels_gt0": 117300,
+          "visible_pixels_gt05": 110618,
+          "point_A_xy": [
+            842,
+            288
+          ],
+          "point_A_margin_pixels": 81.61494961096282
+        },
+        "seed": 242,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.48627450980392156,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.9281400857003381,
+            "focus_leakage": 0.3658697929491701,
+            "focused_image_fraction": 0.4713202582465278,
+            "target_eval_pixels": 110618,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.2568627595901489,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              247
+            ],
+            "RGB8_std": 60.7517595590746,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.39215686274509803,
+            "click_xy": [
+              842,
+              288
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 81.61494961096282,
+            "magic_depth_at_click_png8": 100,
+            "target_focus_coverage": 0.994991773490752,
+            "focus_leakage": 0.45873799576799956,
+            "focused_image_fraction": 0.5593092176649306,
+            "target_eval_pixels": 110618,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.30392158031463623,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              248
+            ],
+            "RGB8_std": 60.80656351977379,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.44313725490196076,
+            "click_xy": [
+              877,
+              357
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 72.56031973468694,
+            "magic_depth_at_click_png8": 113,
+            "target_native_depth_median_png8": 113.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.9733949266846263,
+            "focus_leakage": 0.4239387653743901,
+            "focused_image_fraction": 0.5269860161675347,
+            "target_eval_pixels": 110618,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.27843135595321655,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              248
+            ],
+            "RGB8_std": 60.7685839692723,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_008",
+        "frame": 6,
+        "K": 16,
+        "target_source_id": "AM-2k:m_4d5c30c8",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 107706,
+          "visible_pixels_gt0": 117602,
+          "visible_pixels_gt05": 110943,
+          "point_A_xy": [
+            475,
+            120
+          ],
+          "point_A_margin_pixels": 83.21658488546619
+        },
+        "seed": 248,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.47843137254901963,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.9418800645376455,
+            "focus_leakage": 0.3462342419097855,
+            "focused_image_fraction": 0.4582722981770833,
+            "target_eval_pixels": 110943,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.2607843279838562,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              249
+            ],
+            "RGB8_std": 61.33522814469844,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.4823529411764706,
+            "click_xy": [
+              475,
+              120
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 83.21658488546619,
+            "magic_depth_at_click_png8": 123,
+            "target_focus_coverage": 0.935417286354254,
+            "focus_leakage": 0.34567878032329535,
+            "focused_image_fraction": 0.4566056993272569,
+            "target_eval_pixels": 110943,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.2588235139846802,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              250
+            ],
+            "RGB8_std": 61.327060704442275,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.4196078431372549,
+            "click_xy": [
+              769,
+              356
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 63.89053137985315,
+            "magic_depth_at_click_png8": 107,
+            "target_native_depth_median_png8": 107.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.9887149256825577,
+            "focus_leakage": 0.3673041945702586,
+            "focused_image_fraction": 0.4841885036892361,
+            "target_eval_pixels": 110943,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.2901960611343384,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              248
+            ],
+            "RGB8_std": 61.173570362050405,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_008",
+        "frame": 12,
+        "K": 16,
+        "target_source_id": "AM-2k:m_4d5c30c8",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 107424,
+          "visible_pixels_gt0": 117351,
+          "visible_pixels_gt05": 110675,
+          "point_A_xy": [
+            781,
+            289
+          ],
+          "point_A_margin_pixels": 78.39005038906404
+        },
+        "seed": 254,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.44313725490196076,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.9203885249604699,
+            "focus_leakage": 0.5145789723029788,
+            "focused_image_fraction": 0.5907253689236112,
+            "target_eval_pixels": 110675,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.27843135595321655,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              248
+            ],
+            "RGB8_std": 61.03494945739553,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.3568627450980392,
+            "click_xy": [
+              781,
+              289
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 78.39005038906404,
+            "magic_depth_at_click_png8": 91,
+            "target_focus_coverage": 0.9964129207138017,
+            "focus_leakage": 0.5805667965497162,
+            "focused_image_fraction": 0.6585964626736112,
+            "target_eval_pixels": 110675,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.3215686082839966,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              249
+            ],
+            "RGB8_std": 61.2064822554957,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.39215686274509803,
+            "click_xy": [
+              813,
+              356
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 73.348483283569,
+            "magic_depth_at_click_png8": 100,
+            "target_native_depth_median_png8": 100.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.989609216173481,
+            "focus_leakage": 0.5634844275997655,
+            "focused_image_fraction": 0.6434427897135416,
+            "target_eval_pixels": 110675,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.30392158031463623,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              248
+            ],
+            "RGB8_std": 61.22182063105705,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_008",
+        "frame": 18,
+        "K": 16,
+        "target_source_id": "AM-2k:m_4d5c30c8",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 109709,
+          "visible_pixels_gt0": 118558,
+          "visible_pixels_gt05": 112666,
+          "point_A_xy": [
+            766,
+            285
+          ],
+          "point_A_margin_pixels": 98.76234100101111
+        },
+        "seed": 260,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.4588235294117647,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.9676832407292351,
+            "focus_leakage": 0.3206233574623081,
+            "focused_image_fraction": 0.4442223442925347,
+            "target_eval_pixels": 112666,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.270588219165802,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 61.324429873014616,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.3333333333333333,
+            "click_xy": [
+              766,
+              285
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 98.76234100101111,
+            "magic_depth_at_click_png8": 85,
+            "target_focus_coverage": 0.9267835904354463,
+            "focus_leakage": 0.4794261020458632,
+            "focused_image_fraction": 0.5648786756727431,
+            "target_eval_pixels": 112666,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.3333333134651184,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 61.290275957576426,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.40784313725490196,
+            "click_xy": [
+              818,
+              357
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 72.83543093852057,
+            "magic_depth_at_click_png8": 104,
+            "target_native_depth_median_png8": 104.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.9761152432854632,
+            "focus_leakage": 0.34258254079361555,
+            "focused_image_fraction": 0.4635976155598958,
+            "target_eval_pixels": 112666,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.2960784435272217,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 61.392439730608906,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_008",
+        "frame": 24,
+        "K": 16,
+        "target_source_id": "AM-2k:m_4d5c30c8",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 107071,
+          "visible_pixels_gt0": 117279,
+          "visible_pixels_gt05": 110596,
+          "point_A_xy": [
+            832,
+            289
+          ],
+          "point_A_margin_pixels": 83.00602387778854
+        },
+        "seed": 266,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.42745098039215684,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.9555228037180368,
+            "focus_leakage": 0.45840393299222915,
+            "focused_image_fraction": 0.5516170925564237,
+            "target_eval_pixels": 110596,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.2862744927406311,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              251
+            ],
+            "RGB8_std": 61.828423102258135,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.3607843137254902,
+            "click_xy": [
+              832,
+              289
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 83.00602387778854,
+            "magic_depth_at_click_png8": 92,
+            "target_focus_coverage": 0.9955785019349706,
+            "focus_leakage": 0.504002270318095,
+            "focused_image_fraction": 0.5961761474609375,
+            "target_eval_pixels": 110596,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.31960785388946533,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              251
+            ],
+            "RGB8_std": 61.930356223180496,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.403921568627451,
+            "click_xy": [
+              869,
+              356
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 73.348483283569,
+            "magic_depth_at_click_png8": 103,
+            "target_native_depth_median_png8": 103.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.9823230496582155,
+            "focus_leakage": 0.46686754530202745,
+            "focused_image_fraction": 0.5635189480251737,
+            "target_eval_pixels": 110596,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.29803919792175293,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              251
+            ],
+            "RGB8_std": 61.820889069729404,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_000",
+        "frame": 0,
+        "K": 32,
+        "target_source_id": "AM-2k:m_c4e2ddb6",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 162253,
+          "visible_pixels_gt0": 175137,
+          "visible_pixels_gt05": 167114,
+          "point_A_xy": [
+            797,
+            398
+          ],
+          "point_A_margin_pixels": 159.62455951387932
+        },
+        "seed": 42,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.3254901960784314,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.04250391948011537,
+            "focus_leakage": 0.08821177639516453,
+            "focused_image_fraction": 0.07526143391927083,
+            "target_eval_pixels": 167114,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.6745097637176514,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              254
+            ],
+            "RGB8_std": 64.96576171954042,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.9882352941176471,
+            "click_xy": [
+              797,
+              398
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 159.62455951387932,
+            "magic_depth_at_click_png8": 252,
+            "target_focus_coverage": 0.07551731153583781,
+            "focus_leakage": 0.0,
+            "focused_image_fraction": 0.021396213107638888,
+            "target_eval_pixels": 167114,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.9882352948188782,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 64.79076164255228,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.8,
+            "click_xy": [
+              682,
+              466
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 109.5673308974897,
+            "magic_depth_at_click_png8": 204,
+            "target_native_depth_median_png8": 204.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.640269516617399,
+            "focus_leakage": 0.0004589434837122377,
+            "focused_image_fraction": 0.1817355685763889,
+            "target_eval_pixels": 167114,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.800000011920929,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 64.91197842179977,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_000",
+        "frame": 6,
+        "K": 32,
+        "target_source_id": "AM-2k:m_c4e2ddb6",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 160346,
+          "visible_pixels_gt0": 173255,
+          "visible_pixels_gt05": 165201,
+          "point_A_xy": [
+            703,
+            398
+          ],
+          "point_A_margin_pixels": 159.62455951387932
+        },
+        "seed": 48,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.34509803921568627,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.07064121887882034,
+            "focus_leakage": 0.0349227432334094,
+            "focused_image_fraction": 0.044926961263020836,
+            "target_eval_pixels": 165201,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.6549019813537598,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              254
+            ],
+            "RGB8_std": 65.08830714658407,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.984313725490196,
+            "click_xy": [
+              703,
+              398
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 159.62455951387932,
+            "magic_depth_at_click_png8": 251,
+            "target_focus_coverage": 0.05763887627798863,
+            "focus_leakage": 0.0,
+            "focused_image_fraction": 0.016143798828125,
+            "target_eval_pixels": 165201,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.9843137264251709,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 64.88533248778863,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.7647058823529411,
+            "click_xy": [
+              596,
+              464
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 111.46299834474219,
+            "magic_depth_at_click_png8": 195,
+            "target_native_depth_median_png8": 195.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.6138098437660789,
+            "focus_leakage": 0.00035560956424875715,
+            "focused_image_fraction": 0.17217508951822916,
+            "target_eval_pixels": 165201,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.7647058963775635,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 65.03597169507708,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_000",
+        "frame": 12,
+        "K": 32,
+        "target_source_id": "AM-2k:m_c4e2ddb6",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 153119,
+          "visible_pixels_gt0": 166058,
+          "visible_pixels_gt05": 158008,
+          "point_A_xy": [
+            703,
+            398
+          ],
+          "point_A_margin_pixels": 159.62455951387932
+        },
+        "seed": 54,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.36470588235294116,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.07198369702799859,
+            "focus_leakage": 0.23579719139633548,
+            "focused_image_fraction": 0.1919131808810764,
+            "target_eval_pixels": 158008,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.6352940797805786,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 64.36121657059985,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.984313725490196,
+            "click_xy": [
+              703,
+              398
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 159.62455951387932,
+            "magic_depth_at_click_png8": 251,
+            "target_focus_coverage": 0.06661055136448787,
+            "focus_leakage": 0.0,
+            "focused_image_fraction": 0.017844306098090276,
+            "target_eval_pixels": 158008,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.9843137264251709,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 63.97836977986147,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.7647058823529411,
+            "click_xy": [
+              601,
+              462
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 112.60550608207397,
+            "magic_depth_at_click_png8": 195,
+            "target_native_depth_median_png8": 195.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.6295820464786593,
+            "focus_leakage": 0.000787372399355281,
+            "focused_image_fraction": 0.1692352294921875,
+            "target_eval_pixels": 158008,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.7647058963775635,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 64.25257129914289,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_000",
+        "frame": 18,
+        "K": 32,
+        "target_source_id": "AM-2k:m_c4e2ddb6",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 161115,
+          "visible_pixels_gt0": 174047,
+          "visible_pixels_gt05": 165994,
+          "point_A_xy": [
+            758,
+            398
+          ],
+          "point_A_margin_pixels": 159.62455951387932
+        },
+        "seed": 60,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.403921568627451,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.12024531007144837,
+            "focus_leakage": 0.15936814288747847,
+            "focused_image_fraction": 0.1483578152126736,
+            "target_eval_pixels": 165994,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.5960783958435059,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              253
+            ],
+            "RGB8_std": 66.30458013288248,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.9882352941176471,
+            "click_xy": [
+              758,
+              398
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 159.62455951387932,
+            "magic_depth_at_click_png8": 252,
+            "target_focus_coverage": 0.06426738315842741,
+            "focus_leakage": 0.0,
+            "focused_image_fraction": 0.018086751302083332,
+            "target_eval_pixels": 165994,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.9882352948188782,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 66.00624028087648,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.7764705882352941,
+            "click_xy": [
+              651,
+              464
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 111.46299834474219,
+            "magic_depth_at_click_png8": 198,
+            "target_native_depth_median_png8": 198.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.6182994566068654,
+            "focus_leakage": 0.000542670410306019,
+            "focused_image_fraction": 0.17439778645833334,
+            "target_eval_pixels": 165994,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.7764706015586853,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 66.25346616659695,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_000",
+        "frame": 24,
+        "K": 32,
+        "target_source_id": "AM-2k:m_c4e2ddb6",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 162253,
+          "visible_pixels_gt0": 175137,
+          "visible_pixels_gt05": 167114,
+          "point_A_xy": [
+            750,
+            398
+          ],
+          "point_A_margin_pixels": 159.62455951387932
+        },
+        "seed": 66,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.3764705882352941,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.11334777457304594,
+            "focus_leakage": 0.12618343545220126,
+            "focused_image_fraction": 0.1225467258029514,
+            "target_eval_pixels": 167114,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.6235294342041016,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              254
+            ],
+            "RGB8_std": 66.56563311006104,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.9882352941176471,
+            "click_xy": [
+              750,
+              398
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 159.62455951387932,
+            "magic_depth_at_click_png8": 252,
+            "target_focus_coverage": 0.06117380949531458,
+            "focus_leakage": 0.0,
+            "focused_image_fraction": 0.017332288953993056,
+            "target_eval_pixels": 167114,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.9882352948188782,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 66.21046011578242,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.7686274509803922,
+            "click_xy": [
+              642,
+              464
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 111.13955191559843,
+            "magic_depth_at_click_png8": 196,
+            "target_native_depth_median_png8": 196.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.5971492514092177,
+            "focus_leakage": 0.0002957110075465449,
+            "focused_image_fraction": 0.16940138075086805,
+            "target_eval_pixels": 167114,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.7686274647712708,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 66.49175105628932,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_001",
+        "frame": 0,
+        "K": 32,
+        "target_source_id": "AM-2k:m_72b29bf5",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 16409,
+          "visible_pixels_gt0": 20095,
+          "visible_pixels_gt05": 17309,
+          "point_A_xy": [
+            929,
+            490
+          ],
+          "point_A_margin_pixels": 53.600373133029585
+        },
+        "seed": 67,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.6941176470588235,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.015252180946328499,
+            "focus_leakage": 0.19536780695702297,
+            "focused_image_fraction": 0.1900821261935764,
+            "target_eval_pixels": 17309,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.6941176652908325,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 57.75707743137844,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.5647058823529412,
+            "click_xy": [
+              929,
+              490
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 53.600373133029585,
+            "magic_depth_at_click_png8": 144,
+            "target_focus_coverage": 0.9709977468369057,
+            "focus_leakage": 0.15322917303476766,
+            "focused_image_fraction": 0.1772274441189236,
+            "target_eval_pixels": 17309,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.5647059082984924,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 57.75354158485142,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.5568627450980392,
+            "click_xy": [
+              924,
+              486
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 49.25444142409901,
+            "magic_depth_at_click_png8": 142,
+            "target_native_depth_median_png8": 142.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.9747530186608123,
+            "focus_leakage": 0.1490528632437578,
+            "focused_image_fraction": 0.17328389485677084,
+            "target_eval_pixels": 17309,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.5568627715110779,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 57.75734978435939,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_001",
+        "frame": 6,
+        "K": 32,
+        "target_source_id": "AM-2k:m_72b29bf5",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 26636,
+          "visible_pixels_gt0": 31070,
+          "visible_pixels_gt05": 27768,
+          "point_A_xy": [
+            927,
+            424
+          ],
+          "point_A_margin_pixels": 61.61168720299745
+        },
+        "seed": 73,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.6470588235294118,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.6716724286949006,
+            "focus_leakage": 0.22466266706520346,
+            "focused_image_fraction": 0.24570719401041666,
+            "target_eval_pixels": 27768,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.6470588445663452,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 58.02300732863933,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.5490196078431373,
+            "click_xy": [
+              927,
+              424
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 61.61168720299745,
+            "magic_depth_at_click_png8": 140,
+            "target_focus_coverage": 0.9852708153269951,
+            "focus_leakage": 0.17580988371265496,
+            "focused_image_fraction": 0.21391805013020834,
+            "target_eval_pixels": 27768,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.5490196347236633,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 58.02499726212,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.5647058823529412,
+            "click_xy": [
+              928,
+              442
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 60.07495318350236,
+            "magic_depth_at_click_png8": 144,
+            "target_native_depth_median_png8": 144.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.9707216940363008,
+            "focus_leakage": 0.18549219294874533,
+            "focused_image_fraction": 0.22245958116319445,
+            "target_eval_pixels": 27768,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.5647059082984924,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 58.03014596645965,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_001",
+        "frame": 12,
+        "K": 32,
+        "target_source_id": "AM-2k:m_72b29bf5",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 11777,
+          "visible_pixels_gt0": 21200,
+          "visible_pixels_gt05": 16944,
+          "point_A_xy": [
+            932,
+            525
+          ],
+          "point_A_margin_pixels": 50.695167422546305
+        },
+        "seed": 79,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.6352941176470588,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.5649197355996223,
+            "focus_leakage": 0.18180421728808827,
+            "focused_image_fraction": 0.19281005859375,
+            "target_eval_pixels": 16944,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.6352941393852234,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 58.99407577740942,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.5568627450980392,
+            "click_xy": [
+              932,
+              525
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 50.695167422546305,
+            "magic_depth_at_click_png8": 142,
+            "target_focus_coverage": 0.8252478753541076,
+            "focus_leakage": 0.23647011590559977,
+            "focused_image_fraction": 0.2533840603298611,
+            "target_eval_pixels": 16944,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.5568627715110779,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 58.981308256936735,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.5490196078431373,
+            "click_xy": [
+              915,
+              520
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 39.6232255123179,
+            "magic_depth_at_click_png8": 140,
+            "target_native_depth_median_png8": 140.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.8386449480642115,
+            "focus_leakage": 0.2425481776288228,
+            "focused_image_fraction": 0.2596723768446181,
+            "target_eval_pixels": 16944,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.5490196347236633,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 58.98525138734851,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_001",
+        "frame": 18,
+        "K": 32,
+        "target_source_id": "AM-2k:m_72b29bf5",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 47731,
+          "visible_pixels_gt0": 51967,
+          "visible_pixels_gt05": 49165,
+          "point_A_xy": [
+            941,
+            297
+          ],
+          "point_A_margin_pixels": 70.71067811865476
+        },
+        "seed": 85,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.5803921568627451,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.0803213668259941,
+            "focus_leakage": 0.3889087206538687,
+            "focused_image_fraction": 0.3631863064236111,
+            "target_eval_pixels": 49165,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.5803921818733215,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              253
+            ],
+            "RGB8_std": 57.70359003315778,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.8392156862745098,
+            "click_xy": [
+              941,
+              297
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 70.71067811865476,
+            "magic_depth_at_click_png8": 214,
+            "target_focus_coverage": 0.7061324112681786,
+            "focus_leakage": 0.047615964961278734,
+            "focused_image_fraction": 0.10250684950086805,
+            "target_eval_pixels": 49165,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.8392156958580017,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 57.700873480694725,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.8470588235294118,
+            "click_xy": [
+              930,
+              358
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 62.07253821135398,
+            "magic_depth_at_click_png8": 216,
+            "target_native_depth_median_png8": 216.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.7317603986575816,
+            "focus_leakage": 0.04268494559417304,
+            "focused_image_fraction": 0.10012308756510417,
+            "target_eval_pixels": 49165,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.8470588326454163,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 57.69427708261368,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      },
+      {
+        "scene": "repro_001",
+        "frame": 24,
+        "K": 32,
+        "target_source_id": "AM-2k:m_72b29bf5",
+        "target": {
+          "status": "AVAILABLE",
+          "alpha_threshold": 0.9,
+          "component_pixels": 48757,
+          "visible_pixels_gt0": 52546,
+          "visible_pixels_gt05": 50144,
+          "point_A_xy": [
+            941,
+            297
+          ],
+          "point_A_margin_pixels": 70.71067811865476
+        },
+        "seed": 91,
+        "candidates": {
+          "auto_ldf": {
+            "focus": 0.6196078431372549,
+            "click_xy": null,
+            "inside_visible_target": null,
+            "boundary_margin_pixels": null,
+            "target_focus_coverage": 0.4706844288449266,
+            "focus_leakage": 0.12313963830418026,
+            "focused_image_fraction": 0.1526862250434028,
+            "target_eval_pixels": 50144,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.6196078658103943,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 58.30154503992988,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "interior_A": {
+            "focus": 0.6823529411764706,
+            "click_xy": [
+              941,
+              297
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 70.71067811865476,
+            "magic_depth_at_click_png8": 174,
+            "target_focus_coverage": 0.5656908104658583,
+            "focus_leakage": 0.17126815890898311,
+            "focused_image_fraction": 0.2048000759548611,
+            "target_eval_pixels": 50144,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.6823529601097107,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 58.301318201065094,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          },
+          "medoid_B": {
+            "focus": 0.7098039215686275,
+            "click_xy": [
+              931,
+              350
+            ],
+            "inside_visible_target": true,
+            "boundary_margin_pixels": 61.1310068623117,
+            "magic_depth_at_click_png8": 181,
+            "target_native_depth_median_png8": 181.0,
+            "selected_depth_error_png8": 0.0,
+            "target_focus_coverage": 0.5993738034460753,
+            "focus_leakage": 0.2017195375037059,
+            "focused_image_fraction": 0.2355261908637153,
+            "target_eval_pixels": 50144,
+            "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+            "max_defocus_condition": 0.7098039388656616,
+            "finite": true,
+            "RGB8_range": [
+              0,
+              255
+            ],
+            "RGB8_std": 58.30189539672963,
+            "native_tiles": 6,
+            "output_size": [
+              1024,
+              576
+            ]
+          }
+        }
+      }
+    ],
+    "by_K": {
+      "4": {
+        "auto_ldf": {
+          "target_focus_coverage": {
+            "mean": 1.0,
+            "min": 1.0,
+            "max": 1.0
+          },
+          "focus_leakage": {
+            "mean": 0.9999601500690083,
+            "min": 0.9996015006900841,
+            "max": 1.0
+          },
+          "boundary_margin_pixels": null
+        },
+        "interior_A": {
+          "target_focus_coverage": {
+            "mean": 0.99998785578235,
+            "min": 0.9999176197602735,
+            "max": 1.0
+          },
+          "focus_leakage": {
+            "mean": 0.9049369591537934,
+            "min": 0.7036582841867653,
+            "max": 1.0
+          },
+          "boundary_margin_pixels": {
+            "mean": 102.55576470165295,
+            "min": 87.86353054595519,
+            "max": 125.89678312014172
+          }
+        },
+        "medoid_B": {
+          "target_focus_coverage": {
+            "mean": 0.9999946471686121,
+            "min": 0.9999590063130278,
+            "max": 1.0
+          },
+          "focus_leakage": {
+            "mean": 0.9226343354185562,
+            "min": 0.7448636884980737,
+            "max": 1.0
+          },
+          "boundary_margin_pixels": {
+            "mean": 86.31586934749758,
+            "min": 68.70953354520753,
+            "max": 125.89678312014172
+          }
+        }
+      },
+      "8": {
+        "auto_ldf": {
+          "target_focus_coverage": {
+            "mean": 0.9634707545858342,
+            "min": 0.7161245160645152,
+            "max": 1.0
+          },
+          "focus_leakage": {
+            "mean": 0.7046378742275269,
+            "min": 0.3262136295868802,
+            "max": 0.9851250707581201
+          },
+          "boundary_margin_pixels": null
+        },
+        "interior_A": {
+          "target_focus_coverage": {
+            "mean": 0.992746887102013,
+            "min": 0.9844426348947842,
+            "max": 1.0
+          },
+          "focus_leakage": {
+            "mean": 0.5305940373790117,
+            "min": 0.09952003077958929,
+            "max": 0.9838763980509606
+          },
+          "boundary_margin_pixels": {
+            "mean": 82.35124340173763,
+            "min": 60.14149981501958,
+            "max": 104.5609869884557
+          }
+        },
+        "medoid_B": {
+          "target_focus_coverage": {
+            "mean": 0.9962885184074057,
+            "min": 0.9923856055086501,
+            "max": 1.0
+          },
+          "focus_leakage": {
+            "mean": 0.5355799607197985,
+            "min": 0.11515606213629587,
+            "max": 0.9739795106682896
+          },
+          "boundary_margin_pixels": {
+            "mean": 60.074440061818905,
+            "min": 53.0,
+            "max": 68.0294054067798
+          }
+        }
+      },
+      "16": {
+        "auto_ldf": {
+          "target_focus_coverage": {
+            "mean": 0.8423683678444469,
+            "min": 0.5888533054475344,
+            "max": 0.9896255542061134
+          },
+          "focus_leakage": {
+            "mean": 0.3382414823405635,
+            "min": 0.22691631366698434,
+            "max": 0.5145789723029788
+          },
+          "boundary_margin_pixels": null
+        },
+        "interior_A": {
+          "target_focus_coverage": {
+            "mean": 0.9490158349062334,
+            "min": 0.8431423809679423,
+            "max": 0.9964129207138017
+          },
+          "focus_leakage": {
+            "mean": 0.33501288223631,
+            "min": 0.14321386548422124,
+            "max": 0.5805667965497162
+          },
+          "boundary_margin_pixels": {
+            "mean": 73.9831179592916,
+            "min": 62.96824596572466,
+            "max": 98.76234100101111
+          }
+        },
+        "medoid_B": {
+          "target_focus_coverage": {
+            "mean": 0.9570250500718549,
+            "min": 0.8546779517009248,
+            "max": 0.9896255542061134
+          },
+          "focus_leakage": {
+            "mean": 0.3183069475162001,
+            "min": 0.1673634468485988,
+            "max": 0.5634844275997655
+          },
+          "boundary_margin_pixels": {
+            "mean": 65.783614908125,
+            "min": 57.0350769263968,
+            "max": 73.348483283569
+          }
+        }
+      },
+      "32": {
+        "auto_ldf": {
+          "target_focus_coverage": {
+            "mean": 0.22215720609432008,
+            "min": 0.015252180946328499,
+            "max": 0.6716724286949006
+          },
+          "focus_leakage": {
+            "mean": 0.1758366339632953,
+            "min": 0.0349227432334094,
+            "max": 0.3889087206538687
+          },
+          "boundary_margin_pixels": null
+        },
+        "interior_A": {
+          "target_focus_coverage": {
+            "mean": 0.4378547591084101,
+            "min": 0.05763887627798863,
+            "max": 0.9852708153269951
+          },
+          "focus_leakage": {
+            "mean": 0.07843932965232843,
+            "min": 0.0,
+            "max": 0.23647011590559977
+          },
+          "boundary_margin_pixels": {
+            "mean": 110.54513815652794,
+            "min": 50.695167422546305,
+            "max": 159.62455951387932
+          }
+        },
+        "medoid_B": {
+          "target_focus_coverage": {
+            "mean": 0.7214363977743201,
+            "min": 0.5971492514092177,
+            "max": 0.9747530186608123
+          },
+          "focus_leakage": {
+            "mean": 0.08239380237843737,
+            "min": 0.0002957110075465449,
+            "max": 0.2425481776288228
+          },
+          "boundary_margin_pixels": {
+            "mean": 82.83945507782315,
+            "min": 39.6232255123179,
+            "max": 112.60550608207397
+          }
+        }
+      }
+    },
+    "unavailable": [],
+    "metrics_selection": "No PSNR, SSIM, LPIPS, FVD, FD or RM computed; no bokeh GT read",
+    "scope": "GT visible target alpha only chooses one control point; generator RGB and native predicted geometry retained; no temporal smoothing",
+    "torch": "2.8.0+cu128",
+    "device": "NVIDIA RTX PRO 6000 Blackwell Server Edition"
+  },
+  "full_runner_check": {
+    "status": "FROZEN_RUNNER_B_EQUALS_PREFLIGHT_RGB8",
+    "maximum_RGB8_difference": 0,
+    "native_depth_max_difference": 0.0,
+    "native_PNG8_different_pixels": 0,
+    "scope": "Fresh depth+generator process; cached preflight conditioning replays exact B output; native depth inference also compared",
+    "frame": {
+      "frame": 0,
+      "K": 4,
+      "target_source_id": "AM-2k:m_8e4a045c",
+      "target": {
+        "status": "AVAILABLE",
+        "alpha_threshold": 0.9,
+        "component_pixels": 71944,
+        "visible_pixels_gt0": 74613,
+        "visible_pixels_gt05": 72833,
+        "point_A_xy": [
+          669,
+          356
+        ],
+        "point_A_margin_pixels": 122.0
+      },
+      "point_B_xy": [
+        631,
+        384
+      ],
+      "focus": 0.8627450980392157,
+      "magic_depth_at_click_png8": 220,
+      "medoid": {
+        "target_native_depth_median_png8": 220.0,
+        "selected_depth_error_png8": 0.0,
+        "boundary_margin_pixels": 94.0
+      },
+      "target_focus_coverage": 1.0,
+      "focus_leakage": 0.8473338994295839,
+      "focused_image_fraction": 0.8661855061848959,
+      "target_eval_pixels": 72833,
+      "target_eval_mask": "Visible target alpha >0.5; complement defines non-target",
+      "max_defocus_condition": 0.10784313827753067,
+      "seed": 142,
+      "native_tiles": 6,
+      "finite": true,
+      "output_size": [
+        1024,
+        576
+      ],
+      "depth_range": [
+        0.0,
+        1.0
+      ]
+    }
+  },
+  "instance_check": {
+    "status": "ALL_PREFLIGHT_A_POINTS_MATCH_FULL_INVENTORY",
+    "preflight_points": 40,
+    "all_match": true,
+    "source_instance_semantics_changes": [],
+    "scenes": 200,
+    "scope": "Source object index checked as well as source ID; repeated source assets are distinct instances"
+  },
+  "frozen_protocol": {
+    "status": "FROZEN_TARGET_GUIDED_DEPTH_MEDOID_POINT_FOCUS",
+    "name": "MagicBokeh Target-guided Point-Focus / Depth-Medoid B",
+    "authorization": "User explicitly selected B after40-frame three-candidate control/visual review on2026-09-30; disclose target-region predicted-depth assisted point selection",
+    "input": "outputs/any2bokeh-mpib-public-proxy-200-20260928/clips",
+    "author_commit": "c672e63",
+    "target": "Designated object from metadata; visible alpha=object alpha times all nearer-layer transmittances",
+    "click_region": "Visible alpha>0.9, then>0.5, then>0 if empty; largest8-connected component; boundaries zero padded",
+    "point": "Pixel of native PNG8 depth nearest safe-region median; ties greatest exact Euclidean boundary distance, then row-major",
+    "model_input_permission": "RGB and one target-guided click; visible GT target alpha and native predicted depth assist point selection outside model. No GT numeric depth, mask, alpha or hidden RGB fed to generator",
+    "depth": "Official DAdepth.pth / ViT-L from RGB; infer_image input_size518, per-image minmax plus1e-8, truncate toPNG8",
+    "focus": "Native predicted PNG8 depth at selected point /255, not region median scalar",
+    "K": "Manifest K unchanged; abs(native_depth-focus)*K/32; focus mask<=0.1",
+    "prompt": "high quality,",
+    "generator": "Unchanged FP16 official model;512x512 tiles, stride256, original overlap reconstruction and PIL/AdaIN output",
+    "temporal": "Independent frame inference, no propagation/smoothing; same semantic object selected perframe",
+    "RNG": "Seed42+25*manifest_scene_index+frame_index immediately before six native tile calls; preflight/full and worker order independent",
+    "visibility_inventory": "5000/5000 have safe visible alpha>0.9; zero unavailable frames; no semantic instance changes",
+    "preflight": "outputs/magicbokeh-point-focus-20260930/preflight",
+    "preflight_reuse": "Forty B outputs and native depth conditions reused; exact generator replay checked before full run",
+    "quality_scope": "Paired public-proxy reproduction development; GT-guided control permission disclosed; no claim of same-geometry or automatic autofocus comparison",
+    "failure_policy": "Keep K32 partial-target defocus and native depth variation; no K/gamma/threshold search or depth replacement",
+    "output": "outputs/magicbokeh-point-focus-20260930/full",
+    "record": "03_实验记录/records/magicbokeh-track-a-200-20260930.json"
+  },
+  "visual_review": {
+    "status": "ALL_EIGHT_CONTACT_SHEETS_AND40_FRAMES_REVIEWED",
+    "views": 8,
+    "frames": 40,
+    "findings": [
+      "A and B clicks are inside the benchmark-designated visible target on all40 frames.",
+      "repro_000 A clicks lion face, native predicted depth is high near face and lower over body; focus mask covers a small facial patch, body defocus remains in output.",
+      "B enlarges the targeted lion focused region, while partial-target defocus remains; K32 repro_001 has native geometry/control changes across selected frames.",
+      "LowK focused masks often include most of the image at unchanged native threshold; multiple objects and boundaries remain method limitations."
+    ],
+    "boundary": "Five separated keyframes perclip, not continuous25-frame temporal review; no paired bokeh quality metrics used to choose adapter"
+  },
+  "selection": {
+    "primary": "medoid_B",
+    "user_explicit_choice": "改用 B，披露目标区域深度辅助选点",
+    "basis": "Control diagnostics and native interface, not PSNR/SSIM/LPIPS; A stability premise did not hold forK32 repro_000",
+    "original_A_and_Auto_outputs_retained": true,
+    "target_alpha_permission_disclosed": true
+  },
+  "corrected_implementation_issue": "Initial frozen-runner check called PIL.size as a method in an output audit. Corrected to the property before formal inference; replay then passed; failed check log retained.",
+  "artifacts": {
+    "root": "outputs/magicbokeh-point-focus-20260930",
+    "logs": "logs/magicbokeh-point-focus-20260930",
+    "inventory_entry": "scripts/inventory_magicbokeh_targets.py",
+    "preflight_entry": "scripts/preflight_magicbokeh_focus.py",
+    "full_entry": "scripts/run_magicbokeh_track_a.py",
+    "evaluation_entry": "scripts/evaluate_magicbokeh_track_a.py"
+  }
+}

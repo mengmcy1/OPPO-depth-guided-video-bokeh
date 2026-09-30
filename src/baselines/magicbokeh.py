@@ -38,10 +38,10 @@ class OfficialMagicBokeh:
         return dict(images=images * 2 - 1, controls=controls * 2 - 1,
                     focused=focused * 2 - 1, positions=positions, shape=lq.shape)
 
-    def forward_cuda(self, prepared):
+    def forward_cuda(self, prepared, prompt=""):
         """All native tile forwards and author overlap assembly to CUDA float RGB."""
         import torch
-        outputs = [self.model(image, control, focused, "") for image, control, focused in
+        outputs = [self.model(image, control, focused, prompt) for image, control, focused in
                    zip(prepared["images"], prepared["controls"], prepared["focused"])]
         return self.module.reconstruct_from_patches(
             torch.stack(outputs), prepared["shape"], prepared["positions"])
