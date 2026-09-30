@@ -1,0 +1,542 @@
+{
+  "status": "TABLE3B_SIX_METHODS_COMPLETE_AND_REVIEWED",
+  "reviewed_utc": "2026-09-30T06:54:30.102847+00:00",
+  "raw_record": "efficiency-track-a-3ab-20260930.json",
+  "started_at": "2026-09-30T14:12:05.468514+08:00",
+  "measurements_completed_utc": "2026-09-30T06:54:03.743847+00:00",
+  "entry_parity_record": "efficiency-entry-parity-20260930.json",
+  "methods": {
+    "any2bokeh": {
+      "Core_seconds_mean": 12.627517327852548,
+      "Core_seconds_std": 0.011079144166979972,
+      "E2E_given_inputs_seconds_mean": 14.084255046769977,
+      "E2E_given_inputs_seconds_std": 0.061549628549437525,
+      "FPS_E2E": 1.775031758299023,
+      "by_K": {
+        "4": {
+          "core_seconds": {
+            "mean": 12.614500323683023,
+            "std": 0.011671047227219648
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 14.088667991757394,
+            "std": 0.015496940332665418
+          }
+        },
+        "8": {
+          "core_seconds": {
+            "mean": 12.633449437469244,
+            "std": 0.007785323408484712
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 14.143908272683621,
+            "std": 0.0715338718292654
+          }
+        },
+        "16": {
+          "core_seconds": {
+            "mean": 12.630363433808089,
+            "std": 0.00903583688223858
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 14.007641131430864,
+            "std": 0.015028275100346312
+          }
+        },
+        "32": {
+          "core_seconds": {
+            "mean": 12.631756116449832,
+            "std": 0.00402546940836056
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 14.09680279120803,
+            "std": 0.020129492017353208
+          }
+        }
+      },
+      "device": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+      "formal_repeats": 20,
+      "formal_output_frames": 500,
+      "warmup_repeats": 4,
+      "Peak_memory_GiB_sampled": 38.4677734375,
+      "memory_kind": "GPU device occupancy",
+      "peak_torch_allocated_GiB": 34.29324769973755,
+      "peak_torch_reserved_GiB": 37.794921875,
+      "E2E_minus_Core_seconds": 1.456737718917429,
+      "E2E_seconds_range": [
+        13.995304509997368,
+        14.267817165702581
+      ],
+      "runtime": {
+        "loaded_learned_parameters": 2606607241,
+        "loaded_parameter_components": {
+          "unet": 1876296074,
+          "vae": 98234367,
+          "image_encoder": 632076800
+        },
+        "device": "GPU0",
+        "torch": "2.8.0+cu128",
+        "CUDA": "12.8",
+        "project_commit": "b581be5e77528b28ac257fc6f7e4ae76214d213d",
+        "gpu_hardware": "NVIDIA RTX PRO 6000 Blackwell Server Edition, 590.44.01, 97887 MiB",
+        "cpu_model": "Intel(R) Xeon(R) Platinum 8470Q",
+        "cpu_quota": "2200000 100000",
+        "memory_quota_bytes": "118111600640",
+        "core_region_definition": "Public video pipeline on already-CUDA RGB/CoC/MPI/K/weights through CUDA float output; three native calls emitting8/8/9frames, overlap assembly included. Host transfers outside."
+      }
+    },
+    "mpib": {
+      "Core_seconds_mean": 6.163968570157886,
+      "Core_seconds_std": 0.18166974181905424,
+      "E2E_given_inputs_seconds_mean": 7.6813731322065,
+      "E2E_given_inputs_seconds_std": 0.20717448141597197,
+      "FPS_E2E": 3.254626428077016,
+      "by_K": {
+        "4": {
+          "core_seconds": {
+            "mean": 6.002108643203973,
+            "std": 0.01699628959845659
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 7.782909410446882,
+            "std": 0.14761850221785383
+          }
+        },
+        "8": {
+          "core_seconds": {
+            "mean": 6.009945157915354,
+            "std": 0.006565135259070267
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 7.570916255563498,
+            "std": 0.04179824636052336
+          }
+        },
+        "16": {
+          "core_seconds": {
+            "mean": 6.209531622380018,
+            "std": 0.004671383224659136
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 7.447799237072468,
+            "std": 0.03355035128386199
+          }
+        },
+        "32": {
+          "core_seconds": {
+            "mean": 6.434288857132197,
+            "std": 0.008722618299925178
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 7.923867625743151,
+            "std": 0.09681796860535159
+          }
+        }
+      },
+      "device": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+      "formal_repeats": 20,
+      "formal_output_frames": 500,
+      "warmup_repeats": 4,
+      "Peak_memory_GiB_sampled": 2.4345703125,
+      "memory_kind": "GPU device occupancy",
+      "peak_torch_allocated_GiB": 1.1084823608398438,
+      "peak_torch_reserved_GiB": 1.763671875,
+      "E2E_minus_Core_seconds": 1.5174045620486138,
+      "E2E_seconds_range": [
+        7.3942907229065895,
+        8.075479663908482
+      ],
+      "runtime": {
+        "loaded_learned_parameters": 42041031,
+        "loaded_parameter_components": {
+          "inpnet": 27048835,
+          "mpinet": 14951683,
+          "aupnet": 40513
+        },
+        "device": "GPU0",
+        "torch": "2.8.0+cu128",
+        "CUDA": "12.8",
+        "project_commit": "b581be5e77528b28ac257fc6f7e4ae76214d213d",
+        "gpu_hardware": "NVIDIA RTX PRO 6000 Blackwell Server Edition, 590.44.01, 97887 MiB",
+        "cpu_model": "Intel(R) Xeon(R) Platinum 8470Q",
+        "cpu_quota": "2200000 100000",
+        "memory_quota_bytes": "118111600640",
+        "core_region_definition": "Official inpnet, mpinet, aupnet and MPI renderer forward calls on CUDA inputs; CPU mask construction/intermediate resize and transfers are E2E-only."
+      }
+    },
+    "bokehme": {
+      "Core_seconds_mean": 0.3505675423890352,
+      "Core_seconds_std": 0.045407481147335636,
+      "E2E_given_inputs_seconds_mean": 1.1858516596257687,
+      "E2E_given_inputs_seconds_std": 0.11298152963926865,
+      "FPS_E2E": 21.081894853433443,
+      "by_K": {
+        "4": {
+          "core_seconds": {
+            "mean": 0.34682771041989324,
+            "std": 0.004789694993556905
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 1.282153408229351,
+            "std": 0.12353316427039132
+          }
+        },
+        "8": {
+          "core_seconds": {
+            "mean": 0.355146785825491,
+            "std": 0.0010461783960013379
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 1.209495732933283,
+            "std": 0.06998303042048416
+          }
+        },
+        "16": {
+          "core_seconds": {
+            "mean": 0.28778417184948923,
+            "std": 0.0015736283268524586
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 1.052106139063835,
+            "std": 0.06973880126811549
+          }
+        },
+        "32": {
+          "core_seconds": {
+            "mean": 0.41251150146126747,
+            "std": 0.00015179556346611015
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 1.1996513582766055,
+            "std": 0.02687284669587306
+          }
+        }
+      },
+      "device": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+      "formal_repeats": 20,
+      "formal_output_frames": 500,
+      "warmup_repeats": 4,
+      "Peak_memory_GiB_sampled": 1.0107421875,
+      "memory_kind": "GPU device occupancy",
+      "peak_torch_allocated_GiB": 0.31250429153442383,
+      "peak_torch_reserved_GiB": 0.34765625,
+      "E2E_minus_Core_seconds": 0.8352841172367335,
+      "E2E_seconds_range": [
+        0.9655062519013882,
+        1.4769882895052433
+      ],
+      "runtime": {
+        "loaded_learned_parameters": 1163740,
+        "loaded_parameter_components": {
+          "arnet": 923664,
+          "iunet": 240076
+        },
+        "device": "GPU0",
+        "torch": "2.8.0+cu128",
+        "CUDA": "12.8",
+        "project_commit": "b581be5e77528b28ac257fc6f7e4ae76214d213d",
+        "gpu_hardware": "NVIDIA RTX PRO 6000 Blackwell Server Edition, 590.44.01, 97887 MiB",
+        "cpu_model": "Intel(R) Xeon(R) Platinum 8470Q",
+        "cpu_quota": "2200000 100000",
+        "memory_quota_bytes": "118111600640",
+        "core_region_definition": "Official demo pipeline on already-CUDA RGB/defocus through CUDA output, including classical/neural branches and blend; transfers outside."
+      }
+    },
+    "drbokeh": {
+      "Core_seconds_mean": 7.178266977518797,
+      "Core_seconds_std": 0.013732349159635662,
+      "E2E_given_inputs_seconds_mean": 20.621430881880222,
+      "E2E_given_inputs_seconds_std": 0.813657532587,
+      "FPS_E2E": 1.2123310037601303,
+      "by_K": {
+        "4": {
+          "core_seconds": {
+            "mean": 7.192865467071533,
+            "std": 0.010416475424922978
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 21.312419095635413,
+            "std": 0.14565942221122288
+          }
+        },
+        "8": {
+          "core_seconds": {
+            "mean": 7.171777871996165,
+            "std": 0.006593764408550773
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 21.27337116152048,
+            "std": 0.12319056202410979
+          }
+        },
+        "16": {
+          "core_seconds": {
+            "mean": 7.185725205391646,
+            "std": 0.00469040866825177
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 20.51481977775693,
+            "std": 0.18588737742174774
+          }
+        },
+        "32": {
+          "core_seconds": {
+            "mean": 7.162699365615845,
+            "std": 0.005501088727209614
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 19.38511349260807,
+            "std": 0.14427314295145802
+          }
+        }
+      },
+      "device": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+      "formal_repeats": 20,
+      "formal_output_frames": 500,
+      "warmup_repeats": 4,
+      "Peak_memory_GiB_sampled": 2.8779296875,
+      "memory_kind": "GPU device occupancy",
+      "peak_torch_allocated_GiB": 1.9380254745483398,
+      "peak_torch_reserved_GiB": 2.20703125,
+      "E2E_minus_Core_seconds": 13.443163904361425,
+      "E2E_seconds_range": [
+        19.23897086083889,
+        21.5485767275095
+      ],
+      "runtime": {
+        "loaded_learned_parameters": 50975875,
+        "loaded_parameter_components": {
+          "LaMa": 50975875
+        },
+        "device": "GPU0",
+        "torch": "2.8.0+cu128",
+        "CUDA": "12.8",
+        "project_commit": "b581be5e77528b28ac257fc6f7e4ae76214d213d",
+        "gpu_hardware": "NVIDIA RTX PRO 6000 Blackwell Server Edition, 590.44.01, 97887 MiB",
+        "cpu_model": "Intel(R) Xeon(R) Platinum 8470Q",
+        "cpu_quota": "2200000 100000",
+        "memory_quota_bytes": "118111600640",
+        "core_region_definition": "LaMa model.forward twice and Multi_Layer_Renderer.forward on already-CUDA RGBAD. GT-alpha layer construction, cv2 repair, input/output transfer and photometric CPU postprocess are E2E-only."
+      }
+    },
+    "bokehdiff": {
+      "Core_seconds_mean": 27.38383594993502,
+      "Core_seconds_std": 0.029434945441935943,
+      "E2E_given_inputs_seconds_mean": 28.165993072092533,
+      "E2E_given_inputs_seconds_std": 0.08432391420836412,
+      "FPS_E2E": 0.887595190981231,
+      "by_K": {
+        "4": {
+          "core_seconds": {
+            "mean": 27.39724743068218,
+            "std": 0.021440413563948824
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 28.231666143238545,
+            "std": 0.049088684900534446
+          }
+        },
+        "8": {
+          "core_seconds": {
+            "mean": 27.39101522937417,
+            "std": 0.05041953567139916
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 28.229473510384558,
+            "std": 0.09185601534559698
+          }
+        },
+        "16": {
+          "core_seconds": {
+            "mean": 27.383204205334188,
+            "std": 0.012680764011705689
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 28.104610534012316,
+            "std": 0.037976802017679036
+          }
+        },
+        "32": {
+          "core_seconds": {
+            "mean": 27.363876934349538,
+            "std": 0.012850653044656145
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 28.09822210073471,
+            "std": 0.02462152115543352
+          }
+        }
+      },
+      "device": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+      "formal_repeats": 20,
+      "formal_output_frames": 500,
+      "warmup_repeats": 4,
+      "Peak_memory_GiB_sampled": 18.3427734375,
+      "memory_kind": "GPU device occupancy",
+      "peak_torch_allocated_GiB": 14.87462854385376,
+      "peak_torch_reserved_GiB": 17.669921875,
+      "E2E_minus_Core_seconds": 0.7821571221575141,
+      "E2E_seconds_range": [
+        28.05458875000477,
+        28.372444409877062
+      ],
+      "runtime": {
+        "loaded_learned_parameters": 3493431787,
+        "loaded_parameter_components": {
+          "unet": 2592057604,
+          "vae": 83653863,
+          "text_encoder": 123060480,
+          "text_encoder_2": 694659840
+        },
+        "device": "GPU0",
+        "torch": "2.8.0+cu128",
+        "CUDA": "12.8",
+        "project_commit": "b581be5e77528b28ac257fc6f7e4ae76214d213d",
+        "gpu_hardware": "NVIDIA RTX PRO 6000 Blackwell Server Edition, 590.44.01, 97887 MiB",
+        "cpu_model": "Intel(R) Xeon(R) Platinum 8470Q",
+        "cpu_quota": "2200000 100000",
+        "memory_quota_bytes": "118111600640",
+        "core_region_definition": "Public VAE.encode plus TiledSDXL pipeline on CUDA RGB/condition through CUDA float output; no diagnostic CPU copy or PIL conversion in Core. Frozen PISA/seed retained."
+      }
+    },
+    "deeplens": {
+      "Core_seconds_mean": 25.36989005189389,
+      "Core_seconds_std": 1.2389801897680945,
+      "E2E_given_inputs_seconds_mean": 26.451933037862183,
+      "E2E_given_inputs_seconds_std": 1.2557165000643575,
+      "FPS_E2E": 0.9451105128769248,
+      "by_K": {
+        "4": {
+          "core_seconds": {
+            "mean": 26.00293715596199,
+            "std": 1.864778554078481
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 27.109401047229767,
+            "std": 1.8823361284593145
+          }
+        },
+        "8": {
+          "core_seconds": {
+            "mean": 25.060233215242626,
+            "std": 0.41399319320749045
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 26.152528732270003,
+            "std": 0.42166514265723787
+          }
+        },
+        "16": {
+          "core_seconds": {
+            "mean": 24.594917932897808,
+            "std": 0.9483274621444288
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 25.633030693233014,
+            "std": 0.9316821224587782
+          }
+        },
+        "32": {
+          "core_seconds": {
+            "mean": 25.82147190347314,
+            "std": 1.0569045592485578
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 26.912771678715945,
+            "std": 1.069948951855312
+          }
+        }
+      },
+      "device": "CPU (native TF1.15,8 threads)",
+      "formal_repeats": 20,
+      "formal_output_frames": 500,
+      "warmup_repeats": 4,
+      "Peak_memory_GiB_sampled": 1.3585968017578125,
+      "memory_kind": "CPU process RSS",
+      "peak_torch_allocated_GiB": null,
+      "peak_torch_reserved_GiB": null,
+      "E2E_minus_Core_seconds": 1.0820429859682932,
+      "E2E_seconds_range": [
+        24.14435463026166,
+        29.61223116889596
+      ],
+      "runtime": {
+        "active_parameters": 2036111,
+        "device": "CPU",
+        "runtime": {
+          "source_commit": "3dbc1b04ba082b3b6b1dc0d944b3d18fa542ae2c",
+          "runtime": "1.15.0",
+          "device": "CPU",
+          "checkpoint_tensors": 488,
+          "restored_tensors": 210,
+          "restored_elements": 2044303,
+          "scopes": [
+            "Feature",
+            "Lensblur",
+            "SR"
+          ],
+          "all_restored_finite": true,
+          "no_uninitialized_variables": true,
+          "DepthNet_built_or_executed": false,
+          "compatibility_files": [
+            {
+              "file": "network/network.py",
+              "modified": true
+            },
+            {
+              "file": "network/kernel_net.py",
+              "modified": false
+            },
+            {
+              "file": "network/feature_net.py",
+              "modified": false
+            },
+            {
+              "file": "network/srnet.py",
+              "modified": false
+            },
+            {
+              "file": "core/build_lensblur.py",
+              "modified": false
+            },
+            {
+              "file": "core/build_sr.py",
+              "modified": false
+            }
+          ],
+          "native_SR_uint8_intermediate_preserved": true,
+          "limitation": "Native TF1 CPU reference; no claim of original GPU numerical parity."
+        },
+        "project_commit": "840eb7b7df4ed27bc63de7713e964be3ff3729dd",
+        "gpu_hardware": "NVIDIA RTX PRO 6000 Blackwell Server Edition, 590.44.01, 97887 MiB",
+        "cpu_model": "Intel(R) Xeon(R) Platinum 8470Q",
+        "cpu_quota": "2200000 100000",
+        "memory_quota_bytes": "118111600640",
+        "core_region_definition": "Native TF1 session.run of LensBlur+singleSR graph; external geometry mapping, numpy validation and final RGB uint8 conversion outside Core. CPU only."
+      }
+    }
+  },
+  "selection": "Fixed four clips K4/8/16/32, full25 frames each, one warmup and five formal repeats per clip. Equal clip weight; no timing-based reselection.",
+  "verification": {
+    "methods": 6,
+    "formal_repeats": 120,
+    "formal_output_frames": 3000,
+    "warmup_repeats": 24,
+    "warmup_output_frames": 600,
+    "output": "All runtime shape,finite,nonconstant RGB uint8 and output-frame checks passed in every invocation; timing outputs discarded after validation, existing quality outputs unchanged.",
+    "native_units": "ATB8/8/9 emitted frames; frame methods25 genuine single-frame units; model call counts checked.",
+    "aggregation": "Means, sample standard deviations, all by-K summaries, FPS=25/meanE2E and sampled peaks recomputed from all20 rows per method.",
+    "hardware": "GPU serial, no other compute process allowed before each repeat; nativeTF1 CPU measured separately."
+  },
+  "limits": [
+    "E2E-given-inputs excludes model loading, firstCUDAcontext, external geometry/alpha generation, output writing/encoding and evaluation.",
+    "Nested synchronized Core measurement adds synchronization overhead inside E2E; Core boundaries differ by method and are named explicitly.",
+    "Warm filesystem cache; no page-cache dropping. Four selected clips are not the entire200-video distribution.",
+    "Mixed-K standard deviations combine scene/control effects with timing variability; all repeats retained.",
+    "GPU device and CPU RSS peaks sampled0.2s; not exact instantaneous maxima. ExactTorchallocator peaks separately retained.",
+    "DeepLens CPU8threads/RSS and GPU memory/time have different hardware meanings; no unconditional CPU-vs-GPU speedup ranking.",
+    "DrBokeh uses allowed GTalpha reconstruction, not DAVIS Full-public; unused resident models remain in device occupancy.",
+    "Synthetic frozen adapters and control ranges unchanged. No model/quality metric tuning during efficiency measurement.",
+    "Embedded Table3A diagnostics in raw3B summary are not replacements for separately reviewed3A rows."
+  ]
+}

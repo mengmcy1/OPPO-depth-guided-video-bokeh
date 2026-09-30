@@ -955,11 +955,11 @@ A的PSNR/SSIM/FD/RM更接近论文，B的FVD/VFID-I更接近。完整200段与�
 | Any-to-Bokeh | RTX PRO 6000 Blackwell | 0.50464 | 2457.810 | N/A† | ≈38.47 |
 | Ours | GPU | later | later | later | later |
 
-**本轮3A已完成（2026-09-30）**：五种GPU方法各4个固定输入×5次正式重复，共100个计时样本；逐帧方法测第0帧，ATB保留25帧原生调用再除25。表中Time为已同步的模型段均值，不是3B的25帧E2E。不同方法具体Core起止点见§16.2；CPU分层/repair等被排除出Core的工作会进入后续3B。
+**本轮3A已完成（2026-09-30）**：五种GPU方法各4个固定输入×5次正式重复，共100个计时样本；逐帧方法测第0帧，ATB保留25帧原生调用再除25。表中Time为已同步的模型段均值，不是3B的25帧E2E。不同方法具体Core起止点见§16.2；CPU分层/repair等被排除出Core的工作已计入3B。
 
 † GFLOPs已执行独立算子覆盖检查，但卷积/矩阵乘法/attention计数未覆盖自定义CUDA、FFT、归一化、逐元素、插值及随机控制等完整路径。因此总GFLOPs按协议标N/A，部分计数仅保存在诊断记录，不冒充完整方法复杂度。显存为0.2秒监测及快速单帧结束点采样的设备占用峰值（包含CUDA/CuPy/context/缓存）；不是精确瞬时最大值，精确PyTorch allocated/reserved峰值另保留。Params以实际调用的神经模块中独立参数张量统计，排除未调用模块、buffer和固定核；ATB包含UNet/VAE/image encoder，Dr包含LaMa而不含未调用的LDF/MiDaS。
 
-完整逐次时间、标准差、by-K、原生执行单元和硬件见[原始计时](records/efficiency-3a-20260930.json)，结论与计数边界见[3A最终复核](records/efficiency-3a-final-review-20260930.json)。**Table3B未启动**；3A单帧pipeline诊断时间不能填写3B。
+完整逐次时间、标准差、by-K、原生执行单元和硬件见[原始计时](records/efficiency-3a-20260930.json)，结论与计数边界见[3A最终复核](records/efficiency-3a-final-review-20260930.json)。**Table3B现已独立完成**；3A单帧pipeline诊断时间没有用来填写3B。
 
 说明：
 
@@ -980,15 +980,23 @@ A的PSNR/SSIM/FD/RM更接近论文，B的FVD/VFID-I更接近。完整200段与�
 
 **定位**：回答“在与 Synthetic Track A 相同输入权限下，真正处理一段25帧视频要多久”。这是**系统/流水级实际效率**，与3A的模型复杂度分开。
 
-| Method | Device | Core Time / 25f ↓ | E2E-given-inputs / 25f ↓ | FPS (E2E) ↑ | Peak Device Memory ↓ |
+| Method | Device | Core / 25f (s) ↓ | E2E-given-inputs / 25f (s) ↓ | FPS (E2E) ↑ | Peak memory (GiB, sampled) ↓ |
 |---|---|---:|---:|---:|---:|
-| DeepLens | CPU |  |  |  |  |
-| Dr.Bokeh | GPU |  |  |  |  |
-| BokehMe | GPU |  |  |  |  |
-| MPIB | GPU |  |  |  |  |
-| BokehDiff | GPU |  |  |  |  |
-| Any-to-Bokeh | GPU |  |  |  |  |
+| DeepLens | CPU / TF1.15 / 8 threads | 25.370 | 26.452 | 0.945 | ≈1.36 RSS |
+| Dr.Bokeh | RTX PRO 6000 Blackwell | 7.178 | 20.621 | 1.212 | ≈2.88 VRAM |
+| BokehMe | RTX PRO 6000 Blackwell | 0.351 | 1.186 | 21.082 | ≈1.01 VRAM |
+| MPIB | RTX PRO 6000 Blackwell | 6.164 | 7.681 | 3.255 | ≈2.43 VRAM |
+| BokehDiff | RTX PRO 6000 Blackwell | 27.384 | 28.166 | 0.888 | ≈18.34 VRAM |
+| Any-to-Bokeh | RTX PRO 6000 Blackwell | 12.628 | 14.084 | 1.775 | ≈38.47 VRAM |
 | Ours | GPU | later | later | later | later |
+
+**3B已完成并复核（2026-09-30）**：固定repro_004/006/003/000分别覆盖K4/8/16/32，每段完整25帧预热1次、正式重复5次；六方法共120次正式计时、3000帧输出，另有24次完整预热。14:12–14:54北京时间串行执行，未更改冻结adapter、模型、控制值或输入清单。表中为20次均值，FPS=25/平均E2E；逐次时间、样本标准差、by-K及原生调用均已复算。Any-to-Bokeh每段真实调用输出8/8/9帧，其余方法逐帧执行25次，未用3A单帧结果外推。
+
+GPU为RTX PRO 6000 Blackwell Server Edition（590.44.01，Torch2.8/cu128）；DeepLens为Xeon Platinum8470Q、native TF1.15 CPU8线程，容器CPU配额22核。GPU显存和CPU RSS均为正式重复期间0.2秒采样峰值，不是精确瞬时峰值；精确Torch allocated/reserved另存。CPU内存与GPU显存不作同质排序，CPU与GPU时间不作无条件加速比。
+
+E2E终点为25张1024×576的CPU RGB uint8；输入解码、adapter、必要分层/修复、推理、传输和后处理均计入，模型加载、外部geometry/alpha生成、最终写盘/编码不计。采用warm filesystem cache；同步Core计时的开销包含在E2E中。Dr.Bokeh继续使用Track A允许的GT-alpha reconstruction，DeepLens继续external geometry+single-SR+aperture saturation。
+
+证据：[3B逐次计时](records/efficiency-track-a-3ab-20260930.json)、[3B最终复核](records/efficiency-3b-final-review-20260930.json)。3A保留独立模型级测量，3B不改写3A的Time/Params/GFLOPs。
 
 统一输入与输出边界：
 
@@ -1370,7 +1378,7 @@ DAVIS数据本身已经齐全，当前缺的是协议而不是下载。它同时
 
 ### 16.2 Efficiency统一口径
 
-当前按Table3A/3B及§12的新定义执行。配置`configs/efficiency-track-a.json`、入口`scripts/measure_efficiency.py`；此前尚未产出正式计时，旧配置将说明文字混入状态值的启动检查问题已修复。模型、checkpoint和Track A输入权限均不变。
+当前按Table3A/3B及§12的新定义执行。配置`configs/efficiency-track-a.json`、入口`scripts/measure_efficiency.py`；Table3A与Table3B正式计时均已完成，结果及最终复核分别见各表；旧配置将说明文字混入状态值的启动检查问题已修复。模型、checkpoint和Track A输入权限均不变。
 
 **Core与E2E**：删除旧版“host输入到host输出整体算Core”的边界。Any-to-Bokeh按已经位于CUDA的RGB/CoC/MPI/K进入公开视频pipeline、到CUDA float输出为Core，三次原生调用输出8/8/9帧；BokehMe为已经CUDA输入的官方demo pipeline；BokehDiff为CUDA输入的VAE.encode加TiledSDXL到CUDA float输出。MPIB分段累计inpnet/mpinet/aupnet/renderer的forward；Dr分段累计两次LaMa forward和一次完整Multi_Layer_Renderer.forward（内部两层），CPU分层/cv2修复及传输只进E2E。DeepLens为native TF1 Session.run，输入adapter和最终CPU uint8转换在Core外。各段采用同步+wall-clock；外围读取、适配、传输、后处理和最终25张CPU RGB uint8全部进入E2E，写盘/编码在计时后。
 
