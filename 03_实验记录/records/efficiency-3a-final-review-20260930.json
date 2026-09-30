@@ -1,0 +1,277 @@
+{
+  "status": "TABLE3A_FIVE_GPU_METHODS_COMPLETE_AND_REVIEWED",
+  "reviewed_utc": "2026-09-30T06:04:17.187862+00:00",
+  "raw_record": "efficiency-3a-20260930.json",
+  "entry_parity": "efficiency-entry-parity-20260930.json",
+  "methods": {
+    "drbokeh": {
+      "Time_per_output_frame_seconds": 0.2880764467641711,
+      "Params_M": 50.975875,
+      "GFLOPs_per_output_frame": null,
+      "GFLOPs_status": "PARTIAL_OPERATOR_COUNT_NOT_FULL_PIPELINE_GFLOPS",
+      "Peak_device_memory_GiB_sampled": 2.8779296875,
+      "Peak_torch_allocated_GiB": 1.9380254745483398,
+      "scope": "Same measured native model units, output-frame weighted; excludes transfer/adapter portions included in Table3B E2E. See per-method Core definition.",
+      "time_per_output_frame_std_seconds": 0.00028093794247380086,
+      "formal_repeats": 20,
+      "source_clips": 4,
+      "output_frames_per_execution": 1,
+      "loaded_learned_parameters": 50975875,
+      "active_learned_parameters": 50975875,
+      "device": "NVIDIA RTX PRO 6000 Blackwell Server Edition, 590.44.01, 97887 MiB",
+      "torch": "2.8.0+cu128",
+      "CUDA": "12.8"
+    },
+    "bokehme": {
+      "Time_per_output_frame_seconds": 0.015025043860077858,
+      "Params_M": 1.16374,
+      "GFLOPs_per_output_frame": null,
+      "GFLOPs_status": "PARTIAL_OPERATOR_COUNT_NOT_FULL_PIPELINE_GFLOPS",
+      "Peak_device_memory_GiB_sampled": 1.0107421875,
+      "Peak_torch_allocated_GiB": 0.31250429153442383,
+      "scope": "Same measured native model units, output-frame weighted; excludes transfer/adapter portions included in Table3B E2E. See per-method Core definition.",
+      "time_per_output_frame_std_seconds": 0.0019083368616642446,
+      "formal_repeats": 20,
+      "source_clips": 4,
+      "output_frames_per_execution": 1,
+      "loaded_learned_parameters": 1163740,
+      "active_learned_parameters": 1163740,
+      "device": "NVIDIA RTX PRO 6000 Blackwell Server Edition, 590.44.01, 97887 MiB",
+      "torch": "2.8.0+cu128",
+      "CUDA": "12.8"
+    },
+    "mpib": {
+      "Time_per_output_frame_seconds": 0.2527658408507705,
+      "Params_M": 41.528006,
+      "GFLOPs_per_output_frame": null,
+      "GFLOPs_status": "PARTIAL_OPERATOR_COUNT_NOT_FULL_PIPELINE_GFLOPS",
+      "Peak_device_memory_GiB_sampled": 2.4345703125,
+      "Peak_torch_allocated_GiB": 1.1084823608398438,
+      "scope": "Same measured native model units, output-frame weighted; excludes transfer/adapter portions included in Table3B E2E. See per-method Core definition.",
+      "time_per_output_frame_std_seconds": 0.00451471219316026,
+      "formal_repeats": 20,
+      "source_clips": 4,
+      "output_frames_per_execution": 1,
+      "loaded_learned_parameters": 42041031,
+      "active_learned_parameters": 41528006,
+      "device": "NVIDIA RTX PRO 6000 Blackwell Server Edition, 590.44.01, 97887 MiB",
+      "torch": "2.8.0+cu128",
+      "CUDA": "12.8"
+    },
+    "bokehdiff": {
+      "Time_per_output_frame_seconds": 1.1039662947878242,
+      "Params_M": 3493.431787,
+      "GFLOPs_per_output_frame": null,
+      "GFLOPs_status": "PARTIAL_OPERATOR_COUNT_NOT_FULL_PIPELINE_GFLOPS",
+      "Peak_device_memory_GiB_sampled": 18.3701171875,
+      "Peak_torch_allocated_GiB": 14.872202396392822,
+      "scope": "Same measured native model units, output-frame weighted; excludes transfer/adapter portions included in Table3B E2E. See per-method Core definition.",
+      "time_per_output_frame_std_seconds": 0.010659128502652647,
+      "formal_repeats": 20,
+      "source_clips": 4,
+      "output_frames_per_execution": 1,
+      "loaded_learned_parameters": 3493431787,
+      "active_learned_parameters": 3493431787,
+      "device": "NVIDIA RTX PRO 6000 Blackwell Server Edition, 590.44.01, 97887 MiB",
+      "torch": "2.8.0+cu128",
+      "CUDA": "12.8"
+    },
+    "any2bokeh": {
+      "Time_per_output_frame_seconds": 0.5046425166949631,
+      "Params_M": 2457.810121,
+      "GFLOPs_per_output_frame": null,
+      "GFLOPs_status": "PARTIAL_OPERATOR_COUNT_NOT_FULL_PIPELINE_GFLOPS",
+      "Peak_device_memory_GiB_sampled": 38.4697265625,
+      "Peak_torch_allocated_GiB": 34.29156160354614,
+      "scope": "Same measured native model units, output-frame weighted; excludes transfer/adapter portions included in Table3B E2E. See per-method Core definition.",
+      "time_per_output_frame_std_seconds": 0.0004492030810209456,
+      "formal_repeats": 20,
+      "source_clips": 4,
+      "output_frames_per_execution": 25,
+      "loaded_learned_parameters": 2606607241,
+      "active_learned_parameters": 2457810121,
+      "device": "NVIDIA RTX PRO 6000 Blackwell Server Edition, 590.44.01, 97887 MiB",
+      "torch": "2.8.0+cu128",
+      "CUDA": "12.8"
+    }
+  },
+  "GFLOPs_coverage": {
+    "drbokeh": {
+      "status": "PARTIAL_OPERATOR_COUNT_NOT_FULL_PIPELINE_GFLOPS",
+      "reported_GFLOPs": null,
+      "reason": "Custom CUDA/CuPy scatter and dynamic renderer operations are outside the dispatcher counter.",
+      "counted_arithmetic_GFLOPs_per_output_frame_mean_diagnostic_only": 1977.599655936,
+      "by_K": [
+        {
+          "K": 4,
+          "output_frames": 1,
+          "counted_GFLOPs": 1977.599655936,
+          "counted_GFLOPs_per_output_frame": 1977.599655936
+        },
+        {
+          "K": 8,
+          "output_frames": 1,
+          "counted_GFLOPs": 1977.599655936,
+          "counted_GFLOPs_per_output_frame": 1977.599655936
+        },
+        {
+          "K": 16,
+          "output_frames": 1,
+          "counted_GFLOPs": 1977.599655936,
+          "counted_GFLOPs_per_output_frame": 1977.599655936
+        },
+        {
+          "K": 32,
+          "output_frames": 1,
+          "counted_GFLOPs": 1977.599655936,
+          "counted_GFLOPs_per_output_frame": 1977.599655936
+        }
+      ],
+      "raw_coverage_path": "outputs/efficiency-3a-20260930/drbokeh/flop-coverage.json"
+    },
+    "bokehme": {
+      "status": "PARTIAL_OPERATOR_COUNT_NOT_FULL_PIPELINE_GFLOPS",
+      "reported_GFLOPs": null,
+      "reason": "Custom CUDA/CuPy scatter and dynamic renderer operations are outside the dispatcher counter.",
+      "counted_arithmetic_GFLOPs_per_output_frame_mean_diagnostic_only": 271.89150796800004,
+      "by_K": [
+        {
+          "K": 4,
+          "output_frames": 1,
+          "counted_GFLOPs": 343.137189888,
+          "counted_GFLOPs_per_output_frame": 343.137189888
+        },
+        {
+          "K": 8,
+          "output_frames": 1,
+          "counted_GFLOPs": 343.137189888,
+          "counted_GFLOPs_per_output_frame": 343.137189888
+        },
+        {
+          "K": 16,
+          "output_frames": 1,
+          "counted_GFLOPs": 235.536924672,
+          "counted_GFLOPs_per_output_frame": 235.536924672
+        },
+        {
+          "K": 32,
+          "output_frames": 1,
+          "counted_GFLOPs": 165.754727424,
+          "counted_GFLOPs_per_output_frame": 165.754727424
+        }
+      ],
+      "raw_coverage_path": "outputs/efficiency-3a-20260930/bokehme/flop-coverage.json"
+    },
+    "mpib": {
+      "status": "PARTIAL_OPERATOR_COUNT_NOT_FULL_PIPELINE_GFLOPS",
+      "reported_GFLOPs": null,
+      "reason": "Custom CUDA/CuPy scatter and dynamic renderer operations are outside the dispatcher counter.",
+      "counted_arithmetic_GFLOPs_per_output_frame_mean_diagnostic_only": 2575.841394688,
+      "by_K": [
+        {
+          "K": 4,
+          "output_frames": 1,
+          "counted_GFLOPs": 2551.751507968,
+          "counted_GFLOPs_per_output_frame": 2551.751507968
+        },
+        {
+          "K": 8,
+          "output_frames": 1,
+          "counted_GFLOPs": 2554.134396928,
+          "counted_GFLOPs_per_output_frame": 2554.134396928
+        },
+        {
+          "K": 16,
+          "output_frames": 1,
+          "counted_GFLOPs": 2583.778951168,
+          "counted_GFLOPs_per_output_frame": 2583.778951168
+        },
+        {
+          "K": 32,
+          "output_frames": 1,
+          "counted_GFLOPs": 2613.700722688,
+          "counted_GFLOPs_per_output_frame": 2613.700722688
+        }
+      ],
+      "raw_coverage_path": "outputs/efficiency-3a-20260930/mpib/flop-coverage.json"
+    },
+    "bokehdiff": {
+      "status": "PARTIAL_OPERATOR_COUNT_NOT_FULL_PIPELINE_GFLOPS",
+      "reported_GFLOPs": null,
+      "reason": "Dispatcher counter covers convolution/matrix products/attention formulas, not every executed floating-point normalization, elementwise, resampling and stochastic/control operation. Partial count is diagnostic only.",
+      "counted_arithmetic_GFLOPs_per_output_frame_mean_diagnostic_only": 18114.63896064,
+      "by_K": [
+        {
+          "K": 4,
+          "output_frames": 1,
+          "counted_GFLOPs": 18114.63896064,
+          "counted_GFLOPs_per_output_frame": 18114.63896064
+        },
+        {
+          "K": 8,
+          "output_frames": 1,
+          "counted_GFLOPs": 18114.63896064,
+          "counted_GFLOPs_per_output_frame": 18114.63896064
+        },
+        {
+          "K": 16,
+          "output_frames": 1,
+          "counted_GFLOPs": 18114.63896064,
+          "counted_GFLOPs_per_output_frame": 18114.63896064
+        },
+        {
+          "K": 32,
+          "output_frames": 1,
+          "counted_GFLOPs": 18114.63896064,
+          "counted_GFLOPs_per_output_frame": 18114.63896064
+        }
+      ],
+      "raw_coverage_path": "outputs/efficiency-3a-20260930/bokehdiff/flop-coverage.json"
+    },
+    "any2bokeh": {
+      "status": "PARTIAL_OPERATOR_COUNT_NOT_FULL_PIPELINE_GFLOPS",
+      "reported_GFLOPs": null,
+      "reason": "Dispatcher counter covers convolution/matrix products/attention formulas, not every executed floating-point normalization, elementwise, resampling and stochastic/control operation. Partial count is diagnostic only.",
+      "counted_arithmetic_GFLOPs_per_output_frame_mean_diagnostic_only": 32358.66080182272,
+      "by_K": [
+        {
+          "K": 4,
+          "output_frames": 25,
+          "counted_GFLOPs": 808966.520045568,
+          "counted_GFLOPs_per_output_frame": 32358.66080182272
+        },
+        {
+          "K": 8,
+          "output_frames": 25,
+          "counted_GFLOPs": 808966.520045568,
+          "counted_GFLOPs_per_output_frame": 32358.66080182272
+        },
+        {
+          "K": 16,
+          "output_frames": 25,
+          "counted_GFLOPs": 808966.520045568,
+          "counted_GFLOPs_per_output_frame": 32358.66080182272
+        },
+        {
+          "K": 32,
+          "output_frames": 25,
+          "counted_GFLOPs": 808966.520045568,
+          "counted_GFLOPs_per_output_frame": 32358.66080182272
+        }
+      ],
+      "raw_coverage_path": "outputs/efficiency-3a-20260930/any2bokeh/flop-coverage.json"
+    }
+  },
+  "table3B_started": false,
+  "selection": "Fixed4 clips K4/8/16/32, first frame for frame methods; original25-frame video path forAny-to-Bokeh. One warmup and5 formal repeats perinput.",
+  "time_scope": "Sum of named model/renderer regions, CUDA synchronized wall time. Per-method boundaries in protocol; does not include CPU adapters, peripheral transport or file IO.",
+  "units": "Seconds/output-frame; parameters in10^6; device memory inGiB(2^30 bytes), sampled0.2s plus endpoint samples for very fast units. Exact PyTorch allocator peaks retained separately.",
+  "limits": [
+    "Mixed-K standard deviation includes scene/control differences, not only runtime jitter.",
+    "Sampled device memory includes CUDA/CuPy/context/cached allocations; not an exact instantaneous maximum.",
+    "Complete GFLOPs are N/A because the counter does not cover the full floating-point path; successful partial counts retained only as diagnostics.",
+    "Any-to-Bokeh active2,457,810,121 vs loaded2,606,607,241 parameters; checkpoint ff_k owners not invoked and self.ff_k has no use in the public forward.",
+    "DrBokeh includes LaMa learned parameters but excludes uncalled LDF/MiDaS; their resident memory remains in device occupancy.",
+    "Different hardware and timing boundaries preclude unconditional speedup claims against paper Time."
+  ]
+}

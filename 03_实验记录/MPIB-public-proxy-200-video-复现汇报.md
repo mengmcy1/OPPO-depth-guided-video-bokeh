@@ -811,3 +811,37 @@ K增大时PSNR下降，K32的LPIPS/FD/RM明显更大，与已知饱和限制相�
 定性终审保留了breakdance的旁观者清晰层与分割变化、horsejump-high的时变虚化、kite-surf的细绳/水花、soapbox坡缘补全等现象。连续25帧以PNG接触图逐帧复核，没有宣称实时播放盲评、无闪烁或完整时序质量排名；全部MP4保留供播放。固定集合内未发现新的客观实现错误，按既定规则冻结，不扩大候选或为了排名重跑。
 
 证据：[最终复核](records/davis-final-review-20260929.json)、[六方法逐帧指标](records/davis-six-method-50-20260929.json)、[全量完整性](records/davis-six-method-integrity-20260929.json)、[Table2](Benchmark与Baseline统一评价协议.md#table-2davis-real-world)。Efficiency仍未实测，下一步先确认当前设备空闲状态，再按E2E-given-inputs执行。
+
+## Table 3A 模型级计算成本（2026-09-30，已完成）
+
+按用户汇报优先级先完成3A，3B尚未启动。固定K4/8/16/32的四个输入，每个预热1次、正式5次；逐帧方法使用第0帧，Any-to-Bokeh使用真实25帧overlap路径（每次8/8/9帧），按实际输出帧数归一。五种GPU方法各20次正式记录，没有挑选有利重复或更换输入。硬件为RTX PRO6000 Blackwell Server Edition、590.44.01驱动，GPU独占串行。
+
+| Method | Device | Time / output frame (s) ↓ | Params (M) ↓ | GFLOPs / output frame ↓ | Peak VRAM (GiB, sampled) ↓ |
+|---|---|---:|---:|---:|---:|
+| Dr.Bokeh | RTX PRO 6000 Blackwell | 0.28808 | 50.976 | N/A† | ≈2.88 |
+| BokehMe | RTX PRO 6000 Blackwell | 0.01503 | 1.164 | N/A† | ≈1.01 |
+| MPIB | RTX PRO 6000 Blackwell | 0.25277 | 41.528 | N/A† | ≈2.43 |
+| BokehDiff | RTX PRO 6000 Blackwell | 1.10397 | 3493.432 | N/A† | ≈18.37 |
+| Any-to-Bokeh | RTX PRO 6000 Blackwell | 0.50464 | 2457.810 | N/A† | ≈38.47 |
+| Ours | GPU | later | later | later | later |
+
+表中Time是同步的核心模型/renderer执行，不是完整视频E2E。Dr累计两次LaMa+一次完整多层renderer的CUDA forward，分层、CPU修复及外部传输不在Core中；MPIB累计inpainting/MPI/upsampling/render各模型forward；BokehMe、BokehDiff和ATB按已在GPU的输入到GPU浮点输出划定。外围读取、adapter、传输和CPU uint8输出将进入3B，不能把3A时间或单帧诊断当作3B结果。
+
+参数量按实际调用的神经模块中独立参数张量计数：ATB包含UNet、VAE和image encoder，排除未被forward调用的ff_k等权重（实际调用2457.810M，加载总量2606.607M）；Dr包含LaMa的50.976M，不把未调用的LDF/MiDaS算入。它们的已加载常驻显存仍保留在设备占用里。不同论文可能只计renderer/主干，不能把不同范围的Params直接混比。
+
+† 独立dispatcher profiling已执行，未报错，但可计卷积/矩阵乘法/attention算术不是整个floating-point路径；自定义CUDA/FFT/归一化/逐元素/插值及随机控制等未完整覆盖，主表总GFLOPs据此记N/A。原始覆盖列表与部分计数保留为诊断，不用部分数值冒充完整复杂度。设备显存采用0.2秒监测与快速单帧结束点采样，包含上下文与缓存，标注≈；精确PyTorch allocated/reserved峰值另存在记录中。
+
+跨4个K的时间均值/标准差如下，标准差同时包含输入/控制差异，并非纯测量抖动：
+
+| Method | Mean (s/output-frame) | Std |
+|---|---:|---:|
+| Dr.Bokeh | 0.288076 | 0.000281 |
+| BokehMe | 0.015025 | 0.001908 |
+| MPIB | 0.252766 | 0.004515 |
+| BokehDiff | 1.103966 | 0.010659 |
+| Any-to-Bokeh | 0.504643 | 0.000449 |
+
+
+论文硬件和私有计时边界没有完全复原，因此本表称ATB-style reproduced cost，不将本轮与论文的Time相除宣称同硬件加速比。3B之后单独报告实际25帧流水与CPU DeepLens。
+
+证据：[3A逐次计时](records/efficiency-3a-20260930.json)、[3A最终复核及覆盖边界](records/efficiency-3a-final-review-20260930.json)、[计时入口一致性](records/efficiency-entry-parity-20260930.json)。

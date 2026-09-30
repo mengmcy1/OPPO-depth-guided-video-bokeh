@@ -946,14 +946,20 @@ A的PSNR/SSIM/FD/RM更接近论文，B的FVD/VFID-I更接近。完整200段与�
 
 **定位**：回答“这个方法/模型本身算一次有多贵”，与 Any-to-Bokeh 论文 computational-cost table 使用同类维度，重点报告单帧/单位输出帧的模型级计算成本。该表用于**模型复杂度比较**，不是完整25帧视频流水的真实端到端耗时。
 
-| Method | Device | Time / output frame ↓ | Params (M) ↓ | GFLOPs / output frame ↓ | Peak VRAM (GB) ↓ |
+| Method | Device | Time / output frame (s) ↓ | Params (M) ↓ | GFLOPs / output frame ↓ | Peak VRAM (GiB, sampled) ↓ |
 |---|---|---:|---:|---:|---:|
-| Dr.Bokeh | GPU |  |  |  |  |
-| BokehMe | GPU |  |  |  |  |
-| MPIB | GPU |  |  |  |  |
-| BokehDiff | GPU |  |  |  |  |
-| Any-to-Bokeh | GPU |  |  |  |  |
+| Dr.Bokeh | RTX PRO 6000 Blackwell | 0.28808 | 50.976 | N/A† | ≈2.88 |
+| BokehMe | RTX PRO 6000 Blackwell | 0.01503 | 1.164 | N/A† | ≈1.01 |
+| MPIB | RTX PRO 6000 Blackwell | 0.25277 | 41.528 | N/A† | ≈2.43 |
+| BokehDiff | RTX PRO 6000 Blackwell | 1.10397 | 3493.432 | N/A† | ≈18.37 |
+| Any-to-Bokeh | RTX PRO 6000 Blackwell | 0.50464 | 2457.810 | N/A† | ≈38.47 |
 | Ours | GPU | later | later | later | later |
+
+**本轮3A已完成（2026-09-30）**：五种GPU方法各4个固定输入×5次正式重复，共100个计时样本；逐帧方法测第0帧，ATB保留25帧原生调用再除25。表中Time为已同步的模型段均值，不是3B的25帧E2E。不同方法具体Core起止点见§16.2；CPU分层/repair等被排除出Core的工作会进入后续3B。
+
+† GFLOPs已执行独立算子覆盖检查，但卷积/矩阵乘法/attention计数未覆盖自定义CUDA、FFT、归一化、逐元素、插值及随机控制等完整路径。因此总GFLOPs按协议标N/A，部分计数仅保存在诊断记录，不冒充完整方法复杂度。显存为0.2秒监测及快速单帧结束点采样的设备占用峰值（包含CUDA/CuPy/context/缓存）；不是精确瞬时最大值，精确PyTorch allocated/reserved峰值另保留。Params以实际调用的神经模块中独立参数张量统计，排除未调用模块、buffer和固定核；ATB包含UNet/VAE/image encoder，Dr包含LaMa而不含未调用的LDF/MiDaS。
+
+完整逐次时间、标准差、by-K、原生执行单元和硬件见[原始计时](records/efficiency-3a-20260930.json)，结论与计数边界见[3A最终复核](records/efficiency-3a-final-review-20260930.json)。**Table3B未启动**；3A单帧pipeline诊断时间不能填写3B。
 
 说明：
 
