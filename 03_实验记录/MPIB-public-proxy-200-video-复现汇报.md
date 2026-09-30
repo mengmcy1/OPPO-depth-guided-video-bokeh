@@ -2,7 +2,7 @@
 
 > 任务：使用公开可获得组件重建 Any-to-Bokeh synthetic evaluation pipeline，并验证官方权重的指标量级
 >
-> 当前状态：✅ Synthetic七个方法各200×25及全部指标完成；原六种配置保持冻结，2026-09-30新增MagicBokeh的Target-guided Depth-Medoid B与同配置Table 3。Any-to-Bokeh首轮模块分析完成，下一步验证VAE/缓存效率机制及系统归纳失败场景。
+> 当前状态：✅ Synthetic七个方法各200×25及全部指标完成；原六种配置保持冻结，2026-09-30新增MagicBokeh的Target-guided Depth-Medoid B与同配置Table 3A。Any-to-Bokeh首轮模块分析完成，下一步验证VAE/缓存效率机制及系统归纳失败场景。
 > 运行记录：sRGB输入配置落盘至全量汇总约170.3分钟，含并发和中断恢复，不含此前图层/几何构造。
 > 数据规模：200 场景 × 25 帧 = 5000 帧（RGB + GT + Prediction 完整）
 > 补充指标：2026-09-28完成TorchMetrics PSNR/SSIM、VideoMAE FVD、I3D VFID-I，见下表及第七节。
@@ -609,7 +609,7 @@ GT-alpha相对Full-public的PSNR中位增益2.287867dB，PSNR/FD同时改善180/
 
 **后续主表报告选择（Ours开始前冻结）**：当前阶段的任务是尽可能恢复ATB Synthetic benchmark及其Table 1 performance landscape，而不是建立最终统一信息权限的公平benchmark。基于完整200段结果，GT-alpha被选为Dr.Bokeh的Track A主表 **reconstruction adapter**；Full-public继续保留为公开完整pipeline诊断结果，Known Layers继续作为额外隐藏层信息诊断。该选择发生在Ours正式评价前，之后不允许根据Ours成绩重新回调Dr.Bokeh协议。
 
-下一阶段先在这套已冻结的ATB-style reproduction benchmark上比较Ours与Any-to-Bokeh；完成这一层证据后，再建立本项目自己的独立benchmark。后者将重新统一baseline的信息权限与低帧率粗深度输入，届时Dr.Bokeh应优先重新评估Full-public等不读取GT alpha/hidden layers的公开完整pipeline，而不能默认沿用本阶段GT-alpha权限。两套benchmark承担不同目的，结果必须分开命名和报告。
+当前先在已冻结的ATB-style reproduction benchmark上比较Ours与Any-to-Bokeh。未来若研究问题需要独立benchmark，应按最终任务统一baseline的信息权限，届时重新评估Dr.Bokeh Full-public等不读取GT alpha/hidden layers的公开完整pipeline，不能默认沿用本阶段GT-alpha权限。独立评价不预设低帧率粗深度，也不是当前前置；不同条件的结果分开命名和报告。
 
 **实现与反例检查**：三组共15000张PNG通过完整性/尺寸/模式验证；新增两分支10000帧素材重建与lens覆盖全部通过，最大实际R31.87451px，遗漏径向权重质量最大4.3893e-6，CoC变换误差float64≤1.07e-14/float32≤3.55e-6，无输出裁剪。原11段55组视觉记录保留；追加查看GT-alpha最大PSNR退步193，以及Known相对Alpha最大PSNR退步160、最大FD退步101，各0/6/12/18/24帧和中间层。累计14段70组，未发现新的明显错层/通道/帧序实现阻塞；稀疏关键帧不能排除未采样时序问题。
 
@@ -811,11 +811,29 @@ K增大时PSNR下降，K32的LPIPS/FD/RM明显更大，与已知饱和限制相�
 
 定性终审保留了breakdance的旁观者清晰层与分割变化、horsejump-high的时变虚化、kite-surf的细绳/水花、soapbox坡缘补全等现象。连续25帧以PNG接触图逐帧复核，没有宣称实时播放盲评、无闪烁或完整时序质量排名；全部MP4保留供播放。固定集合内未发现新的客观实现错误，按既定规则冻结，不扩大候选或为了排名重跑。
 
-证据：[最终复核](records/davis-final-review-20260929.json)、[六方法逐帧指标](records/davis-six-method-50-20260929.json)、[全量完整性](records/davis-six-method-integrity-20260929.json)、[Table2](Benchmark与Baseline统一评价协议.md#table-2davis-real-world)。Efficiency的正式主表现统一为下文Table 3；历史25帧E2E测量继续保留在records/归档。
+证据：[最终复核](records/davis-final-review-20260929.json)、[六方法逐帧指标](records/davis-six-method-50-20260929.json)、[全量完整性](records/davis-six-method-integrity-20260929.json)、[Table2](Benchmark与Baseline统一评价协议.md#table-2davis-real-world)。Efficiency正式保留下文Table 3A模型成本与Table 3B完整25帧流水；硬件版本分开报告。
 
-## Table 3 模型级计算成本（2026-09-30，当前正式效率主表）
+## Table 3A 模型级计算成本（按硬件分开报告）
 
-原 Table 3A 直接更名为 **Table 3**。固定 K4/8/16/32 的四个输入，每个预热1次、正式5次；逐帧方法使用第0帧，Any-to-Bokeh使用真实25帧 overlap 路径（每次8/8/9帧），按实际输出帧数归一。现有五种GPU方法及新增MagicBokeh各20次正式记录，没有挑选有利重复或更换RGB输入。硬件为 RTX PRO6000 Blackwell Server Edition、590.44.01 驱动，GPU 独占串行。
+### RTX 4090 D：2026-10-01复测
+
+| Method | Device | 模型段秒/输出帧 ↓ | Params (M) | GFLOPs | 设备采样峰值 (GiB) ↓ |
+|---|---|---:|---:|---:|---:|
+| Dr.Bokeh | RTX 4090 D | 0.342006 | 50.976 | N/A | ≈2.63 |
+| BokehMe | RTX 4090 D | 0.012936 | 1.164 | N/A | ≈0.75 |
+| MPIB | RTX 4090 D | 0.235940 | 41.528 | N/A | ≈2.18 |
+| BokehDiff | RTX 4090 D | 0.921041 | 3493.432 | N/A | ≈17.57 |
+| MagicBokeh B | RTX 4090 D | 1.269188 | 1398.545 | N/A | ≈5.13 |
+| Any-to-Bokeh | RTX 4090 D | 0.803312 | 2457.810 | N/A | ≈42.14 |
+| Ours | 待测 | — | — | — | — |
+
+六种GPU方法各4个固定输入×5次正式重复，共120个正式计时样本。逐帧方法测第0帧；ATB保留25帧真实8/8/9输出调用，模型段约20.083秒再除以25，不是独立单帧在线延迟。参数量及GFLOPs覆盖口径复用，计时/显存重新测量。原始记录中的附带E2E字段不是六方法完整25帧Table 3B复测，不能据此填新卡3B。
+
+证据：[4090 D六方法原始结果](records/table3-4090d-20261001.json)。两台GPU结果分开保留，不计算跨硬件方法加速比。
+
+### RTX PRO 6000 Blackwell：2026-09-30原始测量
+
+以下为旧卡配置及原始结果。固定 K4/8/16/32 的四个输入，每个预热1次、正式5次；逐帧方法使用第0帧，Any-to-Bokeh使用真实25帧 overlap 路径（每次8/8/9帧），按实际输出帧数归一。现有五种GPU方法及新增MagicBokeh各20次正式记录，没有挑选有利重复或更换RGB输入。硬件为 RTX PRO6000 Blackwell Server Edition、590.44.01 驱动，GPU 独占串行。
 
 | Method | Device | Time / output frame (s) ↓ | Params (M) ↓ | GFLOPs / output frame ↓ | Peak VRAM (GiB, sampled) ↓ |
 |---|---|---:|---:|---:|---:|
@@ -850,23 +868,34 @@ MagicBokeh的1024×576原生输出由六个512×512重叠图块组成；B配置1
 
 证据：[原五方法计时](records/efficiency-3a-20260930.json)、[最终复核及覆盖边界](records/efficiency-3a-final-review-20260930.json)、[计时入口一致性](records/efficiency-entry-parity-20260930.json)、[MagicBokeh B同配置补测](records/magicbokeh-frozen-B-table3-20260930.json)、[原生Auto-LDF对照](records/magicbokeh-native-and-table3-20260930.json)。
 
-### 历史25帧E2E测量的处理
+## Table 3B：25-frame Video E2E Efficiency under Given Inputs
 
-原 Table 3B 已于2026-09-30完成六方法120次正式计时并通过复核；实验事实不删除，但根据当前研究主线，它不再作为正式主表。完整结果仍保存在：
+**正式保留，与Table 3A互补。** Table 3A回答模型计算成本，Table 3B回答给定输入后25帧实际流水耗时；它与低帧率几何Track B没有关系。2026-10-01按用户更正恢复本表，不重新生成或改写已有实测结果。
 
-- [3B逐次计时](records/efficiency-track-a-3ab-20260930.json)
-- [3B最终复核](records/efficiency-3b-final-review-20260930.json)
-- [阶段归档](历史阶段记录/2026-09-30_Efficiency_3A与3B测量.md)
+**已测范围**：下表来自旧RTX PRO 6000及旧机CPU的2026-09-30测量，六方法各20次正式重复。**新4090 D尚未完成Table 3B复测；MagicBokeh B在任一机器上都尚无该口径结果。** 所有缺项保留待测，不能将模型时间乘25后作为E2E，也不能给旧卡数据换设备标签。
 
-后续如果需要工程部署层面的完整E2E，可继续引用该历史测量；当前论文/汇报主线优先使用 Table 3 的模型级成本，以便直接支撑 Any-to-Bokeh 的效率与显存优化。
+| Method | Device（旧机） | Core / 25f (s) ↓ | E2E-given-inputs / 25f (s) ↓ | FPS (E2E) ↑ | 峰值内存 (GiB, sampled) ↓ |
+|---|---|---:|---:|---:|---:|
+| DeepLens | CPU / TF1.15 / 8 threads | 25.370 | 26.452 | 0.945 | ≈1.36 RSS |
+| Dr.Bokeh | RTX PRO 6000 Blackwell | 7.178 | 20.621 | 1.212 | ≈2.88 VRAM |
+| BokehMe | RTX PRO 6000 Blackwell | 0.351 | 1.186 | 21.082 | ≈1.01 VRAM |
+| MPIB | RTX PRO 6000 Blackwell | 6.164 | 7.681 | 3.255 | ≈2.43 VRAM |
+| BokehDiff | RTX PRO 6000 Blackwell | 27.384 | 28.166 | 0.888 | ≈18.34 VRAM |
+| Any-to-Bokeh | RTX PRO 6000 Blackwell | 12.628 | 14.084 | 1.775 | ≈38.47 VRAM |
+| MagicBokeh B | 待测 | — | — | — | — |
+| Ours | 待测 | — | — | — | — |
 
-## 当前研究主线更新（2026-09-30）
+E2E-given-inputs从已给输入的读取/解码开始，包括适配、必要分层/修复、推理、传输和后处理，直到25张1024×576 CPU RGB uint8就绪；排除模型加载、首次CUDA context、benchmark外部geometry/GT alpha生成、最终写盘及MP4编码。FPS=25/平均E2E秒数，Core同时单列。
+
+证据：[3B原始计时](records/efficiency-track-a-3ab-20260930.json)、[3B最终复核](records/efficiency-3b-final-review-20260930.json)、[阶段归档](历史阶段记录/2026-09-30_Efficiency_3A与3B测量.md)。旧数据的std、by-K、内存采样与CPU/GPU边界保持原记录。后续MagicBokeh若补测3B，需明确自身估深、目标选点及CPU颜色后处理等方法内步骤，不能将3A生成器计时直接改称E2E。
+
+## 当前研究主线与执行边界（2026-10-01更正）
 
 经当前阶段讨论，低帧率 Depth 不再作为必须坚持的创新方向。原 Track B / OPPO-style Low-FPS 自建 benchmark 从当前前置实验中移除，不继续为了填表执行 30/15/10/5/2 fps sweep。
 
-短期顺序改为：
+当前限定为既有性能评价：新卡3A已完成，新卡3B为待补项，本次未启动。编码分批、缓存优化、失败分析等继续作为后续候选，不因下列研究顺序自动执行：
 
-1. **MagicBokeh已收尾**：原生验证、40帧三候选、用户冻结B、200×25评价及B同配置Table 3全部完成；额外GT目标辅助选点权限已披露，不重复选方案或推理；
+1. **MagicBokeh已收尾**：原生验证、40帧三候选、用户冻结B、200×25评价及B同配置Table 3A全部完成；额外GT目标辅助选点权限已披露，不重复选方案或推理；
 2. **Any-to-Bokeh效率机制验证**：首轮VAE/UNet/解码时间与峰值归因已完成，下一步区分FP32编码activation、持续缓存和重叠重复计算的贡献；
 3. **Any-to-Bokeh Failure Analysis**：基于现有200段Synthetic和DAVIS固定视频，系统筛选边界/遮挡/细结构、大运动、强虚化、focus/control变化等可重复失败；
 4. **冻结 Ours**：只选择有明确问题证据、可做受控消融且具有实际价值的方向，不再为了符合旧计划强行加入低帧率Depth completion、Token Merging或三头结构。

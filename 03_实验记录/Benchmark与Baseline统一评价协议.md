@@ -41,7 +41,7 @@ Benchmark Suite
 
 - **Reproduced Any-to-Bokeh-style Synthetic**：主 paired 定量评价，当前七种 baseline 已完成，MagicBokeh采用已冻结的Target-guided Depth-Medoid B；
 - **DAVIS**：真实视频泛化与边界/时序失败场景观察，当前六方法已冻结；
-- **Efficiency**：作为独立 Table 3，重点比较模型级 Time / Params / Peak VRAM，并进一步对 Any-to-Bokeh 做细粒度 profile；
+- **Efficiency**：正式保留Table 3A模型级成本与Table 3B完整25帧E2E-given-inputs，两者边界及硬件分别标明；
 - **低帧率 Depth / OPPO-style 自建 benchmark**：从当前主表与执行顺序移除；若后续 Ours 的最终设计重新需要这一问题，再作为可选扩展重新立项，不阻塞当前研究；
 - **VBS / BokehCrafter**：继续作为可选补充，不阻塞当前主线。
 
@@ -329,13 +329,13 @@ Video + Explicit\ Geometry + Temporal\ Modeling
 
 MagicBokeh 是 CVPR 2026 的单步扩散式 Bokeh 方法，将 Real-ISR、内部 disparity/depth estimation 与可控 Bokeh 统一到一个框架，并通过 U-Net block pruning 等设计强调效率。它不是原生视频方法，也不是与 Any-to-Bokeh 完全相同的外部 Geometry 输入范式，因此加入时必须保留其原生输入边界，不把它伪装成“同输入视频方法”。
 
-2026-09-30已完成官方完整示例、RGB→DAdepth/LDF→虚化路径与原生Auto-LDF成本。官方自动选择路径先离线预测深度/mask，再用512×512重叠图块生成同尺寸输出。随后完成5000帧目标统计与40帧三候选预检；用户已选择并冻结 **Target-guided Depth-Medoid Point-Focus B**，200×25推理/评价及同配置Table 3全部完成。DAVIS尚未扩展。
+2026-09-30已完成官方完整示例、RGB→DAdepth/LDF→虚化路径与原生Auto-LDF成本。官方自动选择路径先离线预测深度/mask，再用512×512重叠图块生成同尺寸输出。随后完成5000帧目标统计与40帧三候选预检；用户已选择并冻结 **Target-guided Depth-Medoid Point-Focus B**，200×25推理/评价及同配置Table 3A全部完成。DAVIS尚未扩展。
 
 正式B从metadata指定的对象构造可见alpha（扣除更近层遮挡），按`>0.9→>0.5→>0`选安全最大8连通域；用模型自身PNG8深度找最接近该区域中位数的实际像素，多解取边界距离最大、再row-major。focus读取该像素深度/255，不直接使用区域中位数标量或benchmark深度标量。**GT可见目标区域与自身预测深度参与选点，这是一项额外的目标控制权限**；生成器仅接收RGB、原生预测depth形成的defocus/focus mask及demo固定提示词，GT深度/alpha/隐藏RGB不进入神经模型。逐帧无平滑，K/32、阈值0.1、512px分块和AdaIN保持原生。
 
 5000帧均有`alpha>0.9`安全目标区域，无不可见帧或实例切换。40帧Auto/A/B共120张输出已查看，没有计算Bokeh GT指标来选方案；A点击正确，但K32 repro_000覆盖均值6.50%，B61.98%。用户明确改用B并披露辅助选点，保留部分目标失焦等模型/代理数据边界。所有点击位于目标内部、输出finite，正式入口与B预检重放PNG逐值一致。配置`configs/magicbokeh-track-a-frozen.json`。
 
-证据：[原生复现与Auto-LDF成本](records/magicbokeh-native-and-table3-20260930.json)、[目标统计、三候选预检与B冻结](records/magicbokeh-point-focus-preflight-20260930.json)。正式B的同配置Table 3已补齐：1.20890s/output-frame、1398.545M、≈5.30GiB；[完整质量结果](records/magicbokeh-track-a-200-20260930.json)、[B成本](records/magicbokeh-frozen-B-table3-20260930.json)。原Auto-LDF记录保留为历史对照。
+证据：[原生复现与Auto-LDF成本](records/magicbokeh-native-and-table3-20260930.json)、[目标统计、三候选预检与B冻结](records/magicbokeh-point-focus-preflight-20260930.json)。正式B的同配置Table 3A已补齐：1.20890s/output-frame、1398.545M、≈5.30GiB；[完整质量结果](records/magicbokeh-track-a-200-20260930.json)、[B成本](records/magicbokeh-frozen-B-table3-20260930.json)。原Auto-LDF记录保留为历史对照。
 
 ## BokehCrafter
 
@@ -414,7 +414,8 @@ Video Output
 |---|---|
 | Reproduced Any-to-Bokeh-style Synthetic | paired 主定量；七方法baseline reproduction，含已冻结MagicBokeh B |
 | DAVIS | 真实视频 VEPI + 固定定性失败场景；当前六方法已冻结 |
-| Table 3 Efficiency | 模型级 Time / Params / Peak VRAM；支撑后续 ATB 效率优化 |
+| Table 3A Efficiency | 模型级Time / Params / Peak VRAM |
+| Table 3B Efficiency | 25帧Core / E2E-given-inputs / FPS / 内存，按设备分开记录 |
 | ATB profiling / failure analysis | 不单独伪装成 benchmark；作为确定 Ours 方向的机制证据 |
 
 ---
@@ -451,7 +452,7 @@ Any-to-Bokeh 对同一批输入只产生一份 prediction，再分别以两种 r
 - 已知 RGBA 图层绕过学习式深度/分割/修复，采用线性光照合成与 sRGB 输出。关闭景深对齐 PSNR 60.57 dB；参考深度组合为对焦 2 m、背景 6 m，K=16，50 mm 焦距 / 36 mm 传感器宽度，对应 f/2.10054。光圈由明暗边界扩散标定，半径差约 0.1%；此映射尚不外推到所有深度或 K。
 - Cycles 同帧独立随机种子差异 PSNR 57.16 dB、MAE 0.000698；1024 与 4096 spp 差异 PSNR 59.21 dB。低采样初版和 CPU 回退初版均不作为本表最终 Cycles 结果。
 - LPIPS 使用 squeeze v0.1；FD 使用 torchvision RAFT-large C_T_SKHT_V2 的完整分辨率光流差；RM 对全部 24 对相邻帧计算变化差。5 段视频不足以稳定比较视频分布，本阶段 **不报告 FVD**，不以替代指标冒名填入。
-- *耗时为试验成本：Dr.Bokeh 包含核心渲染/传输、不含 PNG 写盘，部分帧与校验任务交错；Cycles 包含渲染与 PNG 写盘。二者口径不同，不能直接作为统一速度排名或 Table 3 成绩。Cycles 的 125 帧总计约 303 秒，当前生成成本可接受。
+- *耗时为试验成本：Dr.Bokeh 包含核心渲染/传输、不含 PNG 写盘，部分帧与校验任务交错；Cycles 包含渲染与 PNG 写盘。二者口径不同，不能直接作为统一速度排名或 Table 3A 成绩。Cycles 的 125 帧总计约 303 秒，当前生成成本可接受。
 - 素材为 AM-2k 训练前景及 BG-20k 背景，运动为构造的平面仿射运动。该 5-scene 试验只保留为 renderer 开发证据。后续 E6 24-scene 验证与 200-video MPIB-public proxy 复现均已完成，不再以本表决定当前 sweep 的 renderer。
 
 除数值指标外，还固定观察：
@@ -533,7 +534,7 @@ Any-to-Bokeh 对同一批输入只产生一份 prediction，再分别以两种 r
 
 **当前Track A阶段边界与冻结规则**：本表当前首先服务于 **Any-to-Bokeh Synthetic/Table 1 reproduction**，不是最终统一信息权限的独立benchmark。Dr.Bokeh因此采用完整200段protocol-recovery后选定的GT Alpha reconstruction adapter作为reported主行；Full-public公开完整pipeline保留为诊断证据，并计划在后续自建公平benchmark时重新优先评估。该选择只表示“当前复现展示配置”，不证明ATB私有实验使用GT alpha。
 
-在Ours正式评价前，本表中DeepLens、BokehDiff、BokehMe、Dr.Bokeh、MPIB与Any-to-Bokeh的reported配置全部冻结。**Ours出现结果后不得为了扩大/缩小差距回调baseline adapter或benchmark构造。** 后续研究顺序为：先在当前ATB-style reproduction benchmark上比较Ours与Any-to-Bokeh；再设计独立的本项目benchmark，统一RGB/低帧率粗深度/focus/control的信息权限和退化协议，并重新确定适用于该公平设置的baseline adapter。两阶段结果分表、分名报告。
+在Ours正式评价前，本表中DeepLens、BokehDiff、BokehMe、Dr.Bokeh、MPIB与Any-to-Bokeh的reported配置全部冻结。**Ours出现结果后不得为了扩大/缩小差距回调baseline adapter或benchmark构造。** 当前先在ATB-style reproduction benchmark上比较Ours与Any-to-Bokeh。未来若研究问题需要独立benchmark，再按最终任务统一信息权限和评价协议；不预设低帧率几何，也不将旧Track B作为Ours前置。不同评价条件分表、分名报告。
 
 Validation 重点依次观察：
 
@@ -767,7 +768,7 @@ A的PSNR/SSIM/FD/RM更接近论文，B的FVD/VFID-I更接近。完整200段与�
 
 > 本 Benchmark 受 Any-to-Bokeh 公开合成协议启发，但不是作者官方 Synthetic Test Set 的逐样本复现，因此 paper-reported numbers 仅作为外部参考，不与本项目 Table 1 成绩混为同一评价结果。
 
-当前 public-proxy sanity check 已完成；MagicBokeh的Table 1与B同配置Table 3已经完成，当前转入ATB效率机制验证与失败场景分析。
+当前 public-proxy sanity check 已完成；MagicBokeh的Table 1与B同配置Table 3A已经完成，当前转入ATB效率机制验证与失败场景分析。
 
 
 ---
@@ -792,9 +793,27 @@ A的PSNR/SSIM/FD/RM更接近论文，B的FVD/VFID-I更接近。完整200段与�
 
 ---
 
-## Table 3：Model-level Computational Cost
+## Table 3A：Model-level Computational Cost
 
-**定位**：当前正式 Efficiency 主表。回答“这个方法/模型本身算一次有多贵”，重点服务于 **Any-to-Bokeh 的时间/显存优化**以及与其他方法的模型级成本比较。原 Table 3A 直接更名为 Table 3；原 Table 3B 的25帧 E2E 测量已完成，但从当前主表体系移除，数据继续保存在 records 与历史阶段记录中，不删除实验事实。
+**定位**：正式效率表之一，报告模型/renderer核心段的单位输出帧成本。Table 3A与下文Table 3B同时保留；移除低帧率Track B不影响这两张效率表。
+
+### RTX 4090 D：2026-10-01复测
+
+| Method | Device | 模型段秒/输出帧 ↓ | Params (M) | GFLOPs | 设备采样峰值 (GiB) ↓ |
+|---|---|---:|---:|---:|---:|
+| Dr.Bokeh | RTX 4090 D | 0.342006 | 50.976 | N/A | ≈2.63 |
+| BokehMe | RTX 4090 D | 0.012936 | 1.164 | N/A | ≈0.75 |
+| MPIB | RTX 4090 D | 0.235940 | 41.528 | N/A | ≈2.18 |
+| BokehDiff | RTX 4090 D | 0.921041 | 3493.432 | N/A | ≈17.57 |
+| MagicBokeh B | RTX 4090 D | 1.269188 | 1398.545 | N/A | ≈5.13 |
+| Any-to-Bokeh | RTX 4090 D | 0.803312 | 2457.810 | N/A | ≈42.14 |
+| Ours | 待测 | — | — | — | — |
+
+六种GPU方法各4个固定输入×5次正式重复，共120个正式计时样本。逐帧方法测第0帧；ATB保留25帧真实8/8/9输出调用，模型段约20.083秒再除以25，不是独立单帧在线延迟。参数量及GFLOPs覆盖口径复用，计时/显存重新测量。原始记录中的附带E2E字段不是六方法完整25帧Table 3B复测，不能据此填新卡3B。
+
+证据：[4090 D六方法原始结果](records/table3-4090d-20261001.json)。两台GPU结果分开保留，不计算跨硬件方法加速比。
+
+### RTX PRO 6000 Blackwell：2026-09-30原始测量
 
 | Method | Device | Time / output frame (s) ↓ | Params (M) ↓ | GFLOPs / output frame ↓ | Peak VRAM (GiB, sampled) ↓ |
 |---|---|---:|---:|---:|---:|
@@ -814,20 +833,103 @@ A的PSNR/SSIM/FD/RM更接近论文，B的FVD/VFID-I更接近。完整200段与�
 
 † GFLOPs已执行独立算子覆盖检查，但自定义CUDA、FFT、归一化、逐元素、插值及随机控制等没有完整覆盖，因此总GFLOPs继续标 N/A；不使用不完整计数冒充全路径复杂度。显存为0.2秒设备占用采样峰值，精确Torch allocated/reserved另存。Params按实际调用神经模块统计。
 
-Any-to-Bokeh正式成本为 **0.50464 s/output-frame** 的模型段和 **≈38.47 GiB** 的设备采样峰值。首轮模块profile已定位VAE时间占比约81%、编码Torch allocated峰值约34.29GiB及6.47GiB RGB缓存；下一步用最小受控实验区分activation、缓存保留与重叠计算的贡献，再决定改动位置。
+Any-to-Bokeh旧96GB卡模型成本为 **0.50464 s/output-frame** 的模型段和 **≈38.47 GiB** 的设备采样峰值。首轮模块profile已定位VAE时间占比约81%、编码Torch allocated峰值约34.29GiB及6.47GiB RGB缓存；下一步用最小受控实验区分activation、缓存保留与重叠计算的贡献，再决定改动位置。
 
-原 Table 3B 及其六方法25帧 E2E 结果仍可在：
-- `records/efficiency-track-a-3ab-20260930.json`
-- `records/efficiency-3b-final-review-20260930.json`
-- `历史阶段记录/2026-09-30_Efficiency_3A与3B测量.md`
+## Table 3B：25-frame Video E2E Efficiency under Given Inputs
 
-中追溯；它们作为历史工程测量保留，但不再占当前正式主表编号。
+**正式保留，与Table 3A互补。** Table 3A回答模型计算成本，Table 3B回答给定输入后25帧实际流水耗时；它与低帧率几何Track B没有关系。2026-10-01按用户更正恢复本表，不重新生成或改写已有实测结果。
+
+**已测范围**：下表来自旧RTX PRO 6000及旧机CPU的2026-09-30测量，六方法各20次正式重复。**新4090 D尚未完成Table 3B复测；MagicBokeh B在任一机器上都尚无该口径结果。** 所有缺项保留待测，不能将模型时间乘25后作为E2E，也不能给旧卡数据换设备标签。
+
+| Method | Device（旧机） | Core / 25f (s) ↓ | E2E-given-inputs / 25f (s) ↓ | FPS (E2E) ↑ | 峰值内存 (GiB, sampled) ↓ |
+|---|---|---:|---:|---:|---:|
+| DeepLens | CPU / TF1.15 / 8 threads | 25.370 | 26.452 | 0.945 | ≈1.36 RSS |
+| Dr.Bokeh | RTX PRO 6000 Blackwell | 7.178 | 20.621 | 1.212 | ≈2.88 VRAM |
+| BokehMe | RTX PRO 6000 Blackwell | 0.351 | 1.186 | 21.082 | ≈1.01 VRAM |
+| MPIB | RTX PRO 6000 Blackwell | 6.164 | 7.681 | 3.255 | ≈2.43 VRAM |
+| BokehDiff | RTX PRO 6000 Blackwell | 27.384 | 28.166 | 0.888 | ≈18.34 VRAM |
+| Any-to-Bokeh | RTX PRO 6000 Blackwell | 12.628 | 14.084 | 1.775 | ≈38.47 VRAM |
+| MagicBokeh B | 待测 | — | — | — | — |
+| Ours | 待测 | — | — | — | — |
+
+E2E-given-inputs从已给输入的读取/解码开始，包括适配、必要分层/修复、推理、传输和后处理，直到25张1024×576 CPU RGB uint8就绪；排除模型加载、首次CUDA context、benchmark外部geometry/GT alpha生成、最终写盘及MP4编码。FPS=25/平均E2E秒数，Core同时单列。
+
+证据：[3B原始计时](records/efficiency-track-a-3ab-20260930.json)、[3B最终复核](records/efficiency-3b-final-review-20260930.json)、[阶段归档](历史阶段记录/2026-09-30_Efficiency_3A与3B测量.md)。旧数据的std、by-K、内存采样与CPU/GPU边界保持原记录。后续MagicBokeh若补测3B，需明确自身估深、目标选点及CPU颜色后处理等方法内步骤，不能将3A生成器计时直接改称E2E。
+
+统一输入与输出边界：
+
+~~~text
+Synthetic Track A 已给输入
+RGB + Geometry + Focus/K
+(+ 当前冻结配置明确允许的额外输入，如 Dr.Bokeh GT alpha)
+        ↓
+文件读取 / 解码
+        ↓
+方法需要的 resize / normalization / geometry adapter
+        ↓
+方法内部必要的 layer construction / repair / inpainting / model inference / renderer
+        ↓
+postprocess / clamp / color-range recovery
+        ↓
+25 × 576 × 1024 × 3 的 CPU RGB uint8 frames
+        ← E2E-given-inputs 计时结束
+        ↓
+PNG write / MP4 encode
+        不计
+~~~
+
+`E2E-given-inputs` **计入**：
+
+- benchmark 已给输入的文件读取与解码；
+- resize、normalization、focus/K/geometry adapter；
+- 当前冻结方法真正需要的分层、repair、inpainting、模型推理、renderer；
+- 必要 postprocess；
+- 最终25帧转为统一 CPU RGB uint8。
+
+`E2E-given-inputs` **排除**：
+
+- checkpoint / model load；
+- 首次 CUDA context 和一次性环境初始化；
+- benchmark 外部的 Geometry/Depth 生成；
+- GT alpha 的生成过程；
+- 最终 PNG/MP4 写盘与编码；
+- DAVIS VDA / DeepLens DAVIS DepthNet 等不属于 Track A 冻结输入权限的前置计算。
+
+方法权限必须跟 **Synthetic Track A 冻结主表**一致：
+
+- Dr.Bokeh：使用 GT-alpha reconstruction adapter；不把 DAVIS Full-public LDF 重新塞进 3B。
+- DeepLens：使用 Track A external-geometry、native TF1.15 CPU、single-SR frozen path；不使用 DAVIS native DepthNet。
+- BokehMe：Normalized + gamma=2.2。
+- MPIB：gamma=2.2。
+- BokehDiff：Normalized-B。
+- Any-to-Bokeh：官方冻结视频推理配置。
+
+正式测量规则：
+
+- 统一 1024×576、25 frames、batch size=1。
+- 固定当前已准备的 **4 段 Efficiency clips**，不根据速度结果更换场景；每段至少正式重复5次。
+- 模型加载后至少完成1次完整25帧 warm-up；若第一、第二次 warm-up仍有明显初始化差异，可增加 warm-up，但不得按结果挑有利次数。
+- GPU 方法采用 wall-clock + `cuda synchronize` 的方式界定开始/结束；不能直接用异步 Python `time()` 夹住 forward。
+- 输入读取采用 **warm filesystem cache** 条件：warm-up 后正式重复，不人为 drop OS page cache。
+- GPU 方法逐个串行执行，计时前必须通过连续空闲检查；不得与其他 GPU workload、DAVIS生产任务或并行 baseline 同时运行。
+- `Core Time` 仅统计当前方法核心 model/renderer 执行段；外围读取、adapter、CPU/GPU transfer 与最终 CPU uint8 conversion 不计入 Core，但全部进入 E2E。
+- `FPS (E2E) = 25 / E2E-given-inputs_seconds`。
+- GPU 行记录 inference peak VRAM；DeepLens CPU 行记录 peak process RSS，并在表注中明确单位/设备，不能把 CPU memory 与 GPU VRAM 当作同质排名。
+- 报告每方法跨固定 clips × repeats 的均值，并同时保留标准差和逐次原始记录；主表可展示 mean，机器可读记录保存完整分布。
+- DeepLens CPU 与其余 GPU 方法不做无条件“快N倍/慢N倍”结论，只报告各自冻结可复现路径的实际成本。
+- 本轮生产并发吞吐、历史跑全量数据耗时、后台多worker吞吐**不得**填入 Table 3B。
+
+3A 与 3B 的一句话区别：
+
+> **Table 3A = 模型级复杂度：这个方法算一次有多贵。**
+>
+> **Table 3B = 视频流水级效率：给定 Track A 输入后，一段25帧视频实际多久产出。**
 
 ---
 
 # 12. 效率测试统一规则
 
-当前正式 Efficiency 只保留 **Table 3：Model-level Computational Cost**。统一原则：
+当前正式Efficiency保留**Table 3A模型级成本**与**Table 3B 25帧E2E-given-inputs**。以下模型级规则用于3A；3B计时边界及完整25帧规则见其专节。共同要求同设备、固定配置、预热及重复测量：
 
 - 1024×576，batch size=1；
 - 固定输入与冻结方法配置，不为速度重新选择 adapter、gamma、aperture 或控制值；
@@ -839,9 +941,9 @@ Any-to-Bokeh正式成本为 **0.50464 s/output-frame** 的模型段和 **≈38.4
 - GFLOPs 只有在完整算子覆盖可信时才报告，否则标 N/A；
 - 不把不同 GPU / 不同论文私有计时边界的绝对时间直接换算成加速倍数。
 
-**后续 ATB 优化的额外 profiling**可以比 Table 3 更细：记录 VAE encode/decode、UNet、temporal/overlap、geometry/MPI 条件构建等阶段的时间与峰值显存。这些 profile 用于定位瓶颈，不自动成为新的主表。
+**后续 ATB 优化的额外 profiling**可以比 Table 3A 更细：记录 VAE encode/decode、UNet、temporal/overlap、geometry/MPI 条件构建等阶段的时间与峰值显存。这些 profile 用于定位瓶颈，不自动成为新的主表。
 
-原25帧 E2E-given-inputs 测量已完成并保存在历史记录中，但当前不再作为正式 Table 3B；后续如果工程部署需要，可继续作为 diagnostic 使用。
+Table 3B继续作为正式端到端效率表。旧卡六方法已有实测，新卡3B及MagicBokeh B的3B均待测；本次恢复表格不代表已执行这些补测。
 
 ---
 
@@ -853,14 +955,14 @@ Any-to-Bokeh 已完成：
 
 - Reproduced Synthetic 200×25；
 - DAVIS 50×25；
-- Table 3 模型级 Time / Params / Peak VRAM；
+- Table 3A 模型级 Time / Params / Peak VRAM；
 - 对应定量与固定定性复核。
 
 这些结果已经足够作为后续分析基线，当前不再通过新增 Low-FPS benchmark 扩大任务面。
 
 ## B. Efficiency / VRAM profiling
 
-首轮模块级profile已完成：固定四输入、每段预热1次、正式2次，VAE编码/解码约占模型段时间81%，RGB/CoC编码峰值均约34.29GiB，RGB多尺度FP32缓存6.46875GiB，UNet阶段峰值14.39GiB。每25输出帧实际编码RGB48帧槽、CoC48帧槽并解码32帧槽。分段同步计时只用于归因，不替代Table 3；权重和算法未改变。证据：[ATB首轮模块分析](records/any2bokeh-native-module-profile-20260930.json)。
+首轮模块级profile已完成：固定四输入、每段预热1次、正式2次，VAE编码/解码约占模型段时间81%，RGB/CoC编码峰值均约34.29GiB，RGB多尺度FP32缓存6.46875GiB，UNet阶段峰值14.39GiB。每25输出帧实际编码RGB48帧槽、CoC48帧槽并解码32帧槽。分段同步计时只用于归因，不替代Table 3A；权重和算法未改变。证据：[ATB首轮模块分析](records/any2bokeh-native-module-profile-20260930.json)。
 
 下一步据此设计最小受控验证，回答：
 
@@ -944,7 +1046,7 @@ output/
 - 可可靠获得时的 GFLOPs；
 - profiling阶段可附加 per-stage latency / memory。
 
-历史E2E/fps记录继续保留，但不再作为当前正式Table 3列。
+Table 3B另保存25帧Core、E2E-given-inputs、FPS、GPU设备采样显存或CPU RSS，保留原始重复、std、by-K及硬件；不得与3A混用时间字段。
 
 ## config.yaml
 
@@ -963,11 +1065,11 @@ output/
 ## 已确定
 
 - 当前主 Benchmark：Reproduced Any-to-Bokeh-style Synthetic + DAVIS；
-- 当前正式效率表：**Table 3 Model-level Computational Cost**；
-- 原 Table 3B 已完成但转为历史工程诊断，不占当前主表；
+- 当前正式效率表：**Table 3A模型级成本 + Table 3B 25帧端到端效率**；
+- 3A新旧GPU结果分开保留；3B旧卡六方法完成，新卡及MagicBokeh B待测；
 - 原 Track B / OPPO-style Low-FPS benchmark / Table 4 从当前计划移除；
 - 当前已完成Synthetic baseline：DeepLens、Dr.Bokeh、BokehMe、MPIB、BokehDiff、Any-to-Bokeh、MagicBokeh B；
-- **MagicBokeh B的Table 1及同配置Table 3已冻结**，额外GT目标控制权限随表披露；
+- **MagicBokeh B的Table 1及同配置Table 3A已冻结**，额外GT目标控制权限随表披露；
 - Any-to-Bokeh 是当前核心视频分析对象；
 - Ours 不预设低帧率 Depth completion、Token Merging 或三头结构，具体设计由 efficiency profiling 与 failure analysis 决定；
 - BokehCrafter继续 deferred，不阻塞当前推进。
@@ -976,9 +1078,9 @@ output/
 
 ### 1. MagicBokeh 的可复现接入（已完成）
 
-已确认官方代码`c672e63`、checkpoint、真实同尺寸输出、DAdepth/LDF预处理及六图块Table 3口径，完整原生验证与20次正式计时完成；当前公开checkout未见LICENSE文件，源码保持未修改。
+已确认官方代码`c672e63`、checkpoint、真实同尺寸输出、DAdepth/LDF预处理及六图块Table 3A口径，完整原生验证与20次正式计时完成；当前公开checkout未见LICENSE文件，源码保持未修改。
 
-目标选焦问题已完成预检，用户选择B，额外GT目标控制权限如上披露。200×25质量评价及同一B配置Table 3均已完成，不重复推理或候选选择；不再扩展A/B/K/gamma/threshold搜索。
+目标选焦问题已完成预检，用户选择B，额外GT目标控制权限如上披露。200×25质量评价及同一B配置Table 3A均已完成，不重复推理或候选选择；不再扩展A/B/K/gamma/threshold搜索。
 
 ### 2. Any-to-Bokeh 的效率瓶颈
 
@@ -1016,14 +1118,14 @@ output/
 1. 已完成基础复现
    ├── Synthetic 七方法：✅
    ├── DAVIS 六方法：✅
-   └── Table 3 模型级效率：✅ 六种GPU方法，含MagicBokeh
+   └── Table 3A 模型级效率：✅ 六种GPU方法，含MagicBokeh
 
 2. MagicBokeh — 已完成新增 baseline
    ├── 官方代码 / checkpoint / 完整native demo：✅；checkout未见LICENSE
    ├── 原生RGB→DAdepth/LDF→分块inference：✅
    ├── Synthetic目标点选焦adapter：✅ 用户冻结Depth-Medoid B
    ├── 200×25 Table 1：✅ 完整性和全部指标通过
-   └── Table 3：✅ B同配置完成；Auto-LDF成本留作历史
+   └── Table 3A：✅ B同配置完成；Auto-LDF成本留作历史
 
 3. Any-to-Bokeh Efficiency Profiling → 最小受控验证
    ├── 首轮阶段时间/显存归因：✅ VAE约81%，编码峰值约34.29GiB
@@ -1044,7 +1146,7 @@ output/
    └── 不为了符合旧计划强行加入低帧率Depth模块
 
 6. Ours 实现 / 消融 / 统一评价
-   └── 在冻结的 Table 1 / Table 2 / Table 3 及必要专项实验上补结果
+   └── 在冻结的 Table 1 / Table 2 / Table 3A / Table 3B及必要专项实验上补结果
 ~~~
 
 ### 16.1 MagicBokeh 的当前定位
@@ -1061,10 +1163,10 @@ Any-to-Bokeh 目前是与本项目最直接的公开视频 Bokeh baseline。现�
 
 只有这三步形成证据后，才冻结 Ours。
 
-### 16.3 旧 Low-FPS / Table 3B 的处理
+### 16.3 Track B与Table 3B的区分
 
 - Track B Clean、OPPO-style Low-FPS 自建 benchmark、原 Table 4：从当前主线与主表移除，历史设计保留；
-- 原 Table 3B：实测结果完整保留在 records/历史归档，不再作为当前主表；
+- Table 3B：正式保留25帧E2E-given-inputs及FPS，与低帧率Track B无关；旧卡已测结果恢复展示，新卡缺项仍待测；
 - 旧技术路线中的低帧率 depth propagation / Token Merging / 三头结构：继续作为候选，不是必须实现项；
 - 若未来导师或实验结果重新指向低帧率输入问题，再单独恢复，不需要现在为其继续补实验。
 
@@ -1754,31 +1856,17 @@ scene_xxxx/
 
 # 18. 当前最终表格体系
 
-当前主线只保留 **4 个结果表块 + 1 张辅助验证表**：
+正式保留两张效率表。全部表块如下，Table 0为历史开发证据，Table V为辅助外部对照：
 
-1. **Table 0：GT Renderer Comparison（历史开发验证）**
-2. **Table 1：Reproduced Any-to-Bokeh-style Synthetic**
-3. **Table 2：DAVIS Real-world**
-4. **Table 3：Model-level Computational Cost**
-5. **Table V：Benchmark Validation vs Paper Table 1（辅助）**
+| 表格 | 职责与当前状态 |
+|---|---|
+| Table 0 | GT Renderer Comparison，历史开发验证 |
+| Table 1 | Reproduced Synthetic，七方法结果已完成 |
+| Table 2 | DAVIS，六方法结果已完成；MagicBokeh尚未评价 |
+| Table 3A | 模型级Time/output-frame、Params、GFLOPs、Peak VRAM；新旧GPU各自记录 |
+| Table 3B | 完整25帧Core、E2E-given-inputs、FPS、内存；旧卡六方法已完成，新卡及MagicBokeh B待测 |
+| Table V | 与论文报告值的辅助对照 |
 
-~~~text
-Table 0   GT Renderer Comparison（历史开发验证）
+**继续移除的是Table 1B / Track B Clean及原Table 4 OPPO-style Low-FPS专项**，历史设计保留；不恢复低帧率sweep。Table 3B不属于Track B，不得因停做低帧率实验而删除端到端效率评价。原有机器可读记录文件名、历史阶段文档和0930已汇报原稿保留，不追溯改写实验事实。
 
-Table 1   Synthetic Reproduction
-Table V   Benchmark Validation vs Paper（辅助）
-
-Table 2   DAVIS Real-world
-
-Table 3   Model-level Computational Cost
-~~~
-
-其中：
-
-- 原 **Table 1A** 即现在的 Table 1；历史文档中的 Track A 名称不追溯删除；
-- 原 **Table 1B / Track B Clean** 从当前计划移除；
-- 原 **Table 3A** 直接更名为 Table 3；
-- 原 **Table 3B** 已完成但只作为历史工程测量保留；
-- 原 **Table 4 OPPO-style Low-FPS Depth Robustness** 从当前主表体系移除；
-- MagicBokeh已完成Table 1 / B同配置Table 3；Table 2尚未扩展，不阻塞当前分析；
-- Ours 最终需要补哪些表，以后续 efficiency profiling 与 failure analysis 确定的研究问题为准。
+本次只恢复表格体系与展示，不启动新卡3B、优化或其他实验；待测项按后续明确任务执行。
