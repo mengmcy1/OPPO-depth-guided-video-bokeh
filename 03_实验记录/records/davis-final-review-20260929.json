@@ -1,0 +1,164 @@
+{
+  "status": "DAVIS_2016_V2_SIX_BASELINES_COMPLETE_AND_FROZEN",
+  "reviewed_utc": "2026-09-30T04:04:43.900082+00:00",
+  "automatic_completion_beijing": "2026-09-30 00:26:51",
+  "total_prediction_frames": 7500,
+  "total_MP4": 300,
+  "methods": {
+    "deeplens": {
+      "VEPI_public_mp4": 0.9289552126730566,
+      "VEPI_png": 0.9313776256710463,
+      "codec_delta": -0.0024224129979895114,
+      "codec_delta_range": [
+        -0.008951481227175151,
+        -5.769877738615037e-05
+      ],
+      "paper_VEPI": 0.715,
+      "difference_from_paper": 0.21395521267305662
+    },
+    "drbokeh": {
+      "VEPI_public_mp4": 0.8768241530529552,
+      "VEPI_png": 0.880094353675208,
+      "codec_delta": -0.0032702006222530213,
+      "codec_delta_range": [
+        -0.010018655143667843,
+        -0.0013032836399338166
+      ],
+      "paper_VEPI": 0.863,
+      "difference_from_paper": 0.013824153052955257
+    },
+    "bokehme": {
+      "VEPI_public_mp4": 0.9537135860651665,
+      "VEPI_png": 0.9566225004956381,
+      "codec_delta": -0.002908914430471552,
+      "codec_delta_range": [
+        -0.010240903136070179,
+        -0.0009436119810254384
+      ],
+      "paper_VEPI": 0.937,
+      "difference_from_paper": 0.016713586065166486
+    },
+    "mpib": {
+      "VEPI_public_mp4": 0.9298719432788088,
+      "VEPI_png": 0.9323453916500268,
+      "codec_delta": -0.0024734483712179787,
+      "codec_delta_range": [
+        -0.009000063787185208,
+        -0.00038478702234989726
+      ],
+      "paper_VEPI": 0.921,
+      "difference_from_paper": 0.008871943278808803
+    },
+    "bokehdiff": {
+      "VEPI_public_mp4": 0.8472160353979977,
+      "VEPI_png": 0.8472812365859324,
+      "codec_delta": -6.520118793463148e-05,
+      "codec_delta_range": [
+        -0.004174572074800875,
+        0.0010654265974650023
+      ],
+      "paper_VEPI": 0.859,
+      "difference_from_paper": -0.011783964602002261
+    },
+    "any2bokeh": {
+      "VEPI_public_mp4": 0.9501061845653479,
+      "VEPI_png": 0.9539970213566075,
+      "codec_delta": -0.0038908367912592954,
+      "codec_delta_range": [
+        -0.01030867429738569,
+        -0.0013477620904384091
+      ],
+      "paper_VEPI": 0.944,
+      "difference_from_paper": 0.00610618456534795
+    }
+  },
+  "integrity_record": "davis-six-method-integrity-20260929.json",
+  "metric_record": "davis-six-method-50-20260929.json",
+  "visual_review": {
+    "scenes": [
+      "bear",
+      "blackswan",
+      "bmx-trees",
+      "breakdance",
+      "dog",
+      "horsejump-high",
+      "kite-surf",
+      "soapbox"
+    ],
+    "selection": "Fixed before preflight; no score-selected extra scenes",
+    "keyframes": [
+      0,
+      6,
+      12,
+      18,
+      24
+    ],
+    "cross_method_keyframe_groups": 240,
+    "chronological_prediction_frames_viewed": 1200,
+    "chronological_input_frames_viewed": 200,
+    "evidence": "All8 cross-method keyframe sheets and all56 chronological25-frame sheets (input plus six methods) inspected. PNG images, 256x144 per temporal panel; not real-time video playback or a blinded perceptual study.",
+    "preview_root": "outputs/davis-baselines-20260929/final-review",
+    "video_path_pattern": "outputs/davis-baselines-20260929/{method}/evaluation/mp4/{scene}.mp4",
+    "objective_implementation_errors_found": false,
+    "scene_observations": {
+      "bear": "六方法均保留熊的连续姿态；石墙和邻近岩石失焦程度不同，毛发细节有所变化。未见孤立黑帧或全局亮度跳变。",
+      "blackswan": "岸边/叶片虚化可见；主体及倒影随源运动连续。水波本身随时间变化，不能将全部纹理变化视为模型闪烁。",
+      "bmx-trees": "树干遮挡、车轮细结构和源相机运动模糊均保留；后半段原图已有明显运动模糊。Dr的LDF/LaMa相关遗漏见既有预检中间层记录，不改输入。",
+      "breakdance": "DeepLens背景人群相对清晰；Dr部分右侧旁观者被保留为清晰层，区域随帧变化；各方法舞者姿态连续。背景人物自身也在运动，不唯一归因于时序网络。",
+      "dog": "原图本身含尾部及相机运动模糊，输出未恢复这些源信息；主体和草地变化连续，未见孤立坏帧。",
+      "horsejump-high": "BokehMe前段背景和近处障碍物失焦较强，后段减弱；Normalized控制随span变化，保持原行为。马、骑手及障碍物相对姿态顺序正常。",
+      "kite-surf": "细绳/水花是保留的困难区域；源水波和飞沫随时间变化，不能据接触表单独给出闪烁强弱的总体排名。",
+      "soapbox": "DeepLens近坡细节保留较多，其他方法坡面失焦可见；Dr坡缘/补全边界不理想，车与人员随运动保持连续。"
+    },
+    "method_table_notes": {
+      "deeplens": [
+        "轻虚化；breakdance旁观者仍较清晰",
+        "大主体保留；原生深度不能精确覆盖细结构",
+        "发丝/细边软化保留",
+        "25帧姿态连续；不作无闪烁保证"
+      ],
+      "drbokeh": [
+        "岸边/坡面失焦可见；背景分层不均",
+        "breakdance旁观者混入salient层",
+        "细线遗漏、坡边/遮挡补全痕迹保留",
+        "分割及清晰区随帧变化，保留失败案例"
+      ],
+      "bokehme": [
+        "horsejump早帧虚化较强，随后转弱",
+        "大主体保留，细线/水花局部软化",
+        "细边过渡仍有偏差",
+        "随帧失焦强度变化；记录span，不补偿"
+      ],
+      "mpib": [
+        "岸边/近坡失焦可见；近焦背景仍保留",
+        "大主体保留，细线/水花局部软化",
+        "轮廓及遮挡边缘仍有软化",
+        "25帧顺序连续；不作无闪烁保证"
+      ],
+      "bokehdiff": [
+        "背景失焦可见；部分近焦背景仍清晰",
+        "主体细节存在平滑/重绘",
+        "毛发、细绳及局部纹理变化保留",
+        "纹理变化保留，不作闪烁等级排名"
+      ],
+      "any2bokeh": [
+        "岸边/近坡失焦可见",
+        "大主体保留，细结构仍有偏差",
+        "毛发/细线边缘残余软化",
+        "未见拼接处孤立错帧；不作无闪烁保证"
+      ]
+    },
+    "limits": "No claim of flicker-free output or exhaustive full-resolution artifact absence. Source motion, geometry changes and model effects are not uniquely separated by contact sheets. MP4 decode integrity and original-author metric entrance equality checked separately."
+  },
+  "adapters_changed_after_metrics": false,
+  "new_inference_performed": false,
+  "metrics_used_to_retune": false,
+  "interpretation": [
+    "VEPI measures foreground edge preservation; AIF identity can score1 without bokeh.",
+    "Shared VDA/focus/K16 does not give identical internal defocus across adapters.",
+    "DeepLens uses native DepthNet+aperture0.5; Dr uses Full-public LDF+LaMa without GT alpha.",
+    "Paper differences and rankings are observations, never pass thresholds.",
+    "Raw generated metric record retains REVIEW_PENDING from generation; this final review is the authoritative closure."
+  ],
+  "next_step": "Efficiency, given-inputs protocol; first resolve persistent GPU100% with0MiB/no visible process on current restarted server."
+}

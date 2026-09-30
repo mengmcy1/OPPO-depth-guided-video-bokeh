@@ -924,16 +924,21 @@ A的PSNR/SSIM/FD/RM更接近论文，B的FVD/VFID-I更接近。完整200段与�
 
 ## Table 2：DAVIS Real-world
 
+**冻结状态：DAVIS_2016_V2_SIX_BASELINES_COMPLETE_AND_FROZEN（2026-09-30）。** 每方法50×25帧，六方法7500帧及300段统一H.264视频完整；预检8段均复用。主列采用MP4 VEPI，PNG和codec差值另列诊断。BokehCrafter继续deferred，不计入本轮六方法。
+
 | Method | VEPI-public-mp4 ↑ | Background Defocus | Focus Leakage | Halo / Boundary | Temporal Flicker / Video |
 |---|---:|---|---|---|---|
-| DeepLens |  |  |  |  |  |
-| Dr.Bokeh |  |  |  |  |  |
-| BokehMe |  |  |  |  |  |
-| MPIB |  |  |  |  |  |
-| BokehDiff |  |  |  |  |  |
-| Any-to-Bokeh |  |  |  |  |  |
-| BokehCrafter* |  |  |  |  |  |
-| Ours |  |  |  |  |  |
+| DeepLens | 0.92896 | 轻虚化；breakdance旁观者仍较清晰 | 大主体保留；原生深度不能精确覆盖细结构 | 发丝/细边软化保留 | 25帧姿态连续；不作无闪烁保证 |
+| Dr.Bokeh | 0.87682 | 岸边/坡面失焦可见；背景分层不均 | breakdance旁观者混入salient层 | 细线遗漏、坡边/遮挡补全痕迹保留 | 分割及清晰区随帧变化，保留失败案例 |
+| BokehMe | 0.95371 | horsejump早帧虚化较强，随后转弱 | 大主体保留，细线/水花局部软化 | 细边过渡仍有偏差 | 随帧失焦强度变化；记录span，不补偿 |
+| MPIB | 0.92987 | 岸边/近坡失焦可见；近焦背景仍保留 | 大主体保留，细线/水花局部软化 | 轮廓及遮挡边缘仍有软化 | 25帧顺序连续；不作无闪烁保证 |
+| BokehDiff | 0.84722 | 背景失焦可见；部分近焦背景仍清晰 | 主体细节存在平滑/重绘 | 毛发、细绳及局部纹理变化保留 | 纹理变化保留，不作闪烁等级排名 |
+| Any-to-Bokeh | 0.95011 | 岸边/近坡失焦可见 | 大主体保留，细结构仍有偏差 | 毛发/细线边缘残余软化 | 未见拼接处孤立错帧；不作无闪烁保证 |
+| Ours | later | later | later | later | later |
+
+定性列来自固定8段、每方法40组关键帧及全部25帧顺序接触图复核（共1200张prediction和200张input），不是实时播放盲评，不据此宣称无闪烁或给出细微时序质量排名。所有48段主视觉视频保存在`outputs/davis-baselines-20260929/{method}/evaluation/mp4/{scene}.mp4`；逐场景观察、方法限制及视频入口见[最终复核](records/davis-final-review-20260929.json)。Full-public分割/补全错误、Normalized强度变化和生成细节变化均保留；不再据论文排序调整adapter。
+
+全量Normalized的K/span约16.0245–72.8571；Dr实际图层最大半径14.37024px，LDF阈值空/全满帧均为0，但这不代表分割质量正确。全量检查见[完整性记录](records/davis-six-method-integrity-20260929.json)，MP4/PNG逐帧值见[六方法指标](records/davis-six-method-50-20260929.json)。VEPI只能描述前景边缘保留，不能单独排序整体虚化质量。
 
 ---
 

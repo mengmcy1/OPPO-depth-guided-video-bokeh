@@ -773,7 +773,29 @@ K增大时PSNR下降，K32的LPIPS/FD/RM明显更大，与已知饱和限制相�
 
 ---
 
-**最后更新**：2026-09-29
+**最后更新**：2026-09-30
 **状态**：Any-to-Bokeh公开代理复现及author-public指标已完成；MPIB/BokehMe/Dr.Bokeh Track A已填真实结果，BokehDiff双200段及A/B复核完成且Normalized已选为主表展示配置；Dr.Bokeh新输入协议200段已收尾，DeepLens按用户冻结的单级SR+饱和协议完成200段，见8.7；范围与版本依据保留在8.6。
 
 补算实现及权重来源：[作者公开指标代码](https://github.com/vivoCameraResearch/any-to-bokeh/blob/f7a16959dd219080fb8eec0d32bb9602d8970c22/metrics/vid_metrics.py)、[cdfvd固定版本](https://github.com/songweige/content-debiased-fvd/tree/a1e037ab7cb087debd2221d14ae4a001ec054201)、[作者指定I3D权重](https://huggingface.co/zhengchong/VFID)、[官方VideoMAE2权重](https://huggingface.co/OpenGVLab/VideoMAE2)。
+
+
+## DAVIS v2 六方法收尾（2026-09-30）
+
+六方法各50段×25帧完整性检查通过，300段视频按冻结H.264参数编码；MP4主VEPI与作者原始入口逐帧相等，PNG只作codec诊断。自动计算于北京时间00:26:51完成，随后固定8段的六方法关键帧及25帧顺序接触图完成定性复核，Table2冻结。没有重新生成预检、补偿Normalized控制、改gamma/aperture或按论文分数调参。
+
+| Method | VEPI-public-mp4 ↑ | VEPI-png诊断 | MP4−PNG | 论文VEPI | 本轮−论文 |
+|---|---:|---:|---:|---:|---:|
+| DeepLens | 0.92896 | 0.93138 | -0.00242 | 0.715 | +0.21396 |
+| Dr.Bokeh | 0.87682 | 0.88009 | -0.00327 | 0.863 | +0.01382 |
+| BokehMe | 0.95371 | 0.95662 | -0.00291 | 0.937 | +0.01671 |
+| MPIB | 0.92987 | 0.93235 | -0.00247 | 0.921 | +0.00887 |
+| BokehDiff | 0.84722 | 0.84728 | -0.00007 | 0.859 | -0.01178 |
+| Any-to-Bokeh | 0.95011 | 0.95400 | -0.00389 | 0.944 | +0.00611 |
+
+论文参考沿用上文§4.2 ICLR2026正式版Table1。本轮五方法与论文差值绝对值约0.0061–0.0167，DeepLens差值为+0.21396；这些只是声明条件下的外部对照，不能据此声称复原了作者私有adapter或超过原论文整体质量。本轮BokehMe和Any-to-Bokeh的VEPI排序交换；DeepLens采用原生DepthNet+UI默认aperture0.5，部分背景虚化较轻，该分数不能单独证明其bokeh质量改善。主VEPI衡量前景边缘保留，AIF原样输出就能在PNG自比达到1。
+
+全量Normalized K/span约16.0245–72.8571，内部失焦强度并不统一；Dr实际图层最大半径14.37024px，LDF阈值空/全满帧均为0，但仍保留轮廓与分层失败。Dr的DAVIS行使用Full-public，不能与Synthetic的GT-alpha主行混称同一输入权限。
+
+定性终审保留了breakdance的旁观者清晰层与分割变化、horsejump-high的时变虚化、kite-surf的细绳/水花、soapbox坡缘补全等现象。连续25帧以PNG接触图逐帧复核，没有宣称实时播放盲评、无闪烁或完整时序质量排名；全部MP4保留供播放。固定集合内未发现新的客观实现错误，按既定规则冻结，不扩大候选或为了排名重跑。
+
+证据：[最终复核](records/davis-final-review-20260929.json)、[六方法逐帧指标](records/davis-six-method-50-20260929.json)、[全量完整性](records/davis-six-method-integrity-20260929.json)、[Table2](Benchmark与Baseline统一评价协议.md#table-2davis-real-world)。Efficiency仍未实测，下一步先确认当前设备空闲状态，再按E2E-given-inputs执行。

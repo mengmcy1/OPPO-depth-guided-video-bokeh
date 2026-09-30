@@ -24,6 +24,16 @@ def gpu_processes():
     return [int(x.strip()) for x in subprocess.check_output(['nvidia-smi', '--query-compute-apps=pid', '--format=csv,noheader,nounits'], text=True).splitlines() if x.strip()]
 
 
+def assert_idle_gpu():
+    # A container may see no compute PID even while the device reports activity.
+    # Do not label that situation as an exclusive idle timing environment.
+    for i in range(3):
+        assert not gpu_processes(), 'Wait for an idle GPU; do not stop other processes'
+        utilization = int(subprocess.check_output(['nvidia-smi', '--id=0', '--query-gpu=utilization.gpu', '--format=csv,noheader,nounits'], text=True).strip())
+        assert utilization <= 5, f'GPU utilization {utilization}% before timing; resolve activity/telemetry before measuring'
+        if i < 2: time.sleep(1)
+
+
 def load(method, c):
     """Reuse the existing adapters; no checkpoint/control changes for timing."""
     if method == 'deeplens':
@@ -141,7 +151,7 @@ def infer(method, state, frames):
 
 
 def worker(method, c):
-    assert not gpu_processes(), 'Wait for an idle GPU; do not stop other processes'
+    assert_idle_gpu()
     cpu = method == 'deeplens'
     assert os.environ.get('CUDA_VISIBLE_DEVICES') == ('' if cpu else '0')
     if not cpu: import torch
