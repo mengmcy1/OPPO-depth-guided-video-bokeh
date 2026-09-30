@@ -39,7 +39,7 @@ Benchmark Suite
 
 说明：
 
-- **Reproduced Any-to-Bokeh-style Synthetic**：主 paired 定量评价，当前六种 baseline 已完成，后续加入 MagicBokeh 时按其原生输入能力单独冻结 adapter；
+- **Reproduced Any-to-Bokeh-style Synthetic**：主 paired 定量评价，当前七种 baseline 已完成，MagicBokeh采用已冻结的Target-guided Depth-Medoid B；
 - **DAVIS**：真实视频泛化与边界/时序失败场景观察，当前六方法已冻结；
 - **Efficiency**：作为独立 Table 3，重点比较模型级 Time / Params / Peak VRAM，并进一步对 Any-to-Bokeh 做细粒度 profile；
 - **低帧率 Depth / OPPO-style 自建 benchmark**：从当前主表与执行顺序移除；若后续 Ours 的最终设计重新需要这一问题，再作为可选扩展重新立项，不阻塞当前研究；
@@ -329,13 +329,13 @@ Video + Explicit\ Geometry + Temporal\ Modeling
 
 MagicBokeh 是 CVPR 2026 的单步扩散式 Bokeh 方法，将 Real-ISR、内部 disparity/depth estimation 与可控 Bokeh 统一到一个框架，并通过 U-Net block pruning 等设计强调效率。它不是原生视频方法，也不是与 Any-to-Bokeh 完全相同的外部 Geometry 输入范式，因此加入时必须保留其原生输入边界，不把它伪装成“同输入视频方法”。
 
-2026-09-30已完成官方完整示例、RGB→DAdepth/LDF→虚化路径与原生Auto-LDF成本。官方自动选择路径先离线预测深度/mask，再用512×512重叠图块生成同尺寸输出。随后完成5000帧目标统计与40帧三候选预检；用户已选择并冻结 **Target-guided Depth-Medoid Point-Focus B**，200×25推理/评价运行中。DAVIS尚未扩展。
+2026-09-30已完成官方完整示例、RGB→DAdepth/LDF→虚化路径与原生Auto-LDF成本。官方自动选择路径先离线预测深度/mask，再用512×512重叠图块生成同尺寸输出。随后完成5000帧目标统计与40帧三候选预检；用户已选择并冻结 **Target-guided Depth-Medoid Point-Focus B**，200×25推理/评价及同配置Table 3全部完成。DAVIS尚未扩展。
 
 正式B从metadata指定的对象构造可见alpha（扣除更近层遮挡），按`>0.9→>0.5→>0`选安全最大8连通域；用模型自身PNG8深度找最接近该区域中位数的实际像素，多解取边界距离最大、再row-major。focus读取该像素深度/255，不直接使用区域中位数标量或benchmark深度标量。**GT可见目标区域与自身预测深度参与选点，这是一项额外的目标控制权限**；生成器仅接收RGB、原生预测depth形成的defocus/focus mask及demo固定提示词，GT深度/alpha/隐藏RGB不进入神经模型。逐帧无平滑，K/32、阈值0.1、512px分块和AdaIN保持原生。
 
 5000帧均有`alpha>0.9`安全目标区域，无不可见帧或实例切换。40帧Auto/A/B共120张输出已查看，没有计算Bokeh GT指标来选方案；A点击正确，但K32 repro_000覆盖均值6.50%，B61.98%。用户明确改用B并披露辅助选点，保留部分目标失焦等模型/代理数据边界。所有点击位于目标内部、输出finite，正式入口与B预检重放PNG逐值一致。配置`configs/magicbokeh-track-a-frozen.json`。
 
-证据：[原生复现与Auto-LDF成本](records/magicbokeh-native-and-table3-20260930.json)、[目标统计、三候选预检与B冻结](records/magicbokeh-point-focus-preflight-20260930.json)。正式B的同配置Table 3在GPU独占时补测，原Auto-LDF记录不删除。
+证据：[原生复现与Auto-LDF成本](records/magicbokeh-native-and-table3-20260930.json)、[目标统计、三候选预检与B冻结](records/magicbokeh-point-focus-preflight-20260930.json)。正式B的同配置Table 3已补齐：1.20890s/output-frame、1398.545M、≈5.30GiB；[完整质量结果](records/magicbokeh-track-a-200-20260930.json)、[B成本](records/magicbokeh-frozen-B-table3-20260930.json)。原Auto-LDF记录保留为历史对照。
 
 ## BokehCrafter
 
@@ -412,7 +412,7 @@ Video Output
 
 | Benchmark / Evidence | 当前职责 |
 |---|---|
-| Reproduced Any-to-Bokeh-style Synthetic | paired 主定量；baseline reproduction；后续 MagicBokeh 适配后补测 |
+| Reproduced Any-to-Bokeh-style Synthetic | paired 主定量；七方法baseline reproduction，含已冻结MagicBokeh B |
 | DAVIS | 真实视频 VEPI + 固定定性失败场景；当前六方法已冻结 |
 | Table 3 Efficiency | 模型级 Time / Params / Peak VRAM；支撑后续 ATB 效率优化 |
 | ATB profiling / failure analysis | 不单独伪装成 benchmark；作为确定 Ours 方向的机制证据 |
@@ -491,7 +491,7 @@ Any-to-Bokeh 对同一批输入只产生一份 prediction，再分别以两种 r
 
 ## Table 1：Any-to-Bokeh Synthetic / Reproduced Synthetic
 
-建议分别报告 Track A 与 Track B。
+当前只报告冻结的Synthetic主表；Track B已退出当前执行顺序，历史设计保留。
 
 | Method | PSNR ↑ | SSIM ↑ | LPIPS ↓ | FVD ↓ | FD ↓ | RM ↓ |
 |---|---:|---:|---:|---:|---:|---:|
@@ -501,7 +501,7 @@ Any-to-Bokeh 对同一批输入只产生一份 prediction，再分别以两种 r
 | MPIB（γ=2.2冻结） | **31.6195** | **0.974408** | **0.02835** | **24.95694** | **0.44985** | **0.008184** |
 | BokehDiff-B（Normalized，主表） | **27.0627** | **0.843751** | **0.13202** | **65.99693** | **0.80225** | **0.021633** |
 | Any-to-Bokeh | **39.7116** | **0.986305** | **0.01515** | **8.93752** | **0.44496** | **0.005645** |
-| MagicBokeh（Target-guided Depth-Medoid B，已冻结） | pending | pending | pending | pending | pending | pending |
+| MagicBokeh（Target-guided Depth-Medoid B） | **25.1202** | **0.799536** | **0.19773** | **97.78987** | **0.87097** | **0.026840** |
 | BokehCrafter* |  |  |  |  |  |  |
 | Ours |  |  |  |  |  |  |
 
@@ -767,7 +767,7 @@ A的PSNR/SSIM/FD/RM更接近论文，B的FVD/VFID-I更接近。完整200段与�
 
 > 本 Benchmark 受 Any-to-Bokeh 公开合成协议启发，但不是作者官方 Synthetic Test Set 的逐样本复现，因此 paper-reported numbers 仅作为外部参考，不与本项目 Table 1 成绩混为同一评价结果。
 
-当前 public-proxy sanity check 已完成；现阶段新增任务是接入 MagicBokeh，并在保持原生输入边界的前提下决定其可进入的 Table 1 / Table 3 项。
+当前 public-proxy sanity check 已完成；MagicBokeh的Table 1与B同配置Table 3已经完成，当前转入ATB效率机制验证与失败场景分析。
 
 
 ---
@@ -802,19 +802,19 @@ A的PSNR/SSIM/FD/RM更接近论文，B的FVD/VFID-I更接近。完整200段与�
 | BokehMe | RTX PRO 6000 Blackwell | 0.01503 | 1.164 | N/A† | ≈1.01 |
 | MPIB | RTX PRO 6000 Blackwell | 0.25277 | 41.528 | N/A† | ≈2.43 |
 | BokehDiff | RTX PRO 6000 Blackwell | 1.10397 | 3493.432 | N/A† | ≈18.37 |
-| **MagicBokeh** | RTX PRO 6000 Blackwell | **1.17280** | **1398.545** | N/A‡ | **≈5.30** |
+| **MagicBokeh（B）** | RTX PRO 6000 Blackwell | **1.20890** | **1398.545** | N/A‡ | **≈5.30** |
 | **Any-to-Bokeh** | RTX PRO 6000 Blackwell | **0.50464** | **2457.810** | N/A† | **≈38.47** |
 | Ours | GPU | later | later | later | later |
 
 **已完成部分（2026-09-30）**：原3A五种GPU方法各4个固定输入×5次正式重复，共100个计时样本；逐帧方法测第0帧，Any-to-Bokeh保留25帧原生调用再按实际输出帧数归一。表中 Time 为同步的核心模型/renderer段，不是完整25帧E2E。
 
-**MagicBokeh补测（2026-09-30）**：复用同四个RGB第0帧与K4/8/16/32，各预热1次、正式5次。每帧原生六个512×512图块、stride256；模型段包含六次生成器forward和GPU重叠拼接。DAdepth/LDF先由RGB独立生成条件，其时间和参数不进入生成器列；输入控制构造/传输及CPU PIL/AdaIN也不计。实际调用参数包含UNet、ControlNet、VAE和每图块调用的text encoder。Torch allocated/reserved峰值为3.89219/4.62695GiB，设备采样峰值为5.29980GiB。原生自动选焦与其他方法的focus/geometry权限不同，当前只测模型成本，未冻结Synthetic质量行。
+**MagicBokeh补测（2026-09-30）**：复用同四个RGB第0帧与K4/8/16/32，各预热1次、正式5次。每帧原生六个512×512图块、stride256；模型段包含六次生成器forward和GPU重叠拼接。正式B沿用自身DAdepth并用GT可见目标辅助选点；其预处理时间和参数不进入生成器列；输入控制构造/传输及CPU PIL/AdaIN也不计。实际调用参数包含UNet、ControlNet、VAE和每图块调用的text encoder。Torch allocated/reserved峰值为3.89219/4.62695GiB，设备采样峰值为5.29980GiB。正式主行使用已冻结B与demo提示词，和Synthetic质量配置一致；原Auto-LDF/空提示词1.17280s记录为历史对照。输入权限及控制坐标差异明确披露。
 
-‡ MagicBokeh没有可信的完整算子覆盖，GFLOPs记N/A，未将部分计数报告为完整复杂度。证据：[20次原始计时与复核](records/magicbokeh-native-and-table3-20260930.json)；入口`scripts/measure_magicbokeh.py`、`configs/magicbokeh-native.json`。
+‡ MagicBokeh没有可信的完整算子覆盖，GFLOPs记N/A，未将部分计数报告为完整复杂度。证据：[B同配置20次原始计时与复核](records/magicbokeh-frozen-B-table3-20260930.json)；入口`scripts/measure_magicbokeh.py --focus-control frozen-b`、`configs/magicbokeh-track-a-frozen.json`。
 
 † GFLOPs已执行独立算子覆盖检查，但自定义CUDA、FFT、归一化、逐元素、插值及随机控制等没有完整覆盖，因此总GFLOPs继续标 N/A；不使用不完整计数冒充全路径复杂度。显存为0.2秒设备占用采样峰值，精确Torch allocated/reserved另存。Params按实际调用神经模块统计。
 
-当前最值得继续分析的是 Any-to-Bokeh：约 **0.50464 s/output-frame** 的模型段和 **≈38.47 GiB** 的采样峰值明显形成优化空间。下一步不是立刻改网络，而是先把 VAE、UNet、temporal/overlap、geometry conditioning、decode 等阶段的时间与峰值显存贡献 profile 清楚，再决定改动位置。
+Any-to-Bokeh正式成本为 **0.50464 s/output-frame** 的模型段和 **≈38.47 GiB** 的设备采样峰值。首轮模块profile已定位VAE时间占比约81%、编码Torch allocated峰值约34.29GiB及6.47GiB RGB缓存；下一步用最小受控实验区分activation、缓存保留与重叠计算的贡献，再决定改动位置。
 
 原 Table 3B 及其六方法25帧 E2E 结果仍可在：
 - `records/efficiency-track-a-3ab-20260930.json`
@@ -860,7 +860,9 @@ Any-to-Bokeh 已完成：
 
 ## B. Efficiency / VRAM profiling
 
-下一步针对现有冻结实现做**模块级 profile**，目标不是先改代码，而是回答：
+首轮模块级profile已完成：固定四输入、每段预热1次、正式2次，VAE编码/解码约占模型段时间81%，RGB/CoC编码峰值均约34.29GiB，RGB多尺度FP32缓存6.46875GiB，UNet阶段峰值14.39GiB。每25输出帧实际编码RGB48帧槽、CoC48帧槽并解码32帧槽。分段同步计时只用于归因，不替代Table 3；权重和算法未改变。证据：[ATB首轮模块分析](records/any2bokeh-native-module-profile-20260930.json)。
+
+下一步据此设计最小受控验证，回答：
 
 - VAE encode / decode 分别占多少时间与显存；
 - UNet / temporal blocks 的主要 activation 峰值在哪里；
@@ -964,23 +966,23 @@ output/
 - 当前正式效率表：**Table 3 Model-level Computational Cost**；
 - 原 Table 3B 已完成但转为历史工程诊断，不占当前主表；
 - 原 Track B / OPPO-style Low-FPS benchmark / Table 4 从当前计划移除；
-- 当前已完成 baseline：DeepLens、Dr.Bokeh、BokehMe、MPIB、BokehDiff、Any-to-Bokeh；
-- **MagicBokeh 是当前短期优先新增 baseline**；
+- 当前已完成Synthetic baseline：DeepLens、Dr.Bokeh、BokehMe、MPIB、BokehDiff、Any-to-Bokeh、MagicBokeh B；
+- **MagicBokeh B的Table 1及同配置Table 3已冻结**，额外GT目标控制权限随表披露；
 - Any-to-Bokeh 是当前核心视频分析对象；
 - Ours 不预设低帧率 Depth completion、Token Merging 或三头结构，具体设计由 efficiency profiling 与 failure analysis 决定；
 - BokehCrafter继续 deferred，不阻塞当前推进。
 
 ## 仍需继续确认
 
-### 1. MagicBokeh 的可复现接入
+### 1. MagicBokeh 的可复现接入（已完成）
 
 已确认官方代码`c672e63`、checkpoint、真实同尺寸输出、DAdepth/LDF预处理及六图块Table 3口径，完整原生验证与20次正式计时完成；当前公开checkout未见LICENSE文件，源码保持未修改。
 
-目标选焦问题已完成预检，用户选择B，额外GT目标控制权限如上披露。当前任务为完成已启动的200×25质量评价，并补同一B配置的Table 3；不再扩展A/B/K/gamma/threshold搜索。
+目标选焦问题已完成预检，用户选择B，额外GT目标控制权限如上披露。200×25质量评价及同一B配置Table 3均已完成，不重复推理或候选选择；不再扩展A/B/K/gamma/threshold搜索。
 
 ### 2. Any-to-Bokeh 的效率瓶颈
 
-当前已有总量证据，但还没有模块级归因。需要 profile：
+首轮已定位到VAE时间占比约81%、编码峰值约34.29GiB及6.47GiB RGB缓存。待继续区分编码activation、缓存保留与重复计算的贡献，并细分：
 
 - VAE；
 - UNet；
@@ -1012,22 +1014,22 @@ output/
 
 ~~~text
 1. 已完成基础复现
-   ├── Synthetic 六方法：✅
+   ├── Synthetic 七方法：✅
    ├── DAVIS 六方法：✅
    └── Table 3 模型级效率：✅ 六种GPU方法，含MagicBokeh
 
-2. MagicBokeh — 当前短期新增 baseline
+2. MagicBokeh — 已完成新增 baseline
    ├── 官方代码 / checkpoint / 完整native demo：✅；checkout未见LICENSE
    ├── 原生RGB→DAdepth/LDF→分块inference：✅
    ├── Synthetic目标点选焦adapter：✅ 用户冻结Depth-Medoid B
-   ├── 200×25 Table 1：推理/评价运行中
-   └── Table 3：Auto-LDF原生成本已测；B同配置待补
+   ├── 200×25 Table 1：✅ 完整性和全部指标通过
+   └── Table 3：✅ B同配置完成；Auto-LDF成本留作历史
 
-3. Any-to-Bokeh Efficiency Profiling
-   ├── 分解 VAE / UNet / temporal / overlap / condition / decode 时间
-   ├── 定位≈38.47 GiB峰值主要来源
-   ├── 检查重叠窗口与重复计算
-   └── 只基于profile证据提出优化候选
+3. Any-to-Bokeh Efficiency Profiling → 最小受控验证
+   ├── 首轮阶段时间/显存归因：✅ VAE约81%，编码峰值约34.29GiB
+   ├── RGB缓存与帧槽计数：✅ 6.47GiB，编码48/48、解码32
+   ├── 待验证activation、缓存保留与重叠重复计算的贡献
+   └── 核对输出/质量、时间和显存后判断优化是否有效
 
 4. Any-to-Bokeh Failure Analysis
    ├── Synthetic bottom / hard cases
@@ -1047,7 +1049,7 @@ output/
 
 ### 16.1 MagicBokeh 的当前定位
 
-MagicBokeh 是新的优先 baseline，但属于**单图、内部估深、单步扩散 + Real-ISR**范式。它的价值一方面是补充最新生成式画质基线，另一方面是提供“高质量同时降低扩散计算成本”的设计参考。接入时必须保留其任务边界，不把它强制改成 Any-to-Bokeh 的 external-geometry 视频接口。
+MagicBokeh已完成Synthetic与同配置成本评价，属于**单图、内部估深、单步扩散 + Real-ISR**范式。当前全帧生成器路径显存低于ATB、耗时高于ATB；质量差距与强虚化时的部分目标失焦保留，不能将单步标签当作全帧更快的证据。目标辅助B的额外GT控制权限随表披露，保留其RGB内部估深与点控边界。
 
 ### 16.2 Any-to-Bokeh 是核心分析对象
 
@@ -1778,5 +1780,5 @@ Table 3   Model-level Computational Cost
 - 原 **Table 3A** 直接更名为 Table 3；
 - 原 **Table 3B** 已完成但只作为历史工程测量保留；
 - 原 **Table 4 OPPO-style Low-FPS Depth Robustness** 从当前主表体系移除；
-- MagicBokeh 完成复现后补入适用的 Table 1 / Table 3；是否进入 Table 2 由其原生任务边界决定；
+- MagicBokeh已完成Table 1 / B同配置Table 3；Table 2尚未扩展，不阻塞当前分析；
 - Ours 最终需要补哪些表，以后续 efficiency profiling 与 failure analysis 确定的研究问题为准。

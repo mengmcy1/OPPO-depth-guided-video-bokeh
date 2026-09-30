@@ -2,13 +2,13 @@
 
 > 任务：使用公开可获得组件重建 Any-to-Bokeh synthetic evaluation pipeline，并验证官方权重的指标量级
 >
-> 当前状态：✅ Any-to-Bokeh **200/200 已完成**（2026-09-28 06:26 UTC（北京时间14:26））；✅ Track A 六个方法（Any-to-Bokeh、MPIB、BokehMe、Dr.Bokeh、BokehDiff、DeepLens）200×25 及全部指标完成，主表配置已冻结（2026-09-29）
+> 当前状态：✅ Synthetic七个方法各200×25及全部指标完成；原六种配置保持冻结，2026-09-30新增MagicBokeh的Target-guided Depth-Medoid B与同配置Table 3。Any-to-Bokeh首轮模块分析完成，下一步验证VAE/缓存效率机制及系统归纳失败场景。
 > 运行记录：sRGB输入配置落盘至全量汇总约170.3分钟，含并发和中断恢复，不含此前图层/几何构造。
 > 数据规模：200 场景 × 25 帧 = 5000 帧（RGB + GT + Prediction 完整）
 > 补充指标：2026-09-28完成TorchMetrics PSNR/SSIM、VideoMAE FVD、I3D VFID-I，见下表及第七节。
 >
 > 核心方案：Any-to-Bokeh 公开场景生成逻辑 + MPIB 官方 ray-tracing renderer proxy + Any-to-Bokeh 官方权重
-> Baseline：六个方法与论文 Table 1 的总对照见 1.1，各方法候选、选择依据与失败案例见 8.1–8.7。中间方法排序未完全恢复，不宣称整体性能版图已对齐。
+> Baseline：七个方法的主表与论文外部参考见1.1；原六方法候选、选择依据与失败案例见8.1–8.7，MagicBokeh详见中央进度及阶段归档。中间方法排序未完全恢复，不宣称整体性能版图已对齐。
 
 ---
 
@@ -43,7 +43,7 @@ PSNR/SSIM主对照采用本轮TorchMetrics补算；原逐帧PSNR **39.73197 dB**
 
 当前已经验证的是：固定公开参数与代理素材下，官方checkpoint能完成200段推理和本轮四项补算。数值接近论文不证明恢复了官方测试集、私有renderer或历史评价环境；VFID-I更低也不能解释为模型优于论文。
 
-### 1.1 六个方法与论文 Table 1 总对照（Track A，200×25）
+### 1.1 七个方法的Synthetic主表与论文外部参考（200×25）
 
 单元格为「本项目 / 论文」。PSNR/SSIM 为 TorchMetrics；LPIPS 为项目 squeeze v0.1 实现，论文值取 ICLR2026 正式版；FVD 为 VideoMAE 集合距离；RM 为完整 24-transition。本项目测试素材与 GT 为公开代理，论文值来自作者未公开的测试集，只作量级与排序参考。完整精度数值见协议文档当前 Table 1 / Table V；历史阶段仍称Track A。
 
@@ -55,8 +55,9 @@ PSNR/SSIM主对照采用本轮TorchMetrics补算；原逐帧PSNR **39.73197 dB**
 | BokehMe（Normalized，γ=2.2） | 33.334 / 27.992 | 0.9794 / 0.936 | 0.0247 / 0.060 | 18.55 / 39.102 | 0.540 / 0.536 | 0.0074 / 0.013 |
 | BokehDiff（Normalized） | 27.063 / 27.525 | 0.8438 / 0.834 | 0.1320 / 0.127 | 66.00 / 65.678 | 0.802 / 0.660 | 0.0216 / 0.021 |
 | DeepLens（单级SR，aperture饱和） | 28.167 / 24.574 | 0.9437 / 0.819 | 0.0633 / 0.183 | 40.12 / 125.338 | 0.583 / 1.162 | 0.0124 / 0.030 |
+| MagicBokeh（Target-guided Depth-Medoid B） | 25.120 / — | 0.7995 / — | 0.1977 / — | 97.79 / — | 0.871 / — | 0.0268 / — |
 
-\* **Dr.Bokeh 主行读取 GT union alpha**（真实前景 alpha 的并集），其他方法只接收 RGB + PNG8 disparity + focus + K，信息权限不同。不读取 GT alpha 的公开完整 pipeline（LDF+LaMa）为 PSNR 29.108 / FVD 143.29，保留在 8.5 与 Table V。该选择服务于当前 ATB 复现，不声称作者私有 adapter 使用了 GT alpha；未来自建公平 benchmark 优先重新评估公开完整 pipeline。
+\* **Dr.Bokeh 主行读取 GT union alpha**（真实前景 alpha 的并集），原有其他方法接收RGB + PNG8 disparity + focus + K；新增MagicBokeh从RGB估深，并使用GT可见目标区域与自身预测深度辅助选择一个焦点像素，信息权限不同。不读取 GT alpha 的公开完整 pipeline（LDF+LaMa）为 PSNR 29.108 / FVD 143.29，保留在 8.5 与 Table V。该选择服务于当前 ATB 复现，不声称作者私有 adapter 使用了 GT alpha；未来自建公平 benchmark 优先重新评估公开完整 pipeline。
 
 **可以得出的结论**：
 
@@ -822,13 +823,13 @@ K增大时PSNR下降，K32的LPIPS/FD/RM明显更大，与已知饱和限制相�
 | BokehMe | RTX PRO 6000 Blackwell | 0.01503 | 1.164 | N/A† | ≈1.01 |
 | MPIB | RTX PRO 6000 Blackwell | 0.25277 | 41.528 | N/A† | ≈2.43 |
 | BokehDiff | RTX PRO 6000 Blackwell | 1.10397 | 3493.432 | N/A† | ≈18.37 |
-| **MagicBokeh** | RTX PRO 6000 Blackwell | **1.17280** | **1398.545** | N/A‡ | **≈5.30** |
+| **MagicBokeh（B）** | RTX PRO 6000 Blackwell | **1.20890** | **1398.545** | N/A‡ | **≈5.30** |
 | **Any-to-Bokeh** | RTX PRO 6000 Blackwell | **0.50464** | **2457.810** | N/A† | **≈38.47** |
 | Ours | GPU | later | later | later | later |
 
 表中 Time 是同步的核心模型/renderer执行，不是完整视频 E2E。Any-to-Bokeh 的 25 帧真实模型段约 12.616 s，再按输出帧数归一，因此 0.50464 s/output-frame 不能称为“独立单帧在线延迟”。
 
-MagicBokeh的1024×576原生输出由六个512×512重叠图块组成；1.17280s包含六次生成器forward与作者GPU拼接。DAdepth/LDF预处理、条件构造/传输、CPU PIL与AdaIN颜色校正不计入Time；其参数也不进入生成器Params。实际调用生成器参数包括UNet、ControlNet、VAE及每图块调用的text encoder。Torch allocated/reserved峰值为3.89219/4.62695GiB。该路径的显存低于ATB、全帧耗时高于ATB；其自动选焦与当前共享focus不同，不作为同输入画质比较。‡ 完整算子覆盖尚未建立，GFLOPs保持N/A。
+MagicBokeh的1024×576原生输出由六个512×512重叠图块组成；B配置1.20890s包含六次生成器forward与作者GPU拼接。DAdepth及GT目标辅助选点、条件构造/传输、CPU PIL与AdaIN颜色校正不计入Time；其参数也不进入生成器Params。实际调用生成器参数包括UNet、ControlNet、VAE及每图块调用的text encoder。Torch allocated/reserved峰值为3.89219/4.62695GiB。该路径的显存低于ATB、全帧耗时高于ATB；其GT目标辅助点控及自身估深与其他方法的输入权限不同，随结果披露；原Auto-LDF/空提示词1.17280s留作历史对照。‡ 完整算子覆盖尚未建立，GFLOPs保持N/A。
 
 参数量按实际调用的神经模块中独立参数张量计数：ATB包含UNet、VAE和image encoder，排除未被forward调用的ff_k等权重；Dr包含LaMa，不把未调用的LDF/MiDaS算入。设备显存采用0.2秒监测与快速结束点采样，包含上下文与缓存，故标注≈；精确PyTorch allocated/reserved峰值另保存在记录中。
 
@@ -842,12 +843,12 @@ MagicBokeh的1024×576原生输出由六个512×512重叠图块组成；1.17280s
 | BokehMe | 0.015025 | 0.001908 |
 | MPIB | 0.252766 | 0.004515 |
 | BokehDiff | 1.103966 | 0.010659 |
-| MagicBokeh | 1.172797 | 0.009547 |
+| MagicBokeh（B） | 1.208896 | 0.036781 |
 | Any-to-Bokeh | 0.504643 | 0.000449 |
 
 论文硬件和私有计时边界没有完全复原，因此本表只称 ATB-style reproduced cost，不将本轮与论文 Time 直接相除宣称同硬件加速比。
 
-证据：[原五方法计时](records/efficiency-3a-20260930.json)、[最终复核及覆盖边界](records/efficiency-3a-final-review-20260930.json)、[计时入口一致性](records/efficiency-entry-parity-20260930.json)、[MagicBokeh补测及原生复现](records/magicbokeh-native-and-table3-20260930.json)。
+证据：[原五方法计时](records/efficiency-3a-20260930.json)、[最终复核及覆盖边界](records/efficiency-3a-final-review-20260930.json)、[计时入口一致性](records/efficiency-entry-parity-20260930.json)、[MagicBokeh B同配置补测](records/magicbokeh-frozen-B-table3-20260930.json)、[原生Auto-LDF对照](records/magicbokeh-native-and-table3-20260930.json)。
 
 ### 历史25帧E2E测量的处理
 
@@ -865,9 +866,9 @@ MagicBokeh的1024×576原生输出由六个512×512重叠图块组成；1.17280s
 
 短期顺序改为：
 
-1. **完成MagicBokeh的Synthetic适配**：完整原生RGB→DAdepth/LDF→虚化及Table 3已完成；下一步验证官方点选焦接口与目标焦平面对应，再补可成立的Table 1结果；
-2. **Any-to-Bokeh Efficiency Profiling**：分解 VAE、UNet、temporal/overlap、geometry conditioning、decode 等阶段，解释当前约0.50464 s/output-frame与≈38.47 GiB峰值的主要来源；
+1. **MagicBokeh已收尾**：原生验证、40帧三候选、用户冻结B、200×25评价及B同配置Table 3全部完成；额外GT目标辅助选点权限已披露，不重复选方案或推理；
+2. **Any-to-Bokeh效率机制验证**：首轮VAE/UNet/解码时间与峰值归因已完成，下一步区分FP32编码activation、持续缓存和重叠重复计算的贡献；
 3. **Any-to-Bokeh Failure Analysis**：基于现有200段Synthetic和DAVIS固定视频，系统筛选边界/遮挡/细结构、大运动、强虚化、focus/control变化等可重复失败；
 4. **冻结 Ours**：只选择有明确问题证据、可做受控消融且具有实际价值的方向，不再为了符合旧计划强行加入低帧率Depth completion、Token Merging或三头结构。
 
-MagicBokeh完成复现后再决定它是否能以不扭曲任务定义的方式进入DAVIS；不为凑齐表格强行改变其原生输入范式。
+MagicBokeh尚未进入DAVIS，当前不阻塞ATB机制分析。首轮profile确认VAE编码/解码约占81%模型段时间，RGB/CoC编码峰值约34.29GiB，RGB FP32缓存6.47GiB；下一步验证缓存/重叠编码的优化假设及失败机制，Ours尚未冻结。证据：[模块分析](records/any2bokeh-native-module-profile-20260930.json)。
