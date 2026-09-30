@@ -810,11 +810,11 @@ K增大时PSNR下降，K32的LPIPS/FD/RM明显更大，与已知饱和限制相�
 
 定性终审保留了breakdance的旁观者清晰层与分割变化、horsejump-high的时变虚化、kite-surf的细绳/水花、soapbox坡缘补全等现象。连续25帧以PNG接触图逐帧复核，没有宣称实时播放盲评、无闪烁或完整时序质量排名；全部MP4保留供播放。固定集合内未发现新的客观实现错误，按既定规则冻结，不扩大候选或为了排名重跑。
 
-证据：[最终复核](records/davis-final-review-20260929.json)、[六方法逐帧指标](records/davis-six-method-50-20260929.json)、[全量完整性](records/davis-six-method-integrity-20260929.json)、[Table2](Benchmark与Baseline统一评价协议.md#table-2davis-real-world)。Efficiency已随后完成3A和3B，实测值及边界见下文两表。
+证据：[最终复核](records/davis-final-review-20260929.json)、[六方法逐帧指标](records/davis-six-method-50-20260929.json)、[全量完整性](records/davis-six-method-integrity-20260929.json)、[Table2](Benchmark与Baseline统一评价协议.md#table-2davis-real-world)。Efficiency的正式主表现统一为下文Table 3；历史25帧E2E测量继续保留在records/归档。
 
-## Table 3A 模型级计算成本（2026-09-30，已完成）
+## Table 3 模型级计算成本（2026-09-30，当前正式效率主表）
 
-按用户汇报优先级先完成3A；3B随后独立测完，见下一节。固定K4/8/16/32的四个输入，每个预热1次、正式5次；逐帧方法使用第0帧，Any-to-Bokeh使用真实25帧overlap路径（每次8/8/9帧），按实际输出帧数归一。五种GPU方法各20次正式记录，没有挑选有利重复或更换输入。硬件为RTX PRO6000 Blackwell Server Edition、590.44.01驱动，GPU独占串行。
+原 Table 3A 直接更名为 **Table 3**。固定 K4/8/16/32 的四个输入，每个预热1次、正式5次；逐帧方法使用第0帧，Any-to-Bokeh使用真实25帧 overlap 路径（每次8/8/9帧），按实际输出帧数归一。五种GPU方法各20次正式记录，没有挑选有利重复或更换输入。硬件为 RTX PRO6000 Blackwell Server Edition、590.44.01 驱动，GPU 独占串行。
 
 | Method | Device | Time / output frame (s) ↓ | Params (M) ↓ | GFLOPs / output frame ↓ | Peak VRAM (GiB, sampled) ↓ |
 |---|---|---:|---:|---:|---:|
@@ -822,16 +822,17 @@ K增大时PSNR下降，K32的LPIPS/FD/RM明显更大，与已知饱和限制相�
 | BokehMe | RTX PRO 6000 Blackwell | 0.01503 | 1.164 | N/A† | ≈1.01 |
 | MPIB | RTX PRO 6000 Blackwell | 0.25277 | 41.528 | N/A† | ≈2.43 |
 | BokehDiff | RTX PRO 6000 Blackwell | 1.10397 | 3493.432 | N/A† | ≈18.37 |
-| Any-to-Bokeh | RTX PRO 6000 Blackwell | 0.50464 | 2457.810 | N/A† | ≈38.47 |
+| **MagicBokeh** | GPU | pending | pending | pending | pending |
+| **Any-to-Bokeh** | RTX PRO 6000 Blackwell | **0.50464** | **2457.810** | N/A† | **≈38.47** |
 | Ours | GPU | later | later | later | later |
 
-表中Time是同步的核心模型/renderer执行，不是完整视频E2E。Dr累计两次LaMa+一次完整多层renderer的CUDA forward，分层、CPU修复及外部传输不在Core中；MPIB累计inpainting/MPI/upsampling/render各模型forward；BokehMe、BokehDiff和ATB按已在GPU的输入到GPU浮点输出划定。外围读取、adapter、传输和CPU uint8输出已计入3B，不能把3A时间或单帧诊断当作3B结果。
+表中 Time 是同步的核心模型/renderer执行，不是完整视频 E2E。Any-to-Bokeh 的 25 帧真实模型段约 12.616 s，再按输出帧数归一，因此 0.50464 s/output-frame 不能称为“独立单帧在线延迟”。
 
-参数量按实际调用的神经模块中独立参数张量计数：ATB包含UNet、VAE和image encoder，排除未被forward调用的ff_k等权重（实际调用2457.810M，加载总量2606.607M）；Dr包含LaMa的50.976M，不把未调用的LDF/MiDaS算入。它们的已加载常驻显存仍保留在设备占用里。不同论文可能只计renderer/主干，不能把不同范围的Params直接混比。
+参数量按实际调用的神经模块中独立参数张量计数：ATB包含UNet、VAE和image encoder，排除未被forward调用的ff_k等权重；Dr包含LaMa，不把未调用的LDF/MiDaS算入。设备显存采用0.2秒监测与快速结束点采样，包含上下文与缓存，故标注≈；精确PyTorch allocated/reserved峰值另保存在记录中。
 
-† 独立dispatcher profiling已执行，未报错，但可计卷积/矩阵乘法/attention算术不是整个floating-point路径；自定义CUDA/FFT/归一化/逐元素/插值及随机控制等未完整覆盖，主表总GFLOPs据此记N/A。原始覆盖列表与部分计数保留为诊断，不用部分数值冒充完整复杂度。设备显存采用0.2秒监测与快速单帧结束点采样，包含上下文与缓存，标注≈；精确PyTorch allocated/reserved峰值另存在记录中。
+† 独立dispatcher profiling已执行，但可计卷积/矩阵乘法/attention算术并不覆盖自定义CUDA、FFT、归一化、逐元素、插值及随机控制等全部路径，因此总GFLOPs继续记N/A，不用部分计数冒充完整复杂度。
 
-跨4个K的时间均值/标准差如下，标准差同时包含输入/控制差异，并非纯测量抖动：
+跨4个K的时间均值/标准差：
 
 | Method | Mean (s/output-frame) | Std |
 |---|---:|---:|
@@ -841,55 +842,29 @@ K增大时PSNR下降，K32的LPIPS/FD/RM明显更大，与已知饱和限制相�
 | BokehDiff | 1.103966 | 0.010659 |
 | Any-to-Bokeh | 0.504643 | 0.000449 |
 
+论文硬件和私有计时边界没有完全复原，因此本表只称 ATB-style reproduced cost，不将本轮与论文 Time 直接相除宣称同硬件加速比。
 
-论文硬件和私有计时边界没有完全复原，因此本表称ATB-style reproduced cost，不将本轮与论文的Time相除宣称同硬件加速比。3B在下一节单独报告实际25帧流水与CPU DeepLens。
+证据：[原始计时](records/efficiency-3a-20260930.json)、[最终复核及覆盖边界](records/efficiency-3a-final-review-20260930.json)、[计时入口一致性](records/efficiency-entry-parity-20260930.json)。
 
-证据：[3A逐次计时](records/efficiency-3a-20260930.json)、[3A最终复核及覆盖边界](records/efficiency-3a-final-review-20260930.json)、[计时入口一致性](records/efficiency-entry-parity-20260930.json)。
+### 历史25帧E2E测量的处理
 
-## Table 3B 视频流水效率（2026-09-30，已完成）
+原 Table 3B 已于2026-09-30完成六方法120次正式计时并通过复核；实验事实不删除，但根据当前研究主线，它不再作为正式主表。完整结果仍保存在：
 
-| Method | Device | Core / 25f (s) ↓ | E2E-given-inputs / 25f (s) ↓ | FPS (E2E) ↑ | Peak memory (GiB, sampled) ↓ |
-|---|---|---:|---:|---:|---:|
-| DeepLens | CPU / TF1.15 / 8 threads | 25.370 | 26.452 | 0.945 | ≈1.36 RSS |
-| Dr.Bokeh | RTX PRO 6000 Blackwell | 7.178 | 20.621 | 1.212 | ≈2.88 VRAM |
-| BokehMe | RTX PRO 6000 Blackwell | 0.351 | 1.186 | 21.082 | ≈1.01 VRAM |
-| MPIB | RTX PRO 6000 Blackwell | 6.164 | 7.681 | 3.255 | ≈2.43 VRAM |
-| BokehDiff | RTX PRO 6000 Blackwell | 27.384 | 28.166 | 0.888 | ≈18.34 VRAM |
-| Any-to-Bokeh | RTX PRO 6000 Blackwell | 12.628 | 14.084 | 1.775 | ≈38.47 VRAM |
-| Ours | GPU | later | later | later | later |
+- [3B逐次计时](records/efficiency-track-a-3ab-20260930.json)
+- [3B最终复核](records/efficiency-3b-final-review-20260930.json)
+- [阶段归档](历史阶段记录/2026-09-30_Efficiency_3A与3B测量.md)
 
-**3B已完成并复核（2026-09-30）**：固定repro_004/006/003/000分别覆盖K4/8/16/32，每段完整25帧预热1次、正式重复5次；六方法共120次正式计时、3000帧输出，另有24次完整预热。14:12–14:54北京时间串行执行，未更改冻结adapter、模型、控制值或输入清单。表中为20次均值，FPS=25/平均E2E；逐次时间、样本标准差、by-K及原生调用均已复算。Any-to-Bokeh每段真实调用输出8/8/9帧，其余方法逐帧执行25次，未用3A单帧结果外推。
+后续如果需要工程部署层面的完整E2E，可继续引用该历史测量；当前论文/汇报主线优先使用 Table 3 的模型级成本，以便直接支撑 Any-to-Bokeh 的效率与显存优化。
 
-GPU为RTX PRO 6000 Blackwell Server Edition（590.44.01，Torch2.8/cu128）；DeepLens为Xeon Platinum8470Q、native TF1.15 CPU8线程，容器CPU配额22核。GPU显存和CPU RSS均为正式重复期间0.2秒采样峰值，不是精确瞬时峰值；精确Torch allocated/reserved另存。CPU内存与GPU显存不作同质排序，CPU与GPU时间不作无条件加速比。
+## 当前研究主线更新（2026-09-30）
 
-E2E终点为25张1024×576的CPU RGB uint8；输入解码、adapter、必要分层/修复、推理、传输和后处理均计入，模型加载、外部geometry/alpha生成、最终写盘/编码不计。采用warm filesystem cache；同步Core计时的开销包含在E2E中。Dr.Bokeh继续使用Track A允许的GT-alpha reconstruction，DeepLens继续external geometry+single-SR+aperture saturation。
+经当前阶段讨论，低帧率 Depth 不再作为必须坚持的创新方向。原 Track B / OPPO-style Low-FPS 自建 benchmark 从当前前置实验中移除，不继续为了填表执行 30/15/10/5/2 fps sweep。
 
-本轮可以直接观察到：BokehMe的given-inputs流水为1.186秒/25帧，六种冻结实现中GPU端耗时最短；Any-to-Bokeh为14.084秒/25帧，约1.775 FPS，其显存采样峰值约38.47 GiB。Dr.Bokeh的Core约7.178秒，但完整流水约20.621秒，差值13.443秒，约占E2E的65.2%；这部分包含Core之外的读取、分层、CPU修复、传输及后处理，不能仅凭差值再细分归因。BokehDiff的Core约占整段耗时97.2%，当前时间主要落在其模型路径。
+短期顺序改为：
 
-这些数值描述当前冻结实现、输入权限和硬件上的实际成本，不是效果排名，也不是生产多worker吞吐。3B与论文模型级Time边界不同，不拿二者计算论文加速比。
+1. **接入 MagicBokeh**：先保留其 native LQ-RGB → internal depth/defocus → single-step bokeh 路径，完成官方实现复现，再补可成立的 Synthetic / Table 3 项；
+2. **Any-to-Bokeh Efficiency Profiling**：分解 VAE、UNet、temporal/overlap、geometry conditioning、decode 等阶段，解释当前约0.50464 s/output-frame与≈38.47 GiB峰值的主要来源；
+3. **Any-to-Bokeh Failure Analysis**：基于现有200段Synthetic和DAVIS固定视频，系统筛选边界/遮挡/细结构、大运动、强虚化、focus/control变化等可重复失败；
+4. **冻结 Ours**：只选择有明确问题证据、可做受控消融且具有实际价值的方向，不再为了符合旧计划强行加入低帧率Depth completion、Token Merging或三头结构。
 
-| Method | Core mean ± std (s/25f) | E2E mean ± std (s/25f) |
-|---|---:|---:|
-| DeepLens | 25.370 ± 1.239 | 26.452 ± 1.256 |
-| Dr.Bokeh | 7.178 ± 0.014 | 20.621 ± 0.814 |
-| BokehMe | 0.351 ± 0.045 | 1.186 ± 0.113 |
-| MPIB | 6.164 ± 0.182 | 7.681 ± 0.207 |
-| BokehDiff | 27.384 ± 0.029 | 28.166 ± 0.084 |
-| Any-to-Bokeh | 12.628 ± 0.011 | 14.084 ± 0.062 |
-
-标准差覆盖全部20次正式重复，同时包含场景/控制差异和运行波动；没有剔除较慢重复。DeepLens E2E范围约24.144–29.612秒，全部保留。
-
-| Method | K4 E2E (s) | K8 E2E (s) | K16 E2E (s) | K32 E2E (s) |
-|---|---:|---:|---:|---:|
-| DeepLens | 27.109 | 26.153 | 25.633 | 26.913 |
-| Dr.Bokeh | 21.312 | 21.273 | 20.515 | 19.385 |
-| BokehMe | 1.282 | 1.209 | 1.052 | 1.200 |
-| MPIB | 7.783 | 7.571 | 7.448 | 7.924 |
-| BokehDiff | 28.232 | 28.229 | 28.105 | 28.098 |
-| Any-to-Bokeh | 14.089 | 14.144 | 14.008 | 14.097 |
-
-每个K对应不同固定场景，by-K只作描述性统计，不能把差异唯一归因于K。全部输入在计时前固定，质量结果未重跑或回调。
-
-复核通过：六方法各20次正式执行，输出均为25帧、1024×576、finite且非空；Core分段总和、实际调用次数、E2E、FPS、均值/样本标准差及内存峰值均与逐次记录一致。测速输出完成CPU转换与检查后释放，不覆盖已冻结的质量评价视频。五种GPU方法启动时记录的项目版本为b581be5，DeepLens为840eb7b；期间的新增提交只涉及PPT和讲稿，scripts/src/configs没有变化。
-
-证据：[3B逐次计时](records/efficiency-track-a-3ab-20260930.json)、[3B最终复核](records/efficiency-3b-final-review-20260930.json)。本轮入口`python scripts/measure_efficiency.py --all --table 3b`，本地产物`outputs/efficiency-track-a-3ab-20260930/`，日志`logs/efficiency-track-a-3ab-20260930/`。**Efficiency 3A/3B至此完成；下一步为冻结Track B Clean的统一时间补齐方式，再评价30/15/10/5/2 fps几何输入。**
+MagicBokeh完成复现后再决定它是否能以不扭曲任务定义的方式进入DAVIS；不为凑齐表格强行改变其原生输入范式。
