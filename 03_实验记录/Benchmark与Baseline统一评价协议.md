@@ -942,18 +942,114 @@ A的PSNR/SSIM/FD/RM更接近论文，B的FVD/VFID-I更接近。完整200段与�
 
 ---
 
-## Table 3：Efficiency
+## Table 3A：ATB-style Model-level Computational Cost
 
-| Method | Resolution | Frames | Core Time ↓ | E2E-given-inputs ↓ | FPS (E2E) ↑ | Peak VRAM ↓ | Params ↓ |
-|---|---|---:|---:|---:|---:|---:|---:|
-| DeepLens | 1024×576 | 25 |  |  |  |  |  |
-| Dr.Bokeh | 1024×576 | 25 |  |  |  |  |  |
-| BokehMe | 1024×576 | 25 |  |  |  |  |  |
-| MPIB | 1024×576 | 25 |  |  |  |  |  |
-| BokehDiff | 1024×576 | 25 |  |  |  |  |  |
-| Any-to-Bokeh | 1024×576 | 25 |  |  |  |  |  |
-| BokehCrafter* | 1024×576 | 25 |  |  |  |  |  |
-| Ours | 1024×576 | 25 |  |  |  |  |  |
+**定位**：回答“这个方法/模型本身算一次有多贵”，与 Any-to-Bokeh 论文 computational-cost table 使用同类维度，重点报告单帧/单位输出帧的模型级计算成本。该表用于**模型复杂度比较**，不是完整25帧视频流水的真实端到端耗时。
+
+| Method | Device | Time / output frame ↓ | Params (M) ↓ | GFLOPs / output frame ↓ | Peak VRAM (GB) ↓ |
+|---|---|---:|---:|---:|---:|
+| Dr.Bokeh | GPU |  |  |  |  |
+| BokehMe | GPU |  |  |  |  |
+| MPIB | GPU |  |  |  |  |
+| BokehDiff | GPU |  |  |  |  |
+| Any-to-Bokeh | GPU |  |  |  |  |
+| Ours | GPU | later | later | later | later |
+
+说明：
+
+- 分辨率统一为 **1024×576**，batch size=1；正式实测尽量使用同一 GPU、同一软件栈和空闲设备状态。
+- 对原生逐帧方法，直接测单帧核心执行；对 Any-to-Bokeh / Ours 这类原生视频模型，**不能为了表格强行制造不存在的单帧入口**。应按其真实最小/固定视频执行单元测量，再除以实际输出帧数得到 `Time / output frame` 与 `GFLOPs / output frame`，同时在记录中保存原始执行单元大小。
+- `Time / output frame` 属于模型/renderer 侧标准化时间：排除 checkpoint/model load、首次 CUDA context、磁盘写入和 MP4 编码；GPU 计时前后必须同步。该口径只称 **ATB-style reproduced cost protocol**，除非作者公开计时边界完全可恢复，否则不声称逐项复刻论文私有计时实现。
+- `Params` 统计当前冻结配置**实际参与推理的 learned parameters**。没有参与当前执行路径的网络不计入。例如 Track A Dr.Bokeh 已给 GT alpha 时不把未调用的 LDF 参数算入；若某方法核心是非学习 renderer，则如实报告其 learned-parameter 情况，不为填表虚构参数。
+- `GFLOPs` 只统计实际执行路径中可可靠计算的浮点算子；遇到 renderer、自定义 CUDA、稀疏/动态控制流等无法可靠映射为 FLOPs 的部分，标记 `N/A` 并解释原因，不能用不完整数字冒充全流程 GFLOPs。
+- `Peak VRAM` 在模型已加载、warm-up 完成后重置峰值统计，再测一次标准执行；包含常驻模型参数、activation 与临时 buffer，不包含 checkpoint 加载时的瞬时复制峰值。
+- Any-to-Bokeh 论文使用的硬件与本项目当前 RTX PRO 6000 Blackwell Server Edition 不同，因此论文 Time/VRAM只作外部参考；**不同 GPU 上的绝对时间不能直接当作同硬件加速比**。
+- DeepLens 未强行加入 3A 主表：其当前可复现冻结实现为 native TF1.15 CPU，而 ATB 的 computational-cost 主表没有给出与本项目当前 CPU 路径可直接同口径的行。DeepLens 的实际执行成本放到 Table 3B，并显式标记 CPU。若后续需要，可另列 CPU diagnostic，不与 GPU 3A 主排序混合。
+- BokehCrafter 继续 deferred，不阻塞本轮 3A。
+
+---
+
+## Table 3B：25-frame Video E2E Efficiency under Given Inputs
+
+**定位**：回答“在与 Synthetic Track A 相同输入权限下，真正处理一段25帧视频要多久”。这是**系统/流水级实际效率**，与3A的模型复杂度分开。
+
+| Method | Device | Core Time / 25f ↓ | E2E-given-inputs / 25f ↓ | FPS (E2E) ↑ | Peak Device Memory ↓ |
+|---|---|---:|---:|---:|---:|
+| DeepLens | CPU |  |  |  |  |
+| Dr.Bokeh | GPU |  |  |  |  |
+| BokehMe | GPU |  |  |  |  |
+| MPIB | GPU |  |  |  |  |
+| BokehDiff | GPU |  |  |  |  |
+| Any-to-Bokeh | GPU |  |  |  |  |
+| Ours | GPU | later | later | later | later |
+
+统一输入与输出边界：
+
+~~~text
+Synthetic Track A 已给输入
+RGB + Geometry + Focus/K
+(+ 当前冻结配置明确允许的额外输入，如 Dr.Bokeh GT alpha)
+        ↓
+文件读取 / 解码
+        ↓
+方法需要的 resize / normalization / geometry adapter
+        ↓
+方法内部必要的 layer construction / repair / inpainting / model inference / renderer
+        ↓
+postprocess / clamp / color-range recovery
+        ↓
+25 × 576 × 1024 × 3 的 CPU RGB uint8 frames
+        ← E2E-given-inputs 计时结束
+        ↓
+PNG write / MP4 encode
+        不计
+~~~
+
+`E2E-given-inputs` **计入**：
+
+- benchmark 已给输入的文件读取与解码；
+- resize、normalization、focus/K/geometry adapter；
+- 当前冻结方法真正需要的分层、repair、inpainting、模型推理、renderer；
+- 必要 postprocess；
+- 最终25帧转为统一 CPU RGB uint8。
+
+`E2E-given-inputs` **排除**：
+
+- checkpoint / model load；
+- 首次 CUDA context 和一次性环境初始化；
+- benchmark 外部的 Geometry/Depth 生成；
+- GT alpha 的生成过程；
+- 最终 PNG/MP4 写盘与编码；
+- DAVIS VDA / DeepLens DAVIS DepthNet 等不属于 Track A 冻结输入权限的前置计算。
+
+方法权限必须跟 **Synthetic Track A 冻结主表**一致：
+
+- Dr.Bokeh：使用 GT-alpha reconstruction adapter；不把 DAVIS Full-public LDF 重新塞进 3B。
+- DeepLens：使用 Track A external-geometry、native TF1.15 CPU、single-SR frozen path；不使用 DAVIS native DepthNet。
+- BokehMe：Normalized + gamma=2.2。
+- MPIB：gamma=2.2。
+- BokehDiff：Normalized-B。
+- Any-to-Bokeh：官方冻结视频推理配置。
+
+正式测量规则：
+
+- 统一 1024×576、25 frames、batch size=1。
+- 固定当前已准备的 **4 段 Efficiency clips**，不根据速度结果更换场景；每段至少正式重复5次。
+- 模型加载后至少完成1次完整25帧 warm-up；若第一、第二次 warm-up仍有明显初始化差异，可增加 warm-up，但不得按结果挑有利次数。
+- GPU 方法采用 wall-clock + `cuda synchronize` 的方式界定开始/结束；不能直接用异步 Python `time()` 夹住 forward。
+- 输入读取采用 **warm filesystem cache** 条件：warm-up 后正式重复，不人为 drop OS page cache。
+- GPU 方法逐个串行执行，计时前必须通过连续空闲检查；不得与其他 GPU workload、DAVIS生产任务或并行 baseline 同时运行。
+- `Core Time` 仅统计当前方法核心 model/renderer 执行段；外围读取、adapter、CPU/GPU transfer 与最终 CPU uint8 conversion 不计入 Core，但全部进入 E2E。
+- `FPS (E2E) = 25 / E2E-given-inputs_seconds`。
+- GPU 行记录 inference peak VRAM；DeepLens CPU 行记录 peak process RSS，并在表注中明确单位/设备，不能把 CPU memory 与 GPU VRAM 当作同质排名。
+- 报告每方法跨固定 clips × repeats 的均值，并同时保留标准差和逐次原始记录；主表可展示 mean，机器可读记录保存完整分布。
+- DeepLens CPU 与其余 GPU 方法不做无条件“快N倍/慢N倍”结论，只报告各自冻结可复现路径的实际成本。
+- 本轮生产并发吞吐、历史跑全量数据耗时、后台多worker吞吐**不得**填入 Table 3B。
+
+3A 与 3B 的一句话区别：
+
+> **Table 3A = 模型级复杂度：这个方法算一次有多贵。**  
+> **Table 3B = 视频流水级效率：给定 Track A 输入后，一段25帧视频实际多久产出。**
 
 ---
 
@@ -975,41 +1071,49 @@ A的PSNR/SSIM/FD/RM更接近论文，B的FVD/VFID-I更接近。完整200段与�
 
 # 12. 效率测试统一规则
 
-所有方法尽量在同一条件下重新测试：
+本项目 Efficiency 已拆成两个互补口径，**不能把二者的 Time 混为同一列**：
 
-- 同一 GPU；
-- 同一 CUDA / PyTorch 环境；
-- 同一分辨率；
-- 同一视频长度；
-- batch size = 1；
-- warm-up；
-- 至少重复 5 次；
-- 报平均值；
-- 记录 Peak VRAM。
+1. **Table 3A：ATB-style Model-level Computational Cost**  
+   关注模型/renderer 本身的 Time / output frame、Params、GFLOPs、Peak VRAM，服务于与既有论文 computational-cost 表的同类比较。
 
-区分：
+2. **Table 3B：25-frame Video E2E Efficiency under Given Inputs**  
+   关注与 Track A 相同输入权限下，完整25帧实际执行流水的 Core Time 与 `E2E-given-inputs`。
 
-## Core Time
+共同要求：
 
-只统计核心模型 / Renderer。
+- 固定输入与 method configuration，不能为了速度重新选择 adapter、gamma、aperture、分辨率或视频长度；
+- batch size=1；
+- warm-up 后正式计时；
+- 每个固定 clip 至少重复5次；
+- GPU 方法计时前后显式同步；
+- 正式测量期间独占已获准 GPU，不与其他任务并发；
+- 模型加载和首次 CUDA context 不计；
+- 保存逐次时间、均值、标准差、设备、软件环境和峰值内存；
+- 生产流水的并发吞吐与正式 benchmark latency 分开记录。
 
-## E2E Time
+## 12.1 Core Time
 
-包含：
+只统计当前冻结方法真正执行的核心模型 / renderer 段。Core 的起止点允许因方法结构不同而不同，但必须在配置/记录中逐方法写明，并满足：
 
-~~~text
-RGB
-↓
-Depth / Geometry Estimation
-↓
-Mask / Target Extraction
-↓
-Geometry Preprocessing
-↓
-Bokeh Model / Renderer
-↓
-Output
-~~~
+- 不包含磁盘读取；
+- 不包含 benchmark 外部 geometry / alpha 生成；
+- 不包含最终写盘；
+- GPU 核心段前后同步；
+- 对视频模型按真实视频执行单元统计，不把不存在的单帧 forward 人为拆出来。
+
+## 12.2 E2E-given-inputs
+
+当前 Table 3B 正式采用：
+
+> **从 benchmark 已提供的冻结输入开始，到统一 CPU RGB uint8 结果就绪为止。**
+
+它不是“从原始 RGB 开始自动完成估深/分割的一切系统总耗时”。因此不再使用旧的“E2E必含Depth/Geometry Estimation”的通用描述作为当前主表定义。
+
+统一链路见 Table 3B。特别地：
+
+- Dr.Bokeh Track A 已给 GT alpha，因此 GT alpha 的生成不计；GT alpha 之后当前冻结配置实际调用的处理计入。
+- DeepLens Track A 使用 external geometry，因此 DAVIS native DepthNet 不计。
+- 若未来独立公平 benchmark 改成统一 RGB + low-FPS coarse depth 权限，应另建新的系统 E2E 定义，不能静默覆盖本轮 3B。
 
 ---
 
@@ -1992,23 +2096,23 @@ Track B
    真实视频泛化。
 
 4. **Table 3：Efficiency**  
-   速度、显存、参数量和端到端成本。
+   拆成 **Table 3A：ATB-style Model-level Computational Cost** 与 **Table 3B：25-frame Video E2E Efficiency under Given Inputs**；前者报告模型级计算成本，后者报告实际25帧流水效率。
 
 5. **Table 4：OPPO-style Low-FPS Depth Robustness**  
    Low-FPS Coarse Depth 专项鲁棒性评价。
 
-其中 Table 1 在最终报告中建议拆成：
+其中 Table 1 与 Table 3 在最终报告中分别拆成：
 
 - **Table 1A：Track A — Unified Per-frame Geometry**
 - **Table 1B：Track B — Low-FPS Coarse Geometry**
+- **Table 3A：ATB-style Model-level Computational Cost**
+- **Table 3B：25-frame Video E2E Efficiency under Given Inputs**
 
-因此：
+因此仍可理解为 **5 个主表主题 + 1 张辅助验证表**，但实际展示为：
 
 \[
-\boxed{5\ 张主表 + 1\ 张辅助验证表}
+\boxed{7\ 个主结果表块 + 1\ 个 Benchmark\ Validation\ 表}
 \]
-
-其中 Table 1 拆成 A/B 后，最终实际展示为 **6 个主结果表块 + 1 个 Benchmark Validation 表**。
 
 即：
 
@@ -2021,7 +2125,8 @@ Table V   Benchmark Validation vs Paper Table 1（辅助）
 
 Table 2   DAVIS Real-world
 
-Table 3   Efficiency
+Table 3A  ATB-style Model-level Computational Cost
+Table 3B  25-frame Video E2E Efficiency under Given Inputs
 
 Table 4   OPPO-style Low-FPS Depth Robustness
 ~~~
