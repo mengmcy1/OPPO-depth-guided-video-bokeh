@@ -357,10 +357,22 @@ def worker(method, c):
     finally:
         stop.set(); monitor.join()
     (out/'warmups.json').write_text(json.dumps(warmups,indent=2)+'\n')
-    # Profiling is a separate pass, so its overhead never enters measured rows.
-    flops=flop_diagnostic(method,state,c,out)
+    # Repeated hardware timing can reuse the frozen complexity evidence.
+    previous = None
+    if c.get('reuse_complexity_record'):
+        previous = read(ROOT / c['reuse_complexity_record'])['methods'][method]
+        flops = dict(status=previous['Table3A']['GFLOPs_status'],
+            reported_GFLOPs=previous['Table3A']['GFLOPs_per_output_frame'],
+            source=c['reuse_complexity_record'],
+            reason='Frozen model and coverage convention reused; no new FLOP diagnostic pass.')
+    else:
+        # Profiling is a separate pass, so its overhead never enters measured rows.
+        flops=flop_diagnostic(method,state,c,out)
     (out/'flop-coverage.json').write_text(json.dumps(flops,indent=2)+'\n')
     parameters=dict(active_parameters=runtime['active_parameters']) if cpu else state['parameter_tracker'].summary()
+    if previous is not None:
+        assert parameters['active_parameters'] == previous['parameters']['active_parameters'], 'Frozen invoked model parameters changed'
+        parameters = dict(previous['parameters'], reused_from=c['reuse_complexity_record'])
     result=dict(method=method,status='STANDARDIZED_TIMING_COMPLETE',runtime=runtime,parameters=parameters,rows=rows,
         Core_seconds_mean=float(np.mean([r['core_seconds'] for r in rows])),
         Core_seconds_std=float(np.std([r['core_seconds'] for r in rows],ddof=1)),
@@ -383,11 +395,20 @@ def worker(method, c):
 
 def main():
     parser = argparse.ArgumentParser(); parser.add_argument('--method', choices=METHODS); parser.add_argument('--all', action='store_true'); parser.add_argument('--prepare-only', action='store_true'); parser.add_argument('--table',choices=['3a','3b'],default='3b')
+    parser.add_argument('--output-dir', type=Path)
+    parser.add_argument('--logs-dir', type=Path)
+    parser.add_argument('--record', type=Path)
+    parser.add_argument('--reuse-complexity-record', type=Path)
     args = parser.parse_args(); c = read(ROOT / 'configs/efficiency-track-a.json')
     c['table']=args.table
     if args.table=='3a':
         c.update(output='outputs/efficiency-3a-20260930',logs='logs/efficiency-3a-20260930',record='03_实验记录/records/efficiency-3a-20260930.json',
             selection='First frame of each of the fixed4 clips for frame methods; full25-frame native path for Any-to-Bokeh. Selected before timing; no independent one-frame ATB entry.')
+    for argument, key in [('output_dir', 'output'), ('logs_dir', 'logs'), ('record', 'record'), ('reuse_complexity_record', 'reuse_complexity_record')]:
+        value = getattr(args, argument)
+        if value is not None: c[key] = str(value)
+    if args.all and args.output_dir is not None:
+        assert args.logs_dir is not None and args.record is not None, 'Provide isolated log and record destinations with --all'
     methods=['drbokeh','bokehme','mpib','bokehdiff','any2bokeh'] if args.table=='3a' else METHODS
     scenes = {s['id']: s for s in read(ROOT / c['input'] / 'config.json')['scenes']}
     for sid, K in zip(c['scenes'], c['K']):
@@ -409,8 +430,11 @@ def main():
                 assert read(summary.parent / 'protocol.json') == c
                 continue
             env = dict(os.environ, CUDA_VISIBLE_DEVICES='' if method == 'deeplens' else '0', OMP_NUM_THREADS='8' if method == 'deeplens' else '4', OPENBLAS_NUM_THREADS='1', TF_ENABLE_ONEDNN_OPTS='0')
+            command = [python.get(method, '/root/miniconda3/envs/magicbokeh/bin/python'), str(Path(__file__).resolve()), '--method', method, '--table', args.table]
+            for flag, value in [('--output-dir', args.output_dir), ('--logs-dir', args.logs_dir), ('--record', args.record), ('--reuse-complexity-record', args.reuse_complexity_record)]:
+                if value is not None: command.extend([flag, str(value)])
             with (logs / f'{method}.log').open('a') as log:
-                subprocess.run([python.get(method, '/root/miniconda3/envs/magicbokeh/bin/python'), str(Path(__file__).resolve()), '--method', method, '--table',args.table], cwd=ROOT, env=env, stdout=log, stderr=subprocess.STDOUT, check=True)
+                subprocess.run(command, cwd=ROOT, env=env, stdout=log, stderr=subprocess.STDOUT, check=True)
         result = dict(status='TABLE3A_FIVE_GPU_METHODS_COMPLETE_REVIEW_PENDING' if args.table=='3a' else 'TABLE3B_SIX_METHODS_COMPLETE_REVIEW_PENDING', protocol=c,
             methods={m: read(ROOT / c['output'] / m / 'summary.json') for m in methods})
         from prepare_davis_v2 import write_new

@@ -12,7 +12,9 @@ ROOT=Path(__file__).resolve().parents[2]
 
 def load_grid2d():
     repo=ROOT.parent/'DrBokeh/app/cuda-src'
-    build=ROOT/'logs/drbokeh-launch-grid2d-20260928';build.mkdir(exist_ok=True)
+    major,minor=torch.cuda.get_device_capability(0)
+    # Preserve existing binaries; the same frozen kernel needs a build for this GPU.
+    build=ROOT/'logs'/f'drbokeh-launch-grid2d-sm{major}{minor}';build.mkdir(exist_ok=True)
     cpp=(repo/'scatter_cuda.cpp').read_text()
     cuda=(repo/'scatter_cuda_kernel.cu').read_text().replace('x.type()','x.scalar_type()')
     old='''    const int threads = 512;
@@ -34,7 +36,6 @@ setup(name='scatter_cuda_grid2d',ext_modules=[CUDAExtension('scatter_cuda_grid2d
         else:p.write_text(text)
     binaries=list(build.glob('scatter_cuda_grid2d*.so'))
     if not binaries:
-        major,minor=torch.cuda.get_device_capability(0)
         env=dict(os.environ,TORCH_CUDA_ARCH_LIST=f'{major}.{minor}',MAX_JOBS='4')
         subprocess.run([sys.executable,'setup_grid2d.py','build_ext','--inplace'],cwd=build,env=env,check=True)
         binaries=list(build.glob('scatter_cuda_grid2d*.so'))
