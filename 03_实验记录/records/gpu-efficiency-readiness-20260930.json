@@ -1,0 +1,39 @@
+{
+  "status": "CUDA_CORRECTNESS_AND_IDLE_CHECK_PASSED",
+  "recorded_utc": "2026-09-30T05:11:15.107448+00:00",
+  "before_probe": {
+    "time_beijing": "2026-09-30 13:09:08",
+    "utilization_percent": 100,
+    "memory_MiB": 0,
+    "pstate": "P0",
+    "power_W": 101.66,
+    "visible_compute_processes": 0,
+    "driver": "590.44.01"
+  },
+  "probe": {
+    "interpreter": "/root/miniconda3/envs/magicbokeh/bin/python",
+    "torch": "2.8.0+cu128",
+    "CUDA": "12.8",
+    "device": "GPU0 RTX PRO6000 Blackwell Server Edition",
+    "capability": [
+      12,
+      0
+    ],
+    "cuda_init_seconds": 0.11210248619318008,
+    "elementwise_1024_exact": true,
+    "matmul_1024_square_ones_three_calls_correct": true
+  },
+  "after_probe_samples": [
+    "2026/09/30 13:11:12.908, 0 %, 0 MiB, P8, 35.00 W",
+    "2026/09/30 13:11:14.004, 0 %, 0 MiB, P8, 35.50 W",
+    "2026/09/30 13:11:15.078, 0 %, 0 MiB, P8, 35.50 W"
+  ],
+  "actions_not_performed": [
+    "driver changes",
+    "GPU reset",
+    "clock/power changes",
+    "killing other processes"
+  ],
+  "inference": "The stale/high utilization reading cleared after a successful short CUDA workload and context exit. Root cause is not uniquely established; no high-utilization guard bypass was used.",
+  "timing_scope": "Subsequent standardized model timings run serially only after the unchanged idle guard passes."
+}

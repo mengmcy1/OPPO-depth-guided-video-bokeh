@@ -27,11 +27,16 @@ def gpu_processes():
 def assert_idle_gpu():
     # A container may see no compute PID even while the device reports activity.
     # Do not label that situation as an exclusive idle timing environment.
-    for i in range(3):
+    # NVML's utilization sample can still cover the preceding method's final
+    # kernels after its process exits. Require three idle samples within30s.
+    consecutive = 0
+    for i in range(30):
         assert not gpu_processes(), 'Wait for an idle GPU; do not stop other processes'
         utilization = int(subprocess.check_output(['nvidia-smi', '--id=0', '--query-gpu=utilization.gpu', '--format=csv,noheader,nounits'], text=True).strip())
-        assert utilization <= 5, f'GPU utilization {utilization}% before timing; resolve activity/telemetry before measuring'
-        if i < 2: time.sleep(1)
+        consecutive = consecutive + 1 if utilization <= 5 else 0
+        if consecutive == 3: return
+        time.sleep(1)
+    raise AssertionError(f'GPU utilization {utilization}% before timing; idle state not established within30s')
 
 
 def load(method, c):
