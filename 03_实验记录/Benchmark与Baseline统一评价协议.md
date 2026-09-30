@@ -505,7 +505,7 @@ Any-to-Bokeh 对同一批输入只产生一份 prediction，再分别以两种 r
 | BokehCrafter* |  |  |  |  |  |  |
 | Ours |  |  |  |  |  |  |
 
-注：Dr.Bokeh 主行读取 GT union alpha，其余方法只接收 RGB + PNG8 disparity + focus + K，信息权限不同；不读取 GT alpha 的公开完整 pipeline（LDF+LaMa）为 PSNR 29.1077 / FVD 143.28969，见 Table V。
+注：Dr.Bokeh 主行额外读取 GT union alpha，原有其他五种方法接收 RGB + PNG8 disparity + focus + K。新增MagicBokeh B从RGB估深，并用GT可见目标区域及自身预测深度辅助选择一个焦点像素；GT数值深度/alpha不输入生成器，但目标区域辅助选点属于额外控制权限。各方法信息权限不同。不读取 GT alpha 的Dr.Bokeh公开完整 pipeline（LDF+LaMa）为 PSNR 29.1077 / FVD 143.28969，见 Table V。
 
 若使用自建版本，表题必须明确写：
 

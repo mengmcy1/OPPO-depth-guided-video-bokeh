@@ -62,7 +62,7 @@ PSNR/SSIM主对照采用本轮TorchMetrics补算；原逐帧PSNR **39.73197 dB**
 **可以得出的结论**：
 
 - **已复现**：Any-to-Bokeh 在六项指标上均排第一，量级与论文接近；它领先 MPIB 的 PSNR 差距为 8.09 dB，论文为 7.51 dB。
-- **未复现**：中间方法的排序。按 PSNR，论文为 ATB > MPIB > Dr.Bokeh > BokehMe > BokehDiff > DeepLens，本项目为 ATB > BokehMe > MPIB > Dr.Bokeh > DeepLens > BokehDiff；FVD 排序也只部分一致。BokehMe 和 DeepLens 的绝对值明显优于论文行。
+- **未复现**：原六种有论文对应行的方法之间的排序。按 PSNR，论文为 ATB > MPIB > Dr.Bokeh > BokehMe > BokehDiff > DeepLens，本项目对应六法为 ATB > BokehMe > MPIB > Dr.Bokeh > DeepLens > BokehDiff；FVD 排序也只部分一致。BokehMe 和 DeepLens 的绝对值明显优于论文行。新增MagicBokeh B没有对应的ATB论文行，不参与六法论文偏差统计；其25.1202 dB在当前七法Synthetic主表中最低，结论限定于当前代理数据与冻结控制协议。
 - **选择偏差**：MPIB、BokehMe、BokehDiff 的主表配置是在这 200 段上从预设候选中按“整体更接近论文行”选定的；Dr.Bokeh 的 GT-alpha 配置也在看过 200 段结果后选定。这些行接近论文，有一部分来自选择本身，不是独立验证。Any-to-Bokeh 行未经候选选择；DeepLens 的控制映射在正式分数出现前冻结，但 K16/32 全部触发 aperture 饱和（2725/5000 帧）。
 
 ---
