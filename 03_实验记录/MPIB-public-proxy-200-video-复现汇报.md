@@ -872,7 +872,7 @@ MagicBokeh的1024×576原生输出由六个512×512重叠图块组成；B配置1
 
 **正式保留，与Table 3A互补。** Table 3A回答模型计算成本，Table 3B回答给定输入后25帧实际流水耗时；它与低帧率几何Track B没有关系。2026-10-01按用户更正恢复本表，不重新生成或改写已有实测结果。
 
-**已测范围**：下表来自旧RTX PRO 6000及旧机CPU的2026-09-30测量，六方法各20次正式重复。**新4090 D尚未完成Table 3B复测；MagicBokeh B在任一机器上都尚无该口径结果。** 所有缺项保留待测，不能将模型时间乘25后作为E2E，也不能给旧卡数据换设备标签。
+**旧硬件实测**：下表来自旧RTX PRO 6000及旧机CPU的2026-09-30测量，六方法各20次正式重复，原始结果保留。**本轮当前4090 D及Xeon 8481C的七方法完整25帧视频E2E实测已完成，见下方当前硬件表。** MagicBokeh B按下述完整边界实测，不将generator-only时间充作E2E，也不给旧数据更换设备标签。
 
 | Method | Device（旧机） | Core / 25f (s) ↓ | E2E-given-inputs / 25f (s) ↓ | FPS (E2E) ↑ | 峰值内存 (GiB, sampled) ↓ |
 |---|---|---:|---:|---:|---:|
@@ -885,15 +885,48 @@ MagicBokeh的1024×576原生输出由六个512×512重叠图块组成；B配置1
 | MagicBokeh B | 待测 | — | — | — | — |
 | Ours | 待测 | — | — | — | — |
 
+### 当前4090 D及CPU视频端到端效率（2026-10-01，已完成）
+
+七方法实际运行完整25帧，四固定输入各预热1次、正式5次，共140个正式样本、28次完整预热。下表为均值±标准差；std来自20个正式样本，包含四片段差异，单K五次重复统计另存。FPS=25/平均E2E秒数。
+
+| 方法 | 当前设备 | Core / 25f (s) | E2E-given-inputs / 25f (s) | FPS | GPU采样峰值 / GiB | CPU RSS / GiB |
+|---|---|---:|---:|---:|---:|---:|
+| DeepLens | Xeon 8481C / TF1.15 / 8 threads | 46.733 ± 2.104 | 48.789 ± 2.151 | 0.512 | — | 1.524 |
+| Dr.Bokeh | RTX 4090 D | 8.584 ± 0.005 | 21.789 ± 0.518 | 1.147 | 2.626 | — |
+| BokehMe | RTX 4090 D | 0.293 ± 0.077 | 1.139 ± 0.075 | 21.953 | 0.755 | — |
+| MPIB | RTX 4090 D | 5.956 ± 0.163 | 7.536 ± 0.213 | 3.317 | 2.181 | — |
+| BokehDiff | RTX 4090 D | 23.151 ± 0.013 | 23.957 ± 0.053 | 1.044 | 17.569 | — |
+| MagicBokeh B | RTX 4090 D | 32.571 ± 0.784 | 36.570 ± 0.879 | 0.684 | 6.786 | — |
+| Any-to-Bokeh | RTX 4090 D | 20.113 ± 0.020 | 21.860 ± 0.130 | 1.144 | 42.136 | — |
+
+GPU补充峰值使用PyTorch口径，CPU不填PyTorch显存：
+
+| GPU方法 | Torch allocated / GiB | Torch reserved / GiB |
+|---|---:|---:|
+| Dr.Bokeh | 1.939 | 2.209 |
+| BokehMe | 0.314 | 0.348 |
+| MPIB | 1.108 | 1.764 |
+| BokehDiff | 14.876 | 17.152 |
+| MagicBokeh B | 5.139 | 6.361 |
+| Any-to-Bokeh | 34.293 | 41.713 |
+
+硬件为4090 D / 49140MiB / 驱动580.105.08，以及Intel Xeon Platinum 8481C；容器配额20核、90GiB。GPU沿用PyTorch2.8.0+cu128 / CUDA12.8环境。DeepLens固定原生TF1.15 CPU、intra-op8/inter-op1线程、oneDNN关闭。内存沿用0.2s采样，模型加载峰值排除。
+
+MagicBokeh B的Core=DAdepth网络forward+六图块生成器/GPU拼接，E2E另计读取、每帧估深外围处理、GT目标辅助选点、条件/传输和PIL/AdaIN；与模型计算成本表的generator-only口径不同。CPU RSS不能当作GPU显存。原有模型成本、质量及DAVIS结果未重跑，模型/精度/adapter/batch/缓存未改。
+
+证据：[当前服务器七方法原始逐次数据、std/by-K及旧新硬件对照](records/video-e2e-4090d-20261001.json)。完整每帧计时单元/日志保存在`outputs/video-e2e-4090d-20261001/`及对应`logs/`；已完成项目可按入口恢复而跳过，未完成尝试保留并整项重启以保持随机流。旧PRO6000及旧CPU表保留原硬件标注，旧机MagicBokeh E2E缺项仍留空。
+
 E2E-given-inputs从已给输入的读取/解码开始，包括适配、必要分层/修复、推理、传输和后处理，直到25张1024×576 CPU RGB uint8就绪；排除模型加载、首次CUDA context、benchmark外部geometry/GT alpha生成、最终写盘及MP4编码。FPS=25/平均E2E秒数，Core同时单列。
 
-证据：[3B原始计时](records/efficiency-track-a-3ab-20260930.json)、[3B最终复核](records/efficiency-3b-final-review-20260930.json)、[阶段归档](历史阶段记录/2026-09-30_Efficiency_3A与3B测量.md)。旧数据的std、by-K、内存采样与CPU/GPU边界保持原记录。后续MagicBokeh若补测3B，需明确自身估深、目标选点及CPU颜色后处理等方法内步骤，不能将3A生成器计时直接改称E2E。
+证据：[3B原始计时](records/efficiency-track-a-3ab-20260930.json)、[3B最终复核](records/efficiency-3b-final-review-20260930.json)、[阶段归档](历史阶段记录/2026-09-30_Efficiency_3A与3B测量.md)。旧数据的std、by-K、内存采样与CPU/GPU边界保持原记录。MagicBokeh B本轮按下述完整方法边界补测。
+
+**MagicBokeh B本轮边界**：沿用冻结原生模型与点控adapter，E2E包括每帧重新DAdepth估深、读取已给目标metadata/layer alpha并计算可见区域、B选点、PNG8与defocus/focus-mask条件构造/传输、六图块生成与GPU拼接、CPU PIL/AdaIN及25帧uint8 RGB输出。外部benchmark geometry/alpha原始生成、模型加载、写盘/编码与指标排除；LDF自动选焦不属于B。Core单列DAdepth网络forward及生成器GPU段之和，与模型计算成本表的generator-only边界明确区分。逐帧种子/精度从原冻结B完整入口继承，未复用旧深度/条件/输出。配置`configs/magicbokeh-video-e2e.json`，入口`scripts/run_video_e2e.py`；当前执行产物在`outputs/video-e2e-4090d-20261001/`，原始日志在对应`logs/`。
 
 ## 当前研究主线与执行边界（2026-10-01更正）
 
 经当前阶段讨论，低帧率 Depth 不再作为必须坚持的创新方向。原 Track B / OPPO-style Low-FPS 自建 benchmark 从当前前置实验中移除，不继续为了填表执行 30/15/10/5/2 fps sweep。
 
-当前限定为既有性能评价：新卡3A已完成，新卡3B为待补项，本次未启动。编码分批、缓存优化、失败分析等继续作为后续候选，不因下列研究顺序自动执行：
+当前限定的既有性能评价已完成：新卡模型计算成本保持原已完成结果，本轮只补七方法完整25帧视频端到端效率。编码分批、缓存优化、失败分析等继续作为后续候选，不因下列研究顺序自动执行：
 
 1. **MagicBokeh已收尾**：原生验证、40帧三候选、用户冻结B、200×25评价及B同配置Table 3A全部完成；额外GT目标辅助选点权限已披露，不重复选方案或推理；
 2. **Any-to-Bokeh效率机制验证**：首轮VAE/UNet/解码时间与峰值归因已完成，下一步区分FP32编码activation、持续缓存和重叠重复计算的贡献；

@@ -306,6 +306,9 @@ def worker(method, c):
     runtime['cpu_quota'] = Path('/sys/fs/cgroup/cpu.max').read_text().strip()
     runtime['memory_quota_bytes'] = Path('/sys/fs/cgroup/memory.max').read_text().strip()
     runtime['core_region_definition'] = c['core_regions'][method]
+    runtime['torch_threads'] = None if cpu else c['torch_threads']
+    runtime['TF_intra_threads'] = c['deeplens_threads'] if cpu else None
+    runtime['TF_inter_threads'] = 1 if cpu else None
     (out/'protocol.json').write_text(json.dumps(c,indent=2)+'\n')
     (out/'runtime.json').write_text(json.dumps(runtime,indent=2)+'\n')
     samples = []; monitor_errors = []; stop = threading.Event(); page_bytes = os.sysconf('SC_PAGE_SIZE')
@@ -350,7 +353,9 @@ def worker(method, c):
                     peak_process_RSS_MiB_sampled=max(x['rss_MiB'] for x in observed))
                 if repeat>=0:
                     rows.append(row); (out/f'{sid}-repeat{repeat}.json').write_text(json.dumps(row,indent=2)+'\n')
-                else: warmups.append(row)
+                else:
+                    warmups.append(row)
+                    print('FULL_CLIP_WARMUP_CHECK_PASSED',method,sid,expected_frames,'frames; shape/finite/uint8 and timing boundaries valid',flush=True)
                 print('TIMING',method,sid,repeat,round(meter.seconds,3),round(seconds,3),flush=True)
                 del prepared,values,pixels
         assert set(gpu_processes()) <= ({os.getpid()} if not cpu else set())
@@ -359,7 +364,10 @@ def worker(method, c):
     (out/'warmups.json').write_text(json.dumps(warmups,indent=2)+'\n')
     # Repeated hardware timing can reuse the frozen complexity evidence.
     previous = None
-    if c.get('reuse_complexity_record'):
+    if c.get('skip_flop_diagnostic'):
+        flops = dict(status='NOT_REMEASURED_IN_VIDEO_E2E_RUN', reported_GFLOPs=None,
+            reason='This run only measures frozen full-video Core/E2E and memory; existing complexity evidence retained.')
+    elif c.get('reuse_complexity_record'):
         previous = read(ROOT / c['reuse_complexity_record'])['methods'][method]
         flops = dict(status=previous['Table3A']['GFLOPs_status'],
             reported_GFLOPs=previous['Table3A']['GFLOPs_per_output_frame'],
@@ -399,6 +407,7 @@ def main():
     parser.add_argument('--logs-dir', type=Path)
     parser.add_argument('--record', type=Path)
     parser.add_argument('--reuse-complexity-record', type=Path)
+    parser.add_argument('--skip-flop-diagnostic', action='store_true')
     args = parser.parse_args(); c = read(ROOT / 'configs/efficiency-track-a.json')
     c['table']=args.table
     if args.table=='3a':
@@ -409,6 +418,7 @@ def main():
         if value is not None: c[key] = str(value)
     if args.all and args.output_dir is not None:
         assert args.logs_dir is not None and args.record is not None, 'Provide isolated log and record destinations with --all'
+    if args.skip_flop_diagnostic: c['skip_flop_diagnostic'] = True
     methods=['drbokeh','bokehme','mpib','bokehdiff','any2bokeh'] if args.table=='3a' else METHODS
     scenes = {s['id']: s for s in read(ROOT / c['input'] / 'config.json')['scenes']}
     for sid, K in zip(c['scenes'], c['K']):
@@ -433,6 +443,7 @@ def main():
             command = [python.get(method, '/root/miniconda3/envs/magicbokeh/bin/python'), str(Path(__file__).resolve()), '--method', method, '--table', args.table]
             for flag, value in [('--output-dir', args.output_dir), ('--logs-dir', args.logs_dir), ('--record', args.record), ('--reuse-complexity-record', args.reuse_complexity_record)]:
                 if value is not None: command.extend([flag, str(value)])
+            if args.skip_flop_diagnostic: command.append('--skip-flop-diagnostic')
             with (logs / f'{method}.log').open('a') as log:
                 subprocess.run(command, cwd=ROOT, env=env, stdout=log, stderr=subprocess.STDOUT, check=True)
         result = dict(status='TABLE3A_FIVE_GPU_METHODS_COMPLETE_REVIEW_PENDING' if args.table=='3a' else 'TABLE3B_SIX_METHODS_COMPLETE_REVIEW_PENDING', protocol=c,

@@ -1,0 +1,25 @@
+{
+  "name": "Frozen MagicBokeh B video E2E-given-inputs",
+  "frozen_adapter": "configs/magicbokeh-track-a-frozen.json",
+  "common_protocol": "configs/efficiency-track-a.json",
+  "model_loader": "scripts/run_magicbokeh_track_a.py:load_models",
+  "core": "DAdepth model.forward plus the unchanged six-tile generator and GPU overlap reconstruction. Depth CPU preprocessing, transfers, resize/minmax/PNG8 adaptation, target selection and color postprocessing belong to E2E only.",
+  "e2e_included": [
+    "Read given RGB and target metadata/layer alpha; derive visible target from already-provided alpha",
+    "Fresh official DAdepth inference from RGB for every frame, including its preprocessing and transfers",
+    "Frozen visible-target depth-medoid B point selection and focus lookup",
+    "PNG8 depth quantization, native defocus/focus-mask construction and transfer",
+    "Six unchanged 512px generator tiles, stride256, and GPU overlap reconstruction",
+    "CPU PIL conversion, native AdaIN color correction, final CPU uint8 RGB for all25 frames"
+  ],
+  "e2e_excluded": [
+    "Model/checkpoint loading and first CUDA context",
+    "External benchmark geometry or GT alpha generation",
+    "LDF automatic-focus path, which is not used by frozen B",
+    "Disk output, PNG/MP4 encoding and metric calculation"
+  ],
+  "rng": "Frozen B frame seed42+25*manifest_scene_index+frame_index; no adapter or model changes",
+  "reuse_policy": "No cached depth, conditions or prior rendered output reused; existing native model caches remain unchanged",
+  "output": "outputs/video-e2e-4090d-20261001/magicbokeh",
+  "memory_sample_seconds": 0.2
+}

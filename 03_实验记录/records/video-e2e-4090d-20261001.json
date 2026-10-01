@@ -1,0 +1,3721 @@
+{
+  "status": "SEVEN_METHOD_VIDEO_E2E_COMPLETE",
+  "completed_UTC": "2026-10-01T02:21:32.454051+00:00",
+  "protocol": {
+    "name": "Table3A model cost and Table3B given-input25-frame efficiency v2",
+    "input": "outputs/any2bokeh-mpib-public-proxy-200-20260928/clips",
+    "scene_selection": "First manifest scene of each K, selected without timing results; equal scene weight",
+    "scenes": [
+      "repro_004",
+      "repro_006",
+      "repro_003",
+      "repro_000"
+    ],
+    "K": [
+      4,
+      8,
+      16,
+      32
+    ],
+    "resolution": [
+      1024,
+      576
+    ],
+    "frames": 25,
+    "batch": "One video; frame methods batch1, ATB retains its frozen two overlapping groups per internal call",
+    "warmup_clips_per_scene": 1,
+    "repeats_per_scene": 5,
+    "gpu": 0,
+    "torch_threads": 4,
+    "deeplens_threads": 8,
+    "core": "Sum of explicitly named model/renderer regions, CUDA synchronize+wall clock. Outer decode/adapters, host/device transfers and final CPU uint8 conversion excluded; included in E2E.",
+    "e2e": "E2E-given-inputs: input decode/read, geometry/control adaptation, full method pipeline, CPU output transfer and clamp/round RGB8. Excludes model loading, output file writing, video encoding, metrics, unavailable GT generation and external depth estimation.",
+    "e2e_authorization": "User explicitly selected E2E-given-inputs on2026-09-29",
+    "drbokeh": "Synthetic GT union alpha + LaMa reconstruction, frozen gamma2.2/lens71/grid2d; not DAVIS Full-public",
+    "deeplens": "Frozen external-geometry TF1.15 CPU / single SR / aperture saturation, not DAVIS native DepthNet",
+    "time": "perf_counter with GPU synchronize at clip/core boundaries; nested Core within E2E in the same repeat; no production jobs in parallel",
+    "rng": "Separate timing process, initial seed0 (BokehDiff42), continuous stream across warmup/repeats; does not change saved quality outputs or their RNG states",
+    "peak_memory": "Per-unit PyTorch allocated/reserved peaks after warmup; Table3B device total sampled0.2s (includes CUDA/CuPy); native CPU RSS sampled0.2s during repeats. Units GiB (2^30 bytes). Loading peak excluded.",
+    "aggregation": "Per-scene mean/std over5 repeats, then equal mean over4 scenes; FPS=25/mean E2E seconds; preserve all raw repeats and by-K values",
+    "output": "outputs/video-e2e-4090d-20261001",
+    "record": "outputs/video-e2e-4090d-20261001/six-methods.json",
+    "gate": "DAVIS_2016_V2_SIX_BASELINES_COMPLETE_AND_FROZEN",
+    "core_regions": {
+      "any2bokeh": "Public video pipeline on already-CUDA RGB/CoC/MPI/K/weights through CUDA float output; three native calls emitting8/8/9frames, overlap assembly included. Host transfers outside.",
+      "mpib": "Official inpnet, mpinet, aupnet and MPI renderer forward calls on CUDA inputs; CPU mask construction/intermediate resize and transfers are E2E-only.",
+      "bokehme": "Official demo pipeline on already-CUDA RGB/defocus through CUDA output, including classical/neural branches and blend; transfers outside.",
+      "drbokeh": "LaMa model.forward twice and Multi_Layer_Renderer.forward on already-CUDA RGBAD. GT-alpha layer construction, cv2 repair, input/output transfer and photometric CPU postprocess are E2E-only.",
+      "bokehdiff": "Public VAE.encode plus TiledSDXL pipeline on CUDA RGB/condition through CUDA float output; no diagnostic CPU copy or PIL conversion in Core. Frozen PISA/seed retained.",
+      "deeplens": "Native TF1 session.run of LensBlur+singleSR graph; external geometry mapping, numpy validation and final RGB uint8 conversion outside Core. CPU only."
+    },
+    "unit": "Frame methods record each real single-frame unit; ATB records its real8/8/9-output calls. Table3A time is measured Core sum divided by actual emitted frames; no synthetic single-frame video entry.",
+    "core_timing_overhead": "Nested synchronized Core measurement adds synchronization overhead to E2E; no asynchronous unsynchronized timings.",
+    "GFLOPs": "After latency repeats, separate diagnostic dispatcher count perK. Preserve operator coverage and countable arithmetic; report N/A when full floating-point path is not covered, never label a partial count full-pipeline GFLOPs.",
+    "logs": "logs/video-e2e-4090d-20261001",
+    "table": "3b",
+    "skip_flop_diagnostic": true
+  },
+  "MagicBokeh_boundary": {
+    "name": "Frozen MagicBokeh B video E2E-given-inputs",
+    "frozen_adapter": "configs/magicbokeh-track-a-frozen.json",
+    "common_protocol": "configs/efficiency-track-a.json",
+    "model_loader": "scripts/run_magicbokeh_track_a.py:load_models",
+    "core": "DAdepth model.forward plus the unchanged six-tile generator and GPU overlap reconstruction. Depth CPU preprocessing, transfers, resize/minmax/PNG8 adaptation, target selection and color postprocessing belong to E2E only.",
+    "e2e_included": [
+      "Read given RGB and target metadata/layer alpha; derive visible target from already-provided alpha",
+      "Fresh official DAdepth inference from RGB for every frame, including its preprocessing and transfers",
+      "Frozen visible-target depth-medoid B point selection and focus lookup",
+      "PNG8 depth quantization, native defocus/focus-mask construction and transfer",
+      "Six unchanged 512px generator tiles, stride256, and GPU overlap reconstruction",
+      "CPU PIL conversion, native AdaIN color correction, final CPU uint8 RGB for all25 frames"
+    ],
+    "e2e_excluded": [
+      "Model/checkpoint loading and first CUDA context",
+      "External benchmark geometry or GT alpha generation",
+      "LDF automatic-focus path, which is not used by frozen B",
+      "Disk output, PNG/MP4 encoding and metric calculation"
+    ],
+    "rng": "Frozen B frame seed42+25*manifest_scene_index+frame_index; no adapter or model changes",
+    "reuse_policy": "No cached depth, conditions or prior rendered output reused; existing native model caches remain unchanged",
+    "output": "outputs/video-e2e-4090d-20261001/magicbokeh",
+    "memory_sample_seconds": 0.2
+  },
+  "table": [
+    {
+      "method": "deeplens",
+      "device": "CPU / Intel Xeon Platinum 8481C / TF1.15 / intra8 inter1",
+      "Core_seconds_mean": 46.733059160225096,
+      "Core_seconds_std": 2.1037505091797297,
+      "E2E_given_inputs_seconds_mean": 48.78919329419732,
+      "E2E_given_inputs_seconds_std": 2.150822577923565,
+      "FPS_E2E": 0.5124085542724754,
+      "Peak_device_memory_GiB_sampled": null,
+      "Peak_torch_allocated_GiB": null,
+      "Peak_torch_reserved_GiB": null,
+      "CPU_RSS_GiB_sampled": 1.5242652893066406,
+      "formal_samples": 20,
+      "warmups": 4,
+      "frames_per_execution": 25
+    },
+    {
+      "method": "drbokeh",
+      "device": "NVIDIA GeForce RTX 4090 D",
+      "Core_seconds_mean": 8.584468182176352,
+      "Core_seconds_std": 0.00473286169805804,
+      "E2E_given_inputs_seconds_mean": 21.788814554549752,
+      "E2E_given_inputs_seconds_std": 0.5176504270641064,
+      "FPS_E2E": 1.1473777032435992,
+      "Peak_device_memory_GiB_sampled": 2.6259765625,
+      "Peak_torch_allocated_GiB": 1.938849925994873,
+      "Peak_torch_reserved_GiB": 2.208984375,
+      "CPU_RSS_GiB_sampled": null,
+      "formal_samples": 20,
+      "warmups": 4,
+      "frames_per_execution": 25
+    },
+    {
+      "method": "bokehme",
+      "device": "NVIDIA GeForce RTX 4090 D",
+      "Core_seconds_mean": 0.2932546915486455,
+      "Core_seconds_std": 0.07670178962375489,
+      "E2E_given_inputs_seconds_mean": 1.1388024544343351,
+      "E2E_given_inputs_seconds_std": 0.07455823875994241,
+      "FPS_E2E": 21.952885597193394,
+      "Peak_device_memory_GiB_sampled": 0.7548828125,
+      "Peak_torch_allocated_GiB": 0.31445741653442383,
+      "Peak_torch_reserved_GiB": 0.34765625,
+      "CPU_RSS_GiB_sampled": null,
+      "formal_samples": 20,
+      "warmups": 4,
+      "frames_per_execution": 25
+    },
+    {
+      "method": "mpib",
+      "device": "NVIDIA GeForce RTX 4090 D",
+      "Core_seconds_mean": 5.95599155165255,
+      "Core_seconds_std": 0.16343501896314666,
+      "E2E_given_inputs_seconds_mean": 7.535811417363584,
+      "E2E_given_inputs_seconds_std": 0.21257339619218799,
+      "FPS_E2E": 3.317492784174035,
+      "Peak_device_memory_GiB_sampled": 2.1806640625,
+      "Peak_torch_allocated_GiB": 1.1084823608398438,
+      "Peak_torch_reserved_GiB": 1.763671875,
+      "CPU_RSS_GiB_sampled": null,
+      "formal_samples": 20,
+      "warmups": 4,
+      "frames_per_execution": 25
+    },
+    {
+      "method": "bokehdiff",
+      "device": "NVIDIA GeForce RTX 4090 D",
+      "Core_seconds_mean": 23.15104864090681,
+      "Core_seconds_std": 0.012994436864560031,
+      "E2E_given_inputs_seconds_mean": 23.95711736064404,
+      "E2E_given_inputs_seconds_std": 0.05278962396130153,
+      "FPS_E2E": 1.043531223880431,
+      "Peak_device_memory_GiB_sampled": 17.5693359375,
+      "Peak_torch_allocated_GiB": 14.87554407119751,
+      "Peak_torch_reserved_GiB": 17.15234375,
+      "CPU_RSS_GiB_sampled": null,
+      "formal_samples": 20,
+      "warmups": 4,
+      "frames_per_execution": 25
+    },
+    {
+      "method": "magicbokeh",
+      "device": "NVIDIA GeForce RTX 4090 D",
+      "Core_seconds_mean": 32.57142381891608,
+      "Core_seconds_std": 0.7838397842987113,
+      "E2E_given_inputs_seconds_mean": 36.57040787357837,
+      "E2E_given_inputs_seconds_std": 0.8788430190697142,
+      "FPS_E2E": 0.6836128294336625,
+      "Peak_device_memory_GiB_sampled": 6.7861328125,
+      "Peak_torch_allocated_GiB": 5.139299392700195,
+      "Peak_torch_reserved_GiB": 6.361328125,
+      "CPU_RSS_GiB_sampled": null,
+      "formal_samples": 20,
+      "warmups": 4,
+      "frames_per_execution": 25
+    },
+    {
+      "method": "any2bokeh",
+      "device": "NVIDIA GeForce RTX 4090 D",
+      "Core_seconds_mean": 20.112800140678882,
+      "Core_seconds_std": 0.019930639419228454,
+      "E2E_given_inputs_seconds_mean": 21.86033634208143,
+      "E2E_given_inputs_seconds_std": 0.12961331045753097,
+      "FPS_E2E": 1.143623758060606,
+      "Peak_device_memory_GiB_sampled": 42.1357421875,
+      "Peak_torch_allocated_GiB": 34.29290437698364,
+      "Peak_torch_reserved_GiB": 41.712890625,
+      "CPU_RSS_GiB_sampled": null,
+      "formal_samples": 20,
+      "warmups": 4,
+      "frames_per_execution": 25
+    }
+  ],
+  "methods": {
+    "deeplens": {
+      "runtime": {
+        "active_parameters": 2036111,
+        "device": "CPU",
+        "runtime": {
+          "source_commit": "3dbc1b04ba082b3b6b1dc0d944b3d18fa542ae2c",
+          "runtime": "1.15.0",
+          "device": "CPU",
+          "checkpoint_tensors": 488,
+          "restored_tensors": 210,
+          "restored_elements": 2044303,
+          "scopes": [
+            "Feature",
+            "Lensblur",
+            "SR"
+          ],
+          "all_restored_finite": true,
+          "no_uninitialized_variables": true,
+          "DepthNet_built_or_executed": false,
+          "compatibility_files": [
+            {
+              "file": "network/network.py",
+              "modified": true
+            },
+            {
+              "file": "network/kernel_net.py",
+              "modified": false
+            },
+            {
+              "file": "network/feature_net.py",
+              "modified": false
+            },
+            {
+              "file": "network/srnet.py",
+              "modified": false
+            },
+            {
+              "file": "core/build_lensblur.py",
+              "modified": false
+            },
+            {
+              "file": "core/build_sr.py",
+              "modified": false
+            }
+          ],
+          "native_SR_uint8_intermediate_preserved": true,
+          "limitation": "Native TF1 CPU reference; no claim of original GPU numerical parity."
+        },
+        "project_commit": "299cd92208ddcd972b691455a2f6e3efc422220c",
+        "gpu_hardware": "NVIDIA GeForce RTX 4090 D, 580.105.08, 49140 MiB",
+        "cpu_model": "Intel(R) Xeon(R) Platinum 8481C",
+        "cpu_quota": "2000000 100000",
+        "memory_quota_bytes": "96636764160",
+        "core_region_definition": "Native TF1 session.run of LensBlur+singleSR graph; external geometry mapping, numpy validation and final RGB uint8 conversion outside Core. CPU only.",
+        "torch_threads": null,
+        "TF_intra_threads": 8,
+        "TF_inter_threads": 1
+      },
+      "by_K": {
+        "4": {
+          "core_seconds": {
+            "mean": 49.93957406580448,
+            "std": 1.308029144445679
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 52.066853143274784,
+            "std": 1.2973868337198955
+          }
+        },
+        "8": {
+          "core_seconds": {
+            "mean": 46.14337910488248,
+            "std": 0.8273040240892656
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 48.21719595268369,
+            "std": 0.8234528026909433
+          }
+        },
+        "16": {
+          "core_seconds": {
+            "mean": 44.9095461346209,
+            "std": 0.23375431092882665
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 46.87412437275052,
+            "std": 0.23003129118400611
+          }
+        },
+        "32": {
+          "core_seconds": {
+            "mean": 45.93973733559251,
+            "std": 0.5851081994659185
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 47.99859970808029,
+            "std": 0.5966783572762355
+          }
+        }
+      },
+      "raw_summary": "outputs/video-e2e-4090d-20261001/deeplens/summary.json",
+      "raw_warmups": "outputs/video-e2e-4090d-20261001/deeplens/warmups.json",
+      "rows": [
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 51.881555531173944,
+          "E2E_given_inputs_seconds": 53.9785178527236,
+          "core_regions_seconds": {
+            "TF1_LensBlur_singleSR": 51.881555531173944
+          },
+          "core_region_calls": {
+            "TF1_LensBlur_singleSR": 25
+          },
+          "peak_torch_allocated_GiB": null,
+          "peak_torch_reserved_GiB": null,
+          "peak_device_memory_MiB_sampled": null,
+          "peak_process_RSS_MiB_sampled": 1355.9296875
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 50.285016268491745,
+          "E2E_given_inputs_seconds": 52.43317773938179,
+          "core_regions_seconds": {
+            "TF1_LensBlur_singleSR": 50.285016268491745
+          },
+          "core_region_calls": {
+            "TF1_LensBlur_singleSR": 25
+          },
+          "peak_torch_allocated_GiB": null,
+          "peak_torch_reserved_GiB": null,
+          "peak_device_memory_MiB_sampled": null,
+          "peak_process_RSS_MiB_sampled": 1373.328125
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 50.06211955845356,
+          "E2E_given_inputs_seconds": 52.19517068192363,
+          "core_regions_seconds": {
+            "TF1_LensBlur_singleSR": 50.06211955845356
+          },
+          "core_region_calls": {
+            "TF1_LensBlur_singleSR": 25
+          },
+          "peak_torch_allocated_GiB": null,
+          "peak_torch_reserved_GiB": null,
+          "peak_device_memory_MiB_sampled": null,
+          "peak_process_RSS_MiB_sampled": 1398.7421875
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 48.86525234952569,
+          "E2E_given_inputs_seconds": 50.99131831154227,
+          "core_regions_seconds": {
+            "TF1_LensBlur_singleSR": 48.86525234952569
+          },
+          "core_region_calls": {
+            "TF1_LensBlur_singleSR": 25
+          },
+          "peak_torch_allocated_GiB": null,
+          "peak_torch_reserved_GiB": null,
+          "peak_device_memory_MiB_sampled": null,
+          "peak_process_RSS_MiB_sampled": 1463.5703125
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 48.60392662137747,
+          "E2E_given_inputs_seconds": 50.73608113080263,
+          "core_regions_seconds": {
+            "TF1_LensBlur_singleSR": 48.60392662137747
+          },
+          "core_region_calls": {
+            "TF1_LensBlur_singleSR": 25
+          },
+          "peak_torch_allocated_GiB": null,
+          "peak_torch_reserved_GiB": null,
+          "peak_device_memory_MiB_sampled": null,
+          "peak_process_RSS_MiB_sampled": 1386.3125
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 47.51137804239988,
+          "E2E_given_inputs_seconds": 49.56605637818575,
+          "core_regions_seconds": {
+            "TF1_LensBlur_singleSR": 47.51137804239988
+          },
+          "core_region_calls": {
+            "TF1_LensBlur_singleSR": 25
+          },
+          "peak_torch_allocated_GiB": null,
+          "peak_torch_reserved_GiB": null,
+          "peak_device_memory_MiB_sampled": null,
+          "peak_process_RSS_MiB_sampled": 1418.37109375
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 46.252796445041895,
+          "E2E_given_inputs_seconds": 48.33692443743348,
+          "core_regions_seconds": {
+            "TF1_LensBlur_singleSR": 46.252796445041895
+          },
+          "core_region_calls": {
+            "TF1_LensBlur_singleSR": 25
+          },
+          "peak_torch_allocated_GiB": null,
+          "peak_torch_reserved_GiB": null,
+          "peak_device_memory_MiB_sampled": null,
+          "peak_process_RSS_MiB_sampled": 1440.80859375
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 45.82211505621672,
+          "E2E_given_inputs_seconds": 47.872182331979275,
+          "core_regions_seconds": {
+            "TF1_LensBlur_singleSR": 45.82211505621672
+          },
+          "core_region_calls": {
+            "TF1_LensBlur_singleSR": 25
+          },
+          "peak_torch_allocated_GiB": null,
+          "peak_torch_reserved_GiB": null,
+          "peak_device_memory_MiB_sampled": null,
+          "peak_process_RSS_MiB_sampled": 1461.23046875
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 45.36185770481825,
+          "E2E_given_inputs_seconds": 47.402136120945215,
+          "core_regions_seconds": {
+            "TF1_LensBlur_singleSR": 45.36185770481825
+          },
+          "core_region_calls": {
+            "TF1_LensBlur_singleSR": 25
+          },
+          "peak_torch_allocated_GiB": null,
+          "peak_torch_reserved_GiB": null,
+          "peak_device_memory_MiB_sampled": null,
+          "peak_process_RSS_MiB_sampled": 1442.92578125
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 45.76874827593565,
+          "E2E_given_inputs_seconds": 47.908680494874716,
+          "core_regions_seconds": {
+            "TF1_LensBlur_singleSR": 45.76874827593565
+          },
+          "core_region_calls": {
+            "TF1_LensBlur_singleSR": 25
+          },
+          "peak_torch_allocated_GiB": null,
+          "peak_torch_reserved_GiB": null,
+          "peak_device_memory_MiB_sampled": null,
+          "peak_process_RSS_MiB_sampled": 1514.3671875
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 44.5538098141551,
+          "E2E_given_inputs_seconds": 46.55732740461826,
+          "core_regions_seconds": {
+            "TF1_LensBlur_singleSR": 44.5538098141551
+          },
+          "core_region_calls": {
+            "TF1_LensBlur_singleSR": 25
+          },
+          "peak_torch_allocated_GiB": null,
+          "peak_torch_reserved_GiB": null,
+          "peak_device_memory_MiB_sampled": null,
+          "peak_process_RSS_MiB_sampled": 1560.84765625
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 45.14751563593745,
+          "E2E_given_inputs_seconds": 47.15427075698972,
+          "core_regions_seconds": {
+            "TF1_LensBlur_singleSR": 45.14751563593745
+          },
+          "core_region_calls": {
+            "TF1_LensBlur_singleSR": 25
+          },
+          "peak_torch_allocated_GiB": null,
+          "peak_torch_reserved_GiB": null,
+          "peak_device_memory_MiB_sampled": null,
+          "peak_process_RSS_MiB_sampled": 1492.203125
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 45.05396442860365,
+          "E2E_given_inputs_seconds": 46.93087635561824,
+          "core_regions_seconds": {
+            "TF1_LensBlur_singleSR": 45.05396442860365
+          },
+          "core_region_calls": {
+            "TF1_LensBlur_singleSR": 25
+          },
+          "peak_torch_allocated_GiB": null,
+          "peak_torch_reserved_GiB": null,
+          "peak_device_memory_MiB_sampled": null,
+          "peak_process_RSS_MiB_sampled": 1462.91796875
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 44.98040680959821,
+          "E2E_given_inputs_seconds": 46.98530164733529,
+          "core_regions_seconds": {
+            "TF1_LensBlur_singleSR": 44.98040680959821
+          },
+          "core_region_calls": {
+            "TF1_LensBlur_singleSR": 25
+          },
+          "peak_torch_allocated_GiB": null,
+          "peak_torch_reserved_GiB": null,
+          "peak_device_memory_MiB_sampled": null,
+          "peak_process_RSS_MiB_sampled": 1486.88671875
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 44.812033984810114,
+          "E2E_given_inputs_seconds": 46.74284569919109,
+          "core_regions_seconds": {
+            "TF1_LensBlur_singleSR": 44.812033984810114
+          },
+          "core_region_calls": {
+            "TF1_LensBlur_singleSR": 25
+          },
+          "peak_torch_allocated_GiB": null,
+          "peak_torch_reserved_GiB": null,
+          "peak_device_memory_MiB_sampled": null,
+          "peak_process_RSS_MiB_sampled": 1504.1796875
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 46.239181745797396,
+          "E2E_given_inputs_seconds": 48.29843248054385,
+          "core_regions_seconds": {
+            "TF1_LensBlur_singleSR": 46.239181745797396
+          },
+          "core_region_calls": {
+            "TF1_LensBlur_singleSR": 25
+          },
+          "peak_torch_allocated_GiB": null,
+          "peak_torch_reserved_GiB": null,
+          "peak_device_memory_MiB_sampled": null,
+          "peak_process_RSS_MiB_sampled": 1519.75390625
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 46.44335986301303,
+          "E2E_given_inputs_seconds": 48.50246627256274,
+          "core_regions_seconds": {
+            "TF1_LensBlur_singleSR": 46.44335986301303
+          },
+          "core_region_calls": {
+            "TF1_LensBlur_singleSR": 25
+          },
+          "peak_torch_allocated_GiB": null,
+          "peak_torch_reserved_GiB": null,
+          "peak_device_memory_MiB_sampled": null,
+          "peak_process_RSS_MiB_sampled": 1516.09375
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 46.298698373138905,
+          "E2E_given_inputs_seconds": 48.383724208921194,
+          "core_regions_seconds": {
+            "TF1_LensBlur_singleSR": 46.298698373138905
+          },
+          "core_region_calls": {
+            "TF1_LensBlur_singleSR": 25
+          },
+          "peak_torch_allocated_GiB": null,
+          "peak_torch_reserved_GiB": null,
+          "peak_device_memory_MiB_sampled": null,
+          "peak_process_RSS_MiB_sampled": 1523.87109375
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 45.69196221232414,
+          "E2E_given_inputs_seconds": 47.739856600761414,
+          "core_regions_seconds": {
+            "TF1_LensBlur_singleSR": 45.69196221232414
+          },
+          "core_region_calls": {
+            "TF1_LensBlur_singleSR": 25
+          },
+          "peak_torch_allocated_GiB": null,
+          "peak_torch_reserved_GiB": null,
+          "peak_device_memory_MiB_sampled": null,
+          "peak_process_RSS_MiB_sampled": 1516.32421875
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 45.02548448368907,
+          "E2E_given_inputs_seconds": 47.06851897761226,
+          "core_regions_seconds": {
+            "TF1_LensBlur_singleSR": 45.02548448368907
+          },
+          "core_region_calls": {
+            "TF1_LensBlur_singleSR": 25
+          },
+          "peak_torch_allocated_GiB": null,
+          "peak_torch_reserved_GiB": null,
+          "peak_device_memory_MiB_sampled": null,
+          "peak_process_RSS_MiB_sampled": 1459.64453125
+        }
+      ]
+    },
+    "drbokeh": {
+      "runtime": {
+        "loaded_learned_parameters": 50975875,
+        "loaded_parameter_components": {
+          "LaMa": 50975875
+        },
+        "device": "GPU0",
+        "torch": "2.8.0+cu128",
+        "CUDA": "12.8",
+        "project_commit": "299cd92208ddcd972b691455a2f6e3efc422220c",
+        "gpu_hardware": "NVIDIA GeForce RTX 4090 D, 580.105.08, 49140 MiB",
+        "cpu_model": "Intel(R) Xeon(R) Platinum 8481C",
+        "cpu_quota": "2000000 100000",
+        "memory_quota_bytes": "96636764160",
+        "core_region_definition": "LaMa model.forward twice and Multi_Layer_Renderer.forward on already-CUDA RGBAD. GT-alpha layer construction, cv2 repair, input/output transfer and photometric CPU postprocess are E2E-only.",
+        "torch_threads": 4,
+        "TF_intra_threads": null,
+        "TF_inter_threads": null
+      },
+      "by_K": {
+        "4": {
+          "core_seconds": {
+            "mean": 8.582376640290022,
+            "std": 0.003376736443851846
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 22.05501729696989,
+            "std": 0.1482863839955207
+          }
+        },
+        "8": {
+          "core_seconds": {
+            "mean": 8.583305812627078,
+            "std": 0.0036369906995507217
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 22.22151772379875,
+            "std": 0.17135816840013784
+          }
+        },
+        "16": {
+          "core_seconds": {
+            "mean": 8.586875296384097,
+            "std": 0.007051402730246091
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 21.825461108237505,
+            "std": 0.1845627724826453
+          }
+        },
+        "32": {
+          "core_seconds": {
+            "mean": 8.585314979404211,
+            "std": 0.004092851083966392
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 21.053262089192867,
+            "std": 0.4322129412350565
+          }
+        }
+      },
+      "raw_summary": "outputs/video-e2e-4090d-20261001/drbokeh/summary.json",
+      "raw_warmups": "outputs/video-e2e-4090d-20261001/drbokeh/warmups.json",
+      "rows": [
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 8.581559166312218,
+          "E2E_given_inputs_seconds": 22.05687616020441,
+          "core_regions_seconds": {
+            "LaMa": 2.1775200366973877,
+            "Multi_Layer_Renderer": 6.40403912961483
+          },
+          "core_region_calls": {
+            "LaMa": 50,
+            "Multi_Layer_Renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.938849925994873,
+          "peak_torch_reserved_GiB": 2.208984375,
+          "peak_device_memory_MiB_sampled": 2689,
+          "peak_process_RSS_MiB_sampled": 2194.7890625
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 8.579569436609745,
+          "E2E_given_inputs_seconds": 22.01388106867671,
+          "core_regions_seconds": {
+            "LaMa": 2.1783352717757225,
+            "Multi_Layer_Renderer": 6.4012341648340225
+          },
+          "core_region_calls": {
+            "LaMa": 50,
+            "Multi_Layer_Renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.938849925994873,
+          "peak_torch_reserved_GiB": 2.208984375,
+          "peak_device_memory_MiB_sampled": 2689,
+          "peak_process_RSS_MiB_sampled": 2194.8515625
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 8.583969954401255,
+          "E2E_given_inputs_seconds": 22.260120701044798,
+          "core_regions_seconds": {
+            "LaMa": 2.1787264831364155,
+            "Multi_Layer_Renderer": 6.405243471264839
+          },
+          "core_region_calls": {
+            "LaMa": 50,
+            "Multi_Layer_Renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.938849925994873,
+          "peak_torch_reserved_GiB": 2.208984375,
+          "peak_device_memory_MiB_sampled": 2689,
+          "peak_process_RSS_MiB_sampled": 2202.0234375
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 8.587420899420977,
+          "E2E_given_inputs_seconds": 22.095480162650347,
+          "core_regions_seconds": {
+            "LaMa": 2.179117050021887,
+            "Multi_Layer_Renderer": 6.40830384939909
+          },
+          "core_region_calls": {
+            "LaMa": 50,
+            "Multi_Layer_Renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.938849925994873,
+          "peak_torch_reserved_GiB": 2.208984375,
+          "peak_device_memory_MiB_sampled": 2689,
+          "peak_process_RSS_MiB_sampled": 2208.2421875
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 8.579363744705915,
+          "E2E_given_inputs_seconds": 21.848728392273188,
+          "core_regions_seconds": {
+            "LaMa": 2.178124614059925,
+            "Multi_Layer_Renderer": 6.40123913064599
+          },
+          "core_region_calls": {
+            "LaMa": 50,
+            "Multi_Layer_Renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.938849925994873,
+          "peak_torch_reserved_GiB": 2.208984375,
+          "peak_device_memory_MiB_sampled": 2689,
+          "peak_process_RSS_MiB_sampled": 2210.6640625
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 8.583550613373518,
+          "E2E_given_inputs_seconds": 22.052723575383425,
+          "core_regions_seconds": {
+            "LaMa": 2.177481859922409,
+            "Multi_Layer_Renderer": 6.406068753451109
+          },
+          "core_region_calls": {
+            "LaMa": 50,
+            "Multi_Layer_Renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.938849925994873,
+          "peak_torch_reserved_GiB": 2.208984375,
+          "peak_device_memory_MiB_sampled": 2689,
+          "peak_process_RSS_MiB_sampled": 2169.6015625
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 8.584014736115932,
+          "E2E_given_inputs_seconds": 22.209812693297863,
+          "core_regions_seconds": {
+            "LaMa": 2.1792612187564373,
+            "Multi_Layer_Renderer": 6.404753517359495
+          },
+          "core_region_calls": {
+            "LaMa": 50,
+            "Multi_Layer_Renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.938849925994873,
+          "peak_torch_reserved_GiB": 2.208984375,
+          "peak_device_memory_MiB_sampled": 2689,
+          "peak_process_RSS_MiB_sampled": 2212.46484375
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 8.57824231684208,
+          "E2E_given_inputs_seconds": 22.125480100512505,
+          "core_regions_seconds": {
+            "LaMa": 2.1798448711633682,
+            "Multi_Layer_Renderer": 6.398397445678711
+          },
+          "core_region_calls": {
+            "LaMa": 50,
+            "Multi_Layer_Renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.938849925994873,
+          "peak_torch_reserved_GiB": 2.208984375,
+          "peak_device_memory_MiB_sampled": 2689,
+          "peak_process_RSS_MiB_sampled": 2204.0546875
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 8.582338761538267,
+          "E2E_given_inputs_seconds": 22.50360282883048,
+          "core_regions_seconds": {
+            "LaMa": 2.179242003709078,
+            "Multi_Layer_Renderer": 6.403096757829189
+          },
+          "core_region_calls": {
+            "LaMa": 50,
+            "Multi_Layer_Renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.938849925994873,
+          "peak_torch_reserved_GiB": 2.208984375,
+          "peak_device_memory_MiB_sampled": 2689,
+          "peak_process_RSS_MiB_sampled": 2148.04296875
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 8.588382635265589,
+          "E2E_given_inputs_seconds": 22.215969420969486,
+          "core_regions_seconds": {
+            "LaMa": 2.180964905768633,
+            "Multi_Layer_Renderer": 6.407417729496956
+          },
+          "core_region_calls": {
+            "LaMa": 50,
+            "Multi_Layer_Renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.938849925994873,
+          "peak_torch_reserved_GiB": 2.208984375,
+          "peak_device_memory_MiB_sampled": 2689,
+          "peak_process_RSS_MiB_sampled": 2190.82421875
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 8.579106081277132,
+          "E2E_given_inputs_seconds": 21.981173165142536,
+          "core_regions_seconds": {
+            "LaMa": 2.1787498220801353,
+            "Multi_Layer_Renderer": 6.400356259196997
+          },
+          "core_region_calls": {
+            "LaMa": 50,
+            "Multi_Layer_Renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.938849925994873,
+          "peak_torch_reserved_GiB": 2.208984375,
+          "peak_device_memory_MiB_sampled": 2689,
+          "peak_process_RSS_MiB_sampled": 2172.703125
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 8.584433406591415,
+          "E2E_given_inputs_seconds": 21.72171066328883,
+          "core_regions_seconds": {
+            "LaMa": 2.179830636829138,
+            "Multi_Layer_Renderer": 6.404602769762278
+          },
+          "core_region_calls": {
+            "LaMa": 50,
+            "Multi_Layer_Renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.938849925994873,
+          "peak_torch_reserved_GiB": 2.208984375,
+          "peak_device_memory_MiB_sampled": 2689,
+          "peak_process_RSS_MiB_sampled": 2188.3671875
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 8.583829317241907,
+          "E2E_given_inputs_seconds": 21.54950825497508,
+          "core_regions_seconds": {
+            "LaMa": 2.182489976286888,
+            "Multi_Layer_Renderer": 6.401339340955019
+          },
+          "core_region_calls": {
+            "LaMa": 50,
+            "Multi_Layer_Renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.938849925994873,
+          "peak_torch_reserved_GiB": 2.208984375,
+          "peak_device_memory_MiB_sampled": 2689,
+          "peak_process_RSS_MiB_sampled": 2189.0078125
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 8.597711715847254,
+          "E2E_given_inputs_seconds": 21.939361084252596,
+          "core_regions_seconds": {
+            "LaMa": 2.180677365511656,
+            "Multi_Layer_Renderer": 6.417034350335598
+          },
+          "core_region_calls": {
+            "LaMa": 50,
+            "Multi_Layer_Renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.938849925994873,
+          "peak_torch_reserved_GiB": 2.208984375,
+          "peak_device_memory_MiB_sampled": 2689,
+          "peak_process_RSS_MiB_sampled": 2188.73828125
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 8.589295960962772,
+          "E2E_given_inputs_seconds": 21.93555237352848,
+          "core_regions_seconds": {
+            "LaMa": 2.1789235025644302,
+            "Multi_Layer_Renderer": 6.410372458398342
+          },
+          "core_region_calls": {
+            "LaMa": 50,
+            "Multi_Layer_Renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.938849925994873,
+          "peak_torch_reserved_GiB": 2.208984375,
+          "peak_device_memory_MiB_sampled": 2689,
+          "peak_process_RSS_MiB_sampled": 2168.44921875
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 8.579573437571526,
+          "E2E_given_inputs_seconds": 20.89456083253026,
+          "core_regions_seconds": {
+            "LaMa": 2.1795699782669544,
+            "Multi_Layer_Renderer": 6.400003459304571
+          },
+          "core_region_calls": {
+            "LaMa": 50,
+            "Multi_Layer_Renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.938849925994873,
+          "peak_torch_reserved_GiB": 2.208984375,
+          "peak_device_memory_MiB_sampled": 2689,
+          "peak_process_RSS_MiB_sampled": 2148.31640625
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 8.58465325459838,
+          "E2E_given_inputs_seconds": 21.096339616924524,
+          "core_regions_seconds": {
+            "LaMa": 2.179646424949169,
+            "Multi_Layer_Renderer": 6.40500682964921
+          },
+          "core_region_calls": {
+            "LaMa": 50,
+            "Multi_Layer_Renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.938849925994873,
+          "peak_torch_reserved_GiB": 2.208984375,
+          "peak_device_memory_MiB_sampled": 2689,
+          "peak_process_RSS_MiB_sampled": 2143.91796875
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 8.586013406515121,
+          "E2E_given_inputs_seconds": 20.97409264370799,
+          "core_regions_seconds": {
+            "LaMa": 2.1802540943026543,
+            "Multi_Layer_Renderer": 6.405759312212467
+          },
+          "core_region_calls": {
+            "LaMa": 50,
+            "Multi_Layer_Renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.938849925994873,
+          "peak_torch_reserved_GiB": 2.208984375,
+          "peak_device_memory_MiB_sampled": 2689,
+          "peak_process_RSS_MiB_sampled": 2171.23828125
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 8.58526549115777,
+          "E2E_given_inputs_seconds": 20.56118842586875,
+          "core_regions_seconds": {
+            "LaMa": 2.1809758506715298,
+            "Multi_Layer_Renderer": 6.40428964048624
+          },
+          "core_region_calls": {
+            "LaMa": 50,
+            "Multi_Layer_Renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.938849925994873,
+          "peak_torch_reserved_GiB": 2.208984375,
+          "peak_device_memory_MiB_sampled": 2689,
+          "peak_process_RSS_MiB_sampled": 2171.28515625
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 8.591069307178259,
+          "E2E_given_inputs_seconds": 21.74012892693281,
+          "core_regions_seconds": {
+            "LaMa": 2.1814498007297516,
+            "Multi_Layer_Renderer": 6.409619506448507
+          },
+          "core_region_calls": {
+            "LaMa": 50,
+            "Multi_Layer_Renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.938849925994873,
+          "peak_torch_reserved_GiB": 2.208984375,
+          "peak_device_memory_MiB_sampled": 2689,
+          "peak_process_RSS_MiB_sampled": 2186.86328125
+        }
+      ]
+    },
+    "bokehme": {
+      "runtime": {
+        "loaded_learned_parameters": 1163740,
+        "loaded_parameter_components": {
+          "arnet": 923664,
+          "iunet": 240076
+        },
+        "device": "GPU0",
+        "torch": "2.8.0+cu128",
+        "CUDA": "12.8",
+        "project_commit": "299cd92208ddcd972b691455a2f6e3efc422220c",
+        "gpu_hardware": "NVIDIA GeForce RTX 4090 D, 580.105.08, 49140 MiB",
+        "cpu_model": "Intel(R) Xeon(R) Platinum 8481C",
+        "cpu_quota": "2000000 100000",
+        "memory_quota_bytes": "96636764160",
+        "core_region_definition": "Official demo pipeline on already-CUDA RGB/defocus through CUDA output, including classical/neural branches and blend; transfers outside.",
+        "torch_threads": 4,
+        "TF_intra_threads": null,
+        "TF_inter_threads": null
+      },
+      "by_K": {
+        "4": {
+          "core_seconds": {
+            "mean": 0.24901462942361832,
+            "std": 0.0009127398869196847
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 1.1880361281335354,
+            "std": 0.05260025560545869
+          }
+        },
+        "8": {
+          "core_seconds": {
+            "mean": 0.2685407064855099,
+            "std": 0.0006982531044629415
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 1.1247493952512742,
+            "std": 0.028010568855866985
+          }
+        },
+        "16": {
+          "core_seconds": {
+            "mean": 0.23443555533885957,
+            "std": 0.000995945522647956
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 1.0372520081698895,
+            "std": 0.030708597153120187
+          }
+        },
+        "32": {
+          "core_seconds": {
+            "mean": 0.4210278749465942,
+            "std": 0.0008168826604791652
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 1.205172286182642,
+            "std": 0.015391939295116931
+          }
+        }
+      },
+      "raw_summary": "outputs/video-e2e-4090d-20261001/bokehme/summary.json",
+      "raw_warmups": "outputs/video-e2e-4090d-20261001/bokehme/warmups.json",
+      "rows": [
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 0.24920660629868507,
+          "E2E_given_inputs_seconds": 1.244999147951603,
+          "core_regions_seconds": {
+            "BokehMe_demo_pipeline": 0.24920660629868507
+          },
+          "core_region_calls": {
+            "BokehMe_demo_pipeline": 25
+          },
+          "peak_torch_allocated_GiB": 0.31445741653442383,
+          "peak_torch_reserved_GiB": 0.34765625,
+          "peak_device_memory_MiB_sampled": 773,
+          "peak_process_RSS_MiB_sampled": 1490.5703125
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 0.24766461178660393,
+          "E2E_given_inputs_seconds": 1.2393103130161762,
+          "core_regions_seconds": {
+            "BokehMe_demo_pipeline": 0.24766461178660393
+          },
+          "core_region_calls": {
+            "BokehMe_demo_pipeline": 25
+          },
+          "peak_torch_allocated_GiB": 0.31445741653442383,
+          "peak_torch_reserved_GiB": 0.34765625,
+          "peak_device_memory_MiB_sampled": 773,
+          "peak_process_RSS_MiB_sampled": 1496.02734375
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 0.24908388406038284,
+          "E2E_given_inputs_seconds": 1.1803796403110027,
+          "core_regions_seconds": {
+            "BokehMe_demo_pipeline": 0.24908388406038284
+          },
+          "core_region_calls": {
+            "BokehMe_demo_pipeline": 25
+          },
+          "peak_torch_allocated_GiB": 0.31445741653442383,
+          "peak_torch_reserved_GiB": 0.34765625,
+          "peak_device_memory_MiB_sampled": 773,
+          "peak_process_RSS_MiB_sampled": 1493.95703125
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 0.2502206303179264,
+          "E2E_given_inputs_seconds": 1.1315628178417683,
+          "core_regions_seconds": {
+            "BokehMe_demo_pipeline": 0.2502206303179264
+          },
+          "core_region_calls": {
+            "BokehMe_demo_pipeline": 25
+          },
+          "peak_torch_allocated_GiB": 0.31445741653442383,
+          "peak_torch_reserved_GiB": 0.34765625,
+          "peak_device_memory_MiB_sampled": 773,
+          "peak_process_RSS_MiB_sampled": 1468.11328125
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 0.24889741465449333,
+          "E2E_given_inputs_seconds": 1.1439287215471268,
+          "core_regions_seconds": {
+            "BokehMe_demo_pipeline": 0.24889741465449333
+          },
+          "core_region_calls": {
+            "BokehMe_demo_pipeline": 25
+          },
+          "peak_torch_allocated_GiB": 0.31445741653442383,
+          "peak_torch_reserved_GiB": 0.34765625,
+          "peak_device_memory_MiB_sampled": 773,
+          "peak_process_RSS_MiB_sampled": 1485.6953125
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 0.2682489641010761,
+          "E2E_given_inputs_seconds": 1.1333269104361534,
+          "core_regions_seconds": {
+            "BokehMe_demo_pipeline": 0.2682489641010761
+          },
+          "core_region_calls": {
+            "BokehMe_demo_pipeline": 25
+          },
+          "peak_torch_allocated_GiB": 0.31445741653442383,
+          "peak_torch_reserved_GiB": 0.34765625,
+          "peak_device_memory_MiB_sampled": 773,
+          "peak_process_RSS_MiB_sampled": 1476.18359375
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 0.2676149345934391,
+          "E2E_given_inputs_seconds": 1.1060713827610016,
+          "core_regions_seconds": {
+            "BokehMe_demo_pipeline": 0.2676149345934391
+          },
+          "core_region_calls": {
+            "BokehMe_demo_pipeline": 25
+          },
+          "peak_torch_allocated_GiB": 0.31445741653442383,
+          "peak_torch_reserved_GiB": 0.34765625,
+          "peak_device_memory_MiB_sampled": 773,
+          "peak_process_RSS_MiB_sampled": 1478.74609375
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 0.26878616213798523,
+          "E2E_given_inputs_seconds": 1.132120292633772,
+          "core_regions_seconds": {
+            "BokehMe_demo_pipeline": 0.26878616213798523
+          },
+          "core_region_calls": {
+            "BokehMe_demo_pipeline": 25
+          },
+          "peak_torch_allocated_GiB": 0.31445741653442383,
+          "peak_torch_reserved_GiB": 0.34765625,
+          "peak_device_memory_MiB_sampled": 773,
+          "peak_process_RSS_MiB_sampled": 1480.01171875
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 0.2685392089188099,
+          "E2E_given_inputs_seconds": 1.0896596312522888,
+          "core_regions_seconds": {
+            "BokehMe_demo_pipeline": 0.2685392089188099
+          },
+          "core_region_calls": {
+            "BokehMe_demo_pipeline": 25
+          },
+          "peak_torch_allocated_GiB": 0.31445741653442383,
+          "peak_torch_reserved_GiB": 0.34765625,
+          "peak_device_memory_MiB_sampled": 773,
+          "peak_process_RSS_MiB_sampled": 1481.58203125
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 0.269514262676239,
+          "E2E_given_inputs_seconds": 1.1625687591731548,
+          "core_regions_seconds": {
+            "BokehMe_demo_pipeline": 0.269514262676239
+          },
+          "core_region_calls": {
+            "BokehMe_demo_pipeline": 25
+          },
+          "peak_torch_allocated_GiB": 0.31445741653442383,
+          "peak_torch_reserved_GiB": 0.34765625,
+          "peak_device_memory_MiB_sampled": 773,
+          "peak_process_RSS_MiB_sampled": 1461.4609375
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 0.23526768758893013,
+          "E2E_given_inputs_seconds": 1.052511304616928,
+          "core_regions_seconds": {
+            "BokehMe_demo_pipeline": 0.23526768758893013
+          },
+          "core_region_calls": {
+            "BokehMe_demo_pipeline": 25
+          },
+          "peak_torch_allocated_GiB": 0.2192230224609375,
+          "peak_torch_reserved_GiB": 0.34765625,
+          "peak_device_memory_MiB_sampled": 773,
+          "peak_process_RSS_MiB_sampled": 1495.015625
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 0.23423830047249794,
+          "E2E_given_inputs_seconds": 1.05994788184762,
+          "core_regions_seconds": {
+            "BokehMe_demo_pipeline": 0.23423830047249794
+          },
+          "core_region_calls": {
+            "BokehMe_demo_pipeline": 25
+          },
+          "peak_torch_allocated_GiB": 0.2192230224609375,
+          "peak_torch_reserved_GiB": 0.34765625,
+          "peak_device_memory_MiB_sampled": 773,
+          "peak_process_RSS_MiB_sampled": 1503.16015625
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 0.23546816036105156,
+          "E2E_given_inputs_seconds": 1.0373887680470943,
+          "core_regions_seconds": {
+            "BokehMe_demo_pipeline": 0.23546816036105156
+          },
+          "core_region_calls": {
+            "BokehMe_demo_pipeline": 25
+          },
+          "peak_torch_allocated_GiB": 0.2192230224609375,
+          "peak_torch_reserved_GiB": 0.34765625,
+          "peak_device_memory_MiB_sampled": 773,
+          "peak_process_RSS_MiB_sampled": 1506.0078125
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 0.23297741264104843,
+          "E2E_given_inputs_seconds": 1.0521074198186398,
+          "core_regions_seconds": {
+            "BokehMe_demo_pipeline": 0.23297741264104843
+          },
+          "core_region_calls": {
+            "BokehMe_demo_pipeline": 25
+          },
+          "peak_torch_allocated_GiB": 0.2192230224609375,
+          "peak_torch_reserved_GiB": 0.34765625,
+          "peak_device_memory_MiB_sampled": 773,
+          "peak_process_RSS_MiB_sampled": 1476.51171875
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 0.23422621563076973,
+          "E2E_given_inputs_seconds": 0.984304666519165,
+          "core_regions_seconds": {
+            "BokehMe_demo_pipeline": 0.23422621563076973
+          },
+          "core_region_calls": {
+            "BokehMe_demo_pipeline": 25
+          },
+          "peak_torch_allocated_GiB": 0.2192230224609375,
+          "peak_torch_reserved_GiB": 0.34765625,
+          "peak_device_memory_MiB_sampled": 773,
+          "peak_process_RSS_MiB_sampled": 1503.17578125
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 0.41965802758932114,
+          "E2E_given_inputs_seconds": 1.1949390061199665,
+          "core_regions_seconds": {
+            "BokehMe_demo_pipeline": 0.41965802758932114
+          },
+          "core_region_calls": {
+            "BokehMe_demo_pipeline": 25
+          },
+          "peak_torch_allocated_GiB": 0.17638731002807617,
+          "peak_torch_reserved_GiB": 0.34765625,
+          "peak_device_memory_MiB_sampled": 773,
+          "peak_process_RSS_MiB_sampled": 1516.53515625
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 0.421159777790308,
+          "E2E_given_inputs_seconds": 1.2035332098603249,
+          "core_regions_seconds": {
+            "BokehMe_demo_pipeline": 0.421159777790308
+          },
+          "core_region_calls": {
+            "BokehMe_demo_pipeline": 25
+          },
+          "peak_torch_allocated_GiB": 0.17638731002807617,
+          "peak_torch_reserved_GiB": 0.34765625,
+          "peak_device_memory_MiB_sampled": 773,
+          "peak_process_RSS_MiB_sampled": 1534.58984375
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 0.42113444581627846,
+          "E2E_given_inputs_seconds": 1.2116669453680515,
+          "core_regions_seconds": {
+            "BokehMe_demo_pipeline": 0.42113444581627846
+          },
+          "core_region_calls": {
+            "BokehMe_demo_pipeline": 25
+          },
+          "peak_torch_allocated_GiB": 0.17638731002807617,
+          "peak_torch_reserved_GiB": 0.34765625,
+          "peak_device_memory_MiB_sampled": 773,
+          "peak_process_RSS_MiB_sampled": 1534.59375
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 0.4213446155190468,
+          "E2E_given_inputs_seconds": 1.2276550754904747,
+          "core_regions_seconds": {
+            "BokehMe_demo_pipeline": 0.4213446155190468
+          },
+          "core_region_calls": {
+            "BokehMe_demo_pipeline": 25
+          },
+          "peak_torch_allocated_GiB": 0.17638731002807617,
+          "peak_torch_reserved_GiB": 0.34765625,
+          "peak_device_memory_MiB_sampled": 773,
+          "peak_process_RSS_MiB_sampled": 1534.625
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 0.4218425080180168,
+          "E2E_given_inputs_seconds": 1.1880671940743923,
+          "core_regions_seconds": {
+            "BokehMe_demo_pipeline": 0.4218425080180168
+          },
+          "core_region_calls": {
+            "BokehMe_demo_pipeline": 25
+          },
+          "peak_torch_allocated_GiB": 0.17638731002807617,
+          "peak_torch_reserved_GiB": 0.34765625,
+          "peak_device_memory_MiB_sampled": 773,
+          "peak_process_RSS_MiB_sampled": 1534.6328125
+        }
+      ]
+    },
+    "mpib": {
+      "runtime": {
+        "loaded_learned_parameters": 42041031,
+        "loaded_parameter_components": {
+          "inpnet": 27048835,
+          "mpinet": 14951683,
+          "aupnet": 40513
+        },
+        "device": "GPU0",
+        "torch": "2.8.0+cu128",
+        "CUDA": "12.8",
+        "project_commit": "299cd92208ddcd972b691455a2f6e3efc422220c",
+        "gpu_hardware": "NVIDIA GeForce RTX 4090 D, 580.105.08, 49140 MiB",
+        "cpu_model": "Intel(R) Xeon(R) Platinum 8481C",
+        "cpu_quota": "2000000 100000",
+        "memory_quota_bytes": "96636764160",
+        "core_region_definition": "Official inpnet, mpinet, aupnet and MPI renderer forward calls on CUDA inputs; CPU mask construction/intermediate resize and transfers are E2E-only.",
+        "torch_threads": 4,
+        "TF_intra_threads": null,
+        "TF_inter_threads": null
+      },
+      "by_K": {
+        "4": {
+          "core_seconds": {
+            "mean": 5.797777474671602,
+            "std": 0.005281474821162764
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 7.571660164743662,
+            "std": 0.04644185913931723
+          }
+        },
+        "8": {
+          "core_seconds": {
+            "mean": 5.8279998011887075,
+            "std": 0.002909459924190248
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 7.4650605276227,
+            "std": 0.022752894064250753
+          }
+        },
+        "16": {
+          "core_seconds": {
+            "mean": 6.00140645802021,
+            "std": 0.002640023528715714
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 7.302312364429236,
+            "std": 0.01194691660199354
+          }
+        },
+        "32": {
+          "core_seconds": {
+            "mean": 6.196782472729683,
+            "std": 0.003673204985946135
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 7.8042126126587394,
+            "std": 0.2139119545750841
+          }
+        }
+      },
+      "raw_summary": "outputs/video-e2e-4090d-20261001/mpib/summary.json",
+      "raw_warmups": "outputs/video-e2e-4090d-20261001/mpib/warmups.json",
+      "rows": [
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 5.789199855178595,
+          "E2E_given_inputs_seconds": 7.549123283475637,
+          "core_regions_seconds": {
+            "inpnet": 0.7636688277125359,
+            "mpinet": 1.9973097182810307,
+            "aupnet": 2.910977855324745,
+            "renderer": 0.1172434538602829
+          },
+          "core_region_calls": {
+            "inpnet": 25,
+            "mpinet": 25,
+            "aupnet": 25,
+            "renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.1084823608398438,
+          "peak_torch_reserved_GiB": 1.763671875,
+          "peak_device_memory_MiB_sampled": 2233,
+          "peak_process_RSS_MiB_sampled": 1902.21875
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 5.796573914587498,
+          "E2E_given_inputs_seconds": 7.5312222093343735,
+          "core_regions_seconds": {
+            "inpnet": 0.7650976255536079,
+            "mpinet": 2.002158250659704,
+            "aupnet": 2.9132129922509193,
+            "renderer": 0.11610504612326622
+          },
+          "core_region_calls": {
+            "inpnet": 25,
+            "mpinet": 25,
+            "aupnet": 25,
+            "renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.1084823608398438,
+          "peak_torch_reserved_GiB": 1.763671875,
+          "peak_device_memory_MiB_sampled": 2233,
+          "peak_process_RSS_MiB_sampled": 1920.71484375
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 5.800367895513773,
+          "E2E_given_inputs_seconds": 7.64436637237668,
+          "core_regions_seconds": {
+            "inpnet": 0.7658512070775032,
+            "mpinet": 2.002067282795906,
+            "aupnet": 2.91484310105443,
+            "renderer": 0.11760630458593369
+          },
+          "core_region_calls": {
+            "inpnet": 25,
+            "mpinet": 25,
+            "aupnet": 25,
+            "renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.1084823608398438,
+          "peak_torch_reserved_GiB": 1.763671875,
+          "peak_device_memory_MiB_sampled": 2233,
+          "peak_process_RSS_MiB_sampled": 1939.31640625
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 5.799960762262344,
+          "E2E_given_inputs_seconds": 7.590780969709158,
+          "core_regions_seconds": {
+            "inpnet": 0.7654176913201809,
+            "mpinet": 2.0018805786967278,
+            "aupnet": 2.914639364928007,
+            "renderer": 0.11802312731742859
+          },
+          "core_region_calls": {
+            "inpnet": 25,
+            "mpinet": 25,
+            "aupnet": 25,
+            "renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.1084823608398438,
+          "peak_torch_reserved_GiB": 1.763671875,
+          "peak_device_memory_MiB_sampled": 2233,
+          "peak_process_RSS_MiB_sampled": 1895.77734375
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 5.802784945815802,
+          "E2E_given_inputs_seconds": 7.54280798882246,
+          "core_regions_seconds": {
+            "inpnet": 0.7663956321775913,
+            "mpinet": 2.0026044361293316,
+            "aupnet": 2.9168697856366634,
+            "renderer": 0.11691509187221527
+          },
+          "core_region_calls": {
+            "inpnet": 25,
+            "mpinet": 25,
+            "aupnet": 25,
+            "renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.1084823608398438,
+          "peak_torch_reserved_GiB": 1.763671875,
+          "peak_device_memory_MiB_sampled": 2233,
+          "peak_process_RSS_MiB_sampled": 1905.69921875
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 5.8273745477199554,
+          "E2E_given_inputs_seconds": 7.446123253554106,
+          "core_regions_seconds": {
+            "inpnet": 0.7674504071474075,
+            "mpinet": 2.0060991384088993,
+            "aupnet": 2.9187829419970512,
+            "renderer": 0.13504206016659737
+          },
+          "core_region_calls": {
+            "inpnet": 25,
+            "mpinet": 25,
+            "aupnet": 25,
+            "renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.1084823608398438,
+          "peak_torch_reserved_GiB": 1.763671875,
+          "peak_device_memory_MiB_sampled": 2233,
+          "peak_process_RSS_MiB_sampled": 1905.7109375
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 5.825010165572166,
+          "E2E_given_inputs_seconds": 7.488142102956772,
+          "core_regions_seconds": {
+            "inpnet": 0.7672192491590977,
+            "mpinet": 2.0047556906938553,
+            "aupnet": 2.9172862768173218,
+            "renderer": 0.1357489489018917
+          },
+          "core_region_calls": {
+            "inpnet": 25,
+            "mpinet": 25,
+            "aupnet": 25,
+            "renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.1084823608398438,
+          "peak_torch_reserved_GiB": 1.763671875,
+          "peak_device_memory_MiB_sampled": 2233,
+          "peak_process_RSS_MiB_sampled": 1907.3984375
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 5.825592905282974,
+          "E2E_given_inputs_seconds": 7.435829300433397,
+          "core_regions_seconds": {
+            "inpnet": 0.7671737633645535,
+            "mpinet": 2.0051129646599293,
+            "aupnet": 2.918030370026827,
+            "renderer": 0.13527580723166466
+          },
+          "core_region_calls": {
+            "inpnet": 25,
+            "mpinet": 25,
+            "aupnet": 25,
+            "renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.1084823608398438,
+          "peak_torch_reserved_GiB": 1.763671875,
+          "peak_device_memory_MiB_sampled": 2233,
+          "peak_process_RSS_MiB_sampled": 1927.34375
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 5.8304598443210125,
+          "E2E_given_inputs_seconds": 7.475339513272047,
+          "core_regions_seconds": {
+            "inpnet": 0.7689354792237282,
+            "mpinet": 2.0067993700504303,
+            "aupnet": 2.9197943545877934,
+            "renderer": 0.13493064045906067
+          },
+          "core_region_calls": {
+            "inpnet": 25,
+            "mpinet": 25,
+            "aupnet": 25,
+            "renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.1084823608398438,
+          "peak_torch_reserved_GiB": 1.763671875,
+          "peak_device_memory_MiB_sampled": 2233,
+          "peak_process_RSS_MiB_sampled": 1896.0234375
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 5.831561543047428,
+          "E2E_given_inputs_seconds": 7.479868467897177,
+          "core_regions_seconds": {
+            "inpnet": 0.7685754857957363,
+            "mpinet": 2.007202200591564,
+            "aupnet": 2.9206122048199177,
+            "renderer": 0.13517165184020996
+          },
+          "core_region_calls": {
+            "inpnet": 25,
+            "mpinet": 25,
+            "aupnet": 25,
+            "renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.1084823608398438,
+          "peak_torch_reserved_GiB": 1.763671875,
+          "peak_device_memory_MiB_sampled": 2233,
+          "peak_process_RSS_MiB_sampled": 1904.77734375
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 5.999478738754988,
+          "E2E_given_inputs_seconds": 7.298923954367638,
+          "core_regions_seconds": {
+            "inpnet": 0.7689472138881683,
+            "mpinet": 2.0063746497035027,
+            "aupnet": 2.918773714452982,
+            "renderer": 0.3053831607103348
+          },
+          "core_region_calls": {
+            "inpnet": 25,
+            "mpinet": 25,
+            "aupnet": 25,
+            "renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.1084823608398438,
+          "peak_torch_reserved_GiB": 1.763671875,
+          "peak_device_memory_MiB_sampled": 2233,
+          "peak_process_RSS_MiB_sampled": 1923.91015625
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 5.999916095286608,
+          "E2E_given_inputs_seconds": 7.319051790982485,
+          "core_regions_seconds": {
+            "inpnet": 0.7689359076321125,
+            "mpinet": 2.0066240914165974,
+            "aupnet": 2.919466085731983,
+            "renderer": 0.3048900105059147
+          },
+          "core_region_calls": {
+            "inpnet": 25,
+            "mpinet": 25,
+            "aupnet": 25,
+            "renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.1084823608398438,
+          "peak_torch_reserved_GiB": 1.763671875,
+          "peak_device_memory_MiB_sampled": 2233,
+          "peak_process_RSS_MiB_sampled": 1900.65625
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 5.999171730130911,
+          "E2E_given_inputs_seconds": 7.3068424463272095,
+          "core_regions_seconds": {
+            "inpnet": 0.7684728242456913,
+            "mpinet": 2.006013859063387,
+            "aupnet": 2.9200636595487595,
+            "renderer": 0.3046213872730732
+          },
+          "core_region_calls": {
+            "inpnet": 25,
+            "mpinet": 25,
+            "aupnet": 25,
+            "renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.1084823608398438,
+          "peak_torch_reserved_GiB": 1.763671875,
+          "peak_device_memory_MiB_sampled": 2233,
+          "peak_process_RSS_MiB_sampled": 1905.0390625
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 6.004929453134537,
+          "E2E_given_inputs_seconds": 7.286341983824968,
+          "core_regions_seconds": {
+            "inpnet": 0.769222330302,
+            "mpinet": 2.0071165151894093,
+            "aupnet": 2.9236377105116844,
+            "renderer": 0.304952897131443
+          },
+          "core_region_calls": {
+            "inpnet": 25,
+            "mpinet": 25,
+            "aupnet": 25,
+            "renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.1084823608398438,
+          "peak_torch_reserved_GiB": 1.763671875,
+          "peak_device_memory_MiB_sampled": 2233,
+          "peak_process_RSS_MiB_sampled": 1939.203125
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 6.003536272794008,
+          "E2E_given_inputs_seconds": 7.300401646643877,
+          "core_regions_seconds": {
+            "inpnet": 0.7694019265472889,
+            "mpinet": 2.0078355483710766,
+            "aupnet": 2.9210502207279205,
+            "renderer": 0.30524857714772224
+          },
+          "core_region_calls": {
+            "inpnet": 25,
+            "mpinet": 25,
+            "aupnet": 25,
+            "renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.1084823608398438,
+          "peak_torch_reserved_GiB": 1.763671875,
+          "peak_device_memory_MiB_sampled": 2233,
+          "peak_process_RSS_MiB_sampled": 1914.125
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 6.20313948020339,
+          "E2E_given_inputs_seconds": 8.186069127172232,
+          "core_regions_seconds": {
+            "inpnet": 0.7715422250330448,
+            "mpinet": 2.0088719241321087,
+            "aupnet": 2.922115948051214,
+            "renderer": 0.5006093829870224
+          },
+          "core_region_calls": {
+            "inpnet": 25,
+            "mpinet": 25,
+            "aupnet": 25,
+            "renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.1084823608398438,
+          "peak_torch_reserved_GiB": 1.763671875,
+          "peak_device_memory_MiB_sampled": 2233,
+          "peak_process_RSS_MiB_sampled": 1941.0390625
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 6.194767065346241,
+          "E2E_given_inputs_seconds": 7.688243091106415,
+          "core_regions_seconds": {
+            "inpnet": 0.7692229747772217,
+            "mpinet": 2.007346212863922,
+            "aupnet": 2.9207860492169857,
+            "renderer": 0.4974118284881115
+          },
+          "core_region_calls": {
+            "inpnet": 25,
+            "mpinet": 25,
+            "aupnet": 25,
+            "renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.1084823608398438,
+          "peak_torch_reserved_GiB": 1.763671875,
+          "peak_device_memory_MiB_sampled": 2233,
+          "peak_process_RSS_MiB_sampled": 1904.921875
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 6.193881444633007,
+          "E2E_given_inputs_seconds": 7.704138431698084,
+          "core_regions_seconds": {
+            "inpnet": 0.7686651535332203,
+            "mpinet": 2.0071426816284657,
+            "aupnet": 2.9209247566759586,
+            "renderer": 0.4971488527953625
+          },
+          "core_region_calls": {
+            "inpnet": 25,
+            "mpinet": 25,
+            "aupnet": 25,
+            "renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.1084823608398438,
+          "peak_torch_reserved_GiB": 1.763671875,
+          "peak_device_memory_MiB_sampled": 2233,
+          "peak_process_RSS_MiB_sampled": 1902.6171875
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 6.195916000753641,
+          "E2E_given_inputs_seconds": 7.723329029977322,
+          "core_regions_seconds": {
+            "inpnet": 0.7695977762341499,
+            "mpinet": 2.0082447305321693,
+            "aupnet": 2.9206921868026257,
+            "renderer": 0.4973813071846962
+          },
+          "core_region_calls": {
+            "inpnet": 25,
+            "mpinet": 25,
+            "aupnet": 25,
+            "renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.1084823608398438,
+          "peak_torch_reserved_GiB": 1.763671875,
+          "peak_device_memory_MiB_sampled": 2233,
+          "peak_process_RSS_MiB_sampled": 1906.8515625
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 6.196208372712135,
+          "E2E_given_inputs_seconds": 7.7192833833396435,
+          "core_regions_seconds": {
+            "inpnet": 0.7682105489075184,
+            "mpinet": 2.008615877479315,
+            "aupnet": 2.9208530113101006,
+            "renderer": 0.49852893501520157
+          },
+          "core_region_calls": {
+            "inpnet": 25,
+            "mpinet": 25,
+            "aupnet": 25,
+            "renderer": 25
+          },
+          "peak_torch_allocated_GiB": 1.1084823608398438,
+          "peak_torch_reserved_GiB": 1.763671875,
+          "peak_device_memory_MiB_sampled": 2233,
+          "peak_process_RSS_MiB_sampled": 1905.7265625
+        }
+      ]
+    },
+    "bokehdiff": {
+      "runtime": {
+        "loaded_learned_parameters": 3493431787,
+        "loaded_parameter_components": {
+          "unet": 2592057604,
+          "vae": 83653863,
+          "text_encoder": 123060480,
+          "text_encoder_2": 694659840
+        },
+        "device": "GPU0",
+        "torch": "2.8.0+cu128",
+        "CUDA": "12.8",
+        "project_commit": "299cd92208ddcd972b691455a2f6e3efc422220c",
+        "gpu_hardware": "NVIDIA GeForce RTX 4090 D, 580.105.08, 49140 MiB",
+        "cpu_model": "Intel(R) Xeon(R) Platinum 8481C",
+        "cpu_quota": "2000000 100000",
+        "memory_quota_bytes": "96636764160",
+        "core_region_definition": "Public VAE.encode plus TiledSDXL pipeline on CUDA RGB/condition through CUDA float output; no diagnostic CPU copy or PIL conversion in Core. Frozen PISA/seed retained.",
+        "torch_threads": 4,
+        "TF_intra_threads": null,
+        "TF_inter_threads": null
+      },
+      "by_K": {
+        "4": {
+          "core_seconds": {
+            "mean": 23.15096835270524,
+            "std": 0.024594558415267823
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 24.0167359277606,
+            "std": 0.047601104413876584
+          }
+        },
+        "8": {
+          "core_seconds": {
+            "mean": 23.146755032986402,
+            "std": 0.004968200247823853
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 23.955766056478023,
+            "std": 0.023673217158348737
+          }
+        },
+        "16": {
+          "core_seconds": {
+            "mean": 23.15220176503062,
+            "std": 0.00849943131965264
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 23.9233598805964,
+            "std": 0.051653877444554755
+          }
+        },
+        "32": {
+          "core_seconds": {
+            "mean": 23.154269412904977,
+            "std": 0.007909912852123432
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 23.932607577741145,
+            "std": 0.03349635617364152
+          }
+        }
+      },
+      "raw_summary": "outputs/video-e2e-4090d-20261001/bokehdiff/summary.json",
+      "raw_warmups": "outputs/video-e2e-4090d-20261001/bokehdiff/warmups.json",
+      "rows": [
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 23.120781168341637,
+          "E2E_given_inputs_seconds": 24.027537740767002,
+          "core_regions_seconds": {
+            "BokehDiff_VAE_TiledSDXL": 23.120781168341637
+          },
+          "core_region_calls": {
+            "BokehDiff_VAE_TiledSDXL": 25
+          },
+          "peak_torch_allocated_GiB": 14.87554407119751,
+          "peak_torch_reserved_GiB": 17.15234375,
+          "peak_device_memory_MiB_sampled": 17991,
+          "peak_process_RSS_MiB_sampled": 2204.5703125
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 23.1829926520586,
+          "E2E_given_inputs_seconds": 24.07053653150797,
+          "core_regions_seconds": {
+            "BokehDiff_VAE_TiledSDXL": 23.1829926520586
+          },
+          "core_region_calls": {
+            "BokehDiff_VAE_TiledSDXL": 25
+          },
+          "peak_torch_allocated_GiB": 14.87554407119751,
+          "peak_torch_reserved_GiB": 17.15234375,
+          "peak_device_memory_MiB_sampled": 17991,
+          "peak_process_RSS_MiB_sampled": 2207.45703125
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 23.165791980922222,
+          "E2E_given_inputs_seconds": 24.043058298528194,
+          "core_regions_seconds": {
+            "BokehDiff_VAE_TiledSDXL": 23.165791980922222
+          },
+          "core_region_calls": {
+            "BokehDiff_VAE_TiledSDXL": 25
+          },
+          "peak_torch_allocated_GiB": 14.87554407119751,
+          "peak_torch_reserved_GiB": 17.15234375,
+          "peak_device_memory_MiB_sampled": 17991,
+          "peak_process_RSS_MiB_sampled": 2207.51953125
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 23.150518883019686,
+          "E2E_given_inputs_seconds": 23.9960298538208,
+          "core_regions_seconds": {
+            "BokehDiff_VAE_TiledSDXL": 23.150518883019686
+          },
+          "core_region_calls": {
+            "BokehDiff_VAE_TiledSDXL": 25
+          },
+          "peak_torch_allocated_GiB": 14.87554407119751,
+          "peak_torch_reserved_GiB": 17.15234375,
+          "peak_device_memory_MiB_sampled": 17991,
+          "peak_process_RSS_MiB_sampled": 2210.94921875
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 23.134757079184055,
+          "E2E_given_inputs_seconds": 23.94651721417904,
+          "core_regions_seconds": {
+            "BokehDiff_VAE_TiledSDXL": 23.134757079184055
+          },
+          "core_region_calls": {
+            "BokehDiff_VAE_TiledSDXL": 25
+          },
+          "peak_torch_allocated_GiB": 14.87554407119751,
+          "peak_torch_reserved_GiB": 17.15234375,
+          "peak_device_memory_MiB_sampled": 17991,
+          "peak_process_RSS_MiB_sampled": 2211.04296875
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 23.150575380772352,
+          "E2E_given_inputs_seconds": 23.951851826161146,
+          "core_regions_seconds": {
+            "BokehDiff_VAE_TiledSDXL": 23.150575380772352
+          },
+          "core_region_calls": {
+            "BokehDiff_VAE_TiledSDXL": 25
+          },
+          "peak_torch_allocated_GiB": 14.87554407119751,
+          "peak_torch_reserved_GiB": 17.15234375,
+          "peak_device_memory_MiB_sampled": 17991,
+          "peak_process_RSS_MiB_sampled": 2211.15234375
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 23.146010030061007,
+          "E2E_given_inputs_seconds": 23.983008570969105,
+          "core_regions_seconds": {
+            "BokehDiff_VAE_TiledSDXL": 23.146010030061007
+          },
+          "core_region_calls": {
+            "BokehDiff_VAE_TiledSDXL": 25
+          },
+          "peak_torch_allocated_GiB": 14.87554407119751,
+          "peak_torch_reserved_GiB": 17.15234375,
+          "peak_device_memory_MiB_sampled": 17991,
+          "peak_process_RSS_MiB_sampled": 2211.19921875
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 23.140471164137125,
+          "E2E_given_inputs_seconds": 23.933851778507233,
+          "core_regions_seconds": {
+            "BokehDiff_VAE_TiledSDXL": 23.140471164137125
+          },
+          "core_region_calls": {
+            "BokehDiff_VAE_TiledSDXL": 25
+          },
+          "peak_torch_allocated_GiB": 14.87554407119751,
+          "peak_torch_reserved_GiB": 17.15234375,
+          "peak_device_memory_MiB_sampled": 17991,
+          "peak_process_RSS_MiB_sampled": 2211.2578125
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 23.152772210538387,
+          "E2E_given_inputs_seconds": 23.97745295614004,
+          "core_regions_seconds": {
+            "BokehDiff_VAE_TiledSDXL": 23.152772210538387
+          },
+          "core_region_calls": {
+            "BokehDiff_VAE_TiledSDXL": 25
+          },
+          "peak_torch_allocated_GiB": 14.87554407119751,
+          "peak_torch_reserved_GiB": 17.15234375,
+          "peak_device_memory_MiB_sampled": 17991,
+          "peak_process_RSS_MiB_sampled": 2211.328125
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 23.14394637942314,
+          "E2E_given_inputs_seconds": 23.932665150612593,
+          "core_regions_seconds": {
+            "BokehDiff_VAE_TiledSDXL": 23.14394637942314
+          },
+          "core_region_calls": {
+            "BokehDiff_VAE_TiledSDXL": 25
+          },
+          "peak_torch_allocated_GiB": 14.87554407119751,
+          "peak_torch_reserved_GiB": 17.15234375,
+          "peak_device_memory_MiB_sampled": 17991,
+          "peak_process_RSS_MiB_sampled": 2211.375
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 23.157684452831745,
+          "E2E_given_inputs_seconds": 23.98233115300536,
+          "core_regions_seconds": {
+            "BokehDiff_VAE_TiledSDXL": 23.157684452831745
+          },
+          "core_region_calls": {
+            "BokehDiff_VAE_TiledSDXL": 25
+          },
+          "peak_torch_allocated_GiB": 14.87554407119751,
+          "peak_torch_reserved_GiB": 17.15234375,
+          "peak_device_memory_MiB_sampled": 17991,
+          "peak_process_RSS_MiB_sampled": 2211.65234375
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 23.146355733275414,
+          "E2E_given_inputs_seconds": 23.90159397572279,
+          "core_regions_seconds": {
+            "BokehDiff_VAE_TiledSDXL": 23.146355733275414
+          },
+          "core_region_calls": {
+            "BokehDiff_VAE_TiledSDXL": 25
+          },
+          "peak_torch_allocated_GiB": 14.87554407119751,
+          "peak_torch_reserved_GiB": 17.15234375,
+          "peak_device_memory_MiB_sampled": 17991,
+          "peak_process_RSS_MiB_sampled": 2211.69921875
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 23.140764456242323,
+          "E2E_given_inputs_seconds": 23.867046151310205,
+          "core_regions_seconds": {
+            "BokehDiff_VAE_TiledSDXL": 23.140764456242323
+          },
+          "core_region_calls": {
+            "BokehDiff_VAE_TiledSDXL": 25
+          },
+          "peak_torch_allocated_GiB": 14.87554407119751,
+          "peak_torch_reserved_GiB": 17.15234375,
+          "peak_device_memory_MiB_sampled": 17991,
+          "peak_process_RSS_MiB_sampled": 2211.73046875
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 23.161586746573448,
+          "E2E_given_inputs_seconds": 23.973946522921324,
+          "core_regions_seconds": {
+            "BokehDiff_VAE_TiledSDXL": 23.161586746573448
+          },
+          "core_region_calls": {
+            "BokehDiff_VAE_TiledSDXL": 25
+          },
+          "peak_torch_allocated_GiB": 14.87554407119751,
+          "peak_torch_reserved_GiB": 17.15234375,
+          "peak_device_memory_MiB_sampled": 17991,
+          "peak_process_RSS_MiB_sampled": 2211.78515625
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 23.154617436230183,
+          "E2E_given_inputs_seconds": 23.891881600022316,
+          "core_regions_seconds": {
+            "BokehDiff_VAE_TiledSDXL": 23.154617436230183
+          },
+          "core_region_calls": {
+            "BokehDiff_VAE_TiledSDXL": 25
+          },
+          "peak_torch_allocated_GiB": 14.87554407119751,
+          "peak_torch_reserved_GiB": 17.15234375,
+          "peak_device_memory_MiB_sampled": 17991,
+          "peak_process_RSS_MiB_sampled": 2211.85546875
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 23.152448557317257,
+          "E2E_given_inputs_seconds": 23.983765870332718,
+          "core_regions_seconds": {
+            "BokehDiff_VAE_TiledSDXL": 23.152448557317257
+          },
+          "core_region_calls": {
+            "BokehDiff_VAE_TiledSDXL": 25
+          },
+          "peak_torch_allocated_GiB": 14.87554407119751,
+          "peak_torch_reserved_GiB": 17.15234375,
+          "peak_device_memory_MiB_sampled": 17991,
+          "peak_process_RSS_MiB_sampled": 2211.9375
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 23.149158369749784,
+          "E2E_given_inputs_seconds": 23.89369375258684,
+          "core_regions_seconds": {
+            "BokehDiff_VAE_TiledSDXL": 23.149158369749784
+          },
+          "core_region_calls": {
+            "BokehDiff_VAE_TiledSDXL": 25
+          },
+          "peak_torch_allocated_GiB": 14.87554407119751,
+          "peak_torch_reserved_GiB": 17.15234375,
+          "peak_device_memory_MiB_sampled": 17991,
+          "peak_process_RSS_MiB_sampled": 2211.9765625
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 23.14762094989419,
+          "E2E_given_inputs_seconds": 23.925753578543663,
+          "core_regions_seconds": {
+            "BokehDiff_VAE_TiledSDXL": 23.14762094989419
+          },
+          "core_region_calls": {
+            "BokehDiff_VAE_TiledSDXL": 25
+          },
+          "peak_torch_allocated_GiB": 14.87554407119751,
+          "peak_torch_reserved_GiB": 17.15234375,
+          "peak_device_memory_MiB_sampled": 17991,
+          "peak_process_RSS_MiB_sampled": 2212.03515625
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 23.154562924057245,
+          "E2E_given_inputs_seconds": 23.94205855578184,
+          "core_regions_seconds": {
+            "BokehDiff_VAE_TiledSDXL": 23.154562924057245
+          },
+          "core_region_calls": {
+            "BokehDiff_VAE_TiledSDXL": 25
+          },
+          "peak_torch_allocated_GiB": 14.87554407119751,
+          "peak_torch_reserved_GiB": 17.15234375,
+          "peak_device_memory_MiB_sampled": 17991,
+          "peak_process_RSS_MiB_sampled": 2212.0703125
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 23.167556263506413,
+          "E2E_given_inputs_seconds": 23.917766131460667,
+          "core_regions_seconds": {
+            "BokehDiff_VAE_TiledSDXL": 23.167556263506413
+          },
+          "core_region_calls": {
+            "BokehDiff_VAE_TiledSDXL": 25
+          },
+          "peak_torch_allocated_GiB": 14.87554407119751,
+          "peak_torch_reserved_GiB": 17.15234375,
+          "peak_device_memory_MiB_sampled": 17991,
+          "peak_process_RSS_MiB_sampled": 2212.68359375
+        }
+      ]
+    },
+    "magicbokeh": {
+      "runtime": {
+        "torch": "2.8.0+cu128",
+        "CUDA": "12.8",
+        "gpu_hardware": "NVIDIA GeForce RTX 4090 D, 580.105.08, 49140 MiB",
+        "cpu_model": "Intel(R) Xeon(R) Platinum 8481C",
+        "cpu_quota": "2000000 100000",
+        "memory_quota_bytes": "96636764160",
+        "torch_threads": 4,
+        "cv2_threads": 2,
+        "torch_matmul_allow_tf32": false,
+        "cudnn_allow_tf32": true,
+        "native_loader_and_precision_unchanged": true,
+        "project_commit": "299cd92208ddcd972b691455a2f6e3efc422220c",
+        "author_commit": "c672e630be350148131c119f8e8c2d669ac197b5"
+      },
+      "by_K": {
+        "4": {
+          "core_seconds": {
+            "mean": 32.50557250529528,
+            "std": 0.2715184483707599
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 36.70004449784756,
+            "std": 0.35836186159793
+          }
+        },
+        "8": {
+          "core_seconds": {
+            "mean": 32.44492747336626,
+            "std": 0.08892279649750862
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 36.25822031497955,
+            "std": 0.1125317158144856
+          }
+        },
+        "16": {
+          "core_seconds": {
+            "mean": 32.362711024284366,
+            "std": 0.08910976579160466
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 36.41049650385976,
+            "std": 0.12395789323531876
+          }
+        },
+        "32": {
+          "core_seconds": {
+            "mean": 32.97248427271843,
+            "std": 1.5962197387875943
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 36.91287017762661,
+            "std": 1.7863043763996782
+          }
+        }
+      },
+      "raw_summary": "outputs/video-e2e-4090d-20261001/magicbokeh/summary.json",
+      "raw_warmups": "outputs/video-e2e-4090d-20261001/magicbokeh/warmups.json",
+      "rows": [
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 32.27632228657603,
+          "E2E_given_inputs_seconds": 36.37795701250434,
+          "core_regions_seconds": {
+            "DAdepth_network_forward": 2.534442514181137,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 29.741879772394896
+          },
+          "core_region_calls": {
+            "DAdepth_network_forward": 25,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 25
+          },
+          "peak_torch_allocated_GiB": 5.139299392700195,
+          "peak_torch_reserved_GiB": 6.361328125,
+          "peak_device_memory_MiB_sampled": 6949,
+          "peak_process_RSS_MiB_sampled": 2378.06640625,
+          "output_validation": "25 CPU uint8 RGB; original shape and finite guards passed"
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 32.2817938439548,
+          "E2E_given_inputs_seconds": 36.374876245856285,
+          "core_regions_seconds": {
+            "DAdepth_network_forward": 2.541112270206213,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 29.74068157374859
+          },
+          "core_region_calls": {
+            "DAdepth_network_forward": 25,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 25
+          },
+          "peak_torch_allocated_GiB": 5.139299392700195,
+          "peak_torch_reserved_GiB": 6.361328125,
+          "peak_device_memory_MiB_sampled": 6949,
+          "peak_process_RSS_MiB_sampled": 2375.61328125,
+          "output_validation": "25 CPU uint8 RGB; original shape and finite guards passed"
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 32.88128840923309,
+          "E2E_given_inputs_seconds": 37.13733405247331,
+          "core_regions_seconds": {
+            "DAdepth_network_forward": 2.5427779741585255,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 30.338510435074568
+          },
+          "core_region_calls": {
+            "DAdepth_network_forward": 25,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 25
+          },
+          "peak_torch_allocated_GiB": 5.139299392700195,
+          "peak_torch_reserved_GiB": 6.361328125,
+          "peak_device_memory_MiB_sampled": 6949,
+          "peak_process_RSS_MiB_sampled": 2369.2109375,
+          "output_validation": "25 CPU uint8 RGB; original shape and finite guards passed"
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 32.69931837171316,
+          "E2E_given_inputs_seconds": 37.018279906362295,
+          "core_regions_seconds": {
+            "DAdepth_network_forward": 2.5468140207231045,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 30.152504350990057
+          },
+          "core_region_calls": {
+            "DAdepth_network_forward": 25,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 25
+          },
+          "peak_torch_allocated_GiB": 5.139299392700195,
+          "peak_torch_reserved_GiB": 6.361328125,
+          "peak_device_memory_MiB_sampled": 6949,
+          "peak_process_RSS_MiB_sampled": 2372.15234375,
+          "output_validation": "25 CPU uint8 RGB; original shape and finite guards passed"
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 32.389139614999294,
+          "E2E_given_inputs_seconds": 36.59177527204156,
+          "core_regions_seconds": {
+            "DAdepth_network_forward": 2.544350240379572,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 29.844789374619722
+          },
+          "core_region_calls": {
+            "DAdepth_network_forward": 25,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 25
+          },
+          "peak_torch_allocated_GiB": 5.139299392700195,
+          "peak_torch_reserved_GiB": 6.361328125,
+          "peak_device_memory_MiB_sampled": 6949,
+          "peak_process_RSS_MiB_sampled": 2384.70703125,
+          "output_validation": "25 CPU uint8 RGB; original shape and finite guards passed"
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 32.4798569381237,
+          "E2E_given_inputs_seconds": 36.27293596789241,
+          "core_regions_seconds": {
+            "DAdepth_network_forward": 2.543601680546999,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 29.936255257576704
+          },
+          "core_region_calls": {
+            "DAdepth_network_forward": 25,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 25
+          },
+          "peak_torch_allocated_GiB": 5.139299392700195,
+          "peak_torch_reserved_GiB": 6.361328125,
+          "peak_device_memory_MiB_sampled": 6949,
+          "peak_process_RSS_MiB_sampled": 2374.19921875,
+          "output_validation": "25 CPU uint8 RGB; original shape and finite guards passed"
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 32.37812500447035,
+          "E2E_given_inputs_seconds": 36.17409183830023,
+          "core_regions_seconds": {
+            "DAdepth_network_forward": 2.545851983129978,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 29.83227302134037
+          },
+          "core_region_calls": {
+            "DAdepth_network_forward": 25,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 25
+          },
+          "peak_torch_allocated_GiB": 5.139299392700195,
+          "peak_torch_reserved_GiB": 6.361328125,
+          "peak_device_memory_MiB_sampled": 6949,
+          "peak_process_RSS_MiB_sampled": 2373.125,
+          "output_validation": "25 CPU uint8 RGB; original shape and finite guards passed"
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 32.36701808869839,
+          "E2E_given_inputs_seconds": 36.15297031030059,
+          "core_regions_seconds": {
+            "DAdepth_network_forward": 2.54373499751091,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 29.823283091187477
+          },
+          "core_region_calls": {
+            "DAdepth_network_forward": 25,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 25
+          },
+          "peak_torch_allocated_GiB": 5.139299392700195,
+          "peak_torch_reserved_GiB": 6.361328125,
+          "peak_device_memory_MiB_sampled": 6949,
+          "peak_process_RSS_MiB_sampled": 2377.28125,
+          "output_validation": "25 CPU uint8 RGB; original shape and finite guards passed"
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 32.416600704193115,
+          "E2E_given_inputs_seconds": 36.253279626369476,
+          "core_regions_seconds": {
+            "DAdepth_network_forward": 2.5422572568058968,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 29.87434344738722
+          },
+          "core_region_calls": {
+            "DAdepth_network_forward": 25,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 25
+          },
+          "peak_torch_allocated_GiB": 5.139299392700195,
+          "peak_torch_reserved_GiB": 6.361328125,
+          "peak_device_memory_MiB_sampled": 6949,
+          "peak_process_RSS_MiB_sampled": 2381.5390625,
+          "output_validation": "25 CPU uint8 RGB; original shape and finite guards passed"
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 32.58303663134575,
+          "E2E_given_inputs_seconds": 36.437823832035065,
+          "core_regions_seconds": {
+            "DAdepth_network_forward": 2.5416232496500015,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 30.041413381695747
+          },
+          "core_region_calls": {
+            "DAdepth_network_forward": 25,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 25
+          },
+          "peak_torch_allocated_GiB": 5.139299392700195,
+          "peak_torch_reserved_GiB": 6.361328125,
+          "peak_device_memory_MiB_sampled": 6949,
+          "peak_process_RSS_MiB_sampled": 2375.046875,
+          "output_validation": "25 CPU uint8 RGB; original shape and finite guards passed"
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 32.25505047291517,
+          "E2E_given_inputs_seconds": 36.282673720270395,
+          "core_regions_seconds": {
+            "DAdepth_network_forward": 2.543142192065716,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 29.711908280849457
+          },
+          "core_region_calls": {
+            "DAdepth_network_forward": 25,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 25
+          },
+          "peak_torch_allocated_GiB": 5.139299392700195,
+          "peak_torch_reserved_GiB": 6.361328125,
+          "peak_device_memory_MiB_sampled": 6949,
+          "peak_process_RSS_MiB_sampled": 2368.609375,
+          "output_validation": "25 CPU uint8 RGB; original shape and finite guards passed"
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 32.46046470850706,
+          "E2E_given_inputs_seconds": 36.47387469187379,
+          "core_regions_seconds": {
+            "DAdepth_network_forward": 2.541812736541033,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 29.918651971966028
+          },
+          "core_region_calls": {
+            "DAdepth_network_forward": 25,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 25
+          },
+          "peak_torch_allocated_GiB": 5.139299392700195,
+          "peak_torch_reserved_GiB": 6.361328125,
+          "peak_device_memory_MiB_sampled": 6949,
+          "peak_process_RSS_MiB_sampled": 2366.69921875,
+          "output_validation": "25 CPU uint8 RGB; original shape and finite guards passed"
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 32.38848580047488,
+          "E2E_given_inputs_seconds": 36.457772586494684,
+          "core_regions_seconds": {
+            "DAdepth_network_forward": 2.541445877403021,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 29.84703992307186
+          },
+          "core_region_calls": {
+            "DAdepth_network_forward": 25,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 25
+          },
+          "peak_torch_allocated_GiB": 5.139299392700195,
+          "peak_torch_reserved_GiB": 6.361328125,
+          "peak_device_memory_MiB_sampled": 6949,
+          "peak_process_RSS_MiB_sampled": 2372.5078125,
+          "output_validation": "25 CPU uint8 RGB; original shape and finite guards passed"
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 32.28468644991517,
+          "E2E_given_inputs_seconds": 36.27993268892169,
+          "core_regions_seconds": {
+            "DAdepth_network_forward": 2.5372286178171635,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 29.747457832098007
+          },
+          "core_region_calls": {
+            "DAdepth_network_forward": 25,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 25
+          },
+          "peak_torch_allocated_GiB": 5.139299392700195,
+          "peak_torch_reserved_GiB": 6.361328125,
+          "peak_device_memory_MiB_sampled": 6949,
+          "peak_process_RSS_MiB_sampled": 2374.14453125,
+          "output_validation": "25 CPU uint8 RGB; original shape and finite guards passed"
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 32.42486768960953,
+          "E2E_given_inputs_seconds": 36.558228831738234,
+          "core_regions_seconds": {
+            "DAdepth_network_forward": 2.5406003892421722,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 29.884267300367355
+          },
+          "core_region_calls": {
+            "DAdepth_network_forward": 25,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 25
+          },
+          "peak_torch_allocated_GiB": 5.139299392700195,
+          "peak_torch_reserved_GiB": 6.361328125,
+          "peak_device_memory_MiB_sampled": 6949,
+          "peak_process_RSS_MiB_sampled": 2394.390625,
+          "output_validation": "25 CPU uint8 RGB; original shape and finite guards passed"
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 32.33637122809887,
+          "E2E_given_inputs_seconds": 36.23168273642659,
+          "core_regions_seconds": {
+            "DAdepth_network_forward": 2.5436897464096546,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 29.792681481689215
+          },
+          "core_region_calls": {
+            "DAdepth_network_forward": 25,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 25
+          },
+          "peak_torch_allocated_GiB": 5.139299392700195,
+          "peak_torch_reserved_GiB": 6.361328125,
+          "peak_device_memory_MiB_sampled": 6949,
+          "peak_process_RSS_MiB_sampled": 2375.6640625,
+          "output_validation": "25 CPU uint8 RGB; original shape and finite guards passed"
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 32.20607998594642,
+          "E2E_given_inputs_seconds": 36.078912023454905,
+          "core_regions_seconds": {
+            "DAdepth_network_forward": 2.541580144315958,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 29.66449984163046
+          },
+          "core_region_calls": {
+            "DAdepth_network_forward": 25,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 25
+          },
+          "peak_torch_allocated_GiB": 5.139299392700195,
+          "peak_torch_reserved_GiB": 6.361328125,
+          "peak_device_memory_MiB_sampled": 6949,
+          "peak_process_RSS_MiB_sampled": 2373.51953125,
+          "output_validation": "25 CPU uint8 RGB; original shape and finite guards passed"
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 35.82649841159582,
+          "E2E_given_inputs_seconds": 40.105911284685135,
+          "core_regions_seconds": {
+            "DAdepth_network_forward": 2.542947828769684,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 33.28355058282614
+          },
+          "core_region_calls": {
+            "DAdepth_network_forward": 25,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 25
+          },
+          "peak_torch_allocated_GiB": 5.139299392700195,
+          "peak_torch_reserved_GiB": 6.361328125,
+          "peak_device_memory_MiB_sampled": 6949,
+          "peak_process_RSS_MiB_sampled": 2390.57421875,
+          "output_validation": "25 CPU uint8 RGB; original shape and finite guards passed"
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 32.26718441024423,
+          "E2E_given_inputs_seconds": 36.094569239765406,
+          "core_regions_seconds": {
+            "DAdepth_network_forward": 2.542319566011429,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 29.724864844232798
+          },
+          "core_region_calls": {
+            "DAdepth_network_forward": 25,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 25
+          },
+          "peak_torch_allocated_GiB": 5.139299392700195,
+          "peak_torch_reserved_GiB": 6.361328125,
+          "peak_device_memory_MiB_sampled": 6949,
+          "peak_process_RSS_MiB_sampled": 2376.77734375,
+          "output_validation": "25 CPU uint8 RGB; original shape and finite guards passed"
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 32.226287327706814,
+          "E2E_given_inputs_seconds": 36.05327560380101,
+          "core_regions_seconds": {
+            "DAdepth_network_forward": 2.539790865033865,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 29.68649646267295
+          },
+          "core_region_calls": {
+            "DAdepth_network_forward": 25,
+            "MagicBokeh_six_tiles_and_GPU_reconstruction": 25
+          },
+          "peak_torch_allocated_GiB": 5.139299392700195,
+          "peak_torch_reserved_GiB": 6.361328125,
+          "peak_device_memory_MiB_sampled": 6949,
+          "peak_process_RSS_MiB_sampled": 2380.90234375,
+          "output_validation": "25 CPU uint8 RGB; original shape and finite guards passed"
+        }
+      ]
+    },
+    "any2bokeh": {
+      "runtime": {
+        "loaded_learned_parameters": 2606607241,
+        "loaded_parameter_components": {
+          "unet": 1876296074,
+          "vae": 98234367,
+          "image_encoder": 632076800
+        },
+        "device": "GPU0",
+        "torch": "2.8.0+cu128",
+        "CUDA": "12.8",
+        "project_commit": "299cd92208ddcd972b691455a2f6e3efc422220c",
+        "gpu_hardware": "NVIDIA GeForce RTX 4090 D, 580.105.08, 49140 MiB",
+        "cpu_model": "Intel(R) Xeon(R) Platinum 8481C",
+        "cpu_quota": "2000000 100000",
+        "memory_quota_bytes": "96636764160",
+        "core_region_definition": "Public video pipeline on already-CUDA RGB/CoC/MPI/K/weights through CUDA float output; three native calls emitting8/8/9frames, overlap assembly included. Host transfers outside.",
+        "torch_threads": 4,
+        "TF_intra_threads": null,
+        "TF_inter_threads": null
+      },
+      "by_K": {
+        "4": {
+          "core_seconds": {
+            "mean": 20.09713071733713,
+            "std": 0.03474310745250724
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 21.841809213906526,
+            "std": 0.07285718138885498
+          }
+        },
+        "8": {
+          "core_seconds": {
+            "mean": 20.12296305820346,
+            "std": 0.006299743951115601
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 21.897507886588574,
+            "std": 0.04013823301255588
+          }
+        },
+        "16": {
+          "core_seconds": {
+            "mean": 20.10876369923353,
+            "std": 0.0050722280933774505
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 21.882856170088054,
+            "std": 0.2571460524394605
+          }
+        },
+        "32": {
+          "core_seconds": {
+            "mean": 20.12234308794141,
+            "std": 0.006642742367054435
+          },
+          "E2E_given_inputs_seconds": {
+            "mean": 21.81917209774256,
+            "std": 0.042971385028264024
+          }
+        }
+      },
+      "raw_summary": "outputs/video-e2e-4090d-20261001/any2bokeh/summary.json",
+      "raw_warmups": "outputs/video-e2e-4090d-20261001/any2bokeh/warmups.json",
+      "rows": [
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 20.0451842546463,
+          "E2E_given_inputs_seconds": 21.79016425460577,
+          "core_regions_seconds": {
+            "ATB_video_pipeline": 20.0451842546463
+          },
+          "core_region_calls": {
+            "ATB_video_pipeline": 3
+          },
+          "peak_torch_allocated_GiB": 34.290546894073486,
+          "peak_torch_reserved_GiB": 41.712890625,
+          "peak_device_memory_MiB_sampled": 43147,
+          "peak_process_RSS_MiB_sampled": 6504.140625
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 20.078784238547087,
+          "E2E_given_inputs_seconds": 21.800501685589552,
+          "core_regions_seconds": {
+            "ATB_video_pipeline": 20.078784238547087
+          },
+          "core_region_calls": {
+            "ATB_video_pipeline": 3
+          },
+          "peak_torch_allocated_GiB": 34.28948640823364,
+          "peak_torch_reserved_GiB": 41.712890625,
+          "peak_device_memory_MiB_sampled": 43147,
+          "peak_process_RSS_MiB_sampled": 6626.546875
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 20.118087623268366,
+          "E2E_given_inputs_seconds": 21.80980333313346,
+          "core_regions_seconds": {
+            "ATB_video_pipeline": 20.118087623268366
+          },
+          "core_region_calls": {
+            "ATB_video_pipeline": 3
+          },
+          "peak_torch_allocated_GiB": 34.29180574417114,
+          "peak_torch_reserved_GiB": 41.712890625,
+          "peak_device_memory_MiB_sampled": 43147,
+          "peak_process_RSS_MiB_sampled": 6936.203125
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 20.130077976733446,
+          "E2E_given_inputs_seconds": 21.96764251589775,
+          "core_regions_seconds": {
+            "ATB_video_pipeline": 20.130077976733446
+          },
+          "core_region_calls": {
+            "ATB_video_pipeline": 3
+          },
+          "peak_torch_allocated_GiB": 34.2907452583313,
+          "peak_torch_reserved_GiB": 41.712890625,
+          "peak_device_memory_MiB_sampled": 43147,
+          "peak_process_RSS_MiB_sampled": 7095.1796875
+        },
+        {
+          "scene": "repro_004",
+          "K": 4,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 20.113519493490458,
+          "E2E_given_inputs_seconds": 21.8409342803061,
+          "core_regions_seconds": {
+            "ATB_video_pipeline": 20.113519493490458
+          },
+          "core_region_calls": {
+            "ATB_video_pipeline": 3
+          },
+          "peak_torch_allocated_GiB": 34.291157245635986,
+          "peak_torch_reserved_GiB": 41.712890625,
+          "peak_device_memory_MiB_sampled": 43147,
+          "peak_process_RSS_MiB_sampled": 6954.41015625
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 20.118101000785828,
+          "E2E_given_inputs_seconds": 21.87557466700673,
+          "core_regions_seconds": {
+            "ATB_video_pipeline": 20.118101000785828
+          },
+          "core_region_calls": {
+            "ATB_video_pipeline": 3
+          },
+          "peak_torch_allocated_GiB": 34.28838777542114,
+          "peak_torch_reserved_GiB": 41.712890625,
+          "peak_device_memory_MiB_sampled": 43147,
+          "peak_process_RSS_MiB_sampled": 6767.55078125
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 20.11641226708889,
+          "E2E_given_inputs_seconds": 21.923639476299286,
+          "core_regions_seconds": {
+            "ATB_video_pipeline": 20.11641226708889
+          },
+          "core_region_calls": {
+            "ATB_video_pipeline": 3
+          },
+          "peak_torch_allocated_GiB": 34.287861347198486,
+          "peak_torch_reserved_GiB": 41.712890625,
+          "peak_device_memory_MiB_sampled": 43147,
+          "peak_process_RSS_MiB_sampled": 7183.64453125
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 20.123728081583977,
+          "E2E_given_inputs_seconds": 21.846470046788454,
+          "core_regions_seconds": {
+            "ATB_video_pipeline": 20.123728081583977
+          },
+          "core_region_calls": {
+            "ATB_video_pipeline": 3
+          },
+          "peak_torch_allocated_GiB": 34.2917218208313,
+          "peak_torch_reserved_GiB": 41.712890625,
+          "peak_device_memory_MiB_sampled": 43147,
+          "peak_process_RSS_MiB_sampled": 6504.45703125
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 20.132465563714504,
+          "E2E_given_inputs_seconds": 21.949021711945534,
+          "core_regions_seconds": {
+            "ATB_video_pipeline": 20.132465563714504
+          },
+          "core_region_calls": {
+            "ATB_video_pipeline": 3
+          },
+          "peak_torch_allocated_GiB": 34.2909893989563,
+          "peak_torch_reserved_GiB": 41.712890625,
+          "peak_device_memory_MiB_sampled": 43147,
+          "peak_process_RSS_MiB_sampled": 7050.5703125
+        },
+        {
+          "scene": "repro_006",
+          "K": 8,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 20.124108377844095,
+          "E2E_given_inputs_seconds": 21.892833530902863,
+          "core_regions_seconds": {
+            "ATB_video_pipeline": 20.124108377844095
+          },
+          "core_region_calls": {
+            "ATB_video_pipeline": 3
+          },
+          "peak_torch_allocated_GiB": 34.290668964385986,
+          "peak_torch_reserved_GiB": 41.712890625,
+          "peak_device_memory_MiB_sampled": 43147,
+          "peak_process_RSS_MiB_sampled": 7309.125
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 20.10672517120838,
+          "E2E_given_inputs_seconds": 21.78473227098584,
+          "core_regions_seconds": {
+            "ATB_video_pipeline": 20.10672517120838
+          },
+          "core_region_calls": {
+            "ATB_video_pipeline": 3
+          },
+          "peak_torch_allocated_GiB": 34.291035175323486,
+          "peak_torch_reserved_GiB": 41.712890625,
+          "peak_device_memory_MiB_sampled": 43147,
+          "peak_process_RSS_MiB_sampled": 6558.546875
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 20.11288522183895,
+          "E2E_given_inputs_seconds": 21.750028256326914,
+          "core_regions_seconds": {
+            "ATB_video_pipeline": 20.11288522183895
+          },
+          "core_region_calls": {
+            "ATB_video_pipeline": 3
+          },
+          "peak_torch_allocated_GiB": 34.291157245635986,
+          "peak_torch_reserved_GiB": 41.712890625,
+          "peak_device_memory_MiB_sampled": 43147,
+          "peak_process_RSS_MiB_sampled": 6505.14453125
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 20.11460178717971,
+          "E2E_given_inputs_seconds": 21.783123183995485,
+          "core_regions_seconds": {
+            "ATB_video_pipeline": 20.11460178717971
+          },
+          "core_region_calls": {
+            "ATB_video_pipeline": 3
+          },
+          "peak_torch_allocated_GiB": 34.290546894073486,
+          "peak_torch_reserved_GiB": 41.712890625,
+          "peak_device_memory_MiB_sampled": 43147,
+          "peak_process_RSS_MiB_sampled": 6504.921875
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 20.101947251707315,
+          "E2E_given_inputs_seconds": 21.754428312182426,
+          "core_regions_seconds": {
+            "ATB_video_pipeline": 20.101947251707315
+          },
+          "core_region_calls": {
+            "ATB_video_pipeline": 3
+          },
+          "peak_torch_allocated_GiB": 34.2907452583313,
+          "peak_torch_reserved_GiB": 41.712890625,
+          "peak_device_memory_MiB_sampled": 43147,
+          "peak_process_RSS_MiB_sampled": 7202.1875
+        },
+        {
+          "scene": "repro_003",
+          "K": 16,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 20.107659064233303,
+          "E2E_given_inputs_seconds": 22.341968826949596,
+          "core_regions_seconds": {
+            "ATB_video_pipeline": 20.107659064233303
+          },
+          "core_region_calls": {
+            "ATB_video_pipeline": 3
+          },
+          "peak_torch_allocated_GiB": 34.29290437698364,
+          "peak_torch_reserved_GiB": 41.712890625,
+          "peak_device_memory_MiB_sampled": 43147,
+          "peak_process_RSS_MiB_sampled": 6505.26171875
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 0,
+          "output_frames": 25,
+          "core_seconds": 20.112232085317373,
+          "E2E_given_inputs_seconds": 21.83336142078042,
+          "core_regions_seconds": {
+            "ATB_video_pipeline": 20.112232085317373
+          },
+          "core_region_calls": {
+            "ATB_video_pipeline": 3
+          },
+          "peak_torch_allocated_GiB": 34.2895245552063,
+          "peak_torch_reserved_GiB": 41.712890625,
+          "peak_device_memory_MiB_sampled": 43147,
+          "peak_process_RSS_MiB_sampled": 6505.3671875
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 1,
+          "output_frames": 25,
+          "core_seconds": 20.11920553445816,
+          "E2E_given_inputs_seconds": 21.7601475417614,
+          "core_regions_seconds": {
+            "ATB_video_pipeline": 20.11920553445816
+          },
+          "core_region_calls": {
+            "ATB_video_pipeline": 3
+          },
+          "peak_torch_allocated_GiB": 34.289326190948486,
+          "peak_torch_reserved_GiB": 41.712890625,
+          "peak_device_memory_MiB_sampled": 43147,
+          "peak_process_RSS_MiB_sampled": 6504.98828125
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 2,
+          "output_frames": 25,
+          "core_seconds": 20.12669401243329,
+          "E2E_given_inputs_seconds": 21.83279649168253,
+          "core_regions_seconds": {
+            "ATB_video_pipeline": 20.12669401243329
+          },
+          "core_region_calls": {
+            "ATB_video_pipeline": 3
+          },
+          "peak_torch_allocated_GiB": 34.290546894073486,
+          "peak_torch_reserved_GiB": 41.712890625,
+          "peak_device_memory_MiB_sampled": 43147,
+          "peak_process_RSS_MiB_sampled": 6766.18359375
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 3,
+          "output_frames": 25,
+          "core_seconds": 20.125072453171015,
+          "E2E_given_inputs_seconds": 21.873689226806164,
+          "core_regions_seconds": {
+            "ATB_video_pipeline": 20.125072453171015
+          },
+          "core_region_calls": {
+            "ATB_video_pipeline": 3
+          },
+          "peak_torch_allocated_GiB": 34.29107332229614,
+          "peak_torch_reserved_GiB": 41.712890625,
+          "peak_device_memory_MiB_sampled": 43147,
+          "peak_process_RSS_MiB_sampled": 6654.5078125
+        },
+        {
+          "scene": "repro_000",
+          "K": 32,
+          "repeat": 4,
+          "output_frames": 25,
+          "core_seconds": 20.128511354327202,
+          "E2E_given_inputs_seconds": 21.795865807682276,
+          "core_regions_seconds": {
+            "ATB_video_pipeline": 20.128511354327202
+          },
+          "core_region_calls": {
+            "ATB_video_pipeline": 3
+          },
+          "peak_torch_allocated_GiB": 34.290180683135986,
+          "peak_torch_reserved_GiB": 41.712890625,
+          "peak_device_memory_MiB_sampled": 43147,
+          "peak_process_RSS_MiB_sampled": 7187.21484375
+        }
+      ]
+    }
+  },
+  "old_current_comparison": [
+    {
+      "method": "deeplens",
+      "old_hardware": {
+        "device": "CPU / Intel Xeon Platinum 8470Q / TF1.15 / 8threads",
+        "Core_seconds_mean": 25.36989005189389,
+        "E2E_given_inputs_seconds_mean": 26.451933037862183,
+        "FPS_E2E": 0.9451105128769248,
+        "Peak_device_memory_GiB_sampled": null,
+        "CPU_RSS_GiB_sampled": 1.3585968017578125
+      },
+      "current_hardware": {
+        "method": "deeplens",
+        "device": "CPU / Intel Xeon Platinum 8481C / TF1.15 / intra8 inter1",
+        "Core_seconds_mean": 46.733059160225096,
+        "Core_seconds_std": 2.1037505091797297,
+        "E2E_given_inputs_seconds_mean": 48.78919329419732,
+        "E2E_given_inputs_seconds_std": 2.150822577923565,
+        "FPS_E2E": 0.5124085542724754,
+        "Peak_device_memory_GiB_sampled": null,
+        "Peak_torch_allocated_GiB": null,
+        "Peak_torch_reserved_GiB": null,
+        "CPU_RSS_GiB_sampled": 1.5242652893066406,
+        "formal_samples": 20,
+        "warmups": 4,
+        "frames_per_execution": 25
+      }
+    },
+    {
+      "method": "drbokeh",
+      "old_hardware": {
+        "device": "RTX PRO 6000 Blackwell",
+        "Core_seconds_mean": 7.178266977518797,
+        "E2E_given_inputs_seconds_mean": 20.621430881880222,
+        "FPS_E2E": 1.2123310037601303,
+        "Peak_device_memory_GiB_sampled": 2.8779296875,
+        "CPU_RSS_GiB_sampled": null
+      },
+      "current_hardware": {
+        "method": "drbokeh",
+        "device": "NVIDIA GeForce RTX 4090 D",
+        "Core_seconds_mean": 8.584468182176352,
+        "Core_seconds_std": 0.00473286169805804,
+        "E2E_given_inputs_seconds_mean": 21.788814554549752,
+        "E2E_given_inputs_seconds_std": 0.5176504270641064,
+        "FPS_E2E": 1.1473777032435992,
+        "Peak_device_memory_GiB_sampled": 2.6259765625,
+        "Peak_torch_allocated_GiB": 1.938849925994873,
+        "Peak_torch_reserved_GiB": 2.208984375,
+        "CPU_RSS_GiB_sampled": null,
+        "formal_samples": 20,
+        "warmups": 4,
+        "frames_per_execution": 25
+      }
+    },
+    {
+      "method": "bokehme",
+      "old_hardware": {
+        "device": "RTX PRO 6000 Blackwell",
+        "Core_seconds_mean": 0.3505675423890352,
+        "E2E_given_inputs_seconds_mean": 1.1858516596257687,
+        "FPS_E2E": 21.081894853433443,
+        "Peak_device_memory_GiB_sampled": 1.0107421875,
+        "CPU_RSS_GiB_sampled": null
+      },
+      "current_hardware": {
+        "method": "bokehme",
+        "device": "NVIDIA GeForce RTX 4090 D",
+        "Core_seconds_mean": 0.2932546915486455,
+        "Core_seconds_std": 0.07670178962375489,
+        "E2E_given_inputs_seconds_mean": 1.1388024544343351,
+        "E2E_given_inputs_seconds_std": 0.07455823875994241,
+        "FPS_E2E": 21.952885597193394,
+        "Peak_device_memory_GiB_sampled": 0.7548828125,
+        "Peak_torch_allocated_GiB": 0.31445741653442383,
+        "Peak_torch_reserved_GiB": 0.34765625,
+        "CPU_RSS_GiB_sampled": null,
+        "formal_samples": 20,
+        "warmups": 4,
+        "frames_per_execution": 25
+      }
+    },
+    {
+      "method": "mpib",
+      "old_hardware": {
+        "device": "RTX PRO 6000 Blackwell",
+        "Core_seconds_mean": 6.163968570157886,
+        "E2E_given_inputs_seconds_mean": 7.6813731322065,
+        "FPS_E2E": 3.254626428077016,
+        "Peak_device_memory_GiB_sampled": 2.4345703125,
+        "CPU_RSS_GiB_sampled": null
+      },
+      "current_hardware": {
+        "method": "mpib",
+        "device": "NVIDIA GeForce RTX 4090 D",
+        "Core_seconds_mean": 5.95599155165255,
+        "Core_seconds_std": 0.16343501896314666,
+        "E2E_given_inputs_seconds_mean": 7.535811417363584,
+        "E2E_given_inputs_seconds_std": 0.21257339619218799,
+        "FPS_E2E": 3.317492784174035,
+        "Peak_device_memory_GiB_sampled": 2.1806640625,
+        "Peak_torch_allocated_GiB": 1.1084823608398438,
+        "Peak_torch_reserved_GiB": 1.763671875,
+        "CPU_RSS_GiB_sampled": null,
+        "formal_samples": 20,
+        "warmups": 4,
+        "frames_per_execution": 25
+      }
+    },
+    {
+      "method": "bokehdiff",
+      "old_hardware": {
+        "device": "RTX PRO 6000 Blackwell",
+        "Core_seconds_mean": 27.38383594993502,
+        "E2E_given_inputs_seconds_mean": 28.165993072092533,
+        "FPS_E2E": 0.887595190981231,
+        "Peak_device_memory_GiB_sampled": 18.3427734375,
+        "CPU_RSS_GiB_sampled": null
+      },
+      "current_hardware": {
+        "method": "bokehdiff",
+        "device": "NVIDIA GeForce RTX 4090 D",
+        "Core_seconds_mean": 23.15104864090681,
+        "Core_seconds_std": 0.012994436864560031,
+        "E2E_given_inputs_seconds_mean": 23.95711736064404,
+        "E2E_given_inputs_seconds_std": 0.05278962396130153,
+        "FPS_E2E": 1.043531223880431,
+        "Peak_device_memory_GiB_sampled": 17.5693359375,
+        "Peak_torch_allocated_GiB": 14.87554407119751,
+        "Peak_torch_reserved_GiB": 17.15234375,
+        "CPU_RSS_GiB_sampled": null,
+        "formal_samples": 20,
+        "warmups": 4,
+        "frames_per_execution": 25
+      }
+    },
+    {
+      "method": "magicbokeh",
+      "old_hardware": null,
+      "current_hardware": {
+        "method": "magicbokeh",
+        "device": "NVIDIA GeForce RTX 4090 D",
+        "Core_seconds_mean": 32.57142381891608,
+        "Core_seconds_std": 0.7838397842987113,
+        "E2E_given_inputs_seconds_mean": 36.57040787357837,
+        "E2E_given_inputs_seconds_std": 0.8788430190697142,
+        "FPS_E2E": 0.6836128294336625,
+        "Peak_device_memory_GiB_sampled": 6.7861328125,
+        "Peak_torch_allocated_GiB": 5.139299392700195,
+        "Peak_torch_reserved_GiB": 6.361328125,
+        "CPU_RSS_GiB_sampled": null,
+        "formal_samples": 20,
+        "warmups": 4,
+        "frames_per_execution": 25
+      }
+    },
+    {
+      "method": "any2bokeh",
+      "old_hardware": {
+        "device": "RTX PRO 6000 Blackwell",
+        "Core_seconds_mean": 12.627517327852548,
+        "E2E_given_inputs_seconds_mean": 14.084255046769977,
+        "FPS_E2E": 1.775031758299023,
+        "Peak_device_memory_GiB_sampled": 38.4677734375,
+        "CPU_RSS_GiB_sampled": null
+      },
+      "current_hardware": {
+        "method": "any2bokeh",
+        "device": "NVIDIA GeForce RTX 4090 D",
+        "Core_seconds_mean": 20.112800140678882,
+        "Core_seconds_std": 0.019930639419228454,
+        "E2E_given_inputs_seconds_mean": 21.86033634208143,
+        "E2E_given_inputs_seconds_std": 0.12961331045753097,
+        "FPS_E2E": 1.143623758060606,
+        "Peak_device_memory_GiB_sampled": 42.1357421875,
+        "Peak_torch_allocated_GiB": 34.29290437698364,
+        "Peak_torch_reserved_GiB": 41.712890625,
+        "CPU_RSS_GiB_sampled": null,
+        "formal_samples": 20,
+        "warmups": 4,
+        "frames_per_execution": 25
+      }
+    }
+  ],
+  "old_hardware_source": "03_实验记录/records/efficiency-track-a-3ab-20260930.json",
+  "validation": {
+    "methods": 7,
+    "formal_samples": 140,
+    "full_clip_warmups": 28,
+    "all_actual25_frames": true,
+    "native_units_and_timing_bounds": true,
+    "output_shape_and_finite_guards_passed": true,
+    "core_and_E2E_means_FPS_verified": true,
+    "CPU_RSS_separate_from_GPU_VRAM": true,
+    "old_MagicBokeh_E2E_missing_not_estimated": true
+  },
+  "statistics": "Equal-weight4 fixed clips and5 repeats; reported std is over20 formal samples (includes clip differences); within-K repeat stats retained separately.",
+  "memory": "Device0 memory sampled every0.2s with existing endpoint fallback; PyTorch allocated/reserved and CPU RSS are separate scopes; model loading excluded.",
+  "limits": [
+    "Hardware/CPU/environment differ across machines; no cross-device difference claimed as model optimization.",
+    "MagicBokeh Core includes own depth network plus generator; model-cost table remains generator-only.",
+    "Old hardware has no MagicBokeh video-E2E measurement; leave empty.",
+    "No model-cost, quality or DAVIS reruns; no model, precision, adapter, batch or cache optimization."
+  ],
+  "artifacts": {
+    "output": "outputs/video-e2e-4090d-20261001",
+    "logs": "logs/video-e2e-4090d-20261001"
+  },
+  "supplementary_environment_versions": {
+    "collected_after_run_UTC": "2026-10-01T02:28:30.021679+00:00",
+    "environments": {
+      "any2bokeh": {
+        "Python": "3.10.21",
+        "packages": {
+          "torch": "2.8.0+cu128",
+          "torchvision": "0.23.0+cu128",
+          "numpy": "2.1.2",
+          "diffusers": "0.25.0",
+          "transformers": "4.32.1",
+          "xformers": null,
+          "tensorflow": null,
+          "opencv-python": "4.12.0.88",
+          "cupy-cuda12x": null
+        }
+      },
+      "magicbokeh": {
+        "Python": "3.10.21",
+        "packages": {
+          "torch": "2.8.0+cu128",
+          "torchvision": "0.23.0+cu128",
+          "numpy": "1.26.0",
+          "diffusers": "0.25.0",
+          "transformers": "4.46.0",
+          "xformers": "0.0.32.post2",
+          "tensorflow": null,
+          "opencv-python": "4.8.0.74",
+          "cupy-cuda12x": "13.6.0"
+        }
+      },
+      "bokehdiff": {
+        "Python": "3.10.21",
+        "packages": {
+          "torch": "2.8.0+cu128",
+          "torchvision": "0.23.0+cu128",
+          "numpy": "1.26.0",
+          "diffusers": "0.32.1",
+          "transformers": "4.46.0",
+          "xformers": "0.0.32.post2",
+          "tensorflow": null,
+          "opencv-python": "4.8.0.74",
+          "cupy-cuda12x": "13.6.0"
+        }
+      },
+      "deeplens": {
+        "Python": "3.7.12",
+        "packages": {
+          "torch": null,
+          "torchvision": null,
+          "numpy": "1.18.5",
+          "diffusers": null,
+          "transformers": null,
+          "xformers": null,
+          "tensorflow": null,
+          "opencv-python": null,
+          "cupy-cuda12x": null,
+          "tensorflow-cpu": "1.15.0",
+          "opencv-python-headless": "4.5.5.64"
+        }
+      }
+    },
+    "magicbokeh_environment_also_used_by": [
+      "mpib",
+      "bokehme",
+      "drbokeh"
+    ]
+  }
+}
