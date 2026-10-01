@@ -4769,5 +4769,3437 @@
       "log": "logs/any2bokeh-module-profile-4090d-20261001/",
       "reason": "First observation attempt missed positional decode_latents cache/last-batch arguments. Partial outputs/logs retained; none mixed into the final8 repeats or statistics. Corrected v2 restarts the original seed/warmup/repeat flow."
     }
+  },
+  "allocator_supplement": {
+    "status": "COMPLETE",
+    "updated_UTC": "2026-10-01T05:21:23.393774+00:00",
+    "source_commit": "30382b0",
+    "source_record_version": "Original eight-run fields and artifacts retained unchanged; this addition is representative supplementary evidence only",
+    "scene": "repro_004",
+    "K": 4,
+    "frames": 25,
+    "resolution_WH": [
+      1024,
+      576
+    ],
+    "warmups": 1,
+    "observations": 1,
+    "included_in_original_timing_statistics": false,
+    "runtime": {
+      "loaded_learned_parameters": 2606607241,
+      "loaded_parameter_components": {
+        "unet": 1876296074,
+        "vae": 98234367,
+        "image_encoder": 632076800
+      },
+      "device": "GPU0",
+      "torch": "2.8.0+cu128",
+      "CUDA": "12.8",
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "gpu_total_GiB": 47.37115478515625,
+      "driver": "580.105.08",
+      "CPU": "Intel(R) Xeon(R) Platinum 8481C",
+      "container_cpu_max": "2000000 100000",
+      "container_memory_limit_bytes": 96636764160,
+      "python": "3.10.21 (main, Aug 27 2026, 14:42:07) [GCC 14.3.0]",
+      "torch_threads": 4,
+      "project_commit": "30382b0e8f619405d230769186a662eae5f1287a",
+      "native_code_commit": "f7a16959dd219080fb8eec0d32bb9602d8970c22"
+    },
+    "backend": "native",
+    "allocator_environment": {
+      "PYTORCH_ALLOC_CONF": null,
+      "PYTORCH_CUDA_ALLOC_CONF": null,
+      "PYTORCH_NO_CUDA_MEMORY_CACHING": null
+    },
+    "allocator_settings_from_separate_history_snapshot": {
+      "PYTORCH_CUDA_ALLOC_CONF": "",
+      "max_split_size": -1,
+      "garbage_collection_threshold": 0.0,
+      "expandable_segments": false,
+      "pinned_num_register_threads": 1,
+      "release_lock_on_cudamalloc": false,
+      "pinned_use_cuda_host_register": false,
+      "roundup_power2_divisions": {
+        "1": 0,
+        "2": 0,
+        "4": 0,
+        "8": 0,
+        "16": 0,
+        "32": 0,
+        "64": 0,
+        "128": 0,
+        "256": 0,
+        "512": 0,
+        "1024": 0,
+        "2048": 0,
+        "4096": 0,
+        "8192": 0,
+        "16384": 0,
+        "32768": 0
+      }
+    },
+    "module_storage_inventories": [
+      {
+        "modules": {
+          "unet": {
+            "parameters": {
+              "by_dtype": {
+                "torch.float16": {
+                  "tensors": 1830,
+                  "logical_bytes": 3752592148,
+                  "unique_storage_bytes": 3752592148
+                }
+              },
+              "unique_storage_bytes": 3752592148
+            },
+            "buffers": {
+              "by_dtype": {},
+              "unique_storage_bytes": 0
+            },
+            "combined_unique_storage_bytes": 3752592148,
+            "combined_unique_storage_GiB": 3.494873780757189,
+            "submodule_of": null
+          },
+          "vae": {
+            "parameters": {
+              "by_dtype": {
+                "torch.float16": {
+                  "tensors": 378,
+                  "logical_bytes": 196468734,
+                  "unique_storage_bytes": 196468734
+                }
+              },
+              "unique_storage_bytes": 196468734
+            },
+            "buffers": {
+              "by_dtype": {},
+              "unique_storage_bytes": 0
+            },
+            "combined_unique_storage_bytes": 196468734,
+            "combined_unique_storage_GiB": 0.1829757671803236,
+            "submodule_of": null
+          },
+          "image_encoder": {
+            "parameters": {
+              "by_dtype": {
+                "torch.float16": {
+                  "tensors": 520,
+                  "logical_bytes": 1264153600,
+                  "unique_storage_bytes": 1264153600
+                }
+              },
+              "unique_storage_bytes": 1264153600
+            },
+            "buffers": {
+              "by_dtype": {
+                "torch.int64": {
+                  "tensors": 1,
+                  "logical_bytes": 2056,
+                  "unique_storage_bytes": 2056
+                }
+              },
+              "unique_storage_bytes": 2056
+            },
+            "combined_unique_storage_bytes": 1264155656,
+            "combined_unique_storage_GiB": 1.1773367002606392,
+            "submodule_of": null
+          },
+          "vae_encoder": {
+            "parameters": {
+              "by_dtype": {
+                "torch.float16": {
+                  "tensors": 106,
+                  "logical_bytes": 68327184,
+                  "unique_storage_bytes": 68327184
+                }
+              },
+              "unique_storage_bytes": 68327184
+            },
+            "buffers": {
+              "by_dtype": {},
+              "unique_storage_bytes": 0
+            },
+            "combined_unique_storage_bytes": 68327184,
+            "combined_unique_storage_GiB": 0.06363464891910553,
+            "submodule_of": "vae"
+          },
+          "vae_decoder": {
+            "parameters": {
+              "by_dtype": {
+                "torch.float16": {
+                  "tensors": 270,
+                  "logical_bytes": 128141406,
+                  "unique_storage_bytes": 128141406
+                }
+              },
+              "unique_storage_bytes": 128141406
+            },
+            "buffers": {
+              "by_dtype": {},
+              "unique_storage_bytes": 0
+            },
+            "combined_unique_storage_bytes": 128141406,
+            "combined_unique_storage_GiB": 0.11934098415076733,
+            "submodule_of": "vae"
+          }
+        },
+        "three_root_union_unique_storage_bytes": 5213216538,
+        "boundary": "Parameters/buffers only, deduplicated by device/storage; VAE submodule totals overlap its parent. Not a full resident-allocation decomposition."
+      },
+      {
+        "modules": {
+          "unet": {
+            "parameters": {
+              "by_dtype": {
+                "torch.float16": {
+                  "tensors": 1830,
+                  "logical_bytes": 3752592148,
+                  "unique_storage_bytes": 3752592148
+                }
+              },
+              "unique_storage_bytes": 3752592148
+            },
+            "buffers": {
+              "by_dtype": {},
+              "unique_storage_bytes": 0
+            },
+            "combined_unique_storage_bytes": 3752592148,
+            "combined_unique_storage_GiB": 3.494873780757189,
+            "submodule_of": null
+          },
+          "vae": {
+            "parameters": {
+              "by_dtype": {
+                "torch.float32": {
+                  "tensors": 378,
+                  "logical_bytes": 392937468,
+                  "unique_storage_bytes": 392937468
+                }
+              },
+              "unique_storage_bytes": 392937468
+            },
+            "buffers": {
+              "by_dtype": {},
+              "unique_storage_bytes": 0
+            },
+            "combined_unique_storage_bytes": 392937468,
+            "combined_unique_storage_GiB": 0.3659515343606472,
+            "submodule_of": null
+          },
+          "image_encoder": {
+            "parameters": {
+              "by_dtype": {
+                "torch.float16": {
+                  "tensors": 520,
+                  "logical_bytes": 1264153600,
+                  "unique_storage_bytes": 1264153600
+                }
+              },
+              "unique_storage_bytes": 1264153600
+            },
+            "buffers": {
+              "by_dtype": {
+                "torch.int64": {
+                  "tensors": 1,
+                  "logical_bytes": 2056,
+                  "unique_storage_bytes": 2056
+                }
+              },
+              "unique_storage_bytes": 2056
+            },
+            "combined_unique_storage_bytes": 1264155656,
+            "combined_unique_storage_GiB": 1.1773367002606392,
+            "submodule_of": null
+          },
+          "vae_encoder": {
+            "parameters": {
+              "by_dtype": {
+                "torch.float32": {
+                  "tensors": 106,
+                  "logical_bytes": 136654368,
+                  "unique_storage_bytes": 136654368
+                }
+              },
+              "unique_storage_bytes": 136654368
+            },
+            "buffers": {
+              "by_dtype": {},
+              "unique_storage_bytes": 0
+            },
+            "combined_unique_storage_bytes": 136654368,
+            "combined_unique_storage_GiB": 0.12726929783821106,
+            "submodule_of": "vae"
+          },
+          "vae_decoder": {
+            "parameters": {
+              "by_dtype": {
+                "torch.float32": {
+                  "tensors": 270,
+                  "logical_bytes": 256282812,
+                  "unique_storage_bytes": 256282812
+                }
+              },
+              "unique_storage_bytes": 256282812
+            },
+            "buffers": {
+              "by_dtype": {},
+              "unique_storage_bytes": 0
+            },
+            "combined_unique_storage_bytes": 256282812,
+            "combined_unique_storage_GiB": 0.23868196830153465,
+            "submodule_of": "vae"
+          }
+        },
+        "three_root_union_unique_storage_bytes": 5409685272,
+        "boundary": "Parameters/buffers only, deduplicated by device/storage; VAE submodule totals overlap its parent. Not a full resident-allocation decomposition."
+      }
+    ],
+    "clip_observed_peak_allocated_GiB": 34.29415559768677,
+    "clip_observed_peak_reserved_GiB": 41.69140625,
+    "boundaries": [
+      "All5 current fields per point are from one synchronized memory_stats read; unsupported fields are null/not-applicable, not zero.",
+      "Entry/exit values do not describe the allocator composition at the instant of the peak.",
+      "Module parameter/buffer storages are dtype-specific deduplicated storage metadata, not a full resident-allocation accounting. VAE child-module inventories overlap its parent.",
+      "No max_reserved-minus-max_allocated fragmentation inference; no empty_cache or allocator/precision/batch/cache/decoder/RNG changes."
+    ],
+    "validation": {
+      "points": 34,
+      "phase_entry_exit_pairs": 15,
+      "full_output_shape_finite_and_8_8_9": true,
+      "stage_peaks_and_reset_protection_preserved": true,
+      "cache_storage_and_invocation_counts_match_original": true,
+      "representative_expansion_needed": false
+    },
+    "artifacts": {
+      "summary": "outputs/any2bokeh-allocator-supplement-20261001/summary.json",
+      "repeat": "outputs/any2bokeh-allocator-supplement-20261001/repro_004-repeat0.json",
+      "log": "logs/any2bokeh-allocator-supplement-20261001/profile.log"
+    },
+    "module_storage_population": "All loaded parameters/buffers of the named modules, regardless of phase invocation; distinct from the formal participating-parameter Params statistic.",
+    "command": [
+      "python",
+      "scripts/profile_any2bokeh_modules.py",
+      "--allocator-supplement",
+      "--output-dir",
+      "outputs/any2bokeh-allocator-supplement-20261001"
+    ]
+  },
+  "memory_history_supplement": {
+    "status": "COMPLETE",
+    "reason": "Entry/exit allocator and dtype inventories still do not show which cache versions coexist near the high peak or the source of large temporaries; one history run supplies lifetimes and allocation stacks.",
+    "scene": "repro_004",
+    "warmups": 1,
+    "observations": 1,
+    "included_in_original_timing_statistics": false,
+    "metadata": {
+      "max_entries": 200000,
+      "events": 69713,
+      "initial_events": 0,
+      "initial_prefix_preserved": true,
+      "target_interval_not_overwritten": true,
+      "allocator_settings": {
+        "PYTORCH_CUDA_ALLOC_CONF": "",
+        "max_split_size": -1,
+        "garbage_collection_threshold": 0.0,
+        "expandable_segments": false,
+        "pinned_num_register_threads": 1,
+        "release_lock_on_cudamalloc": false,
+        "pinned_use_cuda_host_register": false,
+        "roundup_power2_divisions": {
+          "1": 0,
+          "2": 0,
+          "4": 0,
+          "8": 0,
+          "16": 0,
+          "32": 0,
+          "64": 0,
+          "128": 0,
+          "256": 0,
+          "512": 0,
+          "1024": 0,
+          "2048": 0,
+          "4096": 0,
+          "8192": 0,
+          "16384": 0,
+          "32768": 0
+        }
+      },
+      "initial_snapshot": "memory-initial-snapshot.pickle",
+      "final_snapshot": "memory-snapshot.pickle",
+      "scope": "History only for one post-warmup native25-frame supplement. PyTorch allocator only; non-PyTorch CUDA allocations remain outside this evidence."
+    },
+    "coverage": {
+      "events": 69713,
+      "max_entries": 200000,
+      "first_initial_snapshot_marker_preserved": true,
+      "target_interval_not_overwritten": true,
+      "requested_current_boundaries_replayed_exactly": 31,
+      "final_requested_state_matches_snapshot": true
+    },
+    "evidence_boundary": "Trace allocation sizes are requested bytes, not necessarily actual allocator block sizes. Replay matches all synchronized requested-current observations; allocator absolute peaks come from phase measurement. Python allocation stack at resnet.py:258 identifies the add/divide expression, not a separate operator dispatch trace. Pre-history allocations and non-PyTorch CUDA memory are not fully attributed.",
+    "clip_peak_allocated_GiB": 34.29275941848755,
+    "clip_peak_reserved_GiB": 41.693359375,
+    "artifacts": {
+      "summary": "outputs/any2bokeh-memory-history-20261001/summary.json",
+      "initial_snapshot": "outputs/any2bokeh-memory-history-20261001/memory-initial-snapshot.pickle",
+      "final_snapshot": "outputs/any2bokeh-memory-history-20261001/memory-snapshot.pickle",
+      "evidence": "outputs/any2bokeh-memory-history-20261001/memory-history-evidence.json",
+      "scale_metadata": "outputs/any2bokeh-memory-history-20261001/encoder-residual-scale-metadata.json",
+      "log": "logs/any2bokeh-memory-history-20261001/profile.log"
+    },
+    "no_additional_history_needed_now": true,
+    "non_PyTorch_CUDA_memory": "Unexplained by this history; it cannot enumerate all driver/library/context allocations",
+    "command": [
+      "python",
+      "scripts/profile_any2bokeh_modules.py",
+      "--allocator-supplement",
+      "--memory-history",
+      "--output-dir",
+      "outputs/any2bokeh-memory-history-20261001"
+    ],
+    "offline_analysis_command": [
+      "python",
+      "scripts/profile_any2bokeh_modules.py",
+      "--output-dir",
+      "outputs/any2bokeh-memory-history-20261001",
+      "--analyze-history"
+    ]
+  },
+  "diagnostic_tables": {
+    "table1": {
+      "source": "Original30382b0 four-scene eight-run diagnostic; no supplementary/history samples mixed in",
+      "units": "seconds/25-output-frame clip; GiB memory",
+      "std_boundary": "Population standard deviation across8 clips includes between-scene differences, not pure timing jitter",
+      "rows": [
+        {
+          "stage": "CLIP_image_embedding",
+          "label": "CLIP",
+          "seconds_mean": 0.16004751110449433,
+          "seconds_std_population": 0.00021246914036611642,
+          "fraction_of_instrumented_Core": 0.007934648839001213,
+          "peak_allocated_GiB": 11.92488431930542,
+          "peak_reserved_GiB": 41.693359375,
+          "calls_per25_outputs": 3,
+          "input_slots_per25_outputs": 48
+        },
+        {
+          "stage": "VAE_RGB_encode_sample_cache",
+          "label": "RGB VAE编码及采样/缓存",
+          "seconds_mean": 4.580891945865005,
+          "seconds_std_population": 0.0055778980849855945,
+          "fraction_of_instrumented_Core": 0.22710611810836887,
+          "peak_allocated_GiB": 34.29293489456177,
+          "peak_reserved_GiB": 41.693359375,
+          "calls_per25_outputs": 3,
+          "input_slots_per25_outputs": 48
+        },
+        {
+          "stage": "VAE_CoC_encode_sample",
+          "label": "CoC VAE编码及采样",
+          "seconds_mean": 3.787405934650451,
+          "seconds_std_population": 0.0036941323411218063,
+          "fraction_of_instrumented_Core": 0.18776759410260277,
+          "peak_allocated_GiB": 34.29415559768677,
+          "peak_reserved_GiB": 41.693359375,
+          "calls_per25_outputs": 3,
+          "input_slots_per25_outputs": 48
+        },
+        {
+          "stage": "UNet_spatiotemporal_condition",
+          "label": "UNet",
+          "seconds_mean": 3.7419730643741786,
+          "seconds_std_population": 0.0058018192446567,
+          "fraction_of_instrumented_Core": 0.1855151762492895,
+          "peak_allocated_GiB": 14.391210079193115,
+          "peak_reserved_GiB": 41.693359375,
+          "calls_per25_outputs": 3,
+          "input_slots_per25_outputs": 48
+        },
+        {
+          "stage": "Overlap_and_temporal_VAE_decode",
+          "label": "重叠拼接＋时序VAE解码",
+          "seconds_mean": 7.841133628040552,
+          "seconds_std_population": 0.00181031977849565,
+          "fraction_of_instrumented_Core": 0.3887385777437323,
+          "peak_allocated_GiB": 29.645333290100098,
+          "peak_reserved_GiB": 41.693359375,
+          "calls_per25_outputs": 3,
+          "input_slots_per25_outputs": 48,
+          "VAE_decode_calls": 4,
+          "VAE_decode_input_slots": 32,
+          "count_boundary": "3 overlap/decode_latents calls receive48 predicted latent slots; four actual VAE.decode calls receive32 slots"
+        },
+        {
+          "stage": "unattributed_Core",
+          "label": "未归入上述阶段的Core时间",
+          "seconds_mean": 0.059259229339659214,
+          "seconds_std_population": 0.0014788635292267247,
+          "fraction_of_instrumented_Core": 0.002937884957005306,
+          "peak_allocated_GiB": null,
+          "peak_reserved_GiB": null,
+          "calls_per25_outputs": null,
+          "input_slots_per25_outputs": null,
+          "count_boundary": "Not separately measured"
+        },
+        {
+          "stage": "complete_instrumented_Core",
+          "label": "完整带插桩Core",
+          "seconds_mean": 20.17071131337434,
+          "seconds_std_population": 0.01197870664122837,
+          "fraction_of_instrumented_Core": 1.0,
+          "peak_allocated_GiB": 34.29415559768677,
+          "peak_reserved_GiB": 41.693359375,
+          "calls_per25_outputs": 3,
+          "input_slots_per25_outputs": null,
+          "count_boundary": "3 native pipeline calls;48 RGB slots and48 CoC slots, not an aggregate unique-input count"
+        }
+      ],
+      "memory_boundary": "Complete Core memory uses observed full-run maximum across resets; do not sum phase peaks. Reserved includes the already-held allocator pool. Unattributed phase peaks were not separately measured and remain null. Formal non-phase-instrumented Core remains20.112800140678882s."
+    },
+    "table2": {
+      "source": "One fresh-process repro_004 warmup plus one representative supplement observation",
+      "memory_units": "GiB; exact integer bytes also retained",
+      "native_unit_indexing": "JSON0/1/2, displayed in MD as1/2/3",
+      "points": [
+        {
+          "index": 0,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": null,
+          "stage": "model_load_complete",
+          "edge": "checkpoint",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 5260263936,
+              "GiB": 4.899002552032471,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 5473566720,
+              "GiB": 5.09765625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 5260263936,
+              "GiB": 4.899002552032471,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 213302784,
+              "GiB": 0.1986536979675293,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 5213216538,
+              "GiB": 4.855186248198152,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 0,
+          "RGB_cache_unique_storage_GiB": 0.0,
+          "module_storage_inventory_index": 0,
+          "same_memory_stats_call_for_current_fields": true
+        },
+        {
+          "index": 1,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": null,
+          "stage": "input_prepare_complete",
+          "edge": "checkpoint",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 5260263936,
+              "GiB": 4.899002552032471,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 5473566720,
+              "GiB": 5.09765625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 5260263936,
+              "GiB": 4.899002552032471,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 213302784,
+              "GiB": 0.1986536979675293,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 5213216538,
+              "GiB": 4.855186248198152,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 0,
+          "RGB_cache_unique_storage_GiB": 0.0,
+          "module_storage_inventory_index": 0,
+          "same_memory_stats_call_for_current_fields": true
+        },
+        {
+          "index": 2,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": null,
+          "stage": "warmup_complete",
+          "edge": "checkpoint",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12215862784,
+              "GiB": 11.376908779144287,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12215862784,
+              "GiB": 11.376908779144287,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3047209472,
+              "GiB": 2.837934970855713,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12167503654,
+              "GiB": 11.331870829686522,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 0,
+          "same_memory_stats_call_for_current_fields": true
+        },
+        {
+          "index": 3,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 0,
+          "stage": "CLIP_image_embedding",
+          "edge": "entry",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12461230592,
+              "GiB": 11.605425357818604,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12461230592,
+              "GiB": 11.605425357818604,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3047208448,
+              "GiB": 2.8379340171813965,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12412870502,
+              "GiB": 11.560386514291167,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 0,
+          "same_memory_stats_call_for_current_fields": true
+        },
+        {
+          "index": 4,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 0,
+          "stage": "CLIP_image_embedding",
+          "edge": "exit",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12461263360,
+              "GiB": 11.605455875396729,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12461263360,
+              "GiB": 11.605455875396729,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3047175680,
+              "GiB": 2.8379034996032715,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12412903270,
+              "GiB": 11.560417031869292,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 0,
+          "same_memory_stats_call_for_current_fields": true,
+          "stage_peak_allocated_GiB": 11.92219877243042,
+          "stage_peak_reserved_GiB": 41.69140625,
+          "incremental_allocated_peak_above_stage_entry_GiB": 0.3167734146118164
+        },
+        {
+          "index": 5,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 0,
+          "stage": "VAE_RGB_encode_sample_cache",
+          "edge": "entry",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12658373120,
+              "GiB": 11.789028644561768,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12658373120,
+              "GiB": 11.789028644561768,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 2971700736,
+              "GiB": 2.7676119804382324,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12609372004,
+              "GiB": 11.743392799049616,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 1,
+          "same_memory_stats_call_for_current_fields": true
+        },
+        {
+          "index": 6,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 0,
+          "stage": "VAE_RGB_encode_sample_cache",
+          "edge": "exit",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12660732416,
+              "GiB": 11.791225910186768,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12660732416,
+              "GiB": 11.791225910186768,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3084684800,
+              "GiB": 2.8728365898132324,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12611731300,
+              "GiB": 11.745590064674616,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 1,
+          "same_memory_stats_call_for_current_fields": true,
+          "stage_peak_allocated_GiB": 34.28902864456177,
+          "stage_peak_reserved_GiB": 41.69140625,
+          "incremental_allocated_peak_above_stage_entry_GiB": 22.5
+        },
+        {
+          "index": 7,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 0,
+          "stage": "VAE_CoC_encode_sample",
+          "edge": "entry",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12659683840,
+              "GiB": 11.790249347686768,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12659683840,
+              "GiB": 11.790249347686768,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 2970390016,
+              "GiB": 2.7663912773132324,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12610551652,
+              "GiB": 11.744491431862116,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 1,
+          "same_memory_stats_call_for_current_fields": true
+        },
+        {
+          "index": 8,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 0,
+          "stage": "VAE_CoC_encode_sample",
+          "edge": "exit",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12662043136,
+              "GiB": 11.792446613311768,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12662043136,
+              "GiB": 11.792446613311768,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3083374080,
+              "GiB": 2.8716158866882324,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12612910948,
+              "GiB": 11.746688697487116,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 1,
+          "same_memory_stats_call_for_current_fields": true,
+          "stage_peak_allocated_GiB": 34.29024934768677,
+          "stage_peak_reserved_GiB": 41.69140625,
+          "incremental_allocated_peak_above_stage_entry_GiB": 22.5
+        },
+        {
+          "index": 9,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 0,
+          "stage": "UNet_spatiotemporal_condition",
+          "edge": "entry",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12465058304,
+              "GiB": 11.60899019241333,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12465058304,
+              "GiB": 11.60899019241333,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3043380736,
+              "GiB": 2.83436918258667,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12417621942,
+              "GiB": 11.564811637625098,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 0,
+          "same_memory_stats_call_for_current_fields": true
+        },
+        {
+          "index": 10,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 0,
+          "stage": "UNet_spatiotemporal_condition",
+          "edge": "exit",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12466369024,
+              "GiB": 11.61021089553833,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12466369024,
+              "GiB": 11.61021089553833,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3042070016,
+              "GiB": 2.83314847946167,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12418801590,
+              "GiB": 11.565910270437598,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 0,
+          "same_memory_stats_call_for_current_fields": true,
+          "stage_peak_allocated_GiB": 14.386685848236084,
+          "stage_peak_reserved_GiB": 41.69140625,
+          "incremental_allocated_peak_above_stage_entry_GiB": 2.777695655822754
+        },
+        {
+          "index": 11,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 0,
+          "stage": "Overlap_and_temporal_VAE_decode",
+          "edge": "entry",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12466369024,
+              "GiB": 11.61021089553833,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12466369024,
+              "GiB": 11.61021089553833,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3042070016,
+              "GiB": 2.83314847946167,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12418801590,
+              "GiB": 11.565910270437598,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 0,
+          "same_memory_stats_call_for_current_fields": true
+        },
+        {
+          "index": 12,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 0,
+          "stage": "Overlap_and_temporal_VAE_decode",
+          "edge": "exit",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12524302848,
+              "GiB": 11.66416597366333,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12524302848,
+              "GiB": 11.66416597366333,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3097382400,
+              "GiB": 2.88466215133667,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12476604342,
+              "GiB": 11.619743278250098,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 0,
+          "same_memory_stats_call_for_current_fields": true,
+          "stage_peak_allocated_GiB": 29.61227512359619,
+          "stage_peak_reserved_GiB": 41.69140625,
+          "incremental_allocated_peak_above_stage_entry_GiB": 18.00206422805786
+        },
+        {
+          "index": 13,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 1,
+          "stage": "CLIP_image_embedding",
+          "edge": "entry",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12461353472,
+              "GiB": 11.605539798736572,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12461353472,
+              "GiB": 11.605539798736572,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3047085568,
+              "GiB": 2.8378195762634277,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12414050150,
+              "GiB": 11.561485147103667,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 0,
+          "same_memory_stats_call_for_current_fields": true
+        },
+        {
+          "index": 14,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 1,
+          "stage": "CLIP_image_embedding",
+          "edge": "exit",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12461386240,
+              "GiB": 11.605570316314697,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12461386240,
+              "GiB": 11.605570316314697,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3047052800,
+              "GiB": 2.8377890586853027,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12414082918,
+              "GiB": 11.561515664681792,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 0,
+          "same_memory_stats_call_for_current_fields": true,
+          "stage_peak_allocated_GiB": 11.922313213348389,
+          "stage_peak_reserved_GiB": 41.69140625,
+          "incremental_allocated_peak_above_stage_entry_GiB": 0.3167734146118164
+        },
+        {
+          "index": 15,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 1,
+          "stage": "VAE_RGB_encode_sample_cache",
+          "edge": "entry",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12659560960,
+              "GiB": 11.790134906768799,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12659560960,
+              "GiB": 11.790134906768799,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3085856256,
+              "GiB": 2.873927593231201,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12610551652,
+              "GiB": 11.744491431862116,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 1,
+          "same_memory_stats_call_for_current_fields": true
+        },
+        {
+          "index": 16,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 1,
+          "stage": "VAE_RGB_encode_sample_cache",
+          "edge": "exit",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12661920256,
+              "GiB": 11.792332172393799,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12661920256,
+              "GiB": 11.792332172393799,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3083496960,
+              "GiB": 2.871730327606201,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12612910948,
+              "GiB": 11.746688697487116,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 1,
+          "same_memory_stats_call_for_current_fields": true,
+          "stage_peak_allocated_GiB": 34.2901349067688,
+          "stage_peak_reserved_GiB": 41.69140625,
+          "incremental_allocated_peak_above_stage_entry_GiB": 22.5
+        },
+        {
+          "index": 17,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 1,
+          "stage": "VAE_CoC_encode_sample",
+          "edge": "entry",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12660871680,
+              "GiB": 11.791355609893799,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12660871680,
+              "GiB": 11.791355609893799,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3084545536,
+              "GiB": 2.872706890106201,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12611731300,
+              "GiB": 11.745590064674616,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 1,
+          "same_memory_stats_call_for_current_fields": true
+        },
+        {
+          "index": 18,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 1,
+          "stage": "VAE_CoC_encode_sample",
+          "edge": "exit",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12663230976,
+              "GiB": 11.793552875518799,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12663230976,
+              "GiB": 11.793552875518799,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3082186240,
+              "GiB": 2.870509624481201,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12614090596,
+              "GiB": 11.747787330299616,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 1,
+          "same_memory_stats_call_for_current_fields": true,
+          "stage_peak_allocated_GiB": 34.2913556098938,
+          "stage_peak_reserved_GiB": 41.69140625,
+          "incremental_allocated_peak_above_stage_entry_GiB": 22.5
+        },
+        {
+          "index": 19,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 1,
+          "stage": "UNet_spatiotemporal_condition",
+          "edge": "entry",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12468343296,
+              "GiB": 11.612049579620361,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12468343296,
+              "GiB": 11.612049579620361,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3153341952,
+              "GiB": 2.9367785453796387,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12418801590,
+              "GiB": 11.565910270437598,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 0,
+          "same_memory_stats_call_for_current_fields": true
+        },
+        {
+          "index": 20,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 1,
+          "stage": "UNet_spatiotemporal_condition",
+          "edge": "exit",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12469654016,
+              "GiB": 11.613270282745361,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12469654016,
+              "GiB": 11.613270282745361,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3152031232,
+              "GiB": 2.9355578422546387,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12419981238,
+              "GiB": 11.567008903250098,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 0,
+          "same_memory_stats_call_for_current_fields": true,
+          "stage_peak_allocated_GiB": 14.389745235443115,
+          "stage_peak_reserved_GiB": 41.69140625,
+          "incremental_allocated_peak_above_stage_entry_GiB": 2.777695655822754
+        },
+        {
+          "index": 21,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 1,
+          "stage": "Overlap_and_temporal_VAE_decode",
+          "edge": "entry",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12469654016,
+              "GiB": 11.613270282745361,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12469654016,
+              "GiB": 11.613270282745361,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3152031232,
+              "GiB": 2.9355578422546387,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12419981238,
+              "GiB": 11.567008903250098,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 0,
+          "same_memory_stats_call_for_current_fields": true
+        },
+        {
+          "index": 22,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 1,
+          "stage": "Overlap_and_temporal_VAE_decode",
+          "edge": "exit",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12527587840,
+              "GiB": 11.667225360870361,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12527587840,
+              "GiB": 11.667225360870361,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3094097408,
+              "GiB": 2.8816027641296387,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12477783990,
+              "GiB": 11.620841911062598,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 0,
+          "same_memory_stats_call_for_current_fields": true,
+          "stage_peak_allocated_GiB": 29.615609169006348,
+          "stage_peak_reserved_GiB": 41.69140625,
+          "incremental_allocated_peak_above_stage_entry_GiB": 18.002338886260986
+        },
+        {
+          "index": 23,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 2,
+          "stage": "CLIP_image_embedding",
+          "edge": "entry",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12462541312,
+              "GiB": 11.606646060943604,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12462541312,
+              "GiB": 11.606646060943604,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3159143936,
+              "GiB": 2.9421820640563965,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12414050150,
+              "GiB": 11.561485147103667,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 0,
+          "same_memory_stats_call_for_current_fields": true
+        },
+        {
+          "index": 24,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 2,
+          "stage": "CLIP_image_embedding",
+          "edge": "exit",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12462574080,
+              "GiB": 11.606676578521729,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12462574080,
+              "GiB": 11.606676578521729,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3159111168,
+              "GiB": 2.9421515464782715,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12414082918,
+              "GiB": 11.561515664681792,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 0,
+          "same_memory_stats_call_for_current_fields": true,
+          "stage_peak_allocated_GiB": 11.92341947555542,
+          "stage_peak_reserved_GiB": 41.69140625,
+          "incremental_allocated_peak_above_stage_entry_GiB": 0.3167734146118164
+        },
+        {
+          "index": 25,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 2,
+          "stage": "VAE_RGB_encode_sample_cache",
+          "edge": "entry",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12662567424,
+              "GiB": 11.792934894561768,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12662567424,
+              "GiB": 11.792934894561768,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3082849792,
+              "GiB": 2.8711276054382324,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12610551652,
+              "GiB": 11.744491431862116,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 1,
+          "same_memory_stats_call_for_current_fields": true
+        },
+        {
+          "index": 26,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 2,
+          "stage": "VAE_RGB_encode_sample_cache",
+          "edge": "exit",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12664926720,
+              "GiB": 11.795132160186768,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12664926720,
+              "GiB": 11.795132160186768,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3080490496,
+              "GiB": 2.8689303398132324,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12612910948,
+              "GiB": 11.746688697487116,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 1,
+          "same_memory_stats_call_for_current_fields": true,
+          "stage_peak_allocated_GiB": 34.29293489456177,
+          "stage_peak_reserved_GiB": 41.69140625,
+          "incremental_allocated_peak_above_stage_entry_GiB": 22.5
+        },
+        {
+          "index": 27,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 2,
+          "stage": "VAE_CoC_encode_sample",
+          "edge": "entry",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12663878144,
+              "GiB": 11.794155597686768,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12663878144,
+              "GiB": 11.794155597686768,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3081539072,
+              "GiB": 2.8699069023132324,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12611731300,
+              "GiB": 11.745590064674616,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 1,
+          "same_memory_stats_call_for_current_fields": true
+        },
+        {
+          "index": 28,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 2,
+          "stage": "VAE_CoC_encode_sample",
+          "edge": "exit",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12666237440,
+              "GiB": 11.796352863311768,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12666237440,
+              "GiB": 11.796352863311768,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3079179776,
+              "GiB": 2.8677096366882324,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12614090596,
+              "GiB": 11.747787330299616,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 1,
+          "same_memory_stats_call_for_current_fields": true,
+          "stage_peak_allocated_GiB": 34.29415559768677,
+          "stage_peak_reserved_GiB": 41.69140625,
+          "incremental_allocated_peak_above_stage_entry_GiB": 22.5
+        },
+        {
+          "index": 29,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 2,
+          "stage": "UNet_spatiotemporal_condition",
+          "edge": "entry",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12468466176,
+              "GiB": 11.61216402053833,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12468466176,
+              "GiB": 11.61216402053833,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3155316224,
+              "GiB": 2.93861722946167,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12418801590,
+              "GiB": 11.565910270437598,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 0,
+          "same_memory_stats_call_for_current_fields": true
+        },
+        {
+          "index": 30,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 2,
+          "stage": "UNet_spatiotemporal_condition",
+          "edge": "exit",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12469776896,
+              "GiB": 11.61338472366333,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12469776896,
+              "GiB": 11.61338472366333,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3154005504,
+              "GiB": 2.93739652633667,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12419981238,
+              "GiB": 11.567008903250098,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 0,
+          "same_memory_stats_call_for_current_fields": true,
+          "stage_peak_allocated_GiB": 14.389859676361084,
+          "stage_peak_reserved_GiB": 41.69140625,
+          "incremental_allocated_peak_above_stage_entry_GiB": 2.777695655822754
+        },
+        {
+          "index": 31,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 2,
+          "stage": "Overlap_and_temporal_VAE_decode",
+          "edge": "entry",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12469776896,
+              "GiB": 11.61338472366333,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12469776896,
+              "GiB": 11.61338472366333,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3154005504,
+              "GiB": 2.93739652633667,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12419981238,
+              "GiB": 11.567008903250098,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 0,
+          "same_memory_stats_call_for_current_fields": true
+        },
+        {
+          "index": 32,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": 2,
+          "stage": "Overlap_and_temporal_VAE_decode",
+          "edge": "exit",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12534788608,
+              "GiB": 11.67393159866333,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12534788608,
+              "GiB": 11.67393159866333,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3088993792,
+              "GiB": 2.87684965133667,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12484861878,
+              "GiB": 11.627433707937598,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 0,
+          "same_memory_stats_call_for_current_fields": true,
+          "stage_peak_allocated_GiB": 29.643982887268066,
+          "stage_peak_reserved_GiB": 41.69140625,
+          "incremental_allocated_peak_above_stage_entry_GiB": 18.030598163604736
+        },
+        {
+          "index": 33,
+          "scene": "repro_004",
+          "supplement_repeat": 0,
+          "native_unit_index0": null,
+          "stage": "clip_complete",
+          "edge": "checkpoint",
+          "allocator_current": {
+            "allocated_bytes.all.current": {
+              "bytes": 12216772096,
+              "GiB": 11.377755641937256,
+              "applicability": "supported"
+            },
+            "reserved_bytes.all.current": {
+              "bytes": 44765806592,
+              "GiB": 41.69140625,
+              "applicability": "supported"
+            },
+            "active_bytes.all.current": {
+              "bytes": 12216772096,
+              "GiB": 11.377755641937256,
+              "applicability": "supported"
+            },
+            "inactive_split_bytes.all.current": {
+              "bytes": 3161643520,
+              "GiB": 2.944509983062744,
+              "applicability": "supported"
+            },
+            "requested_bytes.all.current": {
+              "bytes": 12167503654,
+              "GiB": 11.331870829686522,
+              "applicability": "supported"
+            }
+          },
+          "RGB_cache_unique_storage_bytes": 6945767424,
+          "RGB_cache_unique_storage_GiB": 6.46875,
+          "module_storage_inventory_index": 0,
+          "same_memory_stats_call_for_current_fields": true
+        }
+      ]
+    },
+    "table3": {
+      "cache_rows": [
+        {
+          "cache": "RGB level0",
+          "shape": [
+            16,
+            128,
+            576,
+            1024
+          ],
+          "dtype": "torch.float32",
+          "logical_bytes": 4831838208,
+          "unique_storage_bytes": 4831838208,
+          "logical_GiB": 4.5,
+          "unique_storage_GiB": 4.5,
+          "creation": "Native RGB encoder feature before down_block0; all four storages replace residual_down_blocks at encoder end",
+          "retained_until": "Next RGB encoder replaces the cache; retained through CoC, UNet, decode and possibly across clip boundaries",
+          "decoder_slices": [
+            [
+              0,
+              8
+            ],
+            [
+              0,
+              8
+            ],
+            [
+              0,
+              8
+            ],
+            [
+              8,
+              16
+            ]
+          ],
+          "decoder_storage_offset_elements": [
+            0,
+            0,
+            0,
+            603979776
+          ],
+          "decoder_skip_level_order": [
+            3,
+            2,
+            1,
+            0
+          ]
+        },
+        {
+          "cache": "RGB level1",
+          "shape": [
+            16,
+            128,
+            288,
+            512
+          ],
+          "dtype": "torch.float32",
+          "logical_bytes": 1207959552,
+          "unique_storage_bytes": 1207959552,
+          "logical_GiB": 1.125,
+          "unique_storage_GiB": 1.125,
+          "creation": "Native RGB encoder feature before down_block1; all four storages replace residual_down_blocks at encoder end",
+          "retained_until": "Next RGB encoder replaces the cache; retained through CoC, UNet, decode and possibly across clip boundaries",
+          "decoder_slices": [
+            [
+              0,
+              8
+            ],
+            [
+              0,
+              8
+            ],
+            [
+              0,
+              8
+            ],
+            [
+              8,
+              16
+            ]
+          ],
+          "decoder_storage_offset_elements": [
+            0,
+            0,
+            0,
+            150994944
+          ],
+          "decoder_skip_level_order": [
+            3,
+            2,
+            1,
+            0
+          ]
+        },
+        {
+          "cache": "RGB level2",
+          "shape": [
+            16,
+            256,
+            144,
+            256
+          ],
+          "dtype": "torch.float32",
+          "logical_bytes": 603979776,
+          "unique_storage_bytes": 603979776,
+          "logical_GiB": 0.5625,
+          "unique_storage_GiB": 0.5625,
+          "creation": "Native RGB encoder feature before down_block2; all four storages replace residual_down_blocks at encoder end",
+          "retained_until": "Next RGB encoder replaces the cache; retained through CoC, UNet, decode and possibly across clip boundaries",
+          "decoder_slices": [
+            [
+              0,
+              8
+            ],
+            [
+              0,
+              8
+            ],
+            [
+              0,
+              8
+            ],
+            [
+              8,
+              16
+            ]
+          ],
+          "decoder_storage_offset_elements": [
+            0,
+            0,
+            0,
+            75497472
+          ],
+          "decoder_skip_level_order": [
+            3,
+            2,
+            1,
+            0
+          ]
+        },
+        {
+          "cache": "RGB level3",
+          "shape": [
+            16,
+            512,
+            72,
+            128
+          ],
+          "dtype": "torch.float32",
+          "logical_bytes": 301989888,
+          "unique_storage_bytes": 301989888,
+          "logical_GiB": 0.28125,
+          "unique_storage_GiB": 0.28125,
+          "creation": "Native RGB encoder feature before down_block3; all four storages replace residual_down_blocks at encoder end",
+          "retained_until": "Next RGB encoder replaces the cache; retained through CoC, UNet, decode and possibly across clip boundaries",
+          "decoder_slices": [
+            [
+              0,
+              8
+            ],
+            [
+              0,
+              8
+            ],
+            [
+              0,
+              8
+            ],
+            [
+              8,
+              16
+            ]
+          ],
+          "decoder_storage_offset_elements": [
+            0,
+            0,
+            0,
+            37748736
+          ],
+          "decoder_skip_level_order": [
+            3,
+            2,
+            1,
+            0
+          ]
+        },
+        {
+          "cache": "cross-call latent cache",
+          "shape": [
+            1,
+            4,
+            4,
+            72,
+            128
+          ],
+          "dtype": "torch.float16",
+          "logical_bytes": 294912,
+          "unique_storage_bytes": 1179648,
+          "logical_GiB": 0.000274658203125,
+          "unique_storage_GiB": 0.0010986328125,
+          "creation": "View of trailing4 weighted latent slots of second window, backing full16-slot allocation",
+          "retained_until": "Next native decode_latents call consumes it; prior reference replaced when the call returns its next cache",
+          "decoder_slices": "Add to first4 latent slots in the next overlap assembly; not an RGB decoder skip feature",
+          "storage_offset_elements": 442368
+        }
+      ],
+      "RGB_total_unique_storage_GiB": 6.46875,
+      "slot_rows": [
+        {
+          "module": "CLIP",
+          "calls": 3,
+          "total_input_slots": 48,
+          "real_frame_visits": 45,
+          "distinct_source_frames": 25,
+          "repeated_visits": 20,
+          "padding_slots": 3
+        },
+        {
+          "module": "RGB encode",
+          "calls": 3,
+          "total_input_slots": 48,
+          "real_frame_visits": 45,
+          "distinct_source_frames": 25,
+          "repeated_visits": 20,
+          "padding_slots": 3
+        },
+        {
+          "module": "CoC encode",
+          "calls": 3,
+          "total_input_slots": 48,
+          "real_frame_visits": 45,
+          "distinct_source_frames": 25,
+          "repeated_visits": 20,
+          "padding_slots": 3
+        },
+        {
+          "module": "VAE decode",
+          "calls": 4,
+          "total_input_slots": 32,
+          "real_frame_visits": 29,
+          "distinct_source_frames": 25,
+          "repeated_visits": 4,
+          "padding_slots": 3
+        }
+      ],
+      "boundary": "Logical view size can be smaller than backing storage. Repeated/padded slots do not establish removable work. Cache size comes from deduplicated storage, not allocated entry/exit differences. No tensor contents or additional tensor references retained."
+    },
+    "table4": {
+      "source": "One separate representative history run; requested-byte lifetimes/stack evidence plus separately measured allocator phase peaks",
+      "rows": [
+        {
+          "stage": "VAE_RGB_encode_sample_cache",
+          "native_unit": 0,
+          "stage_start_event": 4005,
+          "stage_end_event": 4715,
+          "requested_live_peak_event": 4115,
+          "requested_live_peak_GiB": 34.243392799049616,
+          "incremental_requested_live_peak_above_entry_GiB": 22.5,
+          "measured_stage_allocated_peak_GiB": 34.28886079788208,
+          "incremental_allocated_peak_above_stage_entry_GiB": 22.5,
+          "entry_RGB_cache_GiB": 6.46875,
+          "entry_RGB_cache_all_live_at_requested_peak": true,
+          "entry_RGB_cache_lifetimes": [
+            {
+              "level": 0,
+              "requested_GiB": 4.5,
+              "allocated_event": null,
+              "free_requested_event": 4686
+            },
+            {
+              "level": 1,
+              "requested_GiB": 1.125,
+              "allocated_event": null,
+              "free_requested_event": 4684
+            },
+            {
+              "level": 2,
+              "requested_GiB": 0.5625,
+              "allocated_event": null,
+              "free_requested_event": 4682
+            },
+            {
+              "level": 3,
+              "requested_GiB": 0.28125,
+              "allocated_event": null,
+              "free_requested_event": 4680
+            }
+          ],
+          "exit_RGB_cache_levels_live_at_requested_peak": [
+            0
+          ],
+          "large_phase_allocations_at_requested_peak": [
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 4006,
+              "free_requested_event": 27017,
+              "code_locations": [
+                {
+                  "file": "models/vae.py",
+                  "line": 120,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 157,
+                  "function": "_tensor_to_vae_latent"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 481,
+                  "function": "__call__"
+                }
+              ],
+              "exit_RGB_cache_level": 0
+            },
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 4060,
+              "free_requested_event": 4120,
+              "code_locations": [
+                {
+                  "file": "diffusers/models/resnet.py",
+                  "line": 258,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/unet_2d_blocks.py",
+                  "line": 1323,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 152,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 157,
+                  "function": "_tensor_to_vae_latent"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            },
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 4108,
+              "free_requested_event": 4118,
+              "code_locations": [
+                {
+                  "file": "diffusers/models/lora.py",
+                  "line": 358,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/resnet.py",
+                  "line": 251,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/unet_2d_blocks.py",
+                  "line": 1323,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 152,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            },
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 4114,
+              "free_requested_event": 4116,
+              "code_locations": [
+                {
+                  "file": "diffusers/models/resnet.py",
+                  "line": 258,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/unet_2d_blocks.py",
+                  "line": 1323,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 152,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 157,
+                  "function": "_tensor_to_vae_latent"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            },
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 4115,
+              "free_requested_event": 4129,
+              "code_locations": [
+                {
+                  "file": "diffusers/models/resnet.py",
+                  "line": 258,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/unet_2d_blocks.py",
+                  "line": 1323,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 152,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 157,
+                  "function": "_tensor_to_vae_latent"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            }
+          ]
+        },
+        {
+          "stage": "VAE_CoC_encode_sample",
+          "native_unit": 0,
+          "stage_start_event": 4719,
+          "stage_end_event": 5396,
+          "requested_live_peak_event": 4820,
+          "requested_live_peak_GiB": 34.244491431862116,
+          "incremental_requested_live_peak_above_entry_GiB": 22.5,
+          "measured_stage_allocated_peak_GiB": 34.29008150100708,
+          "incremental_allocated_peak_above_stage_entry_GiB": 22.5,
+          "entry_RGB_cache_GiB": 6.46875,
+          "entry_RGB_cache_all_live_at_requested_peak": true,
+          "entry_RGB_cache_lifetimes": [
+            {
+              "level": 0,
+              "requested_GiB": 4.5,
+              "allocated_event": 4006,
+              "free_requested_event": 27017
+            },
+            {
+              "level": 1,
+              "requested_GiB": 1.125,
+              "allocated_event": 4123,
+              "free_requested_event": 27015
+            },
+            {
+              "level": 2,
+              "requested_GiB": 0.5625,
+              "allocated_event": 4250,
+              "free_requested_event": 27013
+            },
+            {
+              "level": 3,
+              "requested_GiB": 0.28125,
+              "allocated_event": 4377,
+              "free_requested_event": 27011
+            }
+          ],
+          "exit_RGB_cache_levels_live_at_requested_peak": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "large_phase_allocations_at_requested_peak": [
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 4720,
+              "free_requested_event": 4836,
+              "code_locations": [
+                {
+                  "file": "models/vae.py",
+                  "line": 120,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 157,
+                  "function": "_tensor_to_vae_latent"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 483,
+                  "function": "__call__"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            },
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 4768,
+              "free_requested_event": 4825,
+              "code_locations": [
+                {
+                  "file": "diffusers/models/resnet.py",
+                  "line": 258,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/unet_2d_blocks.py",
+                  "line": 1323,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 152,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 157,
+                  "function": "_tensor_to_vae_latent"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            },
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 4813,
+              "free_requested_event": 4823,
+              "code_locations": [
+                {
+                  "file": "diffusers/models/lora.py",
+                  "line": 358,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/resnet.py",
+                  "line": 251,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/unet_2d_blocks.py",
+                  "line": 1323,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 152,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            },
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 4819,
+              "free_requested_event": 4821,
+              "code_locations": [
+                {
+                  "file": "diffusers/models/resnet.py",
+                  "line": 258,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/unet_2d_blocks.py",
+                  "line": 1323,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 152,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 157,
+                  "function": "_tensor_to_vae_latent"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            },
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 4820,
+              "free_requested_event": 4834,
+              "code_locations": [
+                {
+                  "file": "diffusers/models/resnet.py",
+                  "line": 258,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/unet_2d_blocks.py",
+                  "line": 1323,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 152,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 157,
+                  "function": "_tensor_to_vae_latent"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            }
+          ]
+        },
+        {
+          "stage": "VAE_RGB_encode_sample_cache",
+          "native_unit": 1,
+          "stage_start_event": 26336,
+          "stage_end_event": 27046,
+          "requested_live_peak_event": 26446,
+          "requested_live_peak_GiB": 34.244491431862116,
+          "incremental_requested_live_peak_above_entry_GiB": 22.5,
+          "measured_stage_allocated_peak_GiB": 34.29153871536255,
+          "incremental_allocated_peak_above_stage_entry_GiB": 22.5,
+          "entry_RGB_cache_GiB": 6.46875,
+          "entry_RGB_cache_all_live_at_requested_peak": true,
+          "entry_RGB_cache_lifetimes": [
+            {
+              "level": 0,
+              "requested_GiB": 4.5,
+              "allocated_event": 4006,
+              "free_requested_event": 27017
+            },
+            {
+              "level": 1,
+              "requested_GiB": 1.125,
+              "allocated_event": 4123,
+              "free_requested_event": 27015
+            },
+            {
+              "level": 2,
+              "requested_GiB": 0.5625,
+              "allocated_event": 4250,
+              "free_requested_event": 27013
+            },
+            {
+              "level": 3,
+              "requested_GiB": 0.28125,
+              "allocated_event": 4377,
+              "free_requested_event": 27011
+            }
+          ],
+          "exit_RGB_cache_levels_live_at_requested_peak": [
+            0
+          ],
+          "large_phase_allocations_at_requested_peak": [
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 26337,
+              "free_requested_event": 49353,
+              "code_locations": [
+                {
+                  "file": "models/vae.py",
+                  "line": 120,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 157,
+                  "function": "_tensor_to_vae_latent"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 481,
+                  "function": "__call__"
+                }
+              ],
+              "exit_RGB_cache_level": 0
+            },
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 26391,
+              "free_requested_event": 26451,
+              "code_locations": [
+                {
+                  "file": "diffusers/models/resnet.py",
+                  "line": 258,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/unet_2d_blocks.py",
+                  "line": 1323,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 152,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 157,
+                  "function": "_tensor_to_vae_latent"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            },
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 26439,
+              "free_requested_event": 26449,
+              "code_locations": [
+                {
+                  "file": "diffusers/models/lora.py",
+                  "line": 358,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/resnet.py",
+                  "line": 251,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/unet_2d_blocks.py",
+                  "line": 1323,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 152,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            },
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 26445,
+              "free_requested_event": 26447,
+              "code_locations": [
+                {
+                  "file": "diffusers/models/resnet.py",
+                  "line": 258,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/unet_2d_blocks.py",
+                  "line": 1323,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 152,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 157,
+                  "function": "_tensor_to_vae_latent"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            },
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 26446,
+              "free_requested_event": 26460,
+              "code_locations": [
+                {
+                  "file": "diffusers/models/resnet.py",
+                  "line": 258,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/unet_2d_blocks.py",
+                  "line": 1323,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 152,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 157,
+                  "function": "_tensor_to_vae_latent"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            }
+          ]
+        },
+        {
+          "stage": "VAE_CoC_encode_sample",
+          "native_unit": 1,
+          "stage_start_event": 27050,
+          "stage_end_event": 27727,
+          "requested_live_peak_event": 27151,
+          "requested_live_peak_GiB": 34.245590064674616,
+          "incremental_requested_live_peak_above_entry_GiB": 22.5,
+          "measured_stage_allocated_peak_GiB": 34.29275941848755,
+          "incremental_allocated_peak_above_stage_entry_GiB": 22.5,
+          "entry_RGB_cache_GiB": 6.46875,
+          "entry_RGB_cache_all_live_at_requested_peak": true,
+          "entry_RGB_cache_lifetimes": [
+            {
+              "level": 0,
+              "requested_GiB": 4.5,
+              "allocated_event": 26337,
+              "free_requested_event": 49353
+            },
+            {
+              "level": 1,
+              "requested_GiB": 1.125,
+              "allocated_event": 26454,
+              "free_requested_event": 49351
+            },
+            {
+              "level": 2,
+              "requested_GiB": 0.5625,
+              "allocated_event": 26581,
+              "free_requested_event": 49349
+            },
+            {
+              "level": 3,
+              "requested_GiB": 0.28125,
+              "allocated_event": 26708,
+              "free_requested_event": 49347
+            }
+          ],
+          "exit_RGB_cache_levels_live_at_requested_peak": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "large_phase_allocations_at_requested_peak": [
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 27051,
+              "free_requested_event": 27167,
+              "code_locations": [
+                {
+                  "file": "models/vae.py",
+                  "line": 120,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 157,
+                  "function": "_tensor_to_vae_latent"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 483,
+                  "function": "__call__"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            },
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 27099,
+              "free_requested_event": 27156,
+              "code_locations": [
+                {
+                  "file": "diffusers/models/resnet.py",
+                  "line": 258,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/unet_2d_blocks.py",
+                  "line": 1323,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 152,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 157,
+                  "function": "_tensor_to_vae_latent"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            },
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 27144,
+              "free_requested_event": 27154,
+              "code_locations": [
+                {
+                  "file": "diffusers/models/lora.py",
+                  "line": 358,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/resnet.py",
+                  "line": 251,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/unet_2d_blocks.py",
+                  "line": 1323,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 152,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            },
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 27150,
+              "free_requested_event": 27152,
+              "code_locations": [
+                {
+                  "file": "diffusers/models/resnet.py",
+                  "line": 258,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/unet_2d_blocks.py",
+                  "line": 1323,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 152,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 157,
+                  "function": "_tensor_to_vae_latent"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            },
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 27151,
+              "free_requested_event": 27165,
+              "code_locations": [
+                {
+                  "file": "diffusers/models/resnet.py",
+                  "line": 258,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/unet_2d_blocks.py",
+                  "line": 1323,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 152,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 157,
+                  "function": "_tensor_to_vae_latent"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            }
+          ]
+        },
+        {
+          "stage": "VAE_RGB_encode_sample_cache",
+          "native_unit": 2,
+          "stage_start_event": 48672,
+          "stage_end_event": 49382,
+          "requested_live_peak_event": 48782,
+          "requested_live_peak_GiB": 34.244491431862116,
+          "incremental_requested_live_peak_above_entry_GiB": 22.5,
+          "measured_stage_allocated_peak_GiB": 34.29056978225708,
+          "incremental_allocated_peak_above_stage_entry_GiB": 22.5,
+          "entry_RGB_cache_GiB": 6.46875,
+          "entry_RGB_cache_all_live_at_requested_peak": true,
+          "entry_RGB_cache_lifetimes": [
+            {
+              "level": 0,
+              "requested_GiB": 4.5,
+              "allocated_event": 26337,
+              "free_requested_event": 49353
+            },
+            {
+              "level": 1,
+              "requested_GiB": 1.125,
+              "allocated_event": 26454,
+              "free_requested_event": 49351
+            },
+            {
+              "level": 2,
+              "requested_GiB": 0.5625,
+              "allocated_event": 26581,
+              "free_requested_event": 49349
+            },
+            {
+              "level": 3,
+              "requested_GiB": 0.28125,
+              "allocated_event": 26708,
+              "free_requested_event": 49347
+            }
+          ],
+          "exit_RGB_cache_levels_live_at_requested_peak": [
+            0
+          ],
+          "large_phase_allocations_at_requested_peak": [
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 48673,
+              "free_requested_event": null,
+              "code_locations": [
+                {
+                  "file": "models/vae.py",
+                  "line": 120,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 157,
+                  "function": "_tensor_to_vae_latent"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 481,
+                  "function": "__call__"
+                }
+              ],
+              "exit_RGB_cache_level": 0
+            },
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 48727,
+              "free_requested_event": 48787,
+              "code_locations": [
+                {
+                  "file": "diffusers/models/resnet.py",
+                  "line": 258,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/unet_2d_blocks.py",
+                  "line": 1323,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 152,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 157,
+                  "function": "_tensor_to_vae_latent"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            },
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 48775,
+              "free_requested_event": 48785,
+              "code_locations": [
+                {
+                  "file": "diffusers/models/lora.py",
+                  "line": 358,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/resnet.py",
+                  "line": 251,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/unet_2d_blocks.py",
+                  "line": 1323,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 152,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            },
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 48781,
+              "free_requested_event": 48783,
+              "code_locations": [
+                {
+                  "file": "diffusers/models/resnet.py",
+                  "line": 258,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/unet_2d_blocks.py",
+                  "line": 1323,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 152,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 157,
+                  "function": "_tensor_to_vae_latent"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            },
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 48782,
+              "free_requested_event": 48796,
+              "code_locations": [
+                {
+                  "file": "diffusers/models/resnet.py",
+                  "line": 258,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/unet_2d_blocks.py",
+                  "line": 1323,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 152,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 157,
+                  "function": "_tensor_to_vae_latent"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            }
+          ]
+        },
+        {
+          "stage": "VAE_CoC_encode_sample",
+          "native_unit": 2,
+          "stage_start_event": 49386,
+          "stage_end_event": 50063,
+          "requested_live_peak_event": 49487,
+          "requested_live_peak_GiB": 34.245590064674616,
+          "incremental_requested_live_peak_above_entry_GiB": 22.5,
+          "measured_stage_allocated_peak_GiB": 34.29179048538208,
+          "incremental_allocated_peak_above_stage_entry_GiB": 22.5,
+          "entry_RGB_cache_GiB": 6.46875,
+          "entry_RGB_cache_all_live_at_requested_peak": true,
+          "entry_RGB_cache_lifetimes": [
+            {
+              "level": 0,
+              "requested_GiB": 4.5,
+              "allocated_event": 48673,
+              "free_requested_event": null
+            },
+            {
+              "level": 1,
+              "requested_GiB": 1.125,
+              "allocated_event": 48790,
+              "free_requested_event": null
+            },
+            {
+              "level": 2,
+              "requested_GiB": 0.5625,
+              "allocated_event": 48917,
+              "free_requested_event": null
+            },
+            {
+              "level": 3,
+              "requested_GiB": 0.28125,
+              "allocated_event": 49044,
+              "free_requested_event": null
+            }
+          ],
+          "exit_RGB_cache_levels_live_at_requested_peak": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "large_phase_allocations_at_requested_peak": [
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 49387,
+              "free_requested_event": 49503,
+              "code_locations": [
+                {
+                  "file": "models/vae.py",
+                  "line": 120,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 157,
+                  "function": "_tensor_to_vae_latent"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 483,
+                  "function": "__call__"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            },
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 49435,
+              "free_requested_event": 49492,
+              "code_locations": [
+                {
+                  "file": "diffusers/models/resnet.py",
+                  "line": 258,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/unet_2d_blocks.py",
+                  "line": 1323,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 152,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 157,
+                  "function": "_tensor_to_vae_latent"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            },
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 49480,
+              "free_requested_event": 49490,
+              "code_locations": [
+                {
+                  "file": "diffusers/models/lora.py",
+                  "line": 358,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/resnet.py",
+                  "line": 251,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/unet_2d_blocks.py",
+                  "line": 1323,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 152,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            },
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 49486,
+              "free_requested_event": 49488,
+              "code_locations": [
+                {
+                  "file": "diffusers/models/resnet.py",
+                  "line": 258,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/unet_2d_blocks.py",
+                  "line": 1323,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 152,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 157,
+                  "function": "_tensor_to_vae_latent"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            },
+            {
+              "requested_GiB": 4.5,
+              "allocated_event": 49487,
+              "free_requested_event": 49501,
+              "code_locations": [
+                {
+                  "file": "diffusers/models/resnet.py",
+                  "line": 258,
+                  "function": "forward"
+                },
+                {
+                  "file": "diffusers/models/unet_2d_blocks.py",
+                  "line": 1323,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 152,
+                  "function": "forward"
+                },
+                {
+                  "file": "models/vae.py",
+                  "line": 484,
+                  "function": "encode"
+                },
+                {
+                  "file": "pipelines/any2bokeh_pipe.py",
+                  "line": 157,
+                  "function": "_tensor_to_vae_latent"
+                }
+              ],
+              "exit_RGB_cache_level": null
+            }
+          ]
+        }
+      ],
+      "boundary": "Trace allocation sizes are requested bytes, not necessarily actual allocator block sizes. Replay matches all synchronized requested-current observations; allocator absolute peaks come from phase measurement. Python allocation stack at resnet.py:258 identifies the add/divide expression, not a separate operator dispatch trace. Pre-history allocations and non-PyTorch CUDA memory are not fully attributed."
+    }
+  },
+  "latest_supplement_conclusions": {
+    "time": "VAE encoding and overlap+temporal decode stages account for80.3612% of original instrumented Core. Overlap/decode is the largest grouped phase (7.8411s), not pure decoder-only time.",
+    "peak": "RGB/CoC encoder allocated peaks remain near34.29GiB. In all6 history encoder calls, requested-live increments reach22.5GiB, with5 simultaneous4.5GiB allocations traced to conv_in and encoder residual conv/add/divide expressions. Requested-size replay is not a complete allocator-block peak decomposition.",
+    "persistent_transient_and_pool": "At RGB requested-live high point, old full6.46875GiB RGB cache and new level0 4.5GiB are live together; remaining new cache levels appear later. CoC creates no RGB cache, retains current full6.46875GiB RGB cache, and its5 large allocations are transient. Synced native allocator inactive_split current is2.837935GiB after warmup and2.944510GiB at clip end, with reserved41.691406GiB; these are boundary states, not peak fragmentation or proof of fit after releasing reserve.",
+    "unresolved": [
+      "Exact allocator block-size slack and all baseline live-object identities at the peak are not fully attributed.",
+      "Python stack at the combined add/divide source line groups expression allocations; no separate low-level operator/workspace trace was collected.",
+      "Non-PyTorch CUDA memory remains outside this history.",
+      "No optimization or output-equivalence/latency/memory improvement has been tested."
+    ],
+    "next_single_factor_experiment": {
+      "status": "待验证／未实施",
+      "single_factor": "Only bypass division by output_scale_factor when it is1, in VAE encoder ResNet return expressions; keep the existing addition. Do not change decoder/UNet or batch/precision/cache/RNG/window.",
+      "hypothesis": "History locates concurrent4.5GiB allocations at the encoder residual add/divide expression. Test whether this one operation change affects actual phase/full-run peaks and latency; no improvement is assumed.",
+      "validation": "First compare the frozen native and candidate on repro_004 with identical initial/warmup RNG flow: sample calls/shapes and before/after RNG state, cache shape/order, output25-frame shape/finite, pixelwise maximum difference and byte/RGB8 equality. Then measure synchronized RGB/CoC and complete-run allocated/reserved peaks plus Core in separate uninstrumented timing processes under the same frozen protocol. Broaden to the other3 fixed clips only after this check; do not rerun200 clips by default.",
+      "no_claims": [
+        "memory reduction not yet measured",
+        "speedup not yet measured",
+        "output equivalence not yet established",
+        "32GiB fit not established"
+      ],
+      "original_microbatch_candidate": "16->8 encoding remains a prior candidate only; not implemented or executed",
+      "scale_metadata": {
+        "source": "Frozen VAE checkpoint/config loaded on CPU only; no inference, no GPU allocation, no model modification",
+        "rows": [
+          {
+            "module": "down_blocks.0.resnets.0",
+            "output_scale_factor": 1.0,
+            "parameter_dtype": "torch.float16"
+          },
+          {
+            "module": "down_blocks.0.resnets.1",
+            "output_scale_factor": 1.0,
+            "parameter_dtype": "torch.float16"
+          },
+          {
+            "module": "down_blocks.1.resnets.0",
+            "output_scale_factor": 1.0,
+            "parameter_dtype": "torch.float16"
+          },
+          {
+            "module": "down_blocks.1.resnets.1",
+            "output_scale_factor": 1.0,
+            "parameter_dtype": "torch.float16"
+          },
+          {
+            "module": "down_blocks.2.resnets.0",
+            "output_scale_factor": 1.0,
+            "parameter_dtype": "torch.float16"
+          },
+          {
+            "module": "down_blocks.2.resnets.1",
+            "output_scale_factor": 1.0,
+            "parameter_dtype": "torch.float16"
+          },
+          {
+            "module": "down_blocks.3.resnets.0",
+            "output_scale_factor": 1.0,
+            "parameter_dtype": "torch.float16"
+          },
+          {
+            "module": "down_blocks.3.resnets.1",
+            "output_scale_factor": 1.0,
+            "parameter_dtype": "torch.float16"
+          },
+          {
+            "module": "mid_block.resnets.0",
+            "output_scale_factor": 1,
+            "parameter_dtype": "torch.float16"
+          },
+          {
+            "module": "mid_block.resnets.1",
+            "output_scale_factor": 1,
+            "parameter_dtype": "torch.float16"
+          }
+        ]
+      }
+    },
+    "section_version_note": "Original verified_facts/unresolved/proposed_single_next_experiment fields describe30382b0 before this supplement. Current findings and recommendation are in latest_supplement_conclusions; the earlier no-allocation-trace limitation is partly resolved, and16->8 remains an unexecuted prior candidate."
   }
 }
