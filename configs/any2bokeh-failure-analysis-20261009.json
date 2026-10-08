@@ -1,0 +1,47 @@
+{
+  "seed": 20261009,
+  "record_prefix": "03_实验记录/records/any2bokeh-failure-analysis-20261009",
+  "output": "outputs/any2bokeh-failure-analysis-20261009",
+  "synthetic_config": "configs/any2bokeh-mpib-public-proxy.json",
+  "davis_manifest": "03_实验记录/records/davis-v2-source-manifest-20260929.json",
+  "exploration_fraction": 0.7,
+  "split_trials": 256,
+  "keyframes": [0, 6, 12, 18, 24],
+  "sampling": {"synthetic_per_K": 4, "davis": 8, "prediction_or_metric_access": false},
+  "display": {"fps": 20, "codec": "libx264", "crf": 18, "preset": "medium", "pixel_format": "yuv420p", "threads": 2, "original_size": [1024, 576], "thumbnail_interpolation": "PIL bilinear", "slow_motion": false, "speed_note": "DAVIS matches frozen public MP420fps; Synthetic uses declared20fps display for its25 timeline samples (raw VideoMatte source-time speed is not asserted)."},
+  "region_protocol": {
+    "foreground": "reference alpha >= 230/255; DAVIS original mask resized with nearest-neighbor, nonzero foreground",
+    "background": "reference alpha <= 25/255",
+    "soft_alpha": "25/255 < alpha < 230/255; DAVIS binary mask: empty",
+    "boundary": "3x3 morphological gradient of alpha>=128/255; Euclidean distance to gradient pixels at output resolution",
+    "distance_bins_px": [[0, 2], [2, 8], [8, 24], [24, null]],
+    "disparity_edge": "max absolute 4-neighbor difference of supplied PNG8 disparity >=4 units, dilated with 5x5 ones; reference-defined, not prediction-defined",
+    "empty": "null metric and zero pixel count; excluded from scene/group means with valid counts reported",
+    "scene_aggregation": "sum absolute/squared RGB error over all region pixels and frames divided by pixel_count*3; temporal mask is union of adjacent reference regions over24 transitions",
+    "cross_scene_aggregation": "unweighted scene means and separately unweighted source-group means of scene means; shared-source scenes are not independent replications",
+    "synthetic_reference": "MPIB-public sRGB proxy GT, not physical paired ground truth",
+    "davis_reference": "input RGB for modification diagnostics only, not bokeh GT; no motion compensation"
+  },
+  "A_rules_fixed_before_metrics": {
+    "primary_comparator": "mpib",
+    "secondary_comparator": "bokehme",
+    "other_methods": "fixed descriptive panels; never select a per-case winner",
+    "synthetic_absolute": "global MSE or time-change MAE >= exploration within-K90th percentile",
+    "synthetic_relative": "boundary_0_2 MAE >1.10*MPIB AND excess >=1/255",
+    "synthetic_local_global_normal": "global MSE <= within-K median AND boundary_0_2 MAE >= within-K90th percentile",
+    "normal_control": "within-K global MSE interquartile range AND boundary MAE <= median; nearest input-proxy match, prefer different source group",
+    "davis_candidates": "VEPI-public-mp4 <=10th percentile OR <=MPIB-0.02; codec |delta| >=90th percentile reported separately",
+    "selection": "up to3 candidates/category, prefer distinct source groups; retain full exploration flags; no visual inference"
+  },
+  "methods": {
+    "any2bokeh": {"synthetic": "outputs/any2bokeh-mpib-public-proxy-200-20260928/clips/{scene}/pred_any2bokeh", "metrics": "outputs/any2bokeh-mpib-public-proxy-200-20260928/metrics-*.json", "permission": "frozen original ATB; RGB, external disparity/focus/K; no scale1 candidate"},
+    "mpib": {"synthetic": "outputs/mpib-adapter-recovery-20260928/gamma_2.2/clips/{scene}/pred_mpib", "metrics": "outputs/mpib-adapter-recovery-20260928/gamma_2.2/metrics/batch_*.json", "permission": "RGB, external geometry/focus/K; frozen gamma2.2; primary numerical comparator"},
+    "bokehme": {"synthetic": "outputs/bokehme-adapter-recovery-20260928/normalized/clips/{scene}/pred_bokehme", "metrics": "outputs/bokehme-adapter-recovery-20260928/normalized/metrics/batch_*.json", "permission": "RGB, external geometry/focus/K; frozen Normalized gamma2.2; secondary numerical comparator"},
+    "drbokeh": {"synthetic": "outputs/drbokeh-input-recovery-200-20260929/gt_alpha/clips/{scene}/pred_drbokeh", "metrics": "outputs/drbokeh-input-recovery-200-20260929/gt_alpha/metrics.json", "permission": "Synthetic Track A EXTRA GT union alpha + LaMa; DAVIS Full-public LDF+LaMa, no GT mask input"},
+    "bokehdiff": {"synthetic": "outputs/bokehdiff-adapter-recovery-20260928/normalized/clips/{scene}/pred_bokehdiff", "metrics": "outputs/bokehdiff-adapter-recovery-20260928/normalized/metrics/batch_*.json", "permission": "RGB, external geometry/focus/K; frozen Normalized"},
+    "deeplens": {"synthetic": "outputs/deeplens-track-a-20260929/clips/{scene}/pred_deeplens", "metrics": "outputs/deeplens-track-a-20260929/metrics/batch*.json", "permission": "Synthetic external-geometry native TF1 CPU single-SR aperture saturation; DAVIS native DepthNet outputs already frozen"},
+    "magicbokeh": {"synthetic": "outputs/magicbokeh-point-focus-20260930/full/clips/{scene}/pred_magicbokeh", "metrics": "outputs/magicbokeh-point-focus-20260930/full/metrics/batch_*.json", "permission": "EXTRA GT visible target region assists own-depth medoid point selection; frozen B; no DAVIS outputs"}
+  },
+  "literature_sampling": "No paper-attributed semantic difficulty labels used. All semantic categories pending user confirmation; no unverified citation introduced.",
+  "constraints": ["CPU only", "No model inference", "No held-out metric/output access", "No human visual conclusions", "No PPT or formal evaluation table edits"]
+}

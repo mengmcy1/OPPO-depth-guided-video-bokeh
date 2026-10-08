@@ -1,0 +1,51 @@
+{
+  "scene": "repro_108",
+  "method": "magicbokeh",
+  "original_expression": "np.mean((pred-gt)**2) on float32 25x576x1024x3",
+  "existing_pooled_MSE": 0.009179613552987577,
+  "literal_float32": 0.009179613552987576,
+  "float64_accumulator": 0.009179579970687099,
+  "regional_pipeline": 0.009179579976399295,
+  "max_relative_difference_all_synthetic": 3.657734401180482e-06,
+  "max_RM24_abs_difference": 8.197584097993649e-08,
+  "reason": "CPU reporting cross-check only; not a model rerun, not a selection-rule adjustment; original formal metrics retained",
+  "reproduced_initial_check_failures": [
+    {
+      "scene_id": "repro_030",
+      "method": "bokehdiff",
+      "existing_pooled_MSE": 0.003958846442401407,
+      "literal_float32": 0.003958846442401409,
+      "float64_accumulator": 0.003958833263476746,
+      "regional_pipeline": 0.003958833264565245,
+      "relative_difference": 3.3287060648317e-06
+    },
+    {
+      "scene_id": "repro_090",
+      "method": "bokehme",
+      "existing_pooled_MSE": 0.00010340959852328517,
+      "literal_float32": 0.00010340959852328524,
+      "float64_accumulator": 0.00010340991310732345,
+      "regional_pipeline": 0.00010340991286444343,
+      "relative_difference": 3.03976770772311e-06
+    },
+    {
+      "scene_id": "repro_108",
+      "method": "magicbokeh",
+      "existing_pooled_MSE": 0.009179613552987577,
+      "literal_float32": 0.009179613552987576,
+      "float64_accumulator": 0.009179579970687099,
+      "regional_pipeline": 0.009179579976399295,
+      "relative_difference": 3.657734401180482e-06
+    },
+    {
+      "scene_id": "repro_170",
+      "method": "deeplens",
+      "existing_pooled_MSE": 0.002071608090773224,
+      "literal_float32": 0.002071608090773225,
+      "float64_accumulator": 0.0020716017724368273,
+      "regional_pipeline": 0.002071601773081565,
+      "relative_difference": 3.049655814253756e-06
+    }
+  ],
+  "interpretation": "Existing float32 whole-array mean is reproduced; new CPU region sums use float64 accumulation. Distinct reporting arithmetic, no original metric replacement or candidate-rule change."
+}

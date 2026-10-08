@@ -1,0 +1,32 @@
+{
+  "seed": 20261012,
+  "mapping": {
+    "Synthetic": {
+      "P01": "mpib",
+      "P02": "bokehme",
+      "P03": "magicbokeh",
+      "P04": "bokehdiff",
+      "P05": "deeplens",
+      "P06": "any2bokeh",
+      "P07": "drbokeh"
+    },
+    "DAVIS": {
+      "P01": "deeplens",
+      "P02": "bokehme",
+      "P03": "bokehdiff",
+      "P04": "any2bokeh",
+      "P05": "drbokeh",
+      "P06": "mpib"
+    }
+  },
+  "permissions": {
+    "any2bokeh": "frozen original ATB; RGB, external disparity/focus/K; no scale1 candidate",
+    "mpib": "RGB, external geometry/focus/K; frozen gamma2.2; primary numerical comparator",
+    "bokehme": "RGB, external geometry/focus/K; frozen Normalized gamma2.2; secondary numerical comparator",
+    "drbokeh": "Synthetic Track A EXTRA GT union alpha + LaMa; DAVIS Full-public LDF+LaMa, no GT mask input",
+    "bokehdiff": "RGB, external geometry/focus/K; frozen Normalized",
+    "deeplens": "Synthetic external-geometry native TF1 CPU single-SR aperture saturation; DAVIS native DepthNet outputs already frozen",
+    "magicbokeh": "EXTRA GT visible target region assists own-depth medoid point selection; frozen B; no DAVIS outputs"
+  },
+  "note": "Separate from B1 index. Panel numbers anonymize names, not a claim of perceptual blinding; B1 already reveals ATB."
+}
