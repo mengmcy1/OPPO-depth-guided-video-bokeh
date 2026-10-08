@@ -62,7 +62,7 @@ def analyze_memory_history(output):
             locations = []
             for frame in value['frames']:
                 filename = frame['filename']
-                if '/any-to-bokeh/' in filename or '/site-packages/diffusers/models/' in filename:
+                if '/any-to-bokeh/' in filename or '/site-packages/diffusers/models/' in filename or filename=='<ATB_encoder_scale1_candidate>':
                     filename = filename.split('/any-to-bokeh/', 1)[-1] if '/any-to-bokeh/' in filename else filename.split('/site-packages/', 1)[-1]
                     locations.append(dict(file=filename, line=frame['line'], function=frame['name']))
             allocations.append(dict(requested_GiB=value['bytes']/2**30,
@@ -200,6 +200,7 @@ class NativeStages:
         self.rows, self.encoder_calls, self.decoder_calls = [], [], []
         self.skip_calls, self.reset_events, self.active = [], [], []
         self.observed_peak = self.observed_reserved_peak = 0
+        self.initial_unit_reset_pending = True
 
     def capture_peaks(self):
         allocated = self.torch.cuda.max_memory_allocated()
@@ -217,8 +218,16 @@ class NativeStages:
         self.originals.append((cuda, 'reset_peak_memory_stats', original))
         def guarded(*args, **kwargs):
             if self.enabled:
-                allocated, reserved = self.capture_peaks()
+                # The first CoreMeter.begin_unit reset precedes this run's H2D.
+                # Its incoming peak belongs to the previous warmup/repeat.
+                exclude_previous = self.initial_unit_reset_pending and not self.active and not self.rows
+                self.initial_unit_reset_pending = False
+                if exclude_previous:
+                    allocated, reserved = cuda.max_memory_allocated(), cuda.max_memory_reserved()
+                else:
+                    allocated, reserved = self.capture_peaks()
                 self.reset_events.append(dict(active_stages=[s['name'] for s in self.active],
+                    excluded_preexisting_peak=exclude_previous,
                     allocated_peak_before_reset_GiB=allocated/2**30,
                     reserved_peak_before_reset_GiB=reserved/2**30))
             return original(*args, **kwargs)

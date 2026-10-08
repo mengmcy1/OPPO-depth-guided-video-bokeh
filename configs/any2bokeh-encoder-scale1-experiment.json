@@ -1,0 +1,11 @@
+{
+  "name": "ATB encoder-only exact unit-scale division bypass",
+  "base_protocol": "configs/efficiency-track-a.json",
+  "variants": ["native", "candidate"],
+  "correctness": {"warmups": 1, "observations": 1, "cache_CPU_chunk_MiB": 32, "acceptance": "Exact posterior call order/shapes, RNG state bytes, RGB/latent cache bytes, float output bits and RGB8 bytes; no tolerance relaxation", "reference_file_policy": "Flush/unmap and advise DONTNEED only on derived CPU reference files after use; no CUDA cache/allocator or model-cache change; never inside performance timing"},
+  "phase_memory": {"warmups": 1, "repeats": 2, "entry": "scripts/profile_any2bokeh_modules.py:NativeStages"},
+  "core_timing": {"warmups": 1, "repeats": 5, "entry": "scripts/measure_efficiency.py:worker", "memory_sampling_seconds": 0.2},
+  "expand": "Only after repro_004 correctness and measurement validation; reuse completed matching repro_004 results",
+  "non_goals": ["encoder microbatch", "cache compression", "overlap reuse", "allocator changes", "precision changes", "full quality evaluation", "PPT", "cross-GPU diagnosis"],
+  "mechanism": "Do not claim elimination of a specific historical4.5GiB allocation without a separate targeted native/candidate history comparison"
+}

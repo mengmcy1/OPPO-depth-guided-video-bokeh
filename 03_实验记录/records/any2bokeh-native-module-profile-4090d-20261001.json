@@ -634,11 +634,13 @@
     "No optimization, output equivalence or full quality reevaluation has been performed."
   ],
   "proposed_single_next_experiment": {
-    "status": "PROPOSAL_ONLY_NOT_STARTED",
+    "status": "SUPERSEDED_DEFERRED_HISTORICAL_CANDIDATE_NOT_STARTED",
     "factor": "VAE encoder microbatch:16 frame slots ->8, all other semantics frozen",
     "purpose": "Separate encoder batch-dependent temporary memory from the fixed full16-slot RGB skip cache. Target both RGB and CoC phases, which both set the native peak.",
     "constraints": "Preserve native two-window pipeline inputs, FP32 force_upcast, full16-slot ordered RGB cache and original decode. Reassemble posterior parameters before the original single16-slot sampling call, preserving sampling count/shape and RNG stream; do not independently sample the two microbatches.",
-    "checks": "First verify shapes/cache order, RNG state/call shape and small-sample output differences, then measure RGB/CoC and whole-Core allocated/reserved peaks and time. Numerical/output equivalence and total improvement must be measured; neither is assumed. No code for this proposal was implemented or executed."
+    "checks": "First verify shapes/cache order, RNG state/call shape and small-sample output differences, then measure RGB/CoC and whole-Core allocated/reserved peaks and time. Numerical/output equivalence and total improvement must be measured; neither is assumed. No code for this proposal was implemented or executed.",
+    "superseded_by": "latest_supplement_conclusions.next_single_factor_experiment",
+    "current_next_step": false
   },
   "by_scene": [
     {
@@ -8133,15 +8135,14 @@
       "No optimization or output-equivalence/latency/memory improvement has been tested."
     ],
     "next_single_factor_experiment": {
-      "status": "待验证／未实施",
+      "status": "EXECUTED_FOUR_INPUTS_CHECKS_PASSED_REVIEW_PENDING",
       "single_factor": "Only bypass division by output_scale_factor when it is1, in VAE encoder ResNet return expressions; keep the existing addition. Do not change decoder/UNet or batch/precision/cache/RNG/window.",
       "hypothesis": "History locates concurrent4.5GiB allocations at the encoder residual add/divide expression. Test whether this one operation change affects actual phase/full-run peaks and latency; no improvement is assumed.",
       "validation": "First compare the frozen native and candidate on repro_004 with identical initial/warmup RNG flow: sample calls/shapes and before/after RNG state, cache shape/order, output25-frame shape/finite, pixelwise maximum difference and byte/RGB8 equality. Then measure synchronized RGB/CoC and complete-run allocated/reserved peaks plus Core in separate uninstrumented timing processes under the same frozen protocol. Broaden to the other3 fixed clips only after this check; do not rerun200 clips by default.",
       "no_claims": [
-        "memory reduction not yet measured",
-        "speedup not yet measured",
-        "output equivalence not yet established",
-        "32GiB fit not established"
+        "No universal output-equivalence guarantee",
+        "No32GB hardware validation",
+        "Not an Ours innovation claim"
       ],
       "original_microbatch_candidate": "16->8 encoding remains a prior candidate only; not implemented or executed",
       "scale_metadata": {
@@ -8198,8 +8199,12 @@
             "parameter_dtype": "torch.float16"
           }
         ]
-      }
+      },
+      "result": "03_实验记录/records/any2bokeh-encoder-scale1-experiment-4090d-20261008.json",
+      "next_action": "STOP_THIS_EXPERIMENT_FOR_REVIEW. Keep native baseline default and candidate explicit. No automatic microbatch/other optimization; original16->8 proposal remains deferred. Position this as ATB implementation efficiency, not Ours innovation."
     },
-    "section_version_note": "Original verified_facts/unresolved/proposed_single_next_experiment fields describe30382b0 before this supplement. Current findings and recommendation are in latest_supplement_conclusions; the earlier no-allocation-trace limitation is partly resolved, and16->8 remains an unexecuted prior candidate."
-  }
+    "section_version_note": "2026-10-01 diagnostic findings retain their historical context; the authorized2026-10-08 experiment is complete, linked in encoder_scale1_experiment_result. Current next action is review, no automatic next optimization. Top-level16->8 remains superseded/deferred."
+  },
+  "current_next_experiment_pointer": "latest_supplement_conclusions.next_single_factor_experiment",
+  "encoder_scale1_experiment_result": "03_实验记录/records/any2bokeh-encoder-scale1-experiment-4090d-20261008.json"
 }
