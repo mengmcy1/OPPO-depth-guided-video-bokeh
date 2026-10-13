@@ -30,6 +30,8 @@ import numpy as np
 from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'src'))
+from review.any2bokeh_pages import enhance_scene_html, enhance_index_html, install_assets, render_review_form
 PENDING = "待用户复核"
 VISUAL = ["视觉是否异常", "是否闪烁", "是否有halo/颜色污染/细节损坏", "视觉自然程度", "人工严重程度", "是否属于感知失败", "是否视觉复核通过"]
 
@@ -557,26 +559,12 @@ STYLE="""<style>body{font-family:system-ui,sans-serif;max-width:1300px;margin:30
 
 def review_form(samples):
     """Local browser form stores only user-entered observations, never auto labels."""
-    payload=json.dumps([{k:s[k] for k in ['sample_id','dataset','scene_id','source_group','split']} for s in samples],ensure_ascii=False)
-    fields=['frame_id_or_transition_id','ROI_xywh','actual_view_mode','user_observation','severity','confidence','normal_motion_or_reasonable_defocus','similar_in_input_or_GT','normal_control','notes']+VISUAL
-    labels=['帧号或transition','ROI x,y,w,h','实际观看方式：原速/慢放/逐帧/接触图','用户观察到的现象','严重程度','置信程度','是否正常运动或合理虚化','输入/GT是否已有类似现象','正常对照','补充说明']+VISUAL
-    js="""<script>
-const samples=SAMPLES,fields=FIELDS,labels=LABELS; const storeKey='atb-failure-B1-user-20261009';
-let saved=JSON.parse(localStorage.getItem(storeKey)||'[]');
-function add(row){const section=document.createElement('article'); const base=row||{...samples[0],package:'B1'};
-const sel=document.createElement('select');samples.forEach(s=>{let o=document.createElement('option');o.value=s.sample_id;o.textContent=s.sample_id+' '+s.dataset+' '+s.scene_id;o.selected=s.sample_id===base.sample_id;sel.append(o)});section.append(sel);section.dataset.kind='review';
-fields.forEach((k,i)=>{const label=document.createElement('label');label.textContent=labels[i];const t=document.createElement('textarea');t.dataset.key=k;t.value=base[k]||(['severity','confidence','normal_motion_or_reasonable_defocus','similar_in_input_or_GT'].includes(k)||i>=10?'待用户复核':'');label.append(t);section.append(label)});document.querySelector('#forms').append(section)}
-function rows(){return [...document.querySelectorAll('[data-kind=review]')].map(s=>{let row={...samples.find(v=>v.sample_id===s.querySelector('select').value),package:'B1'};s.querySelectorAll('textarea').forEach(t=>row[t.dataset.key]=t.value);return row})}
-function saveLocal(){localStorage.setItem(storeKey,JSON.stringify(rows()));document.querySelector('#status').textContent='已保存在当前浏览器；请另导出文件保存。'}
-function exportData(){saveLocal();let b=new Blob([JSON.stringify(rows(),null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='ATB-B1-user-review.json';a.click();URL.revokeObjectURL(a.href)}
-document.addEventListener('input',()=>{localStorage.setItem(storeKey,JSON.stringify(rows()))});
-(saved.length?saved:samples.map(s=>({...s,package:'B1'}))).forEach(add);
-</script>""".replace('SAMPLES',payload).replace('FIELDS',json.dumps(fields,ensure_ascii=False)).replace('LABELS',json.dumps(labels,ensure_ascii=False))
-    return '<!doctype html><meta charset="utf-8"><title>B1用户复核表</title>'+STYLE+'<h1>B1用户复核表</h1><p>所有视觉结论由用户填写；可为同一scene新增多条ROI/帧记录。填写后请导出JSON回传；未填写项保持待用户复核。浏览器本地保存不等于项目已收到反馈。</p><button onclick="add()">新增记录</button><button onclick="exportData()">导出用户JSON</button><span id="status"></span><div id="forms"></div>'+js
+    return render_review_form(samples, 'B1')
 
 
 def materials(c):
     samples=load(record(c,'-B-samples.json'))['rows'];out=ROOT/c['output'];out.mkdir(parents=True,exist_ok=True)
+    install_assets(out)
     rng=random.Random(c['seed']+3);mapping={}
     for ds in ['Synthetic','DAVIS']:
         methods=[m for m in c['methods'] if ds=='Synthetic' or m!='magicbokeh'];rng.shuffle(methods)
@@ -619,6 +607,7 @@ def materials(c):
             body=f'<!doctype html><meta charset="utf-8"><title>{title}</title>'+STYLE+f'<h1>{title}</h1><p>来源组：{s["source_group"]}；探索组。语义标签待用户确认；全部视觉判断待用户复核。</p><p>20fps，25帧，1×播放；每个完整视频面板1024×576，无插帧。浏览器缩放显示，可下载原文件或查看PNG。</p><video controls preload="metadata" src="video.mp4"></video><p><a href="video.mp4" download>下载连续25帧视频</a> · <a href="contact.png">0/6/12/18/24接触图</a></p><img loading="lazy" src="contact.png">'
             if package=='B2':body+=f'<p>统一局部ROI={roi}（x,y,w,h），仅按输入mask边界代理选取；所有方法同位置同范围、双线性放大。它不是预设失败位置。</p><a href="ROI-contact.png">统一ROI接触图</a><p>{"Synthetic GT为MPIB-public proxy。" if ds=="Synthetic" else "DAVIS无paired bokeh GT，不显示GT。"}</p>'
             body+=f'<p>疑似压缩伪影请核对无损PNG：{original_links}</p>'+all_links
+            body=enhance_scene_html(body,dict(s,package=package,labels=labels))
             write_html(folder/'index.html',body)
             entry=dict(sample_id=sample,dataset=ds,scene_id=sid,source_group=s['source_group'],split='exploration',package=package,
                        index=str((folder/'index.html').relative_to(ROOT)),video=str((folder/'video.mp4').relative_to(ROOT)),contact=str((folder/'contact.png').relative_to(ROOT)),
@@ -633,8 +622,9 @@ def materials(c):
     for package in ['B1','B2']:
         prefix='<p class="note">请先独立填写B1观察；本页不显示数值排名或失败标签。<a href="review.html">打开空白人工复核表</a>。完成后导出用户记录交回，再进入后续对照。</p>' if package=='B1' else '<p class="note">B2对照复核材料：等待用户完成B1记录后再启用。面板编号与映射分开保存；此处不提供任何自动视觉结论。</p>'
         page=f'<!doctype html><meta charset="utf-8"><title>{package}观看索引</title>'+STYLE+f'<h1>{package}观看索引</h1>'+prefix+'<p>固定独立样本顺序。20fps，25帧，每面板1024×576；H.264 CRF18 medium yuv420p，ffmpeg7.0.2，CPU2线程；视频为派生展示，不替换原预测。接触图双线性缩小。没有慢放包。DAVIS沿用冻结MP420fps；Synthetic为25个timeline样本的声明展示帧率，不声称原VideoMatte素材时间速率。</p>'+''.join(items[package])
-        write_html(out/package/'index.html',page)
+        write_html(out/package/'index.html',enhance_index_html(page,package))
     write_html(out/'B1/review.html',review_form(samples))
+    write_html(out/'B2/review.html',render_review_form(samples,'B2'))
     dest=record(c,'-materials.json')
     if not (ROOT/dest).exists():save(dest,dict(completed_utc=now(),display=c['display'],ffmpeg=imageio_ffmpeg.get_ffmpeg_version(),items=manifest,B1_index=str(Path(c['output'])/'B1/index.html'),
          B2_index=str(Path(c['output'])/'B2/index.html'),B2_release='Wait for user B1 marks; do not prompt B2 viewing before then',mapping=mapfile,human_review_status=PENDING))
