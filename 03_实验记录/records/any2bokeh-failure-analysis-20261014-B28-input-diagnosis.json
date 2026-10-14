@@ -1,0 +1,218 @@
+{
+  "sample_id": "B28",
+  "scene_id": "scooter-gray",
+  "dataset": "DAVIS",
+  "frame": 4,
+  "K": 16,
+  "focus": 0.30536,
+  "focus_union_mean": 0.3053590924038818,
+  "source_disparity": "data/processed/davis2016-v2/sequences/scooter-gray/disparity/00004_zf_0.30536.png",
+  "source_mask": "data/processed/davis2016-v2/sequences/scooter-gray/mask/00004.png",
+  "native_size": [
+    1920,
+    1080
+  ],
+  "display_size": [
+    1024,
+    576
+  ],
+  "region_selection": "Assistant diagnostic rectangles selected on input RGB only; not user-confirmed ROI. User wording about left-side/background location remains approximate.",
+  "quantity": "q/255 normalized predicted disparity; nominal defocus =16*abs(d-focus) on native grid, not measured output blur radius or actual resized ATB CoC/MPI tensor",
+  "statistics": [
+    {
+      "region": "left_entrance",
+      "assistant_ROI_xywh": [
+        12,
+        155,
+        180,
+        90
+      ],
+      "native_xyxy": [
+        22,
+        290,
+        360,
+        460
+      ],
+      "annotation_intersection": false,
+      "pixel_count": 57460,
+      "d_p10_p50_p90": [
+        0.07450980392156863,
+        0.0784313725490196,
+        0.08627450980392157
+      ],
+      "nominal_defocus_p10_p50_p90": [
+        3.5053678431372552,
+        3.6308580392156866,
+        3.693603137254902
+      ]
+    },
+    {
+      "region": "left_shrub",
+      "assistant_ROI_xywh": [
+        100,
+        245,
+        160,
+        80
+      ],
+      "native_xyxy": [
+        187,
+        459,
+        488,
+        610
+      ],
+      "annotation_intersection": false,
+      "pixel_count": 45451,
+      "d_p10_p50_p90": [
+        0.1411764705882353,
+        0.1607843137254902,
+        0.17254901960784313
+      ],
+      "nominal_defocus_p10_p50_p90": [
+        2.12497568627451,
+        2.313210980392157,
+        2.6269364705882357
+      ]
+    },
+    {
+      "region": "left_upper_wall",
+      "assistant_ROI_xywh": [
+        10,
+        48,
+        255,
+        55
+      ],
+      "native_xyxy": [
+        18,
+        90,
+        497,
+        194
+      ],
+      "annotation_intersection": false,
+      "pixel_count": 49816,
+      "d_p10_p50_p90": [
+        0.11764705882352941,
+        0.12941176470588237,
+        0.1411764705882353
+      ],
+      "nominal_defocus_p10_p50_p90": [
+        2.6269364705882357,
+        2.8151717647058825,
+        3.0034070588235298
+      ]
+    },
+    {
+      "region": "wall_behind_rider",
+      "assistant_ROI_xywh": [
+        699,
+        87,
+        165,
+        83
+      ],
+      "native_xyxy": [
+        1310,
+        163,
+        1620,
+        319
+      ],
+      "annotation_intersection": false,
+      "pixel_count": 48360,
+      "d_p10_p50_p90": [
+        0.1607843137254902,
+        0.17254901960784313,
+        0.1843137254901961
+      ],
+      "nominal_defocus_p10_p50_p90": [
+        1.9367403921568629,
+        2.12497568627451,
+        2.313210980392157
+      ]
+    },
+    {
+      "region": "parked_scooter_left",
+      "assistant_ROI_xywh": [
+        326,
+        249,
+        128,
+        88
+      ],
+      "native_xyxy": [
+        611,
+        466,
+        852,
+        632
+      ],
+      "annotation_intersection": false,
+      "pixel_count": 40006,
+      "d_p10_p50_p90": [
+        0.17647058823529413,
+        0.2235294117647059,
+        0.24313725490196078
+      ],
+      "nominal_defocus_p10_p50_p90": [
+        0.9955639215686278,
+        1.309289411764706,
+        2.0622305882352943
+      ]
+    },
+    {
+      "region": "near_sign",
+      "assistant_ROI_xywh": [
+        471,
+        183,
+        64,
+        97
+      ],
+      "native_xyxy": [
+        883,
+        343,
+        1004,
+        525
+      ],
+      "annotation_intersection": false,
+      "pixel_count": 22022,
+      "d_p10_p50_p90": [
+        0.6627450980392157,
+        0.6941176470588235,
+        0.7019607843137254
+      ],
+      "nominal_defocus_p10_p50_p90": [
+        5.71816156862745,
+        6.220122352941176,
+        6.345612549019607
+      ]
+    },
+    {
+      "region": "rider_and_scooter",
+      "assistant_ROI_xywh": [
+        700,
+        170,
+        208,
+        229
+      ],
+      "native_xyxy": [
+        1312,
+        318,
+        1703,
+        749
+      ],
+      "annotation_intersection": true,
+      "pixel_count": 95817,
+      "d_p10_p50_p90": [
+        0.28627450980392155,
+        0.30980392156862746,
+        0.3215686274509804
+      ],
+      "nominal_defocus_p10_p50_p90": [
+        0.00835764705882358,
+        0.1798776470588237,
+        0.38482823529411725
+      ]
+    }
+  ],
+  "limits": [
+    "Only frame4 checked; no temporal conclusion.",
+    "DAVIS has no metric depth or paired Bokeh GT.",
+    "No predicted-output sharpness measure or visual verdict computed.",
+    "Geometry association does not establish model response correctness or geometric accuracy."
+  ]
+}

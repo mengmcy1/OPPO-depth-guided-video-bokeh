@@ -479,5 +479,42 @@
       "status": "NOT_RUN",
       "reason": "本轮仅代录用户整体判断，不新增深度、预测或视觉质量检查"
     }
+  },
+  {
+    "dataset": "DAVIS",
+    "scene_id": "scooter-gray",
+    "source_group": "DAVIS:scooter-gray",
+    "split": "exploration",
+    "sample_id": "B28",
+    "package": "B1-batch2",
+    "frame_id_or_transition_id": "4",
+    "ROI_xywh": "",
+    "ROI_description": "用户指画面最左边、人物后方部分场景；尚无精确用户ROI，助手检查左侧入口/绿篱/墙面等作为候选位置",
+    "actual_view_mode": "用户提供并排RGB/ATB视频截图，标注frame04/24；播放倍速未知",
+    "user_observation": "用户询问画面左侧、人物后方部分场景是否虚化不明显。",
+    "severity": "待用户确认",
+    "confidence": "待用户确认",
+    "normal_motion_or_reasonable_defocus": "待核查；不能仅因语义背景而要求强虚化",
+    "similar_in_input_or_GT": "用户对照Input RGB；DAVIS无paired bokeh GT",
+    "normal_control": "",
+    "notes": "保留疑问式观察，不替用户判为失败；仅查第4帧。助手ROI不是用户确认位置，名义离焦不是实际输出模糊半径。",
+    "record_id": "B28-B1-chat-001",
+    "recorded_on": "2026-10-14",
+    "observation_source": "用户聊天及截图；助手经授权代录",
+    "visual_observer": "user",
+    "recorded_by": "assistant",
+    "review_status": "PARTIAL_USER_BACKGROUND_BLUR_QUERY_INPUT_CHECKED_PENDING_ROI_AND_B2",
+    "actual_playback_rate": "",
+    "user_original_quotes": [
+      "这种情况画面最左边的人后面的部分场景是不是虚化的不明显，这是B28 DAVIS scooter-gray K16，你分析一下"
+    ],
+    "assistant_input_checks": {
+      "record": "03_实验记录/records/any2bokeh-failure-analysis-20261014-B28-input-diagnosis.json",
+      "frame": 4,
+      "focus": 0.30536,
+      "K": 16,
+      "finding": "左侧入口/绿篱/上方墙面名义离焦中位数分别3.631/2.313/2.815，前方路牌6.220；支持不同位置输入控制强弱不同，不证明深度正确或ATB实际响应充分。",
+      "limits": "未重跑模型、未量化输出模糊、未作持续性或方法排序结论。"
+    }
   }
 ]
