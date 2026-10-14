@@ -1,0 +1,706 @@
+{
+  "saved_utc": "2026-10-14T08:16:30.180761+00:00",
+  "name": "第二批定向补充B1",
+  "seed": 20261014,
+  "input_only": true,
+  "predictions_opened_before_list": false,
+  "rules": {
+    "name": "第二批定向补充B1",
+    "directory": "B1-batch2-20261014",
+    "seed": 20261014,
+    "targeted": {
+      "line_like_proxy": 4,
+      "shape_change_proxy": 2,
+      "boundary_proxy": 2
+    },
+    "random": {
+      "target": 4,
+      "per_input_change_stratum": 2
+    },
+    "proxy_frames": [
+      0,
+      6,
+      12,
+      18,
+      24
+    ],
+    "line_proxy": "CPU OpenCV LSD standard: sum length of segments length>=40px AND fitted gradient-region width<=3px divided by1024*576; not physical line width or confirmed rope/wire semantics",
+    "boundary_proxy": "Mean3x3 gradient pixels / reference union-mask foreground pixels at output resolution",
+    "shape_change_proxy": "1-IoU of adjacent sampled union masks after translating previous foreground centroid to current; no optical flow; shape/pose/occlusion/camera mixture, not proven occlusion",
+    "input_change_proxy": "Mean absolute RGB/255 change between sampled input frames6 apart; not measured motion speed",
+    "ordinary_eligibility": "Each of line-like, boundary and centroid-compensated shape-change proxies <= remaining27-pool60th percentile; exclude targeted selections",
+    "strata": "Eligible pool split at its median input-change proxy into <=median and >median; sorted IDs, seeded sample up to2 per stratum. No replacement if underfilled, no output-conditioned resampling",
+    "semantic_labels": "待用户确认",
+    "review_storage_key": "atb-failure-B1-batch2-user-20261014",
+    "disclosure": "Inspired by first-batch observations; targeted supplement, not independent initial discovery or unconditional dataset random sampling"
+  },
+  "remaining_pool": [
+    "bear",
+    "bmx-trees",
+    "breakdance",
+    "breakdance-flare",
+    "camel",
+    "car-roundabout",
+    "car-turn",
+    "cows",
+    "dance-twirl",
+    "dog-agility",
+    "drift-straight",
+    "elephant",
+    "flamingo",
+    "goat",
+    "hockey",
+    "horsejump-high",
+    "kite-walk",
+    "libby",
+    "mallard-water",
+    "paragliding",
+    "parkour",
+    "scooter-black",
+    "scooter-gray",
+    "soapbox",
+    "surf",
+    "swing",
+    "train"
+  ],
+  "first_batch_excluded": [
+    "blackswan",
+    "bmx-bumps",
+    "car-shadow",
+    "drift-turn",
+    "paragliding-launch",
+    "rhino",
+    "soccerball",
+    "stroller"
+  ],
+  "heldout_excluded": [
+    "boat",
+    "bus",
+    "dance-jump",
+    "dog",
+    "drift-chicane",
+    "hike",
+    "horsejump-low",
+    "kite-surf",
+    "lucia",
+    "mallard-fly",
+    "motocross-bumps",
+    "motocross-jump",
+    "motorbike",
+    "rollerblade",
+    "tennis"
+  ],
+  "thresholds": {
+    "line_like_proxy": 0.0024776571249175406,
+    "boundary_proxy": 0.1304509113684799,
+    "shape_change_proxy": 0.44089473742102603
+  },
+  "ordinary_pool": [
+    "bear",
+    "car-turn",
+    "cows",
+    "goat",
+    "mallard-water",
+    "surf",
+    "train"
+  ],
+  "input_change_stratum_median": 0.12159565091133118,
+  "random_strata": {
+    "lower_input_change": [
+      "bear",
+      "car-turn",
+      "cows",
+      "surf"
+    ],
+    "higher_input_change": [
+      "goat",
+      "mallard-water",
+      "train"
+    ]
+  },
+  "targeted_count": 8,
+  "random_count": 4,
+  "source_groups": 12,
+  "source_overlap_with_heldout": 0,
+  "rows": [
+    {
+      "scene_id": "car-roundabout",
+      "source_group": "DAVIS:car-roundabout",
+      "K": 16,
+      "dataset": "DAVIS",
+      "split": "exploration",
+      "line_like_proxy": 0.007998849786559327,
+      "boundary_proxy": 0.0421858131002578,
+      "shape_change_proxy": 0.05498404002010057,
+      "input_change_proxy": 0.1574745997786522,
+      "foreground_fraction_proxy": 0.1537685818142361,
+      "sampled_frames": [
+        0,
+        6,
+        12,
+        18,
+        24
+      ],
+      "raw_RGB_sizes": [
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ]
+      ],
+      "semantic_labels": "待用户确认",
+      "prediction_access": false,
+      "sampling_channel": "input-targeted:line_like_proxy",
+      "sampling_reason": "按预先固定的输入代理排序选取；不宣称已确认细结构/遮挡语义或输出异常",
+      "proxy_definition": "CPU OpenCV LSD standard: sum length of segments length>=40px AND fitted gradient-region width<=3px divided by1024*576; not physical line width or confirmed rope/wire semantics",
+      "batch": "第二批定向补充B1",
+      "sample_id": "B25"
+    },
+    {
+      "scene_id": "breakdance",
+      "source_group": "DAVIS:breakdance",
+      "K": 16,
+      "dataset": "DAVIS",
+      "split": "exploration",
+      "line_like_proxy": 0.006362348201218992,
+      "boundary_proxy": 0.08647758789707924,
+      "shape_change_proxy": 0.6450576777205386,
+      "input_change_proxy": 0.07671676948666573,
+      "foreground_fraction_proxy": 0.09511888292100694,
+      "sampled_frames": [
+        0,
+        6,
+        12,
+        18,
+        24
+      ],
+      "raw_RGB_sizes": [
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ]
+      ],
+      "semantic_labels": "待用户确认",
+      "prediction_access": false,
+      "sampling_channel": "input-targeted:line_like_proxy",
+      "sampling_reason": "按预先固定的输入代理排序选取；不宣称已确认细结构/遮挡语义或输出异常",
+      "proxy_definition": "CPU OpenCV LSD standard: sum length of segments length>=40px AND fitted gradient-region width<=3px divided by1024*576; not physical line width or confirmed rope/wire semantics",
+      "batch": "第二批定向补充B1",
+      "sample_id": "B26"
+    },
+    {
+      "scene_id": "drift-straight",
+      "source_group": "DAVIS:drift-straight",
+      "K": 16,
+      "dataset": "DAVIS",
+      "split": "exploration",
+      "line_like_proxy": 0.004209811720324473,
+      "boundary_proxy": 0.08246309414776601,
+      "shape_change_proxy": 0.41490608308540816,
+      "input_change_proxy": 0.22820184752345085,
+      "foreground_fraction_proxy": 0.04089287651909722,
+      "sampled_frames": [
+        0,
+        6,
+        12,
+        18,
+        24
+      ],
+      "raw_RGB_sizes": [
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ]
+      ],
+      "semantic_labels": "待用户确认",
+      "prediction_access": false,
+      "sampling_channel": "input-targeted:line_like_proxy",
+      "sampling_reason": "按预先固定的输入代理排序选取；不宣称已确认细结构/遮挡语义或输出异常",
+      "proxy_definition": "CPU OpenCV LSD standard: sum length of segments length>=40px AND fitted gradient-region width<=3px divided by1024*576; not physical line width or confirmed rope/wire semantics",
+      "batch": "第二批定向补充B1",
+      "sample_id": "B27"
+    },
+    {
+      "scene_id": "scooter-gray",
+      "source_group": "DAVIS:scooter-gray",
+      "K": 16,
+      "dataset": "DAVIS",
+      "split": "exploration",
+      "line_like_proxy": 0.0041441180445771246,
+      "boundary_proxy": 0.12884818782816115,
+      "shape_change_proxy": 0.47130659009484777,
+      "input_change_proxy": 0.18663723394274712,
+      "foreground_fraction_proxy": 0.06109076605902778,
+      "sampled_frames": [
+        0,
+        6,
+        12,
+        18,
+        24
+      ],
+      "raw_RGB_sizes": [
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ]
+      ],
+      "semantic_labels": "待用户确认",
+      "prediction_access": false,
+      "sampling_channel": "input-targeted:line_like_proxy",
+      "sampling_reason": "按预先固定的输入代理排序选取；不宣称已确认细结构/遮挡语义或输出异常",
+      "proxy_definition": "CPU OpenCV LSD standard: sum length of segments length>=40px AND fitted gradient-region width<=3px divided by1024*576; not physical line width or confirmed rope/wire semantics",
+      "batch": "第二批定向补充B1",
+      "sample_id": "B28"
+    },
+    {
+      "scene_id": "breakdance-flare",
+      "source_group": "DAVIS:breakdance-flare",
+      "K": 16,
+      "dataset": "DAVIS",
+      "split": "exploration",
+      "line_like_proxy": 0.002467031002096418,
+      "boundary_proxy": 0.11539578679934295,
+      "shape_change_proxy": 0.6923438753564584,
+      "input_change_proxy": 0.09008412435650826,
+      "foreground_fraction_proxy": 0.07041049533420139,
+      "sampled_frames": [
+        0,
+        6,
+        12,
+        18,
+        24
+      ],
+      "raw_RGB_sizes": [
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ]
+      ],
+      "semantic_labels": "待用户确认",
+      "prediction_access": false,
+      "sampling_channel": "input-targeted:shape_change_proxy",
+      "sampling_reason": "按预先固定的输入代理排序选取；不宣称已确认细结构/遮挡语义或输出异常",
+      "proxy_definition": "1-IoU of adjacent sampled union masks after translating previous foreground centroid to current; no optical flow; shape/pose/occlusion/camera mixture, not proven occlusion",
+      "batch": "第二批定向补充B1",
+      "sample_id": "B29"
+    },
+    {
+      "scene_id": "dog-agility",
+      "source_group": "DAVIS:dog-agility",
+      "K": 16,
+      "dataset": "DAVIS",
+      "split": "exploration",
+      "line_like_proxy": 0.0019561333594740266,
+      "boundary_proxy": 0.06795598804472139,
+      "shape_change_proxy": 0.6728424505504356,
+      "input_change_proxy": 0.14057521149516106,
+      "foreground_fraction_proxy": 0.12342461480034723,
+      "sampled_frames": [
+        0,
+        6,
+        12,
+        18,
+        24
+      ],
+      "raw_RGB_sizes": [
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ]
+      ],
+      "semantic_labels": "待用户确认",
+      "prediction_access": false,
+      "sampling_channel": "input-targeted:shape_change_proxy",
+      "sampling_reason": "按预先固定的输入代理排序选取；不宣称已确认细结构/遮挡语义或输出异常",
+      "proxy_definition": "1-IoU of adjacent sampled union masks after translating previous foreground centroid to current; no optical flow; shape/pose/occlusion/camera mixture, not proven occlusion",
+      "batch": "第二批定向补充B1",
+      "sample_id": "B30"
+    },
+    {
+      "scene_id": "bmx-trees",
+      "source_group": "DAVIS:bmx-trees",
+      "K": 16,
+      "dataset": "DAVIS",
+      "split": "exploration",
+      "line_like_proxy": 0.0018158645576073066,
+      "boundary_proxy": 0.3310987738686331,
+      "shape_change_proxy": 0.6022803392494582,
+      "input_change_proxy": 0.15746911615133286,
+      "foreground_fraction_proxy": 0.03061659071180555,
+      "sampled_frames": [
+        0,
+        6,
+        12,
+        18,
+        24
+      ],
+      "raw_RGB_sizes": [
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ]
+      ],
+      "semantic_labels": "待用户确认",
+      "prediction_access": false,
+      "sampling_channel": "input-targeted:boundary_proxy",
+      "sampling_reason": "按预先固定的输入代理排序选取；不宣称已确认细结构/遮挡语义或输出异常",
+      "proxy_definition": "Mean3x3 gradient pixels / reference union-mask foreground pixels at output resolution",
+      "batch": "第二批定向补充B1",
+      "sample_id": "B31"
+    },
+    {
+      "scene_id": "paragliding",
+      "source_group": "DAVIS:paragliding",
+      "K": 16,
+      "dataset": "DAVIS",
+      "split": "exploration",
+      "line_like_proxy": 0.00036250058199382496,
+      "boundary_proxy": 0.33071024433819607,
+      "shape_change_proxy": 0.17573130731550282,
+      "input_change_proxy": 0.06637639924883842,
+      "foreground_fraction_proxy": 0.02185702853732639,
+      "sampled_frames": [
+        0,
+        6,
+        12,
+        18,
+        24
+      ],
+      "raw_RGB_sizes": [
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ]
+      ],
+      "semantic_labels": "待用户确认",
+      "prediction_access": false,
+      "sampling_channel": "input-targeted:boundary_proxy",
+      "sampling_reason": "按预先固定的输入代理排序选取；不宣称已确认细结构/遮挡语义或输出异常",
+      "proxy_definition": "Mean3x3 gradient pixels / reference union-mask foreground pixels at output resolution",
+      "batch": "第二批定向补充B1",
+      "sample_id": "B32"
+    },
+    {
+      "scene_id": "car-turn",
+      "source_group": "DAVIS:car-turn",
+      "K": 16,
+      "dataset": "DAVIS",
+      "split": "exploration",
+      "line_like_proxy": 0.0005456008042933212,
+      "boundary_proxy": 0.09358422255590944,
+      "shape_change_proxy": 0.23047559121843045,
+      "input_change_proxy": 0.05147154163569212,
+      "foreground_fraction_proxy": 0.029808213975694442,
+      "sampled_frames": [
+        0,
+        6,
+        12,
+        18,
+        24
+      ],
+      "raw_RGB_sizes": [
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ]
+      ],
+      "semantic_labels": "待用户确认",
+      "prediction_access": false,
+      "sampling_channel": "fixed-seed-stratified-random:lower_input_change",
+      "sampling_reason": "三个输入结构/形状代理均不高于候选池60分位，再按RGB变化代理分层随机；不是无条件全数据集随机，非人工正常结论",
+      "proxy_definition": "Each of line-like, boundary and centroid-compensated shape-change proxies <= remaining27-pool60th percentile; exclude targeted selections; Eligible pool split at its median input-change proxy into <=median and >median; sorted IDs, seeded sample up to2 per stratum. No replacement if underfilled, no output-conditioned resampling",
+      "batch": "第二批定向补充B1",
+      "sample_id": "B33"
+    },
+    {
+      "scene_id": "cows",
+      "source_group": "DAVIS:cows",
+      "K": 16,
+      "dataset": "DAVIS",
+      "split": "exploration",
+      "line_like_proxy": 1.4560623094439507e-05,
+      "boundary_proxy": 0.0718897280512243,
+      "shape_change_proxy": 0.15563585014051529,
+      "input_change_proxy": 0.12159565091133118,
+      "foreground_fraction_proxy": 0.13959994845920137,
+      "sampled_frames": [
+        0,
+        6,
+        12,
+        18,
+        24
+      ],
+      "raw_RGB_sizes": [
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ]
+      ],
+      "semantic_labels": "待用户确认",
+      "prediction_access": false,
+      "sampling_channel": "fixed-seed-stratified-random:lower_input_change",
+      "sampling_reason": "三个输入结构/形状代理均不高于候选池60分位，再按RGB变化代理分层随机；不是无条件全数据集随机，非人工正常结论",
+      "proxy_definition": "Each of line-like, boundary and centroid-compensated shape-change proxies <= remaining27-pool60th percentile; exclude targeted selections; Eligible pool split at its median input-change proxy into <=median and >median; sorted IDs, seeded sample up to2 per stratum. No replacement if underfilled, no output-conditioned resampling",
+      "batch": "第二批定向补充B1",
+      "sample_id": "B34"
+    },
+    {
+      "scene_id": "goat",
+      "source_group": "DAVIS:goat",
+      "K": 16,
+      "dataset": "DAVIS",
+      "split": "exploration",
+      "line_like_proxy": 1.398716639313433e-05,
+      "boundary_proxy": 0.09791030198888401,
+      "shape_change_proxy": 0.2683027668967446,
+      "input_change_proxy": 0.15284060686826706,
+      "foreground_fraction_proxy": 0.07800326877170138,
+      "sampled_frames": [
+        0,
+        6,
+        12,
+        18,
+        24
+      ],
+      "raw_RGB_sizes": [
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ]
+      ],
+      "semantic_labels": "待用户确认",
+      "prediction_access": false,
+      "sampling_channel": "fixed-seed-stratified-random:higher_input_change",
+      "sampling_reason": "三个输入结构/形状代理均不高于候选池60分位，再按RGB变化代理分层随机；不是无条件全数据集随机，非人工正常结论",
+      "proxy_definition": "Each of line-like, boundary and centroid-compensated shape-change proxies <= remaining27-pool60th percentile; exclude targeted selections; Eligible pool split at its median input-change proxy into <=median and >median; sorted IDs, seeded sample up to2 per stratum. No replacement if underfilled, no output-conditioned resampling",
+      "batch": "第二批定向补充B1",
+      "sample_id": "B35"
+    },
+    {
+      "scene_id": "mallard-water",
+      "source_group": "DAVIS:mallard-water",
+      "K": 16,
+      "dataset": "DAVIS",
+      "split": "exploration",
+      "line_like_proxy": 0.0011816361944915518,
+      "boundary_proxy": 0.0966309106959042,
+      "shape_change_proxy": 0.18366768163272806,
+      "input_change_proxy": 0.14172140136361122,
+      "foreground_fraction_proxy": 0.052329169379340276,
+      "sampled_frames": [
+        0,
+        6,
+        12,
+        18,
+        24
+      ],
+      "raw_RGB_sizes": [
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          1920,
+          1080
+        ]
+      ],
+      "semantic_labels": "待用户确认",
+      "prediction_access": false,
+      "sampling_channel": "fixed-seed-stratified-random:higher_input_change",
+      "sampling_reason": "三个输入结构/形状代理均不高于候选池60分位，再按RGB变化代理分层随机；不是无条件全数据集随机，非人工正常结论",
+      "proxy_definition": "Each of line-like, boundary and centroid-compensated shape-change proxies <= remaining27-pool60th percentile; exclude targeted selections; Eligible pool split at its median input-change proxy into <=median and >median; sorted IDs, seeded sample up to2 per stratum. No replacement if underfilled, no output-conditioned resampling",
+      "batch": "第二批定向补充B1",
+      "sample_id": "B36"
+    }
+  ],
+  "semantic_coverage": "All rope/wire/branch/rail/occlusion/motion semantic labels await user confirmation. Proxies can also reflect architecture, pose, contrast or camera movement. No additional data generated.",
+  "missing_random_slots": 0,
+  "disclosure": "Inspired by first-batch observations; targeted supplement, not independent initial discovery or unconditional dataset random sampling"
+}

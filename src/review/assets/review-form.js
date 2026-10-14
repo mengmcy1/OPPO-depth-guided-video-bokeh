@@ -106,9 +106,11 @@
     // Accept location metadata only; no observations or visual conclusions are imported.
     Object.assign(context, {frame_id_or_transition_id:position, ROI_xywh:roi,
       actual_view_mode:String(raw.actual_view_mode || ''), actual_playback_rate:rate,
+      ROI_selection_origin:String(raw.ROI_selection_origin || ''), diagnostic_ROI_id:String(raw.diagnostic_ROI_id || ''),
       video_playback_rate_setting:raw.video_playback_rate_setting, context_source:String(raw.context_source || '')});
     const banner = document.getElementById('context-banner'); banner.hidden = false;
     document.getElementById('context-description').textContent = `${sample.sample_id} ${sample.scene_id}：${position || '帧待逐帧定位'}；ROI ${roi || '未选'}；${context.actual_view_mode}；实际视频倍速 ${rate === '' ? '不适用/待填写' : rate+'×'}。仅在点击下面按钮后新增，不覆盖既有记录。`;
+    if (context.ROI_selection_origin.includes('executor_diagnostic')) document.getElementById('context-description').textContent += ` ${context.diagnostic_ROI_id}为执行方诊断框，非用户已确认位置或视觉结论。`;
     document.getElementById('import-context').addEventListener('click', () => { add(context); saveLocal(); });
   } catch (error) { status.textContent = `定位信息未导入：${error.message}。已有记录保留。`; }
 })();

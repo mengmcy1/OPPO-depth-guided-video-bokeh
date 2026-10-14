@@ -20,10 +20,12 @@ def payload(value):
 
 
 def viewer_fragment(item):
-    panels = [{'label': label, 'prefix': 'originals/' + label.replace(' ', '_') + '/'} for label in item['labels']]
+    panels = item.get('panels') or [{'label': label, 'prefix': 'originals/' + label.replace(' ', '_') + '/'} for label in item['labels']]
     config = {k: item[k] for k in ['sample_id', 'dataset', 'scene_id', 'source_group', 'split', 'package']}
-    config.update(frames=25, width=1024, height=576, fps=20, panels=panels, review_url='../review.html')
-    return BEGIN + '''
+    config.update(frames=25, width=1024, height=576, fps=20, panels=panels, review_url=item.get('review_url','../review.html'))
+    if item.get('diagnostic_rois'):
+        config['diagnostic_rois']=item['diagnostic_rois']
+    fragment = BEGIN + '''
 <link rel="stylesheet" href="../../review-tools/viewer.css">
 <section id="atb-viewer" class="atb-viewer" aria-label="精确PNG逐帧查看器">
   <h2>播放与精确逐帧定位</h2>
@@ -58,6 +60,10 @@ def viewer_fragment(item):
 <script id="atb-viewer-config" type="application/json">''' + payload(config) + '''</script>
 <script src="../../review-tools/viewer.js"></script>
 ''' + END
+    if item.get('diagnostic_rois'):
+        control='<p>以下为执行方选取的诊断ROI，非用户确认位置；固定frame0坐标不跟踪主体。请选择或手动调整。</p><label>诊断ROI入口：<select id="diagnostic-roi-select"><option value="">未选择</option></select></label>'
+        fragment=fragment.replace('<div id="synchronous-panels"',control+'<div id="synchronous-panels"',1)
+    return fragment
 
 
 def enhance_scene_html(text, item):
@@ -90,13 +96,14 @@ def install_assets(output):
             target.write_bytes(source.read_bytes())
 
 
-def render_review_form(samples, package='B1'):
+def render_review_form(samples, package='B1', store_key=None, title=None, notice=None, metadata_extra=()):
     assert package in ['B1', 'B2']
-    metadata = [{k: s[k] for k in ['sample_id', 'dataset', 'scene_id', 'source_group', 'split']} for s in samples]
+    metadata = [{k: s[k] for k in ['sample_id', 'dataset', 'scene_id', 'source_group', 'split']+list(metadata_extra) if k in s} for s in samples]
     config = dict(samples=metadata, fields=FIELDS, labels=LABELS, visual=VISUAL, package=package,
-                  store_key=f'atb-failure-{package}-user-20261009')
-    title = html.escape(package + '用户复核表')
+                  store_key=store_key or f'atb-failure-{package}-user-20261009')
+    title = html.escape(title or package + '用户复核表')
     gate = '<p class="atb-warning">B2仅在用户完成B1记录后使用；页面功能更新不代表已完成B1或视觉复核。</p>' if package == 'B2' else ''
+    if notice is not None:gate='<p class="atb-note">'+html.escape(notice)+'</p>'
     return f'''<!doctype html><meta charset="utf-8"><title>{title}</title>
 <link rel="stylesheet" href="../review-tools/viewer.css">
 <main class="atb-review"><h1>{title}</h1>{gate}

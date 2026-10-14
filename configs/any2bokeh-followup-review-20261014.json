@@ -1,0 +1,42 @@
+{
+  "source_config": "configs/any2bokeh-failure-analysis-20261009.json",
+  "output": "outputs/any2bokeh-failure-analysis-20261009",
+  "record_prefix": "03_实验记录/records/any2bokeh-followup-20261014",
+  "http_base": "http://127.0.0.1:8765/",
+  "B19": {
+    "directory": "B19-input-check-20261014",
+    "scene_id": "paragliding-launch",
+    "diagnostic_rois": [
+      {"id": "D01", "name": "诊断ROI：手附近绳带候选", "xywh": [575, 286, 12, 28]},
+      {"id": "D02", "name": "诊断ROI：肩附近绳带候选", "xywh": [526, 195, 12, 32]},
+      {"id": "D03", "name": "诊断ROI：上方细线A候选", "xywh": [539, 70, 10, 44]},
+      {"id": "D04", "name": "诊断ROI：上方细线B候选", "xywh": [384, 100, 16, 36]},
+      {"id": "D05", "name": "诊断ROI：邻近主体输入对照", "xywh": [535, 262, 16, 18]},
+      {"id": "D06", "name": "诊断ROI：邻近背景输入对照", "xywh": [600, 264, 20, 20]}
+    ],
+    "roi_status": "Executor-selected frame0 input patches; not user-confirmed anatomy, rope locations or normal-output regions; static coordinates, no tracking",
+    "disparity_scale": [0, 1],
+    "nominal_defocus_scale": [0, 16],
+    "color_map": "OpenCV VIRIDIS fixed LUT; no per-frame or per-ROI normalization",
+    "comparison_order": ["any2bokeh", "mpib", "bokehme", "deeplens", "drbokeh", "bokehdiff"],
+    "review_storage_key": "atb-failure-B19-B2-input-review-20261014"
+  },
+  "batch2": {
+    "name": "第二批定向补充B1",
+    "directory": "B1-batch2-20261014",
+    "seed": 20261014,
+    "targeted": {"line_like_proxy": 4, "shape_change_proxy": 2, "boundary_proxy": 2},
+    "random": {"target": 4, "per_input_change_stratum": 2},
+    "proxy_frames": [0, 6, 12, 18, 24],
+    "line_proxy": "CPU OpenCV LSD standard: sum length of segments length>=40px AND fitted gradient-region width<=3px divided by1024*576; not physical line width or confirmed rope/wire semantics",
+    "boundary_proxy": "Mean3x3 gradient pixels / reference union-mask foreground pixels at output resolution",
+    "shape_change_proxy": "1-IoU of adjacent sampled union masks after translating previous foreground centroid to current; no optical flow; shape/pose/occlusion/camera mixture, not proven occlusion",
+    "input_change_proxy": "Mean absolute RGB/255 change between sampled input frames6 apart; not measured motion speed",
+    "ordinary_eligibility": "Each of line-like, boundary and centroid-compensated shape-change proxies <= remaining27-pool60th percentile; exclude targeted selections",
+    "strata": "Eligible pool split at its median input-change proxy into <=median and >median; sorted IDs, seeded sample up to2 per stratum. No replacement if underfilled, no output-conditioned resampling",
+    "semantic_labels": "待用户确认",
+    "review_storage_key": "atb-failure-B1-batch2-user-20261014",
+    "disclosure": "Inspired by first-batch observations; targeted supplement, not independent initial discovery or unconditional dataset random sampling"
+  },
+  "limits": ["CPU inputs/materials only", "No inference, new neural metrics, input correction or K/focus change", "No held-out15 videos", "No automatic perceptual conclusions", "Browser and chat records remain separate until user-confirmed merge"]
+}

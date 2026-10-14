@@ -7,6 +7,7 @@
   const cache = new Map();
   let frame = 0, from = 0, mode = 'frame', size = 'fit', roi = null, ticket = 0;
   let rendered = false, previousVideoTime = 0;
+  let roiOrigin = 'none', diagnosticROI = '';
   const clamp = (n, low, high) => Math.max(low, Math.min(high, n));
   const png = (panel, t) => `${panel.prefix}${String(t).padStart(5, '0')}.png`;
   const pressed = (selector, key, value) => root.querySelectorAll(selector).forEach(b => b.setAttribute('aria-pressed', String(b.dataset[key] === value)));
@@ -73,6 +74,8 @@
       const y = Math.min(start[1], end[1], config.height - 1);
       roi = [x, y, Math.max(1, Math.min(config.width - x, Math.abs(end[0] - start[0]))),
                    Math.max(1, Math.min(config.height - y, Math.abs(end[1] - start[1])))];
+      roiOrigin = 'user_manual_coordinates_semantics_unconfirmed'; diagnosticROI = '';
+      if ($('diagnostic-roi-select')) $('diagnostic-roi-select').value = '';
       updateROI();
     };
     surface.addEventListener('pointerdown', event => {
@@ -167,7 +170,24 @@
     root.classList.toggle('native-size', size === 'native'); root.classList.toggle('double-size', size === 'double'); updateROI();
   }));
   $('roi-enabled').addEventListener('change', event => root.classList.toggle('roi-enabled', event.target.checked));
-  $('clear-roi').addEventListener('click', () => { roi = null; updateROI(); });
+  $('clear-roi').addEventListener('click', () => {
+    roi = null; roiOrigin = 'none'; diagnosticROI = '';
+    if ($('diagnostic-roi-select')) $('diagnostic-roi-select').value = '';
+    updateROI();
+  });
+  const presets = $('diagnostic-roi-select');
+  if (presets) {
+    (config.diagnostic_rois || []).forEach((r, i) => {
+      const option = document.createElement('option'); option.value = i;
+      option.textContent = `${r.id} ${r.name} [${r.xywh.join(',')}]`; presets.append(option);
+    });
+    presets.addEventListener('change', () => {
+      roi = presets.value === '' ? null : [...config.diagnostic_rois[Number(presets.value)].xywh];
+      roiOrigin = roi ? 'executor_diagnostic_preset_not_user_confirmed' : 'none';
+      diagnosticROI = roi ? config.diagnostic_rois[Number(presets.value)].id : '';
+      updateROI();
+    });
+  }
 
   function reviewContext(videoObservation) {
     if (!videoObservation && !rendered) return;
@@ -175,6 +195,7 @@
     ['sample_id', 'dataset', 'scene_id', 'source_group', 'split', 'package'].forEach(k => { context[k] = config[k]; });
     context.frame_id_or_transition_id = videoObservation ? '' : (mode === 'frame' ? String(frame) : `${from}→${from + 1}`);
     context.ROI_xywh = roi ? roi.join(',') : '';
+    context.ROI_selection_origin = roiOrigin; context.diagnostic_ROI_id = diagnosticROI;
     context.actual_view_mode = videoObservation ? (video.playbackRate === 1 ? '视频原速' : '视频慢放') : (mode === 'frame' ? '逐帧PNG' : '相邻帧PNG');
     context.actual_playback_rate = videoObservation ? video.playbackRate : '';
     context.video_playback_rate_setting = video.playbackRate;
