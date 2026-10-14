@@ -1,0 +1,144 @@
+{
+  "sample_id": "B33",
+  "scene_id": "car-turn",
+  "K": 16,
+  "frames": [
+    0,
+    22
+  ],
+  "source_geometry": "data/processed/davis2016-v2/sequences/car-turn/geometry.json",
+  "focus_rule": "per-frame original union annotation mean of q/255, rounded to5 decimals",
+  "focus_values": [
+    0.31981,
+    0.34132,
+    0.36566,
+    0.39755,
+    0.41688,
+    0.42559
+  ],
+  "statistics": [
+    {
+      "frame": 0,
+      "region": "middle_white_post",
+      "assistant_ROI_xywh": [
+        527,
+        364,
+        4,
+        24
+      ],
+      "native_xyxy": [
+        988,
+        682,
+        996,
+        728
+      ],
+      "pixel_count": 368,
+      "focus": 0.31981,
+      "d_p10_p50_p90": [
+        0.3215686274509804,
+        0.403921568627451,
+        0.40784313725490196
+      ],
+      "signed_d_minus_focus_median": 0.084111568627451,
+      "nominal_defocus_p10_p50_p90": [
+        0.09088313725490238,
+        1.345785098039216,
+        1.4085301960784316
+      ]
+    },
+    {
+      "frame": 0,
+      "region": "far_dark_post",
+      "assistant_ROI_xywh": [
+        681,
+        308,
+        4,
+        30
+      ],
+      "native_xyxy": [
+        1276,
+        577,
+        1285,
+        634
+      ],
+      "pixel_count": 513,
+      "focus": 0.31981,
+      "d_p10_p50_p90": [
+        0.2,
+        0.23921568627450981,
+        0.28627450980392155
+      ],
+      "signed_d_minus_focus_median": -0.08059431372549017,
+      "nominal_defocus_p10_p50_p90": [
+        0.5365678431372549,
+        1.2895090196078427,
+        1.9169599999999996
+      ]
+    },
+    {
+      "frame": 22,
+      "region": "middle_white_post",
+      "assistant_ROI_xywh": [
+        542,
+        358,
+        4,
+        24
+      ],
+      "native_xyxy": [
+        1016,
+        671,
+        1024,
+        717
+      ],
+      "pixel_count": 368,
+      "focus": 0.41688,
+      "d_p10_p50_p90": [
+        0.2811764705882353,
+        0.37254901960784315,
+        0.4
+      ],
+      "signed_d_minus_focus_median": -0.04433098039215683,
+      "nominal_defocus_p10_p50_p90": [
+        0.2700799999999992,
+        0.7092956862745092,
+        2.1712564705882356
+      ]
+    },
+    {
+      "frame": 22,
+      "region": "far_dark_post",
+      "assistant_ROI_xywh": [
+        695,
+        302,
+        4,
+        30
+      ],
+      "native_xyxy": [
+        1303,
+        566,
+        1311,
+        623
+      ],
+      "pixel_count": 456,
+      "focus": 0.41688,
+      "d_p10_p50_p90": [
+        0.21176470588235294,
+        0.2627450980392157,
+        0.2784313725490196
+      ],
+      "signed_d_minus_focus_median": -0.15413490196078428,
+      "nominal_defocus_p10_p50_p90": [
+        2.2151780392156857,
+        2.4661584313725484,
+        3.2818447058823526
+      ]
+    }
+  ],
+  "quantity": "Native normalized disparity q/255 and16*abs(d-focus); nominal control, NOT measured output blur radius",
+  "limits": [
+    "User did not specify exact post; assistant selected two representative corresponding posts by input RGB; no automated tracking.",
+    "Thin ROI may include background; these are local input samples, not independent true geometry.",
+    "Frame0 vs22 is non-adjacent comparison, not flicker evidence.",
+    "No baseline inference, parameter changes or output quality verdict."
+  ]
+}
