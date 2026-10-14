@@ -23,6 +23,8 @@ def viewer_fragment(item):
     panels = item.get('panels') or [{'label': label, 'prefix': 'originals/' + label.replace(' ', '_') + '/'} for label in item['labels']]
     config = {k: item[k] for k in ['sample_id', 'dataset', 'scene_id', 'source_group', 'split', 'package']}
     config.update(frames=25, width=1024, height=576, fps=20, panels=panels, review_url=item.get('review_url','../review.html'))
+    for key in ['tracked_rois', 'initial_frame', 'frame_jumps']:
+        if key in item: config[key]=item[key]
     if item.get('diagnostic_rois'):
         config['diagnostic_rois']=item['diagnostic_rois']
     fragment = BEGIN + '''
@@ -63,6 +65,12 @@ def viewer_fragment(item):
     if item.get('diagnostic_rois'):
         control='<p>以下为执行方选取的诊断ROI，非用户确认位置；固定frame0坐标不跟踪主体。请选择或手动调整。</p><label>诊断ROI入口：<select id="diagnostic-roi-select"><option value="">未选择</option></select></label>'
         fragment=fragment.replace('<div id="synchronous-panels"',control+'<div id="synchronous-panels"',1)
+    if item.get('tracked_rois'):
+        control='<p>按帧调整的执行方诊断位置，非用户确认对应。选择后，同帧各面板用同一坐标，相邻两帧各用自身坐标；缺失位置留空，不沿用上一帧。</p><label>定位候选：<select id="tracked-roi-select"><option value="">未选择/手动ROI</option></select></label>'
+        fragment=fragment.replace('<div id="synchronous-panels"',control+'<div id="synchronous-panels"',1)
+    if item.get('frame_jumps'):
+        jumps='<div class="atb-toolbar">关键帧入口：'+''.join(f'<button data-jump="{int(t)}">帧{int(t)}</button>' for t in item['frame_jumps'])+'</div>'
+        fragment=fragment.replace('<div id="synchronous-panels"',jumps+'<div id="synchronous-panels"',1)
     return fragment
 
 

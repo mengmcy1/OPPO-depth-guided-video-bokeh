@@ -5,7 +5,8 @@
   const video = document.querySelector('video');
   const $ = id => document.getElementById(id);
   const cache = new Map();
-  let frame = 0, from = 0, mode = 'frame', size = 'fit', roi = null, ticket = 0;
+  let frame = config.initial_frame ?? 0, from = Math.max(0, (config.initial_frame ?? 0) - 1), mode = 'frame', size = 'fit', roi = null, ticket = 0;
+  let trackedSelection = '';
   let rendered = false, previousVideoTime = 0;
   let roiOrigin = 'none', diagnosticROI = '';
   const clamp = (n, low, high) => Math.max(low, Math.min(high, n));
@@ -36,10 +37,18 @@
     a.textContent = `${panel.label} 帧${t}完整PNG`; return a;
   }
 
+  function roiForFrame(t) {
+    if (!trackedSelection) return roi;
+    const selected = config.tracked_rois.find(r => r.id === trackedSelection);
+    return selected.xywh_by_frame[String(t)] ?? null;
+  }
   function updateROI() {
-    root.dataset.roi = JSON.stringify(roi);
-    $('roi-label').textContent = roi ? `ROI x,y,w,h = ${roi.join(', ')}` : 'ROI未选择';
+    const currentROI = roiForFrame(frame);
+    root.dataset.roi = JSON.stringify(currentROI);
+    root.dataset.trackedRoi = trackedSelection;
+    $('roi-label').textContent = currentROI ? `ROI x,y,w,h = ${currentROI.join(', ')}` : (trackedSelection ? `帧${frame}无可用预设位置；未插补` : 'ROI未选择');
     root.querySelectorAll('.atb-surface').forEach(surface => {
+      const roi = roiForFrame(Number(surface.querySelector('img').dataset.frame));
       const rect = surface.querySelector('rect');
       rect.style.display = roi ? '' : 'none';
       const crop = surface.parentElement.querySelector('.atb-crop');
@@ -75,6 +84,8 @@
       roi = [x, y, Math.max(1, Math.min(config.width - x, Math.abs(end[0] - start[0]))),
                    Math.max(1, Math.min(config.height - y, Math.abs(end[1] - start[1])))];
       roiOrigin = 'user_manual_coordinates_semantics_unconfirmed'; diagnosticROI = '';
+      trackedSelection = '';
+      if ($('tracked-roi-select')) $('tracked-roi-select').value = '';
       if ($('diagnostic-roi-select')) $('diagnostic-roi-select').value = '';
       updateROI();
     };
@@ -136,6 +147,7 @@
   function setFrame(t) {
     frame = clamp(Number(t), 0, 24); from = clamp(frame - 1, 0, 23); render();
   }
+  root.querySelectorAll('[data-jump]').forEach(button => button.addEventListener('click', () => { mode = 'frame'; setFrame(button.dataset.jump); }));
   function step(amount) {
     if (mode === 'frame') setFrame(frame + amount);
     else { from = clamp(from + amount, 0, 23); frame = from + 1; render(); }
@@ -172,6 +184,8 @@
   $('roi-enabled').addEventListener('change', event => root.classList.toggle('roi-enabled', event.target.checked));
   $('clear-roi').addEventListener('click', () => {
     roi = null; roiOrigin = 'none'; diagnosticROI = '';
+    trackedSelection = '';
+    if ($('tracked-roi-select')) $('tracked-roi-select').value = '';
     if ($('diagnostic-roi-select')) $('diagnostic-roi-select').value = '';
     updateROI();
   });
@@ -183,9 +197,21 @@
     });
     presets.addEventListener('change', () => {
       roi = presets.value === '' ? null : [...config.diagnostic_rois[Number(presets.value)].xywh];
+      trackedSelection = '';
       roiOrigin = roi ? 'executor_diagnostic_preset_not_user_confirmed' : 'none';
       diagnosticROI = roi ? config.diagnostic_rois[Number(presets.value)].id : '';
       updateROI();
+    });
+  }
+  const trackedPresets = $('tracked-roi-select');
+  if (trackedPresets) {
+    config.tracked_rois.forEach(r => {
+      const option = document.createElement('option'); option.value = r.id; option.textContent = `${r.id} ${r.name}`; trackedPresets.append(option);
+    });
+    trackedPresets.addEventListener('change', () => {
+      trackedSelection = trackedPresets.value; roi = null;
+      roiOrigin = trackedSelection ? 'executor_diagnostic_tracked_RGB_not_user_confirmed' : 'none';
+      diagnosticROI = trackedSelection; updateROI();
     });
   }
 
@@ -194,7 +220,8 @@
     const context = {};
     ['sample_id', 'dataset', 'scene_id', 'source_group', 'split', 'package'].forEach(k => { context[k] = config[k]; });
     context.frame_id_or_transition_id = videoObservation ? '' : (mode === 'frame' ? String(frame) : `${from}→${from + 1}`);
-    context.ROI_xywh = roi ? roi.join(',') : '';
+    const currentROI = roiForFrame(frame);
+    context.ROI_xywh = currentROI ? currentROI.join(',') : '';
     context.ROI_selection_origin = roiOrigin; context.diagnostic_ROI_id = diagnosticROI;
     context.actual_view_mode = videoObservation ? (video.playbackRate === 1 ? '视频原速' : '视频慢放') : (mode === 'frame' ? '逐帧PNG' : '相邻帧PNG');
     context.actual_playback_rate = videoObservation ? video.playbackRate : '';

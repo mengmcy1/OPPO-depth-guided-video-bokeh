@@ -1,0 +1,56 @@
+{
+  "output": "outputs/any2bokeh-failure-analysis-20261009/B33-B36-diagnostics-20261014",
+  "record_prefix": "03_实验记录/records/any2bokeh-B33-B36-diagnostics-20261014",
+  "source_commit": "446c6b2",
+  "K": 16,
+  "native_size": [1920,1080],
+  "display_size": [1024,576],
+  "B33": {
+    "scene_id": "car-turn",
+    "reference_frame": 0,
+    "comparison_frames": [1,22],
+    "marked_files": [["../00000.png", "Input_RGB", 0], ["../00001.png", "Frozen_ATB", 1], ["../00022.png", "Frozen_ATB", 22]],
+    "selection_rule": "Four separated RGB-visible rope locations inside the user frame0 blue circle, not posts. Initial centers refined using RGB-only bright narrow-line contrast before any new disparity reading; no replacement after statistics. IDs refer to local segment registration candidates, not proven unique material points.",
+    "rope_points": [
+      {"id":"R1", "native_center":[1045,678], "slope":-0.26},
+      {"id":"R2", "native_center":[1115,662], "slope":-0.26},
+      {"id":"R3", "native_center":[1185,645], "slope":-0.26},
+      {"id":"R4", "native_center":[1240,629], "slope":-0.26}
+    ],
+    "band_length_native": 21,
+    "band_width_native": 3,
+    "grass_normal_offset_native": 8,
+    "post_controls": [
+      {"id":"P-white", "native_xywh":[988,682,8,46]},
+      {"id":"P-dark", "native_xywh":[1276,577,9,57]}
+    ],
+    "tracking": {
+      "method":"Direct frame0 grayscale NCC of RGB context patches; reverse registration; rope-only RGB normal refinement. No optical-flow or neural model, no disparity input.",
+      "patch_size":41,
+      "search_xy_radius":[56,30],
+      "min_NCC":0.90,
+      "min_peak_margin_outside_3px":0.02,
+      "max_reverse_error_native":2,
+      "normal_refinement_offsets_native":[-2,-1,0,1,2],
+      "min_rope_RGB_contrast":10,
+      "missing_policy":"Failed/ambiguous locations remain null; no interpolation, smoothing, along-rope rescue, or threshold changes. Successful context registration does not prove a unique material-point identity or uncontaminated rope pixels."
+    },
+    "review_storage_key":"atb-failure-B33-input-diagnostics-user-20261014"
+  },
+  "B36": {
+    "scene_id":"mallard-water",
+    "keyframes":[0,6,12,18,24],
+    "ROIs_display_xywh": {
+      "0":{"head_core":[664,163,20,22],"bill_core":[700,218,12,8],"neck_core":[655,223,20,26],"body_core":[490,255,50,24],"head_context":[632,128,128,160]},
+      "6":{"head_core":[624,152,22,22],"bill_core":[671,201,12,10],"neck_core":[620,215,18,23],"body_core":[465,250,50,24],"head_context":[592,112,128,160]},
+      "12":{"head_core":[585,151,22,22],"bill_core":[627,198,12,10],"neck_core":[586,223,18,23],"body_core":[445,249,50,24],"head_context":[553,110,128,160]},
+      "18":{"head_core":[541,158,22,22],"bill_core":[588,203,12,10],"neck_core":[540,222,18,23],"body_core":[417,242,50,24],"head_context":[510,106,128,160]},
+      "24":{"head_core":[518,143,22,22],"bill_core":[557,195,12,10],"neck_core":[518,220,18,22],"body_core":[416,248,50,24],"head_context":[483,102,128,160]}
+    },
+    "ROI_selection":"Input RGB only; frame0/6 core rectangles reuse prior diagnosis exactly, later keyframes manually localized on RGB. All are executor diagnostic ROIs, not user-confirmed. Non-keyframe presets are null, never interpolated.",
+    "methods":["any2bokeh","mpib","bokehme","deeplens","drbokeh","bokehdiff"],
+    "anonymous_mapping":"03_实验记录/records/any2bokeh-failure-analysis-20261009-B2-panel-mapping.json",
+    "review_storage_key":"atb-failure-B36-B2-diagnostics-user-20261014"
+  },
+  "limits":["Existing exploration data only", "No physical depth truth or paired DAVIS bokeh GT", "Nominal control is not measured blur radius or actual ATB condition tensor", "All new perceptual judgments are user-only"]
+}

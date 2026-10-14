@@ -1,0 +1,186 @@
+{
+  "checked_utc": "2026-10-14T15:06:55.571675+00:00",
+  "status": "诊断材料已准备，等待用户视觉复核",
+  "source_commit": "446c6b2",
+  "RGB_marker_correspondence": [
+    {
+      "file": "../00000.png",
+      "panel": "Input_RGB",
+      "frame_id": 0,
+      "size": [
+        1024,
+        576
+      ],
+      "changed_pixels": 3556,
+      "changed_bbox": [
+        514,
+        279,
+        704,
+        436
+      ],
+      "outside_blue_marker_dilation_mismatches": 0,
+      "scope": "Pixel/frame correspondence only; no new perceptual verdict"
+    },
+    {
+      "file": "../00001.png",
+      "panel": "Frozen_ATB",
+      "frame_id": 1,
+      "size": [
+        1024,
+        576
+      ],
+      "changed_pixels": 3115,
+      "changed_bbox": [
+        518,
+        287,
+        707,
+        406
+      ],
+      "outside_blue_marker_dilation_mismatches": 0,
+      "scope": "Pixel/frame correspondence only; no new perceptual verdict"
+    },
+    {
+      "file": "../00022.png",
+      "panel": "Frozen_ATB",
+      "frame_id": 22,
+      "size": [
+        1024,
+        576
+      ],
+      "changed_pixels": 3077,
+      "changed_bbox": [
+        520,
+        289,
+        708,
+        406
+      ],
+      "outside_blue_marker_dilation_mismatches": 0,
+      "scope": "Pixel/frame correspondence only; no new perceptual verdict"
+    }
+  ],
+  "RGB_selection_before_disparity": true,
+  "accepted_positions": {
+    "R1": 22,
+    "R2": 25,
+    "R3": 18,
+    "R4": 25,
+    "P-white": 25,
+    "P-dark": 21
+  },
+  "B33_stat_rows": 350,
+  "B33_missing_stat_rows": 34,
+  "B36_stat_rows": 20,
+  "original_frame0_6_B36_values_match": true,
+  "PNG_integrity_checks": 350,
+  "decoded_videos": [
+    {
+      "sample_id": "B33",
+      "frames": 25,
+      "fps": 20.0,
+      "size": [
+        2048,
+        600
+      ],
+      "finite": true
+    },
+    {
+      "sample_id": "B36",
+      "frames": 25,
+      "fps": 20.0,
+      "size": [
+        3072,
+        1800
+      ],
+      "finite": true
+    }
+  ],
+  "per_correspondence_charts": 6,
+  "source_split": "Both videos in original exploration; held-out data not opened",
+  "all_perceptual_fields_pending": true,
+  "failed_initial_localization_log": "logs/atb-b33-b36-locate-20261014.log (JSON numpy-int serialization error; fixed without changing selections or thresholds)",
+  "user_images_preserved_outside_Git": true,
+  "neural_inference": false,
+  "browser_checks": {
+    "checked_utc": "2026-10-14T15:11:34.853405+00:00",
+    "actual_HTTP_base": "http://127.0.0.1:8765/",
+    "material_root": "outputs/any2bokeh-failure-analysis-20261009",
+    "HTTP_200_links": 618,
+    "browser": "Chrome 140.0.7339.16",
+    "B36_standard_layout": {
+      "package": "B2",
+      "dataset": "DAVIS",
+      "sample_id": "B36",
+      "panels": 9,
+      "playback_rates_checked": [
+        1,
+        0.5,
+        0.25
+      ],
+      "actual_native_playback": true,
+      "PNG_sync_keyboard_boundaries": true,
+      "adjacent_11_12": true,
+      "ROI_xywh": [
+        100,
+        120,
+        200,
+        120
+      ],
+      "ROI_native_pixel_mismatches": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "native100_200percent": true,
+      "thumbnails25": true,
+      "rapid_navigation_race_checked": true,
+      "MP4_not_seeked_by_PNG_viewer": true
+    },
+    "B33_initial1_and_endpoint_buttons": true,
+    "moving_ROI_coordinates_same_for_all_methods_per_frame": true,
+    "adjacent_frames_use_own_coordinates": true,
+    "missing_presets_never_carried_or_interpolated": true,
+    "ROI_canvas_pixel_mismatches": 0,
+    "old_form_preservation": {
+      "B1_same_key": true,
+      "old_text_and_unknown_fields_preserved": true,
+      "append_only_context": true,
+      "exact_transition_and_shared_ROI_transferred": true,
+      "PNG_rate_not_misrepresented": true,
+      "actual_video_rate_recorded": true,
+      "reload_persistence": true,
+      "timestamped_exports_distinct": true,
+      "test_fixture_profile_only": true
+    },
+    "independent_keys_append_export_reload": true,
+    "old_B1_B2_batch2_keys_unchanged": true,
+    "javascript_errors": [],
+    "isolated_fixture_profile_only": true,
+    "user_actual_client_proxy_path_reproduced": false
+  },
+  "environment": {
+    "CPU": "Intel(R) Xeon(R) Platinum 8481C",
+    "CPU_quota_cores": 20.0,
+    "memory_limit_GiB": 90.0,
+    "preparation_environment": "existing any2bokeh Python3.10.21/OpenCV4.12.0/numpy2.1.2",
+    "plotting_environment": "existing base Python3.12/Matplotlib; no installation or dependency upgrade",
+    "CPU_OpenCV_threads": 1,
+    "video_encoding_threads": 2,
+    "GPU_used": false
+  },
+  "final_evidence_index_and_CSV_HTTP200": true
+}
