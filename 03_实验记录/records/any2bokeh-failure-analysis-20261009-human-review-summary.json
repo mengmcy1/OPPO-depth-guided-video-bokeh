@@ -38,5 +38,56 @@
     ],
     "requested_direction": "倾向扩大真实视频观察；第二批清单与数量尚未冻结或生成。",
     "review_state": "First-batch aggregate feedback received; detailed per-scene and B2 verification remain separate."
+  },
+  {
+    "record_id": "B1-batch2-complete-chat-20261014-001",
+    "recorded_on": "2026-10-14",
+    "record_scope": "group_level_user_feedback",
+    "dataset": "DAVIS",
+    "package": "B1-batch2",
+    "split": "exploration",
+    "sample_ids": [
+      "B25",
+      "B26",
+      "B27",
+      "B28",
+      "B29",
+      "B30",
+      "B31",
+      "B32",
+      "B33",
+      "B34",
+      "B35",
+      "B36"
+    ],
+    "visual_observer": "user",
+    "recorded_by": "assistant",
+    "user_original_quotes": [
+      "其他的都没什么问题，现在已经看完了"
+    ],
+    "user_observation": "用户确认第二批B25–B36已看完；先前已指出的B28/B33/B34/B36候选保留，其余8段整体未见明显问题。",
+    "remaining_normal_samples": {
+      "B25": "car-roundabout",
+      "B26": "breakdance",
+      "B27": "drift-straight",
+      "B29": "breakdance-flare",
+      "B30": "dog-agility",
+      "B31": "bmx-trees",
+      "B32": "paragliding",
+      "B35": "goat"
+    },
+    "retained_candidate_samples": [
+      "B28",
+      "B33",
+      "B34",
+      "B36"
+    ],
+    "review_state": "SECOND_BATCH_B1_USER_VIEWING_COMPLETE_CANDIDATE_B2_AND_CAUSES_PENDING",
+    "limits": [
+      "其余8段由本轮上下文解析，不伪造逐帧通过、严重度或独立的8条详细评价。",
+      "4段是候选疑问，不是4段确认失败；定向抽样与分层随机混合，不计算全数据集失败率。",
+      "B19此前相对ATB较好证据保留；第二批B2、规则冻结与来源隔离复核未完成。",
+      "本轮只记录完成状态，不追加推理或机制实验。"
+    ]
   }
 ]
