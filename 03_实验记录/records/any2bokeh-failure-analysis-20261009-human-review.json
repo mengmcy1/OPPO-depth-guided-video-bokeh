@@ -673,5 +673,43 @@
       "scope_limit": "不能据此认定真实深度错误、ATB独有机制或与B19必然同因。",
       "next_action": "用户先继续观察其他片段；此候选仅记录，暂不进一步分析或实验。"
     }
+  },
+  {
+    "dataset": "DAVIS",
+    "scene_id": "mallard-water",
+    "source_group": "DAVIS:mallard-water",
+    "split": "exploration",
+    "sample_id": "B36",
+    "package": "B1-batch2",
+    "frame_id_or_transition_id": "0,6 (screenshot also contains partial frame12)",
+    "ROI_xywh": "",
+    "ROI_description": "鸭头部分，精确ROI待用户确认；助手分头部、喙、颈部、身体和邻近水面抽查",
+    "actual_view_mode": "用户提供接触图，帧0/6完整、12部分可见；未说明播放倍速或持续性",
+    "user_observation": "用户认为鸭头被虚化似乎不合理，询问是否与深度有关",
+    "severity": "待用户确认",
+    "confidence": "待用户确认",
+    "normal_motion_or_reasonable_defocus": "待验证；头颈有真实几何差异可能，不能凭语义同一主体证明离焦应完全相同",
+    "similar_in_input_or_GT": "输入RGB可对照；DAVIS无paired bokeh GT或真实深度",
+    "normal_control": "",
+    "notes": "分层随机样本保留，不因观察异常更换；头部被估得比焦点更近，不能套用细绳混入远背景的假设。",
+    "record_id": "B36-B1-chat-001",
+    "recorded_on": "2026-10-14",
+    "observation_source": "用户原话及接触图；助手授权代录",
+    "visual_observer": "user",
+    "recorded_by": "assistant",
+    "review_status": "USER_HEAD_BLUR_QUERY_INPUT_DIFFERENTIAL_SUPPORTED_CAUSE_UNVERIFIED",
+    "actual_playback_rate": "",
+    "user_original_quotes": [
+      "这里的鸭子头的部分被虚化了，似乎不太对，是不是也跟深度有关"
+    ],
+    "assistant_input_checks": {
+      "record": "03_实验记录/records/any2bokeh-failure-analysis-20261014-B36-input-diagnosis.json",
+      "frames": [
+        0,
+        6
+      ],
+      "finding": "头中心名义离焦中位数2.400/2.228，颈部0.204/0.156，身体0.580/0.534。鸭头中心q/255约0.72549，高于focus0.57550/0.58624；邻近水面约0.20784/0.19608。输入有头颈离焦差异，不是所查水面视差混同。",
+      "limits": "定性现象由用户提出；未测实际输出模糊半径，未验证真实头颈深度或做因果干预。"
+    }
   }
 ]
