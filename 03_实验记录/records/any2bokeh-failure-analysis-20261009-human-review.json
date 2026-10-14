@@ -516,5 +516,75 @@
       "finding": "左侧入口/绿篱/上方墙面名义离焦中位数分别3.631/2.313/2.815，前方路牌6.220；支持不同位置输入控制强弱不同，不证明深度正确或ATB实际响应充分。",
       "limits": "未重跑模型、未量化输出模糊、未作持续性或方法排序结论。"
     }
+  },
+  {
+    "dataset": "DAVIS",
+    "scene_id": "cows",
+    "source_group": "DAVIS:cows",
+    "split": "exploration",
+    "sample_id": "B34",
+    "package": "B1-batch2",
+    "frame_id_or_transition_id": "",
+    "ROI_xywh": "",
+    "ROI_description": "前景最高的竖杆；用户尚未提供精确ROI",
+    "actual_view_mode": "用户提供Input/ATB并排截图，无可见帧号；播放倍速与观察持续性未知",
+    "user_observation": "用户认为前景最高的棍子似乎虚化不足",
+    "severity": "待用户确认",
+    "confidence": "待用户确认",
+    "normal_motion_or_reasonable_defocus": "未确定",
+    "similar_in_input_or_GT": "用户对照输入；DAVIS无paired bokeh GT",
+    "normal_control": "",
+    "notes": "两处分别记录；B34来自分层随机对照，但不因发现疑问更换样本。助手另查代表帧12，未确认是截图帧。",
+    "record_id": "B34-B1-chat-001",
+    "recorded_on": "2026-10-14",
+    "observation_source": "用户原话及截图；助手授权代录",
+    "visual_observer": "user",
+    "recorded_by": "assistant",
+    "review_status": "PARTIAL_USER_QUERY_PENDING_EXACT_FRAME_ROI",
+    "actual_playback_rate": "",
+    "user_original_quotes": [
+      "这里前景的最高的棍子似乎虚化的程度也不太够，然后牛脖子下的铃铛有点被虚化了，你看一下"
+    ],
+    "assistant_input_checks": {
+      "record": "03_实验记录/records/any2bokeh-failure-analysis-20261014-B34-input-diagnosis.json",
+      "diagnostic_frame": 12,
+      "matches_user_screenshot": "not_confirmed",
+      "finding": "高竖杆三处名义离焦中位数0.924–1.050，近处斜栏杆5.003；铃铛中心0.707，牛颈0.456。输入控制不能替代输出模糊测量，也不证明真实深度错误。"
+    }
+  },
+  {
+    "dataset": "DAVIS",
+    "scene_id": "cows",
+    "source_group": "DAVIS:cows",
+    "split": "exploration",
+    "sample_id": "B34",
+    "package": "B1-batch2",
+    "frame_id_or_transition_id": "",
+    "ROI_xywh": "",
+    "ROI_description": "牛脖子下的铃铛；用户尚未提供精确ROI",
+    "actual_view_mode": "用户提供Input/ATB并排截图，无可见帧号；播放倍速与观察持续性未知",
+    "user_observation": "用户认为铃铛有点被虚化",
+    "severity": "待用户确认",
+    "confidence": "待用户确认",
+    "normal_motion_or_reasonable_defocus": "未确定",
+    "similar_in_input_or_GT": "用户对照输入；DAVIS无paired bokeh GT",
+    "normal_control": "",
+    "notes": "两处分别记录；B34来自分层随机对照，但不因发现疑问更换样本。助手另查代表帧12，未确认是截图帧。",
+    "record_id": "B34-B1-chat-002",
+    "recorded_on": "2026-10-14",
+    "observation_source": "用户原话及截图；助手授权代录",
+    "visual_observer": "user",
+    "recorded_by": "assistant",
+    "review_status": "PARTIAL_USER_QUERY_PENDING_EXACT_FRAME_ROI",
+    "actual_playback_rate": "",
+    "user_original_quotes": [
+      "这里前景的最高的棍子似乎虚化的程度也不太够，然后牛脖子下的铃铛有点被虚化了，你看一下"
+    ],
+    "assistant_input_checks": {
+      "record": "03_实验记录/records/any2bokeh-failure-analysis-20261014-B34-input-diagnosis.json",
+      "diagnostic_frame": 12,
+      "matches_user_screenshot": "not_confirmed",
+      "finding": "高竖杆三处名义离焦中位数0.924–1.050，近处斜栏杆5.003；铃铛中心0.707，牛颈0.456。输入控制不能替代输出模糊测量，也不证明真实深度错误。"
+    }
   }
 ]
