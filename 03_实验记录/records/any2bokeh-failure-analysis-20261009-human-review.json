@@ -594,17 +594,17 @@
     "split": "exploration",
     "sample_id": "B33",
     "package": "B1-batch2",
-    "frame_id_or_transition_id": "0 and 22 (non-adjacent)",
+    "frame_id_or_transition_id": "1 and 22 (non-adjacent; latest user clarification)",
     "ROI_xywh": "",
     "ROI_description": "用户明确指第22帧汽车旁边那部分栏杆，认为它与车越来越近；精确杆/绳段ROI尚未确认",
-    "actual_view_mode": "用户提供第0帧输出面板截图及第22帧局部输出截图",
+    "actual_view_mode": "早先为帧0与22截图；最新两张局部截图用户明确图1=帧22、图2=帧1",
     "user_observation": "用户观察车靠近时旁边栏杆反而变模糊，并认为该部分栏杆与车距离减小，应更清楚。",
     "severity": "待用户确认",
     "confidence": "待用户确认",
     "normal_motion_or_reasonable_defocus": "尚未确定；若对应同一栏杆且与车的相机轴向深度差确实缩小，则离焦通常应减小。画面邻近不能独自证明深度趋近。",
     "similar_in_input_or_GT": "DAVIS无真实深度或paired bokeh GT",
     "normal_control": "",
-    "notes": "不能仅用输入要求更强虚化解释为物理合理；应保留几何/焦点一致性疑问。两端点差异不自动记成闪烁。",
+    "notes": "不能仅用输入要求更强虚化解释为物理合理；应保留几何/焦点一致性疑问。两端点差异不自动记成闪烁。 最新帧对修正为1/22，先前0/22诊断保留为历史，不冒充当前帧对。",
     "record_id": "B33-B1-chat-001",
     "recorded_on": "2026-10-14",
     "observation_source": "用户原话及截图；助手授权代录",
@@ -614,7 +614,8 @@
     "actual_playback_rate": "",
     "user_original_quotes": [
       "这里其实我有一点问题，帧0和帧22的对比，帧22车旁边的那部分栏杆，车越近他反而会越模糊，这个是不是有点问题",
-      "我是特指22帧车旁边那部分栏杆，他离车是越来越近的，理论不应该越来越清楚吗"
+      "我是特指22帧车旁边那部分栏杆，他离车是越来越近的，理论不应该越来越清楚吗",
+      "图1是22，图二是1"
     ],
     "assistant_input_checks": {
       "record": "03_实验记录/records/any2bokeh-failure-analysis-20261014-B33-input-diagnosis.json",
@@ -623,7 +624,11 @@
         0.41688
       ],
       "finding": "助手选取远处深色立柱的名义离焦中位数1.290→2.466，较近白色立柱1.346→0.709；具体是否为用户指的同一栏杆仍待ROI确认。",
-      "limits": "输入离焦变大只能解释模型收到的控制，不证明真实几何或输出正确。需同物体对应和轴向几何区分，不以2D靠近替代3D证据。"
+      "limits": "输入离焦变大只能解释模型收到的控制，不证明真实几何或输出正确。需同物体对应和轴向几何区分，不以2D靠近替代3D证据。",
+      "focus_1_22": [
+        0.32269,
+        0.41688
+      ]
     }
   }
 ]

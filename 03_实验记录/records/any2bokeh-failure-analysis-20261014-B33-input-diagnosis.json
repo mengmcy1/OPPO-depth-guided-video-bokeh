@@ -4,6 +4,7 @@
   "K": 16,
   "frames": [
     0,
+    1,
     22
   ],
   "source_geometry": "data/processed/davis2016-v2/sequences/car-turn/geometry.json",
@@ -132,6 +133,35 @@
         2.4661584313725484,
         3.2818447058823526
       ]
+    },
+    {
+      "frame": 1,
+      "region": "far_dark_post",
+      "assistant_ROI_xywh": [
+        682,
+        308,
+        4,
+        30
+      ],
+      "native_xyxy": [
+        1278,
+        577,
+        1287,
+        634
+      ],
+      "pixel_count": 513,
+      "focus": 0.32269,
+      "d_p10_p50_p90": [
+        0.2,
+        0.23921568627450981,
+        0.2823529411764706
+      ],
+      "signed_d_minus_focus_median": -0.08347431372549016,
+      "nominal_defocus_p10_p50_p90": [
+        0.6453929411764703,
+        1.3355890196078426,
+        1.9630399999999995
+      ]
     }
   ],
   "quantity": "Native normalized disparity q/255 and16*abs(d-focus); nominal control, NOT measured output blur radius",
@@ -140,5 +170,23 @@
     "Thin ROI may include background; these are local input samples, not independent true geometry.",
     "Frame0 vs22 is non-adjacent comparison, not flicker evidence.",
     "No baseline inference, parameter changes or output quality verdict."
-  ]
+  ],
+  "historical_diagnostic_frames": [
+    0,
+    22
+  ],
+  "current_user_comparison_frames": [
+    1,
+    22
+  ],
+  "frame_clarification": "用户后续明确新两图分别帧22、帧1；保留先前帧0诊断，不能将帧0数值当帧1。",
+  "focus_by_frame": {
+    "0": 0.31981,
+    "1": 0.32269,
+    "6": 0.34132,
+    "12": 0.36566,
+    "18": 0.39755,
+    "22": 0.41688,
+    "24": 0.42559
+  }
 }
