@@ -610,14 +610,15 @@
     "observation_source": "用户原话及截图；助手授权代录",
     "visual_observer": "user",
     "recorded_by": "assistant",
-    "review_status": "USER_LOCAL_DEPTH_CONVERGENCE_QUERY_PENDING_EXACT_CORRESPONDENCE",
+    "review_status": "USER_MARKED_SAME_FENCE_SPAN_ENDPOINT_SOFTENING_SUPPORTED_CAUSE_PENDING",
     "actual_playback_rate": "",
     "user_original_quotes": [
       "这里其实我有一点问题，帧0和帧22的对比，帧22车旁边的那部分栏杆，车越近他反而会越模糊，这个是不是有点问题",
       "我是特指22帧车旁边那部分栏杆，他离车是越来越近的，理论不应该越来越清楚吗",
       "图1是22，图二是1",
       "00000.png我用蓝圈标出来的这一段，在视频一开始他应该离车最远，理论应该模糊一点，然后车越近他应该越清楚，但是现实是反过来的",
-      "00000.png在根目录下，你找一下"
+      "00000.png在根目录下，你找一下",
+      "你可以补看一下ATB生成的是不是符合我说越来越糊，00001.png和00022.png我也分别圈出来了对应地方，放在了根目录下"
     ],
     "assistant_input_checks": {
       "record": "03_实验记录/records/any2bokeh-failure-analysis-20261014-B33-input-diagnosis.json",
@@ -646,6 +647,21 @@
         22
       ],
       "note": "帧0标注用于固定物体定位，不替换此前最新1/22对照帧号"
+    },
+    "assistant_visual_crosscheck": {
+      "authorization": "用户本轮明确请求助手补看两张圈选ATB输出；仅此案例补充，不代替用户的视觉记录",
+      "images": [
+        "/root/autodl-tmp/00001.png",
+        "/root/autodl-tmp/00022.png"
+      ],
+      "frames": [
+        1,
+        22
+      ],
+      "observation": "圈内对应细绳在帧1线条更清晰，帧22线条更淡、边缘更软，周围草地细节也更模糊；支持用户的端点对比观察。",
+      "scope": "仅两张1024×576圈选输出的定性复核；非全部中间帧单调趋势、非运动补偿或模糊半径测量",
+      "causal_limits": "不能单凭输出判定真实深度趋近、VDA错误或ATB独有机制；此前两端立柱小框不代表整段细绳。",
+      "recorded_on": "2026-10-14"
     }
   }
 ]
