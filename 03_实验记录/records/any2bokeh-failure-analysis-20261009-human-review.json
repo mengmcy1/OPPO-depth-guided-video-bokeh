@@ -610,7 +610,7 @@
     "observation_source": "用户原话及截图；助手授权代录",
     "visual_observer": "user",
     "recorded_by": "assistant",
-    "review_status": "USER_MARKED_SAME_FENCE_SPAN_ENDPOINT_SOFTENING_SUPPORTED_CAUSE_PENDING",
+    "review_status": "ENDPOINT_SOFTENING_SUPPORTED_THIN_STRUCTURE_GEOMETRY_HYPOTHESIS_RECORDED_ANALYSIS_DEFERRED",
     "actual_playback_rate": "",
     "user_original_quotes": [
       "这里其实我有一点问题，帧0和帧22的对比，帧22车旁边的那部分栏杆，车越近他反而会越模糊，这个是不是有点问题",
@@ -618,7 +618,8 @@
       "图1是22，图二是1",
       "00000.png我用蓝圈标出来的这一段，在视频一开始他应该离车最远，理论应该模糊一点，然后车越近他应该越清楚，但是现实是反过来的",
       "00000.png在根目录下，你找一下",
-      "你可以补看一下ATB生成的是不是符合我说越来越糊，00001.png和00022.png我也分别圈出来了对应地方，放在了根目录下"
+      "你可以补看一下ATB生成的是不是符合我说越来越糊，00001.png和00022.png我也分别圈出来了对应地方，放在了根目录下",
+      "我感觉可能还是细节构的问题，太细了导致深度估计混到背景的草地里去了，然后随着草地一起变糊了，我肉眼确实感觉是越来越胡了"
     ],
     "assistant_input_checks": {
       "record": "03_实验记录/records/any2bokeh-failure-analysis-20261014-B33-input-diagnosis.json",
@@ -662,6 +663,15 @@
       "scope": "仅两张1024×576圈选输出的定性复核；非全部中间帧单调趋势、非运动补偿或模糊半径测量",
       "causal_limits": "不能单凭输出判定真实深度趋近、VDA错误或ATB独有机制；此前两端立柱小框不代表整段细绳。",
       "recorded_on": "2026-10-14"
+    },
+    "user_mechanism_hypothesis": {
+      "recorded_on": "2026-10-14",
+      "hypothesis": "细绳过细，预测视差可能与背景草地混淆，继而随草地离焦增加一起变模糊。",
+      "status": "UNVERIFIED_USER_HYPOTHESIS",
+      "observation_basis": "用户口述视频中越来越糊；已对照的帧1与22支持端点变模糊，尚未核验中间帧单调性。",
+      "missing_evidence": "尚未分别跟踪同段细绳中心、两侧草地及立柱的视差/离焦变化；尚无几何修正因果实验。",
+      "scope_limit": "不能据此认定真实深度错误、ATB独有机制或与B19必然同因。",
+      "next_action": "用户先继续观察其他片段；此候选仅记录，暂不进一步分析或实验。"
     }
   }
 ]
