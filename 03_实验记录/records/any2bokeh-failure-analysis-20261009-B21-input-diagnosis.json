@@ -1,0 +1,156 @@
+{
+  "diagnostic_frame": 12,
+  "user_screenshot_frame_confirmed": false,
+  "frame_selection": "Fixed protocol keyframe12, representative input check only; NOT a match to user screenshot.",
+  "focus": {
+    "frame": 12,
+    "file": "00012_zf_0.39554.png",
+    "focus": 0.39554,
+    "focus_unrounded": 0.39553788204751983,
+    "quantized_min": 0,
+    "quantized_max": 247
+  },
+  "rows": [
+    {
+      "region": "roof_antenna",
+      "assistant_ROI_xywh": [
+        580,
+        136,
+        17,
+        20
+      ],
+      "annotation_intersection": true,
+      "n": 195,
+      "median_disparity": 0.3843137254901961,
+      "disparity_p10_p90": [
+        0.08235294117647059,
+        0.38823529411764707
+      ],
+      "nominal_radius_median": 0.17962039215686243
+    },
+    {
+      "region": "roof_rail",
+      "assistant_ROI_xywh": [
+        430,
+        147,
+        111,
+        16
+      ],
+      "annotation_intersection": true,
+      "n": 2330,
+      "median_disparity": 0.37254901960784315,
+      "disparity_p10_p90": [
+        0.16470588235294117,
+        0.403921568627451
+      ],
+      "nominal_radius_median": 0.3678556862745097
+    },
+    {
+      "region": "roof_solid_below_rail",
+      "assistant_ROI_xywh": [
+        476,
+        168,
+        79,
+        11
+      ],
+      "annotation_intersection": true,
+      "n": 3129,
+      "median_disparity": 0.4117647058823529,
+      "disparity_p10_p90": [
+        0.403921568627451,
+        0.4196078431372549
+      ],
+      "nominal_radius_median": 0.2595952941176467
+    },
+    {
+      "region": "car_door",
+      "assistant_ROI_xywh": [
+        403,
+        245,
+        80,
+        27
+      ],
+      "annotation_intersection": true,
+      "n": 7701,
+      "median_disparity": 0.38823529411764707,
+      "disparity_p10_p90": [
+        0.3803921568627451,
+        0.396078431372549
+      ],
+      "nominal_radius_median": 0.11687529411764697
+    },
+    {
+      "region": "background_above_roof",
+      "assistant_ROI_xywh": [
+        445,
+        123,
+        99,
+        16
+      ],
+      "annotation_intersection": false,
+      "n": 5766,
+      "median_disparity": 0.09411764705882353,
+      "disparity_p10_p90": [
+        0.08627450980392157,
+        0.10196078431372549
+      ],
+      "nominal_radius_median": 4.822757647058824
+    },
+    {
+      "region": "antenna_upper_thin_part",
+      "assistant_ROI_xywh": [
+        581,
+        136,
+        13,
+        12
+      ],
+      "annotation_intersection": true,
+      "n": 37,
+      "median_disparity": 0.08235294117647059,
+      "disparity_p10_p90": [
+        0.0784313725490196,
+        0.11215686274509802
+      ],
+      "nominal_radius_median": 5.010992941176471
+    },
+    {
+      "region": "antenna_base",
+      "assistant_ROI_xywh": [
+        576,
+        150,
+        20,
+        9
+      ],
+      "annotation_intersection": true,
+      "n": 391,
+      "median_disparity": 0.38823529411764707,
+      "disparity_p10_p90": [
+        0.24705882352941178,
+        0.39215686274509803
+      ],
+      "nominal_radius_median": 0.11687529411764697
+    }
+  ],
+  "recorded_on": "2026-10-14",
+  "dataset": "DAVIS",
+  "scene_id": "car-shadow",
+  "sample_id": "B21",
+  "K": 16,
+  "scope": "CPU input-only representative frame12, no model inference or B2/held-out outputs. User reports persistent roof fine-structure softness through most frames; NOT independently visually confirmed by assistant.",
+  "sources": {
+    "geometry": "data/processed/davis2016-v2/sequences/car-shadow/geometry.json",
+    "disparity": "data/processed/davis2016-v2/sequences/car-shadow/disparity/00012_zf_0.39554.png",
+    "annotation": "data/raw/DAVIS-2017/DAVIS/Annotations/Full-Resolution/car-shadow/00012.png",
+    "display_input": "outputs/any2bokeh-failure-analysis-20261009/display-input/B21/00012.png"
+  },
+  "ROI_protocol": "Rectangles chosen by assistant on input RGB for geometric inspection, not user-confirmed ROI.1024x576 display coordinates mapped to1920x1080 native disparity with floor/ceil. Foreground rectangles intersect source annotation>0. No output images or error maps used for selection.",
+  "radius_definition": "16*abs(d-focus), d=original PNG8/255; nominal input control, not physical depth or measured output blur.",
+  "interpretation": "Roof fine-structure ROIs contain both near-focus and background-like disparity values; median over a larger roof region can hide localized mismatch. The representative input supports investigating depth structure loss but does not establish the cause of every-frame output softness.",
+  "limits": [
+    "Screenshot frame not determined; diagnostic frame12 is a pre-existing fixed keyframe, not claimed screenshot match.",
+    "Small annotation/resize/boundary alignment errors can influence thin-structure statistics.",
+    "No true metric depth or paired DAVIS bokeh GT.",
+    "User said roof fine structure, not specifically antenna vs roof rail; diagnostic subregions are assistant hypotheses.",
+    "Persistent errors need not be temporal flicker; no all25-frame causal verification has been performed."
+  ]
+}

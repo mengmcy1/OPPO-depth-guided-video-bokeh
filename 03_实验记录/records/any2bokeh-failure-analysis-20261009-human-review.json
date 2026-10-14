@@ -225,5 +225,47 @@
       "scope": "原始RGB/标注/VDA视差/焦点的CPU诊断；无真实深度或模型重跑",
       "ROI_note": "诊断JSON中的框由助手选取，仅用于输入核查，不代填用户ROI"
     }
+  },
+  {
+    "dataset": "DAVIS",
+    "scene_id": "car-shadow",
+    "source_group": "DAVIS:car-shadow",
+    "split": "exploration",
+    "sample_id": "B21",
+    "package": "B1",
+    "record_id": "B21-B1-chat-001",
+    "recorded_on": "2026-10-14",
+    "frame_id_or_transition_id": "",
+    "frame_scope": "用户说明基本每一帧都有；针对25帧观看片段的持续现象，未逐帧确认具体清单",
+    "ROI_xywh": "",
+    "ROI_description": "车顶细结构；具体是行李架、天线或其他部位及数值ROI待确认",
+    "actual_view_mode": "用户提供对照截图并报告整段持续现象；截图帧号和实际播放速度未说明",
+    "actual_playback_rate": "",
+    "user_observation": "用户认为车顶细结构也被模糊，并补充基本每一帧都是。",
+    "user_original_quotes": [
+      "下一个主要也是车顶的那个细节构也被模糊了，你看一下，这个是B21 · DAVIS · car-shadow · K=16",
+      "这个基本每一帧都是"
+    ],
+    "severity": "待用户确认",
+    "confidence": "待用户确认",
+    "normal_motion_or_reasonable_defocus": "待核实局部几何和条件；持续存在不直接证明几何错误或排除真实离焦",
+    "similar_in_input_or_GT": "用户对照输入RGB；DAVIS无paired bokeh GT",
+    "normal_control": "",
+    "notes": "持续细结构模糊按用户直接反馈登记，不归类为偶发闪烁。第12帧为助手代表性输入检查，不冒称用户截图帧或已完成全片段原因验证。",
+    "visual_observer": "user",
+    "recorded_by": "assistant",
+    "observation_source": "本对话用户直接观察及追加说明；助手经授权代录",
+    "review_status": "PARTIAL_USER_OBSERVATION_PENDING_LOCALIZATION_AND_B2",
+    "视觉是否异常": "用户报告车顶细结构持续偏模糊，异常机制未确认",
+    "是否闪烁": "本条为持续模糊，用户未报告闪烁",
+    "视觉自然程度": "待用户确认",
+    "人工严重程度": "待用户确认",
+    "是否属于感知失败": "待进一步复核，未确认模型失败",
+    "是否视觉复核通过": "尚未完成B1/B2复核",
+    "assistant_input_checks": {
+      "record": "03_实验记录/records/any2bokeh-failure-analysis-20261009-B21-input-diagnosis.json",
+      "scope": "原始标注和VDA视差第12帧的CPU核查；不是对用户未给帧号截图的精确匹配"
+    },
+    "是否有halo/颜色污染/细节损坏": "用户报告车顶细结构被模糊；halo及颜色污染未确认"
   }
 ]
