@@ -105,7 +105,7 @@
     "normal_motion_or_reasonable_defocus": "用户提出与人物深度接近的疑问；真实深度尚未验证",
     "similar_in_input_or_GT": "用户对照输入RGB；DAVIS没有paired bokeh GT",
     "normal_control": "",
-    "notes": "细结构深度估计问题是助手提出的待验证解释，不作为用户已确认结论；语义区域不等于固定焦平面。",
+    "notes": "细结构深度估计问题是助手提出的待验证解释，不作为用户已确认结论；语义区域不等于固定焦平面。 用户随后在B2报告P04相对更清楚（映射为ATB）；与先前ATB仍有持续模糊的观察并存，尚不支持该案例中ATB相对更差。",
     "视觉是否异常": "用户提出疑似不合理虚化，未最终确认",
     "是否闪烁": "未单独报告",
     "是否有halo/颜色污染/细节损坏": "用户报告细绳虚化；其他类型未确认",
@@ -118,11 +118,12 @@
     "observation_source": "用户在本对话中的直接反馈及所附截图；助手经授权代录",
     "visual_observer": "user",
     "recorded_by": "assistant",
-    "review_status": "USER_LOCALIZED_UPPER_ROPES_PERSISTENT_BLUR_PENDING_B2",
+    "review_status": "USER_UPPER_ROPES_LOCALIZED_B2_RELATIVE_ATB_CLEARER_REPORTED",
     "actual_playback_rate": "",
     "user_original_quotes": [
       "这里的降落伞的线柄被虚化是合理的吗，降落伞应该和人是差不多深度的吧",
-      "主要是头顶的这好几根绳子，实际上基本全程都是模糊的"
+      "主要是头顶的这好几根绳子，实际上基本全程都是模糊的",
+      "基本只有P04比较清楚，其他的都很模糊，这里的P几分别是什么"
     ],
     "ROI_description": "用户确认第0帧头顶上方多根绳子的整体定位框；显示坐标1024×576，xywh=(348,19,248,144)。框含背景，未分别定位每根绳子；不外推为全25帧跟踪ROI。",
     "assistant_input_checks": {
@@ -142,7 +143,7 @@
         "3": "伞绳"
       },
       "limits": "以上为给定VDA量化视差，不是真实米制深度；伞绳与人物预测差异是输入线索，未证明具体误差机制",
-      "next_check": "已收到用户头顶多根绳子第0帧整体ROI；下一步由用户查看既有六方法同帧同位置结果。细绳逐根/标注相交统计尚未针对此新ROI重算，旧6框150行不可当成本框统计。"
+      "next_check": "已收到第0帧匿名编号方法对照：用户认为P04/ATB较清楚，其余较模糊。保留为ATB相对弱点假设的反向证据；可继续第二批B1，待汇总后再决定最小诊断，不追加推理。"
     },
     "followup_observations": [
       {
@@ -162,6 +163,26 @@
         "user_quote": "主要是头顶的这好几根绳子，实际上基本全程都是模糊的",
         "temporal_scope": "用户描述基本全程；未逐帧列出异常帧，不写成25/25已逐帧验证",
         "limits": "持续模糊不是闪烁证据；ROI仅第0帧确认；六方法同位置视觉比较尚未反馈；不确认几何错误或ATB独有机制"
+      },
+      {
+        "recorded_on": "2026-10-14",
+        "source": "用户在请求揭示编号映射前的直接反馈及第0帧对照截图",
+        "review_package": "B19-B2",
+        "frame_id": 0,
+        "ROI_description": "头顶上方多根绳子；本次截图未显示数值坐标，不将上一张ROI坐标直接作为本次确认坐标",
+        "user_quote": "基本只有P04比较清楚，其他的都很模糊，这里的P几分别是什么",
+        "anonymous_comparison": "基本只有P04比较清楚，其他都很模糊",
+        "method_mapping_source": "outputs/any2bokeh-failure-analysis-20261009/B19-input-check-20261014/method-mapping.json",
+        "method_mapping": {
+          "P01": "DeepLens",
+          "P02": "BokehMe",
+          "P03": "BokehDiff",
+          "P04": "Any-to-Bokeh",
+          "P05": "Dr.Bokeh",
+          "P06": "MPIB"
+        },
+        "mapping_disclosure": "本条反馈先于本轮助手揭示编号；后续反馈需与此区分。不声称此前所有观看完全盲法。",
+        "limits": "截图显示P04/P06/P02，其他方法的判断保留为用户口述；未将第0帧对比外推为全25帧各方法排序。相对更清楚不等于与输入等价或所有绳子完整恢复；仍无真实几何/Bokeh GT或因果验证。"
       }
     ]
   },
