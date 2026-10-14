@@ -267,5 +267,46 @@
       "scope": "原始标注和VDA视差第12帧的CPU核查；不是对用户未给帧号截图的精确匹配"
     },
     "是否有halo/颜色污染/细节损坏": "用户报告车顶细结构被模糊；halo及颜色污染未确认"
+  },
+  {
+    "dataset": "DAVIS",
+    "scene_id": "drift-turn",
+    "source_group": "DAVIS:drift-turn",
+    "split": "exploration",
+    "sample_id": "B24",
+    "package": "B1",
+    "frame_id_or_transition_id": "12",
+    "ROI_xywh": "",
+    "actual_view_mode": "用户提供视频第12/24帧输入/ATB对照截图；实际播放速度及其他观看方式未说明",
+    "user_observation": "用户认为前景虚化比较好，但背景人物及后面墙体文字基本没有明显虚化。",
+    "severity": "待用户确认",
+    "confidence": "待用户确认",
+    "normal_motion_or_reasonable_defocus": "待进一步复核；助手输入核查显示前后景名义离焦量相差较大，与用户所述现象相容",
+    "similar_in_input_or_GT": "用户提供输入RGB/ATB对照；DAVIS无paired bokeh GT",
+    "normal_control": "",
+    "notes": "保留正向观察及背景弱虚化疑问，不只记录负面现象。当前不可直接归为模型漏虚化；不改变K/焦点或原输出。",
+    "视觉是否异常": "前景获用户正向评价；背景虚化不明显，异常性质待核实",
+    "是否闪烁": "未报告",
+    "是否有halo/颜色污染/细节损坏": "用户未报告上述类型；报告背景人物/广告文字虚化不明显",
+    "视觉自然程度": "前景虚化用户认为较好；整体评价未明确",
+    "人工严重程度": "待用户确认",
+    "是否属于感知失败": "未确认模型失败；需区分控制要求与用户期望",
+    "是否视觉复核通过": "尚未完成B1/B2复核",
+    "record_id": "B24-B1-chat-001",
+    "recorded_on": "2026-10-14",
+    "ROI_description": "近处前景与远处人物、墙面广告文字；各区域准确ROI未由用户指定",
+    "actual_playback_rate": "",
+    "positive_observation": "用户明确肯定本片段前景的虚化效果。",
+    "user_original_quotes": [
+      "这里的前景虚化的比较好，但是背景的人，后面的墙体上面的字等感觉基本没什么虚化，你看下"
+    ],
+    "visual_observer": "user",
+    "recorded_by": "assistant",
+    "observation_source": "本对话用户直接反馈及所附第12帧截图；助手经授权代录",
+    "review_status": "PARTIAL_USER_OBSERVATION_PENDING_LOCALIZATION_AND_B2",
+    "assistant_input_checks": {
+      "record": "03_实验记录/records/any2bokeh-failure-analysis-20261009-B24-input-diagnosis.json",
+      "scope": "frame12原始标注/焦点/VDA输入的CPU统计，不是实际输出模糊半径测量"
+    }
   }
 ]

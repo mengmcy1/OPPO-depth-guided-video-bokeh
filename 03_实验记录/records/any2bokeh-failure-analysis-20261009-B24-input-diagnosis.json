@@ -1,0 +1,163 @@
+{
+  "scene_id": "drift-turn",
+  "dataset": "DAVIS",
+  "sample_id": "B24",
+  "frame": 12,
+  "K": 16,
+  "focus": {
+    "frame": 12,
+    "file": "00012_zf_0.15923.png",
+    "focus": 0.15923,
+    "focus_unrounded": 0.15922977006427852,
+    "quantized_min": 0,
+    "quantized_max": 180
+  },
+  "statistics": [
+    {
+      "region": "racecar",
+      "assistant_ROI_xywh": [
+        151,
+        178,
+        199,
+        110
+      ],
+      "annotation_intersection": true,
+      "pixel_count": 65335,
+      "d_median": 0.1607843137254902,
+      "d_p10_p90": [
+        0.15294117647058825,
+        0.16470588235294117
+      ],
+      "nominal_radius_median_px": 0.08761411764705862,
+      "nominal_radius_p10_p90_px": [
+        0.024869019607843157,
+        0.15035921568627453
+      ]
+    },
+    {
+      "region": "near_marker_3",
+      "assistant_ROI_xywh": [
+        474,
+        341,
+        126,
+        170
+      ],
+      "annotation_intersection": false,
+      "pixel_count": 75840,
+      "d_median": 0.5607843137254902,
+      "d_p10_p90": [
+        0.5490196078431373,
+        0.5686274509803921
+      ],
+      "nominal_radius_median_px": 6.4248690196078435,
+      "nominal_radius_p10_p90_px": [
+        6.236633725490197,
+        6.550359215686274
+      ]
+    },
+    {
+      "region": "spectators",
+      "assistant_ROI_xywh": [
+        262,
+        112,
+        480,
+        69
+      ],
+      "annotation_intersection": false,
+      "pixel_count": 117130,
+      "d_median": 0.09803921568627451,
+      "d_p10_p90": [
+        0.08627450980392157,
+        0.10980392156862745
+      ],
+      "nominal_radius_median_px": 0.979052549019608,
+      "nominal_radius_p10_p90_px": [
+        0.790817254901961,
+        1.167287843137255
+      ]
+    },
+    {
+      "region": "wall_POTENZA",
+      "assistant_ROI_xywh": [
+        519,
+        208,
+        189,
+        61
+      ],
+      "annotation_intersection": false,
+      "pixel_count": 40825,
+      "d_median": 0.12941176470588237,
+      "d_p10_p90": [
+        0.12156862745098039,
+        0.12941176470588237
+      ],
+      "nominal_radius_median_px": 0.4770917647058823,
+      "nominal_radius_p10_p90_px": [
+        0.4770917647058823,
+        0.6025819607843139
+      ]
+    },
+    {
+      "region": "wall_MONSTER",
+      "assistant_ROI_xywh": [
+        808,
+        197,
+        170,
+        67
+      ],
+      "annotation_intersection": false,
+      "pixel_count": 40194,
+      "d_median": 0.1450980392156863,
+      "d_p10_p90": [
+        0.13725490196078433,
+        0.14901960784313725
+      ],
+      "nominal_radius_median_px": 0.22611137254901958,
+      "nominal_radius_p10_p90_px": [
+        0.16336627450980412,
+        0.35160156862745096
+      ]
+    },
+    {
+      "region": "near_road",
+      "assistant_ROI_xywh": [
+        225,
+        427,
+        205,
+        101
+      ],
+      "annotation_intersection": false,
+      "pixel_count": 73340,
+      "d_median": 0.5019607843137255,
+      "d_p10_p90": [
+        0.4235294117647059,
+        0.5764705882352941
+      ],
+      "nominal_radius_median_px": 5.483692549019608,
+      "nominal_radius_p10_p90_px": [
+        4.228790588235293,
+        6.675849411764705
+      ]
+    }
+  ],
+  "recorded_on": "2026-10-14",
+  "sources": {
+    "focus": "data/processed/davis2016-v2/sequences/drift-turn/geometry.json",
+    "disparity": "data/processed/davis2016-v2/sequences/drift-turn/disparity/00012_zf_0.15923.png",
+    "annotation": "data/raw/DAVIS-2017/DAVIS/Annotations/Full-Resolution/drift-turn/00012.png",
+    "RGB": "outputs/any2bokeh-failure-analysis-20261009/display-input/B24/00012.png",
+    "protocol": "configs/davis-eval-v2.json"
+  },
+  "focus_target": "Racecar original nonzero annotation; q/255 mean=0.1592297700642785, rounded0.15923",
+  "analysis_scope": "CPU-only input statistics. Screenshot header frame12 and input scene content identify B24/drift-turn. No model inference, no B2 outputs or held-out data, no assistant perceptual verdict.",
+  "ROI_protocol": "Assistant-selected rectangles in1024x576 input display, mapped by floor/ceil to1920x1080 native disparity; racecar intersected with nonzero source annotation. Other rectangles are region samples, not semantic segmentation or user-confirmed ROI.",
+  "nominal_radius_definition": "16*abs(d-0.15923), d=PNG8/255; nominal input control only, not measured output blur or metric depth.",
+  "interpretation": "Given disparity places far people and wall text close to racecar focus in disparity units, while near marker/road differ much more. User-described strong near defocus and weak far defocus are compatible with these controls; this does not prove physical depth accuracy or complete model fidelity.",
+  "limitations": [
+    "No real depth or paired bokeh GT.",
+    "Whole-image perceptual satisfaction is user-reported, not decided by assistant.",
+    "Rectangles are provisional input diagnostic samples; RGB and conditioning resize may influence edges.",
+    "One-frame input checks do not establish temporal behavior.",
+    "Do not tune K/focus or modify frozen outputs to satisfy this observation."
+  ]
+}
