@@ -143,5 +143,87 @@
       "limits": "以上为给定VDA量化视差，不是真实米制深度；伞绳与人物预测差异是输入线索，未证明具体误差机制",
       "next_check": "用户分别定位靠近手肩与上方细线ROI；后续查输入深度与固定方法对照"
     }
+  },
+  {
+    "dataset": "DAVIS",
+    "scene_id": "stroller",
+    "source_group": "DAVIS:stroller",
+    "split": "exploration",
+    "sample_id": "B20",
+    "package": "B1",
+    "frame_id_or_transition_id": "24",
+    "ROI_xywh": "",
+    "actual_view_mode": "用户提供视频第24/24帧对照截图；实际播放倍速与其他观看方式未说明",
+    "user_observation": "用户认为人物鞋子似乎被虚化。",
+    "severity": "待用户确认",
+    "confidence": "待用户确认",
+    "normal_motion_or_reasonable_defocus": "待进一步核验输入离焦与实际深度关系",
+    "similar_in_input_or_GT": "用户提供输入RGB/ATB对照；DAVIS无paired bokeh GT",
+    "normal_control": "",
+    "notes": "两处观察独立记录；助手根据用户请求做输入CPU数值核查，不替用户确认观感或严重程度，不由单帧推断闪烁。",
+    "视觉是否异常": "用户报告疑似虚化异常，原因未确认",
+    "是否闪烁": "未单独报告",
+    "是否有halo/颜色污染/细节损坏": "用户报告疑似鞋部额外模糊；halo/颜色污染未确认",
+    "视觉自然程度": "待用户确认",
+    "人工严重程度": "待用户确认",
+    "是否属于感知失败": "待进一步复核，未确认模型失败",
+    "是否视觉复核通过": "尚未完成B1/B2复核",
+    "record_id": "B20-B1-chat-001",
+    "recorded_on": "2026-10-14",
+    "ROI_description": "人物鞋部；用户尚未明确成人或孩子、具体哪只鞋及数值ROI",
+    "actual_playback_rate": "",
+    "user_original_quotes": [
+      "这组似乎是人的鞋子被虚化了，还有就是画面最右侧的玻璃似乎没有被虚化"
+    ],
+    "observation_source": "用户在本对话中的直接反馈及所附第24帧截图；助手经授权代录",
+    "visual_observer": "user",
+    "recorded_by": "assistant",
+    "review_status": "PARTIAL_USER_OBSERVATION_PENDING_LOCALIZATION_AND_B2",
+    "assistant_input_checks": {
+      "record": "03_实验记录/records/any2bokeh-failure-analysis-20261009-B20-input-diagnosis.json",
+      "scope": "原始RGB/标注/VDA视差/焦点的CPU诊断；无真实深度或模型重跑",
+      "ROI_note": "诊断JSON中的框由助手选取，仅用于输入核查，不代填用户ROI"
+    }
+  },
+  {
+    "dataset": "DAVIS",
+    "scene_id": "stroller",
+    "source_group": "DAVIS:stroller",
+    "split": "exploration",
+    "sample_id": "B20",
+    "package": "B1",
+    "frame_id_or_transition_id": "24",
+    "ROI_xywh": "",
+    "actual_view_mode": "用户提供视频第24/24帧对照截图；实际播放倍速与其他观看方式未说明",
+    "user_observation": "用户认为画面最右侧的玻璃似乎没有被虚化。",
+    "severity": "待用户确认",
+    "confidence": "待用户确认",
+    "normal_motion_or_reasonable_defocus": "待进一步核验输入离焦与实际深度关系",
+    "similar_in_input_or_GT": "用户提供输入RGB/ATB对照；DAVIS无paired bokeh GT",
+    "normal_control": "",
+    "notes": "两处观察独立记录；助手根据用户请求做输入CPU数值核查，不替用户确认观感或严重程度，不由单帧推断闪烁。",
+    "视觉是否异常": "用户报告疑似虚化异常，原因未确认",
+    "是否闪烁": "未单独报告",
+    "是否有halo/颜色污染/细节损坏": "用户报告右侧玻璃疑似未虚化；其他类型未确认",
+    "视觉自然程度": "待用户确认",
+    "人工严重程度": "待用户确认",
+    "是否属于感知失败": "待进一步复核，未确认模型失败",
+    "是否视觉复核通过": "尚未完成B1/B2复核",
+    "record_id": "B20-B1-chat-002",
+    "recorded_on": "2026-10-14",
+    "ROI_description": "最右侧玻璃/橱窗区域，精确ROI待用户确认",
+    "actual_playback_rate": "",
+    "user_original_quotes": [
+      "这组似乎是人的鞋子被虚化了，还有就是画面最右侧的玻璃似乎没有被虚化"
+    ],
+    "observation_source": "用户在本对话中的直接反馈及所附第24帧截图；助手经授权代录",
+    "visual_observer": "user",
+    "recorded_by": "assistant",
+    "review_status": "PARTIAL_USER_OBSERVATION_PENDING_LOCALIZATION_AND_B2",
+    "assistant_input_checks": {
+      "record": "03_实验记录/records/any2bokeh-failure-analysis-20261009-B20-input-diagnosis.json",
+      "scope": "原始RGB/标注/VDA视差/焦点的CPU诊断；无真实深度或模型重跑",
+      "ROI_note": "诊断JSON中的框由助手选取，仅用于输入核查，不代填用户ROI"
+    }
   }
 ]
