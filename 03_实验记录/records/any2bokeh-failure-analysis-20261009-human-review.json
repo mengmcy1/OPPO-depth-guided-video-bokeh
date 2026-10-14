@@ -97,9 +97,9 @@
     "sample_id": "B19",
     "package": "B1",
     "frame_id_or_transition_id": "0",
-    "ROI_xywh": "",
-    "actual_view_mode": "用户提供第0帧同步PNG对照截图；是否另看视频及倍速未说明",
-    "user_observation": "用户指出滑翔伞绳/操纵绳被虚化，询问其合理性，并认为伞与人物可能深度接近。",
+    "ROI_xywh": "348,19,248,144",
+    "actual_view_mode": "用户提供专项输入查看器第0帧同步PNG、200%最近邻ROI截图；同时口述基本全程模糊，具体播放倍速未说明",
+    "user_observation": "用户确认主要是头顶上方多根绳子，观察为基本全程模糊；第0帧整体ROI已定位。",
     "severity": "待用户确认",
     "confidence": "待用户确认",
     "normal_motion_or_reasonable_defocus": "用户提出与人物深度接近的疑问；真实深度尚未验证",
@@ -118,12 +118,13 @@
     "observation_source": "用户在本对话中的直接反馈及所附截图；助手经授权代录",
     "visual_observer": "user",
     "recorded_by": "assistant",
-    "review_status": "PARTIAL_USER_OBSERVATION_PENDING_LOCALIZATION_AND_B2",
+    "review_status": "USER_LOCALIZED_UPPER_ROPES_PERSISTENT_BLUR_PENDING_B2",
     "actual_playback_rate": "",
     "user_original_quotes": [
-      "这里的降落伞的线柄被虚化是合理的吗，降落伞应该和人是差不多深度的吧"
+      "这里的降落伞的线柄被虚化是合理的吗，降落伞应该和人是差不多深度的吧",
+      "主要是头顶的这好几根绳子，实际上基本全程都是模糊的"
     ],
-    "ROI_description": "伞绳/操纵绳；尚未分别定位手肩附近与上方细线",
+    "ROI_description": "用户确认第0帧头顶上方多根绳子的整体定位框；显示坐标1024×576，xywh=(348,19,248,144)。框含背景，未分别定位每根绳子；不外推为全25帧跟踪ROI。",
     "assistant_input_checks": {
       "source": "data/processed/davis2016-v2/sequences/paragliding-launch/geometry.json；data/raw/DAVIS-2017/DAVIS/Annotations/Full-Resolution/paragliding-launch/00000.png",
       "frame": 0,
@@ -141,8 +142,28 @@
         "3": "伞绳"
       },
       "limits": "以上为给定VDA量化视差，不是真实米制深度；伞绳与人物预测差异是输入线索，未证明具体误差机制",
-      "next_check": "用户分别定位靠近手肩与上方细线ROI；后续查输入深度与固定方法对照"
-    }
+      "next_check": "已收到用户头顶多根绳子第0帧整体ROI；下一步由用户查看既有六方法同帧同位置结果。细绳逐根/标注相交统计尚未针对此新ROI重算，旧6框150行不可当成本框统计。"
+    },
+    "followup_observations": [
+      {
+        "recorded_on": "2026-10-14",
+        "source": "用户聊天原话及专项查看器截图",
+        "frame_id": 0,
+        "ROI_xywh": [
+          348,
+          19,
+          248,
+          144
+        ],
+        "coordinate_grid": [
+          1024,
+          576
+        ],
+        "user_quote": "主要是头顶的这好几根绳子，实际上基本全程都是模糊的",
+        "temporal_scope": "用户描述基本全程；未逐帧列出异常帧，不写成25/25已逐帧验证",
+        "limits": "持续模糊不是闪烁证据；ROI仅第0帧确认；六方法同位置视觉比较尚未反馈；不确认几何错误或ATB独有机制"
+      }
+    ]
   },
   {
     "dataset": "DAVIS",
