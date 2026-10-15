@@ -1,0 +1,12 @@
+{
+ "scene":"car-turn", "source_frame":22, "context_frames":25, "K":16,
+ "output":"outputs/any2bokeh-failure-analysis-20261009/B33-geometry-diagnosis-20261015",
+ "record":"03_实验记录/records/any2bokeh-B33-causal-diagnosis-20261015.json",
+ "variants":["native","native_repeat","rope_post_reference","translated_grass_delta","focus_hold_frame1"],
+ "mask_rule":"On frame22 RGB only: fit straight guide through accepted R1/R2/R4 centers, trace brightness maximum within+/-2 normal pixels; keep contrast>=10 vs two offsets+/-8; width3 native pixels. Restrict between tracked posts with12-native-pixel margins. This new single-frame RGB mask does not impute missing historical R3 tracking.",
+ "target_rule":"Linearly interpolate predicted post-control median disparity along projected x, using frame22 tracked P-white and P-dark. A straight-rope inverse-depth consistency approximation, not measured geometry; post estimates and rope sag may be wrong.",
+ "control_translation_native_y":16,
+ "focus_control":"Only frame22 filename focus changed to frame1's frozen focus; original disparity unchanged. Diagnostic control, not proposed tracking protocol.",
+ "fixed":["RGB","K16","original model/precision","saved pre-car-turn RNG","per-call CPU generator0","25frame context"],
+ "limits":["One intervened frame; no cross-source validation", "Unchanged original predictions", "New visual judgments require user", "No radius sweep or output-based ROI selection"]
+}

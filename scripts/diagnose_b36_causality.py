@@ -49,6 +49,7 @@ def prepare(c,out):
  info['existing_adapter_audits_frame0']=audits;save(out/'prepared.json',info);print('PREPARED',target,fh,'water_clip',info['water_clipped_pixels'],flush=True)
 
 def infer(c,out):
+ assert (out/'prepared.json').is_file(), 'Complete CPU preparation before inference'
  import torch
  assert os.environ.get('CUDA_VISIBLE_DEVICES')=='0';torch.set_num_threads(4);cv2.setNumThreads(1)
  repo=ROOT.parent/'any-to-bokeh';p=read(ROOT/'configs/davis-baselines.json');assert subprocess.check_output(['git','-C',str(repo),'rev-parse','HEAD'],text=True).strip()==p['any2bokeh']['author_commit']
@@ -73,7 +74,10 @@ def infer(c,out):
   diffs={k:float((batch[k]-basebatch[k]).abs().max()) for k in ['pixel_values','coc','mpi_mask','k','weight']}
   for k in ['pixel_values','k','weight']:assert diffs[k]==0
   for k in ['coc','mpi_mask']:
-   err=(batch[k]-basebatch[k]).abs();err[0,0]=0;assert torch.count_nonzero(err)==0
+   err=(batch[k]-basebatch[k]).abs()
+   for group,start_frame in enumerate(range(0,24,4)):
+    if start_frame<=c['source_frame']<min(start_frame+8,25):err[group,c['source_frame']-start_frame]=0
+   assert torch.count_nonzero(err)==0
   cache=None;frames=[];torch.cuda.reset_peak_memory_stats();start=time.monotonic()
   for i in range(0,6,2):
    tensors={k:batch[k][i:i+2].to('cuda',dtype=torch.float32 if k in ['pixel_values','coc'] else torch.float16) for k in ['pixel_values','coc','k','mpi_mask','weight']}

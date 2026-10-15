@@ -42,9 +42,16 @@
       "hypothesis": "头部局部几何条件是导致细节抑制的贡献因素。",
       "new_input_evidence": "head-to-neck头部对输入MAE7.417→2.575，梯度比0.429→0.836；同改变量水面对照头部变化仅0.016。focus移到头部也改变颈/身/背景。详见any2bokeh-B36-causal-diagnosis-20261015.json。",
       "missing": "新输出用户观感、真实几何、跨来源与时序验证；诊断值不是真值且未拆分CoC/MPI路径。"
+    },
+    {
+      "case": "B33第22帧受控诊断",
+      "known_fact": "输入原图相近而输出22更糊；离焦增长在现有几何下主要由跟焦改变驱动。",
+      "hypothesis": "细绳局部几何数值偏低与跟焦敏感性共同参与；不能假定轮廓完全消失。",
+      "new_input_evidence": "780native像素窄带采用两端立柱近似参考，R2梯度比0.130→0.132，未显著恢复；仅focus回帧1则0.302，但汽车梯度比0.769→0.433。",
+      "missing": "新输出用户复核；真实几何、细线条件空间支持与上下文作用、跨来源验证。"
     }
   ],
-  "status": "B36单帧局部条件干预完成，结果支持条件依赖；新输出待用户复核，真实几何/跨来源结论未验证",
+  "status": "B36主诊断采用局部深度偏差，配对修改获用户偏好；B33新增分解与干预，窄带修正弱、跟焦敏感性明确",
   "preserved_counterevidence": "B19用户认为ATB相对更清楚的旧反馈保留；本轮未再分析B19",
   "protocol_boundaries": [
     "Existing exploration data only",
@@ -53,5 +60,5 @@
     "All new perceptual judgments are user-only"
   ],
   "updated_on": "2026-10-15",
-  "update_scope": "B36局部受控诊断；B33原CPU行历史保留，最新用户反馈见human-review与中央进度。"
+  "update_scope": "B33恢复受控诊断及B36主诊断写入；详细结果见20261015两个causal-diagnosis记录。"
 }

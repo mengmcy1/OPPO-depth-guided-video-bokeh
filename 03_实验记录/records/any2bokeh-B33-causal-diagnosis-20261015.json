@@ -1,0 +1,2433 @@
+{
+  "config": {
+    "scene": "car-turn",
+    "source_frame": 22,
+    "context_frames": 25,
+    "K": 16,
+    "output": "outputs/any2bokeh-failure-analysis-20261009/B33-geometry-diagnosis-20261015",
+    "record": "03_实验记录/records/any2bokeh-B33-causal-diagnosis-20261015.json",
+    "variants": [
+      "native",
+      "native_repeat",
+      "rope_post_reference",
+      "translated_grass_delta",
+      "focus_hold_frame1"
+    ],
+    "mask_rule": "On frame22 RGB only: fit straight guide through accepted R1/R2/R4 centers, trace brightness maximum within+/-2 normal pixels; keep contrast>=10 vs two offsets+/-8; width3 native pixels. Restrict between tracked posts with12-native-pixel margins. This new single-frame RGB mask does not impute missing historical R3 tracking.",
+    "target_rule": "Linearly interpolate predicted post-control median disparity along projected x, using frame22 tracked P-white and P-dark. A straight-rope inverse-depth consistency approximation, not measured geometry; post estimates and rope sag may be wrong.",
+    "control_translation_native_y": 16,
+    "focus_control": "Only frame22 filename focus changed to frame1's frozen focus; original disparity unchanged. Diagnostic control, not proposed tracking protocol.",
+    "fixed": [
+      "RGB",
+      "K16",
+      "original model/precision",
+      "saved pre-car-turn RNG",
+      "per-call CPU generator0",
+      "25frame context"
+    ],
+    "limits": [
+      "One intervened frame; no cross-source validation",
+      "Unchanged original predictions",
+      "New visual judgments require user",
+      "No radius sweep or output-based ROI selection"
+    ]
+  },
+  "input_audit": {
+    "config": {
+      "scene": "car-turn",
+      "source_frame": 22,
+      "context_frames": 25,
+      "K": 16,
+      "output": "outputs/any2bokeh-failure-analysis-20261009/B33-geometry-diagnosis-20261015",
+      "record": "03_实验记录/records/any2bokeh-B33-causal-diagnosis-20261015.json",
+      "variants": [
+        "native",
+        "native_repeat",
+        "rope_post_reference",
+        "translated_grass_delta",
+        "focus_hold_frame1"
+      ],
+      "mask_rule": "On frame22 RGB only: fit straight guide through accepted R1/R2/R4 centers, trace brightness maximum within+/-2 normal pixels; keep contrast>=10 vs two offsets+/-8; width3 native pixels. Restrict between tracked posts with12-native-pixel margins. This new single-frame RGB mask does not impute missing historical R3 tracking.",
+      "target_rule": "Linearly interpolate predicted post-control median disparity along projected x, using frame22 tracked P-white and P-dark. A straight-rope inverse-depth consistency approximation, not measured geometry; post estimates and rope sag may be wrong.",
+      "control_translation_native_y": 16,
+      "focus_control": "Only frame22 filename focus changed to frame1's frozen focus; original disparity unchanged. Diagnostic control, not proposed tracking protocol.",
+      "fixed": [
+        "RGB",
+        "K16",
+        "original model/precision",
+        "saved pre-car-turn RNG",
+        "per-call CPU generator0",
+        "25frame context"
+      ],
+      "limits": [
+        "One intervened frame; no cross-source validation",
+        "Unchanged original predictions",
+        "New visual judgments require user",
+        "No radius sweep or output-based ROI selection"
+      ]
+    },
+    "anchors": {
+      "P-white": 0.38823529411764707,
+      "P-dark": 0.25882352941176473
+    },
+    "post_x_native": [
+      1017,
+      1306
+    ],
+    "guide_slope": -0.24357880468949927,
+    "guide_intercept": 930.8121154320028,
+    "trace": [
+      {
+        "native_x": 1029,
+        "native_y": 680,
+        "contrast": 10.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1030,
+        "native_y": 680,
+        "contrast": 8.5,
+        "accepted": false
+      },
+      {
+        "native_x": 1031,
+        "native_y": 678,
+        "contrast": 3.0,
+        "accepted": false
+      },
+      {
+        "native_x": 1032,
+        "native_y": 677,
+        "contrast": 15.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1033,
+        "native_y": 677,
+        "contrast": 7.5,
+        "accepted": false
+      },
+      {
+        "native_x": 1034,
+        "native_y": 677,
+        "contrast": 2.5,
+        "accepted": false
+      },
+      {
+        "native_x": 1035,
+        "native_y": 677,
+        "contrast": 3.0,
+        "accepted": false
+      },
+      {
+        "native_x": 1036,
+        "native_y": 676,
+        "contrast": 51.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1037,
+        "native_y": 676,
+        "contrast": 41.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1038,
+        "native_y": 676,
+        "contrast": 27.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1039,
+        "native_y": 676,
+        "contrast": 20.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1040,
+        "native_y": 675,
+        "contrast": 31.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1041,
+        "native_y": 675,
+        "contrast": 19.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1042,
+        "native_y": 678,
+        "contrast": 12.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1043,
+        "native_y": 678,
+        "contrast": 17.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1044,
+        "native_y": 675,
+        "contrast": 21.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1045,
+        "native_y": 674,
+        "contrast": 34.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1046,
+        "native_y": 674,
+        "contrast": 25.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1047,
+        "native_y": 674,
+        "contrast": 15.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1048,
+        "native_y": 677,
+        "contrast": 11.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1049,
+        "native_y": 673,
+        "contrast": 37.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1050,
+        "native_y": 673,
+        "contrast": 40.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1051,
+        "native_y": 673,
+        "contrast": 48.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1052,
+        "native_y": 673,
+        "contrast": 56.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1053,
+        "native_y": 673,
+        "contrast": 60.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1054,
+        "native_y": 672,
+        "contrast": 74.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1055,
+        "native_y": 672,
+        "contrast": 87.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1056,
+        "native_y": 672,
+        "contrast": 84.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1057,
+        "native_y": 672,
+        "contrast": 81.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1058,
+        "native_y": 671,
+        "contrast": 66.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1059,
+        "native_y": 671,
+        "contrast": 55.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1060,
+        "native_y": 671,
+        "contrast": 56.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1061,
+        "native_y": 671,
+        "contrast": 53.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1062,
+        "native_y": 670,
+        "contrast": 55.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1063,
+        "native_y": 670,
+        "contrast": 60.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1064,
+        "native_y": 670,
+        "contrast": 62.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1065,
+        "native_y": 670,
+        "contrast": 72.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1066,
+        "native_y": 670,
+        "contrast": 79.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1067,
+        "native_y": 669,
+        "contrast": 90.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1068,
+        "native_y": 669,
+        "contrast": 82.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1069,
+        "native_y": 669,
+        "contrast": 65.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1070,
+        "native_y": 669,
+        "contrast": 59.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1071,
+        "native_y": 669,
+        "contrast": 52.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1072,
+        "native_y": 668,
+        "contrast": 49.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1073,
+        "native_y": 668,
+        "contrast": 54.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1074,
+        "native_y": 668,
+        "contrast": 56.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1075,
+        "native_y": 668,
+        "contrast": 60.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1076,
+        "native_y": 668,
+        "contrast": 63.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1077,
+        "native_y": 667,
+        "contrast": 73.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1078,
+        "native_y": 667,
+        "contrast": 94.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1079,
+        "native_y": 667,
+        "contrast": 94.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1080,
+        "native_y": 667,
+        "contrast": 99.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1081,
+        "native_y": 667,
+        "contrast": 81.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1082,
+        "native_y": 667,
+        "contrast": 50.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1083,
+        "native_y": 667,
+        "contrast": 24.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1084,
+        "native_y": 666,
+        "contrast": 17.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1085,
+        "native_y": 666,
+        "contrast": 44.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1086,
+        "native_y": 666,
+        "contrast": 63.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1087,
+        "native_y": 666,
+        "contrast": 65.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1088,
+        "native_y": 665,
+        "contrast": 85.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1089,
+        "native_y": 665,
+        "contrast": 91.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1090,
+        "native_y": 665,
+        "contrast": 88.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1091,
+        "native_y": 665,
+        "contrast": 67.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1092,
+        "native_y": 665,
+        "contrast": 50.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1093,
+        "native_y": 665,
+        "contrast": 33.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1094,
+        "native_y": 664,
+        "contrast": 26.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1095,
+        "native_y": 664,
+        "contrast": 19.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1096,
+        "native_y": 664,
+        "contrast": 35.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1097,
+        "native_y": 664,
+        "contrast": 44.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1098,
+        "native_y": 664,
+        "contrast": 45.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1099,
+        "native_y": 663,
+        "contrast": 49.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1100,
+        "native_y": 663,
+        "contrast": 61.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1101,
+        "native_y": 663,
+        "contrast": 72.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1102,
+        "native_y": 663,
+        "contrast": 59.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1103,
+        "native_y": 662,
+        "contrast": 37.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1104,
+        "native_y": 662,
+        "contrast": 33.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1105,
+        "native_y": 662,
+        "contrast": 27.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1106,
+        "native_y": 662,
+        "contrast": 31.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1107,
+        "native_y": 662,
+        "contrast": 28.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1108,
+        "native_y": 661,
+        "contrast": 27.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1109,
+        "native_y": 661,
+        "contrast": 37.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1110,
+        "native_y": 661,
+        "contrast": 42.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1111,
+        "native_y": 660,
+        "contrast": 46.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1112,
+        "native_y": 660,
+        "contrast": 57.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1113,
+        "native_y": 660,
+        "contrast": 55.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1114,
+        "native_y": 660,
+        "contrast": 55.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1115,
+        "native_y": 660,
+        "contrast": 42.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1116,
+        "native_y": 660,
+        "contrast": 20.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1117,
+        "native_y": 659,
+        "contrast": 14.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1118,
+        "native_y": 659,
+        "contrast": 28.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1119,
+        "native_y": 659,
+        "contrast": 35.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1120,
+        "native_y": 659,
+        "contrast": 44.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1121,
+        "native_y": 659,
+        "contrast": 56.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1122,
+        "native_y": 659,
+        "contrast": 58.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1123,
+        "native_y": 658,
+        "contrast": 59.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1124,
+        "native_y": 658,
+        "contrast": 63.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1125,
+        "native_y": 658,
+        "contrast": 60.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1126,
+        "native_y": 658,
+        "contrast": 43.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1127,
+        "native_y": 658,
+        "contrast": 25.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1128,
+        "native_y": 657,
+        "contrast": 25.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1129,
+        "native_y": 657,
+        "contrast": 28.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1130,
+        "native_y": 657,
+        "contrast": 25.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1131,
+        "native_y": 657,
+        "contrast": 27.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1132,
+        "native_y": 656,
+        "contrast": 42.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1133,
+        "native_y": 656,
+        "contrast": 52.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1134,
+        "native_y": 656,
+        "contrast": 56.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1135,
+        "native_y": 656,
+        "contrast": 57.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1136,
+        "native_y": 655,
+        "contrast": 55.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1137,
+        "native_y": 655,
+        "contrast": 51.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1138,
+        "native_y": 655,
+        "contrast": 32.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1139,
+        "native_y": 654,
+        "contrast": 14.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1140,
+        "native_y": 654,
+        "contrast": 18.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1141,
+        "native_y": 654,
+        "contrast": 25.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1142,
+        "native_y": 654,
+        "contrast": 33.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1143,
+        "native_y": 654,
+        "contrast": 45.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1144,
+        "native_y": 654,
+        "contrast": 55.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1145,
+        "native_y": 654,
+        "contrast": 50.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1146,
+        "native_y": 653,
+        "contrast": 66.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1147,
+        "native_y": 653,
+        "contrast": 70.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1148,
+        "native_y": 653,
+        "contrast": 58.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1149,
+        "native_y": 653,
+        "contrast": 44.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1150,
+        "native_y": 652,
+        "contrast": 35.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1151,
+        "native_y": 652,
+        "contrast": 21.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1152,
+        "native_y": 652,
+        "contrast": 12.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1153,
+        "native_y": 651,
+        "contrast": 21.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1154,
+        "native_y": 651,
+        "contrast": 45.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1155,
+        "native_y": 651,
+        "contrast": 55.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1156,
+        "native_y": 651,
+        "contrast": 44.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1157,
+        "native_y": 651,
+        "contrast": 27.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1158,
+        "native_y": 650,
+        "contrast": 21.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1159,
+        "native_y": 651,
+        "contrast": 23.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1160,
+        "native_y": 650,
+        "contrast": 35.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1161,
+        "native_y": 647,
+        "contrast": 30.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1162,
+        "native_y": 647,
+        "contrast": 26.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1163,
+        "native_y": 649,
+        "contrast": 26.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1164,
+        "native_y": 649,
+        "contrast": 40.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1165,
+        "native_y": 649,
+        "contrast": 53.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1166,
+        "native_y": 649,
+        "contrast": 53.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1167,
+        "native_y": 649,
+        "contrast": 47.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1168,
+        "native_y": 648,
+        "contrast": 35.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1169,
+        "native_y": 648,
+        "contrast": 31.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1170,
+        "native_y": 648,
+        "contrast": 44.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1171,
+        "native_y": 648,
+        "contrast": 44.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1172,
+        "native_y": 647,
+        "contrast": 16.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1173,
+        "native_y": 647,
+        "contrast": 27.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1174,
+        "native_y": 647,
+        "contrast": 41.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1175,
+        "native_y": 647,
+        "contrast": 43.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1176,
+        "native_y": 646,
+        "contrast": 32.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1177,
+        "native_y": 646,
+        "contrast": 26.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1178,
+        "native_y": 646,
+        "contrast": 25.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1179,
+        "native_y": 646,
+        "contrast": 31.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1180,
+        "native_y": 645,
+        "contrast": 59.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1181,
+        "native_y": 645,
+        "contrast": 76.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1182,
+        "native_y": 645,
+        "contrast": 77.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1183,
+        "native_y": 645,
+        "contrast": 74.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1184,
+        "native_y": 644,
+        "contrast": 49.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1185,
+        "native_y": 644,
+        "contrast": 25.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1186,
+        "native_y": 644,
+        "contrast": 28.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1187,
+        "native_y": 644,
+        "contrast": 38.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1188,
+        "native_y": 643,
+        "contrast": 41.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1189,
+        "native_y": 643,
+        "contrast": 44.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1190,
+        "native_y": 643,
+        "contrast": 41.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1191,
+        "native_y": 642,
+        "contrast": 47.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1192,
+        "native_y": 642,
+        "contrast": 61.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1193,
+        "native_y": 642,
+        "contrast": 53.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1194,
+        "native_y": 642,
+        "contrast": 51.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1195,
+        "native_y": 642,
+        "contrast": 33.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1196,
+        "native_y": 641,
+        "contrast": 34.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1197,
+        "native_y": 641,
+        "contrast": 41.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1198,
+        "native_y": 641,
+        "contrast": 38.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1199,
+        "native_y": 641,
+        "contrast": 41.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1200,
+        "native_y": 640,
+        "contrast": 47.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1201,
+        "native_y": 640,
+        "contrast": 46.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1202,
+        "native_y": 639,
+        "contrast": 50.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1203,
+        "native_y": 639,
+        "contrast": 63.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1204,
+        "native_y": 639,
+        "contrast": 75.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1205,
+        "native_y": 639,
+        "contrast": 70.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1206,
+        "native_y": 639,
+        "contrast": 55.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1207,
+        "native_y": 639,
+        "contrast": 33.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1208,
+        "native_y": 638,
+        "contrast": 27.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1209,
+        "native_y": 638,
+        "contrast": 42.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1210,
+        "native_y": 638,
+        "contrast": 57.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1211,
+        "native_y": 637,
+        "contrast": 73.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1212,
+        "native_y": 637,
+        "contrast": 86.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1213,
+        "native_y": 637,
+        "contrast": 78.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1214,
+        "native_y": 637,
+        "contrast": 49.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1215,
+        "native_y": 636,
+        "contrast": 38.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1216,
+        "native_y": 636,
+        "contrast": 47.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1217,
+        "native_y": 635,
+        "contrast": 61.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1218,
+        "native_y": 635,
+        "contrast": 84.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1219,
+        "native_y": 635,
+        "contrast": 84.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1220,
+        "native_y": 635,
+        "contrast": 65.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1221,
+        "native_y": 634,
+        "contrast": 44.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1222,
+        "native_y": 634,
+        "contrast": 48.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1223,
+        "native_y": 634,
+        "contrast": 51.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1224,
+        "native_y": 634,
+        "contrast": 55.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1225,
+        "native_y": 633,
+        "contrast": 63.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1226,
+        "native_y": 633,
+        "contrast": 72.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1227,
+        "native_y": 633,
+        "contrast": 76.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1228,
+        "native_y": 633,
+        "contrast": 68.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1229,
+        "native_y": 633,
+        "contrast": 35.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1230,
+        "native_y": 632,
+        "contrast": 26.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1231,
+        "native_y": 632,
+        "contrast": 38.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1232,
+        "native_y": 631,
+        "contrast": 35.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1233,
+        "native_y": 631,
+        "contrast": 62.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1234,
+        "native_y": 631,
+        "contrast": 62.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1235,
+        "native_y": 631,
+        "contrast": 54.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1236,
+        "native_y": 631,
+        "contrast": 63.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1237,
+        "native_y": 631,
+        "contrast": 55.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1238,
+        "native_y": 630,
+        "contrast": 56.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1239,
+        "native_y": 630,
+        "contrast": 69.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1240,
+        "native_y": 629,
+        "contrast": 67.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1241,
+        "native_y": 629,
+        "contrast": 59.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1242,
+        "native_y": 629,
+        "contrast": 46.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1243,
+        "native_y": 628,
+        "contrast": 32.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1244,
+        "native_y": 628,
+        "contrast": 43.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1245,
+        "native_y": 628,
+        "contrast": 59.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1246,
+        "native_y": 628,
+        "contrast": 69.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1247,
+        "native_y": 627,
+        "contrast": 64.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1248,
+        "native_y": 627,
+        "contrast": 51.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1249,
+        "native_y": 627,
+        "contrast": 46.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1250,
+        "native_y": 626,
+        "contrast": 63.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1251,
+        "native_y": 626,
+        "contrast": 83.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1252,
+        "native_y": 626,
+        "contrast": 95.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1253,
+        "native_y": 625,
+        "contrast": 101.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1254,
+        "native_y": 625,
+        "contrast": 90.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1255,
+        "native_y": 625,
+        "contrast": 78.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1256,
+        "native_y": 624,
+        "contrast": 53.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1257,
+        "native_y": 624,
+        "contrast": 55.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1258,
+        "native_y": 624,
+        "contrast": 67.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1259,
+        "native_y": 623,
+        "contrast": 73.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1260,
+        "native_y": 623,
+        "contrast": 75.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1261,
+        "native_y": 623,
+        "contrast": 64.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1262,
+        "native_y": 623,
+        "contrast": 49.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1263,
+        "native_y": 623,
+        "contrast": 39.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1264,
+        "native_y": 623,
+        "contrast": 31.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1265,
+        "native_y": 621,
+        "contrast": 35.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1266,
+        "native_y": 621,
+        "contrast": 61.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1267,
+        "native_y": 621,
+        "contrast": 72.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1268,
+        "native_y": 621,
+        "contrast": 84.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1269,
+        "native_y": 621,
+        "contrast": 71.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1270,
+        "native_y": 621,
+        "contrast": 53.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1271,
+        "native_y": 620,
+        "contrast": 34.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1272,
+        "native_y": 620,
+        "contrast": 31.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1273,
+        "native_y": 619,
+        "contrast": 48.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1274,
+        "native_y": 619,
+        "contrast": 61.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1275,
+        "native_y": 619,
+        "contrast": 59.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1276,
+        "native_y": 618,
+        "contrast": 52.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1277,
+        "native_y": 618,
+        "contrast": 34.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1278,
+        "native_y": 618,
+        "contrast": 17.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1279,
+        "native_y": 617,
+        "contrast": 29.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1280,
+        "native_y": 617,
+        "contrast": 50.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1281,
+        "native_y": 617,
+        "contrast": 55.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1282,
+        "native_y": 617,
+        "contrast": 54.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1283,
+        "native_y": 616,
+        "contrast": 61.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1284,
+        "native_y": 616,
+        "contrast": 49.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1285,
+        "native_y": 616,
+        "contrast": 32.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1286,
+        "native_y": 616,
+        "contrast": 17.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1287,
+        "native_y": 615,
+        "contrast": 49.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1288,
+        "native_y": 615,
+        "contrast": 47.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1289,
+        "native_y": 615,
+        "contrast": 44.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1290,
+        "native_y": 615,
+        "contrast": 39.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1291,
+        "native_y": 614,
+        "contrast": 38.0,
+        "accepted": true
+      },
+      {
+        "native_x": 1292,
+        "native_y": 616,
+        "contrast": 14.5,
+        "accepted": true
+      },
+      {
+        "native_x": 1293,
+        "native_y": 616,
+        "contrast": 13.5,
+        "accepted": true
+      }
+    ],
+    "intervention_pixels": 780,
+    "control_pixels": 780,
+    "clipped_control_pixels": 0,
+    "source_focus": 0.41688,
+    "held_focus": 0.32269,
+    "delta_q_p10_p50_p90": [
+      0.0,
+      13.5,
+      23.0
+    ],
+    "rois": {
+      "R1": [
+        547,
+        337,
+        48,
+        40
+      ],
+      "R2": [
+        584,
+        329,
+        48,
+        40
+      ],
+      "R4": [
+        651,
+        312,
+        48,
+        40
+      ],
+      "car": [
+        750,
+        285,
+        100,
+        100
+      ],
+      "grass": [
+        560,
+        290,
+        60,
+        30
+      ],
+      "road": [
+        560,
+        445,
+        110,
+        55
+      ]
+    },
+    "candidate_input_changes": [
+      {
+        "id": "R1",
+        "original_d_mean": 0.2852785558667911,
+        "reference_d_mean": 0.3627139744786802,
+        "original_nominal_mean": 2.1056231061313415,
+        "reference_nominal_mean": 0.8666564083411138,
+        "modified_fraction": 0.8888888888888888
+      },
+      {
+        "id": "R2",
+        "original_d_mean": 0.2887021475256768,
+        "reference_d_mean": 0.33215063803299083,
+        "original_nominal_mean": 2.050845639589169,
+        "reference_nominal_mean": 1.3556697914721445,
+        "modified_fraction": 0.8253968253968254
+      },
+      {
+        "id": "R4",
+        "original_d_mean": 0.25216308745720517,
+        "reference_d_mean": 0.2758169934640522,
+        "original_nominal_mean": 2.635470600684718,
+        "reference_nominal_mean": 2.257008104575163,
+        "modified_fraction": 0.8571428571428571
+      }
+    ]
+  },
+  "runs": [
+    {
+      "variant": "native",
+      "seconds": 27.070475824177265,
+      "frames": 25,
+      "finite": true,
+      "peak_allocated_GiB": 34.344990730285645,
+      "condition_differences": {
+        "pixel_values": 0.0,
+        "coc": 0.0,
+        "mpi_mask": 0.0,
+        "k": 0.0,
+        "weight": 0.0
+      },
+      "legacy_replay": {
+        "max_byte_error": 1.0,
+        "mean_byte_error": 0.018540717230902778,
+        "different_bytes": 820182
+      }
+    },
+    {
+      "variant": "native_repeat",
+      "seconds": 26.80108019709587,
+      "frames": 25,
+      "finite": true,
+      "peak_allocated_GiB": 34.34634876251221,
+      "condition_differences": {
+        "pixel_values": 0.0,
+        "coc": 0.0,
+        "mpi_mask": 0.0,
+        "k": 0.0,
+        "weight": 0.0
+      },
+      "end_RNG_matches_native": true,
+      "change_per_frame_MAE_RGB8": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_byte_change": 0.0,
+      "repeat_different_bytes": 0
+    },
+    {
+      "variant": "rope_post_reference",
+      "seconds": 27.107375390827656,
+      "frames": 25,
+      "finite": true,
+      "peak_allocated_GiB": 34.346943855285645,
+      "condition_differences": {
+        "pixel_values": 0.0,
+        "coc": 0.19551116228103638,
+        "mpi_mask": 1.0,
+        "k": 0.0,
+        "weight": 0.0
+      },
+      "end_RNG_matches_native": true,
+      "change_per_frame_MAE_RGB8": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.01412059642650463,
+        0.015552662037037037,
+        0.01677166974103009,
+        0.018919768156828703,
+        0.018410011574074073,
+        0.01972565827546296,
+        0.01861854835792824,
+        0.018418488679108797,
+        0.017100016276041668
+      ],
+      "max_byte_change": 1.0
+    },
+    {
+      "variant": "translated_grass_delta",
+      "seconds": 26.837279353290796,
+      "frames": 25,
+      "finite": true,
+      "peak_allocated_GiB": 34.345852851867676,
+      "condition_differences": {
+        "pixel_values": 0.0,
+        "coc": 0.1974964737892151,
+        "mpi_mask": 1.0,
+        "k": 0.0,
+        "weight": 0.0
+      },
+      "end_RNG_matches_native": true,
+      "change_per_frame_MAE_RGB8": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.014126812970196759,
+        0.015419288917824073,
+        0.016381157769097224,
+        0.017258820710358797,
+        0.017441926179108797,
+        0.01852812590422454,
+        0.020070393880208332,
+        0.018592551902488427,
+        0.01738202130353009
+      ],
+      "max_byte_change": 1.0
+    },
+    {
+      "variant": "focus_hold_frame1",
+      "seconds": 27.185753144323826,
+      "frames": 25,
+      "finite": true,
+      "peak_allocated_GiB": 34.344754219055176,
+      "condition_differences": {
+        "pixel_values": 0.0,
+        "coc": 0.1883801817893982,
+        "mpi_mask": 2.0,
+        "k": 0.0,
+        "weight": 0.0
+      },
+      "end_RNG_matches_native": true,
+      "change_per_frame_MAE_RGB8": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.029181586371527776,
+        0.02911094382957176,
+        0.041094179506655094,
+        0.09581728334780093,
+        0.11456298828125,
+        0.16091975459346064,
+        2.0322158248336226,
+        0.1722802056206597,
+        0.11383452238859953
+      ],
+      "max_byte_change": 61.0
+    }
+  ],
+  "region_metrics": [
+    {
+      "variant": "native",
+      "region": "R1",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 6.619791666666667,
+        "gradient_energy_ratio": 0.13233209524156356,
+        "laplacian_energy_ratio": 0.010654324930426699
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "variant": "native",
+      "region": "R2",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 6.392534722222223,
+        "gradient_energy_ratio": 0.12953821343261906,
+        "laplacian_energy_ratio": 0.007965170961281066
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "variant": "native",
+      "region": "R4",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 7.548958333333332,
+        "gradient_energy_ratio": 0.11092889980266929,
+        "laplacian_energy_ratio": 0.007887745683671213
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "variant": "native",
+      "region": "car",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 4.930466666666667,
+        "gradient_energy_ratio": 0.769022288765611,
+        "laplacian_energy_ratio": 0.39436333665924234
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "variant": "native",
+      "region": "grass",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 6.064814814814815,
+        "gradient_energy_ratio": 0.11942878582431629,
+        "laplacian_energy_ratio": 0.004210841383482611
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "variant": "native",
+      "region": "road",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 2.332727272727273,
+        "gradient_energy_ratio": 0.13186673319782152,
+        "laplacian_energy_ratio": 0.016977884589610765
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "variant": "native_repeat",
+      "region": "R1",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 6.619791666666667,
+        "gradient_energy_ratio": 0.13233209524156356,
+        "laplacian_energy_ratio": 0.010654324930426699
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "variant": "native_repeat",
+      "region": "R2",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 6.392534722222223,
+        "gradient_energy_ratio": 0.12953821343261906,
+        "laplacian_energy_ratio": 0.007965170961281066
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "variant": "native_repeat",
+      "region": "R4",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 7.548958333333332,
+        "gradient_energy_ratio": 0.11092889980266929,
+        "laplacian_energy_ratio": 0.007887745683671213
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "variant": "native_repeat",
+      "region": "car",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 4.930466666666667,
+        "gradient_energy_ratio": 0.769022288765611,
+        "laplacian_energy_ratio": 0.39436333665924234
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "variant": "native_repeat",
+      "region": "grass",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 6.064814814814815,
+        "gradient_energy_ratio": 0.11942878582431629,
+        "laplacian_energy_ratio": 0.004210841383482611
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "variant": "native_repeat",
+      "region": "road",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 2.332727272727273,
+        "gradient_energy_ratio": 0.13186673319782152,
+        "laplacian_energy_ratio": 0.016977884589610765
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "variant": "rope_post_reference",
+      "region": "R1",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 6.583159722222222,
+        "gradient_energy_ratio": 0.13558787240956358,
+        "laplacian_energy_ratio": 0.011281382197789645
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.06059027777777778,
+        "gradient_energy_ratio": 1.0246030803189263,
+        "laplacian_energy_ratio": 1.0588547159447137
+      }
+    },
+    {
+      "variant": "rope_post_reference",
+      "region": "R2",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 6.366666666666666,
+        "gradient_energy_ratio": 0.13190020872292907,
+        "laplacian_energy_ratio": 0.008283699318935417
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.05121527777777778,
+        "gradient_energy_ratio": 1.018233965312009,
+        "laplacian_energy_ratio": 1.0399901470040915
+      }
+    },
+    {
+      "variant": "rope_post_reference",
+      "region": "R4",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 7.534722222222221,
+        "gradient_energy_ratio": 0.11216041011205961,
+        "laplacian_energy_ratio": 0.008061577814389147
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.032638888888888856,
+        "gradient_energy_ratio": 1.0111017986438255,
+        "laplacian_energy_ratio": 1.022038252460116
+      }
+    },
+    {
+      "variant": "rope_post_reference",
+      "region": "car",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 4.931266666666668,
+        "gradient_energy_ratio": 0.7689907911511964,
+        "laplacian_energy_ratio": 0.3945444842407476
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.047466666666666664,
+        "gradient_energy_ratio": 0.9999590420006355,
+        "laplacian_energy_ratio": 1.0004593418420684
+      }
+    },
+    {
+      "variant": "rope_post_reference",
+      "region": "grass",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 6.062407407407407,
+        "gradient_energy_ratio": 0.11969860076043146,
+        "laplacian_energy_ratio": 0.004182423891722006
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.020185185185185174,
+        "gradient_energy_ratio": 1.002259211916565,
+        "laplacian_energy_ratio": 0.9932513506986811
+      }
+    },
+    {
+      "variant": "rope_post_reference",
+      "region": "road",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 2.3351515151515154,
+        "gradient_energy_ratio": 0.1318006686877739,
+        "laplacian_energy_ratio": 0.016979706978674028
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.013443526170798898,
+        "gradient_energy_ratio": 0.9994990054849656,
+        "laplacian_energy_ratio": 1.0001073389946578
+      }
+    },
+    {
+      "variant": "translated_grass_delta",
+      "region": "R1",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 6.609375,
+        "gradient_energy_ratio": 0.1324640172227757,
+        "laplacian_energy_ratio": 0.010786530940059236
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.07395833333333332,
+        "gradient_energy_ratio": 1.000996900872546,
+        "laplacian_energy_ratio": 1.012408670703761
+      }
+    },
+    {
+      "variant": "translated_grass_delta",
+      "region": "R2",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 6.375347222222222,
+        "gradient_energy_ratio": 0.13080492150141743,
+        "laplacian_energy_ratio": 0.008217556237385638
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.06545138888888885,
+        "gradient_energy_ratio": 1.0097786439632908,
+        "laplacian_energy_ratio": 1.0316861091031724
+      }
+    },
+    {
+      "variant": "translated_grass_delta",
+      "region": "R4",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 7.548263888888889,
+        "gradient_energy_ratio": 0.11106296290230479,
+        "laplacian_energy_ratio": 0.007916184708510918
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.04687500000000005,
+        "gradient_energy_ratio": 1.0012085497996823,
+        "laplacian_energy_ratio": 1.0036054692912548
+      }
+    },
+    {
+      "variant": "translated_grass_delta",
+      "region": "car",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 4.933533333333334,
+        "gradient_energy_ratio": 0.7689373810065672,
+        "laplacian_energy_ratio": 0.39453557156557456
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.0484,
+        "gradient_energy_ratio": 0.9998895899894136,
+        "laplacian_energy_ratio": 1.0004367416803783
+      }
+    },
+    {
+      "variant": "translated_grass_delta",
+      "region": "grass",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 6.066851851851851,
+        "gradient_energy_ratio": 0.1192626180167301,
+        "laplacian_energy_ratio": 0.004195665437097134
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.02425925925925927,
+        "gradient_energy_ratio": 0.9986086452571776,
+        "laplacian_energy_ratio": 0.9963959824169569
+      }
+    },
+    {
+      "variant": "translated_grass_delta",
+      "region": "road",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 2.33504132231405,
+        "gradient_energy_ratio": 0.13174640148625405,
+        "laplacian_energy_ratio": 0.017009376066921898
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.013884297520661153,
+        "gradient_energy_ratio": 0.9990874748418394,
+        "laplacian_energy_ratio": 1.0018548528319249
+      }
+    },
+    {
+      "variant": "focus_hold_frame1",
+      "region": "R1",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 4.906076388888889,
+        "gradient_energy_ratio": 0.3290285439808805,
+        "laplacian_energy_ratio": 0.07344708452822382
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 2.271354166666667,
+        "gradient_energy_ratio": 2.4863850555699316,
+        "laplacian_energy_ratio": 6.8936403768269825
+      }
+    },
+    {
+      "variant": "focus_hold_frame1",
+      "region": "R2",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 4.823784722222221,
+        "gradient_energy_ratio": 0.3017843617704787,
+        "laplacian_energy_ratio": 0.05471280897389161
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 2.139236111111111,
+        "gradient_energy_ratio": 2.3296937156498276,
+        "laplacian_energy_ratio": 6.869006232239358
+      }
+    },
+    {
+      "variant": "focus_hold_frame1",
+      "region": "R4",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 6.1644097222222225,
+        "gradient_energy_ratio": 0.24674694811499603,
+        "laplacian_energy_ratio": 0.03216382626611303
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 1.9838541666666667,
+        "gradient_energy_ratio": 2.2243702818105344,
+        "laplacian_energy_ratio": 4.077695650443808
+      }
+    },
+    {
+      "variant": "focus_hold_frame1",
+      "region": "car",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 10.926033333333335,
+        "gradient_energy_ratio": 0.4325151500676266,
+        "laplacian_energy_ratio": 0.05271871864178964
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 7.285299999999999,
+        "gradient_energy_ratio": 0.5624221253221078,
+        "laplacian_energy_ratio": 0.13368057763275878
+      }
+    },
+    {
+      "variant": "focus_hold_frame1",
+      "region": "grass",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 5.234814814814815,
+        "gradient_energy_ratio": 0.19072543065596603,
+        "laplacian_energy_ratio": 0.009072739253210635
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 1.447777777777778,
+        "gradient_energy_ratio": 1.596980404176004,
+        "laplacian_energy_ratio": 2.154614345911779
+      }
+    },
+    {
+      "variant": "focus_hold_frame1",
+      "region": "road",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 2.602258953168044,
+        "gradient_energy_ratio": 0.048290578233524846,
+        "laplacian_energy_ratio": 0.00829272724364446
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.6447382920110194,
+        "gradient_energy_ratio": 0.3662074358138616,
+        "laplacian_energy_ratio": 0.48844290346507646
+      }
+    }
+  ],
+  "limits": [
+    "Gradient/MAE response is not perceptual accuracy.",
+    "Linearly interpolated post predictions are only a diagnostic geometric reference.",
+    "Sparse RGB mask may miss the rope or include mixed pixels; line consistency not depth truth.",
+    "Single-frame intervention, original focus unchanged except separate focus control."
+  ],
+  "CPU_profile_record": "03_实验记录/records/any2bokeh-B33-geometry-diagnosis-20261015.json",
+  "endpoint_decomposition": [
+    {
+      "correspondence_id": "R1",
+      "native_mean_nominal_frame1": 0.5755296607531898,
+      "native_mean_nominal_frame22": 2.1056231061313415,
+      "hold_frame1_disparity_change_focus": 1.8805375163398694,
+      "hold_frame1_focus_change_disparity": 0.7849631372549014,
+      "symmetric_focus_contribution": 1.3128339122315598,
+      "symmetric_disparity_contribution": 0.21725953314659185,
+      "total_change": 1.5300934453781516,
+      "limits": "Algebraic decomposition of declared control at tracked candidate bands, not causal truth of physical geometry."
+    },
+    {
+      "correspondence_id": "R2",
+      "native_mean_nominal_frame1": 0.7821184936196698,
+      "native_mean_nominal_frame22": 2.050845639589169,
+      "hold_frame1_disparity_change_focus": 2.231113302209773,
+      "hold_frame1_focus_change_disparity": 0.6544931714908183,
+      "symmetric_focus_contribution": 1.4226736383442269,
+      "symmetric_disparity_contribution": -0.15394649237472768,
+      "total_change": 1.2687271459694993,
+      "limits": "Algebraic decomposition of declared control at tracked candidate bands, not causal truth of physical geometry."
+    },
+    {
+      "correspondence_id": "R3",
+      "status": "missing paired location; no interpolation"
+    },
+    {
+      "correspondence_id": "R4",
+      "native_mean_nominal_frame1": 1.3485364207905375,
+      "native_mean_nominal_frame22": 2.635470600684718,
+      "hold_frame1_disparity_change_focus": 2.8555764207905376,
+      "hold_frame1_focus_change_disparity": 1.1284306006847178,
+      "symmetric_focus_contribution": 1.5070400000000004,
+      "symmetric_disparity_contribution": -0.22010582010581958,
+      "total_change": 1.2869341798941807,
+      "limits": "Algebraic decomposition of declared control at tracked candidate bands, not causal truth of physical geometry."
+    }
+  ],
+  "conclusions": {
+    "supported": [
+      "At tracked candidate bands, nominal defocus growth from1 to22 is dominated by changing focus; disparity variation partly offsets growth atR2/R4.",
+      "RGB cross-line peaks have small nonzero disparity contrast against adjacent grass, consistent with a visible independent contour; not total disappearance of geometry.",
+      "The fixed3-native-pixel rope-only post-reference intervention produces only small RGB8 changes, no large restoration demonstrated.",
+      "Holding frame22 focus toframe1 gives much larger rope-region structure response, but also changes the car and background; it is not a suitable fixed-focus solution."
+    ],
+    "unresolved": [
+      "Straight-rope interpolation uses predicted post depths, not measured geometry; static rope-depth bias remains possible.",
+      "The sparse mask covers780native pixels; weak intervention response does not rule out geometry problems or insufficient spatial support.",
+      "One frame, no new human visual verdict, no cross-source or physical correctness conclusion."
+    ],
+    "relation_to_B36": "Do not copy the successful B36 local geometry repair conclusion onto B33; this fixed B33 repair had weak response."
+  },
+  "execution_notes": [
+    "CPU preparation initially hit numpy bool JSON serialization after inputs were written. Converted bool to Python bool and reconstructed metadata with byte-equality checks of all existing modified PNGs and symlink-target checks. Inference reused unchanged prepared inputs. Added prepared.json presence requirement for future runs. No parameter changes or rerun to chase positive result."
+  ],
+  "verification": {
+    "prediction_frames": 125,
+    "same_process_repeat_byte_equal": true,
+    "all_RNG_end_states_match": true,
+    "intervention_frame": 22,
+    "RGB_K_weight_unchanged": true,
+    "new_output_visual_review": "pending user"
+  }
+}
