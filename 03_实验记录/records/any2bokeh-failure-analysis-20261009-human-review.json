@@ -735,12 +735,13 @@
     "observation_source": "用户原话及接触图；助手授权代录",
     "visual_observer": "user",
     "recorded_by": "assistant",
-    "review_status": "USER_SIX_METHOD_LOCAL_COMPARISON_RECEIVED_BOKEHDIFF_PREFERRED_CAUSAL_INTERPRETATION_PENDING",
+    "review_status": "LOCAL_GEOMETRY_INTERVENTION_NUMERIC_RESPONSE_AND_USER_PREFERENCE_SUPPORTED_SINGLE_FRAME",
     "actual_playback_rate": "",
     "user_original_quotes": [
       "这里的鸭子头的部分被虚化了，似乎不太对，是不是也跟深度有关",
       "02 06 04 05都出现了",
-      "是的，都是这样，03应该是效果最好的"
+      "是的，都是这样，03应该是效果最好的",
+      "仅头部视差改为颈部参考值这个是最好的"
     ],
     "assistant_input_checks": {
       "record": "03_实验记录/records/any2bokeh-failure-analysis-20261014-B36-input-diagnosis.json",
@@ -792,6 +793,17 @@
           "更清楚同时伴随较弱背景虚化，不能单独认定同等虚化强度下细节保留更优。",
           "DeepLens自身估深，BokehDiff冻结Normalized适配；未做内部有效离焦匹配。",
           "不外推到全部视频、严格客观排名或模型机制优劣。"
+        ]
+      },
+      {
+        "recorded_on": "2026-10-15",
+        "user_quote": "仅头部视差改为颈部参考值这个是最好的",
+        "preferred_variant": "head_to_neck",
+        "scope": "本次B36第0帧局部干预对照的整体用户偏好；完整25帧调用仅干预源帧0。",
+        "limits": [
+          "用户未分别对头颈边界、背景旁效应评分；不补成无伪影或无旁效应。",
+          "不能外推为全25帧持续改善、跨来源成功或真实几何已恢复。",
+          "本次采用预先固定的原颈部ROI视差中位数，不是MagicBokeh生成/选点方法。"
         ]
       }
     ]
