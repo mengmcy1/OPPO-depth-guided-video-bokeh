@@ -153,7 +153,7 @@ def analyze(c,out):
   flat.append(dict(method=r['method'],region=r['region'],input_MAE_RGB8=r['vs_input']['MAE_vs_reference_RGB8'],input_gradient_ratio=r['vs_input']['gradient_energy_ratio'],input_laplacian_ratio=r['vs_input']['laplacian_energy_ratio'],change_vs_native_MAE_RGB8=r.get('vs_native',{}).get('MAE_vs_reference_RGB8')))
  csvpath=(ROOT/c['record']).with_suffix('.csv')
  with csvpath.open('w',encoding='utf-8-sig',newline='') as f:
-  w=csv.DictWriter(f,fieldnames=list(flat[0]));w.writeheader();w.writerows(flat)
+  w=csv.DictWriter(f,fieldnames=list(flat[0]),lineterminator='\n');w.writeheader();w.writerows(flat)
  # Compact local comparison for user; only input-selected fixed frame0 and same crop.
  html=['<!doctype html><meta charset="utf-8"><title>B36局部干预诊断</title><style>body{font-family:system-ui;background:#f6f9ff;margin:24px} .row{display:flex;flex-wrap:wrap;gap:14px}img{image-rendering:pixelated}figure{margin:4px} </style><h1>B36第0帧：局部几何与焦点诊断</h1><p>原RGB及原focus/K/RNG固定，局部干预只作用第0帧。focus_to_head为单独焦点敏感性对照。诊断值不是几何真值；用户判断视觉变化。未修改正式预测。</p>']
  names={'Input':'原始输入','native':'原版重放','native_repeat':'原版重复','head_to_neck':'仅头部视差改为颈部参考值','translated_water_delta':'同幅度水面干预对照','focus_to_head':'仅焦点改到头部参考值'}
