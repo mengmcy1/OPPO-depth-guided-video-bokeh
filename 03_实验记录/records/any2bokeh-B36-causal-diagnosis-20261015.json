@@ -1,0 +1,3046 @@
+{
+  "config": {
+    "scene": "mallard-water",
+    "source_frame": 0,
+    "context_frames": 25,
+    "K": 16,
+    "output": "outputs/any2bokeh-failure-analysis-20261009/B36-causal-diagnosis-20261015",
+    "record": "03_实验记录/records/any2bokeh-B36-causal-diagnosis-20261015.json",
+    "head_polygon_display": [
+      [
+        645,
+        148
+      ],
+      [
+        696,
+        143
+      ],
+      [
+        739,
+        229
+      ],
+      [
+        717,
+        243
+      ],
+      [
+        645,
+        221
+      ]
+    ],
+    "mask_rule": "Polygon intersect original DAVIS union, used only to construct diagnostic intervention outside the model. No mask supplied to inference.",
+    "target": "Median original VDA q in prior frame0 neck-core ROI [655,223,20,26]; diagnostic reference, not depth truth.",
+    "water_translation_display": [
+      100,
+      0
+    ],
+    "variants": [
+      "native",
+      "native_repeat",
+      "head_to_neck",
+      "translated_water_delta",
+      "focus_to_head"
+    ],
+    "interventions": {
+      "head_to_neck": "Only frame0 head polygon: replace q with original neck median rounded to uint8; preserve original filename focus.",
+      "translated_water_delta": "Translate identical head support100 display pixels right; apply identical signed q deltas, clip to0–255 and report clipping; original focus fixed. This control matches pixels/delta, not baseline defocus or semantic context.",
+      "focus_to_head": "Only frame0 filename focus is set to prior head-core median q/255, rounded5 decimals. Original disparity stays unchanged; this is an independent focus sensitivity control."
+    },
+    "fixed": [
+      "RGB",
+      "original author model and weights",
+      "native precision",
+      "K16",
+      "25-frame8/8/9 calling convention",
+      "pre-scene saved global RNG",
+      "per-call generator0"
+    ],
+    "metrics": "Paired output change MAE in RGB8 units and input-relative gradient energy/Laplacian energy/residual on fixed ROIs; these diagnose response, not perceptual quality or bokeh accuracy.",
+    "limits": [
+      "One exploration source and one intervened frame; no cross-source or temporal-quality claim",
+      "No independent metric depth or paired bokeh GT",
+      "No tuning based on output",
+      "New visual quality verdicts remain for user"
+    ]
+  },
+  "input_audit": {
+    "config": {
+      "scene": "mallard-water",
+      "source_frame": 0,
+      "context_frames": 25,
+      "K": 16,
+      "output": "outputs/any2bokeh-failure-analysis-20261009/B36-causal-diagnosis-20261015",
+      "record": "03_实验记录/records/any2bokeh-B36-causal-diagnosis-20261015.json",
+      "head_polygon_display": [
+        [
+          645,
+          148
+        ],
+        [
+          696,
+          143
+        ],
+        [
+          739,
+          229
+        ],
+        [
+          717,
+          243
+        ],
+        [
+          645,
+          221
+        ]
+      ],
+      "mask_rule": "Polygon intersect original DAVIS union, used only to construct diagnostic intervention outside the model. No mask supplied to inference.",
+      "target": "Median original VDA q in prior frame0 neck-core ROI [655,223,20,26]; diagnostic reference, not depth truth.",
+      "water_translation_display": [
+        100,
+        0
+      ],
+      "variants": [
+        "native",
+        "native_repeat",
+        "head_to_neck",
+        "translated_water_delta",
+        "focus_to_head"
+      ],
+      "interventions": {
+        "head_to_neck": "Only frame0 head polygon: replace q with original neck median rounded to uint8; preserve original filename focus.",
+        "translated_water_delta": "Translate identical head support100 display pixels right; apply identical signed q deltas, clip to0–255 and report clipping; original focus fixed. This control matches pixels/delta, not baseline defocus or semantic context.",
+        "focus_to_head": "Only frame0 filename focus is set to prior head-core median q/255, rounded5 decimals. Original disparity stays unchanged; this is an independent focus sensitivity control."
+      },
+      "fixed": [
+        "RGB",
+        "original author model and weights",
+        "native precision",
+        "K16",
+        "25-frame8/8/9 calling convention",
+        "pre-scene saved global RNG",
+        "per-call generator0"
+      ],
+      "metrics": "Paired output change MAE in RGB8 units and input-relative gradient energy/Laplacian energy/residual on fixed ROIs; these diagnose response, not perceptual quality or bokeh accuracy.",
+      "limits": [
+        "One exploration source and one intervened frame; no cross-source or temporal-quality claim",
+        "No independent metric depth or paired bokeh GT",
+        "No tuning based on output",
+        "New visual quality verdicts remain for user"
+      ]
+    },
+    "target_q": 147,
+    "head_focus_diagnostic": 0.72549,
+    "original_focus": 0.5755,
+    "head_pixels": 14607,
+    "water_pixels": 14607,
+    "water_annotation_overlap": 0,
+    "water_clipped_pixels": 0,
+    "head_delta_q": {
+      "count": 14607,
+      "p10_p50_p90": [
+        -41.0,
+        -34.0,
+        -9.0
+      ],
+      "mean": -28.124666255904703
+    },
+    "original_head_d": {
+      "count": 14607,
+      "p10_p50_p90": [
+        0.611764705882353,
+        0.7098039215686275,
+        0.7372549019607844
+      ],
+      "mean": 0.6867633970819791
+    },
+    "rois": {
+      "head": [
+        664,
+        163,
+        20,
+        22
+      ],
+      "bill": [
+        700,
+        218,
+        12,
+        8
+      ],
+      "neck": [
+        655,
+        223,
+        20,
+        26
+      ],
+      "body": [
+        490,
+        255,
+        50,
+        24
+      ],
+      "water_near_head": [
+        745,
+        170,
+        35,
+        30
+      ],
+      "far_water": [
+        90,
+        85,
+        150,
+        100
+      ]
+    },
+    "input_checks": [
+      {
+        "frame": 0,
+        "focus": 0.5755,
+        "union_pixels": 110603,
+        "union_d": {
+          "count": 110603,
+          "p10_p50_p90": [
+            0.5098039215686274,
+            0.5686274509803921,
+            0.6588235294117647
+          ],
+          "mean": 0.5754999376856245
+        },
+        "eroded_median": 0.5725490196078431,
+        "focus_minus_median": 0.0068725490196078765,
+        "q_step_defocus": 0.06274509803921569
+      },
+      {
+        "frame": 1,
+        "focus": 0.57762,
+        "union_pixels": 111404,
+        "union_d": {
+          "count": 111404,
+          "p10_p50_p90": [
+            0.5137254901960784,
+            0.5686274509803921,
+            0.6627450980392157
+          ],
+          "mean": 0.5776158282062599
+        },
+        "eroded_median": 0.5725490196078431,
+        "focus_minus_median": 0.008992549019607887,
+        "q_step_defocus": 0.06274509803921569
+      },
+      {
+        "frame": 2,
+        "focus": 0.57978,
+        "union_pixels": 111664,
+        "union_d": {
+          "count": 111664,
+          "p10_p50_p90": [
+            0.5176470588235295,
+            0.5725490196078431,
+            0.6627450980392157
+          ],
+          "mean": 0.5797846269902143
+        },
+        "eroded_median": 0.5764705882352941,
+        "focus_minus_median": 0.0072309803921568605,
+        "q_step_defocus": 0.06274509803921569
+      },
+      {
+        "frame": 3,
+        "focus": 0.58177,
+        "union_pixels": 111631,
+        "union_d": {
+          "count": 111631,
+          "p10_p50_p90": [
+            0.5215686274509804,
+            0.5725490196078431,
+            0.6666666666666666
+          ],
+          "mean": 0.581765975822655
+        },
+        "eroded_median": 0.5764705882352941,
+        "focus_minus_median": 0.009220980392156908,
+        "q_step_defocus": 0.06274509803921569
+      },
+      {
+        "frame": 4,
+        "focus": 0.58354,
+        "union_pixels": 111426,
+        "union_d": {
+          "count": 111426,
+          "p10_p50_p90": [
+            0.5215686274509804,
+            0.5725490196078431,
+            0.6745098039215687
+          ],
+          "mean": 0.5835432501936569
+        },
+        "eroded_median": 0.5764705882352941,
+        "focus_minus_median": 0.010990980392156846,
+        "q_step_defocus": 0.06274509803921569
+      },
+      {
+        "frame": 5,
+        "focus": 0.58614,
+        "union_pixels": 112040,
+        "union_d": {
+          "count": 112040,
+          "p10_p50_p90": [
+            0.5254901960784314,
+            0.5764705882352941,
+            0.6823529411764706
+          ],
+          "mean": 0.5861361138528955
+        },
+        "eroded_median": 0.5764705882352941,
+        "focus_minus_median": 0.009669411764705926,
+        "q_step_defocus": 0.06274509803921569
+      },
+      {
+        "frame": 6,
+        "focus": 0.58624,
+        "union_pixels": 112112,
+        "union_d": {
+          "count": 112112,
+          "p10_p50_p90": [
+            0.5254901960784314,
+            0.5764705882352941,
+            0.6784313725490196
+          ],
+          "mean": 0.5862420142882326
+        },
+        "eroded_median": 0.5764705882352941,
+        "focus_minus_median": 0.009769411764705915,
+        "q_step_defocus": 0.06274509803921569
+      },
+      {
+        "frame": 7,
+        "focus": 0.58793,
+        "union_pixels": 111888,
+        "union_d": {
+          "count": 111888,
+          "p10_p50_p90": [
+            0.5294117647058824,
+            0.5764705882352941,
+            0.6823529411764706
+          ],
+          "mean": 0.5879322249420289
+        },
+        "eroded_median": 0.5764705882352941,
+        "focus_minus_median": 0.011459411764705885,
+        "q_step_defocus": 0.06274509803921569
+      },
+      {
+        "frame": 8,
+        "focus": 0.58592,
+        "union_pixels": 111520,
+        "union_d": {
+          "count": 111520,
+          "p10_p50_p90": [
+            0.5254901960784314,
+            0.5764705882352941,
+            0.6784313725490196
+          ],
+          "mean": 0.5859245154302753
+        },
+        "eroded_median": 0.5764705882352941,
+        "focus_minus_median": 0.009449411764705928,
+        "q_step_defocus": 0.06274509803921569
+      },
+      {
+        "frame": 9,
+        "focus": 0.5843,
+        "union_pixels": 111114,
+        "union_d": {
+          "count": 111114,
+          "p10_p50_p90": [
+            0.5254901960784314,
+            0.5725490196078431,
+            0.6784313725490196
+          ],
+          "mean": 0.5843003493673871
+        },
+        "eroded_median": 0.5764705882352941,
+        "focus_minus_median": 0.01175098039215694,
+        "q_step_defocus": 0.06274509803921569
+      },
+      {
+        "frame": 10,
+        "focus": 0.58467,
+        "union_pixels": 110916,
+        "union_d": {
+          "count": 110916,
+          "p10_p50_p90": [
+            0.5254901960784314,
+            0.5764705882352941,
+            0.6784313725490196
+          ],
+          "mean": 0.5846704342236732
+        },
+        "eroded_median": 0.5764705882352941,
+        "focus_minus_median": 0.008199411764705955,
+        "q_step_defocus": 0.06274509803921569
+      },
+      {
+        "frame": 11,
+        "focus": 0.58493,
+        "union_pixels": 110727,
+        "union_d": {
+          "count": 110727,
+          "p10_p50_p90": [
+            0.5254901960784314,
+            0.5725490196078431,
+            0.6823529411764706
+          ],
+          "mean": 0.5849306818377011
+        },
+        "eroded_median": 0.5764705882352941,
+        "focus_minus_median": 0.012380980392156848,
+        "q_step_defocus": 0.06274509803921569
+      },
+      {
+        "frame": 12,
+        "focus": 0.58356,
+        "union_pixels": 109839,
+        "union_d": {
+          "count": 109839,
+          "p10_p50_p90": [
+            0.5254901960784314,
+            0.5725490196078431,
+            0.6823529411764706
+          ],
+          "mean": 0.5835607874555789
+        },
+        "eroded_median": 0.5764705882352941,
+        "focus_minus_median": 0.011010980392156866,
+        "q_step_defocus": 0.06274509803921569
+      },
+      {
+        "frame": 13,
+        "focus": 0.58474,
+        "union_pixels": 108512,
+        "union_d": {
+          "count": 108512,
+          "p10_p50_p90": [
+            0.5254901960784314,
+            0.5725490196078431,
+            0.6823529411764706
+          ],
+          "mean": 0.5847423037336432
+        },
+        "eroded_median": 0.5725490196078431,
+        "focus_minus_median": 0.012190980392156936,
+        "q_step_defocus": 0.06274509803921569
+      },
+      {
+        "frame": 14,
+        "focus": 0.58404,
+        "union_pixels": 107633,
+        "union_d": {
+          "count": 107633,
+          "p10_p50_p90": [
+            0.5254901960784314,
+            0.5725490196078431,
+            0.6901960784313725
+          ],
+          "mean": 0.5840384618537612
+        },
+        "eroded_median": 0.5725490196078431,
+        "focus_minus_median": 0.011490980392156902,
+        "q_step_defocus": 0.06274509803921569
+      },
+      {
+        "frame": 15,
+        "focus": 0.5857,
+        "union_pixels": 106529,
+        "union_d": {
+          "count": 106529,
+          "p10_p50_p90": [
+            0.5254901960784314,
+            0.5725490196078431,
+            0.6980392156862745
+          ],
+          "mean": 0.5857011043112811
+        },
+        "eroded_median": 0.5725490196078431,
+        "focus_minus_median": 0.013150980392156897,
+        "q_step_defocus": 0.06274509803921569
+      },
+      {
+        "frame": 16,
+        "focus": 0.58513,
+        "union_pixels": 106028,
+        "union_d": {
+          "count": 106028,
+          "p10_p50_p90": [
+            0.5215686274509804,
+            0.5686274509803921,
+            0.7019607843137254
+          ],
+          "mean": 0.5851277908832073
+        },
+        "eroded_median": 0.5725490196078431,
+        "focus_minus_median": 0.016502549019607904,
+        "q_step_defocus": 0.06274509803921569
+      },
+      {
+        "frame": 17,
+        "focus": 0.58533,
+        "union_pixels": 105769,
+        "union_d": {
+          "count": 105769,
+          "p10_p50_p90": [
+            0.5215686274509804,
+            0.5686274509803921,
+            0.7098039215686275
+          ],
+          "mean": 0.585333335557937
+        },
+        "eroded_median": 0.5725490196078431,
+        "focus_minus_median": 0.016702549019607882,
+        "q_step_defocus": 0.06274509803921569
+      },
+      {
+        "frame": 18,
+        "focus": 0.58465,
+        "union_pixels": 106148,
+        "union_d": {
+          "count": 106148,
+          "p10_p50_p90": [
+            0.5176470588235295,
+            0.5686274509803921,
+            0.7176470588235294
+          ],
+          "mean": 0.5846538351557979
+        },
+        "eroded_median": 0.5686274509803921,
+        "focus_minus_median": 0.016022549019607868,
+        "q_step_defocus": 0.06274509803921569
+      },
+      {
+        "frame": 19,
+        "focus": 0.58506,
+        "union_pixels": 106213,
+        "union_d": {
+          "count": 106213,
+          "p10_p50_p90": [
+            0.5176470588235295,
+            0.5686274509803921,
+            0.7254901960784313
+          ],
+          "mean": 0.5850595446109675
+        },
+        "eroded_median": 0.5686274509803921,
+        "focus_minus_median": 0.01643254901960789,
+        "q_step_defocus": 0.06274509803921569
+      },
+      {
+        "frame": 20,
+        "focus": 0.58363,
+        "union_pixels": 105786,
+        "union_d": {
+          "count": 105786,
+          "p10_p50_p90": [
+            0.5137254901960784,
+            0.5647058823529412,
+            0.7294117647058823
+          ],
+          "mean": 0.5836345889574327
+        },
+        "eroded_median": 0.5686274509803921,
+        "focus_minus_median": 0.018924117647058813,
+        "q_step_defocus": 0.06274509803921569
+      },
+      {
+        "frame": 21,
+        "focus": 0.58568,
+        "union_pixels": 105037,
+        "union_d": {
+          "count": 105037,
+          "p10_p50_p90": [
+            0.5137254901960784,
+            0.5647058823529412,
+            0.7450980392156863
+          ],
+          "mean": 0.5856777266348907
+        },
+        "eroded_median": 0.5686274509803921,
+        "focus_minus_median": 0.02097411764705881,
+        "q_step_defocus": 0.06274509803921569
+      },
+      {
+        "frame": 22,
+        "focus": 0.58391,
+        "union_pixels": 104840,
+        "union_d": {
+          "count": 104840,
+          "p10_p50_p90": [
+            0.5098039215686274,
+            0.5647058823529412,
+            0.7450980392156863
+          ],
+          "mean": 0.5839123669307478
+        },
+        "eroded_median": 0.5647058823529412,
+        "focus_minus_median": 0.01920411764705887,
+        "q_step_defocus": 0.06274509803921569
+      },
+      {
+        "frame": 23,
+        "focus": 0.58473,
+        "union_pixels": 103995,
+        "union_d": {
+          "count": 103995,
+          "p10_p50_p90": [
+            0.5098039215686274,
+            0.5647058823529412,
+            0.7568627450980392
+          ],
+          "mean": 0.5847348618759008
+        },
+        "eroded_median": 0.5647058823529412,
+        "focus_minus_median": 0.020024117647058803,
+        "q_step_defocus": 0.06274509803921569
+      },
+      {
+        "frame": 24,
+        "focus": 0.58465,
+        "union_pixels": 103605,
+        "union_d": {
+          "count": 103605,
+          "p10_p50_p90": [
+            0.5098039215686274,
+            0.5607843137254902,
+            0.7647058823529411
+          ],
+          "mean": 0.5846507142985566
+        },
+        "eroded_median": 0.5647058823529412,
+        "focus_minus_median": 0.0238656862745098,
+        "q_step_defocus": 0.06274509803921569
+      }
+    ],
+    "conditions": "Only frame0 is modified; no actual focus recomputation except named focus sensitivity control.",
+    "existing_adapter_audits_frame0": {
+      "bokehme": {
+        "focus": 0.5755,
+        "K": 16,
+        "span": 0.8374999687075615,
+        "effective_K": 19.104478325762045,
+        "geometry": {
+          "disparity_range": [
+            0.07058823853731155,
+            0.908088207244873
+          ],
+          "span": 0.8374999687075615,
+          "original_focus": 0.5755,
+          "mapped_focus": 0.6028797377053917,
+          "signed_defocus_range": [
+            -9.646076202392578,
+            6.353923797607422
+          ],
+          "pipeline_defocus_range": [
+            -0.9646076202392578,
+            0.6353923797607421
+          ]
+        },
+        "gamma": 2.2
+      },
+      "bokehdiff": {
+        "focus": 0.5755,
+        "K": 16,
+        "span": 0.8375,
+        "effective_K": 19.104477611940297,
+        "geometry": {
+          "candidate": "normalized",
+          "min": 0.07058823529411765,
+          "max": 0.9080882352941176,
+          "span": 0.8375,
+          "input_focus": 0.5755,
+          "mapped_focus": 0.6028797190517998,
+          "K": 16,
+          "CoC_condition_scale": 1.1940298507462686,
+          "max_defocus_condition": 0.9646075504828797,
+          "mapping_error_float64": 3.3306690738754696e-16
+        }
+      },
+      "mpib": {
+        "focus": 0.5755,
+        "K": 16,
+        "span": 0.8374999687075615,
+        "gamma": 2.2
+      },
+      "drbokeh": {
+        "focus": 0.5755,
+        "K": 16,
+        "span": 0.8375,
+        "geometry": {
+          "min": 0.07058823529411765,
+          "max": 0.9080882352941176,
+          "span": 0.8375,
+          "focus": 0.5755,
+          "focus_prime": 0.6028797190517998,
+          "K_manifest": 16,
+          "K_Dr": 13.4,
+          "signed_CoC_error_float64": 1.7763568394002505e-15,
+          "signed_CoC_error_float32": 1.0529312435281213e-06,
+          "nominal_input_radius_max": 8.078588235294118
+        }
+      }
+    }
+  },
+  "runtime": {
+    "torch": "2.8.0+cu128",
+    "cuda": "12.8",
+    "device": "NVIDIA GeForce RTX 4090 D",
+    "saved_rng_predecessor": "mallard-fly",
+    "scene_index": 33,
+    "matmul_tf32": false,
+    "cudnn_tf32": true,
+    "cudnn_benchmark": false,
+    "author_commit": "f7a16959dd219080fb8eec0d32bb9602d8970c22"
+  },
+  "runs": [
+    {
+      "variant": "native",
+      "seconds": 27.439178358763456,
+      "frames": 25,
+      "finite": true,
+      "peak_allocated_GiB": 34.34483051300049,
+      "condition_differences": {
+        "pixel_values": 0.0,
+        "coc": 0.0,
+        "mpi_mask": 0.0,
+        "k": 0.0,
+        "weight": 0.0
+      },
+      "legacy_replay": {
+        "max_byte_error": 1.0,
+        "mean_byte_error": 0.020227819372106482,
+        "different_bytes": 894814
+      }
+    },
+    {
+      "variant": "native_repeat",
+      "seconds": 26.511131390929222,
+      "frames": 25,
+      "finite": true,
+      "peak_allocated_GiB": 34.34618091583252,
+      "condition_differences": {
+        "pixel_values": 0.0,
+        "coc": 0.0,
+        "mpi_mask": 0.0,
+        "k": 0.0,
+        "weight": 0.0
+      },
+      "end_RNG_matches_native": true,
+      "change_per_frame_MAE_RGB8": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_byte_change": 0.0,
+      "repeat_different_bytes": 0
+    },
+    {
+      "variant": "head_to_neck",
+      "seconds": 26.625911187380552,
+      "frames": 25,
+      "finite": true,
+      "peak_allocated_GiB": 34.34751605987549,
+      "condition_differences": {
+        "pixel_values": 0.0,
+        "coc": 0.6781141757965088,
+        "mpi_mask": 2.0,
+        "k": 0.0,
+        "weight": 0.0
+      },
+      "end_RNG_matches_native": true,
+      "change_per_frame_MAE_RGB8": [
+        0.49436329029224535,
+        0.08469475640190972,
+        0.05530237268518518,
+        0.027488425925925927,
+        0.024360939308449073,
+        0.022471675166377315,
+        0.020558675130208332,
+        0.017084192346643517,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_byte_change": 40.0
+    },
+    {
+      "variant": "translated_water_delta",
+      "seconds": 26.616801902651787,
+      "frames": 25,
+      "finite": true,
+      "peak_allocated_GiB": 34.34629535675049,
+      "condition_differences": {
+        "pixel_values": 0.0,
+        "coc": 0.6439824104309082,
+        "mpi_mask": 2.0,
+        "k": 0.0,
+        "weight": 0.0
+      },
+      "end_RNG_matches_native": true,
+      "change_per_frame_MAE_RGB8": [
+        0.046065153899016206,
+        0.022276136610243056,
+        0.02759184660734954,
+        0.020185682508680556,
+        0.019959626374421297,
+        0.019096091941550927,
+        0.017807571976273147,
+        0.014483981662326388,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_byte_change": 11.0
+    },
+    {
+      "variant": "focus_to_head",
+      "seconds": 26.551757529377937,
+      "frames": 25,
+      "finite": true,
+      "peak_allocated_GiB": 34.34592914581299,
+      "condition_differences": {
+        "pixel_values": 0.0,
+        "coc": 0.2999802827835083,
+        "mpi_mask": 2.0,
+        "k": 0.0,
+        "weight": 0.0
+      },
+      "end_RNG_matches_native": true,
+      "change_per_frame_MAE_RGB8": [
+        2.730023419415509,
+        0.18366269712094907,
+        0.09827168782552083,
+        0.051334522388599535,
+        0.038350423177083336,
+        0.03543825502748842,
+        0.02775969328703704,
+        0.022755940755208332,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "max_byte_change": 75.0
+    }
+  ],
+  "region_metrics": [
+    {
+      "method": "native",
+      "region": "head",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 7.416666666666666,
+        "gradient_energy_ratio": 0.4289722685356791,
+        "laplacian_energy_ratio": 0.04134224183515139
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "method": "native",
+      "region": "bill",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 4.736111111111112,
+        "gradient_energy_ratio": 0.8108033705060449,
+        "laplacian_energy_ratio": 0.06304955074817734
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "method": "native",
+      "region": "neck",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 1.830128205128205,
+        "gradient_energy_ratio": 0.8302016245221646,
+        "laplacian_energy_ratio": 0.2882740043579315
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "method": "native",
+      "region": "body",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 5.0438888888888895,
+        "gradient_energy_ratio": 0.7171442893083024,
+        "laplacian_energy_ratio": 0.3798171369603191
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "method": "native",
+      "region": "water_near_head",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 10.22190476190476,
+        "gradient_energy_ratio": 0.11662613908998974,
+        "laplacian_energy_ratio": 0.01167716702166635
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "method": "native",
+      "region": "far_water",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 5.6396,
+        "gradient_energy_ratio": 0.060204781972437,
+        "laplacian_energy_ratio": 0.009697703496431965
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "method": "native_repeat",
+      "region": "head",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 7.416666666666666,
+        "gradient_energy_ratio": 0.4289722685356791,
+        "laplacian_energy_ratio": 0.04134224183515139
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "method": "native_repeat",
+      "region": "bill",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 4.736111111111112,
+        "gradient_energy_ratio": 0.8108033705060449,
+        "laplacian_energy_ratio": 0.06304955074817734
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "method": "native_repeat",
+      "region": "neck",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 1.830128205128205,
+        "gradient_energy_ratio": 0.8302016245221646,
+        "laplacian_energy_ratio": 0.2882740043579315
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "method": "native_repeat",
+      "region": "body",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 5.0438888888888895,
+        "gradient_energy_ratio": 0.7171442893083024,
+        "laplacian_energy_ratio": 0.3798171369603191
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "method": "native_repeat",
+      "region": "water_near_head",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 10.22190476190476,
+        "gradient_energy_ratio": 0.11662613908998974,
+        "laplacian_energy_ratio": 0.01167716702166635
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "method": "native_repeat",
+      "region": "far_water",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 5.6396,
+        "gradient_energy_ratio": 0.060204781972437,
+        "laplacian_energy_ratio": 0.009697703496431965
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "method": "head_to_neck",
+      "region": "head",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 2.5749999999999997,
+        "gradient_energy_ratio": 0.8355476558627957,
+        "laplacian_energy_ratio": 0.44223438160961737
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 5.802272727272728,
+        "gradient_energy_ratio": 1.9477894426951758,
+        "laplacian_energy_ratio": 10.696913422668
+      }
+    },
+    {
+      "method": "head_to_neck",
+      "region": "bill",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 2.354166666666667,
+        "gradient_energy_ratio": 0.9342770944359909,
+        "laplacian_energy_ratio": 0.06821393185547199
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 3.770833333333333,
+        "gradient_energy_ratio": 1.1522856569440292,
+        "laplacian_energy_ratio": 1.0819098795473012
+      }
+    },
+    {
+      "method": "head_to_neck",
+      "region": "neck",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 1.6647435897435896,
+        "gradient_energy_ratio": 0.8525527434552038,
+        "laplacian_energy_ratio": 0.3255624341160988
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.40384615384615374,
+        "gradient_energy_ratio": 1.026922518907264,
+        "laplacian_energy_ratio": 1.1293506497098804
+      }
+    },
+    {
+      "method": "head_to_neck",
+      "region": "body",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 4.762222222222224,
+        "gradient_energy_ratio": 0.7354231800220224,
+        "laplacian_energy_ratio": 0.4067388845196062
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.45333333333333337,
+        "gradient_energy_ratio": 1.0254884421255732,
+        "laplacian_energy_ratio": 1.0708808132638306
+      }
+    },
+    {
+      "method": "head_to_neck",
+      "region": "water_near_head",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 10.17047619047619,
+        "gradient_energy_ratio": 0.11820341233266832,
+        "laplacian_energy_ratio": 0.012041939927413462
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.14984126984126978,
+        "gradient_energy_ratio": 1.013524182957489,
+        "laplacian_energy_ratio": 1.0312381337930934
+      }
+    },
+    {
+      "method": "head_to_neck",
+      "region": "far_water",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 5.438866666666666,
+        "gradient_energy_ratio": 0.06051544639826809,
+        "laplacian_energy_ratio": 0.00951555271880674
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.45695555555555567,
+        "gradient_energy_ratio": 1.0051601287414897,
+        "laplacian_energy_ratio": 0.9812171224154004
+      }
+    },
+    {
+      "method": "translated_water_delta",
+      "region": "head",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 7.412878787878789,
+        "gradient_energy_ratio": 0.4290700498719843,
+        "laplacian_energy_ratio": 0.04128234998976125
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.015909090909090914,
+        "gradient_energy_ratio": 1.0002279432575887,
+        "laplacian_energy_ratio": 0.9985513159729231
+      }
+    },
+    {
+      "method": "translated_water_delta",
+      "region": "bill",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 4.715277777777779,
+        "gradient_energy_ratio": 0.8119247508433327,
+        "laplacian_energy_ratio": 0.06303740928555795
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.041666666666666664,
+        "gradient_energy_ratio": 1.001383048440694,
+        "laplacian_energy_ratio": 0.9998074298313737
+      }
+    },
+    {
+      "method": "translated_water_delta",
+      "region": "neck",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 1.830128205128205,
+        "gradient_energy_ratio": 0.8317919273936684,
+        "laplacian_energy_ratio": 0.2895713092147982
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.038461538461538464,
+        "gradient_energy_ratio": 1.0019155622255245,
+        "laplacian_energy_ratio": 1.0045002491978288
+      }
+    },
+    {
+      "method": "translated_water_delta",
+      "region": "body",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 5.037777777777778,
+        "gradient_energy_ratio": 0.7179495626231386,
+        "laplacian_energy_ratio": 0.3805649405257359
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.04,
+        "gradient_energy_ratio": 1.001122888834007,
+        "laplacian_energy_ratio": 1.0019688515673661
+      }
+    },
+    {
+      "method": "translated_water_delta",
+      "region": "water_near_head",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 11.231428571428571,
+        "gradient_energy_ratio": 0.08720543912079133,
+        "laplacian_energy_ratio": 0.009030552595974779
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 1.259047619047619,
+        "gradient_energy_ratio": 0.7477349400506421,
+        "laplacian_energy_ratio": 0.7733513256442319
+      }
+    },
+    {
+      "method": "translated_water_delta",
+      "region": "far_water",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 5.642844444444445,
+        "gradient_energy_ratio": 0.060125444515018577,
+        "laplacian_energy_ratio": 0.009657345903029945
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 0.01977777777777778,
+        "gradient_energy_ratio": 0.9986822067148297,
+        "laplacian_energy_ratio": 0.9958384380985797
+      }
+    },
+    {
+      "method": "focus_to_head",
+      "region": "head",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 3.2893939393939395,
+        "gradient_energy_ratio": 0.7738983815209775,
+        "laplacian_energy_ratio": 0.2765129427877808
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 5.062121212121211,
+        "gradient_energy_ratio": 1.8040755505308608,
+        "laplacian_energy_ratio": 6.68838772436077
+      }
+    },
+    {
+      "method": "focus_to_head",
+      "region": "bill",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 2.7222222222222228,
+        "gradient_energy_ratio": 0.9454287224208338,
+        "laplacian_energy_ratio": 0.0579372557517855
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 3.236111111111111,
+        "gradient_energy_ratio": 1.1660394576687136,
+        "laplacian_energy_ratio": 0.9189162343628655
+      }
+    },
+    {
+      "method": "focus_to_head",
+      "region": "neck",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 3.292948717948718,
+        "gradient_energy_ratio": 0.5954691829027821,
+        "laplacian_energy_ratio": 0.01764080981717649
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 2.201282051282052,
+        "gradient_energy_ratio": 0.7172585132503366,
+        "laplacian_energy_ratio": 0.061194591085199
+      }
+    },
+    {
+      "method": "focus_to_head",
+      "region": "body",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 11.647777777777778,
+        "gradient_energy_ratio": 0.3748746603204448,
+        "laplacian_energy_ratio": 0.08819405513082212
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 7.2283333333333335,
+        "gradient_energy_ratio": 0.5227325461686624,
+        "laplacian_energy_ratio": 0.2322013583606052
+      }
+    },
+    {
+      "method": "focus_to_head",
+      "region": "water_near_head",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 12.745396825396826,
+        "gradient_energy_ratio": 0.05606940627316022,
+        "laplacian_energy_ratio": 0.007852683343993501
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 3.182539682539683,
+        "gradient_energy_ratio": 0.4807619176169124,
+        "laplacian_energy_ratio": 0.6724818896075798
+      }
+    },
+    {
+      "method": "focus_to_head",
+      "region": "far_water",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 6.255733333333334,
+        "gradient_energy_ratio": 0.03013006673176069,
+        "laplacian_energy_ratio": 0.00788250849528787
+      },
+      "vs_native": {
+        "MAE_vs_reference_RGB8": 1.5402666666666667,
+        "gradient_energy_ratio": 0.5004596934767551,
+        "laplacian_energy_ratio": 0.8128221798272185
+      }
+    },
+    {
+      "method": "frozen_any2bokeh",
+      "region": "head",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 7.426515151515151,
+        "gradient_energy_ratio": 0.42854551184304673,
+        "laplacian_energy_ratio": 0.04115622092279919
+      }
+    },
+    {
+      "method": "frozen_any2bokeh",
+      "region": "bill",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 4.736111111111112,
+        "gradient_energy_ratio": 0.8116361993787993,
+        "laplacian_energy_ratio": 0.0629447227484252
+      }
+    },
+    {
+      "method": "frozen_any2bokeh",
+      "region": "neck",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 1.8339743589743587,
+        "gradient_energy_ratio": 0.8289999702516799,
+        "laplacian_energy_ratio": 0.28986771960787167
+      }
+    },
+    {
+      "method": "frozen_any2bokeh",
+      "region": "body",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 5.046111111111111,
+        "gradient_energy_ratio": 0.7172887442026599,
+        "laplacian_energy_ratio": 0.380445577188328
+      }
+    },
+    {
+      "method": "frozen_any2bokeh",
+      "region": "water_near_head",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 10.230158730158731,
+        "gradient_energy_ratio": 0.11630472018135626,
+        "laplacian_energy_ratio": 0.011396759783469258
+      }
+    },
+    {
+      "method": "frozen_any2bokeh",
+      "region": "far_water",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 5.641066666666665,
+        "gradient_energy_ratio": 0.06015988433347704,
+        "laplacian_energy_ratio": 0.009699774829285414
+      }
+    },
+    {
+      "method": "frozen_mpib",
+      "region": "head",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 8.237121212121213,
+        "gradient_energy_ratio": 0.45206224736826295,
+        "laplacian_energy_ratio": 0.05465770965169608
+      }
+    },
+    {
+      "method": "frozen_mpib",
+      "region": "bill",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 5.666666666666667,
+        "gradient_energy_ratio": 0.9403096855648891,
+        "laplacian_energy_ratio": 0.07344672537961862
+      }
+    },
+    {
+      "method": "frozen_mpib",
+      "region": "neck",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "method": "frozen_mpib",
+      "region": "body",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 1.5455555555555558,
+        "gradient_energy_ratio": 0.9076476417427624,
+        "laplacian_energy_ratio": 0.7939294394558984
+      }
+    },
+    {
+      "method": "frozen_mpib",
+      "region": "water_near_head",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 10.17047619047619,
+        "gradient_energy_ratio": 0.13678285141256444,
+        "laplacian_energy_ratio": 0.013109287609747531
+      }
+    },
+    {
+      "method": "frozen_mpib",
+      "region": "far_water",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 5.496733333333334,
+        "gradient_energy_ratio": 0.09222255703143145,
+        "laplacian_energy_ratio": 0.013665420414977742
+      }
+    },
+    {
+      "method": "frozen_bokehme",
+      "region": "head",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 8.90378787878788,
+        "gradient_energy_ratio": 0.41222930963256105,
+        "laplacian_energy_ratio": 0.05118790894239237
+      }
+    },
+    {
+      "method": "frozen_bokehme",
+      "region": "bill",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 6.663194444444444,
+        "gradient_energy_ratio": 0.90450975806371,
+        "laplacian_energy_ratio": 0.08710251920007643
+      }
+    },
+    {
+      "method": "frozen_bokehme",
+      "region": "neck",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 0.021794871794871808,
+        "gradient_energy_ratio": 1.0000152193309673,
+        "laplacian_energy_ratio": 1.0
+      }
+    },
+    {
+      "method": "frozen_bokehme",
+      "region": "body",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 2.628055555555556,
+        "gradient_energy_ratio": 0.8451032816711948,
+        "laplacian_energy_ratio": 0.6104835999394485
+      }
+    },
+    {
+      "method": "frozen_bokehme",
+      "region": "water_near_head",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 11.704761904761904,
+        "gradient_energy_ratio": 0.0944946517280937,
+        "laplacian_energy_ratio": 0.010151211395252028
+      }
+    },
+    {
+      "method": "frozen_bokehme",
+      "region": "far_water",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 6.091577777777778,
+        "gradient_energy_ratio": 0.06641192554208497,
+        "laplacian_energy_ratio": 0.01202805004421632
+      }
+    },
+    {
+      "method": "frozen_drbokeh",
+      "region": "head",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 8.962121212121211,
+        "gradient_energy_ratio": 0.3933181176183364,
+        "laplacian_energy_ratio": 0.0419184453904943
+      }
+    },
+    {
+      "method": "frozen_drbokeh",
+      "region": "bill",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 11.03125,
+        "gradient_energy_ratio": 1.1172436857329844,
+        "laplacian_energy_ratio": 0.15597604920542718
+      }
+    },
+    {
+      "method": "frozen_drbokeh",
+      "region": "neck",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 0.4698717948717948,
+        "gradient_energy_ratio": 0.9315573235363497,
+        "laplacian_energy_ratio": 0.7018518313056025
+      }
+    },
+    {
+      "method": "frozen_drbokeh",
+      "region": "body",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 6.861666666666666,
+        "gradient_energy_ratio": 0.6202860690892436,
+        "laplacian_energy_ratio": 0.27212487659565004
+      }
+    },
+    {
+      "method": "frozen_drbokeh",
+      "region": "water_near_head",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 10.654603174603174,
+        "gradient_energy_ratio": 0.11993769313287676,
+        "laplacian_energy_ratio": 0.011991705660139957
+      }
+    },
+    {
+      "method": "frozen_drbokeh",
+      "region": "far_water",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 5.677977777777777,
+        "gradient_energy_ratio": 0.08121389786716472,
+        "laplacian_energy_ratio": 0.012614180375995558
+      }
+    },
+    {
+      "method": "frozen_bokehdiff",
+      "region": "head",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 10.671212121212122,
+        "gradient_energy_ratio": 0.8810958949428538,
+        "laplacian_energy_ratio": 0.716634165763379
+      }
+    },
+    {
+      "method": "frozen_bokehdiff",
+      "region": "bill",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 7.618055555555555,
+        "gradient_energy_ratio": 1.3046024217718222,
+        "laplacian_energy_ratio": 0.28243744753620853
+      }
+    },
+    {
+      "method": "frozen_bokehdiff",
+      "region": "neck",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 4.437820512820513,
+        "gradient_energy_ratio": 0.9918585409209347,
+        "laplacian_energy_ratio": 0.33544350331658873
+      }
+    },
+    {
+      "method": "frozen_bokehdiff",
+      "region": "body",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 12.9675,
+        "gradient_energy_ratio": 0.7652391389250875,
+        "laplacian_energy_ratio": 0.5905435071254553
+      }
+    },
+    {
+      "method": "frozen_bokehdiff",
+      "region": "water_near_head",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 11.126031746031746,
+        "gradient_energy_ratio": 0.09450133181047829,
+        "laplacian_energy_ratio": 0.013437345490152823
+      }
+    },
+    {
+      "method": "frozen_bokehdiff",
+      "region": "far_water",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 5.599466666666666,
+        "gradient_energy_ratio": 0.06896058191797165,
+        "laplacian_energy_ratio": 0.013596917689921106
+      }
+    },
+    {
+      "method": "frozen_deeplens",
+      "region": "head",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 0.190909090909091,
+        "gradient_energy_ratio": 0.9935053100431902,
+        "laplacian_energy_ratio": 0.9828507212491902
+      }
+    },
+    {
+      "method": "frozen_deeplens",
+      "region": "bill",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 11.5625,
+        "gradient_energy_ratio": 2.265589990140667,
+        "laplacian_energy_ratio": 0.17971684400244148
+      }
+    },
+    {
+      "method": "frozen_deeplens",
+      "region": "neck",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 0.2615384615384615,
+        "gradient_energy_ratio": 0.9788582058122864,
+        "laplacian_energy_ratio": 0.8272248167442067
+      }
+    },
+    {
+      "method": "frozen_deeplens",
+      "region": "body",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 0.7102777777777778,
+        "gradient_energy_ratio": 1.015486122066665,
+        "laplacian_energy_ratio": 0.9584157101517088
+      }
+    },
+    {
+      "method": "frozen_deeplens",
+      "region": "water_near_head",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 9.642539682539683,
+        "gradient_energy_ratio": 0.36242158793830825,
+        "laplacian_energy_ratio": 0.058849810449068306
+      }
+    },
+    {
+      "method": "frozen_deeplens",
+      "region": "far_water",
+      "vs_input": {
+        "MAE_vs_reference_RGB8": 4.431133333333334,
+        "gradient_energy_ratio": 0.34903899503419994,
+        "laplacian_energy_ratio": 0.05698173430121095
+      }
+    }
+  ],
+  "extended_CPU_audit": {
+    "five_keyframe_existing_output_metrics": [
+      {
+        "frame": 0,
+        "method": "any2bokeh",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 7.426515151515151,
+        "gradient_energy_ratio": 0.42854551184304673,
+        "laplacian_energy_ratio": 0.04115622092279919
+      },
+      {
+        "frame": 0,
+        "method": "any2bokeh",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 4.736111111111112,
+        "gradient_energy_ratio": 0.8116361993787993,
+        "laplacian_energy_ratio": 0.0629447227484252
+      },
+      {
+        "frame": 0,
+        "method": "any2bokeh",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 1.8339743589743587,
+        "gradient_energy_ratio": 0.8289999702516799,
+        "laplacian_energy_ratio": 0.28986771960787167
+      },
+      {
+        "frame": 0,
+        "method": "any2bokeh",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 5.046111111111111,
+        "gradient_energy_ratio": 0.7172887442026599,
+        "laplacian_energy_ratio": 0.380445577188328
+      },
+      {
+        "frame": 0,
+        "method": "mpib",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 8.237121212121213,
+        "gradient_energy_ratio": 0.45206224736826295,
+        "laplacian_energy_ratio": 0.05465770965169608
+      },
+      {
+        "frame": 0,
+        "method": "mpib",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 5.666666666666667,
+        "gradient_energy_ratio": 0.9403096855648891,
+        "laplacian_energy_ratio": 0.07344672537961862
+      },
+      {
+        "frame": 0,
+        "method": "mpib",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      },
+      {
+        "frame": 0,
+        "method": "mpib",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 1.5455555555555558,
+        "gradient_energy_ratio": 0.9076476417427624,
+        "laplacian_energy_ratio": 0.7939294394558984
+      },
+      {
+        "frame": 0,
+        "method": "bokehme",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 8.90378787878788,
+        "gradient_energy_ratio": 0.41222930963256105,
+        "laplacian_energy_ratio": 0.05118790894239237
+      },
+      {
+        "frame": 0,
+        "method": "bokehme",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 6.663194444444444,
+        "gradient_energy_ratio": 0.90450975806371,
+        "laplacian_energy_ratio": 0.08710251920007643
+      },
+      {
+        "frame": 0,
+        "method": "bokehme",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 0.021794871794871808,
+        "gradient_energy_ratio": 1.0000152193309673,
+        "laplacian_energy_ratio": 1.0
+      },
+      {
+        "frame": 0,
+        "method": "bokehme",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 2.628055555555556,
+        "gradient_energy_ratio": 0.8451032816711948,
+        "laplacian_energy_ratio": 0.6104835999394485
+      },
+      {
+        "frame": 0,
+        "method": "drbokeh",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 8.962121212121211,
+        "gradient_energy_ratio": 0.3933181176183364,
+        "laplacian_energy_ratio": 0.0419184453904943
+      },
+      {
+        "frame": 0,
+        "method": "drbokeh",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 11.03125,
+        "gradient_energy_ratio": 1.1172436857329844,
+        "laplacian_energy_ratio": 0.15597604920542718
+      },
+      {
+        "frame": 0,
+        "method": "drbokeh",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 0.4698717948717948,
+        "gradient_energy_ratio": 0.9315573235363497,
+        "laplacian_energy_ratio": 0.7018518313056025
+      },
+      {
+        "frame": 0,
+        "method": "drbokeh",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 6.861666666666666,
+        "gradient_energy_ratio": 0.6202860690892436,
+        "laplacian_energy_ratio": 0.27212487659565004
+      },
+      {
+        "frame": 0,
+        "method": "bokehdiff",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 10.671212121212122,
+        "gradient_energy_ratio": 0.8810958949428538,
+        "laplacian_energy_ratio": 0.716634165763379
+      },
+      {
+        "frame": 0,
+        "method": "bokehdiff",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 7.618055555555555,
+        "gradient_energy_ratio": 1.3046024217718222,
+        "laplacian_energy_ratio": 0.28243744753620853
+      },
+      {
+        "frame": 0,
+        "method": "bokehdiff",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 4.437820512820513,
+        "gradient_energy_ratio": 0.9918585409209347,
+        "laplacian_energy_ratio": 0.33544350331658873
+      },
+      {
+        "frame": 0,
+        "method": "bokehdiff",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 12.9675,
+        "gradient_energy_ratio": 0.7652391389250875,
+        "laplacian_energy_ratio": 0.5905435071254553
+      },
+      {
+        "frame": 0,
+        "method": "deeplens",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 0.190909090909091,
+        "gradient_energy_ratio": 0.9935053100431902,
+        "laplacian_energy_ratio": 0.9828507212491902
+      },
+      {
+        "frame": 0,
+        "method": "deeplens",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 11.5625,
+        "gradient_energy_ratio": 2.265589990140667,
+        "laplacian_energy_ratio": 0.17971684400244148
+      },
+      {
+        "frame": 0,
+        "method": "deeplens",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 0.2615384615384615,
+        "gradient_energy_ratio": 0.9788582058122864,
+        "laplacian_energy_ratio": 0.8272248167442067
+      },
+      {
+        "frame": 0,
+        "method": "deeplens",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 0.7102777777777778,
+        "gradient_energy_ratio": 1.015486122066665,
+        "laplacian_energy_ratio": 0.9584157101517088
+      },
+      {
+        "frame": 6,
+        "method": "any2bokeh",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 6.122589531680441,
+        "gradient_energy_ratio": 0.4856763167596547,
+        "laplacian_energy_ratio": 0.05194877813496741
+      },
+      {
+        "frame": 6,
+        "method": "any2bokeh",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 4.866666666666667,
+        "gradient_energy_ratio": 0.7807273512069516,
+        "laplacian_energy_ratio": 0.05405515546316035
+      },
+      {
+        "frame": 6,
+        "method": "any2bokeh",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 1.4363929146537844,
+        "gradient_energy_ratio": 0.8141515894799235,
+        "laplacian_energy_ratio": 0.26189151455018844
+      },
+      {
+        "frame": 6,
+        "method": "any2bokeh",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 5.100555555555555,
+        "gradient_energy_ratio": 0.6980906698456999,
+        "laplacian_energy_ratio": 0.3570074991022709
+      },
+      {
+        "frame": 6,
+        "method": "mpib",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 7.356749311294766,
+        "gradient_energy_ratio": 0.47061971832008015,
+        "laplacian_energy_ratio": 0.056972399430416806
+      },
+      {
+        "frame": 6,
+        "method": "mpib",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 4.205555555555556,
+        "gradient_energy_ratio": 0.8904742946878448,
+        "laplacian_energy_ratio": 0.07674318070574492
+      },
+      {
+        "frame": 6,
+        "method": "mpib",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 0.015297906602254425,
+        "gradient_energy_ratio": 1.0029725650871772,
+        "laplacian_energy_ratio": 0.9982493144580386
+      },
+      {
+        "frame": 6,
+        "method": "mpib",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 2.5344444444444445,
+        "gradient_energy_ratio": 0.8496868351862539,
+        "laplacian_energy_ratio": 0.6396016630030376
+      },
+      {
+        "frame": 6,
+        "method": "bokehme",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 7.277548209366391,
+        "gradient_energy_ratio": 0.4743917462235835,
+        "laplacian_energy_ratio": 0.0592912302073371
+      },
+      {
+        "frame": 6,
+        "method": "bokehme",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 4.222222222222223,
+        "gradient_energy_ratio": 0.8888144034497704,
+        "laplacian_energy_ratio": 0.07452864034860691
+      },
+      {
+        "frame": 6,
+        "method": "bokehme",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 0.03864734299516908,
+        "gradient_energy_ratio": 1.0058142163855077,
+        "laplacian_energy_ratio": 1.0010220097538707
+      },
+      {
+        "frame": 6,
+        "method": "bokehme",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 1.7325000000000002,
+        "gradient_energy_ratio": 0.8929216529876832,
+        "laplacian_energy_ratio": 0.7131622551815545
+      },
+      {
+        "frame": 6,
+        "method": "drbokeh",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 7.6487603305785115,
+        "gradient_energy_ratio": 0.4353019132775684,
+        "laplacian_energy_ratio": 0.047389592318789954
+      },
+      {
+        "frame": 6,
+        "method": "drbokeh",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 31.975,
+        "gradient_energy_ratio": 0.23222289932576715,
+        "laplacian_energy_ratio": 0.04468568285441508
+      },
+      {
+        "frame": 6,
+        "method": "drbokeh",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 0.3784219001610306,
+        "gradient_energy_ratio": 0.946147291592543,
+        "laplacian_energy_ratio": 0.7310196689383633
+      },
+      {
+        "frame": 6,
+        "method": "drbokeh",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 5.759166666666667,
+        "gradient_energy_ratio": 0.6489752797297395,
+        "laplacian_energy_ratio": 0.30412652667062007
+      },
+      {
+        "frame": 6,
+        "method": "bokehdiff",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 7.476584022038567,
+        "gradient_energy_ratio": 0.9808375554916144,
+        "laplacian_energy_ratio": 0.5174960416292081
+      },
+      {
+        "frame": 6,
+        "method": "bokehdiff",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 6.197222222222223,
+        "gradient_energy_ratio": 1.3071392897437537,
+        "laplacian_energy_ratio": 0.3611700516839501
+      },
+      {
+        "frame": 6,
+        "method": "bokehdiff",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 4.426731078904992,
+        "gradient_energy_ratio": 1.1075610065390427,
+        "laplacian_energy_ratio": 0.48017741385472407
+      },
+      {
+        "frame": 6,
+        "method": "bokehdiff",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 12.452222222222224,
+        "gradient_energy_ratio": 0.8841941172965847,
+        "laplacian_energy_ratio": 0.6053745569638189
+      },
+      {
+        "frame": 6,
+        "method": "deeplens",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 3.5888429752066116,
+        "gradient_energy_ratio": 0.800961865657273,
+        "laplacian_energy_ratio": 0.25075877948146563
+      },
+      {
+        "frame": 6,
+        "method": "deeplens",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 9.9,
+        "gradient_energy_ratio": 1.0459422849018152,
+        "laplacian_energy_ratio": 0.10711924854568906
+      },
+      {
+        "frame": 6,
+        "method": "deeplens",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 1.5515297906602254,
+        "gradient_energy_ratio": 1.168815527624371,
+        "laplacian_energy_ratio": 0.5740672695143976
+      },
+      {
+        "frame": 6,
+        "method": "deeplens",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 2.7105555555555556,
+        "gradient_energy_ratio": 0.8583770541810596,
+        "laplacian_energy_ratio": 0.6207352737641387
+      },
+      {
+        "frame": 12,
+        "method": "any2bokeh",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 5.238980716253444,
+        "gradient_energy_ratio": 0.5360815167118675,
+        "laplacian_energy_ratio": 0.10425962424535355
+      },
+      {
+        "frame": 12,
+        "method": "any2bokeh",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 21.819444444444446,
+        "gradient_energy_ratio": 0.16413989218253047,
+        "laplacian_energy_ratio": 0.008993070796134855
+      },
+      {
+        "frame": 12,
+        "method": "any2bokeh",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 1.752012882447665,
+        "gradient_energy_ratio": 0.8267430018255821,
+        "laplacian_energy_ratio": 0.45749716714021493
+      },
+      {
+        "frame": 12,
+        "method": "any2bokeh",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 3.302777777777778,
+        "gradient_energy_ratio": 0.8041212772859079,
+        "laplacian_energy_ratio": 0.4992158893990506
+      },
+      {
+        "frame": 12,
+        "method": "mpib",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 5.951101928374657,
+        "gradient_energy_ratio": 0.5057811465978062,
+        "laplacian_energy_ratio": 0.10246497672746659
+      },
+      {
+        "frame": 12,
+        "method": "mpib",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 20.958333333333332,
+        "gradient_energy_ratio": 0.1682535210841375,
+        "laplacian_energy_ratio": 0.011938135039484815
+      },
+      {
+        "frame": 12,
+        "method": "mpib",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 0.0,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      },
+      {
+        "frame": 12,
+        "method": "mpib",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 0.5544444444444444,
+        "gradient_energy_ratio": 0.9630571243766415,
+        "laplacian_energy_ratio": 0.8860867264940832
+      },
+      {
+        "frame": 12,
+        "method": "bokehme",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 5.925619834710745,
+        "gradient_energy_ratio": 0.50758424553194,
+        "laplacian_energy_ratio": 0.10644483356825538
+      },
+      {
+        "frame": 12,
+        "method": "bokehme",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 19.20833333333333,
+        "gradient_energy_ratio": 0.40327908576528654,
+        "laplacian_energy_ratio": 0.055666607602577974
+      },
+      {
+        "frame": 12,
+        "method": "bokehme",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 0.004025764895330121,
+        "gradient_energy_ratio": 1.0,
+        "laplacian_energy_ratio": 1.0
+      },
+      {
+        "frame": 12,
+        "method": "bokehme",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 0.20833333333333334,
+        "gradient_energy_ratio": 0.9871356260243463,
+        "laplacian_energy_ratio": 0.9569137767425845
+      },
+      {
+        "frame": 12,
+        "method": "drbokeh",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 6.413911845730028,
+        "gradient_energy_ratio": 0.4571774995329664,
+        "laplacian_energy_ratio": 0.0885014622828743
+      },
+      {
+        "frame": 12,
+        "method": "drbokeh",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 30.70833333333333,
+        "gradient_energy_ratio": 0.17354285814254405,
+        "laplacian_energy_ratio": 0.019380910314621958
+      },
+      {
+        "frame": 12,
+        "method": "drbokeh",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 0.5217391304347828,
+        "gradient_energy_ratio": 0.9192034133726812,
+        "laplacian_energy_ratio": 0.7859987079960796
+      },
+      {
+        "frame": 12,
+        "method": "drbokeh",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 2.8225,
+        "gradient_energy_ratio": 0.8085293670069659,
+        "laplacian_energy_ratio": 0.557046559212646
+      },
+      {
+        "frame": 12,
+        "method": "bokehdiff",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 6.295454545454545,
+        "gradient_energy_ratio": 0.8461476732076509,
+        "laplacian_energy_ratio": 0.48193960118757545
+      },
+      {
+        "frame": 12,
+        "method": "bokehdiff",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 16.23611111111111,
+        "gradient_energy_ratio": 0.7104030919370432,
+        "laplacian_energy_ratio": 0.43822746399586177
+      },
+      {
+        "frame": 12,
+        "method": "bokehdiff",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 6.4041867954911424,
+        "gradient_energy_ratio": 0.7126144989735206,
+        "laplacian_energy_ratio": 0.3269661649655679
+      },
+      {
+        "frame": 12,
+        "method": "bokehdiff",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 9.905,
+        "gradient_energy_ratio": 0.7624123659580961,
+        "laplacian_energy_ratio": 0.5284930787542902
+      },
+      {
+        "frame": 12,
+        "method": "deeplens",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 0.24999999999999983,
+        "gradient_energy_ratio": 0.977186984571096,
+        "laplacian_energy_ratio": 0.9567303567868797
+      },
+      {
+        "frame": 12,
+        "method": "deeplens",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 17.094444444444445,
+        "gradient_energy_ratio": 0.8533443012609533,
+        "laplacian_energy_ratio": 0.23056155677686488
+      },
+      {
+        "frame": 12,
+        "method": "deeplens",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 0.07004830917874394,
+        "gradient_energy_ratio": 1.0058172171378754,
+        "laplacian_energy_ratio": 0.9965882261691636
+      },
+      {
+        "frame": 12,
+        "method": "deeplens",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 0.5547222222222221,
+        "gradient_energy_ratio": 1.0188451884182317,
+        "laplacian_energy_ratio": 0.9877789153635816
+      },
+      {
+        "frame": 18,
+        "method": "any2bokeh",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 5.634297520661156,
+        "gradient_energy_ratio": 0.3900160522181101,
+        "laplacian_energy_ratio": 0.02226498985891257
+      },
+      {
+        "frame": 18,
+        "method": "any2bokeh",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 16.105555555555554,
+        "gradient_energy_ratio": 0.08628729851126388,
+        "laplacian_energy_ratio": 0.0037744115521631282
+      },
+      {
+        "frame": 18,
+        "method": "any2bokeh",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 1.8711755233494363,
+        "gradient_energy_ratio": 0.6656187654797453,
+        "laplacian_energy_ratio": 0.4070287920810143
+      },
+      {
+        "frame": 18,
+        "method": "any2bokeh",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 3.2577777777777785,
+        "gradient_energy_ratio": 0.8093835609253599,
+        "laplacian_energy_ratio": 0.5064445039858521
+      },
+      {
+        "frame": 18,
+        "method": "mpib",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 5.729338842975206,
+        "gradient_energy_ratio": 0.38730550743941045,
+        "laplacian_energy_ratio": 0.026096289011650408
+      },
+      {
+        "frame": 18,
+        "method": "mpib",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 21.70277777777778,
+        "gradient_energy_ratio": 0.29614962474593115,
+        "laplacian_energy_ratio": 0.03434830468593534
+      },
+      {
+        "frame": 18,
+        "method": "mpib",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 0.07004830917874397,
+        "gradient_energy_ratio": 0.9947160136182438,
+        "laplacian_energy_ratio": 0.9911538994491809
+      },
+      {
+        "frame": 18,
+        "method": "mpib",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 0.04083333333333334,
+        "gradient_energy_ratio": 0.9992796666572675,
+        "laplacian_energy_ratio": 0.9971593269890168
+      },
+      {
+        "frame": 18,
+        "method": "bokehme",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 5.794765840220385,
+        "gradient_energy_ratio": 0.3866363902727607,
+        "laplacian_energy_ratio": 0.030468503704880873
+      },
+      {
+        "frame": 18,
+        "method": "bokehme",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 17.172222222222224,
+        "gradient_energy_ratio": 0.3078764151723521,
+        "laplacian_energy_ratio": 0.022098878645510085
+      },
+      {
+        "frame": 18,
+        "method": "bokehme",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 0.0893719806763285,
+        "gradient_energy_ratio": 0.9996304706005614,
+        "laplacian_energy_ratio": 0.9986829449489942
+      },
+      {
+        "frame": 18,
+        "method": "bokehme",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 0.02666666666666668,
+        "gradient_energy_ratio": 0.9992289579957488,
+        "laplacian_energy_ratio": 0.9939046323459965
+      },
+      {
+        "frame": 18,
+        "method": "drbokeh",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 6.526170798898071,
+        "gradient_energy_ratio": 0.32121804158301276,
+        "laplacian_energy_ratio": 0.0191439119767397
+      },
+      {
+        "frame": 18,
+        "method": "drbokeh",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 19.64722222222222,
+        "gradient_energy_ratio": 0.1363056152988752,
+        "laplacian_energy_ratio": 0.011372367768349064
+      },
+      {
+        "frame": 18,
+        "method": "drbokeh",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 1.0531400966183575,
+        "gradient_energy_ratio": 0.7888068177678476,
+        "laplacian_energy_ratio": 0.6431755878502351
+      },
+      {
+        "frame": 18,
+        "method": "drbokeh",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 1.6402777777777777,
+        "gradient_energy_ratio": 0.8914789925856161,
+        "laplacian_energy_ratio": 0.7137531050261389
+      },
+      {
+        "frame": 18,
+        "method": "bokehdiff",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 6.115702479338844,
+        "gradient_energy_ratio": 0.9256491040891935,
+        "laplacian_energy_ratio": 0.2806205731749867
+      },
+      {
+        "frame": 18,
+        "method": "bokehdiff",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 15.683333333333332,
+        "gradient_energy_ratio": 0.9267690645838564,
+        "laplacian_energy_ratio": 0.7730823644157089
+      },
+      {
+        "frame": 18,
+        "method": "bokehdiff",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 6.885668276972623,
+        "gradient_energy_ratio": 0.5412114414139203,
+        "laplacian_energy_ratio": 0.3398042841838782
+      },
+      {
+        "frame": 18,
+        "method": "bokehdiff",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 10.051666666666668,
+        "gradient_energy_ratio": 0.8616122929944404,
+        "laplacian_energy_ratio": 0.5925546283265559
+      },
+      {
+        "frame": 18,
+        "method": "deeplens",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 3.3822314049586777,
+        "gradient_energy_ratio": 0.6893085929664634,
+        "laplacian_energy_ratio": 0.12461883791755493
+      },
+      {
+        "frame": 18,
+        "method": "deeplens",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 17.866666666666667,
+        "gradient_energy_ratio": 0.7522403447196244,
+        "laplacian_energy_ratio": 0.11368903793357497
+      },
+      {
+        "frame": 18,
+        "method": "deeplens",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 0.02173913043478261,
+        "gradient_energy_ratio": 0.9931598810003596,
+        "laplacian_energy_ratio": 0.9883417494271963
+      },
+      {
+        "frame": 18,
+        "method": "deeplens",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 1.3769444444444443,
+        "gradient_energy_ratio": 0.9385876851692375,
+        "laplacian_energy_ratio": 0.73366750344376
+      },
+      {
+        "frame": 24,
+        "method": "any2bokeh",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 9.376033057851238,
+        "gradient_energy_ratio": 0.23760074441410717,
+        "laplacian_energy_ratio": 0.020687127836508848
+      },
+      {
+        "frame": 24,
+        "method": "any2bokeh",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 9.16111111111111,
+        "gradient_energy_ratio": 1.2270198656351974,
+        "laplacian_energy_ratio": 0.2655684976330019
+      },
+      {
+        "frame": 24,
+        "method": "any2bokeh",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 2.063131313131313,
+        "gradient_energy_ratio": 0.6504899743893439,
+        "laplacian_energy_ratio": 0.2783144069653767
+      },
+      {
+        "frame": 24,
+        "method": "any2bokeh",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 3.963611111111111,
+        "gradient_energy_ratio": 0.7338983250851845,
+        "laplacian_energy_ratio": 0.43694608444285155
+      },
+      {
+        "frame": 24,
+        "method": "mpib",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 9.462121212121213,
+        "gradient_energy_ratio": 0.29602198716153477,
+        "laplacian_energy_ratio": 0.0338477716344742
+      },
+      {
+        "frame": 24,
+        "method": "mpib",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 12.105555555555554,
+        "gradient_energy_ratio": 2.3585843448522477,
+        "laplacian_energy_ratio": 0.7223168665313913
+      },
+      {
+        "frame": 24,
+        "method": "mpib",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 1.398148148148148,
+        "gradient_energy_ratio": 0.76690757925023,
+        "laplacian_energy_ratio": 0.5951541504551372
+      },
+      {
+        "frame": 24,
+        "method": "mpib",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 0.8697222222222224,
+        "gradient_energy_ratio": 0.9360863702655298,
+        "laplacian_energy_ratio": 0.8340198153514302
+      },
+      {
+        "frame": 24,
+        "method": "bokehme",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 10.055096418732782,
+        "gradient_energy_ratio": 0.24670648270297618,
+        "laplacian_energy_ratio": 0.028360613332471644
+      },
+      {
+        "frame": 24,
+        "method": "bokehme",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 12.036111111111111,
+        "gradient_energy_ratio": 2.330048941733547,
+        "laplacian_energy_ratio": 0.6390495804185791
+      },
+      {
+        "frame": 24,
+        "method": "bokehme",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 0.744107744107744,
+        "gradient_energy_ratio": 0.8442211329442946,
+        "laplacian_energy_ratio": 0.734533874052211
+      },
+      {
+        "frame": 24,
+        "method": "bokehme",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 0.12250000000000001,
+        "gradient_energy_ratio": 0.9921217954798555,
+        "laplacian_energy_ratio": 0.9744388727022449
+      },
+      {
+        "frame": 24,
+        "method": "drbokeh",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 10.22038567493113,
+        "gradient_energy_ratio": 0.23111093501571625,
+        "laplacian_energy_ratio": 0.023493522772379295
+      },
+      {
+        "frame": 24,
+        "method": "drbokeh",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 20.644444444444446,
+        "gradient_energy_ratio": 2.9369781787936162,
+        "laplacian_energy_ratio": 0.4440895017685115
+      },
+      {
+        "frame": 24,
+        "method": "drbokeh",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 2.776936026936027,
+        "gradient_energy_ratio": 0.5562401229910517,
+        "laplacian_energy_ratio": 0.21173761656156978
+      },
+      {
+        "frame": 24,
+        "method": "drbokeh",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 2.7538888888888886,
+        "gradient_energy_ratio": 0.8105155445246769,
+        "laplacian_energy_ratio": 0.5882164303934853
+      },
+      {
+        "frame": 24,
+        "method": "bokehdiff",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 9.09022038567493,
+        "gradient_energy_ratio": 0.8525778351065806,
+        "laplacian_energy_ratio": 0.6036633604695156
+      },
+      {
+        "frame": 24,
+        "method": "bokehdiff",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 6.397222222222222,
+        "gradient_energy_ratio": 0.9367856496748583,
+        "laplacian_energy_ratio": 0.6704011176933069
+      },
+      {
+        "frame": 24,
+        "method": "bokehdiff",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 5.852693602693602,
+        "gradient_energy_ratio": 0.6829702791944041,
+        "laplacian_energy_ratio": 0.38586871952224644
+      },
+      {
+        "frame": 24,
+        "method": "bokehdiff",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 12.337777777777779,
+        "gradient_energy_ratio": 0.8035899156017067,
+        "laplacian_energy_ratio": 0.5190077613768146
+      },
+      {
+        "frame": 24,
+        "method": "deeplens",
+        "region": "head_core",
+        "MAE_vs_reference_RGB8": 0.29201101928374656,
+        "gradient_energy_ratio": 1.006405233825589,
+        "laplacian_energy_ratio": 0.998191851820661
+      },
+      {
+        "frame": 24,
+        "method": "deeplens",
+        "region": "bill_core",
+        "MAE_vs_reference_RGB8": 11.494444444444444,
+        "gradient_energy_ratio": 2.8391244245407004,
+        "laplacian_energy_ratio": 1.6456727559200743
+      },
+      {
+        "frame": 24,
+        "method": "deeplens",
+        "region": "neck_core",
+        "MAE_vs_reference_RGB8": 0.5858585858585859,
+        "gradient_energy_ratio": 1.0185894116244183,
+        "laplacian_energy_ratio": 0.9529204619323066
+      },
+      {
+        "frame": 24,
+        "method": "deeplens",
+        "region": "body_core",
+        "MAE_vs_reference_RGB8": 1.5197222222222222,
+        "gradient_energy_ratio": 1.0683838600607471,
+        "laplacian_energy_ratio": 0.9688178595760442
+      }
+    ],
+    "actual_condition_resize_checks": [
+      {
+        "frame": 0,
+        "region": "head_core",
+        "native_nominal_median": 2.3998431372549014,
+        "author_resized_CoC_times_K_median": 2.3817555904388428,
+        "normalized_adapter_nominal_median": 2.8583143107989457,
+        "span": 0.8375
+      },
+      {
+        "frame": 0,
+        "region": "bill_core",
+        "native_nominal_median": 2.3998431372549014,
+        "author_resized_CoC_times_K_median": 2.387117862701416,
+        "normalized_adapter_nominal_median": 2.865484342990927,
+        "span": 0.8375
+      },
+      {
+        "frame": 0,
+        "region": "neck_core",
+        "native_nominal_median": 0.20376470588235307,
+        "author_resized_CoC_times_K_median": 0.19017302989959717,
+        "normalized_adapter_nominal_median": 0.23115598478197308,
+        "span": 0.8375
+      },
+      {
+        "frame": 0,
+        "region": "body_core",
+        "native_nominal_median": 0.5802352941176476,
+        "author_resized_CoC_times_K_median": 0.5802350640296936,
+        "normalized_adapter_nominal_median": 0.6928182616330121,
+        "span": 0.8375
+      },
+      {
+        "frame": 6,
+        "region": "head_core",
+        "native_nominal_median": 2.228003137254902,
+        "author_resized_CoC_times_K_median": 2.2188282012939453,
+        "normalized_adapter_nominal_median": 2.555550485829248,
+        "span": 0.8718290441176471
+      },
+      {
+        "frame": 6,
+        "region": "bill_core",
+        "native_nominal_median": 2.1652580392156864,
+        "author_resized_CoC_times_K_median": 2.178880214691162,
+        "normalized_adapter_nominal_median": 2.485267773619385,
+        "span": 0.8718290441176471
+      },
+      {
+        "frame": 6,
+        "region": "neck_core",
+        "native_nominal_median": 0.15631058823529465,
+        "author_resized_CoC_times_K_median": 0.1563103199005127,
+        "normalized_adapter_nominal_median": 0.1792904116809874,
+        "span": 0.8718290441176471
+      },
+      {
+        "frame": 6,
+        "region": "body_core",
+        "native_nominal_median": 0.533885490196079,
+        "author_resized_CoC_times_K_median": 0.533885657787323,
+        "normalized_adapter_nominal_median": 0.612374058650924,
+        "span": 0.8718290441176471
+      },
+      {
+        "frame": 12,
+        "region": "head_core",
+        "native_nominal_median": 2.2081380392156866,
+        "author_resized_CoC_times_K_median": 2.183487892150879,
+        "normalized_adapter_nominal_median": 2.449754817469436,
+        "span": 0.8933670343137254
+      },
+      {
+        "frame": 12,
+        "region": "bill_core",
+        "native_nominal_median": 2.270883137254902,
+        "author_resized_CoC_times_K_median": 2.295742988586426,
+        "normalized_adapter_nominal_median": 2.5533231228244655,
+        "span": 0.8933670343137254
+      },
+      {
+        "frame": 12,
+        "region": "neck_core",
+        "native_nominal_median": 0.13754980392156924,
+        "author_resized_CoC_times_K_median": 0.12185369431972504,
+        "normalized_adapter_nominal_median": 0.13923421183490864,
+        "span": 0.8933670343137254
+      },
+      {
+        "frame": 12,
+        "region": "body_core",
+        "native_nominal_median": 0.3257850980392156,
+        "author_resized_CoC_times_K_median": 0.325564980506897,
+        "normalized_adapter_nominal_median": 0.36467105403041883,
+        "span": 0.8933670343137254
+      },
+      {
+        "frame": 18,
+        "region": "head_core",
+        "native_nominal_median": 2.3789333333333325,
+        "author_resized_CoC_times_K_median": 2.381232738494873,
+        "normalized_adapter_nominal_median": 2.65410117582718,
+        "span": 0.8963235294117646
+      },
+      {
+        "frame": 18,
+        "region": "bill_core",
+        "native_nominal_median": 2.8181490196078425,
+        "author_resized_CoC_times_K_median": 2.824026107788086,
+        "normalized_adapter_nominal_median": 3.1449406617445983,
+        "span": 0.8963235294117646
+      },
+      {
+        "frame": 18,
+        "region": "neck_core",
+        "native_nominal_median": 0.18285490196078413,
+        "author_resized_CoC_times_K_median": 0.20610183477401733,
+        "normalized_adapter_nominal_median": 0.2273852884878309,
+        "span": 0.8963235294117646
+      },
+      {
+        "frame": 18,
+        "region": "body_core",
+        "native_nominal_median": 0.13087058823529496,
+        "author_resized_CoC_times_K_median": 0.1344117373228073,
+        "normalized_adapter_nominal_median": 0.14600820344544804,
+        "span": 0.8963235294117646
+      },
+      {
+        "frame": 24,
+        "region": "head_core",
+        "native_nominal_median": 3.4456000000000007,
+        "author_resized_CoC_times_K_median": 3.4465434551239014,
+        "normalized_adapter_nominal_median": 3.803584415584417,
+        "span": 0.9058823529411764
+      },
+      {
+        "frame": 24,
+        "region": "bill_core",
+        "native_nominal_median": 3.508345098039216,
+        "author_resized_CoC_times_K_median": 3.5250563621520996,
+        "normalized_adapter_nominal_median": 3.8750129870129877,
+        "span": 0.9058823529411764
+      },
+      {
+        "frame": 24,
+        "region": "neck_core",
+        "native_nominal_median": 0.6848156862745096,
+        "author_resized_CoC_times_K_median": 0.6813039779663086,
+        "normalized_adapter_nominal_median": 0.7559653679653678,
+        "span": 0.9058823529411764
+      },
+      {
+        "frame": 24,
+        "region": "body_core",
+        "native_nominal_median": 0.2563607843137259,
+        "author_resized_CoC_times_K_median": 0.2560132145881653,
+        "normalized_adapter_nominal_median": 0.28299567099567147,
+        "span": 0.9058823529411764
+      }
+    ],
+    "deeplens_own_geometry": [
+      {
+        "frame": 0,
+        "region": "head_core",
+        "low_resolution": [
+          512,
+          288
+        ],
+        "depth_median": 0.8507139682769775,
+        "focus_depth": 0.8517815470695496,
+        "absolute_difference_median": 0.013506293296813965,
+        "native_aperture_times_difference_median": 0.006753146648406982
+      },
+      {
+        "frame": 0,
+        "region": "bill_core",
+        "low_resolution": [
+          512,
+          288
+        ],
+        "depth_median": 0.6701452136039734,
+        "focus_depth": 0.8517815470695496,
+        "absolute_difference_median": 0.18163633346557617,
+        "native_aperture_times_difference_median": 0.09081816673278809
+      },
+      {
+        "frame": 0,
+        "region": "neck_core",
+        "low_resolution": [
+          512,
+          288
+        ],
+        "depth_median": 0.7916437387466431,
+        "focus_depth": 0.8517815470695496,
+        "absolute_difference_median": 0.06013783812522888,
+        "native_aperture_times_difference_median": 0.03006891906261444
+      },
+      {
+        "frame": 0,
+        "region": "body_core",
+        "low_resolution": [
+          512,
+          288
+        ],
+        "depth_median": 0.8984426856040955,
+        "focus_depth": 0.8517815470695496,
+        "absolute_difference_median": 0.0466611385345459,
+        "native_aperture_times_difference_median": 0.02333056926727295
+      },
+      {
+        "frame": 6,
+        "region": "head_core",
+        "low_resolution": [
+          512,
+          288
+        ],
+        "depth_median": 0.715170681476593,
+        "focus_depth": 0.8346478939056396,
+        "absolute_difference_median": 0.11947721242904663,
+        "native_aperture_times_difference_median": 0.059738606214523315
+      },
+      {
+        "frame": 6,
+        "region": "bill_core",
+        "low_resolution": [
+          512,
+          288
+        ],
+        "depth_median": 0.5040328502655029,
+        "focus_depth": 0.8346478939056396,
+        "absolute_difference_median": 0.3306150734424591,
+        "native_aperture_times_difference_median": 0.16530753672122955
+      },
+      {
+        "frame": 6,
+        "region": "neck_core",
+        "low_resolution": [
+          512,
+          288
+        ],
+        "depth_median": 0.7464145421981812,
+        "focus_depth": 0.8346478939056396,
+        "absolute_difference_median": 0.08823332190513611,
+        "native_aperture_times_difference_median": 0.044116660952568054
+      },
+      {
+        "frame": 6,
+        "region": "body_core",
+        "low_resolution": [
+          512,
+          288
+        ],
+        "depth_median": 0.920978307723999,
+        "focus_depth": 0.8346478939056396,
+        "absolute_difference_median": 0.08633038401603699,
+        "native_aperture_times_difference_median": 0.043165192008018494
+      },
+      {
+        "frame": 12,
+        "region": "head_core",
+        "low_resolution": [
+          512,
+          288
+        ],
+        "depth_median": 0.7338517904281616,
+        "focus_depth": 0.7752364277839661,
+        "absolute_difference_median": 0.04138463735580444,
+        "native_aperture_times_difference_median": 0.02069231867790222
+      },
+      {
+        "frame": 12,
+        "region": "bill_core",
+        "low_resolution": [
+          512,
+          288
+        ],
+        "depth_median": 0.6230005621910095,
+        "focus_depth": 0.7752364277839661,
+        "absolute_difference_median": 0.15223586559295654,
+        "native_aperture_times_difference_median": 0.07611793279647827
+      },
+      {
+        "frame": 12,
+        "region": "neck_core",
+        "low_resolution": [
+          512,
+          288
+        ],
+        "depth_median": 0.8092964887619019,
+        "focus_depth": 0.7752364277839661,
+        "absolute_difference_median": 0.03406009078025818,
+        "native_aperture_times_difference_median": 0.01703004539012909
+      },
+      {
+        "frame": 12,
+        "region": "body_core",
+        "low_resolution": [
+          512,
+          288
+        ],
+        "depth_median": 0.8141930103302002,
+        "focus_depth": 0.7752364277839661,
+        "absolute_difference_median": 0.03895655274391174,
+        "native_aperture_times_difference_median": 0.01947827637195587
+      },
+      {
+        "frame": 18,
+        "region": "head_core",
+        "low_resolution": [
+          512,
+          288
+        ],
+        "depth_median": 0.5759887099266052,
+        "focus_depth": 0.7328724265098572,
+        "absolute_difference_median": 0.15688371658325195,
+        "native_aperture_times_difference_median": 0.07844185829162598
+      },
+      {
+        "frame": 18,
+        "region": "bill_core",
+        "low_resolution": [
+          512,
+          288
+        ],
+        "depth_median": 0.4556194841861725,
+        "focus_depth": 0.7328724265098572,
+        "absolute_difference_median": 0.2772529423236847,
+        "native_aperture_times_difference_median": 0.13862647116184235
+      },
+      {
+        "frame": 18,
+        "region": "neck_core",
+        "low_resolution": [
+          512,
+          288
+        ],
+        "depth_median": 0.7533531785011292,
+        "focus_depth": 0.7328724265098572,
+        "absolute_difference_median": 0.027840256690979004,
+        "native_aperture_times_difference_median": 0.013920128345489502
+      },
+      {
+        "frame": 18,
+        "region": "body_core",
+        "low_resolution": [
+          512,
+          288
+        ],
+        "depth_median": 0.801619291305542,
+        "focus_depth": 0.7328724265098572,
+        "absolute_difference_median": 0.06874683499336243,
+        "native_aperture_times_difference_median": 0.03437341749668121
+      },
+      {
+        "frame": 24,
+        "region": "head_core",
+        "low_resolution": [
+          512,
+          288
+        ],
+        "depth_median": 0.7607036828994751,
+        "focus_depth": 0.7758203744888306,
+        "absolute_difference_median": 0.015116691589355469,
+        "native_aperture_times_difference_median": 0.007558345794677734
+      },
+      {
+        "frame": 24,
+        "region": "bill_core",
+        "low_resolution": [
+          512,
+          288
+        ],
+        "depth_median": 0.45975857973098755,
+        "focus_depth": 0.7758203744888306,
+        "absolute_difference_median": 0.316061794757843,
+        "native_aperture_times_difference_median": 0.1580308973789215
+      },
+      {
+        "frame": 24,
+        "region": "neck_core",
+        "low_resolution": [
+          512,
+          288
+        ],
+        "depth_median": 0.7935853004455566,
+        "focus_depth": 0.7758203744888306,
+        "absolute_difference_median": 0.02044224739074707,
+        "native_aperture_times_difference_median": 0.010221123695373535
+      },
+      {
+        "frame": 24,
+        "region": "body_core",
+        "low_resolution": [
+          512,
+          288
+        ],
+        "depth_median": 0.8115617632865906,
+        "focus_depth": 0.7758203744888306,
+        "absolute_difference_median": 0.03574138879776001,
+        "native_aperture_times_difference_median": 0.017870694398880005
+      }
+    ],
+    "limits": [
+      "DeepLens native condition units are not interchangeable with K*VDA disparity.",
+      "Fixed small ROI gradient ratios are not global background blur measurements or perceptual rankings.",
+      "Prior bill ROIs12/18 contain annotation background; kept for traceability, excluded from pure-bill claims."
+    ]
+  },
+  "metric_limits": "Input-relative errors and edge energy measure photometric change/structure response, not bokeh accuracy or user quality. Reconstruction may sharpen/hallucinate; one intervened frame.",
+  "diagnosis": {
+    "scope": "5 variants x25 output frames; interventions only on source frame0 of one exploration video. GT mask only constructs a diagnostic region, not an implementable new baseline.",
+    "supported": [
+      "Original frozen focus matches native annotation-union mean on all25 frames; source annotation agrees with prepared mask.",
+      "Actual author resize preserves the large head-vs-focus offset at the five checked keyframes; no sign of head defocus created solely by display resizing.",
+      "Paired head-to-neck geometry intervention changes head output toward original RGB and raises local gradient energy; identical signed q perturbation translated to water produces almost no head response.",
+      "Global focus shift is a different intervention: head response changes together with neck and background.",
+      "BokehDiff normalized input control is larger than shared-domain nominal control, despite its higher measured head gradient energy; output differences cannot be explained by a smaller numerical control alone."
+    ],
+    "limits": [
+      "No metric depth or paired bokeh truth: neck-reference intervention is not a validated physical correction.",
+      "CoC and MPI are both rebuilt after disparity change; their individual contributions are not isolated.",
+      "The water control matches area and signed q changes, not original defocus, texture, or semantic context.",
+      "New output aesthetics remain for user review; edge energy and input residuals are not quality scores.",
+      "Only frame0 is intervened; changes in frames1–7 do not establish temporal quality. No claimed across-source generalization.",
+      "DeepLens head is near its own focus at frame0, but its own head-focus differences vary across keyframes; do not generalize the frame0 explanation to all25 frames."
+    ]
+  },
+  "verification": {
+    "prediction_png_count": 125,
+    "all_sizes": [
+      1024,
+      576
+    ],
+    "all_modes": "RGB",
+    "HTTP_links_passed": 13,
+    "same_process_repeat_RGB8_bitwise_equal": true,
+    "RNG_end_matches_for_all_conditions": true,
+    "water_control_no_clipping_or_foreground_overlap": true,
+    "new_visual_review": "pending user"
+  }
+}

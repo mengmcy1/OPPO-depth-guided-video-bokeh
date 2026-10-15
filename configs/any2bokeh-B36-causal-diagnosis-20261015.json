@@ -1,0 +1,21 @@
+{
+  "scene": "mallard-water",
+  "source_frame": 0,
+  "context_frames": 25,
+  "K": 16,
+  "output": "outputs/any2bokeh-failure-analysis-20261009/B36-causal-diagnosis-20261015",
+  "record": "03_实验记录/records/any2bokeh-B36-causal-diagnosis-20261015.json",
+  "head_polygon_display": [[645,148],[696,143],[739,229],[717,243],[645,221]],
+  "mask_rule": "Polygon intersect original DAVIS union, used only to construct diagnostic intervention outside the model. No mask supplied to inference.",
+  "target": "Median original VDA q in prior frame0 neck-core ROI [655,223,20,26]; diagnostic reference, not depth truth.",
+  "water_translation_display": [100,0],
+  "variants": ["native", "native_repeat", "head_to_neck", "translated_water_delta", "focus_to_head"],
+  "interventions": {
+    "head_to_neck": "Only frame0 head polygon: replace q with original neck median rounded to uint8; preserve original filename focus.",
+    "translated_water_delta": "Translate identical head support100 display pixels right; apply identical signed q deltas, clip to0–255 and report clipping; original focus fixed. This control matches pixels/delta, not baseline defocus or semantic context.",
+    "focus_to_head": "Only frame0 filename focus is set to prior head-core median q/255, rounded5 decimals. Original disparity stays unchanged; this is an independent focus sensitivity control."
+  },
+  "fixed": ["RGB", "original author model and weights", "native precision", "K16", "25-frame8/8/9 calling convention", "pre-scene saved global RNG", "per-call generator0"],
+  "metrics": "Paired output change MAE in RGB8 units and input-relative gradient energy/Laplacian energy/residual on fixed ROIs; these diagnose response, not perceptual quality or bokeh accuracy.",
+  "limits": ["One exploration source and one intervened frame; no cross-source or temporal-quality claim", "No independent metric depth or paired bokeh GT", "No tuning based on output", "New visual quality verdicts remain for user"]
+}
