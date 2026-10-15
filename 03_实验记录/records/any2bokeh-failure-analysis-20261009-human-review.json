@@ -610,7 +610,7 @@
     "observation_source": "用户原话及截图；助手授权代录",
     "visual_observer": "user",
     "recorded_by": "assistant",
-    "review_status": "ENDPOINT_SOFTENING_SUPPORTED_THIN_STRUCTURE_GEOMETRY_HYPOTHESIS_RECORDED_ANALYSIS_DEFERRED",
+    "review_status": "USER_RGB_COMPARABLE_ATB_ENDPOINT_SOFTENING_CONFIRMED_LOCALIZATION_AND_CAUSE_PENDING",
     "actual_playback_rate": "",
     "user_original_quotes": [
       "这里其实我有一点问题，帧0和帧22的对比，帧22车旁边的那部分栏杆，车越近他反而会越模糊，这个是不是有点问题",
@@ -619,7 +619,8 @@
       "00000.png我用蓝圈标出来的这一段，在视频一开始他应该离车最远，理论应该模糊一点，然后车越近他应该越清楚，但是现实是反过来的",
       "00000.png在根目录下，你找一下",
       "你可以补看一下ATB生成的是不是符合我说越来越糊，00001.png和00022.png我也分别圈出来了对应地方，放在了根目录下",
-      "我感觉可能还是细节构的问题，太细了导致深度估计混到背景的草地里去了，然后随着草地一起变糊了，我肉眼确实感觉是越来越胡了"
+      "我感觉可能还是细节构的问题，太细了导致深度估计混到背景的草地里去了，然后随着草地一起变糊了，我肉眼确实感觉是越来越胡了",
+      "原图的清晰度基本一致，22帧均比第一帧糊"
     ],
     "assistant_input_checks": {
       "record": "03_实验记录/records/any2bokeh-failure-analysis-20261014-B33-input-diagnosis.json",
@@ -669,10 +670,35 @@
       "hypothesis": "细绳过细，预测视差可能与背景草地混淆，继而随草地离焦增加一起变模糊。",
       "status": "UNVERIFIED_USER_HYPOTHESIS",
       "observation_basis": "用户口述视频中越来越糊；已对照的帧1与22支持端点变模糊，尚未核验中间帧单调性。",
-      "missing_evidence": "尚未分别跟踪同段细绳中心、两侧草地及立柱的视差/离焦变化；尚无几何修正因果实验。",
+      "missing_evidence": "4133d9d已补RGB定位候选与输入统计；用户现确认两端原RGB清晰度基本一致、ATB22更糊。准确细绳窄带对应、纯细绳视差及因果干预仍缺。",
       "scope_limit": "不能据此认定真实深度错误、ATB独有机制或与B19必然同因。",
-      "next_action": "用户先继续观察其他片段；此候选仅记录，暂不进一步分析或实验。"
-    }
+      "next_action": "保留已确认端点观感，继续B36方法对照；定位与机制结论保持待验证。"
+    },
+    "followup_observations": [
+      {
+        "recorded_on": "2026-10-15",
+        "source": "用户查看B33专项端点局部页后的直接反馈",
+        "user_quote": "原图的清晰度基本一致，22帧均比第一帧糊",
+        "frames": [
+          1,
+          22
+        ],
+        "correspondence_ids": [
+          "R1",
+          "R2",
+          "R4"
+        ],
+        "scope_basis": "依上轮查看指导，将“均”解释为具备两帧局部的R1/R2/R4；R3帧22缺失，不补填。",
+        "input_observation": "两帧原图清晰度基本一致",
+        "output_observation": "ATB第22帧均比第1帧更模糊",
+        "limits": [
+          "属于局部端点主观复核，不等于原RGB逐像素或量化锐度相等。",
+          "用户尚未明确确认每处采样窄带始终位于同一细绳材料点，不登记为定位通过。",
+          "3个局部来自同一视频，不是3个独立来源复现。",
+          "未验证中间帧单调性、真实深度或背景混入因果。"
+        ]
+      }
+    ]
   },
   {
     "dataset": "DAVIS",
