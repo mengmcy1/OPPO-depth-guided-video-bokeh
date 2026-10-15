@@ -735,11 +735,12 @@
     "observation_source": "用户原话及接触图；助手授权代录",
     "visual_observer": "user",
     "recorded_by": "assistant",
-    "review_status": "USER_HEAD_SOFTENING_REPORTED_IN_FOUR_METHODS_OTHER_PANELS_AND_SCOPE_PENDING",
+    "review_status": "USER_SIX_METHOD_LOCAL_COMPARISON_RECEIVED_BOKEHDIFF_PREFERRED_CAUSAL_INTERPRETATION_PENDING",
     "actual_playback_rate": "",
     "user_original_quotes": [
       "这里的鸭子头的部分被虚化了，似乎不太对，是不是也跟深度有关",
-      "02 06 04 05都出现了"
+      "02 06 04 05都出现了",
+      "是的，都是这样，03应该是效果最好的"
     ],
     "assistant_input_checks": {
       "record": "03_实验记录/records/any2bokeh-failure-analysis-20261014-B36-input-diagnosis.json",
@@ -772,6 +773,25 @@
           "未明确帧范围、程度排序、背景虚化强弱或头身差异程度。",
           "未提及P01/P03不等于判定其正常；方法名称此前已揭示，非严格盲评。",
           "四方法共享VDA输入但适配及内部处理不同；共同现象支持共享输入因素可能参与，不能证明唯一因果或真实几何错误。"
+        ]
+      },
+      {
+        "recorded_on": "2026-10-15",
+        "review_package": "B36-B2",
+        "user_quote": "是的，都是这样，03应该是效果最好的",
+        "preceding_question": "P01、P03的鸭头是否更清楚？如果更清楚，它们的背景水面是否也明显更清楚、虚化更弱？",
+        "interpretation": "用户确认上一问：P01/DeepLens、P03/BokehDiff鸭头更清楚，同时背景水面更清楚、虚化更弱；用户倾向认为P03效果最好。",
+        "preference": {
+          "panel": "P03",
+          "method": "BokehDiff",
+          "wording": "应该是效果最好的",
+          "scope": "本次B36观看的整体主观偏好，具体帧范围与程度未指定"
+        },
+        "frame_ids": null,
+        "limits": [
+          "更清楚同时伴随较弱背景虚化，不能单独认定同等虚化强度下细节保留更优。",
+          "DeepLens自身估深，BokehDiff冻结Normalized适配；未做内部有效离焦匹配。",
+          "不外推到全部视频、严格客观排名或模型机制优劣。"
         ]
       }
     ]
