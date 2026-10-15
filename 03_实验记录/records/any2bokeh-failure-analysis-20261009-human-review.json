@@ -735,10 +735,11 @@
     "observation_source": "用户原话及接触图；助手授权代录",
     "visual_observer": "user",
     "recorded_by": "assistant",
-    "review_status": "USER_HEAD_BLUR_QUERY_INPUT_DIFFERENTIAL_SUPPORTED_CAUSE_UNVERIFIED",
+    "review_status": "USER_HEAD_SOFTENING_REPORTED_IN_FOUR_METHODS_OTHER_PANELS_AND_SCOPE_PENDING",
     "actual_playback_rate": "",
     "user_original_quotes": [
-      "这里的鸭子头的部分被虚化了，似乎不太对，是不是也跟深度有关"
+      "这里的鸭子头的部分被虚化了，似乎不太对，是不是也跟深度有关",
+      "02 06 04 05都出现了"
     ],
     "assistant_input_checks": {
       "record": "03_实验记录/records/any2bokeh-failure-analysis-20261014-B36-input-diagnosis.json",
@@ -748,6 +749,31 @@
       ],
       "finding": "头中心名义离焦中位数2.400/2.228，颈部0.204/0.156，身体0.580/0.534。鸭头中心q/255约0.72549，高于focus0.57550/0.58624；邻近水面约0.20784/0.19608。输入有头颈离焦差异，不是所查水面视差混同。",
       "limits": "定性现象由用户提出；未测实际输出模糊半径，未验证真实头颈深度或做因果干预。"
-    }
+    },
+    "followup_observations": [
+      {
+        "recorded_on": "2026-10-15",
+        "review_package": "B36-B2",
+        "user_quote": "02 06 04 05都出现了",
+        "interpretation": "依上下文，用户报告P02/P06/P04/P05均出现鸭头变模糊现象。",
+        "reported_methods": {
+          "P02": "BokehMe",
+          "P06": "MPIB",
+          "P04": "Any-to-Bokeh",
+          "P05": "Dr.Bokeh"
+        },
+        "frame_ids": null,
+        "ROI_xywh": null,
+        "unreported_panels": [
+          "P01",
+          "P03"
+        ],
+        "limits": [
+          "未明确帧范围、程度排序、背景虚化强弱或头身差异程度。",
+          "未提及P01/P03不等于判定其正常；方法名称此前已揭示，非严格盲评。",
+          "四方法共享VDA输入但适配及内部处理不同；共同现象支持共享输入因素可能参与，不能证明唯一因果或真实几何错误。"
+        ]
+      }
+    ]
   }
 ]
