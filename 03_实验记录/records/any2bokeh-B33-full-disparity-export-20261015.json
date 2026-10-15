@@ -1,0 +1,39 @@
+{
+  "scene_id": "car-turn",
+  "sample_id": "B33",
+  "frames": 80,
+  "frame_ids": [
+    0,
+    79
+  ],
+  "evaluation_frames": [
+    0,
+    24
+  ],
+  "quantity": "Frozen VDA predicted normalized disparity q/255; not metric true depth. Larger values are interpreted as nearer.",
+  "normalization": "per-sequence all original frames",
+  "native_size": [
+    1920,
+    1080
+  ],
+  "encoding": "Original grayscale uint8 PNG; q/255 gives normalized disparity. Original filename suffix zf records frozen focus only for frames0–24.",
+  "preview": "RGB resized linearly; disparity mapped to fixed VIRIDIS range0–1 on native grid then resized nearest to1024x576. H264 MP4 is visualization only; use original PNG for numerical work.",
+  "preview_fps": 20,
+  "preview_fps_note": "Display choice only; not a claim about source capture rate. 80 frames at20fps=4 seconds; use slowdown controls.",
+  "focus": "Defined only for frames0–24; no focus or ATB predictions generated for25–79.",
+  "source": "data/processed/davis2016-v2/sequences/car-turn",
+  "created_at": "2026-10-15T20:11:20.370784+08:00",
+  "verification": {
+    "archive_png_count": 80,
+    "archive_integrity": "passed",
+    "preview_decoded_frames": 80,
+    "preview_size": [
+      2048,
+      672
+    ]
+  },
+  "artifacts": {
+    "car-turn-VDA-original-80frames.zip": 9271403,
+    "car-turn-RGB-VDA-80frames.mp4": 3346874
+  }
+}
