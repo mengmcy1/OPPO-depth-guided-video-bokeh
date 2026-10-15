@@ -792,6 +792,10 @@ K增大时PSNR下降，K32的LPIPS/FD/RM明显更大，与已知饱和限制相�
 | MPIB | 0.92987 | 0.93235 | -0.00247 | 0.921 | +0.00887 |
 | BokehDiff | 0.84722 | 0.84728 | -0.00007 | 0.859 | -0.01178 |
 | Any-to-Bokeh | 0.95011 | 0.95400 | -0.00389 | 0.944 | +0.00611 |
+| MagicBokeh（DAVIS union区域辅助选焦） | 0.66962 | 0.66919 | +0.00043 | — | — |
+
+MagicBokeh新增量化：VEPI-public-mp4 **0.66962**，VEPI-png **0.66919**，MP4−PNG **+0.00043**。输入为DAVIS非零标注union辅助的自身深度单点选焦，非共享VDA数值条件；多实例/组件选择限制及批准规则见上文。预检200帧及全量1250帧的选点、坐标、原生条件、种子、RGB/finite核验通过，不按VEPI或观感回调。原六行数值与定性列保持原样；新增行不自动填视觉质量结论，也不把新全量输出用于来源隔离组失败发现。[新增逐帧/逐视频及七方法同口径记录](records/magicbokeh-davis-50-20261015.json)、[最终程序核验](records/magicbokeh-davis-final-check-20261015.json)。
+
 
 论文参考沿用上文§4.2 ICLR2026正式版Table1。本轮五方法与论文差值绝对值约0.0061–0.0167，DeepLens差值为+0.21396；这些只是声明条件下的外部对照，不能据此声称复原了作者私有adapter或超过原论文整体质量。本轮BokehMe和Any-to-Bokeh的VEPI排序交换；DeepLens采用原生DepthNet+UI默认aperture0.5，部分背景虚化较轻，该分数不能单独证明其bokeh质量改善。主VEPI衡量前景边缘保留，AIF原样输出就能在PNG自比达到1。
 
@@ -993,4 +997,4 @@ E2E-given-inputs从已给输入的读取/解码开始，包括适配、必要分
 3. **Any-to-Bokeh Failure Analysis**：基于现有200段Synthetic和DAVIS固定视频，系统筛选边界/遮挡/细结构、大运动、强虚化、focus/control变化等可重复失败；
 4. **冻结 Ours**：只选择有明确问题证据、可做受控消融且具有实际价值的方向，不再为了符合旧计划强行加入低帧率Depth completion、Token Merging或三头结构。
 
-MagicBokeh尚未进入DAVIS，当前不阻塞ATB机制分析。首轮profile确认VAE编码/解码约占81%模型段时间，RGB/CoC编码峰值约34.29GiB，RGB FP32缓存6.47GiB；下一步验证缓存/重叠编码的优化假设及失败机制，Ours尚未冻结。证据：[模块分析](records/any2bokeh-native-module-profile-20260930.json)。
+MagicBokeh已补DAVIS50×25量化，原六方法结果与ATB机制分析材料保持独立；新增视觉判断待用户复核。首轮profile确认VAE编码/解码约占81%模型段时间，RGB/CoC编码峰值约34.29GiB，RGB FP32缓存6.47GiB；下一步验证缓存/重叠编码的优化假设及失败机制，Ours尚未冻结。证据：[模块分析](records/any2bokeh-native-module-profile-20260930.json)。

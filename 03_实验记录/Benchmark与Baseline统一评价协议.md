@@ -40,7 +40,7 @@ Benchmark Suite
 说明：
 
 - **Reproduced Any-to-Bokeh-style Synthetic**：主 paired 定量评价，当前七种 baseline 已完成，MagicBokeh采用已冻结的Target-guided Depth-Medoid B；
-- **DAVIS**：真实视频泛化与边界/时序失败场景观察，当前六方法已冻结；
+- **DAVIS**：真实视频泛化与边界/时序失败场景观察，原六方法已冻结，MagicBokeh另补50×25量化、视觉待用户复核；
 - **Efficiency**：正式保留Table 3A模型级成本与Table 3B完整25帧E2E-given-inputs，两者边界及硬件分别标明；
 - **低帧率 Depth / OPPO-style 自建 benchmark**：从当前主表与执行顺序移除；若后续 Ours 的最终设计重新需要这一问题，再作为可选扩展重新立项，不阻塞当前研究；
 - **VBS / BokehCrafter**：继续作为可选补充，不阻塞当前主线。
@@ -413,7 +413,7 @@ Video Output
 | Benchmark / Evidence | 当前职责 |
 |---|---|
 | Reproduced Any-to-Bokeh-style Synthetic | paired 主定量；七方法baseline reproduction，含已冻结MagicBokeh B |
-| DAVIS | 真实视频 VEPI + 固定定性失败场景；当前六方法已冻结 |
+| DAVIS | 真实视频 VEPI + 固定定性失败场景；原六方法冻结；MagicBokeh量化已补、视觉待用户复核 |
 | Table 3A Efficiency | 模型级Time / Params / Peak VRAM |
 | Table 3B Efficiency | 25帧Core / E2E-given-inputs / FPS / 内存，按设备分开记录 |
 | ATB profiling / failure analysis | 不单独伪装成 benchmark；作为确定 Ours 方向的机制证据 |
@@ -775,7 +775,11 @@ A的PSNR/SSIM/FD/RM更接近论文，B的FVD/VFID-I更接近。完整200段与�
 
 ## Table 2：DAVIS Real-world
 
-**冻结状态：DAVIS_2016_V2_SIX_BASELINES_COMPLETE_AND_FROZEN（2026-09-30）。** 每方法50×25帧，六方法7500帧及300段统一H.264视频完整；预检8段均复用。主列采用MP4 VEPI，PNG和codec差值另列诊断。BokehCrafter继续deferred，不计入本轮六方法。
+**MagicBokeh DAVIS独立补测协议（2026-10-15，用户已批准）**：沿用原50段前25帧、K16和既有评价ROI/编码/指标。对焦目标是原palette索引`ID!=0`合并区域，包含旧口径中tennis的ID255；只作模型外点选辅助，非Synthetic指定可见layer定义。RGB原JPEG以CV2 INTER_LINEAR到1024×576、类别索引INTER_NEAREST到同网格。复用B的>0.9/>0.5/>0安全区域、最大8连通域（同面积取最早row-major组件）、自身原生PNG8深度中位数最近点（并列最大零边界Euclidean距离，再row-major）。焦点是所选像素自身DAdepth PNG8/255，不能套VDA焦点。多实例/分离区域按同一规则逐帧选一个点并记录组件/ID覆盖，可能切换、不保证全部实例同焦；目标不可用即停止报告，不临时换目标或排除帧。1250帧输入盘点目标均可用。
+
+固定原8段预检在前、其余42字典序，种子在每帧六原生图块前设`42+25*固定scene索引+帧号`，初始化seed42，预检/恢复/全量相同；200帧程序核验通过后只补42段。原FP16生成器、DAdepth、abs(d−focus)*K/32、0.1阈值、512图块/stride256/拼接及PIL/AdaIN不改，标注不是生成器mask/alpha输入，原生focus条件mask仍来自预测深度。复用原`scripts/evaluate_davis_vepi.py`，VEPI-public-mp4为主、VEPI-png与MP4−PNG为诊断；原imageio_ffmpeg0.4.7/FFmpeg4.2.2、H.264 quality8/20fps/yuv420p、相同Sobel/膨胀union ROI、帧均值后视频等权均值，不按分数/观感调控制。仅完成50段量化补测，不授权来源隔离视频的失败发现。配置`configs/magicbokeh-davis-frozen.json`，新结果单独保存，原六方法不变；实测前不填数值。
+
+**当前状态：原六方法冻结结果保留，MagicBokeh DAVIS定量补测完成（2026-10-15）。** 七方法各50×25帧，共8750帧、350段统一H.264视频；MagicBokeh复用8段200帧预检，只新增42段。主列采用MP4 VEPI，PNG与编码差值单列诊断；MagicBokeh仅完成量化及程序检查，新增视觉结论待用户复核。BokehCrafter继续deferred。
 
 | Method | VEPI-public-mp4 ↑ | Background Defocus | Focus Leakage | Halo / Boundary | Temporal Flicker / Video |
 |---|---:|---|---|---|---|
@@ -785,7 +789,11 @@ A的PSNR/SSIM/FD/RM更接近论文，B的FVD/VFID-I更接近。完整200段与�
 | MPIB | 0.92987 | 岸边/近坡失焦可见；近焦背景仍保留 | 大主体保留，细线/水花局部软化 | 轮廓及遮挡边缘仍有软化 | 25帧顺序连续；不作无闪烁保证 |
 | BokehDiff | 0.84722 | 背景失焦可见；部分近焦背景仍清晰 | 主体细节存在平滑/重绘 | 毛发、细绳及局部纹理变化保留 | 纹理变化保留，不作闪烁等级排名 |
 | Any-to-Bokeh | 0.95011 | 岸边/近坡失焦可见 | 大主体保留，细结构仍有偏差 | 毛发/细线边缘残余软化 | 未见拼接处孤立错帧；不作无闪烁保证 |
+| MagicBokeh（DAVIS区域辅助选焦） | 0.66962 | 待用户复核 | 待用户复核 | 待用户复核 | 待用户复核 |
 | Ours | later | later | later | later | later |
+
+MagicBokeh新增量化：VEPI-public-mp4 **0.66962**，VEPI-png **0.66919**，MP4−PNG **+0.00043**。输入为DAVIS非零标注union辅助的自身深度单点选焦，非共享VDA数值条件；多实例/组件选择限制及批准规则见上文。预检200帧及全量1250帧的选点、坐标、原生条件、种子、RGB/finite核验通过，不按VEPI或观感回调。原六行数值与定性列保持原样；新增行不自动填视觉质量结论，也不把新全量输出用于来源隔离组失败发现。[新增逐帧/逐视频及七方法同口径记录](records/magicbokeh-davis-50-20261015.json)、[最终程序核验](records/magicbokeh-davis-final-check-20261015.json)。
+
 
 定性列来自固定8段、每方法40组关键帧及全部25帧顺序接触图复核（共1200张prediction和200张input），不是实时播放盲评，不据此宣称无闪烁或给出细微时序质量排名。所有48段主视觉视频保存在`outputs/davis-baselines-20260929/{method}/evaluation/mp4/{scene}.mp4`；逐场景观察、方法限制及视频入口见[最终复核](records/davis-final-review-20260929.json)。Full-public分割/补全错误、Normalized强度变化和生成细节变化均保留；不再据论文排序调整adapter。
 
@@ -1895,7 +1903,7 @@ scene_xxxx/
 |---|---|
 | Table 0 | GT Renderer Comparison，历史开发验证 |
 | Table 1 | Reproduced Synthetic，七方法结果已完成 |
-| Table 2 | DAVIS，六方法结果已完成；MagicBokeh尚未评价 |
+| Table 2 | DAVIS，原六方法冻结；MagicBokeh已补50×25量化，新增视觉复核仍待用户 |
 | Table 3A | 模型级Time/output-frame、Params、GFLOPs、Peak VRAM；新旧GPU各自记录 |
 | Table 3B | 完整25帧Core、E2E-given-inputs、FPS、内存；旧卡六方法已完成，新卡及MagicBokeh B待测 |
 | Table V | 与论文报告值的辅助对照 |

@@ -1,0 +1,44 @@
+{
+  "status": "FROZEN_USER_APPROVED_DAVIS_UNION_TARGET_B",
+  "name": "MagicBokeh DAVIS union-target depth-medoid point focus",
+  "data_protocol": "configs/davis-eval-v2.json",
+  "baseline_configuration": "configs/davis-baselines.json",
+  "synthetic_frozen_reference": "configs/magicbokeh-track-a-frozen.json",
+  "output": "outputs/magicbokeh-davis-20261015",
+  "record": "03_实验记录/records/magicbokeh-davis-50-20261015.json",
+  "authorization": {
+    "user_quote": "批准上述完整规则，继续预检及全量",
+    "confirmed_date_Asia_Shanghai": "2026-10-15",
+    "recorded_utc": "2026-10-15T11:06:26.084673+00:00",
+    "scope": "Full rules in async approval: nonzero union including255; B single-click selection; fixed8 then42; same seed/preflight/full/resume; proceed after implementation checks"
+  },
+  "target": {
+    "definition": "Original palette-index annotation !=0, including ID255 exactly as the existing DAVIS v2 union mask. Not the Synthetic designated layer target.",
+    "resize": "Read palette indices without grayscale conversion; INTER_NEAREST to1024x576, then labels!=0. RGB uses existing INTER_LINEAR original JPEG to1024x576 RGB uint8.",
+    "multiple_instances": "Union all nonzero IDs; use B largest8-connected component each frame. Report component label-ID counts and per-ID focused coverage. A component can contain several touching instances; selected component/instance can change across frames. No manual easier-instance choice or guarantee of all instances sharp.",
+    "safe_region": "Reuse safe_target_region: alpha>0.9, then>0.5, then>0; binary labels imply first threshold whenever nonempty. Largest8-connected component; equal area chooses earliest row-major component. Zero-padded exact Euclidean distance.",
+    "point": "Reuse medoid_point: native own predicted PNG8 depth nearest safe-region median; ties greatest exact boundary distance then row-major pixel.",
+    "unavailable": "Stop and record blocking scene/frame if the prescribed union target is empty or invalid. Do not change targets, propagate, exclude, or fill a formal table with a subset.",
+    "permission": "DAVIS annotation assists a single click outside the model; no GT numeric depth, GT alpha or target mask enters the generator. The native focus condition mask is computed from own predicted depth, not from annotation."
+  },
+  "depth": "Unchanged official DAdepth.pth ViT-L infer_image518; per-image minmax with1e-8; float32 depth truncated toPNG8.",
+  "focus": "Own native quantized predicted depth at selected pixel /255; never reuse VDA numeric focus.",
+  "K": 16,
+  "control": "abs(own_PNG8_depth/255-focus)*K/32; native focused condition<=0.1; no VDA span compensation",
+  "prompt": "high quality,",
+  "generator": "Frozen OfficialMagicBokeh FP16 weights/precision and original per-module training states;512x512 tiles stride256,6 calls per1024x576 frame, native GPU overlap assembly and PIL/AdaIN color handling unchanged",
+  "preflight_sequences": [
+    "bear",
+    "blackswan",
+    "bmx-trees",
+    "breakdance",
+    "dog",
+    "horsejump-high",
+    "kite-surf",
+    "soapbox"
+  ],
+  "scene_order": "These8 first in listed order; remaining42 in lexicographic order; fixed before any new output or VEPI",
+  "RNG": "torch.manual_seed(42) before model loading; torch.manual_seed(42+25*fixed_scene_index+frame_index) immediately before6 native tile calls. Same preflight/full/resume; no temporal propagation or smoothing.",
+  "evaluation": "Unchanged scripts/evaluate_davis_vepi.py with original data config, ROI, first25 frames and author entry. Primary VEPI-public-mp4; diagnostic VEPI-png and MP4-PNG; mean25 frames then equal-video mean50.",
+  "scope": "Full50 quantitative baseline supplement only; no held-out failure discovery, viewing-based tuning, ATB page edits, other baseline reruns or efficiency reruns"
+}
