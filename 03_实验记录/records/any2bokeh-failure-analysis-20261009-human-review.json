@@ -620,7 +620,8 @@
       "00000.png在根目录下，你找一下",
       "你可以补看一下ATB生成的是不是符合我说越来越糊，00001.png和00022.png我也分别圈出来了对应地方，放在了根目录下",
       "我感觉可能还是细节构的问题，太细了导致深度估计混到背景的草地里去了，然后随着草地一起变糊了，我肉眼确实感觉是越来越胡了",
-      "原图的清晰度基本一致，22帧均比第一帧糊"
+      "原图的清晰度基本一致，22帧均比第一帧糊",
+      "有独立轮廓"
     ],
     "assistant_input_checks": {
       "record": "03_实验记录/records/any2bokeh-failure-analysis-20261014-B33-input-diagnosis.json",
@@ -668,11 +669,12 @@
     "user_mechanism_hypothesis": {
       "recorded_on": "2026-10-14",
       "hypothesis": "细绳过细，预测视差可能与背景草地混淆，继而随草地离焦增加一起变模糊。",
-      "status": "UNVERIFIED_USER_HYPOTHESIS",
+      "status": "UNVERIFIED_REFINED_AFTER_USER_REPORT_OF_DISTINCT_DISPARITY_CONTOUR",
       "observation_basis": "用户口述视频中越来越糊；已对照的帧1与22支持端点变模糊，尚未核验中间帧单调性。",
       "missing_evidence": "4133d9d已补RGB定位候选与输入统计；用户现确认两端原RGB清晰度基本一致、ATB22更糊。准确细绳窄带对应、纯细绳视差及因果干预仍缺。",
       "scope_limit": "不能据此认定真实深度错误、ATB独有机制或与B19必然同因。",
-      "next_action": "保留已确认端点观感，继续B36方法对照；定位与机制结论保持待验证。"
+      "next_action": "如继续诊断，应核对可见细绳轮廓内部的视差幅值、前后顺序及与每帧焦点的关系；先保留用户观察，不自动启动干预。",
+      "new_counterevidence": "用户报告视差预览中有独立细绳轮廓；不能继续将整段无轮廓、完全背景混同当作既定解释。"
     },
     "followup_observations": [
       {
@@ -697,6 +699,16 @@
           "3个局部来自同一视频，不是3个独立来源复现。",
           "未验证中间帧单调性、真实深度或背景混入因果。"
         ]
+      },
+      {
+        "recorded_on": "2026-10-15",
+        "source": "用户观看B33完整80帧RGB/VDA同步预览后的反馈",
+        "user_quote": "有独立轮廓",
+        "observation": "用户报告细绳在预测视差中有独立轮廓",
+        "frame_ids": null,
+        "ROI_xywh": null,
+        "scope_limit": "未指明具体帧、绳段或持续覆盖范围；不扩写成全部80帧每根细绳均完整且正确。",
+        "interpretation": "削弱细绳完全未被几何区分、全部直接混成背景草地的强解释。轮廓存在不能保证视差幅值、前后顺序或焦点相对关系准确，局部混合像素仍未排除。"
       }
     ]
   },
