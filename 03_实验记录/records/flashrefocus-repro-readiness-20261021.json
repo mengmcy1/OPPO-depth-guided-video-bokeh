@@ -1,0 +1,625 @@
+{
+  "name": "FlashReFocus independent reproduction readiness and adapter proposal",
+  "status": "CODE_PREPARATION_COMPLETE_WAITING_FOR_DEDICATED_WEIGHTS",
+  "status_zh": "代码准备完成，等待专用权重",
+  "checked_utc": "2026-10-21T11:28:13.436866+00:00",
+  "checked_beijing": "2026-10-21T19:28:13.436866+08:00",
+  "scope": {
+    "branch": "repro/flashrefocus",
+    "branch_creation_base": "cf337f34cdc158121e9896ff9f1aa51b7b8abd05",
+    "base_main_commit": "6241bcf93a4f8887a4444b79107896647691db7b",
+    "main_worktree_untouched": true,
+    "training": false,
+    "model_inference": false,
+    "benchmark_evaluation": false,
+    "held_out_failure_analysis_data_access": false,
+    "baseline_configuration_or_tables_changed": false,
+    "PPT_changed": false,
+    "mainline_ATB_work": "Kept separate; no ATB task was started or stopped."
+  },
+  "official_sources": {
+    "project": "https://ming053l.github.io/FlashReFocus/",
+    "code": "https://github.com/ming053l/FlashReFocus",
+    "code_commit": "0a99d4bce442d6e4e548f714bf293f32ee46ec47",
+    "code_commit_date": "2026-10-19T13:13:45+08:00",
+    "paper_local": "01_文献/FlashReFocus- Interactive Image Refocusing in Seconds.pdf",
+    "paper_sections": [
+      "3.1 Stage I",
+      "3.2 Stage II, equations 8/9",
+      "Table 6 timing boundaries",
+      "Related work: AnyBokeh is not video Any-to-Bokeh"
+    ],
+    "space": "https://huggingface.co/spaces/ming0531/FlashReFocus",
+    "space_commit": "a52d323fd98a1ad36ab63126fedc9f418a95e194",
+    "space_engine": "https://huggingface.co/spaces/ming0531/FlashReFocus/blob/a52d323fd98a1ad36ab63126fedc9f418a95e194/engine.py",
+    "submodule_pins": {
+      "PiSA-SR": "9c76e12e261d1980148738a0cff41e5e27d18c9f",
+      "Depth-Anything-V2": "a561b849ebae10a6f5ef49e26c83cbbcd36c71bf",
+      "recognize-anything_training_only": "7cb804a8609e9f4b1a50b7f31436d2df40bb9481"
+    },
+    "submodule_status": "Pinned PiSA-SR and DA-V2 checked out; training-only recognize-anything not initialized."
+  },
+  "availability_recheck": {
+    "method": "Unauthenticated HTTPS metadata/file HEAD requests with Python urllib, plus official project/README/release-page reading and public web search. No Authorization header, hub token/cache, secret, private credential, or online inference used.",
+    "readme_status": "Still states dedicated weights stage1.pkl, refiner.pt, renderer.pt will be released with the paper.",
+    "github_releases_and_tags": {
+      "releases": [],
+      "tags": []
+    },
+    "hf_model_search": [],
+    "public_models_of_author": [
+      "ming0531/DRCT",
+      "ming0531/PhaSR"
+    ],
+    "weight_repo": "ming0531/FlashReFocus-weights",
+    "weight_repo_unauthenticated_status": 401,
+    "weight_files_unauthenticated_status": {
+      "stage1.pkl": 401,
+      "refiner.pt": 401,
+      "renderer.pt": 401
+    },
+    "space_public_tree_entries": 63,
+    "space_public_weight_files": [],
+    "space_private_weight_download": "Public engine.py fetch_weights calls hf_hub_download on these three names with token=os.environ.get(\"HF_TOKEN\"). This is a variable name in public code, not a retrieved token.",
+    "public_base_assets": [
+      {
+        "id": "sd2-community/stable-diffusion-2-1-base",
+        "url": "https://huggingface.co/api/models/sd2-community/stable-diffusion-2-1-base",
+        "http_status": 200,
+        "sha": "4e63672c03103b6c636b8fb4119ba982469b2955",
+        "private": false,
+        "gated": false,
+        "authenticated": false
+      },
+      {
+        "id": "stable-diffusion-v1-5/stable-diffusion-v1-5",
+        "url": "https://huggingface.co/api/models/stable-diffusion-v1-5/stable-diffusion-v1-5",
+        "http_status": 200,
+        "sha": "451f4fe16113bff5a5d2269ed5ad43b0592e9a14",
+        "private": false,
+        "gated": false,
+        "authenticated": false
+      },
+      {
+        "id": "depth-anything/Depth-Anything-V2-Large",
+        "url": "https://huggingface.co/api/models/depth-anything/Depth-Anything-V2-Large",
+        "http_status": 200,
+        "sha": "cbbb86a30ce19b5684b7a05155dc7e6cbc7685b9",
+        "private": false,
+        "gated": false,
+        "authenticated": false
+      }
+    ],
+    "requests": [
+      {
+        "key": "github_releases",
+        "url": "https://api.github.com/repos/ming053l/FlashReFocus/releases",
+        "status": 200,
+        "checked_utc": "2026-10-21T11:20:50.959799+00:00",
+        "authenticated": false,
+        "summary": []
+      },
+      {
+        "key": "github_tags",
+        "url": "https://api.github.com/repos/ming053l/FlashReFocus/tags",
+        "status": 200,
+        "checked_utc": "2026-10-21T11:20:52.455066+00:00",
+        "authenticated": false,
+        "summary": []
+      },
+      {
+        "key": "hf_search",
+        "url": "https://huggingface.co/api/models?search=FlashReFocus&limit=50",
+        "status": 200,
+        "checked_utc": "2026-10-21T11:20:53.284218+00:00",
+        "authenticated": false,
+        "summary": []
+      },
+      {
+        "key": "hf_author_models",
+        "url": "https://huggingface.co/api/models?author=ming0531&limit=100",
+        "status": 200,
+        "checked_utc": "2026-10-21T11:20:55.097350+00:00",
+        "authenticated": false,
+        "summary": [
+          "ming0531/DRCT",
+          "ming0531/PhaSR"
+        ]
+      },
+      {
+        "key": "hf_weights_metadata",
+        "url": "https://huggingface.co/api/models/ming0531/FlashReFocus-weights",
+        "status": 401,
+        "checked_utc": "2026-10-21T11:20:55.878390+00:00",
+        "authenticated": false
+      },
+      {
+        "key": "hf_space_metadata",
+        "url": "https://huggingface.co/api/spaces/ming0531/FlashReFocus",
+        "status": 200,
+        "checked_utc": "2026-10-21T11:20:56.714145+00:00",
+        "authenticated": false,
+        "summary": {
+          "id": "ming0531/FlashReFocus",
+          "sha": "a52d323fd98a1ad36ab63126fedc9f418a95e194",
+          "private": false,
+          "gated": false,
+          "lastModified": "2026-10-12T05:10:10.000Z"
+        }
+      },
+      {
+        "key": "hf_space_tree",
+        "url": "https://huggingface.co/api/spaces/ming0531/FlashReFocus/tree/main?recursive=true&limit=100",
+        "status": 200,
+        "checked_utc": "2026-10-21T11:20:57.457502+00:00",
+        "authenticated": false,
+        "summary": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+      {
+        "key": "hf_engine",
+        "url": "https://huggingface.co/spaces/ming0531/FlashReFocus/raw/main/engine.py",
+        "status": 200,
+        "checked_utc": "2026-10-21T11:20:58.223494+00:00",
+        "authenticated": false,
+        "bytes": 4156
+      },
+      {
+        "key": "hf_app",
+        "url": "https://huggingface.co/spaces/ming0531/FlashReFocus/raw/main/app.py",
+        "status": 200,
+        "checked_utc": "2026-10-21T11:20:59.327220+00:00",
+        "authenticated": false,
+        "bytes": 16614
+      },
+      {
+        "key": "hf_requirements",
+        "url": "https://huggingface.co/spaces/ming0531/FlashReFocus/raw/main/requirements.txt",
+        "status": 200,
+        "checked_utc": "2026-10-21T11:21:01.098653+00:00",
+        "authenticated": false,
+        "bytes": 196
+      },
+      {
+        "key": "stage1.pkl",
+        "url": "https://huggingface.co/ming0531/FlashReFocus-weights/resolve/main/stage1.pkl",
+        "status": 401,
+        "checked_utc": "2026-10-21T11:21:02.493214+00:00",
+        "authenticated": false
+      },
+      {
+        "key": "refiner.pt",
+        "url": "https://huggingface.co/ming0531/FlashReFocus-weights/resolve/main/refiner.pt",
+        "status": 401,
+        "checked_utc": "2026-10-21T11:21:03.200425+00:00",
+        "authenticated": false
+      },
+      {
+        "key": "renderer.pt",
+        "url": "https://huggingface.co/ming0531/FlashReFocus-weights/resolve/main/renderer.pt",
+        "status": 401,
+        "checked_utc": "2026-10-21T11:21:05.093603+00:00",
+        "authenticated": false
+      }
+    ],
+    "conclusion": "No new public or independently authorized dedicated-weight download was found in the checked official sources. HTTP401 establishes anonymous unavailability, not nonexistence of the repository. A running public demo does not establish local reproducibility.",
+    "github_public_issues": [],
+    "github_branches": [
+      {
+        "name": "gh-pages",
+        "sha": "b72dd0487b68bdbda8020838d81bdf64da112a0e"
+      },
+      {
+        "name": "main",
+        "sha": "0a99d4bce442d6e4e548f714bf293f32ee46ec47"
+      }
+    ],
+    "additional_sources": [
+      "https://api.github.com/repos/ming053l/FlashReFocus/issues?state=all&per_page=100",
+      "https://api.github.com/repos/ming053l/FlashReFocus/branches?per_page=100"
+    ]
+  },
+  "runnability_table": [
+    {
+      "component": "Official package / CLI",
+      "code": "Public, pinned 0a99d4bce442d6e4e548f714bf293f32ee46ec47",
+      "weights": "Not bundled",
+      "availability": "Source readable; first-party syntax and selected CPU interfaces checked",
+      "blocker": "Full GPU/package runtime not validated."
+    },
+    {
+      "component": "Stage I one-step restorer",
+      "code": "flashrefocus/deblurring/one_step_diffusion.py + pinned PiSA-SR",
+      "weights": "stage1.pkl + SD2.1 backbone",
+      "availability": "NOT RUN",
+      "blocker": "Dedicated stage1.pkl inaccessible anonymously (401). PiSA-SR original LoRAs are not a substitute."
+    },
+    {
+      "component": "Decoder refiner (default on)",
+      "code": "flashrefocus/deblurring/decoder_refiner.py",
+      "weights": "refiner.pt + SD1.5 VAE",
+      "availability": "NOT RUN",
+      "blocker": "Dedicated refiner.pt inaccessible anonymously (401)."
+    },
+    {
+      "component": "DA-V2-L depth estimator",
+      "code": "flashrefocus/rendering/depth.py + pinned DA-V2",
+      "weights": "depth_anything_v2_vitl.pth",
+      "availability": "Public ungated metadata checked; weights not downloaded or executed",
+      "blocker": "No blocking public-access restriction observed; isolated GPU environment and real inference still unverified."
+    },
+    {
+      "component": "Stage II defocus-aware renderer",
+      "code": "flashrefocus/rendering/renderer.py and defocus_bias_attention.py",
+      "weights": "renderer.pt",
+      "availability": "NOT RUN",
+      "blocker": "Dedicated renderer.pt inaccessible anonymously (401); this also blocks renderer-only path."
+    },
+    {
+      "component": "SD2.1 / SD1.5 VAE backbones",
+      "code": "Official public model repositories",
+      "weights": "Public ungated model metadata; revisions recorded",
+      "availability": "Available to obtain; not downloaded here",
+      "blocker": "They do not replace the three dedicated FlashReFocus checkpoints."
+    },
+    {
+      "component": "Official example input / references",
+      "code": "Space examples/flower.jpg; GitHub tests/reference/*",
+      "weights": "Not applicable",
+      "availability": "One public input saved locally; author reference images not treated as our outputs",
+      "blocker": "GitHub tests/data/ directory absent at this code commit; shipped regression references alone cannot run the regression cases. Public Space examples offer input for CLI smoke test."
+    },
+    {
+      "component": "Isolated readiness environment",
+      "code": "scripts/check_flashrefocus_interfaces.py",
+      "weights": "None",
+      "availability": "CPU source-function checks only; see environment and results",
+      "blocker": "Not a completed GPU inference environment."
+    }
+  ],
+  "native_interface_facts": {
+    "RGB": "1x3xHxW RGB float32 [0,1]; Stage I uses [-1,1]; RGB8 output clamps then truncates, not rounds.",
+    "resize": "Official CLI caps long side at1024 without upsampling, floors each dimension to multiple16, PIL LANCZOS; focal pixel coordinates refer to that resized grid. Existing1024x576 is unchanged.",
+    "native_depth": "DA-V2 relative inverse depth; D=1-minmax(disparity) per image, in [0,1], 1=far. Not metric depth. Scene.depth shape1xHxW; renderer receives1x1xHxW.",
+    "depth_estimator_preprocess": "Short side input_size1024, aspect preserved, multiple14 lower_bound; GPU bicubic align_corners=False then ImageNet normalization; predicted disparity bilinear align_corners=True to image grid; FP16 autocast.",
+    "native_constant_disparity": "Actual disparity_to_depth output is all ones for a constant map. Its docstring says zeros; CPU check records actual return value. Benchmark adapter should reject invalid geometry instead of silently relying on this fallback.",
+    "focus": "Scene.focal_depth_at rounds/clamps x,y then samples own D; render accepts focal-depth scalar directly.",
+    "condition_maps": "Signed Ms=D-Df; front_mask=max_pool2d((Ms<1e-3),5,stride1,padding2); concat Ms/front_mask/constant strength; defocus attention sees abs(Ms). Preserve source threshold/dilation; prose <=0 is an approximation.",
+    "strength": "Paper/native documented interval[0,1], CLI default0.5; no renderer input clamp. Public Demo slider[0,1.5] labels>1 as extrapolated. Not equal to project K4/8/16/32.",
+    "restoration_defaults": "detail_weight1.25, refiner enabled; Stage I core FP16, two UNet predictions when omega!=1; refiner BF16. VAE latent uses posterior mode, not posterior sample.",
+    "render_precision": "Renderer weights loaded FP32, default BF16 autocast, output cast FP32; channels_last=False and merge_vae_lora=False. Author cost script changes refiner toFP16 and channels_last=True; do not silently substitute cost-script settings for default-quality configuration.",
+    "restore_quantization": "prepare(deblur=True) clamps and quantizes restored RGB to8 bits before estimating depth/rendering. prepare(deblur=False) uses supplied image without restoration or extra restore quantization.",
+    "already_sharp_cli_loading": "scripts/refocus.py --already-sharp skips restoration compute but still calls from_pretrained() with deblurring=True and loads Stage I/refiner. It is not a minimal renderer/depth-only loader.",
+    "true_native_no_deblur": "Refocuser.from_pretrained(deblurring=False), then prepare(image,deblur=False); both flags needed because prepare defaults to deblur=True. Still loads DA-V2 and renderer.",
+    "external_geometry_entry": "Candidate only: instantiate Refocuser(None,None,load_renderer(...)) and construct Scene(image,D); call render(scene,strength,F). Bypasses estimate/prepare, leaves learned renderer and its condition construction unchanged.",
+    "import_dependency_caveat": "flashrefocus.__init__ eagerly imports pipeline->Deblurrer->OneStepDiffusion(PiSASR_eval). Even deblurring=False / external-geometry use currently require PiSA-SR and its inference dependencies to import, though not its checkpoints for model construction.",
+    "cache_temporal": "Scene caches image/depth for edits of one photograph. It provides no temporal feature model, overlap handling or native temporal consistency guarantee. Do not reuse prior frame Scene for a different video frame or add temporal smoothing without a separately approved adapter.",
+    "method_name": "Paper explicitly distinguishes AnyBokeh from the video Any-to-Bokeh used in this project."
+  },
+  "source_evidence": {
+    "README.md": "https://github.com/ming053l/FlashReFocus/blob/0a99d4bce442d6e4e548f714bf293f32ee46ec47/README.md",
+    "requirements.txt": "https://github.com/ming053l/FlashReFocus/blob/0a99d4bce442d6e4e548f714bf293f32ee46ec47/requirements.txt",
+    "pyproject.toml": "https://github.com/ming053l/FlashReFocus/blob/0a99d4bce442d6e4e548f714bf293f32ee46ec47/pyproject.toml",
+    ".gitmodules": "https://github.com/ming053l/FlashReFocus/blob/0a99d4bce442d6e4e548f714bf293f32ee46ec47/.gitmodules",
+    "flashrefocus/pipeline.py": "https://github.com/ming053l/FlashReFocus/blob/0a99d4bce442d6e4e548f714bf293f32ee46ec47/flashrefocus/pipeline.py",
+    "flashrefocus/image_io.py": "https://github.com/ming053l/FlashReFocus/blob/0a99d4bce442d6e4e548f714bf293f32ee46ec47/flashrefocus/image_io.py",
+    "flashrefocus/rendering/depth.py": "https://github.com/ming053l/FlashReFocus/blob/0a99d4bce442d6e4e548f714bf293f32ee46ec47/flashrefocus/rendering/depth.py",
+    "flashrefocus/rendering/renderer.py": "https://github.com/ming053l/FlashReFocus/blob/0a99d4bce442d6e4e548f714bf293f32ee46ec47/flashrefocus/rendering/renderer.py",
+    "flashrefocus/deblurring/one_step_diffusion.py": "https://github.com/ming053l/FlashReFocus/blob/0a99d4bce442d6e4e548f714bf293f32ee46ec47/flashrefocus/deblurring/one_step_diffusion.py",
+    "flashrefocus/deblurring/decoder_refiner.py": "https://github.com/ming053l/FlashReFocus/blob/0a99d4bce442d6e4e548f714bf293f32ee46ec47/flashrefocus/deblurring/decoder_refiner.py",
+    "scripts/refocus.py": "https://github.com/ming053l/FlashReFocus/blob/0a99d4bce442d6e4e548f714bf293f32ee46ec47/scripts/refocus.py",
+    "scripts/benchmark_cost.py": "https://github.com/ming053l/FlashReFocus/blob/0a99d4bce442d6e4e548f714bf293f32ee46ec47/scripts/benchmark_cost.py",
+    "tests/regression_cases.py": "https://github.com/ming053l/FlashReFocus/blob/0a99d4bce442d6e4e548f714bf293f32ee46ec47/tests/regression_cases.py"
+  },
+  "adapter_proposal": {
+    "status": "PROPOSED_NOT_IMPLEMENTED_NOT_CALIBRATED_NOT_BENCHMARK_FROZEN",
+    "recommended_variant": "External shared geometry/focus, renderer-only, already-sharp RGB. Keep full-native restoration+own-depth as a separate reproduction variant; never mix variant parameters/timing/results.",
+    "difference_table": [
+      {
+        "field": "RGB",
+        "official": "Single photo; default restore then quantize",
+        "benchmark_proposal": "Synthetic already-sharp RGB, DAVIS existing RGB; no Stage I by default; same1024x576/25frames. Retain existing RGB resize rules, not extra LANCZOS on already fixed inputs. No GT alpha/mask enters generator.",
+        "pending": "Validate official no-deblur path first. DAVIS originals may contain optical blur; skipping restoration is an explicit input/variant limitation, not proof they are all sharp."
+      },
+      {
+        "field": "geometry",
+        "official": "DA-V2 per-image minmax then invert;1=far",
+        "benchmark_proposal": "Use existing disparity d in frozen shared [0,1] coordinate, D=1-d (no per-frame renormalization), aligned to RGB with the frozen geometry resize. Preserve supplied values and source rights.",
+        "pending": "Requires approval; differs from native own-depth preprocessing, while preserving actual renderer functions."
+      },
+      {
+        "field": "focus",
+        "official": "Own D at clicked pixel, rounded/clamped",
+        "benchmark_proposal": "F=1-f from SAME supplied disparity coordinate. Keep frozen per-frame f; do not resample a different pixel/mask or silently clamp. Ms=-(d-f); abs(Ms)=abs(d-f).",
+        "pending": "Validate finite/range and record any out-of-range f; stop for a policy decision instead of clamping or changing target."
+      },
+      {
+        "field": "strength",
+        "official": "Separate native scalar s in[0,1], default0.5",
+        "benchmark_proposal": "One global, deterministic, nondecreasing table s(K) for K4/8/16/32 from an independent control calibration; no defaultK/32.",
+        "pending": "No numerical mapping exists yet; do not use formal benchmark GT/scores or per-scene adjustment."
+      },
+      {
+        "field": "precision",
+        "official": "Stage I FP16; default refiner and renderer BF16 autocast; outputFP32",
+        "benchmark_proposal": "External renderer: retain default BF16 autocast / FP32 outputs and existing RGB8 truncation. No hidden FP16/channels_last/merged-LoRA switch.",
+        "pending": "GPU import/weight-loading/runtime check after access; no claim of bitwise equality across environments."
+      },
+      {
+        "field": "temporal",
+        "official": "Image model; cached Scene reused for same-photo edits",
+        "benchmark_proposal": "Process each of25 frames independently with own RGB/geometry/focus; no previous-frame cache reuse, new smoothing or temporal network.",
+        "pending": "No native video temporal guarantee; future evaluation must measure it, not infer it from interactive edits."
+      },
+      {
+        "field": "timing / params",
+        "official": "First edit: restore+depth+render with PNG I/O; new focus: reuse same photo/depth and render+write",
+        "benchmark_proposal": "Keep full native / no-deblur own-depth / external-geometry renderer-only boundaries separate. For video E2E-given-inputs measure actual25frames, read/decode through CPU uint8; exclude model load, write/encode/metrics/external geometry generation. Core boundary and counted parameters match active modules.",
+        "pending": "All local model costs and parameter counts unmeasured; no paper first/new-focus number copied into project tables."
+      }
+    ],
+    "normalization_alternative_not_selected": {
+      "formula": "If later choosing D=1-(d-lo)/span, F=1-(f-lo)/span, use identical lo/span for both. Then Ms=-(d-f)/span.",
+      "limits": "Not algebraically equivalent to shared geometry at unchanged strength. Native per-frame normalization changes defocus scale; strength enters several learned paths, so multiplying strength by span is not generally an exact compensation. Do not clamp F or silently switch conventions. No inverse-meter1/d transformation."
+    },
+    "independent_calibration_proposal": {
+      "status": "WAITING_FOR_WEIGHTS_AND_APPROVAL_NOT_RUN",
+      "inputs": "Procedural RGB textures/isolated edge and impulse patches, no Synthetic/DAVIS footage, GT or annotations; correct piecewise-constant control disparity with levels0.2/0.5/0.8. Two fixed texture layouts x three focal values(0.2/0.5/0.8)=6small controls, all at1024x576.",
+      "native_strength_grid": [
+        0,
+        0.125,
+        0.25,
+        0.375,
+        0.5,
+        0.625,
+        0.75,
+        0.875,
+        1
+      ],
+      "budget": "6controls x9strengths=54renderer-only outputs after official example succeeds; no training. A second deterministic texture phase reserved for checking the mapping, not refitting.",
+      "measurement": "Within constant-depth interiors, avoid occlusion edges. Record edge10-90% spread plus normalized impulse second-moment blur width, luminance/color residual and in-focus preservation. Measure response relative to s=0; no neural metric. Use both sides of focus and multiple abs(d-f).",
+      "target": "Construct CPU soft-disk reference responses for each K under documented nominal radius K*abs(d-f) at the same resolution; freeze kernel, interpolation, ROI and width estimator BEFORE running the candidate. MPIB actual layer-bin/focus-range and gamma conventions must be disclosed if used instead. This is control calibration, not formal proxy-GT matching or a claim of physical CoC equivalence.",
+      "selection": "One equally weighted aggregate absolute blur-width residual per candidate strength and project K across all control layouts/depths/sides; select the nondecreasing four-value mapping minimizing that predefined aggregate, ties choose smaller strength. Freeze mapping and report per-condition residuals; no per-scene or per-frame strength fitting.",
+      "failure_policy": "If response is nonmonotonic, saturates before a target, or near/far controls disagree materially, report mismatch and unresolved K coverage; do not silently extrapolate>1, change geometry/thresholds, or claim physical equivalence. Proposed acceptance limits and exact kernel must be confirmed before any calibration run."
+    }
+  },
+  "timing_boundaries": {
+    "full_native": "RGB decode/resize/transfer -> Stage I restoration+restore quantization -> own DA-V2 -> focus/conditions -> renderer -> all25CPU uint8RGB. Model loading/output writes/encoding/metrics excluded for project E2E; stageI+depth+renderer parameter scope.",
+    "native_no_deblur": "RGB decode/adapt/transfer -> own DA-V2 -> focus/conditions -> renderer -> all25CPU uint8RGB; noStageI; count DA-V2+renderer.",
+    "external_geometry_renderer_only": "Read/decode already-provided RGB/d/f/K -> frozen adapter+transfer -> original renderer -> all25CPU uint8RGB; noStageI/noDA-V2; count renderer only for rendererCore and include adapter inE2E.",
+    "author_cost_caveat": "Official benchmark_cost.py times restoration and depth+render separately and sums them for first_s, with intervening PNG save/read; new_focus_s uses cached Scene of same picture. It is not a measured contiguous25-frame videoE2E. Reported memory is max allocated GiB in code. No local runtime or parameter value is filled here."
+  },
+  "unrun": {
+    "official_full_example": true,
+    "official_deblurring_false_example": true,
+    "output_quantity_size_finite_checks_on_model_outputs": true,
+    "performance_and_peak_memory": true,
+    "visual_quality": "待用户确认；尚无本地模型输出",
+    "benchmark_adapter": true,
+    "strength_calibration": true
+  },
+  "next_steps": [
+    "Obtain publicly released checkpoints or explicit authorized access supplied by the owner for stage1.pkl/refiner.pt/renderer.pt; record exact revisions and filenames. No request to expose anyone else’s private token.",
+    "Only then build a separate GPU inference environment at documented versions, check GPU scheduling and run full official public example with defaultomega1.25/refiner/strength0.5; save input/AiF/rawdepth/finaloutput and numerical checks.",
+    "Then run true deblurring=False plus prepare(deblur=False), with the same pinned code; do not claim it runs now or treat CLI already-sharp loading as minimal renderer-only.",
+    "Submit proposed shared-coordinate renderer adapter and independent global-strength calibration details for review; no formal Synthetic/DAVIS sweep before these decisions.",
+    "Current stop: code preparation complete, awaiting dedicated weights. No GPU waiting process, training, baseline/PPT changes or main-branch merge."
+  ],
+  "local_artifacts": {
+    "root": "outputs/flashrefocus-repro-20261021",
+    "official_source": "outputs/flashrefocus-repro-20261021/official",
+    "public_example_input": "outputs/flashrefocus-repro-20261021/inputs/flower.jpg",
+    "logs": "logs/flashrefocus-repro-20261021",
+    "CPU_environment": "/root/autodl-tmp/envs/flashrefocus-readiness",
+    "storage_guide": "No server-specific 服务器文件链路与存储架构说明.md found; using existing ignored outputs/ and logs/ conventions in this isolated worktree."
+  },
+  "cpu_interface_checks": {
+    "checked_utc": "2026-10-21T11:27:04.631502+00:00",
+    "official_commit": "0a99d4bce442d6e4e548f714bf293f32ee46ec47",
+    "status": "CPU_SOURCE_FUNCTION_CHECKS_PASSED_NOT_MODEL_INFERENCE",
+    "environment": {
+      "python": "3.10.21",
+      "torch": "2.7.1+cpu",
+      "numpy": "1.26.4",
+      "pillow": "11.3.0",
+      "torch_cuda_build": null,
+      "cuda_visible_devices": ""
+    },
+    "compiled_first_party_files": 17,
+    "function_locations": {
+      "image_to_tensor": "flashrefocus/image_io.py:10",
+      "tensor_to_uint8": "flashrefocus/image_io.py:21",
+      "to_signed": "flashrefocus/image_io.py:31",
+      "to_unit_range": "flashrefocus/image_io.py:36",
+      "resize_to_multiple": "flashrefocus/image_io.py:41",
+      "disparity_to_depth": "flashrefocus/rendering/depth.py:45",
+      "constant_map": "flashrefocus/rendering/renderer.py:21",
+      "resize_bilinear": "flashrefocus/rendering/renderer.py:26",
+      "condition_maps": "flashrefocus/rendering/renderer.py:30",
+      "depth_at": "flashrefocus/rendering/depth_edits.py:6"
+    },
+    "checks": {
+      "RGB_uint8_roundtrip": true,
+      "RGB_float32_shape": true,
+      "crop_multiple": true,
+      "fixed_1024x576_unchanged": true,
+      "resize_LANCZOS_multiple16": true,
+      "native_depth_direction": true,
+      "native_constant_depth_is_one": true,
+      "native_nonfinite_sanitization": true,
+      "proposed_shared_depth_focus_algebra": true,
+      "native_condition_signed_mask_dilation_strength": true,
+      "focal_pixel_round_and_clamp": true
+    },
+    "models_constructed": 0,
+    "neural_network_calls": 0,
+    "weight_loads": 0,
+    "limits": [
+      "Selected original functions only; no full flashrefocus package import or GPU dependency verification.",
+      "No official example, deblurring=False inference, performance or visual-quality validation.",
+      "Shared-coordinate conversion remains an adapter proposal; strength mapping is uncalibrated."
+    ]
+  },
+  "cpu_environment_pip_check": "PASS: No broken requirements found; limited CPU helper environment, not the uninstalled full inference dependencies.",
+  "CPU_reproduction_command": "/root/autodl-tmp/envs/flashrefocus-readiness/bin/python scripts/check_flashrefocus_interfaces.py --official-repo outputs/flashrefocus-repro-20261021/official --out outputs/flashrefocus-repro-20261021/cpu-interface-checks-repeat.json",
+  "environment_preparation": {
+    "purpose": "Independent CPU readiness checks only, no main environment changed.",
+    "python": "3.10.21",
+    "torch": "2.7.1+cpu",
+    "packages": [
+      {
+        "name": "filelock",
+        "version": "4.1.0"
+      },
+      {
+        "name": "fsspec",
+        "version": "2026.9.0"
+      },
+      {
+        "name": "Jinja2",
+        "version": "3.1.6"
+      },
+      {
+        "name": "MarkupSafe",
+        "version": "3.0.4"
+      },
+      {
+        "name": "mpmath",
+        "version": "1.3.0"
+      },
+      {
+        "name": "networkx",
+        "version": "3.4.2"
+      },
+      {
+        "name": "numpy",
+        "version": "1.26.4"
+      },
+      {
+        "name": "packaging",
+        "version": "26.3"
+      },
+      {
+        "name": "pillow",
+        "version": "11.3.0"
+      },
+      {
+        "name": "pip",
+        "version": "26.2.2"
+      },
+      {
+        "name": "setuptools",
+        "version": "79.0.1"
+      },
+      {
+        "name": "sympy",
+        "version": "1.14.0"
+      },
+      {
+        "name": "torch",
+        "version": "2.7.1+cpu"
+      },
+      {
+        "name": "typing_extensions",
+        "version": "4.16.0"
+      }
+    ],
+    "GPU_inference_environment": "Not installed or claimed ready while dedicated weights remain unavailable. Documented baseline: Python3.10/CUDA12.8, torch2.7.1, torchvision0.22.1, diffusers0.25.0, transformers4.46.0, peft0.9.0, huggingface_hub0.23.x; full dependency resolution untested.",
+    "initial_install_failure": "First CPU torch install with old venv pip and sole CPU-wheel index failed on typing_extensions name/build-dependency resolution. Retained log; upgraded pip only inside new environment, installed helper dependencies from PyPI, then installed CPU torch wheel --no-deps. Successful checks and pip check recorded separately."
+  },
+  "official_example_input": {
+    "source": "https://huggingface.co/spaces/ming0531/FlashReFocus/resolve/a52d323fd98a1ad36ab63126fedc9f418a95e194/examples/flower.jpg",
+    "source_size": [
+      1024,
+      672
+    ],
+    "mode": "RGB",
+    "role": "Public input only; no generated restoration/depth/bokeh output",
+    "not_the_absent_GitHub_regression_input": true
+  },
+  "resources_observed": {
+    "GPU": "NVIDIA GeForce RTX4090D",
+    "GPU_total_MiB": 49140,
+    "GPU_used_MiB_before_readiness": 0,
+    "GPU_compute_processes_at_check": [],
+    "GPU_work_submitted": false,
+    "disk_available_at_start_GiB_approx": 405,
+    "CPU_quota_cores": 20,
+    "memory_cgroup_limit_GiB": 90,
+    "host_free_output_not_used_as_container_quota": true
+  },
+  "checks_boundary": "Selected function CPU tests and source reading only. Original model tensors, parameters, outputs and neural-network inference were not instantiated, loaded or validated. Runnable code preparation does not mean official model execution is ready.",
+  "unrun_official_command_after_weights_only": {
+    "status": "NOT_EXECUTED_REQUIRES_SEPARATE_GPU_ENVIRONMENT_AND_DEDICATED_WEIGHTS",
+    "working_directory": "outputs/flashrefocus-repro-20261021/official",
+    "command": "FLASHREFOCUS_WEIGHTS=/path/to/authorized/FlashReFocus-weights CUDA_VISIBLE_DEVICES=0 python scripts/refocus.py ../inputs/flower.jpg ../official-example-full/flower --focus 512 336 --strength 0.5 --detail-weight 1.25 --long-side 1024",
+    "input_working_size": [
+      1024,
+      672
+    ],
+    "notes": "Public Space example input. Run only after GPU scheduling/permission and weights are resolved; this is a future command, not evidence of successful execution. Save raw float depth in addition to CLI near-bright visualization when executing."
+  }
+}
