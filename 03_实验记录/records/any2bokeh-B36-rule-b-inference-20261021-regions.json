@@ -1,0 +1,6171 @@
+{
+  "created_UTC": "2026-10-21T13:32:53.809556+00:00",
+  "policy": {
+    "fixed_before_new_outputs": true,
+    "grid": "Masks: native1920x1080, nearest-neighbor to output1024x576 for statistics. RGB reference: same phase1 INTER_LINEAR display RGB, not bokeh GT.",
+    "head_high_side": "Approved selected mask intersect q/255 > same-frame neck reference, combined high-side support; a head proxy, not anatomical truth. Empty on21-24: report N/A.",
+    "low_side": "Every8-connected component of approved selected low-side support separately; frame-local component IDs, no cross-component or cross-region averaging; no extra size filtering.",
+    "neck": "Original approved reference mask; invalid21 remains empty, no repair.",
+    "body": "Existing five input-RGB body_core anchor boxes, nearest anchor independent RGB NCC propagation using phase1 tracking thresholds; intersect original union and remove selection. Failed localization: N/A.",
+    "head_context": "Supplementary input-only diagnostic rectangle from nearest existing head_context anchor translated by original union bounding-box top-left displacement. All25 frames; includes neck/background, not pure-head or tracked material-point truth. Used for skipped-frame and temporal checks.",
+    "water_near": "Prior frame0 [745,170,35,30] translated by original union bounding-box displacement from frame0, intersect background. Sampling window follows subject, not tracked water material.",
+    "water_far": "Prior fixed [90,85,150,100], intersect background.",
+    "MAE": "Mean abs RGB8 difference vs input RGB on each exact region; empty regions N/A.",
+    "gradient_energy_ratio": "Sobel3x3 on full-image grayscale(.299,.587,.114), RGB normalized0-1; mean(gx^2+gy^2) on3x3-eroded region, divided by corresponding input energy. Empty gradient support or input energy<=1e-15: N/A. No mask-induced artificial edges; not a bokeh quality score or directly identical to historical rectangle-crop metric.",
+    "temporal": "18->19,19->20,20->21,21->22,22->23: fixed image-coordinate union of each pair's supplementary head-context rectangles. Report per-method RGB8 temporal MAE, input-relative temporal-change residual and R-minus-A temporal response, plus A-repeat noise. No motion compensation; call region change, not flicker.",
+    "repeat": "Actually compare float32 uint32 bit patterns and RGB8 bytes; if nonidentical retain quantified repeat noise, no automatic quality judgement."
+  },
+  "frames": [
+    {
+      "frame_id": 0,
+      "head_context_xywh": [
+        632,
+        128,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        489,
+        254,
+        52,
+        26
+      ],
+      "body_checks": {},
+      "body_missing_reason": "",
+      "regions": [
+        {
+          "region": "head_high_side",
+          "pixels": 2922,
+          "native_pixels": null,
+          "display_bbox": [
+            658,
+            152,
+            74,
+            84
+          ],
+          "definition": "approved selected high disparity support; head proxy",
+          "path": "regions/00000/head_high_side.png"
+        },
+        {
+          "region": "low_component_01",
+          "pixels": 43,
+          "native_pixels": 167,
+          "display_bbox": [
+            656,
+            151,
+            34,
+            22
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00000/low_component_01.png"
+        },
+        {
+          "region": "low_component_02",
+          "pixels": 0,
+          "native_pixels": 4,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00000/low_component_02.png"
+        },
+        {
+          "region": "low_component_03",
+          "pixels": 0,
+          "native_pixels": 1,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00000/low_component_03.png"
+        },
+        {
+          "region": "low_component_04",
+          "pixels": 1,
+          "native_pixels": 2,
+          "display_bbox": [
+            694,
+            161,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00000/low_component_04.png"
+        },
+        {
+          "region": "low_component_05",
+          "pixels": 0,
+          "native_pixels": 1,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00000/low_component_05.png"
+        },
+        {
+          "region": "low_component_06",
+          "pixels": 0,
+          "native_pixels": 2,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00000/low_component_06.png"
+        },
+        {
+          "region": "low_component_07",
+          "pixels": 0,
+          "native_pixels": 1,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00000/low_component_07.png"
+        },
+        {
+          "region": "low_component_08",
+          "pixels": 36,
+          "native_pixels": 138,
+          "display_bbox": [
+            386,
+            192,
+            34,
+            12
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00000/low_component_08.png"
+        },
+        {
+          "region": "low_component_09",
+          "pixels": 32,
+          "native_pixels": 112,
+          "display_bbox": [
+            430,
+            208,
+            28,
+            11
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00000/low_component_09.png"
+        },
+        {
+          "region": "low_component_10",
+          "pixels": 29,
+          "native_pixels": 85,
+          "display_bbox": [
+            502,
+            221,
+            29,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00000/low_component_10.png"
+        },
+        {
+          "region": "low_component_11",
+          "pixels": 217,
+          "native_pixels": 759,
+          "display_bbox": [
+            552,
+            223,
+            94,
+            31
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00000/low_component_11.png"
+        },
+        {
+          "region": "low_component_12",
+          "pixels": 84,
+          "native_pixels": 280,
+          "display_bbox": [
+            365,
+            226,
+            53,
+            6
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00000/low_component_12.png"
+        },
+        {
+          "region": "low_component_13",
+          "pixels": 144,
+          "native_pixels": 464,
+          "display_bbox": [
+            330,
+            235,
+            68,
+            9
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00000/low_component_13.png"
+        },
+        {
+          "region": "low_component_14",
+          "pixels": 289,
+          "native_pixels": 1018,
+          "display_bbox": [
+            660,
+            271,
+            34,
+            41
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00000/low_component_14.png"
+        },
+        {
+          "region": "neck",
+          "pixels": 567,
+          "native_pixels": 1862,
+          "display_bbox": [
+            655,
+            223,
+            21,
+            27
+          ],
+          "definition": "saved original reference mask; invalid21 empty",
+          "path": "regions/00000/neck.png"
+        },
+        {
+          "region": "body_unselected",
+          "pixels": 1352,
+          "native_pixels": null,
+          "display_bbox": [
+            489,
+            254,
+            52,
+            26
+          ],
+          "definition": "input-RGB body rectangle intersect union excluding selected pixels",
+          "path": "regions/00000/body_unselected.png"
+        },
+        {
+          "region": "head_context",
+          "pixels": 20480,
+          "native_pixels": null,
+          "display_bbox": [
+            632,
+            128,
+            128,
+            160
+          ],
+          "definition": "supplementary input-defined context; includes neck/background",
+          "path": "regions/00000/head_context.png"
+        },
+        {
+          "region": "water_near",
+          "pixels": 1050,
+          "native_pixels": null,
+          "display_bbox": [
+            745,
+            170,
+            35,
+            30
+          ],
+          "definition": "subject-relative water sampling window, not material tracking",
+          "path": "regions/00000/water_near.png"
+        },
+        {
+          "region": "water_far",
+          "pixels": 15000,
+          "native_pixels": null,
+          "display_bbox": [
+            90,
+            85,
+            150,
+            100
+          ],
+          "definition": "fixed historical water ROI",
+          "path": "regions/00000/water_far.png"
+        }
+      ]
+    },
+    {
+      "frame_id": 1,
+      "head_context_xywh": [
+        627,
+        126,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        485,
+        254,
+        51,
+        26
+      ],
+      "body_checks": {
+        "NCC": 0.9906335473060608,
+        "peak_margin": 0.1491805911064148,
+        "roundtrip_error_native": 0.0
+      },
+      "body_missing_reason": "",
+      "regions": [
+        {
+          "region": "head_high_side",
+          "pixels": 2867,
+          "native_pixels": null,
+          "display_bbox": [
+            652,
+            151,
+            79,
+            80
+          ],
+          "definition": "approved selected high disparity support; head proxy",
+          "path": "regions/00001/head_high_side.png"
+        },
+        {
+          "region": "low_component_01",
+          "pixels": 31,
+          "native_pixels": 123,
+          "display_bbox": [
+            650,
+            149,
+            21,
+            18
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00001/low_component_01.png"
+        },
+        {
+          "region": "low_component_02",
+          "pixels": 7,
+          "native_pixels": 30,
+          "display_bbox": [
+            673,
+            150,
+            11,
+            6
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00001/low_component_02.png"
+        },
+        {
+          "region": "low_component_03",
+          "pixels": 2,
+          "native_pixels": 5,
+          "display_bbox": [
+            685,
+            156,
+            2,
+            2
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00001/low_component_03.png"
+        },
+        {
+          "region": "low_component_04",
+          "pixels": 49,
+          "native_pixels": 129,
+          "display_bbox": [
+            640,
+            185,
+            4,
+            46
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00001/low_component_04.png"
+        },
+        {
+          "region": "low_component_05",
+          "pixels": 26,
+          "native_pixels": 95,
+          "display_bbox": [
+            382,
+            191,
+            24,
+            7
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00001/low_component_05.png"
+        },
+        {
+          "region": "low_component_06",
+          "pixels": 27,
+          "native_pixels": 94,
+          "display_bbox": [
+            424,
+            206,
+            27,
+            12
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00001/low_component_06.png"
+        },
+        {
+          "region": "low_component_07",
+          "pixels": 275,
+          "native_pixels": 943,
+          "display_bbox": [
+            488,
+            220,
+            151,
+            35
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00001/low_component_07.png"
+        },
+        {
+          "region": "low_component_08",
+          "pixels": 44,
+          "native_pixels": 145,
+          "display_bbox": [
+            391,
+            224,
+            23,
+            4
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00001/low_component_08.png"
+        },
+        {
+          "region": "low_component_09",
+          "pixels": 36,
+          "native_pixels": 117,
+          "display_bbox": [
+            360,
+            227,
+            24,
+            4
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00001/low_component_09.png"
+        },
+        {
+          "region": "low_component_10",
+          "pixels": 37,
+          "native_pixels": 121,
+          "display_bbox": [
+            325,
+            234,
+            26,
+            4
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00001/low_component_10.png"
+        },
+        {
+          "region": "low_component_11",
+          "pixels": 46,
+          "native_pixels": 145,
+          "display_bbox": [
+            360,
+            236,
+            32,
+            3
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00001/low_component_11.png"
+        },
+        {
+          "region": "low_component_12",
+          "pixels": 300,
+          "native_pixels": 1067,
+          "display_bbox": [
+            655,
+            272,
+            34,
+            40
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00001/low_component_12.png"
+        },
+        {
+          "region": "neck",
+          "pixels": 520,
+          "native_pixels": 1862,
+          "display_bbox": [
+            650,
+            222,
+            20,
+            26
+          ],
+          "definition": "saved original reference mask; invalid21 empty",
+          "path": "regions/00001/neck.png"
+        },
+        {
+          "region": "body_unselected",
+          "pixels": 1326,
+          "native_pixels": null,
+          "display_bbox": [
+            485,
+            254,
+            51,
+            26
+          ],
+          "definition": "input-RGB body rectangle intersect union excluding selected pixels",
+          "path": "regions/00001/body_unselected.png"
+        },
+        {
+          "region": "head_context",
+          "pixels": 20480,
+          "native_pixels": null,
+          "display_bbox": [
+            627,
+            126,
+            128,
+            160
+          ],
+          "definition": "supplementary input-defined context; includes neck/background",
+          "path": "regions/00001/head_context.png"
+        },
+        {
+          "region": "water_near",
+          "pixels": 1050,
+          "native_pixels": null,
+          "display_bbox": [
+            740,
+            168,
+            35,
+            30
+          ],
+          "definition": "subject-relative water sampling window, not material tracking",
+          "path": "regions/00001/water_near.png"
+        },
+        {
+          "region": "water_far",
+          "pixels": 15000,
+          "native_pixels": null,
+          "display_bbox": [
+            90,
+            85,
+            150,
+            100
+          ],
+          "definition": "fixed historical water ROI",
+          "path": "regions/00001/water_far.png"
+        }
+      ]
+    },
+    {
+      "frame_id": 2,
+      "head_context_xywh": [
+        621,
+        124,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        480,
+        253,
+        51,
+        26
+      ],
+      "body_checks": {
+        "NCC": 0.9865062236785889,
+        "peak_margin": 0.14462178945541382,
+        "roundtrip_error_native": 0.0
+      },
+      "body_missing_reason": "",
+      "regions": [
+        {
+          "region": "head_high_side",
+          "pixels": 2894,
+          "native_pixels": null,
+          "display_bbox": [
+            645,
+            149,
+            82,
+            78
+          ],
+          "definition": "approved selected high disparity support; head proxy",
+          "path": "regions/00002/head_high_side.png"
+        },
+        {
+          "region": "low_component_01",
+          "pixels": 84,
+          "native_pixels": 291,
+          "display_bbox": [
+            636,
+            147,
+            30,
+            42
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00002/low_component_01.png"
+        },
+        {
+          "region": "low_component_02",
+          "pixels": 1,
+          "native_pixels": 6,
+          "display_bbox": [
+            669,
+            149,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00002/low_component_02.png"
+        },
+        {
+          "region": "low_component_03",
+          "pixels": 0,
+          "native_pixels": 4,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00002/low_component_03.png"
+        },
+        {
+          "region": "low_component_04",
+          "pixels": 5,
+          "native_pixels": 18,
+          "display_bbox": [
+            674,
+            151,
+            7,
+            5
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00002/low_component_04.png"
+        },
+        {
+          "region": "low_component_05",
+          "pixels": 2,
+          "native_pixels": 4,
+          "display_bbox": [
+            682,
+            156,
+            2,
+            2
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00002/low_component_05.png"
+        },
+        {
+          "region": "low_component_06",
+          "pixels": 34,
+          "native_pixels": 106,
+          "display_bbox": [
+            376,
+            190,
+            18,
+            9
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00002/low_component_06.png"
+        },
+        {
+          "region": "low_component_07",
+          "pixels": 1,
+          "native_pixels": 5,
+          "display_bbox": [
+            710,
+            206,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00002/low_component_07.png"
+        },
+        {
+          "region": "low_component_08",
+          "pixels": 20,
+          "native_pixels": 67,
+          "display_bbox": [
+            421,
+            206,
+            17,
+            9
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00002/low_component_08.png"
+        },
+        {
+          "region": "low_component_09",
+          "pixels": 0,
+          "native_pixels": 3,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00002/low_component_09.png"
+        },
+        {
+          "region": "low_component_10",
+          "pixels": 52,
+          "native_pixels": 100,
+          "display_bbox": [
+            467,
+            219,
+            52,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00002/low_component_10.png"
+        },
+        {
+          "region": "low_component_11",
+          "pixels": 153,
+          "native_pixels": 567,
+          "display_bbox": [
+            524,
+            220,
+            106,
+            32
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00002/low_component_11.png"
+        },
+        {
+          "region": "low_component_12",
+          "pixels": 28,
+          "native_pixels": 78,
+          "display_bbox": [
+            395,
+            223,
+            12,
+            3
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00002/low_component_12.png"
+        },
+        {
+          "region": "low_component_13",
+          "pixels": 34,
+          "native_pixels": 108,
+          "display_bbox": [
+            355,
+            225,
+            26,
+            4
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00002/low_component_13.png"
+        },
+        {
+          "region": "low_component_14",
+          "pixels": 28,
+          "native_pixels": 88,
+          "display_bbox": [
+            319,
+            232,
+            8,
+            11
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00002/low_component_14.png"
+        },
+        {
+          "region": "low_component_15",
+          "pixels": 55,
+          "native_pixels": 203,
+          "display_bbox": [
+            340,
+            233,
+            44,
+            4
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00002/low_component_15.png"
+        },
+        {
+          "region": "low_component_16",
+          "pixels": 264,
+          "native_pixels": 910,
+          "display_bbox": [
+            651,
+            268,
+            32,
+            42
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00002/low_component_16.png"
+        },
+        {
+          "region": "neck",
+          "pixels": 520,
+          "native_pixels": 1862,
+          "display_bbox": [
+            644,
+            221,
+            20,
+            26
+          ],
+          "definition": "saved original reference mask; invalid21 empty",
+          "path": "regions/00002/neck.png"
+        },
+        {
+          "region": "body_unselected",
+          "pixels": 1326,
+          "native_pixels": null,
+          "display_bbox": [
+            480,
+            253,
+            51,
+            26
+          ],
+          "definition": "input-RGB body rectangle intersect union excluding selected pixels",
+          "path": "regions/00002/body_unselected.png"
+        },
+        {
+          "region": "head_context",
+          "pixels": 20480,
+          "native_pixels": null,
+          "display_bbox": [
+            621,
+            124,
+            128,
+            160
+          ],
+          "definition": "supplementary input-defined context; includes neck/background",
+          "path": "regions/00002/head_context.png"
+        },
+        {
+          "region": "water_near",
+          "pixels": 1050,
+          "native_pixels": null,
+          "display_bbox": [
+            734,
+            166,
+            35,
+            30
+          ],
+          "definition": "subject-relative water sampling window, not material tracking",
+          "path": "regions/00002/water_near.png"
+        },
+        {
+          "region": "water_far",
+          "pixels": 15000,
+          "native_pixels": null,
+          "display_bbox": [
+            90,
+            85,
+            150,
+            100
+          ],
+          "definition": "fixed historical water ROI",
+          "path": "regions/00002/water_far.png"
+        }
+      ]
+    },
+    {
+      "frame_id": 3,
+      "head_context_xywh": [
+        615,
+        122,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        473,
+        252,
+        52,
+        25
+      ],
+      "body_checks": {
+        "NCC": 0.9800409078598022,
+        "peak_margin": 0.14947324991226196,
+        "roundtrip_error_native": 0.0
+      },
+      "body_missing_reason": "",
+      "regions": [
+        {
+          "region": "head_high_side",
+          "pixels": 2864,
+          "native_pixels": null,
+          "display_bbox": [
+            639,
+            146,
+            82,
+            77
+          ],
+          "definition": "approved selected high disparity support; head proxy",
+          "path": "regions/00003/head_high_side.png"
+        },
+        {
+          "region": "low_component_01",
+          "pixels": 18,
+          "native_pixels": 60,
+          "display_bbox": [
+            643,
+            144,
+            15,
+            5
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00003/low_component_01.png"
+        },
+        {
+          "region": "low_component_02",
+          "pixels": 9,
+          "native_pixels": 38,
+          "display_bbox": [
+            661,
+            146,
+            10,
+            4
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00003/low_component_02.png"
+        },
+        {
+          "region": "low_component_03",
+          "pixels": 1,
+          "native_pixels": 7,
+          "display_bbox": [
+            673,
+            151,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00003/low_component_03.png"
+        },
+        {
+          "region": "low_component_04",
+          "pixels": 21,
+          "native_pixels": 58,
+          "display_bbox": [
+            634,
+            152,
+            6,
+            21
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00003/low_component_04.png"
+        },
+        {
+          "region": "low_component_05",
+          "pixels": 0,
+          "native_pixels": 9,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00003/low_component_05.png"
+        },
+        {
+          "region": "low_component_06",
+          "pixels": 0,
+          "native_pixels": 1,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00003/low_component_06.png"
+        },
+        {
+          "region": "low_component_07",
+          "pixels": 0,
+          "native_pixels": 1,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00003/low_component_07.png"
+        },
+        {
+          "region": "low_component_08",
+          "pixels": 1,
+          "native_pixels": 1,
+          "display_bbox": [
+            682,
+            162,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00003/low_component_08.png"
+        },
+        {
+          "region": "low_component_09",
+          "pixels": 0,
+          "native_pixels": 1,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00003/low_component_09.png"
+        },
+        {
+          "region": "low_component_10",
+          "pixels": 34,
+          "native_pixels": 109,
+          "display_bbox": [
+            370,
+            189,
+            20,
+            8
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00003/low_component_10.png"
+        },
+        {
+          "region": "low_component_11",
+          "pixels": 1,
+          "native_pixels": 2,
+          "display_bbox": [
+            704,
+            202,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00003/low_component_11.png"
+        },
+        {
+          "region": "low_component_12",
+          "pixels": 192,
+          "native_pixels": 700,
+          "display_bbox": [
+            557,
+            222,
+            72,
+            28
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00003/low_component_12.png"
+        },
+        {
+          "region": "low_component_13",
+          "pixels": 0,
+          "native_pixels": 2,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00003/low_component_13.png"
+        },
+        {
+          "region": "low_component_14",
+          "pixels": 33,
+          "native_pixels": 112,
+          "display_bbox": [
+            420,
+            208,
+            36,
+            10
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00003/low_component_14.png"
+        },
+        {
+          "region": "low_component_15",
+          "pixels": 0,
+          "native_pixels": 1,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00003/low_component_15.png"
+        },
+        {
+          "region": "low_component_16",
+          "pixels": 38,
+          "native_pixels": 71,
+          "display_bbox": [
+            464,
+            218,
+            38,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00003/low_component_16.png"
+        },
+        {
+          "region": "low_component_17",
+          "pixels": 46,
+          "native_pixels": 116,
+          "display_bbox": [
+            362,
+            223,
+            25,
+            3
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00003/low_component_17.png"
+        },
+        {
+          "region": "low_component_18",
+          "pixels": 98,
+          "native_pixels": 367,
+          "display_bbox": [
+            313,
+            231,
+            59,
+            11
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00003/low_component_18.png"
+        },
+        {
+          "region": "low_component_19",
+          "pixels": 24,
+          "native_pixels": 79,
+          "display_bbox": [
+            317,
+            243,
+            18,
+            18
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00003/low_component_19.png"
+        },
+        {
+          "region": "low_component_20",
+          "pixels": 260,
+          "native_pixels": 899,
+          "display_bbox": [
+            645,
+            270,
+            32,
+            38
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00003/low_component_20.png"
+        },
+        {
+          "region": "neck",
+          "pixels": 520,
+          "native_pixels": 1862,
+          "display_bbox": [
+            638,
+            219,
+            20,
+            26
+          ],
+          "definition": "saved original reference mask; invalid21 empty",
+          "path": "regions/00003/neck.png"
+        },
+        {
+          "region": "body_unselected",
+          "pixels": 1300,
+          "native_pixels": null,
+          "display_bbox": [
+            473,
+            252,
+            52,
+            25
+          ],
+          "definition": "input-RGB body rectangle intersect union excluding selected pixels",
+          "path": "regions/00003/body_unselected.png"
+        },
+        {
+          "region": "head_context",
+          "pixels": 20480,
+          "native_pixels": null,
+          "display_bbox": [
+            615,
+            122,
+            128,
+            160
+          ],
+          "definition": "supplementary input-defined context; includes neck/background",
+          "path": "regions/00003/head_context.png"
+        },
+        {
+          "region": "water_near",
+          "pixels": 1050,
+          "native_pixels": null,
+          "display_bbox": [
+            728,
+            164,
+            35,
+            30
+          ],
+          "definition": "subject-relative water sampling window, not material tracking",
+          "path": "regions/00003/water_near.png"
+        },
+        {
+          "region": "water_far",
+          "pixels": 15000,
+          "native_pixels": null,
+          "display_bbox": [
+            90,
+            85,
+            150,
+            100
+          ],
+          "definition": "fixed historical water ROI",
+          "path": "regions/00003/water_far.png"
+        }
+      ]
+    },
+    {
+      "frame_id": 4,
+      "head_context_xywh": [
+        602,
+        115,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        476,
+        252,
+        51,
+        25
+      ],
+      "body_checks": {
+        "NCC": 0.9917200207710266,
+        "peak_margin": 0.08684778213500977,
+        "roundtrip_error_native": 0.0
+      },
+      "body_missing_reason": "",
+      "regions": [
+        {
+          "region": "head_high_side",
+          "pixels": 2944,
+          "native_pixels": null,
+          "display_bbox": [
+            632,
+            143,
+            83,
+            78
+          ],
+          "definition": "approved selected high disparity support; head proxy",
+          "path": "regions/00004/head_high_side.png"
+        },
+        {
+          "region": "low_component_01",
+          "pixels": 88,
+          "native_pixels": 315,
+          "display_bbox": [
+            626,
+            142,
+            41,
+            34
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00004/low_component_01.png"
+        },
+        {
+          "region": "low_component_02",
+          "pixels": 4,
+          "native_pixels": 9,
+          "display_bbox": [
+            669,
+            150,
+            5,
+            5
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00004/low_component_02.png"
+        },
+        {
+          "region": "low_component_03",
+          "pixels": 1,
+          "native_pixels": 4,
+          "display_bbox": [
+            675,
+            157,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00004/low_component_03.png"
+        },
+        {
+          "region": "low_component_04",
+          "pixels": 1,
+          "native_pixels": 1,
+          "display_bbox": [
+            676,
+            159,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00004/low_component_04.png"
+        },
+        {
+          "region": "low_component_05",
+          "pixels": 26,
+          "native_pixels": 91,
+          "display_bbox": [
+            363,
+            189,
+            20,
+            8
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00004/low_component_05.png"
+        },
+        {
+          "region": "low_component_06",
+          "pixels": 34,
+          "native_pixels": 138,
+          "display_bbox": [
+            413,
+            207,
+            34,
+            9
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00004/low_component_06.png"
+        },
+        {
+          "region": "low_component_07",
+          "pixels": 35,
+          "native_pixels": 64,
+          "display_bbox": [
+            502,
+            216,
+            22,
+            2
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00004/low_component_07.png"
+        },
+        {
+          "region": "low_component_08",
+          "pixels": 172,
+          "native_pixels": 616,
+          "display_bbox": [
+            534,
+            219,
+            86,
+            28
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00004/low_component_08.png"
+        },
+        {
+          "region": "low_component_09",
+          "pixels": 81,
+          "native_pixels": 280,
+          "display_bbox": [
+            342,
+            221,
+            53,
+            8
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00004/low_component_09.png"
+        },
+        {
+          "region": "low_component_10",
+          "pixels": 60,
+          "native_pixels": 192,
+          "display_bbox": [
+            307,
+            229,
+            32,
+            11
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00004/low_component_10.png"
+        },
+        {
+          "region": "low_component_11",
+          "pixels": 25,
+          "native_pixels": 89,
+          "display_bbox": [
+            311,
+            242,
+            20,
+            18
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00004/low_component_11.png"
+        },
+        {
+          "region": "low_component_12",
+          "pixels": 179,
+          "native_pixels": 636,
+          "display_bbox": [
+            642,
+            271,
+            28,
+            34
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00004/low_component_12.png"
+        },
+        {
+          "region": "neck",
+          "pixels": 437,
+          "native_pixels": 1540,
+          "display_bbox": [
+            633,
+            219,
+            19,
+            23
+          ],
+          "definition": "saved original reference mask; invalid21 empty",
+          "path": "regions/00004/neck.png"
+        },
+        {
+          "region": "body_unselected",
+          "pixels": 1275,
+          "native_pixels": null,
+          "display_bbox": [
+            476,
+            252,
+            51,
+            25
+          ],
+          "definition": "input-RGB body rectangle intersect union excluding selected pixels",
+          "path": "regions/00004/body_unselected.png"
+        },
+        {
+          "region": "head_context",
+          "pixels": 20480,
+          "native_pixels": null,
+          "display_bbox": [
+            602,
+            115,
+            128,
+            160
+          ],
+          "definition": "supplementary input-defined context; includes neck/background",
+          "path": "regions/00004/head_context.png"
+        },
+        {
+          "region": "water_near",
+          "pixels": 1050,
+          "native_pixels": null,
+          "display_bbox": [
+            723,
+            161,
+            35,
+            30
+          ],
+          "definition": "subject-relative water sampling window, not material tracking",
+          "path": "regions/00004/water_near.png"
+        },
+        {
+          "region": "water_far",
+          "pixels": 15000,
+          "native_pixels": null,
+          "display_bbox": [
+            90,
+            85,
+            150,
+            100
+          ],
+          "definition": "fixed historical water ROI",
+          "path": "regions/00004/water_far.png"
+        }
+      ]
+    },
+    {
+      "frame_id": 5,
+      "head_context_xywh": [
+        597,
+        113,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        469,
+        250,
+        52,
+        26
+      ],
+      "body_checks": {
+        "NCC": 0.9960193037986755,
+        "peak_margin": 0.0970224142074585,
+        "roundtrip_error_native": 0.0
+      },
+      "body_missing_reason": "",
+      "regions": [
+        {
+          "region": "head_high_side",
+          "pixels": 3012,
+          "native_pixels": null,
+          "display_bbox": [
+            626,
+            141,
+            82,
+            79
+          ],
+          "definition": "approved selected high disparity support; head proxy",
+          "path": "regions/00005/head_high_side.png"
+        },
+        {
+          "region": "low_component_01",
+          "pixels": 8,
+          "native_pixels": 16,
+          "display_bbox": [
+            640,
+            140,
+            8,
+            2
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00005/low_component_01.png"
+        },
+        {
+          "region": "low_component_02",
+          "pixels": 37,
+          "native_pixels": 137,
+          "display_bbox": [
+            621,
+            141,
+            18,
+            27
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00005/low_component_02.png"
+        },
+        {
+          "region": "low_component_03",
+          "pixels": 2,
+          "native_pixels": 6,
+          "display_bbox": [
+            650,
+            142,
+            2,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00005/low_component_03.png"
+        },
+        {
+          "region": "low_component_04",
+          "pixels": 1,
+          "native_pixels": 2,
+          "display_bbox": [
+            653,
+            143,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00005/low_component_04.png"
+        },
+        {
+          "region": "low_component_05",
+          "pixels": 20,
+          "native_pixels": 72,
+          "display_bbox": [
+            358,
+            189,
+            17,
+            6
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00005/low_component_05.png"
+        },
+        {
+          "region": "low_component_06",
+          "pixels": 48,
+          "native_pixels": 198,
+          "display_bbox": [
+            419,
+            212,
+            44,
+            4
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00005/low_component_06.png"
+        },
+        {
+          "region": "low_component_07",
+          "pixels": 12,
+          "native_pixels": 132,
+          "display_bbox": [
+            474,
+            215,
+            48,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00005/low_component_07.png"
+        },
+        {
+          "region": "low_component_08",
+          "pixels": 189,
+          "native_pixels": 663,
+          "display_bbox": [
+            539,
+            218,
+            77,
+            28
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00005/low_component_08.png"
+        },
+        {
+          "region": "low_component_09",
+          "pixels": 83,
+          "native_pixels": 286,
+          "display_bbox": [
+            336,
+            221,
+            53,
+            8
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00005/low_component_09.png"
+        },
+        {
+          "region": "low_component_10",
+          "pixels": 71,
+          "native_pixels": 213,
+          "display_bbox": [
+            302,
+            227,
+            33,
+            11
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00005/low_component_10.png"
+        },
+        {
+          "region": "low_component_11",
+          "pixels": 18,
+          "native_pixels": 68,
+          "display_bbox": [
+            307,
+            239,
+            14,
+            16
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00005/low_component_11.png"
+        },
+        {
+          "region": "low_component_12",
+          "pixels": 210,
+          "native_pixels": 749,
+          "display_bbox": [
+            635,
+            271,
+            29,
+            33
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00005/low_component_12.png"
+        },
+        {
+          "region": "neck",
+          "pixels": 414,
+          "native_pixels": 1540,
+          "display_bbox": [
+            627,
+            218,
+            18,
+            23
+          ],
+          "definition": "saved original reference mask; invalid21 empty",
+          "path": "regions/00005/neck.png"
+        },
+        {
+          "region": "body_unselected",
+          "pixels": 1352,
+          "native_pixels": null,
+          "display_bbox": [
+            469,
+            250,
+            52,
+            26
+          ],
+          "definition": "input-RGB body rectangle intersect union excluding selected pixels",
+          "path": "regions/00005/body_unselected.png"
+        },
+        {
+          "region": "head_context",
+          "pixels": 20480,
+          "native_pixels": null,
+          "display_bbox": [
+            597,
+            113,
+            128,
+            160
+          ],
+          "definition": "supplementary input-defined context; includes neck/background",
+          "path": "regions/00005/head_context.png"
+        },
+        {
+          "region": "water_near",
+          "pixels": 1050,
+          "native_pixels": null,
+          "display_bbox": [
+            718,
+            159,
+            35,
+            30
+          ],
+          "definition": "subject-relative water sampling window, not material tracking",
+          "path": "regions/00005/water_near.png"
+        },
+        {
+          "region": "water_far",
+          "pixels": 15000,
+          "native_pixels": null,
+          "display_bbox": [
+            90,
+            85,
+            150,
+            100
+          ],
+          "definition": "fixed historical water ROI",
+          "path": "regions/00005/water_far.png"
+        }
+      ]
+    },
+    {
+      "frame_id": 6,
+      "head_context_xywh": [
+        592,
+        112,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        464,
+        249,
+        52,
+        26
+      ],
+      "body_checks": {},
+      "body_missing_reason": "",
+      "regions": [
+        {
+          "region": "head_high_side",
+          "pixels": 2979,
+          "native_pixels": null,
+          "display_bbox": [
+            619,
+            140,
+            81,
+            80
+          ],
+          "definition": "approved selected high disparity support; head proxy",
+          "path": "regions/00006/head_high_side.png"
+        },
+        {
+          "region": "low_component_01",
+          "pixels": 1,
+          "native_pixels": 1,
+          "display_bbox": [
+            632,
+            139,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00006/low_component_01.png"
+        },
+        {
+          "region": "low_component_02",
+          "pixels": 1,
+          "native_pixels": 2,
+          "display_bbox": [
+            637,
+            139,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00006/low_component_02.png"
+        },
+        {
+          "region": "low_component_03",
+          "pixels": 1,
+          "native_pixels": 4,
+          "display_bbox": [
+            640,
+            140,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00006/low_component_03.png"
+        },
+        {
+          "region": "low_component_04",
+          "pixels": 1,
+          "native_pixels": 2,
+          "display_bbox": [
+            628,
+            140,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00006/low_component_04.png"
+        },
+        {
+          "region": "low_component_05",
+          "pixels": 40,
+          "native_pixels": 136,
+          "display_bbox": [
+            611,
+            141,
+            16,
+            35
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00006/low_component_05.png"
+        },
+        {
+          "region": "low_component_06",
+          "pixels": 4,
+          "native_pixels": 15,
+          "display_bbox": [
+            643,
+            141,
+            5,
+            2
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00006/low_component_06.png"
+        },
+        {
+          "region": "low_component_07",
+          "pixels": 1,
+          "native_pixels": 2,
+          "display_bbox": [
+            649,
+            143,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00006/low_component_07.png"
+        },
+        {
+          "region": "low_component_08",
+          "pixels": 1,
+          "native_pixels": 1,
+          "display_bbox": [
+            651,
+            144,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00006/low_component_08.png"
+        },
+        {
+          "region": "low_component_09",
+          "pixels": 1,
+          "native_pixels": 4,
+          "display_bbox": [
+            653,
+            146,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00006/low_component_09.png"
+        },
+        {
+          "region": "low_component_10",
+          "pixels": 0,
+          "native_pixels": 1,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00006/low_component_10.png"
+        },
+        {
+          "region": "low_component_11",
+          "pixels": 0,
+          "native_pixels": 1,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00006/low_component_11.png"
+        },
+        {
+          "region": "low_component_12",
+          "pixels": 0,
+          "native_pixels": 5,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00006/low_component_12.png"
+        },
+        {
+          "region": "low_component_13",
+          "pixels": 0,
+          "native_pixels": 1,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00006/low_component_13.png"
+        },
+        {
+          "region": "low_component_14",
+          "pixels": 25,
+          "native_pixels": 91,
+          "display_bbox": [
+            352,
+            188,
+            17,
+            3
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00006/low_component_14.png"
+        },
+        {
+          "region": "low_component_15",
+          "pixels": 3,
+          "native_pixels": 5,
+          "display_bbox": [
+            688,
+            200,
+            3,
+            3
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00006/low_component_15.png"
+        },
+        {
+          "region": "low_component_16",
+          "pixels": 79,
+          "native_pixels": 374,
+          "display_bbox": [
+            420,
+            212,
+            98,
+            3
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00006/low_component_16.png"
+        },
+        {
+          "region": "low_component_17",
+          "pixels": 255,
+          "native_pixels": 893,
+          "display_bbox": [
+            540,
+            218,
+            68,
+            27
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00006/low_component_17.png"
+        },
+        {
+          "region": "low_component_18",
+          "pixels": 22,
+          "native_pixels": 111,
+          "display_bbox": [
+            365,
+            220,
+            18,
+            2
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00006/low_component_18.png"
+        },
+        {
+          "region": "low_component_19",
+          "pixels": 21,
+          "native_pixels": 72,
+          "display_bbox": [
+            333,
+            222,
+            21,
+            5
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00006/low_component_19.png"
+        },
+        {
+          "region": "low_component_20",
+          "pixels": 24,
+          "native_pixels": 70,
+          "display_bbox": [
+            299,
+            225,
+            20,
+            3
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00006/low_component_20.png"
+        },
+        {
+          "region": "low_component_21",
+          "pixels": 234,
+          "native_pixels": 816,
+          "display_bbox": [
+            629,
+            266,
+            30,
+            38
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00006/low_component_21.png"
+        },
+        {
+          "region": "neck",
+          "pixels": 456,
+          "native_pixels": 1540,
+          "display_bbox": [
+            620,
+            215,
+            19,
+            24
+          ],
+          "definition": "saved original reference mask; invalid21 empty",
+          "path": "regions/00006/neck.png"
+        },
+        {
+          "region": "body_unselected",
+          "pixels": 1352,
+          "native_pixels": null,
+          "display_bbox": [
+            464,
+            249,
+            52,
+            26
+          ],
+          "definition": "input-RGB body rectangle intersect union excluding selected pixels",
+          "path": "regions/00006/body_unselected.png"
+        },
+        {
+          "region": "head_context",
+          "pixels": 20480,
+          "native_pixels": null,
+          "display_bbox": [
+            592,
+            112,
+            128,
+            160
+          ],
+          "definition": "supplementary input-defined context; includes neck/background",
+          "path": "regions/00006/head_context.png"
+        },
+        {
+          "region": "water_near",
+          "pixels": 1050,
+          "native_pixels": null,
+          "display_bbox": [
+            713,
+            158,
+            35,
+            30
+          ],
+          "definition": "subject-relative water sampling window, not material tracking",
+          "path": "regions/00006/water_near.png"
+        },
+        {
+          "region": "water_far",
+          "pixels": 15000,
+          "native_pixels": null,
+          "display_bbox": [
+            90,
+            85,
+            150,
+            100
+          ],
+          "definition": "fixed historical water ROI",
+          "path": "regions/00006/water_far.png"
+        }
+      ]
+    },
+    {
+      "frame_id": 7,
+      "head_context_xywh": [
+        587,
+        110,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        460,
+        248,
+        51,
+        26
+      ],
+      "body_checks": {
+        "NCC": 0.99098140001297,
+        "peak_margin": 0.10344618558883667,
+        "roundtrip_error_native": 0.0
+      },
+      "body_missing_reason": "",
+      "regions": [
+        {
+          "region": "head_high_side",
+          "pixels": 2872,
+          "native_pixels": null,
+          "display_bbox": [
+            613,
+            139,
+            81,
+            80
+          ],
+          "definition": "approved selected high disparity support; head proxy",
+          "path": "regions/00007/head_high_side.png"
+        },
+        {
+          "region": "low_component_01",
+          "pixels": 14,
+          "native_pixels": 38,
+          "display_bbox": [
+            618,
+            138,
+            15,
+            3
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00007/low_component_01.png"
+        },
+        {
+          "region": "low_component_02",
+          "pixels": 0,
+          "native_pixels": 1,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00007/low_component_02.png"
+        },
+        {
+          "region": "low_component_03",
+          "pixels": 12,
+          "native_pixels": 48,
+          "display_bbox": [
+            610,
+            143,
+            5,
+            15
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00007/low_component_03.png"
+        },
+        {
+          "region": "low_component_04",
+          "pixels": 4,
+          "native_pixels": 9,
+          "display_bbox": [
+            647,
+            145,
+            4,
+            3
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00007/low_component_04.png"
+        },
+        {
+          "region": "low_component_05",
+          "pixels": 1,
+          "native_pixels": 1,
+          "display_bbox": [
+            685,
+            202,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00007/low_component_05.png"
+        },
+        {
+          "region": "low_component_06",
+          "pixels": 17,
+          "native_pixels": 74,
+          "display_bbox": [
+            415,
+            210,
+            17,
+            2
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00007/low_component_06.png"
+        },
+        {
+          "region": "low_component_07",
+          "pixels": 353,
+          "native_pixels": 1263,
+          "display_bbox": [
+            498,
+            212,
+            101,
+            32
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00007/low_component_07.png"
+        },
+        {
+          "region": "low_component_08",
+          "pixels": 70,
+          "native_pixels": 230,
+          "display_bbox": [
+            327,
+            216,
+            52,
+            7
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00007/low_component_08.png"
+        },
+        {
+          "region": "low_component_09",
+          "pixels": 64,
+          "native_pixels": 182,
+          "display_bbox": [
+            294,
+            223,
+            32,
+            4
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00007/low_component_09.png"
+        },
+        {
+          "region": "low_component_10",
+          "pixels": 260,
+          "native_pixels": 899,
+          "display_bbox": [
+            616,
+            266,
+            36,
+            40
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00007/low_component_10.png"
+        },
+        {
+          "region": "neck",
+          "pixels": 432,
+          "native_pixels": 1540,
+          "display_bbox": [
+            614,
+            213,
+            18,
+            24
+          ],
+          "definition": "saved original reference mask; invalid21 empty",
+          "path": "regions/00007/neck.png"
+        },
+        {
+          "region": "body_unselected",
+          "pixels": 1326,
+          "native_pixels": null,
+          "display_bbox": [
+            460,
+            248,
+            51,
+            26
+          ],
+          "definition": "input-RGB body rectangle intersect union excluding selected pixels",
+          "path": "regions/00007/body_unselected.png"
+        },
+        {
+          "region": "head_context",
+          "pixels": 20480,
+          "native_pixels": null,
+          "display_bbox": [
+            587,
+            110,
+            128,
+            160
+          ],
+          "definition": "supplementary input-defined context; includes neck/background",
+          "path": "regions/00007/head_context.png"
+        },
+        {
+          "region": "water_near",
+          "pixels": 1050,
+          "native_pixels": null,
+          "display_bbox": [
+            708,
+            157,
+            35,
+            30
+          ],
+          "definition": "subject-relative water sampling window, not material tracking",
+          "path": "regions/00007/water_near.png"
+        },
+        {
+          "region": "water_far",
+          "pixels": 15000,
+          "native_pixels": null,
+          "display_bbox": [
+            90,
+            85,
+            150,
+            100
+          ],
+          "definition": "fixed historical water ROI",
+          "path": "regions/00007/water_far.png"
+        }
+      ]
+    },
+    {
+      "frame_id": 8,
+      "head_context_xywh": [
+        583,
+        109,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        456,
+        247,
+        51,
+        25
+      ],
+      "body_checks": {
+        "NCC": 0.9852601885795593,
+        "peak_margin": 0.09904229640960693,
+        "roundtrip_error_native": 0.0
+      },
+      "body_missing_reason": "",
+      "regions": [
+        {
+          "region": "head_high_side",
+          "pixels": 2768,
+          "native_pixels": null,
+          "display_bbox": [
+            608,
+            139,
+            79,
+            78
+          ],
+          "definition": "approved selected high disparity support; head proxy",
+          "path": "regions/00008/head_high_side.png"
+        },
+        {
+          "region": "low_component_01",
+          "pixels": 30,
+          "native_pixels": 85,
+          "display_bbox": [
+            610,
+            136,
+            17,
+            5
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00008/low_component_01.png"
+        },
+        {
+          "region": "low_component_02",
+          "pixels": 10,
+          "native_pixels": 28,
+          "display_bbox": [
+            629,
+            138,
+            10,
+            5
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00008/low_component_02.png"
+        },
+        {
+          "region": "low_component_03",
+          "pixels": 21,
+          "native_pixels": 69,
+          "display_bbox": [
+            603,
+            142,
+            5,
+            17
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00008/low_component_03.png"
+        },
+        {
+          "region": "low_component_04",
+          "pixels": 0,
+          "native_pixels": 1,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00008/low_component_04.png"
+        },
+        {
+          "region": "low_component_05",
+          "pixels": 1,
+          "native_pixels": 1,
+          "display_bbox": [
+            641,
+            144,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00008/low_component_05.png"
+        },
+        {
+          "region": "low_component_06",
+          "pixels": 21,
+          "native_pixels": 86,
+          "display_bbox": [
+            597,
+            161,
+            6,
+            27
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00008/low_component_06.png"
+        },
+        {
+          "region": "low_component_07",
+          "pixels": 37,
+          "native_pixels": 121,
+          "display_bbox": [
+            344,
+            182,
+            27,
+            8
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00008/low_component_07.png"
+        },
+        {
+          "region": "low_component_08",
+          "pixels": 2,
+          "native_pixels": 9,
+          "display_bbox": [
+            673,
+            197,
+            2,
+            2
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00008/low_component_08.png"
+        },
+        {
+          "region": "low_component_09",
+          "pixels": 7,
+          "native_pixels": 17,
+          "display_bbox": [
+            676,
+            199,
+            7,
+            6
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00008/low_component_09.png"
+        },
+        {
+          "region": "low_component_10",
+          "pixels": 29,
+          "native_pixels": 84,
+          "display_bbox": [
+            407,
+            207,
+            21,
+            3
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00008/low_component_10.png"
+        },
+        {
+          "region": "low_component_11",
+          "pixels": 39,
+          "native_pixels": 175,
+          "display_bbox": [
+            430,
+            210,
+            39,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00008/low_component_11.png"
+        },
+        {
+          "region": "low_component_12",
+          "pixels": 385,
+          "native_pixels": 1369,
+          "display_bbox": [
+            498,
+            211,
+            91,
+            32
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00008/low_component_12.png"
+        },
+        {
+          "region": "low_component_13",
+          "pixels": 82,
+          "native_pixels": 251,
+          "display_bbox": [
+            323,
+            214,
+            51,
+            7
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00008/low_component_13.png"
+        },
+        {
+          "region": "low_component_14",
+          "pixels": 103,
+          "native_pixels": 341,
+          "display_bbox": [
+            290,
+            222,
+            63,
+            6
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00008/low_component_14.png"
+        },
+        {
+          "region": "low_component_15",
+          "pixels": 19,
+          "native_pixels": 75,
+          "display_bbox": [
+            293,
+            235,
+            18,
+            17
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00008/low_component_15.png"
+        },
+        {
+          "region": "low_component_16",
+          "pixels": 308,
+          "native_pixels": 1107,
+          "display_bbox": [
+            611,
+            263,
+            35,
+            43
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00008/low_component_16.png"
+        },
+        {
+          "region": "neck",
+          "pixels": 437,
+          "native_pixels": 1540,
+          "display_bbox": [
+            607,
+            213,
+            19,
+            23
+          ],
+          "definition": "saved original reference mask; invalid21 empty",
+          "path": "regions/00008/neck.png"
+        },
+        {
+          "region": "body_unselected",
+          "pixels": 1275,
+          "native_pixels": null,
+          "display_bbox": [
+            456,
+            247,
+            51,
+            25
+          ],
+          "definition": "input-RGB body rectangle intersect union excluding selected pixels",
+          "path": "regions/00008/body_unselected.png"
+        },
+        {
+          "region": "head_context",
+          "pixels": 20480,
+          "native_pixels": null,
+          "display_bbox": [
+            583,
+            109,
+            128,
+            160
+          ],
+          "definition": "supplementary input-defined context; includes neck/background",
+          "path": "regions/00008/head_context.png"
+        },
+        {
+          "region": "water_near",
+          "pixels": 1050,
+          "native_pixels": null,
+          "display_bbox": [
+            704,
+            156,
+            35,
+            30
+          ],
+          "definition": "subject-relative water sampling window, not material tracking",
+          "path": "regions/00008/water_near.png"
+        },
+        {
+          "region": "water_far",
+          "pixels": 15000,
+          "native_pixels": null,
+          "display_bbox": [
+            90,
+            85,
+            150,
+            100
+          ],
+          "definition": "fixed historical water ROI",
+          "path": "regions/00008/water_far.png"
+        }
+      ]
+    },
+    {
+      "frame_id": 9,
+      "head_context_xywh": [
+        579,
+        108,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        452,
+        245,
+        51,
+        25
+      ],
+      "body_checks": {
+        "NCC": 0.9799023270606995,
+        "peak_margin": 0.08994704484939575,
+        "roundtrip_error_native": 0.0
+      },
+      "body_missing_reason": "",
+      "regions": [
+        {
+          "region": "head_high_side",
+          "pixels": 2753,
+          "native_pixels": null,
+          "display_bbox": [
+            602,
+            136,
+            79,
+            80
+          ],
+          "definition": "approved selected high disparity support; head proxy",
+          "path": "regions/00009/head_high_side.png"
+        },
+        {
+          "region": "low_component_01",
+          "pixels": 70,
+          "native_pixels": 227,
+          "display_bbox": [
+            592,
+            135,
+            38,
+            36
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00009/low_component_01.png"
+        },
+        {
+          "region": "low_component_02",
+          "pixels": 1,
+          "native_pixels": 1,
+          "display_bbox": [
+            646,
+            166,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00009/low_component_02.png"
+        },
+        {
+          "region": "low_component_03",
+          "pixels": 47,
+          "native_pixels": 160,
+          "display_bbox": [
+            341,
+            181,
+            25,
+            13
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00009/low_component_03.png"
+        },
+        {
+          "region": "low_component_04",
+          "pixels": 95,
+          "native_pixels": 296,
+          "display_bbox": [
+            406,
+            205,
+            60,
+            5
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00009/low_component_04.png"
+        },
+        {
+          "region": "low_component_05",
+          "pixels": 419,
+          "native_pixels": 1516,
+          "display_bbox": [
+            471,
+            209,
+            112,
+            32
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00009/low_component_05.png"
+        },
+        {
+          "region": "low_component_06",
+          "pixels": 81,
+          "native_pixels": 308,
+          "display_bbox": [
+            319,
+            213,
+            53,
+            6
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00009/low_component_06.png"
+        },
+        {
+          "region": "low_component_07",
+          "pixels": 90,
+          "native_pixels": 311,
+          "display_bbox": [
+            285,
+            220,
+            58,
+            11
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00009/low_component_07.png"
+        },
+        {
+          "region": "low_component_08",
+          "pixels": 293,
+          "native_pixels": 1014,
+          "display_bbox": [
+            605,
+            262,
+            37,
+            43
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00009/low_component_08.png"
+        },
+        {
+          "region": "neck",
+          "pixels": 414,
+          "native_pixels": 1540,
+          "display_bbox": [
+            602,
+            212,
+            18,
+            23
+          ],
+          "definition": "saved original reference mask; invalid21 empty",
+          "path": "regions/00009/neck.png"
+        },
+        {
+          "region": "body_unselected",
+          "pixels": 1275,
+          "native_pixels": null,
+          "display_bbox": [
+            452,
+            245,
+            51,
+            25
+          ],
+          "definition": "input-RGB body rectangle intersect union excluding selected pixels",
+          "path": "regions/00009/body_unselected.png"
+        },
+        {
+          "region": "head_context",
+          "pixels": 20480,
+          "native_pixels": null,
+          "display_bbox": [
+            579,
+            108,
+            128,
+            160
+          ],
+          "definition": "supplementary input-defined context; includes neck/background",
+          "path": "regions/00009/head_context.png"
+        },
+        {
+          "region": "water_near",
+          "pixels": 1050,
+          "native_pixels": null,
+          "display_bbox": [
+            700,
+            154,
+            35,
+            30
+          ],
+          "definition": "subject-relative water sampling window, not material tracking",
+          "path": "regions/00009/water_near.png"
+        },
+        {
+          "region": "water_far",
+          "pixels": 15000,
+          "native_pixels": null,
+          "display_bbox": [
+            90,
+            85,
+            150,
+            100
+          ],
+          "definition": "fixed historical water ROI",
+          "path": "regions/00009/water_far.png"
+        }
+      ]
+    },
+    {
+      "frame_id": 10,
+      "head_context_xywh": [
+        560,
+        112,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        453,
+        251,
+        51,
+        26
+      ],
+      "body_checks": {
+        "NCC": 0.9815787076950073,
+        "peak_margin": 0.10009580850601196,
+        "roundtrip_error_native": 0.0
+      },
+      "body_missing_reason": "",
+      "regions": [
+        {
+          "region": "head_high_side",
+          "pixels": 3126,
+          "native_pixels": null,
+          "display_bbox": [
+            591,
+            135,
+            84,
+            79
+          ],
+          "definition": "approved selected high disparity support; head proxy",
+          "path": "regions/00010/head_high_side.png"
+        },
+        {
+          "region": "low_component_01",
+          "pixels": 70,
+          "native_pixels": 216,
+          "display_bbox": [
+            592,
+            133,
+            32,
+            18
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00010/low_component_01.png"
+        },
+        {
+          "region": "low_component_02",
+          "pixels": 1,
+          "native_pixels": 2,
+          "display_bbox": [
+            627,
+            140,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00010/low_component_02.png"
+        },
+        {
+          "region": "low_component_03",
+          "pixels": 1,
+          "native_pixels": 2,
+          "display_bbox": [
+            634,
+            146,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00010/low_component_03.png"
+        },
+        {
+          "region": "low_component_04",
+          "pixels": 1,
+          "native_pixels": 2,
+          "display_bbox": [
+            636,
+            149,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00010/low_component_04.png"
+        },
+        {
+          "region": "low_component_05",
+          "pixels": 44,
+          "native_pixels": 156,
+          "display_bbox": [
+            338,
+            179,
+            26,
+            11
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00010/low_component_05.png"
+        },
+        {
+          "region": "low_component_06",
+          "pixels": 34,
+          "native_pixels": 126,
+          "display_bbox": [
+            658,
+            191,
+            18,
+            17
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00010/low_component_06.png"
+        },
+        {
+          "region": "low_component_07",
+          "pixels": 42,
+          "native_pixels": 221,
+          "display_bbox": [
+            403,
+            204,
+            47,
+            4
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00010/low_component_07.png"
+        },
+        {
+          "region": "low_component_08",
+          "pixels": 27,
+          "native_pixels": 95,
+          "display_bbox": [
+            489,
+            208,
+            22,
+            3
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00010/low_component_08.png"
+        },
+        {
+          "region": "low_component_09",
+          "pixels": 62,
+          "native_pixels": 275,
+          "display_bbox": [
+            316,
+            211,
+            53,
+            6
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00010/low_component_09.png"
+        },
+        {
+          "region": "low_component_10",
+          "pixels": 108,
+          "native_pixels": 381,
+          "display_bbox": [
+            514,
+            211,
+            69,
+            27
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00010/low_component_10.png"
+        },
+        {
+          "region": "low_component_11",
+          "pixels": 94,
+          "native_pixels": 302,
+          "display_bbox": [
+            284,
+            218,
+            65,
+            7
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00010/low_component_11.png"
+        },
+        {
+          "region": "low_component_12",
+          "pixels": 36,
+          "native_pixels": 142,
+          "display_bbox": [
+            627,
+            273,
+            11,
+            19
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00010/low_component_12.png"
+        },
+        {
+          "region": "neck",
+          "pixels": 432,
+          "native_pixels": 1540,
+          "display_bbox": [
+            598,
+            224,
+            18,
+            24
+          ],
+          "definition": "saved original reference mask; invalid21 empty",
+          "path": "regions/00010/neck.png"
+        },
+        {
+          "region": "body_unselected",
+          "pixels": 1326,
+          "native_pixels": null,
+          "display_bbox": [
+            453,
+            251,
+            51,
+            26
+          ],
+          "definition": "input-RGB body rectangle intersect union excluding selected pixels",
+          "path": "regions/00010/body_unselected.png"
+        },
+        {
+          "region": "head_context",
+          "pixels": 20480,
+          "native_pixels": null,
+          "display_bbox": [
+            560,
+            112,
+            128,
+            160
+          ],
+          "definition": "supplementary input-defined context; includes neck/background",
+          "path": "regions/00010/head_context.png"
+        },
+        {
+          "region": "water_near",
+          "pixels": 1050,
+          "native_pixels": null,
+          "display_bbox": [
+            698,
+            152,
+            35,
+            30
+          ],
+          "definition": "subject-relative water sampling window, not material tracking",
+          "path": "regions/00010/water_near.png"
+        },
+        {
+          "region": "water_far",
+          "pixels": 15000,
+          "native_pixels": null,
+          "display_bbox": [
+            90,
+            85,
+            150,
+            100
+          ],
+          "definition": "fixed historical water ROI",
+          "path": "regions/00010/water_far.png"
+        }
+      ]
+    },
+    {
+      "frame_id": 11,
+      "head_context_xywh": [
+        556,
+        110,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        449,
+        249,
+        51,
+        26
+      ],
+      "body_checks": {
+        "NCC": 0.9905874729156494,
+        "peak_margin": 0.10640203952789307,
+        "roundtrip_error_native": 0.0
+      },
+      "body_missing_reason": "",
+      "regions": [
+        {
+          "region": "head_high_side",
+          "pixels": 3175,
+          "native_pixels": null,
+          "display_bbox": [
+            586,
+            134,
+            84,
+            78
+          ],
+          "definition": "approved selected high disparity support; head proxy",
+          "path": "regions/00011/head_high_side.png"
+        },
+        {
+          "region": "low_component_01",
+          "pixels": 63,
+          "native_pixels": 210,
+          "display_bbox": [
+            587,
+            132,
+            30,
+            17
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00011/low_component_01.png"
+        },
+        {
+          "region": "low_component_02",
+          "pixels": 1,
+          "native_pixels": 2,
+          "display_bbox": [
+            618,
+            136,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00011/low_component_02.png"
+        },
+        {
+          "region": "low_component_03",
+          "pixels": 0,
+          "native_pixels": 2,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00011/low_component_03.png"
+        },
+        {
+          "region": "low_component_04",
+          "pixels": 0,
+          "native_pixels": 1,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00011/low_component_04.png"
+        },
+        {
+          "region": "low_component_05",
+          "pixels": 0,
+          "native_pixels": 5,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00011/low_component_05.png"
+        },
+        {
+          "region": "low_component_06",
+          "pixels": 0,
+          "native_pixels": 2,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00011/low_component_06.png"
+        },
+        {
+          "region": "low_component_07",
+          "pixels": 0,
+          "native_pixels": 1,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00011/low_component_07.png"
+        },
+        {
+          "region": "low_component_08",
+          "pixels": 2,
+          "native_pixels": 6,
+          "display_bbox": [
+            641,
+            175,
+            1,
+            2
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00011/low_component_08.png"
+        },
+        {
+          "region": "low_component_09",
+          "pixels": 66,
+          "native_pixels": 201,
+          "display_bbox": [
+            336,
+            176,
+            38,
+            18
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00011/low_component_09.png"
+        },
+        {
+          "region": "low_component_10",
+          "pixels": 0,
+          "native_pixels": 1,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00011/low_component_10.png"
+        },
+        {
+          "region": "low_component_11",
+          "pixels": 1,
+          "native_pixels": 5,
+          "display_bbox": [
+            648,
+            186,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00011/low_component_11.png"
+        },
+        {
+          "region": "low_component_12",
+          "pixels": 28,
+          "native_pixels": 101,
+          "display_bbox": [
+            656,
+            192,
+            14,
+            12
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00011/low_component_12.png"
+        },
+        {
+          "region": "low_component_13",
+          "pixels": 15,
+          "native_pixels": 79,
+          "display_bbox": [
+            399,
+            202,
+            15,
+            2
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00011/low_component_13.png"
+        },
+        {
+          "region": "low_component_14",
+          "pixels": 22,
+          "native_pixels": 100,
+          "display_bbox": [
+            422,
+            204,
+            26,
+            2
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00011/low_component_14.png"
+        },
+        {
+          "region": "low_component_15",
+          "pixels": 22,
+          "native_pixels": 65,
+          "display_bbox": [
+            493,
+            207,
+            15,
+            3
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00011/low_component_15.png"
+        },
+        {
+          "region": "low_component_16",
+          "pixels": 67,
+          "native_pixels": 291,
+          "display_bbox": [
+            312,
+            208,
+            53,
+            6
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00011/low_component_16.png"
+        },
+        {
+          "region": "low_component_17",
+          "pixels": 22,
+          "native_pixels": 79,
+          "display_bbox": [
+            521,
+            211,
+            24,
+            9
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00011/low_component_17.png"
+        },
+        {
+          "region": "low_component_18",
+          "pixels": 63,
+          "native_pixels": 213,
+          "display_bbox": [
+            289,
+            215,
+            57,
+            6
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00011/low_component_18.png"
+        },
+        {
+          "region": "low_component_19",
+          "pixels": 17,
+          "native_pixels": 66,
+          "display_bbox": [
+            306,
+            249,
+            15,
+            8
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00011/low_component_19.png"
+        },
+        {
+          "region": "low_component_20",
+          "pixels": 57,
+          "native_pixels": 182,
+          "display_bbox": [
+            617,
+            269,
+            17,
+            26
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00011/low_component_20.png"
+        },
+        {
+          "region": "neck",
+          "pixels": 456,
+          "native_pixels": 1540,
+          "display_bbox": [
+            592,
+            223,
+            19,
+            24
+          ],
+          "definition": "saved original reference mask; invalid21 empty",
+          "path": "regions/00011/neck.png"
+        },
+        {
+          "region": "body_unselected",
+          "pixels": 1326,
+          "native_pixels": null,
+          "display_bbox": [
+            449,
+            249,
+            51,
+            26
+          ],
+          "definition": "input-RGB body rectangle intersect union excluding selected pixels",
+          "path": "regions/00011/body_unselected.png"
+        },
+        {
+          "region": "head_context",
+          "pixels": 20480,
+          "native_pixels": null,
+          "display_bbox": [
+            556,
+            110,
+            128,
+            160
+          ],
+          "definition": "supplementary input-defined context; includes neck/background",
+          "path": "regions/00011/head_context.png"
+        },
+        {
+          "region": "water_near",
+          "pixels": 1050,
+          "native_pixels": null,
+          "display_bbox": [
+            694,
+            151,
+            35,
+            30
+          ],
+          "definition": "subject-relative water sampling window, not material tracking",
+          "path": "regions/00011/water_near.png"
+        },
+        {
+          "region": "water_far",
+          "pixels": 15000,
+          "native_pixels": null,
+          "display_bbox": [
+            90,
+            85,
+            150,
+            100
+          ],
+          "definition": "fixed historical water ROI",
+          "path": "regions/00011/water_far.png"
+        }
+      ]
+    },
+    {
+      "frame_id": 12,
+      "head_context_xywh": [
+        553,
+        110,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        444,
+        248,
+        52,
+        26
+      ],
+      "body_checks": {},
+      "body_missing_reason": "",
+      "regions": [
+        {
+          "region": "head_high_side",
+          "pixels": 3132,
+          "native_pixels": null,
+          "display_bbox": [
+            579,
+            133,
+            83,
+            78
+          ],
+          "definition": "approved selected high disparity support; head proxy",
+          "path": "regions/00012/head_high_side.png"
+        },
+        {
+          "region": "low_component_01",
+          "pixels": 34,
+          "native_pixels": 121,
+          "display_bbox": [
+            581,
+            132,
+            36,
+            11
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00012/low_component_01.png"
+        },
+        {
+          "region": "low_component_02",
+          "pixels": 0,
+          "native_pixels": 1,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00012/low_component_02.png"
+        },
+        {
+          "region": "low_component_03",
+          "pixels": 0,
+          "native_pixels": 1,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00012/low_component_03.png"
+        },
+        {
+          "region": "low_component_04",
+          "pixels": 21,
+          "native_pixels": 64,
+          "display_bbox": [
+            573,
+            165,
+            3,
+            23
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00012/low_component_04.png"
+        },
+        {
+          "region": "low_component_05",
+          "pixels": 45,
+          "native_pixels": 154,
+          "display_bbox": [
+            333,
+            174,
+            30,
+            10
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00012/low_component_05.png"
+        },
+        {
+          "region": "low_component_06",
+          "pixels": 32,
+          "native_pixels": 107,
+          "display_bbox": [
+            650,
+            193,
+            12,
+            12
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00012/low_component_06.png"
+        },
+        {
+          "region": "low_component_07",
+          "pixels": 79,
+          "native_pixels": 303,
+          "display_bbox": [
+            396,
+            199,
+            60,
+            6
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00012/low_component_07.png"
+        },
+        {
+          "region": "low_component_08",
+          "pixels": 29,
+          "native_pixels": 122,
+          "display_bbox": [
+            343,
+            206,
+            20,
+            3
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00012/low_component_08.png"
+        },
+        {
+          "region": "low_component_09",
+          "pixels": 68,
+          "native_pixels": 238,
+          "display_bbox": [
+            498,
+            207,
+            61,
+            23
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00012/low_component_09.png"
+        },
+        {
+          "region": "low_component_10",
+          "pixels": 32,
+          "native_pixels": 98,
+          "display_bbox": [
+            309,
+            208,
+            17,
+            4
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00012/low_component_10.png"
+        },
+        {
+          "region": "low_component_11",
+          "pixels": 41,
+          "native_pixels": 185,
+          "display_bbox": [
+            277,
+            212,
+            38,
+            4
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00012/low_component_11.png"
+        },
+        {
+          "region": "low_component_12",
+          "pixels": 31,
+          "native_pixels": 114,
+          "display_bbox": [
+            284,
+            231,
+            31,
+            23
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00012/low_component_12.png"
+        },
+        {
+          "region": "low_component_13",
+          "pixels": 40,
+          "native_pixels": 150,
+          "display_bbox": [
+            616,
+            263,
+            13,
+            29
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00012/low_component_13.png"
+        },
+        {
+          "region": "neck",
+          "pixels": 456,
+          "native_pixels": 1540,
+          "display_bbox": [
+            586,
+            223,
+            19,
+            24
+          ],
+          "definition": "saved original reference mask; invalid21 empty",
+          "path": "regions/00012/neck.png"
+        },
+        {
+          "region": "body_unselected",
+          "pixels": 1352,
+          "native_pixels": null,
+          "display_bbox": [
+            444,
+            248,
+            52,
+            26
+          ],
+          "definition": "input-RGB body rectangle intersect union excluding selected pixels",
+          "path": "regions/00012/body_unselected.png"
+        },
+        {
+          "region": "head_context",
+          "pixels": 20480,
+          "native_pixels": null,
+          "display_bbox": [
+            553,
+            110,
+            128,
+            160
+          ],
+          "definition": "supplementary input-defined context; includes neck/background",
+          "path": "regions/00012/head_context.png"
+        },
+        {
+          "region": "water_near",
+          "pixels": 1050,
+          "native_pixels": null,
+          "display_bbox": [
+            691,
+            151,
+            35,
+            30
+          ],
+          "definition": "subject-relative water sampling window, not material tracking",
+          "path": "regions/00012/water_near.png"
+        },
+        {
+          "region": "water_far",
+          "pixels": 15000,
+          "native_pixels": null,
+          "display_bbox": [
+            90,
+            85,
+            150,
+            100
+          ],
+          "definition": "fixed historical water ROI",
+          "path": "regions/00012/water_far.png"
+        }
+      ]
+    },
+    {
+      "frame_id": 13,
+      "head_context_xywh": [
+        550,
+        109,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        440,
+        247,
+        51,
+        25
+      ],
+      "body_checks": {
+        "NCC": 0.9840908050537109,
+        "peak_margin": 0.10035037994384766,
+        "roundtrip_error_native": 0.0
+      },
+      "body_missing_reason": "",
+      "regions": [
+        {
+          "region": "head_high_side",
+          "pixels": 3083,
+          "native_pixels": null,
+          "display_bbox": [
+            572,
+            131,
+            79,
+            81
+          ],
+          "definition": "approved selected high disparity support; head proxy",
+          "path": "regions/00013/head_high_side.png"
+        },
+        {
+          "region": "low_component_01",
+          "pixels": 0,
+          "native_pixels": 1,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00013/low_component_01.png"
+        },
+        {
+          "region": "low_component_02",
+          "pixels": 1,
+          "native_pixels": 2,
+          "display_bbox": [
+            576,
+            136,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00013/low_component_02.png"
+        },
+        {
+          "region": "low_component_03",
+          "pixels": 5,
+          "native_pixels": 18,
+          "display_bbox": [
+            574,
+            138,
+            2,
+            4
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00013/low_component_03.png"
+        },
+        {
+          "region": "low_component_04",
+          "pixels": 4,
+          "native_pixels": 8,
+          "display_bbox": [
+            573,
+            144,
+            1,
+            4
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00013/low_component_04.png"
+        },
+        {
+          "region": "low_component_05",
+          "pixels": 7,
+          "native_pixels": 17,
+          "display_bbox": [
+            570,
+            152,
+            3,
+            8
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00013/low_component_05.png"
+        },
+        {
+          "region": "low_component_06",
+          "pixels": 64,
+          "native_pixels": 229,
+          "display_bbox": [
+            330,
+            171,
+            31,
+            26
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00013/low_component_06.png"
+        },
+        {
+          "region": "low_component_07",
+          "pixels": 54,
+          "native_pixels": 206,
+          "display_bbox": [
+            391,
+            197,
+            39,
+            6
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00013/low_component_07.png"
+        },
+        {
+          "region": "low_component_08",
+          "pixels": 19,
+          "native_pixels": 102,
+          "display_bbox": [
+            447,
+            203,
+            20,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00013/low_component_08.png"
+        },
+        {
+          "region": "low_component_09",
+          "pixels": 11,
+          "native_pixels": 80,
+          "display_bbox": [
+            352,
+            203,
+            7,
+            3
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00013/low_component_09.png"
+        },
+        {
+          "region": "low_component_10",
+          "pixels": 167,
+          "native_pixels": 598,
+          "display_bbox": [
+            476,
+            204,
+            91,
+            31
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00013/low_component_10.png"
+        },
+        {
+          "region": "low_component_11",
+          "pixels": 17,
+          "native_pixels": 74,
+          "display_bbox": [
+            307,
+            205,
+            17,
+            3
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00013/low_component_11.png"
+        },
+        {
+          "region": "low_component_12",
+          "pixels": 40,
+          "native_pixels": 156,
+          "display_bbox": [
+            273,
+            208,
+            21,
+            11
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00013/low_component_12.png"
+        },
+        {
+          "region": "low_component_13",
+          "pixels": 49,
+          "native_pixels": 186,
+          "display_bbox": [
+            277,
+            221,
+            41,
+            33
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00013/low_component_13.png"
+        },
+        {
+          "region": "low_component_14",
+          "pixels": 60,
+          "native_pixels": 228,
+          "display_bbox": [
+            608,
+            270,
+            15,
+            23
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00013/low_component_14.png"
+        },
+        {
+          "region": "neck",
+          "pixels": 432,
+          "native_pixels": 1540,
+          "display_bbox": [
+            580,
+            223,
+            18,
+            24
+          ],
+          "definition": "saved original reference mask; invalid21 empty",
+          "path": "regions/00013/neck.png"
+        },
+        {
+          "region": "body_unselected",
+          "pixels": 1275,
+          "native_pixels": null,
+          "display_bbox": [
+            440,
+            247,
+            51,
+            25
+          ],
+          "definition": "input-RGB body rectangle intersect union excluding selected pixels",
+          "path": "regions/00013/body_unselected.png"
+        },
+        {
+          "region": "head_context",
+          "pixels": 20480,
+          "native_pixels": null,
+          "display_bbox": [
+            550,
+            109,
+            128,
+            160
+          ],
+          "definition": "supplementary input-defined context; includes neck/background",
+          "path": "regions/00013/head_context.png"
+        },
+        {
+          "region": "water_near",
+          "pixels": 1050,
+          "native_pixels": null,
+          "display_bbox": [
+            688,
+            150,
+            35,
+            30
+          ],
+          "definition": "subject-relative water sampling window, not material tracking",
+          "path": "regions/00013/water_near.png"
+        },
+        {
+          "region": "water_far",
+          "pixels": 15000,
+          "native_pixels": null,
+          "display_bbox": [
+            90,
+            85,
+            150,
+            100
+          ],
+          "definition": "fixed historical water ROI",
+          "path": "regions/00013/water_far.png"
+        }
+      ]
+    },
+    {
+      "frame_id": 14,
+      "head_context_xywh": [
+        549,
+        109,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        436,
+        245,
+        51,
+        26
+      ],
+      "body_checks": {
+        "NCC": 0.9615304470062256,
+        "peak_margin": 0.10534387826919556,
+        "roundtrip_error_native": 0.0
+      },
+      "body_missing_reason": "",
+      "regions": [
+        {
+          "region": "head_high_side",
+          "pixels": 3023,
+          "native_pixels": null,
+          "display_bbox": [
+            566,
+            132,
+            77,
+            81
+          ],
+          "definition": "approved selected high disparity support; head proxy",
+          "path": "regions/00014/head_high_side.png"
+        },
+        {
+          "region": "low_component_01",
+          "pixels": 39,
+          "native_pixels": 127,
+          "display_bbox": [
+            566,
+            131,
+            24,
+            18
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00014/low_component_01.png"
+        },
+        {
+          "region": "low_component_02",
+          "pixels": 53,
+          "native_pixels": 178,
+          "display_bbox": [
+            329,
+            168,
+            33,
+            26
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00014/low_component_02.png"
+        },
+        {
+          "region": "low_component_03",
+          "pixels": 40,
+          "native_pixels": 138,
+          "display_bbox": [
+            388,
+            195,
+            27,
+            5
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00014/low_component_03.png"
+        },
+        {
+          "region": "low_component_04",
+          "pixels": 24,
+          "native_pixels": 107,
+          "display_bbox": [
+            345,
+            200,
+            12,
+            3
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00014/low_component_04.png"
+        },
+        {
+          "region": "low_component_05",
+          "pixels": 423,
+          "native_pixels": 1535,
+          "display_bbox": [
+            418,
+            200,
+            144,
+            36
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00014/low_component_05.png"
+        },
+        {
+          "region": "low_component_06",
+          "pixels": 24,
+          "native_pixels": 108,
+          "display_bbox": [
+            303,
+            202,
+            20,
+            4
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00014/low_component_06.png"
+        },
+        {
+          "region": "low_component_07",
+          "pixels": 43,
+          "native_pixels": 173,
+          "display_bbox": [
+            307,
+            210,
+            26,
+            4
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00014/low_component_07.png"
+        },
+        {
+          "region": "low_component_08",
+          "pixels": 58,
+          "native_pixels": 213,
+          "display_bbox": [
+            274,
+            218,
+            42,
+            34
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00014/low_component_08.png"
+        },
+        {
+          "region": "low_component_09",
+          "pixels": 78,
+          "native_pixels": 273,
+          "display_bbox": [
+            600,
+            266,
+            18,
+            28
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00014/low_component_09.png"
+        },
+        {
+          "region": "neck",
+          "pixels": 414,
+          "native_pixels": 1540,
+          "display_bbox": [
+            574,
+            223,
+            18,
+            23
+          ],
+          "definition": "saved original reference mask; invalid21 empty",
+          "path": "regions/00014/neck.png"
+        },
+        {
+          "region": "body_unselected",
+          "pixels": 1326,
+          "native_pixels": null,
+          "display_bbox": [
+            436,
+            245,
+            51,
+            26
+          ],
+          "definition": "input-RGB body rectangle intersect union excluding selected pixels",
+          "path": "regions/00014/body_unselected.png"
+        },
+        {
+          "region": "head_context",
+          "pixels": 20480,
+          "native_pixels": null,
+          "display_bbox": [
+            549,
+            109,
+            128,
+            160
+          ],
+          "definition": "supplementary input-defined context; includes neck/background",
+          "path": "regions/00014/head_context.png"
+        },
+        {
+          "region": "water_near",
+          "pixels": 1050,
+          "native_pixels": null,
+          "display_bbox": [
+            687,
+            150,
+            35,
+            30
+          ],
+          "definition": "subject-relative water sampling window, not material tracking",
+          "path": "regions/00014/water_near.png"
+        },
+        {
+          "region": "water_far",
+          "pixels": 15000,
+          "native_pixels": null,
+          "display_bbox": [
+            90,
+            85,
+            150,
+            100
+          ],
+          "definition": "fixed historical water ROI",
+          "path": "regions/00014/water_far.png"
+        }
+      ]
+    },
+    {
+      "frame_id": 15,
+      "head_context_xywh": [
+        547,
+        108,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        432,
+        244,
+        51,
+        25
+      ],
+      "body_checks": {
+        "NCC": 0.9385692477226257,
+        "peak_margin": 0.09836286306381226,
+        "roundtrip_error_native": 0.0
+      },
+      "body_missing_reason": "",
+      "regions": [
+        {
+          "region": "head_high_side",
+          "pixels": 3070,
+          "native_pixels": null,
+          "display_bbox": [
+            559,
+            131,
+            77,
+            81
+          ],
+          "definition": "approved selected high disparity support; head proxy",
+          "path": "regions/00015/head_high_side.png"
+        },
+        {
+          "region": "low_component_01",
+          "pixels": 1,
+          "native_pixels": 2,
+          "display_bbox": [
+            569,
+            131,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00015/low_component_01.png"
+        },
+        {
+          "region": "low_component_02",
+          "pixels": 4,
+          "native_pixels": 10,
+          "display_bbox": [
+            560,
+            136,
+            3,
+            5
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00015/low_component_02.png"
+        },
+        {
+          "region": "low_component_03",
+          "pixels": 0,
+          "native_pixels": 5,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00015/low_component_03.png"
+        },
+        {
+          "region": "low_component_04",
+          "pixels": 0,
+          "native_pixels": 3,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00015/low_component_04.png"
+        },
+        {
+          "region": "low_component_05",
+          "pixels": 72,
+          "native_pixels": 226,
+          "display_bbox": [
+            328,
+            166,
+            39,
+            23
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00015/low_component_05.png"
+        },
+        {
+          "region": "low_component_06",
+          "pixels": 38,
+          "native_pixels": 133,
+          "display_bbox": [
+            386,
+            193,
+            38,
+            7
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00015/low_component_06.png"
+        },
+        {
+          "region": "low_component_07",
+          "pixels": 94,
+          "native_pixels": 307,
+          "display_bbox": [
+            301,
+            198,
+            54,
+            5
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00015/low_component_07.png"
+        },
+        {
+          "region": "low_component_08",
+          "pixels": 489,
+          "native_pixels": 1717,
+          "display_bbox": [
+            425,
+            200,
+            129,
+            34
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00015/low_component_08.png"
+        },
+        {
+          "region": "low_component_09",
+          "pixels": 26,
+          "native_pixels": 93,
+          "display_bbox": [
+            270,
+            203,
+            8,
+            11
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00015/low_component_09.png"
+        },
+        {
+          "region": "low_component_10",
+          "pixels": 40,
+          "native_pixels": 115,
+          "display_bbox": [
+            302,
+            207,
+            20,
+            3
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00015/low_component_10.png"
+        },
+        {
+          "region": "low_component_11",
+          "pixels": 66,
+          "native_pixels": 223,
+          "display_bbox": [
+            272,
+            215,
+            44,
+            35
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00015/low_component_11.png"
+        },
+        {
+          "region": "low_component_12",
+          "pixels": 88,
+          "native_pixels": 293,
+          "display_bbox": [
+            596,
+            265,
+            17,
+            28
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00015/low_component_12.png"
+        },
+        {
+          "region": "neck",
+          "pixels": 456,
+          "native_pixels": 1540,
+          "display_bbox": [
+            568,
+            222,
+            19,
+            24
+          ],
+          "definition": "saved original reference mask; invalid21 empty",
+          "path": "regions/00015/neck.png"
+        },
+        {
+          "region": "body_unselected",
+          "pixels": 1275,
+          "native_pixels": null,
+          "display_bbox": [
+            432,
+            244,
+            51,
+            25
+          ],
+          "definition": "input-RGB body rectangle intersect union excluding selected pixels",
+          "path": "regions/00015/body_unselected.png"
+        },
+        {
+          "region": "head_context",
+          "pixels": 20480,
+          "native_pixels": null,
+          "display_bbox": [
+            547,
+            108,
+            128,
+            160
+          ],
+          "definition": "supplementary input-defined context; includes neck/background",
+          "path": "regions/00015/head_context.png"
+        },
+        {
+          "region": "water_near",
+          "pixels": 1050,
+          "native_pixels": null,
+          "display_bbox": [
+            685,
+            149,
+            35,
+            30
+          ],
+          "definition": "subject-relative water sampling window, not material tracking",
+          "path": "regions/00015/water_near.png"
+        },
+        {
+          "region": "water_far",
+          "pixels": 15000,
+          "native_pixels": null,
+          "display_bbox": [
+            90,
+            85,
+            150,
+            100
+          ],
+          "definition": "fixed historical water ROI",
+          "path": "regions/00015/water_far.png"
+        }
+      ]
+    },
+    {
+      "frame_id": 16,
+      "head_context_xywh": [
+        514,
+        107,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        426,
+        243,
+        51,
+        25
+      ],
+      "body_checks": {
+        "NCC": 0.9537771344184875,
+        "peak_margin": 0.10779595375061035,
+        "roundtrip_error_native": 0.0
+      },
+      "body_missing_reason": "",
+      "regions": [
+        {
+          "region": "head_high_side",
+          "pixels": 3248,
+          "native_pixels": null,
+          "display_bbox": [
+            550,
+            131,
+            80,
+            82
+          ],
+          "definition": "approved selected high disparity support; head proxy",
+          "path": "regions/00016/head_high_side.png"
+        },
+        {
+          "region": "low_component_01",
+          "pixels": 9,
+          "native_pixels": 24,
+          "display_bbox": [
+            565,
+            130,
+            9,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00016/low_component_01.png"
+        },
+        {
+          "region": "low_component_02",
+          "pixels": 1,
+          "native_pixels": 3,
+          "display_bbox": [
+            562,
+            131,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00016/low_component_02.png"
+        },
+        {
+          "region": "low_component_03",
+          "pixels": 1,
+          "native_pixels": 1,
+          "display_bbox": [
+            576,
+            131,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00016/low_component_03.png"
+        },
+        {
+          "region": "low_component_04",
+          "pixels": 1,
+          "native_pixels": 3,
+          "display_bbox": [
+            557,
+            134,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00016/low_component_04.png"
+        },
+        {
+          "region": "low_component_05",
+          "pixels": 5,
+          "native_pixels": 10,
+          "display_bbox": [
+            552,
+            146,
+            2,
+            5
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00016/low_component_05.png"
+        },
+        {
+          "region": "low_component_06",
+          "pixels": 31,
+          "native_pixels": 125,
+          "display_bbox": [
+            327,
+            164,
+            21,
+            14
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00016/low_component_06.png"
+        },
+        {
+          "region": "low_component_07",
+          "pixels": 82,
+          "native_pixels": 233,
+          "display_bbox": [
+            300,
+            196,
+            52,
+            4
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00016/low_component_07.png"
+        },
+        {
+          "region": "low_component_08",
+          "pixels": 36,
+          "native_pixels": 119,
+          "display_bbox": [
+            430,
+            199,
+            31,
+            2
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00016/low_component_08.png"
+        },
+        {
+          "region": "low_component_09",
+          "pixels": 293,
+          "native_pixels": 1037,
+          "display_bbox": [
+            463,
+            201,
+            87,
+            31
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00016/low_component_09.png"
+        },
+        {
+          "region": "low_component_10",
+          "pixels": 25,
+          "native_pixels": 88,
+          "display_bbox": [
+            271,
+            213,
+            10,
+            13
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00016/low_component_10.png"
+        },
+        {
+          "region": "low_component_11",
+          "pixels": 22,
+          "native_pixels": 88,
+          "display_bbox": [
+            291,
+            236,
+            20,
+            11
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00016/low_component_11.png"
+        },
+        {
+          "region": "low_component_12",
+          "pixels": 26,
+          "native_pixels": 93,
+          "display_bbox": [
+            602,
+            271,
+            6,
+            15
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00016/low_component_12.png"
+        },
+        {
+          "region": "neck",
+          "pixels": 456,
+          "native_pixels": 1540,
+          "display_bbox": [
+            552,
+            222,
+            19,
+            24
+          ],
+          "definition": "saved original reference mask; invalid21 empty",
+          "path": "regions/00016/neck.png"
+        },
+        {
+          "region": "body_unselected",
+          "pixels": 1275,
+          "native_pixels": null,
+          "display_bbox": [
+            426,
+            243,
+            51,
+            25
+          ],
+          "definition": "input-RGB body rectangle intersect union excluding selected pixels",
+          "path": "regions/00016/body_unselected.png"
+        },
+        {
+          "region": "head_context",
+          "pixels": 20480,
+          "native_pixels": null,
+          "display_bbox": [
+            514,
+            107,
+            128,
+            160
+          ],
+          "definition": "supplementary input-defined context; includes neck/background",
+          "path": "regions/00016/head_context.png"
+        },
+        {
+          "region": "water_near",
+          "pixels": 1050,
+          "native_pixels": null,
+          "display_bbox": [
+            684,
+            149,
+            35,
+            30
+          ],
+          "definition": "subject-relative water sampling window, not material tracking",
+          "path": "regions/00016/water_near.png"
+        },
+        {
+          "region": "water_far",
+          "pixels": 15000,
+          "native_pixels": null,
+          "display_bbox": [
+            90,
+            85,
+            150,
+            100
+          ],
+          "definition": "fixed historical water ROI",
+          "path": "regions/00016/water_far.png"
+        }
+      ]
+    },
+    {
+      "frame_id": 17,
+      "head_context_xywh": [
+        512,
+        106,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        421,
+        242,
+        51,
+        25
+      ],
+      "body_checks": {
+        "NCC": 0.9790790677070618,
+        "peak_margin": 0.135656476020813,
+        "roundtrip_error_native": 0.0
+      },
+      "body_missing_reason": "",
+      "regions": [
+        {
+          "region": "head_high_side",
+          "pixels": 3171,
+          "native_pixels": null,
+          "display_bbox": [
+            545,
+            131,
+            79,
+            82
+          ],
+          "definition": "approved selected high disparity support; head proxy",
+          "path": "regions/00017/head_high_side.png"
+        },
+        {
+          "region": "low_component_01",
+          "pixels": 30,
+          "native_pixels": 114,
+          "display_bbox": [
+            545,
+            129,
+            20,
+            30
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00017/low_component_01.png"
+        },
+        {
+          "region": "low_component_02",
+          "pixels": 3,
+          "native_pixels": 9,
+          "display_bbox": [
+            567,
+            130,
+            3,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00017/low_component_02.png"
+        },
+        {
+          "region": "low_component_03",
+          "pixels": 1,
+          "native_pixels": 3,
+          "display_bbox": [
+            571,
+            131,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00017/low_component_03.png"
+        },
+        {
+          "region": "low_component_04",
+          "pixels": 0,
+          "native_pixels": 1,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00017/low_component_04.png"
+        },
+        {
+          "region": "low_component_05",
+          "pixels": 41,
+          "native_pixels": 164,
+          "display_bbox": [
+            326,
+            162,
+            17,
+            20
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00017/low_component_05.png"
+        },
+        {
+          "region": "low_component_06",
+          "pixels": 99,
+          "native_pixels": 363,
+          "display_bbox": [
+            298,
+            192,
+            53,
+            6
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00017/low_component_06.png"
+        },
+        {
+          "region": "low_component_07",
+          "pixels": 532,
+          "native_pixels": 1870,
+          "display_bbox": [
+            414,
+            197,
+            129,
+            37
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00017/low_component_07.png"
+        },
+        {
+          "region": "low_component_08",
+          "pixels": 79,
+          "native_pixels": 264,
+          "display_bbox": [
+            267,
+            197,
+            19,
+            33
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00017/low_component_08.png"
+        },
+        {
+          "region": "low_component_09",
+          "pixels": 30,
+          "native_pixels": 125,
+          "display_bbox": [
+            305,
+            203,
+            28,
+            3
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00017/low_component_09.png"
+        },
+        {
+          "region": "low_component_10",
+          "pixels": 22,
+          "native_pixels": 91,
+          "display_bbox": [
+            288,
+            232,
+            19,
+            12
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00017/low_component_10.png"
+        },
+        {
+          "region": "low_component_11",
+          "pixels": 44,
+          "native_pixels": 156,
+          "display_bbox": [
+            593,
+            272,
+            11,
+            18
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00017/low_component_11.png"
+        },
+        {
+          "region": "neck",
+          "pixels": 456,
+          "native_pixels": 1540,
+          "display_bbox": [
+            546,
+            222,
+            19,
+            24
+          ],
+          "definition": "saved original reference mask; invalid21 empty",
+          "path": "regions/00017/neck.png"
+        },
+        {
+          "region": "body_unselected",
+          "pixels": 1275,
+          "native_pixels": null,
+          "display_bbox": [
+            421,
+            242,
+            51,
+            25
+          ],
+          "definition": "input-RGB body rectangle intersect union excluding selected pixels",
+          "path": "regions/00017/body_unselected.png"
+        },
+        {
+          "region": "head_context",
+          "pixels": 20480,
+          "native_pixels": null,
+          "display_bbox": [
+            512,
+            106,
+            128,
+            160
+          ],
+          "definition": "supplementary input-defined context; includes neck/background",
+          "path": "regions/00017/head_context.png"
+        },
+        {
+          "region": "water_near",
+          "pixels": 1050,
+          "native_pixels": null,
+          "display_bbox": [
+            682,
+            148,
+            35,
+            30
+          ],
+          "definition": "subject-relative water sampling window, not material tracking",
+          "path": "regions/00017/water_near.png"
+        },
+        {
+          "region": "water_far",
+          "pixels": 15000,
+          "native_pixels": null,
+          "display_bbox": [
+            90,
+            85,
+            150,
+            100
+          ],
+          "definition": "fixed historical water ROI",
+          "path": "regions/00017/water_far.png"
+        }
+      ]
+    },
+    {
+      "frame_id": 18,
+      "head_context_xywh": [
+        510,
+        106,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        416,
+        241,
+        52,
+        26
+      ],
+      "body_checks": {},
+      "body_missing_reason": "",
+      "regions": [
+        {
+          "region": "head_high_side",
+          "pixels": 3309,
+          "native_pixels": null,
+          "display_bbox": [
+            538,
+            130,
+            80,
+            83
+          ],
+          "definition": "approved selected high disparity support; head proxy",
+          "path": "regions/00018/head_high_side.png"
+        },
+        {
+          "region": "low_component_01",
+          "pixels": 7,
+          "native_pixels": 13,
+          "display_bbox": [
+            555,
+            129,
+            7,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00018/low_component_01.png"
+        },
+        {
+          "region": "low_component_02",
+          "pixels": 17,
+          "native_pixels": 59,
+          "display_bbox": [
+            543,
+            130,
+            9,
+            10
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00018/low_component_02.png"
+        },
+        {
+          "region": "low_component_03",
+          "pixels": 1,
+          "native_pixels": 5,
+          "display_bbox": [
+            564,
+            130,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00018/low_component_03.png"
+        },
+        {
+          "region": "low_component_04",
+          "pixels": 0,
+          "native_pixels": 1,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00018/low_component_04.png"
+        },
+        {
+          "region": "low_component_05",
+          "pixels": 59,
+          "native_pixels": 186,
+          "display_bbox": [
+            325,
+            159,
+            33,
+            20
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00018/low_component_05.png"
+        },
+        {
+          "region": "low_component_06",
+          "pixels": 1,
+          "native_pixels": 4,
+          "display_bbox": [
+            589,
+            167,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00018/low_component_06.png"
+        },
+        {
+          "region": "low_component_07",
+          "pixels": 0,
+          "native_pixels": 2,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00018/low_component_07.png"
+        },
+        {
+          "region": "low_component_08",
+          "pixels": 81,
+          "native_pixels": 235,
+          "display_bbox": [
+            296,
+            191,
+            52,
+            5
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00018/low_component_08.png"
+        },
+        {
+          "region": "low_component_09",
+          "pixels": 42,
+          "native_pixels": 144,
+          "display_bbox": [
+            265,
+            194,
+            16,
+            12
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00018/low_component_09.png"
+        },
+        {
+          "region": "low_component_10",
+          "pixels": 576,
+          "native_pixels": 2017,
+          "display_bbox": [
+            411,
+            195,
+            128,
+            39
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00018/low_component_10.png"
+        },
+        {
+          "region": "low_component_11",
+          "pixels": 77,
+          "native_pixels": 282,
+          "display_bbox": [
+            298,
+            199,
+            33,
+            6
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00018/low_component_11.png"
+        },
+        {
+          "region": "low_component_12",
+          "pixels": 59,
+          "native_pixels": 192,
+          "display_bbox": [
+            267,
+            207,
+            27,
+            28
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00018/low_component_12.png"
+        },
+        {
+          "region": "low_component_13",
+          "pixels": 28,
+          "native_pixels": 93,
+          "display_bbox": [
+            295,
+            235,
+            13,
+            8
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00018/low_component_13.png"
+        },
+        {
+          "region": "low_component_14",
+          "pixels": 25,
+          "native_pixels": 99,
+          "display_bbox": [
+            592,
+            274,
+            7,
+            13
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00018/low_component_14.png"
+        },
+        {
+          "region": "neck",
+          "pixels": 456,
+          "native_pixels": 1540,
+          "display_bbox": [
+            540,
+            222,
+            19,
+            24
+          ],
+          "definition": "saved original reference mask; invalid21 empty",
+          "path": "regions/00018/neck.png"
+        },
+        {
+          "region": "body_unselected",
+          "pixels": 1352,
+          "native_pixels": null,
+          "display_bbox": [
+            416,
+            241,
+            52,
+            26
+          ],
+          "definition": "input-RGB body rectangle intersect union excluding selected pixels",
+          "path": "regions/00018/body_unselected.png"
+        },
+        {
+          "region": "head_context",
+          "pixels": 20480,
+          "native_pixels": null,
+          "display_bbox": [
+            510,
+            106,
+            128,
+            160
+          ],
+          "definition": "supplementary input-defined context; includes neck/background",
+          "path": "regions/00018/head_context.png"
+        },
+        {
+          "region": "water_near",
+          "pixels": 1050,
+          "native_pixels": null,
+          "display_bbox": [
+            680,
+            148,
+            35,
+            30
+          ],
+          "definition": "subject-relative water sampling window, not material tracking",
+          "path": "regions/00018/water_near.png"
+        },
+        {
+          "region": "water_far",
+          "pixels": 15000,
+          "native_pixels": null,
+          "display_bbox": [
+            90,
+            85,
+            150,
+            100
+          ],
+          "definition": "fixed historical water ROI",
+          "path": "regions/00018/water_far.png"
+        }
+      ]
+    },
+    {
+      "frame_id": 19,
+      "head_context_xywh": [
+        510,
+        105,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        411,
+        241,
+        52,
+        25
+      ],
+      "body_checks": {
+        "NCC": 0.9836897850036621,
+        "peak_margin": 0.16363292932510376,
+        "roundtrip_error_native": 0.0
+      },
+      "body_missing_reason": "",
+      "regions": [
+        {
+          "region": "head_high_side",
+          "pixels": 3339,
+          "native_pixels": null,
+          "display_bbox": [
+            532,
+            130,
+            80,
+            83
+          ],
+          "definition": "approved selected high disparity support; head proxy",
+          "path": "regions/00019/head_high_side.png"
+        },
+        {
+          "region": "low_component_01",
+          "pixels": 22,
+          "native_pixels": 49,
+          "display_bbox": [
+            543,
+            128,
+            14,
+            3
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00019/low_component_01.png"
+        },
+        {
+          "region": "low_component_02",
+          "pixels": 2,
+          "native_pixels": 5,
+          "display_bbox": [
+            558,
+            130,
+            2,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00019/low_component_02.png"
+        },
+        {
+          "region": "low_component_03",
+          "pixels": 0,
+          "native_pixels": 1,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00019/low_component_03.png"
+        },
+        {
+          "region": "low_component_04",
+          "pixels": 3,
+          "native_pixels": 8,
+          "display_bbox": [
+            536,
+            139,
+            1,
+            3
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00019/low_component_04.png"
+        },
+        {
+          "region": "low_component_05",
+          "pixels": 2,
+          "native_pixels": 5,
+          "display_bbox": [
+            534,
+            155,
+            1,
+            2
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00019/low_component_05.png"
+        },
+        {
+          "region": "low_component_06",
+          "pixels": 49,
+          "native_pixels": 179,
+          "display_bbox": [
+            325,
+            157,
+            33,
+            16
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00019/low_component_06.png"
+        },
+        {
+          "region": "low_component_07",
+          "pixels": 1,
+          "native_pixels": 1,
+          "display_bbox": [
+            533,
+            158,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00019/low_component_07.png"
+        },
+        {
+          "region": "low_component_08",
+          "pixels": 19,
+          "native_pixels": 43,
+          "display_bbox": [
+            529,
+            160,
+            4,
+            18
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00019/low_component_08.png"
+        },
+        {
+          "region": "low_component_09",
+          "pixels": 91,
+          "native_pixels": 292,
+          "display_bbox": [
+            295,
+            189,
+            51,
+            3
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00019/low_component_09.png"
+        },
+        {
+          "region": "low_component_10",
+          "pixels": 24,
+          "native_pixels": 76,
+          "display_bbox": [
+            265,
+            191,
+            8,
+            11
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00019/low_component_10.png"
+        },
+        {
+          "region": "low_component_11",
+          "pixels": 939,
+          "native_pixels": 3279,
+          "display_bbox": [
+            413,
+            194,
+            122,
+            44
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00019/low_component_11.png"
+        },
+        {
+          "region": "low_component_12",
+          "pixels": 13,
+          "native_pixels": 36,
+          "display_bbox": [
+            601,
+            194,
+            11,
+            10
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00019/low_component_12.png"
+        },
+        {
+          "region": "low_component_13",
+          "pixels": 113,
+          "native_pixels": 391,
+          "display_bbox": [
+            291,
+            195,
+            38,
+            8
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00019/low_component_13.png"
+        },
+        {
+          "region": "low_component_14",
+          "pixels": 187,
+          "native_pixels": 661,
+          "display_bbox": [
+            266,
+            204,
+            51,
+            41
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00019/low_component_14.png"
+        },
+        {
+          "region": "low_component_15",
+          "pixels": 30,
+          "native_pixels": 93,
+          "display_bbox": [
+            587,
+            272,
+            7,
+            15
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00019/low_component_15.png"
+        },
+        {
+          "region": "neck",
+          "pixels": 454,
+          "native_pixels": 1536,
+          "display_bbox": [
+            534,
+            222,
+            19,
+            24
+          ],
+          "definition": "saved original reference mask; invalid21 empty",
+          "path": "regions/00019/neck.png"
+        },
+        {
+          "region": "body_unselected",
+          "pixels": 1300,
+          "native_pixels": null,
+          "display_bbox": [
+            411,
+            241,
+            52,
+            25
+          ],
+          "definition": "input-RGB body rectangle intersect union excluding selected pixels",
+          "path": "regions/00019/body_unselected.png"
+        },
+        {
+          "region": "head_context",
+          "pixels": 20480,
+          "native_pixels": null,
+          "display_bbox": [
+            510,
+            105,
+            128,
+            160
+          ],
+          "definition": "supplementary input-defined context; includes neck/background",
+          "path": "regions/00019/head_context.png"
+        },
+        {
+          "region": "water_near",
+          "pixels": 1050,
+          "native_pixels": null,
+          "display_bbox": [
+            680,
+            148,
+            35,
+            30
+          ],
+          "definition": "subject-relative water sampling window, not material tracking",
+          "path": "regions/00019/water_near.png"
+        },
+        {
+          "region": "water_far",
+          "pixels": 15000,
+          "native_pixels": null,
+          "display_bbox": [
+            90,
+            85,
+            150,
+            100
+          ],
+          "definition": "fixed historical water ROI",
+          "path": "regions/00019/water_far.png"
+        }
+      ]
+    },
+    {
+      "frame_id": 20,
+      "head_context_xywh": [
+        508,
+        105,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        407,
+        240,
+        52,
+        26
+      ],
+      "body_checks": {
+        "NCC": 0.9477769732475281,
+        "peak_margin": 0.15184736251831055,
+        "roundtrip_error_native": 0.0
+      },
+      "body_missing_reason": "",
+      "regions": [
+        {
+          "region": "head_high_side",
+          "pixels": 3379,
+          "native_pixels": null,
+          "display_bbox": [
+            527,
+            130,
+            80,
+            84
+          ],
+          "definition": "approved selected high disparity support; head proxy",
+          "path": "regions/00020/head_high_side.png"
+        },
+        {
+          "region": "low_component_01",
+          "pixels": 29,
+          "native_pixels": 75,
+          "display_bbox": [
+            538,
+            128,
+            21,
+            5
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00020/low_component_01.png"
+        },
+        {
+          "region": "low_component_02",
+          "pixels": 0,
+          "native_pixels": 3,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00020/low_component_02.png"
+        },
+        {
+          "region": "low_component_03",
+          "pixels": 1,
+          "native_pixels": 2,
+          "display_bbox": [
+            560,
+            133,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00020/low_component_03.png"
+        },
+        {
+          "region": "low_component_04",
+          "pixels": 1,
+          "native_pixels": 11,
+          "display_bbox": [
+            565,
+            137,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00020/low_component_04.png"
+        },
+        {
+          "region": "low_component_05",
+          "pixels": 1,
+          "native_pixels": 3,
+          "display_bbox": [
+            533,
+            136,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00020/low_component_05.png"
+        },
+        {
+          "region": "low_component_06",
+          "pixels": 1,
+          "native_pixels": 4,
+          "display_bbox": [
+            532,
+            138,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00020/low_component_06.png"
+        },
+        {
+          "region": "low_component_07",
+          "pixels": 1,
+          "native_pixels": 2,
+          "display_bbox": [
+            569,
+            140,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00020/low_component_07.png"
+        },
+        {
+          "region": "low_component_08",
+          "pixels": 1,
+          "native_pixels": 2,
+          "display_bbox": [
+            531,
+            141,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00020/low_component_08.png"
+        },
+        {
+          "region": "low_component_09",
+          "pixels": 0,
+          "native_pixels": 2,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00020/low_component_09.png"
+        },
+        {
+          "region": "low_component_10",
+          "pixels": 1,
+          "native_pixels": 3,
+          "display_bbox": [
+            571,
+            143,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00020/low_component_10.png"
+        },
+        {
+          "region": "low_component_11",
+          "pixels": 1,
+          "native_pixels": 3,
+          "display_bbox": [
+            572,
+            146,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00020/low_component_11.png"
+        },
+        {
+          "region": "low_component_12",
+          "pixels": 1,
+          "native_pixels": 5,
+          "display_bbox": [
+            573,
+            148,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00020/low_component_12.png"
+        },
+        {
+          "region": "low_component_13",
+          "pixels": 2,
+          "native_pixels": 4,
+          "display_bbox": [
+            530,
+            150,
+            1,
+            2
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00020/low_component_13.png"
+        },
+        {
+          "region": "low_component_14",
+          "pixels": 1,
+          "native_pixels": 2,
+          "display_bbox": [
+            574,
+            151,
+            1,
+            1
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00020/low_component_14.png"
+        },
+        {
+          "region": "low_component_15",
+          "pixels": 33,
+          "native_pixels": 131,
+          "display_bbox": [
+            326,
+            155,
+            21,
+            9
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00020/low_component_15.png"
+        },
+        {
+          "region": "low_component_16",
+          "pixels": 19,
+          "native_pixels": 47,
+          "display_bbox": [
+            524,
+            159,
+            4,
+            20
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00020/low_component_16.png"
+        },
+        {
+          "region": "low_component_17",
+          "pixels": 86,
+          "native_pixels": 297,
+          "display_bbox": [
+            295,
+            186,
+            49,
+            6
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00020/low_component_17.png"
+        },
+        {
+          "region": "low_component_18",
+          "pixels": 573,
+          "native_pixels": 2011,
+          "display_bbox": [
+            263,
+            188,
+            57,
+            57
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00020/low_component_18.png"
+        },
+        {
+          "region": "low_component_19",
+          "pixels": 107,
+          "native_pixels": 380,
+          "display_bbox": [
+            285,
+            191,
+            47,
+            9
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00020/low_component_19.png"
+        },
+        {
+          "region": "low_component_20",
+          "pixels": 1002,
+          "native_pixels": 3530,
+          "display_bbox": [
+            415,
+            194,
+            113,
+            43
+          ],
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00020/low_component_20.png"
+        },
+        {
+          "region": "low_component_21",
+          "pixels": 0,
+          "native_pixels": 4,
+          "display_bbox": null,
+          "definition": "one low-side component; frame-local ID, not tracked",
+          "path": "regions/00020/low_component_21.png"
+        },
+        {
+          "region": "neck",
+          "pixels": 451,
+          "native_pixels": 1527,
+          "display_bbox": [
+            529,
+            222,
+            19,
+            24
+          ],
+          "definition": "saved original reference mask; invalid21 empty",
+          "path": "regions/00020/neck.png"
+        },
+        {
+          "region": "body_unselected",
+          "pixels": 1352,
+          "native_pixels": null,
+          "display_bbox": [
+            407,
+            240,
+            52,
+            26
+          ],
+          "definition": "input-RGB body rectangle intersect union excluding selected pixels",
+          "path": "regions/00020/body_unselected.png"
+        },
+        {
+          "region": "head_context",
+          "pixels": 20480,
+          "native_pixels": null,
+          "display_bbox": [
+            508,
+            105,
+            128,
+            160
+          ],
+          "definition": "supplementary input-defined context; includes neck/background",
+          "path": "regions/00020/head_context.png"
+        },
+        {
+          "region": "water_near",
+          "pixels": 1050,
+          "native_pixels": null,
+          "display_bbox": [
+            679,
+            148,
+            35,
+            30
+          ],
+          "definition": "subject-relative water sampling window, not material tracking",
+          "path": "regions/00020/water_near.png"
+        },
+        {
+          "region": "water_far",
+          "pixels": 15000,
+          "native_pixels": null,
+          "display_bbox": [
+            90,
+            85,
+            150,
+            100
+          ],
+          "definition": "fixed historical water ROI",
+          "path": "regions/00020/water_far.png"
+        }
+      ]
+    },
+    {
+      "frame_id": 21,
+      "head_context_xywh": [
+        509,
+        105,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        404,
+        240,
+        51,
+        25
+      ],
+      "body_checks": {
+        "NCC": 0.8994562029838562,
+        "peak_margin": 0.10012292861938477,
+        "roundtrip_error_native": 1.0
+      },
+      "body_missing_reason": "",
+      "regions": [
+        {
+          "region": "head_high_side",
+          "pixels": 0,
+          "native_pixels": null,
+          "display_bbox": null,
+          "definition": "approved selected high disparity support; head proxy",
+          "path": "regions/00021/head_high_side.png"
+        },
+        {
+          "region": "low_component_none",
+          "pixels": 0,
+          "native_pixels": 0,
+          "display_bbox": null,
+          "definition": "no approved low-side component",
+          "path": "regions/00021/low_component_none.png"
+        },
+        {
+          "region": "neck",
+          "pixels": 0,
+          "native_pixels": 0,
+          "display_bbox": null,
+          "definition": "saved original reference mask; invalid21 empty",
+          "path": "regions/00021/neck.png"
+        },
+        {
+          "region": "body_unselected",
+          "pixels": 1275,
+          "native_pixels": null,
+          "display_bbox": [
+            404,
+            240,
+            51,
+            25
+          ],
+          "definition": "input-RGB body rectangle intersect union excluding selected pixels",
+          "path": "regions/00021/body_unselected.png"
+        },
+        {
+          "region": "head_context",
+          "pixels": 20480,
+          "native_pixels": null,
+          "display_bbox": [
+            509,
+            105,
+            128,
+            160
+          ],
+          "definition": "supplementary input-defined context; includes neck/background",
+          "path": "regions/00021/head_context.png"
+        },
+        {
+          "region": "water_near",
+          "pixels": 1050,
+          "native_pixels": null,
+          "display_bbox": [
+            680,
+            148,
+            35,
+            30
+          ],
+          "definition": "subject-relative water sampling window, not material tracking",
+          "path": "regions/00021/water_near.png"
+        },
+        {
+          "region": "water_far",
+          "pixels": 15000,
+          "native_pixels": null,
+          "display_bbox": [
+            90,
+            85,
+            150,
+            100
+          ],
+          "definition": "fixed historical water ROI",
+          "path": "regions/00021/water_far.png"
+        }
+      ]
+    },
+    {
+      "frame_id": 22,
+      "head_context_xywh": [
+        479,
+        101,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        420,
+        248,
+        51,
+        25
+      ],
+      "body_checks": {
+        "NCC": 0.9282239675521851,
+        "peak_margin": 0.11390107870101929,
+        "roundtrip_error_native": 0.0
+      },
+      "body_missing_reason": "",
+      "regions": [
+        {
+          "region": "head_high_side",
+          "pixels": 0,
+          "native_pixels": null,
+          "display_bbox": null,
+          "definition": "approved selected high disparity support; head proxy",
+          "path": "regions/00022/head_high_side.png"
+        },
+        {
+          "region": "low_component_none",
+          "pixels": 0,
+          "native_pixels": 0,
+          "display_bbox": null,
+          "definition": "no approved low-side component",
+          "path": "regions/00022/low_component_none.png"
+        },
+        {
+          "region": "neck",
+          "pixels": 414,
+          "native_pixels": 1428,
+          "display_bbox": [
+            525,
+            219,
+            18,
+            23
+          ],
+          "definition": "saved original reference mask; invalid21 empty",
+          "path": "regions/00022/neck.png"
+        },
+        {
+          "region": "body_unselected",
+          "pixels": 1275,
+          "native_pixels": null,
+          "display_bbox": [
+            420,
+            248,
+            51,
+            25
+          ],
+          "definition": "input-RGB body rectangle intersect union excluding selected pixels",
+          "path": "regions/00022/body_unselected.png"
+        },
+        {
+          "region": "head_context",
+          "pixels": 20480,
+          "native_pixels": null,
+          "display_bbox": [
+            479,
+            101,
+            128,
+            160
+          ],
+          "definition": "supplementary input-defined context; includes neck/background",
+          "path": "regions/00022/head_context.png"
+        },
+        {
+          "region": "water_near",
+          "pixels": 1050,
+          "native_pixels": null,
+          "display_bbox": [
+            680,
+            148,
+            35,
+            30
+          ],
+          "definition": "subject-relative water sampling window, not material tracking",
+          "path": "regions/00022/water_near.png"
+        },
+        {
+          "region": "water_far",
+          "pixels": 15000,
+          "native_pixels": null,
+          "display_bbox": [
+            90,
+            85,
+            150,
+            100
+          ],
+          "definition": "fixed historical water ROI",
+          "path": "regions/00022/water_far.png"
+        }
+      ]
+    },
+    {
+      "frame_id": 23,
+      "head_context_xywh": [
+        481,
+        101,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        418,
+        248,
+        51,
+        24
+      ],
+      "body_checks": {
+        "NCC": 0.9678393602371216,
+        "peak_margin": 0.16627979278564453,
+        "roundtrip_error_native": 0.0
+      },
+      "body_missing_reason": "",
+      "regions": [
+        {
+          "region": "head_high_side",
+          "pixels": 0,
+          "native_pixels": null,
+          "display_bbox": null,
+          "definition": "approved selected high disparity support; head proxy",
+          "path": "regions/00023/head_high_side.png"
+        },
+        {
+          "region": "low_component_none",
+          "pixels": 0,
+          "native_pixels": 0,
+          "display_bbox": null,
+          "definition": "no approved low-side component",
+          "path": "regions/00023/low_component_none.png"
+        },
+        {
+          "region": "neck",
+          "pixels": 396,
+          "native_pixels": 1428,
+          "display_bbox": [
+            522,
+            220,
+            18,
+            22
+          ],
+          "definition": "saved original reference mask; invalid21 empty",
+          "path": "regions/00023/neck.png"
+        },
+        {
+          "region": "body_unselected",
+          "pixels": 1224,
+          "native_pixels": null,
+          "display_bbox": [
+            418,
+            248,
+            51,
+            24
+          ],
+          "definition": "input-RGB body rectangle intersect union excluding selected pixels",
+          "path": "regions/00023/body_unselected.png"
+        },
+        {
+          "region": "head_context",
+          "pixels": 20480,
+          "native_pixels": null,
+          "display_bbox": [
+            481,
+            101,
+            128,
+            160
+          ],
+          "definition": "supplementary input-defined context; includes neck/background",
+          "path": "regions/00023/head_context.png"
+        },
+        {
+          "region": "water_near",
+          "pixels": 1050,
+          "native_pixels": null,
+          "display_bbox": [
+            683,
+            148,
+            35,
+            30
+          ],
+          "definition": "subject-relative water sampling window, not material tracking",
+          "path": "regions/00023/water_near.png"
+        },
+        {
+          "region": "water_far",
+          "pixels": 15000,
+          "native_pixels": null,
+          "display_bbox": [
+            90,
+            85,
+            150,
+            100
+          ],
+          "definition": "fixed historical water ROI",
+          "path": "regions/00023/water_far.png"
+        }
+      ]
+    },
+    {
+      "frame_id": 24,
+      "head_context_xywh": [
+        483,
+        102,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        416,
+        248,
+        51,
+        24
+      ],
+      "body_checks": {},
+      "body_missing_reason": "",
+      "regions": [
+        {
+          "region": "head_high_side",
+          "pixels": 0,
+          "native_pixels": null,
+          "display_bbox": null,
+          "definition": "approved selected high disparity support; head proxy",
+          "path": "regions/00024/head_high_side.png"
+        },
+        {
+          "region": "low_component_none",
+          "pixels": 0,
+          "native_pixels": 0,
+          "display_bbox": null,
+          "definition": "no approved low-side component",
+          "path": "regions/00024/low_component_none.png"
+        },
+        {
+          "region": "neck",
+          "pixels": 414,
+          "native_pixels": 1428,
+          "display_bbox": [
+            518,
+            220,
+            18,
+            23
+          ],
+          "definition": "saved original reference mask; invalid21 empty",
+          "path": "regions/00024/neck.png"
+        },
+        {
+          "region": "body_unselected",
+          "pixels": 1224,
+          "native_pixels": null,
+          "display_bbox": [
+            416,
+            248,
+            51,
+            24
+          ],
+          "definition": "input-RGB body rectangle intersect union excluding selected pixels",
+          "path": "regions/00024/body_unselected.png"
+        },
+        {
+          "region": "head_context",
+          "pixels": 20480,
+          "native_pixels": null,
+          "display_bbox": [
+            483,
+            102,
+            128,
+            160
+          ],
+          "definition": "supplementary input-defined context; includes neck/background",
+          "path": "regions/00024/head_context.png"
+        },
+        {
+          "region": "water_near",
+          "pixels": 1050,
+          "native_pixels": null,
+          "display_bbox": [
+            685,
+            149,
+            35,
+            30
+          ],
+          "definition": "subject-relative water sampling window, not material tracking",
+          "path": "regions/00024/water_near.png"
+        },
+        {
+          "region": "water_far",
+          "pixels": 15000,
+          "native_pixels": null,
+          "display_bbox": [
+            90,
+            85,
+            150,
+            100
+          ],
+          "definition": "fixed historical water ROI",
+          "path": "regions/00024/water_far.png"
+        }
+      ]
+    }
+  ],
+  "definition_source": "Only original RGB, annotations, prior boxes and approved masks. No new predictions read.",
+  "limitation": "All empty or failed supports remain empty; no changes to intervention rules or frame21 reference."
+}

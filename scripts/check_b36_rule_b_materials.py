@@ -1,9 +1,10 @@
-"""Check B36 input-only materials at the existing HTTP root using private Chrome.
+"""Check B36 input or paired-output materials at the existing HTTP root.
 
 Uses the already-installed websocket-client and existing headless Chrome CDP;
 does not access the user's browser profile, models, or GPU.
 """
 from concurrent.futures import ThreadPoolExecutor
+import argparse
 from datetime import datetime, timezone
 from html.parser import HTMLParser
 import json
@@ -18,6 +19,10 @@ ROOT=Path(__file__).resolve().parents[1]
 CONFIG=ROOT/'configs/any2bokeh-B36-rule-b-20261021.json'
 
 
+class NavigationPending(RuntimeError):
+    pass
+
+
 class Links(HTMLParser):
     def __init__(self):
         super().__init__();self.links=[]
@@ -26,7 +31,10 @@ class Links(HTMLParser):
 
 
 def main():
-    c=json.loads(CONFIG.read_text());out=ROOT/c['output'];checks=json.loads((out/'program-checks.json').read_text())
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--config',default=str(CONFIG));args=parser.parse_args()
+    config_path=Path(args.config);config_path=config_path if config_path.is_absolute() else ROOT/config_path
+    c=json.loads(config_path.read_text());out=ROOT/c['output'];checks=json.loads((out/'program-checks.json').read_text())
+    is_output='condition_labels' in c
     root='http://127.0.0.1:8765/';base=root+out.name+'/'
     # Loopback validation must reach the existing server directly. Do not alter
     # environment, VS Code forwarding, or any user's proxy configuration.
@@ -36,6 +44,7 @@ def main():
         p=out/relative;url=base+relative;urls.add(url);parser=Links();parser.feed(p.read_text())
         urls.update(urljoin(url,x) for x in parser.links)
     item=json.loads((out/'viewer-item.json').read_text())
+    panels=len(item['panels'])
     for panel in item['panels']:
         urls.update(base+'B36/'+panel['prefix']+f'{t:05d}.png' for t in range(25))
     def head(url):
@@ -54,6 +63,9 @@ def main():
             data=json.loads(ws.recv())
             if data.get('method')=='Runtime.exceptionThrown':exceptions.append(data['params'])
             if data.get('id')==ident:
+                if method=='Runtime.evaluate' and 'error' in data and data['error'].get('code')==-32000 and any(
+                    word in data['error'].get('message','') for word in ['navigated','context was destroyed','Cannot find context']):
+                    raise NavigationPending(data['error']['message'])
                 assert 'error' not in data,data
                 return data.get('result',{})
     def js(expression):
@@ -61,33 +73,41 @@ def main():
         assert 'exceptionDetails' not in r,r
         return r.get('result',{}).get('value')
     def wait(expression):
-        return js('''(async()=>{for(let i=0;i<600;i++){if('''+expression+''')return true;await new Promise(r=>setTimeout(r,50));}throw new Error('condition timed out');})()''')
+        for attempt in range(4):
+            try:
+                return js('''(async()=>{for(let i=0;i<600;i++){if('''+expression+''')return true;await new Promise(r=>setTimeout(r,50));}throw new Error('condition timed out');})()''')
+            except NavigationPending:
+                if attempt==3:raise
+                time.sleep(.1)
     def frame(t):
         js(f"document.getElementById('frame-slider').value={t};document.getElementById('frame-slider').dispatchEvent(new Event('input',{{bubbles:true}}));")
         wait(f"document.getElementById('atb-viewer').dataset.frame==='{t}' && document.getElementById('frame-status').textContent.includes('PNG同步完成')")
     call('Page.enable');call('Runtime.enable')
     call('Emulation.setDeviceMetricsOverride',dict(width=1440,height=1000,deviceScaleFactor=1,mobile=False))
     call('Page.navigate',dict(url=base+'B36/'))
-    wait("document.getElementById('atb-viewer')?.dataset.frame==='0'")
+    wait("document.getElementById('atb-viewer')?.dataset.frame==='"+str(item.get('initial_frame',0))+"'")
+    if is_output:
+        positions=js("[...document.querySelectorAll('.atb-panel')].map(x=>{const r=x.getBoundingClientRect();return {x:r.x,y:r.y}})")
+        assert positions[1]['y']==positions[2]['y'] and positions[2]['x']>positions[1]['x'],'A/R must be side by side'
     for t in range(25):
         frame(t)
         assert js("[...document.querySelectorAll('.atb-frame-image')].every(x=>x.complete&&x.naturalWidth===1024&&x.naturalHeight===576&&Number(x.dataset.frame)==="+str(t)+")")
-        assert js("document.querySelectorAll('.atb-frame-image').length")==8
+        assert js("document.querySelectorAll('.atb-frame-image').length")==panels
     print('BROWSER all25 synchronized PNG frames',flush=True)
     for rate in [.5,.25,1]:
         js(f"document.querySelector('[data-rate=\"{rate}\"]').click()")
         assert js("document.querySelector('video').playbackRate")==rate
     js("document.getElementById('tracked-roi-select').value='neck';document.getElementById('tracked-roi-select').dispatchEvent(new Event('change'))")
-    frame(0);expected=item['tracked_rois'][0]['xywh_by_frame']['0']
+    frame(0);expected=next(x for x in item['tracked_rois'] if x['id']=='neck')['xywh_by_frame']['0']
     assert js("JSON.parse(document.getElementById('atb-viewer').dataset.roi)")==expected
-    assert js("[...document.querySelectorAll('.atb-crop canvas')].map(x=>JSON.parse(x.dataset.roi))")==[expected]*8
+    assert js("[...document.querySelectorAll('.atb-crop canvas')].map(x=>JSON.parse(x.dataset.roi))")==[expected]*panels
     frame(21)
     assert js("document.getElementById('atb-viewer').dataset.roi")=='null'
     assert js("[...document.querySelectorAll('.atb-crop')].every(x=>x.hidden)")
     frame(12);js("document.querySelector('[data-mode=adjacent]').click()")
     wait("document.getElementById('atb-viewer').dataset.mode==='adjacent' && document.getElementById('frame-status').textContent.includes('PNG同步完成')")
     values=js("[...document.querySelectorAll('.atb-frame-image')].map(x=>Number(x.dataset.frame))")
-    assert values==[11,12]*8
+    assert values==[11,12]*panels
     js("document.querySelector('[data-mode=frame]').click()")
     wait("document.getElementById('atb-viewer').dataset.mode==='frame' && document.getElementById('frame-status').textContent.includes('PNG同步完成')")
     js("document.getElementById('clear-roi').click();document.getElementById('roi-enabled').click();document.querySelector('.atb-surface').scrollIntoView({block:'center'});")
@@ -103,7 +123,7 @@ def main():
       const ref=document.createElement('canvas');ref.width=1024;ref.height=576;const ctx=ref.getContext('2d');ctx.drawImage(im,0,0);
       const x=ctx.getImageData(...box).data,y=a.getContext('2d').getImageData(0,0,a.width,a.height).data;
       let n=0;for(let i=0;i<x.length;i++)n+=x[i]!==y[i];return n;})''')
-    assert crop_differences==[0]*8
+    assert crop_differences==[0]*panels
     js("document.querySelector('[data-size=native]').click()")
     assert js("document.getElementById('atb-viewer').classList.contains('native-size')")
     js("document.getElementById('roi-enabled').click();document.activeElement.blur();document.body.tabIndex=-1;document.body.focus()")
@@ -111,10 +131,12 @@ def main():
     call('Input.dispatchKeyEvent',dict(type='keyUp',key='ArrowRight',code='ArrowRight',windowsVirtualKeyCode=39))
     wait("document.getElementById('atb-viewer').dataset.frame==='13' && document.getElementById('frame-status').textContent.includes('PNG同步完成')")
     old_keys=['atb-failure-B1-user-20261009','atb-failure-B2-user-20261009']
+    if is_output:old_keys.append('atb-B36-rule-b-input-selection-user-20261021')
     for key in old_keys:js(f"localStorage.setItem({json.dumps(key)},'PRIVATE_PROFILE_SENTINEL')")
     js("document.getElementById('png-note').click()")
     wait("document.getElementById('import-context')")
-    assert js("document.title").startswith('B36方案b')
+    assert js("document.title").startswith('B36')
+    if is_output:assert js("window.rows()[0]['视觉是否异常']")=='待用户复核'
     assert js("document.getElementById('context-description').textContent.includes('13')")
     js("document.getElementById('import-context').click()")
     wait("document.querySelectorAll('[data-kind=review]').length===2")
@@ -136,12 +158,12 @@ def main():
     version=call('Browser.getVersion')
     checks.update(HTTP_resources=len(urls),all_HTTP_200=True,HTTP_base=base,
         browser=dict(version=version['product'],private_profile=True,GPU_disabled=True,
-            synchronized_frames=25,panels=8,speed_buttons=True,adjacent_frame_pair=[11,12],
+            synchronized_frames=25,panels=panels,speed_buttons=True,adjacent_frame_pair=[11,12],
             keyboard_navigation=True,moving_ROI=True,missing_ROI_frame21_remains_empty=True,
             manual_synchronized_ROI=True,crop_pixel_differences=crop_differences,native_size_control=True,
             context_transfer=True,form_save_reload_export=True,old_keys_preserved=True,JS_exceptions=0,
             simulated_feedback_only_in_private_profile=True),
-        actual_user_feedback='待用户确认',inference_started=False)
+        actual_user_feedback='待用户视觉复核' if is_output else '待用户确认',inference_started=is_output)
     (out/'verification.json').write_text(json.dumps(checks,ensure_ascii=False,indent=2)+'\n')
     dest=ROOT/(c['record_prefix']+'-verification.json');assert not dest.exists();dest.write_text(json.dumps(checks,ensure_ascii=False,indent=2)+'\n')
     print('BROWSER_CHECKS_PASS',json.dumps(checks,ensure_ascii=False),flush=True)
