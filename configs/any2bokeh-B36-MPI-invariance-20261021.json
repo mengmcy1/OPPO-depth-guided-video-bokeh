@@ -1,0 +1,16 @@
+{
+  "scene": "mallard-water",
+  "sample_id": "B36",
+  "frames": 25,
+  "K": 16,
+  "conditions": ["native", "native_repeat", "mpi_zero", "mpi_three", "coc_only"],
+  "output": "outputs/any2bokeh-failure-analysis-20261009/B36-MPI-invariance-20261021",
+  "record": "03_实验记录/records/any2bokeh-B36-MPI-invariance-20261021.json",
+  "prior_config": "configs/any2bokeh-B36-causal-diagnosis-20261015.json",
+  "prior_record": "03_实验记录/records/any2bokeh-B36-causal-diagnosis-20261015.json",
+  "source_frame": 0,
+  "intervention": "Reuse existing head_to_neck prepared disparity (q=147 inside the existing head polygon intersected with DAVIS union). Load through the unmodified author loader; transplant only its source-frame0 CoC into the original loaded batch. Original MPI/focus/K remain unchanged.",
+  "MPI_replacement": "Replace real slots identified from source-frame groups, including real overlap slots with zero fusion weight. Do not change three final padding slots.",
+  "execution": "Five independent worker processes; original model loading seed0, restore saved predecessor mallard-fly CPU/CUDA scene-entry state, fresh native model/cache, per-call CPU generator0, full native8/8/9 outputs; no performance claims.",
+  "scope": "Exploration B36 only; observational hooks, no author forward/processor edits, no nonzero-mask activation, no training/optimization/held-out data or formal-table changes. New visual judgments remain with the user."
+}
