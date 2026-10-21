@@ -1,0 +1,21 @@
+{
+  "split_record": "03_实验记录/records/any2bokeh-failure-analysis-20261009-source-split.json",
+  "B_manifests": ["03_实验记录/records/any2bokeh-failure-analysis-20261009-B-samples.json", "03_实验记录/records/any2bokeh-followup-20261014-batch2-samples.json"],
+  "output": "outputs/any2bokeh-failure-analysis-20261009/subject-coc-clamp-v2-20261021",
+  "record_prefix": "03_实验记录/records/any2bokeh-subject-coc-statistics-20261021",
+  "exploration_sequences": 35,
+  "frames": 25,
+  "K": 16,
+  "thresholds": [0.5, 1, 2, 4],
+  "grids": {
+    "native": "Original palette-label grid, raw d=q/255 float64, K*abs(d-original focus). No resize before abs.",
+    "actual_condition": "Unchanged author WholeVid loader. Observe actual CoC immediately BEFORE its inplace Normalize (after Resize bilinear antialias+CenterCrop), first RGB-channel timesK. No inverse-normalization or resize(d)-then-abs substitution. Verify all real overlap copies. CPU only."
+  },
+  "regions": "For each original nonzero ID separately, plus independent ID!=0 union: whole/interior/boundary. Labels nearest at1024x576; interior erode7x7 square, radius3 display pixels, border0. Native interior = original native ID/union intersect nearest-upsampled corresponding DISPLAY interior; boundary = original native mask minus interior. This defines the same3-display-pixel exclusion in two grids; projection differences disclosed.",
+  "empty": "Zero pixels => null metrics, retain rows. ID union across25 defines expected IDs; clip median/max over valid frames with count; no silent deletion.",
+  "aggregation": "Median of the25 per-frame metrics, not pooled pixels or median of ID medians. Highest frame for each metric, earliest index on ties. No correlation/significance with about6 user annotations.",
+  "primary_ranking": "actual_condition / union / interior / per-frame fraction(K*CoC>1) clip median descending; ties scene_id ascending. Fixed before statistics. Native-grid ranking reported separately, not substituted after seeing order.",
+  "selection_exclusion": "All DAVIS entries in both B manifests/B1/B2; original six-method fixed8 preflight list; all existing scene-specific review HTML metadata under existing failure-analysis root; explicit B19/B21/B33/B24/B28. Metadata inventory only, not model images/metrics. Statistical sample highest eligible exploration scene; not blind test.",
+  "known_user_labels": {"mallard-water": "B36 用户报告局部虚化", "stroller": "B20 用户报告局部虚化", "cows": "B34 用户报告局部虚化", "rhino": "B18 用户报告整体正常", "blackswan": "B22 用户报告整体正常", "bmx-bumps": "B23 用户报告整体正常", "paragliding-launch": "B19 多实例/伞绳边界证据"},
+  "scope": "Only35 exploration inputs; never15 held-out video inputs/predictions/metrics. No neural inference, no predictions read for ranking/selection. Subject defocus is not depth error."
+}
