@@ -153,6 +153,8 @@ UNet 内部也有 U 形「Decoder/上采样」，但**这不是将 Latent 还原
 
 ### 2.4.1 MPIAttention中的Q/K/V与Mask
 
+**统一表述（2026-10-21运行验证后）**：当前固定公开实现将MPI分区mask置零，分区标签未实际参与注意力控制；并非“作者没有使用任何mask”。目标区域mask仍在外部预处理用于计算焦点；实际attention key mask仍屏蔽附加RGB token，主token注意力、K嵌入和前馈仍执行。B36的标签全0/全3测试与原版float位模式及RGB8一致，CoC-only干预有响应。这个结论不代表作者私有训练或所有其他版本。
+
 设当前UNet主特征为`X`，由RGB Latent投影得到的附加特征为`O`。虚化强度K经Fourier/线性嵌入加到X，再将两组token拼接并归一化，分别线性投影出Q、Key和Value。这里拼接增加token数量，不同于RGB/CoC Latent的通道拼接。
 
 模块构造的读取Mask为`[主token全true；附加RGB token的mpi_mask]`，控制Key/Value位置是否允许被读取；输出只保留主token对应的行，再经学习门控残差及前馈处理。它不是一个简单的“不同分区像素彼此全部禁止参考”的完整成对矩阵。
