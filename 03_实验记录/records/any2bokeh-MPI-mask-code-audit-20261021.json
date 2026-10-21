@@ -1,0 +1,55 @@
+{
+  "date": "2026-10-21",
+  "scope": "Static pinned author-code trace and CPU MPIAttention toy check; no pretrained/full-model forward",
+  "author_commit": "f7a16959dd219080fb8eec0d32bb9602d8970c22",
+  "project_paths": [
+    "../any-to-bokeh/models/unet.py:454",
+    "../any-to-bokeh/models/unet.py:473",
+    "../any-to-bokeh/models/unet.py:490",
+    "../any-to-bokeh/models/attention.py:179"
+  ],
+  "finding": "All down/mid/up MPI input arguments use torch.zeros_like(mpi_mask <= threshold).bool().to(dtype), so original partition values are discarded. MPIAttention concatenates ones for main visual tokens and the resulting false mask for appended RGB condition tokens.",
+  "QKV": "Within fuser, Q/K/V projections use concatenated normalized main tokens (with strength embedding) and projected RGB-condition tokens; mask selects allowed key/value positions. Only main-token output rows are retained.",
+  "important_limits": [
+    "The fuser module still runs; main-token attention and input_k embedding are active.",
+    "RGB still influences UNet through main RGB latent and CLIP; this finding concerns the additional masked RGB-condition token path.",
+    "Cannot infer why author published zeros or whether paper/private training used the same setting. Do not change frozen baseline to enable masks.",
+    "Static trace implies prior fixed-RGB/K local disparity response travels via CoC in this pinned implementation; pretrained output invariance under MPI-only changes remains to be verified."
+  ],
+  "CPU_test": {
+    "seed": 0,
+    "query_dim": 16,
+    "context_dim": 320,
+    "heads": 2,
+    "dim_head": 8,
+    "main_shape": [
+      1,
+      4,
+      16
+    ],
+    "RGB_condition_shape": [
+      1,
+      320,
+      2,
+      2
+    ],
+    "mask_shape": [
+      1,
+      1,
+      4,
+      4
+    ],
+    "input_k": 16,
+    "alpha_attn": 1,
+    "processor": "diffusers.AttnProcessor2_0",
+    "mask_values0_vs3_after_UNet_expression_equal_for_thresholds": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "zero_mask_RGB_condition_times100_output_max_abs_diff": 0.0,
+    "one_mask_RGB_condition_times100_output_max_abs_diff": 0.015092313289642334
+  },
+  "next_check": "If authorized, replay fixed pretrained input/RNG with only supplied MPI labels changed, compare output and hook the actual fuser masks; do not run a four-way purported active-MPI ablation without checking this."
+}
