@@ -1,0 +1,823 @@
+{
+  "created_UTC": "2026-10-21T12:27:41.430203+00:00",
+  "scene": "mallard-water",
+  "policy": {
+    "anchor_config": "configs/any2bokeh-B33-B36-diagnostics-20261014.json",
+    "anchor_ROI_key": "neck_core",
+    "anchor_frames": [
+      0,
+      6,
+      12,
+      18,
+      24
+    ],
+    "selection": "Reuse existing input-RGB-localized neck boxes; executor diagnostic regions, not user-confirmed anatomical truth. No output inspection.",
+    "tracking": "Each non-keyframe independently matches the nearest RGB anchor (tie: earlier frame); native-resolution grayscale TM_CCOEFF_NORMED on the anchor neck rectangle. Translation only; no coordinate or disparity interpolation.",
+    "search_radius_native_xy": [
+      80,
+      40
+    ],
+    "min_NCC": 0.8,
+    "min_peak_margin_outside_3_native_pixels": 0.02,
+    "max_roundtrip_error_native_pixels": 3.0,
+    "min_reference_foreground_fraction": 0.75,
+    "min_valid_native_pixels": 256,
+    "reference_value": "Median original q/255 over neck rectangle intersect original DAVIS ID!=0 union, evaluated separately on each frame. Preserve fractional medians without an extra PNG8 quantization."
+  },
+  "anchors_native_xywh": {
+    "0": [
+      1228,
+      418,
+      38,
+      49
+    ],
+    "6": [
+      1162,
+      403,
+      35,
+      44
+    ],
+    "12": [
+      1098,
+      418,
+      35,
+      44
+    ],
+    "18": [
+      1012,
+      416,
+      35,
+      44
+    ],
+    "24": [
+      971,
+      412,
+      34,
+      42
+    ]
+  },
+  "rows": [
+    {
+      "frame_id": 0,
+      "anchor_frame": 0,
+      "method": "existing input-RGB neck anchor",
+      "attempted_native_xywh": [
+        1228,
+        418,
+        38,
+        49
+      ],
+      "native_xywh": [
+        1228,
+        418,
+        38,
+        49
+      ],
+      "display_xywh": [
+        654,
+        222,
+        22,
+        28
+      ],
+      "localization_valid": true,
+      "checks": {
+        "NCC": null,
+        "peak_margin": null,
+        "roundtrip_error_native": null
+      },
+      "missing_reason": ""
+    },
+    {
+      "frame_id": 1,
+      "anchor_frame": 0,
+      "method": "nearest-anchor independent native RGB translation",
+      "attempted_native_xywh": [
+        1218,
+        416,
+        38,
+        49
+      ],
+      "native_xywh": [
+        1218,
+        416,
+        38,
+        49
+      ],
+      "display_xywh": [
+        649,
+        221,
+        21,
+        27
+      ],
+      "localization_valid": true,
+      "checks": {
+        "NCC": 0.9761039614677429,
+        "peak_margin": 0.05719977617263794,
+        "reverse_NCC": 0.9761068820953369,
+        "roundtrip_error_native": 0.0
+      },
+      "missing_reason": ""
+    },
+    {
+      "frame_id": 2,
+      "anchor_frame": 0,
+      "method": "nearest-anchor independent native RGB translation",
+      "attempted_native_xywh": [
+        1207,
+        413,
+        38,
+        49
+      ],
+      "native_xywh": [
+        1207,
+        413,
+        38,
+        49
+      ],
+      "display_xywh": [
+        643,
+        220,
+        21,
+        27
+      ],
+      "localization_valid": true,
+      "checks": {
+        "NCC": 0.9659556150436401,
+        "peak_margin": 0.06266093254089355,
+        "reverse_NCC": 0.9692472219467163,
+        "roundtrip_error_native": 1.0
+      },
+      "missing_reason": ""
+    },
+    {
+      "frame_id": 3,
+      "anchor_frame": 0,
+      "method": "nearest-anchor independent native RGB translation",
+      "attempted_native_xywh": [
+        1195,
+        409,
+        38,
+        49
+      ],
+      "native_xywh": [
+        1195,
+        409,
+        38,
+        49
+      ],
+      "display_xywh": [
+        637,
+        218,
+        21,
+        27
+      ],
+      "localization_valid": true,
+      "checks": {
+        "NCC": 0.964032769203186,
+        "peak_margin": 0.0547940731048584,
+        "reverse_NCC": 0.964032769203186,
+        "roundtrip_error_native": 0.0
+      },
+      "missing_reason": ""
+    },
+    {
+      "frame_id": 4,
+      "anchor_frame": 6,
+      "method": "nearest-anchor independent native RGB translation",
+      "attempted_native_xywh": [
+        1186,
+        409,
+        35,
+        44
+      ],
+      "native_xywh": [
+        1186,
+        409,
+        35,
+        44
+      ],
+      "display_xywh": [
+        632,
+        218,
+        20,
+        24
+      ],
+      "localization_valid": true,
+      "checks": {
+        "NCC": 0.9817957878112793,
+        "peak_margin": 0.03899240493774414,
+        "reverse_NCC": 0.9817957878112793,
+        "roundtrip_error_native": 0.0
+      },
+      "missing_reason": ""
+    },
+    {
+      "frame_id": 5,
+      "anchor_frame": 6,
+      "method": "nearest-anchor independent native RGB translation",
+      "attempted_native_xywh": [
+        1174,
+        407,
+        35,
+        44
+      ],
+      "native_xywh": [
+        1174,
+        407,
+        35,
+        44
+      ],
+      "display_xywh": [
+        626,
+        217,
+        19,
+        24
+      ],
+      "localization_valid": true,
+      "checks": {
+        "NCC": 0.9864738583564758,
+        "peak_margin": 0.04385119676589966,
+        "reverse_NCC": 0.9864738583564758,
+        "roundtrip_error_native": 0.0
+      },
+      "missing_reason": ""
+    },
+    {
+      "frame_id": 6,
+      "anchor_frame": 6,
+      "method": "existing input-RGB neck anchor",
+      "attempted_native_xywh": [
+        1162,
+        403,
+        35,
+        44
+      ],
+      "native_xywh": [
+        1162,
+        403,
+        35,
+        44
+      ],
+      "display_xywh": [
+        619,
+        214,
+        20,
+        25
+      ],
+      "localization_valid": true,
+      "checks": {
+        "NCC": null,
+        "peak_margin": null,
+        "roundtrip_error_native": null
+      },
+      "missing_reason": ""
+    },
+    {
+      "frame_id": 7,
+      "anchor_frame": 6,
+      "method": "nearest-anchor independent native RGB translation",
+      "attempted_native_xywh": [
+        1150,
+        399,
+        35,
+        44
+      ],
+      "native_xywh": [
+        1150,
+        399,
+        35,
+        44
+      ],
+      "display_xywh": [
+        613,
+        212,
+        19,
+        25
+      ],
+      "localization_valid": true,
+      "checks": {
+        "NCC": 0.9882704615592957,
+        "peak_margin": 0.04915684461593628,
+        "reverse_NCC": 0.9882853031158447,
+        "roundtrip_error_native": 1.0
+      },
+      "missing_reason": ""
+    },
+    {
+      "frame_id": 8,
+      "anchor_frame": 6,
+      "method": "nearest-anchor independent native RGB translation",
+      "attempted_native_xywh": [
+        1138,
+        398,
+        35,
+        44
+      ],
+      "native_xywh": [
+        1138,
+        398,
+        35,
+        44
+      ],
+      "display_xywh": [
+        606,
+        212,
+        20,
+        24
+      ],
+      "localization_valid": true,
+      "checks": {
+        "NCC": 0.9862895011901855,
+        "peak_margin": 0.0428045392036438,
+        "reverse_NCC": 0.9862856268882751,
+        "roundtrip_error_native": 0.0
+      },
+      "missing_reason": ""
+    },
+    {
+      "frame_id": 9,
+      "anchor_frame": 6,
+      "method": "nearest-anchor independent native RGB translation",
+      "attempted_native_xywh": [
+        1127,
+        396,
+        35,
+        44
+      ],
+      "native_xywh": [
+        1127,
+        396,
+        35,
+        44
+      ],
+      "display_xywh": [
+        601,
+        211,
+        19,
+        24
+      ],
+      "localization_valid": true,
+      "checks": {
+        "NCC": 0.979417622089386,
+        "peak_margin": 0.04052019119262695,
+        "reverse_NCC": 0.9794204831123352,
+        "roundtrip_error_native": 0.0
+      },
+      "missing_reason": ""
+    },
+    {
+      "frame_id": 10,
+      "anchor_frame": 12,
+      "method": "nearest-anchor independent native RGB translation",
+      "attempted_native_xywh": [
+        1120,
+        420,
+        35,
+        44
+      ],
+      "native_xywh": [
+        1120,
+        420,
+        35,
+        44
+      ],
+      "display_xywh": [
+        597,
+        224,
+        19,
+        24
+      ],
+      "localization_valid": true,
+      "checks": {
+        "NCC": 0.9853641390800476,
+        "peak_margin": 0.14299166202545166,
+        "reverse_NCC": 0.985366702079773,
+        "roundtrip_error_native": 0.0
+      },
+      "missing_reason": ""
+    },
+    {
+      "frame_id": 11,
+      "anchor_frame": 12,
+      "method": "nearest-anchor independent native RGB translation",
+      "attempted_native_xywh": [
+        1110,
+        418,
+        35,
+        44
+      ],
+      "native_xywh": [
+        1110,
+        418,
+        35,
+        44
+      ],
+      "display_xywh": [
+        592,
+        222,
+        19,
+        25
+      ],
+      "localization_valid": true,
+      "checks": {
+        "NCC": 0.98891681432724,
+        "peak_margin": 0.14030301570892334,
+        "reverse_NCC": 0.9889234304428101,
+        "roundtrip_error_native": 0.0
+      },
+      "missing_reason": ""
+    },
+    {
+      "frame_id": 12,
+      "anchor_frame": 12,
+      "method": "existing input-RGB neck anchor",
+      "attempted_native_xywh": [
+        1098,
+        418,
+        35,
+        44
+      ],
+      "native_xywh": [
+        1098,
+        418,
+        35,
+        44
+      ],
+      "display_xywh": [
+        585,
+        222,
+        20,
+        25
+      ],
+      "localization_valid": true,
+      "checks": {
+        "NCC": null,
+        "peak_margin": null,
+        "roundtrip_error_native": null
+      },
+      "missing_reason": ""
+    },
+    {
+      "frame_id": 13,
+      "anchor_frame": 12,
+      "method": "nearest-anchor independent native RGB translation",
+      "attempted_native_xywh": [
+        1086,
+        418,
+        35,
+        44
+      ],
+      "native_xywh": [
+        1086,
+        418,
+        35,
+        44
+      ],
+      "display_xywh": [
+        579,
+        222,
+        19,
+        25
+      ],
+      "localization_valid": true,
+      "checks": {
+        "NCC": 0.9862461090087891,
+        "peak_margin": 0.1476193070411682,
+        "reverse_NCC": 0.9862478971481323,
+        "roundtrip_error_native": 0.0
+      },
+      "missing_reason": ""
+    },
+    {
+      "frame_id": 14,
+      "anchor_frame": 12,
+      "method": "nearest-anchor independent native RGB translation",
+      "attempted_native_xywh": [
+        1075,
+        417,
+        35,
+        44
+      ],
+      "native_xywh": [
+        1075,
+        417,
+        35,
+        44
+      ],
+      "display_xywh": [
+        573,
+        222,
+        19,
+        24
+      ],
+      "localization_valid": true,
+      "checks": {
+        "NCC": 0.9726700186729431,
+        "peak_margin": 0.15239828824996948,
+        "reverse_NCC": 0.9726670384407043,
+        "roundtrip_error_native": 0.0
+      },
+      "missing_reason": ""
+    },
+    {
+      "frame_id": 15,
+      "anchor_frame": 12,
+      "method": "nearest-anchor independent native RGB translation",
+      "attempted_native_xywh": [
+        1064,
+        416,
+        35,
+        44
+      ],
+      "native_xywh": [
+        1064,
+        416,
+        35,
+        44
+      ],
+      "display_xywh": [
+        567,
+        221,
+        20,
+        25
+      ],
+      "localization_valid": true,
+      "checks": {
+        "NCC": 0.9714467525482178,
+        "peak_margin": 0.1545613408088684,
+        "reverse_NCC": 0.9714467525482178,
+        "roundtrip_error_native": 0.0
+      },
+      "missing_reason": ""
+    },
+    {
+      "frame_id": 16,
+      "anchor_frame": 18,
+      "method": "nearest-anchor independent native RGB translation",
+      "attempted_native_xywh": [
+        1034,
+        416,
+        35,
+        44
+      ],
+      "native_xywh": [
+        1034,
+        416,
+        35,
+        44
+      ],
+      "display_xywh": [
+        551,
+        221,
+        20,
+        25
+      ],
+      "localization_valid": true,
+      "checks": {
+        "NCC": 0.9038472175598145,
+        "peak_margin": 0.4935758411884308,
+        "reverse_NCC": 0.9038540720939636,
+        "roundtrip_error_native": 0.0
+      },
+      "missing_reason": ""
+    },
+    {
+      "frame_id": 17,
+      "anchor_frame": 18,
+      "method": "nearest-anchor independent native RGB translation",
+      "attempted_native_xywh": [
+        1023,
+        416,
+        35,
+        44
+      ],
+      "native_xywh": [
+        1023,
+        416,
+        35,
+        44
+      ],
+      "display_xywh": [
+        545,
+        221,
+        20,
+        25
+      ],
+      "localization_valid": true,
+      "checks": {
+        "NCC": 0.9288917183876038,
+        "peak_margin": 0.49032896757125854,
+        "reverse_NCC": 0.9288781881332397,
+        "roundtrip_error_native": 0.0
+      },
+      "missing_reason": ""
+    },
+    {
+      "frame_id": 18,
+      "anchor_frame": 18,
+      "method": "existing input-RGB neck anchor",
+      "attempted_native_xywh": [
+        1012,
+        416,
+        35,
+        44
+      ],
+      "native_xywh": [
+        1012,
+        416,
+        35,
+        44
+      ],
+      "display_xywh": [
+        539,
+        221,
+        20,
+        25
+      ],
+      "localization_valid": true,
+      "checks": {
+        "NCC": null,
+        "peak_margin": null,
+        "roundtrip_error_native": null
+      },
+      "missing_reason": ""
+    },
+    {
+      "frame_id": 19,
+      "anchor_frame": 18,
+      "method": "nearest-anchor independent native RGB translation",
+      "attempted_native_xywh": [
+        1001,
+        416,
+        35,
+        44
+      ],
+      "native_xywh": [
+        1001,
+        416,
+        35,
+        44
+      ],
+      "display_xywh": [
+        533,
+        221,
+        20,
+        25
+      ],
+      "localization_valid": true,
+      "checks": {
+        "NCC": 0.9274083375930786,
+        "peak_margin": 0.5033390522003174,
+        "reverse_NCC": 0.9274051189422607,
+        "roundtrip_error_native": 0.0
+      },
+      "missing_reason": ""
+    },
+    {
+      "frame_id": 20,
+      "anchor_frame": 18,
+      "method": "nearest-anchor independent native RGB translation",
+      "attempted_native_xywh": [
+        991,
+        416,
+        35,
+        44
+      ],
+      "native_xywh": [
+        991,
+        416,
+        35,
+        44
+      ],
+      "display_xywh": [
+        528,
+        221,
+        20,
+        25
+      ],
+      "localization_valid": true,
+      "checks": {
+        "NCC": 0.8439076542854309,
+        "peak_margin": 0.44616442918777466,
+        "reverse_NCC": 0.8439076542854309,
+        "roundtrip_error_native": 0.0
+      },
+      "missing_reason": ""
+    },
+    {
+      "frame_id": 21,
+      "anchor_frame": 18,
+      "method": "nearest-anchor independent native RGB translation",
+      "attempted_native_xywh": [
+        984,
+        417,
+        35,
+        44
+      ],
+      "native_xywh": null,
+      "display_xywh": null,
+      "localization_valid": false,
+      "checks": {
+        "NCC": 0.695693850517273,
+        "peak_margin": 0.3391181230545044,
+        "reverse_NCC": 0.7282867431640625,
+        "roundtrip_error_native": 1.4142135623730951
+      },
+      "missing_reason": "NCC below fixed0.8"
+    },
+    {
+      "frame_id": 22,
+      "anchor_frame": 24,
+      "method": "nearest-anchor independent native RGB translation",
+      "attempted_native_xywh": [
+        984,
+        410,
+        34,
+        42
+      ],
+      "native_xywh": [
+        984,
+        410,
+        34,
+        42
+      ],
+      "display_xywh": [
+        524,
+        218,
+        19,
+        24
+      ],
+      "localization_valid": true,
+      "checks": {
+        "NCC": 0.9243146181106567,
+        "peak_margin": 0.4903302490711212,
+        "reverse_NCC": 0.9243146181106567,
+        "roundtrip_error_native": 0.0
+      },
+      "missing_reason": ""
+    },
+    {
+      "frame_id": 23,
+      "anchor_frame": 24,
+      "method": "nearest-anchor independent native RGB translation",
+      "attempted_native_xywh": [
+        978,
+        411,
+        34,
+        42
+      ],
+      "native_xywh": [
+        978,
+        411,
+        34,
+        42
+      ],
+      "display_xywh": [
+        521,
+        219,
+        19,
+        23
+      ],
+      "localization_valid": true,
+      "checks": {
+        "NCC": 0.9388423562049866,
+        "peak_margin": 0.5205235481262207,
+        "reverse_NCC": 0.9388315081596375,
+        "roundtrip_error_native": 0.0
+      },
+      "missing_reason": ""
+    },
+    {
+      "frame_id": 24,
+      "anchor_frame": 24,
+      "method": "existing input-RGB neck anchor",
+      "attempted_native_xywh": [
+        971,
+        412,
+        34,
+        42
+      ],
+      "native_xywh": [
+        971,
+        412,
+        34,
+        42
+      ],
+      "display_xywh": [
+        517,
+        219,
+        19,
+        24
+      ],
+      "localization_valid": true,
+      "checks": {
+        "NCC": null,
+        "peak_margin": null,
+        "roundtrip_error_native": null
+      },
+      "missing_reason": ""
+    }
+  ],
+  "selection_source": "RGB only; disparity and model predictions not read",
+  "visual_judgment": "No output quality judgement; executor localization still needs user confirmation."
+}

@@ -1,0 +1,58 @@
+{
+  "scene": "mallard-water",
+  "sample_id": "B36",
+  "stage": "input-selection-only; user confirmation required before inference",
+  "frames": 25,
+  "K": 16,
+  "author_commit": "f7a16959dd219080fb8eec0d32bb9602d8970c22",
+  "output": "outputs/any2bokeh-failure-analysis-20261009/B36-rule-b-selection-20261021",
+  "record_prefix": "03_实验记录/records/any2bokeh-B36-rule-b-20261021",
+  "reference": {
+    "anchor_config": "configs/any2bokeh-B33-B36-diagnostics-20261014.json",
+    "anchor_ROI_key": "neck_core",
+    "anchor_frames": [
+      0,
+      6,
+      12,
+      18,
+      24
+    ],
+    "selection": "Reuse existing input-RGB-localized neck boxes; executor diagnostic regions, not user-confirmed anatomical truth. No output inspection.",
+    "tracking": "Each non-keyframe independently matches the nearest RGB anchor (tie: earlier frame); native-resolution grayscale TM_CCOEFF_NORMED on the anchor neck rectangle. Translation only; no coordinate or disparity interpolation.",
+    "search_radius_native_xy": [
+      80,
+      40
+    ],
+    "min_NCC": 0.8,
+    "min_peak_margin_outside_3_native_pixels": 0.02,
+    "max_roundtrip_error_native_pixels": 3.0,
+    "min_reference_foreground_fraction": 0.75,
+    "min_valid_native_pixels": 256,
+    "reference_value": "Median original q/255 over neck rectangle intersect original DAVIS ID!=0 union, evaluated separately on each frame. Preserve fractional medians without an extra PNG8 quantization."
+  },
+  "candidate_rule": {
+    "revision": 1,
+    "saved_UTC": "2026-10-21T12:29:18.382714+00:00",
+    "distribution_evidence": "03_实验记录/records/any2bokeh-B36-rule-b-20261021-input-distributions.json",
+    "coordinate_system": "Original VDA/DAVIS1920x1080 pixel grid; d=q/255, normalized disparity, not metric depth.",
+    "test": "abs(d_t-r_t)>0.10 within original DAVIS ID!=0 union; strict greater-than; two-sided.",
+    "absolute_disparity_threshold": 0.1,
+    "connectivity": 8,
+    "min_component_native_pixels": 64,
+    "multiple_components": "Keep all qualifying components, including both higher/lower disparity sides; never select a winner.",
+    "max_total_subject_fraction": 0.25,
+    "too_large_policy": "If union of all size-qualified components exceeds25% of subject, skip entire frame. Retain raw candidate visualization and reasons.",
+    "morphology": "none",
+    "head_search_range": "none",
+    "temporal_smoothing": "none",
+    "hysteresis": "none",
+    "rationale": "Input-only abs-difference medians0.035-0.078, most95th percentiles0.13-0.18. A single round0.10 threshold targets a disparity tail rather than all subject pixels; it is not an error detector.64 native pixels removes tiny islands; a conservative quarter-subject cap prevents broad intervention. No threshold/area sweep or output-based selection.",
+    "failure_policy": "Invalid reference or empty candidates: retain original condition; no interpolation. No forced correction on all25 frames.",
+    "status": "single proposal for user selection review; no user approval and no ATB inference"
+  },
+  "missing_policy": "Failed localization, invalid reference, empty selection, or configured area limit: keep original condition on that frame; retain attempted location and exact reason. No interpolation, smoothing or hysteresis.",
+  "intervention_plan": "After user approval only: replace q by the same-frame neck reference within selected native pixels; construct CoC in original author order with original per-frame focus/K, transplant CoC only to all real source-frame occurrences; original MPI/RGB/padding/model/RNG/cache unchanged.",
+  "review_storage_key": "atb-B36-rule-b-input-selection-user-20261021",
+  "user_selection_confirmed": false,
+  "inference_started": false
+}
