@@ -1,0 +1,23 @@
+{
+  "scene": "mallard-water",
+  "sample_id": "B36",
+  "label": "人工辅助末段诊断 R2",
+  "frames": 25,
+  "K": 16,
+  "approval_record": "03_实验记录/records/any2bokeh-B36-rule-b-tail-20261021-user-review.json",
+  "prior_config": "configs/any2bokeh-B36-rule-b-inference-20261021.json",
+  "tail_config": "configs/any2bokeh-B36-rule-b-tail-20261021.json",
+  "tail_proposal": "03_实验记录/records/any2bokeh-B36-rule-b-tail-20261021-pending-control.json",
+  "output": "outputs/any2bokeh-failure-analysis-20261009/B36-rule-b-R2-20261021",
+  "record_prefix": "03_实验记录/records/any2bokeh-B36-rule-b-R2-20261021",
+  "conditions": ["rule_b"],
+  "condition_labels": {"native": "A（复用）", "revision1": "R1（复用）", "rule_b": "R2（人工辅助末段诊断）"},
+  "worker_alias": "Reuse the unchanged run_b36_rule_b.worker with condition key rule_b. In THIS new directory only, rule_b_coc and rule_b/ denote R2. Original R1 files stay read-only at prior_config.output/rule_b/.",
+  "intervention": "Clone saved R1 float CoC. Keep every real source0-20 and padding slot bitwise equal. Only source21-24: original q within APPROVED saved pink mask is replaced by same-frame neck q159/159/159/160, original focus/K and author abs->resize bilinear antialias->Normalize order; transplant CoC to every real occurrence. Original RGB/MPI/K/weights/windows/RNG/cache/precision unchanged.",
+  "common_regions_before_output": "All25 frames, one fixed input-defined support per region shared by A/A-repeat/R1/R2: target_head uses prior selected HIGH side on0-20 and approved pink mask on21-24; head_context is separate mixed rectangle; neck uses prior reference0-20 and approved same-frame orange box intersect subject21-24; body_non_target uses existing RGB-localized body core minus common target; water_near/far reuse existing supports; background_all is complement of original nearest-projected union. No condition-specific empty-vs-nonempty region comparison.",
+  "metrics": "Reuse RGB8 MAE vs input and full-image Sobel3x3 energy ratio on3x3-eroded support; response float/RGB8 differences vs R1 and A-repeat noise per region and frame. No paired bokeh GT; no quality verdict. Temporal18->24 on pair unions of target_head and mixed head_context, no motion compensation; region change, not flicker.",
+  "keyframes": [0, 8, 16, 18, 19, 20, 21, 22, 23, 24],
+  "review_storage_key": "atb-B36-rule-b-R2-output-user-20261021",
+  "additional_preserved_keys": ["atb-B36-rule-b-input-selection-user-20261021", "atb-B36-rule-b-output-user-20261021", "atb-B36-rule-b-tail-input-user-20261021"],
+  "scope": "One approved R2 inference only; reuse verified A/R1 and A-repeat, no other cases or tuning. All new perceptual conclusions await user review. No PPT or formal-table changes."
+}

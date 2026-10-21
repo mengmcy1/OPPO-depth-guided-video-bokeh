@@ -102,8 +102,13 @@ def main():
     assert js("JSON.parse(document.getElementById('atb-viewer').dataset.roi)")==expected
     assert js("[...document.querySelectorAll('.atb-crop canvas')].map(x=>JSON.parse(x.dataset.roi))")==[expected]*panels
     frame(21)
-    assert js("document.getElementById('atb-viewer').dataset.roi")=='null'
-    assert js("[...document.querySelectorAll('.atb-crop')].every(x=>x.hidden)")
+    neck21=next(x for x in item['tracked_rois'] if x['id']=='neck')['xywh_by_frame']['21']
+    if neck21 is None:
+        assert js("document.getElementById('atb-viewer').dataset.roi")=='null'
+        assert js("[...document.querySelectorAll('.atb-crop')].every(x=>x.hidden)")
+    else:
+        assert js("JSON.parse(document.getElementById('atb-viewer').dataset.roi)")==neck21
+        assert js("[...document.querySelectorAll('.atb-crop canvas')].map(x=>JSON.parse(x.dataset.roi))")==[neck21]*panels
     frame(12);js("document.querySelector('[data-mode=adjacent]').click()")
     wait("document.getElementById('atb-viewer').dataset.mode==='adjacent' && document.getElementById('frame-status').textContent.includes('PNG同步完成')")
     values=js("[...document.querySelectorAll('.atb-frame-image')].map(x=>Number(x.dataset.frame))")
@@ -160,7 +165,8 @@ def main():
     checks.update(HTTP_resources=len(urls),all_HTTP_200=True,HTTP_base=base,
         browser=dict(version=version['product'],private_profile=True,GPU_disabled=True,
             synchronized_frames=25,panels=panels,speed_buttons=True,adjacent_frame_pair=[11,12],
-            keyboard_navigation=True,moving_ROI=True,missing_ROI_frame21_remains_empty=True,
+            keyboard_navigation=True,moving_ROI=True,missing_ROI_frame21_remains_empty=neck21 is None,
+            frame21_ROI_matches_declared_input_policy=True,
             manual_synchronized_ROI=True,crop_pixel_differences=crop_differences,native_size_control=True,
             context_transfer=True,form_save_reload_export=True,old_keys_preserved=True,JS_exceptions=0,
             simulated_feedback_only_in_private_profile=True),
