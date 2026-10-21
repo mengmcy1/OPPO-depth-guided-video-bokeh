@@ -1,0 +1,3152 @@
+{
+  "created_UTC": "2026-10-21T14:29:00.900772+00:00",
+  "status": "诊断材料已准备，等待用户确认参考位置与末段局部对照",
+  "scene": "mallard-water",
+  "sample_id": "B36",
+  "source_group": "DAVIS:mallard-water",
+  "split": "exploration",
+  "frames": [
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24
+  ],
+  "config": {
+    "scene": "mallard-water",
+    "sample_id": "B36",
+    "output": "outputs/any2bokeh-failure-analysis-20261009/B36-late-input-diagnosis-20261021",
+    "record_prefix": "03_实验记录/records/any2bokeh-B36-rule-b-tail-20261021",
+    "selection_config": "configs/any2bokeh-B36-rule-b-20261021.json",
+    "inference_config": "configs/any2bokeh-B36-rule-b-inference-20261021.json",
+    "focus_frames": [
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24
+    ],
+    "diagnostic_anchor_frames": [
+      18,
+      24
+    ],
+    "reference_comparison": "Independently propagate each EXISTING RGB anchor to each focus frame using unchanged search/NCC/margin/roundtrip thresholds; save all attempts, including failures. A successful RGB match is not anatomical confirmation. No new hand-picked reference boxes or selection by disparity/cap/output.",
+    "sensitivity": "On each ORIGINAL frame, hold q and union fixed: compare each same-frame dual-anchor reference and historical frame20 reference as a named scalar probe. Failed-localization attempts are diagnostic-only. No probe is adopted because it passes the area cap. Historical frame20 scalar is not a same-frame reference or truth.",
+    "spatial_proxies": "Per component, separately count overlap with pre-existing input-defined head_context rectangle (mixed head/neck/background), body_core rectangle, and <=5-native-pixel subject boundary. Counts overlap and are not an anatomical partition. Component bbox/ID overlays allow user localization.",
+    "pending_control": {
+      "label": "人工辅助末段诊断；待用户确认，不是revision1自动通过",
+      "reference": "For source21 use existing anchor24 independently matched to source21, contingent on fixed RGB checks and user confirmation. For22-24 retain current same-frame reference boxes. No copied frame20 scalar or coordinates.",
+      "late_mask": "For21-24 only, intersect the existing input-defined head_context rectangle and original subject union with HIGH-side pixels of the SAME two-sided,8-connected,min64 eligible components at abs(d-r)>0.10. Save this one proposal for user confirmation, including whether it covers the intended head. Retain <=25% cap; never raise it. No morphology/smoothing/CoC=0.",
+      "R2_0_20": "Must later be bitwise equal to saved R1 CoC, if inference is approved.",
+      "common_evaluation": "Before inference freeze proposed late high-side mask as a common INPUT-defined target support for A/R1/R2, separately from a full mixed head_context rectangle; neck reference, body_core excluding that fixed proposed target, near/far water use identical supports for all conditions. Not R1-empty vs R2-nonempty treatment masks. Head mask purity and reference anatomy require user confirmation.",
+      "approved": false,
+      "inference_started": false
+    },
+    "review_storage_key": "atb-B36-rule-b-tail-input-user-20261021",
+    "additional_preserved_keys": [
+      "atb-B36-rule-b-input-selection-user-20261021",
+      "atb-B36-rule-b-output-user-20261021"
+    ],
+    "scope": "CPU input diagnosis only. Preserve revision1 and all original inputs/predictions. No model loading, no new CoC inference, no PPT/formal-table changes. Stop for user confirmation."
+  },
+  "rows": [
+    {
+      "frame_id": 18,
+      "current_anchor": 18,
+      "current_native_xywh": [
+        1012,
+        416,
+        35,
+        44
+      ],
+      "current_RGB_checks": {
+        "NCC": null,
+        "peak_margin": null,
+        "roundtrip_error_native": null
+      },
+      "current_reference_valid": true,
+      "current_reference_q": 152.0,
+      "current_reference_d": 0.596078431372549,
+      "current_reference_d_distribution": {
+        "p10": 0.5843137502670288,
+        "p50": 0.5960784554481506,
+        "p90": 0.615686297416687,
+        "minimum": 0.45490196347236633,
+        "maximum": 0.6274510025978088,
+        "pixels": 1540
+      },
+      "invalid_attempt_box_d_distribution": null,
+      "focus": 0.58465,
+      "subject_pixels": 106148,
+      "subject_d_distribution": {
+        "p10": 0.5176470875740051,
+        "p50": 0.5686274766921997,
+        "p90": 0.7176470756530762,
+        "minimum": 0.11764705926179886,
+        "maximum": 0.7764706015586853,
+        "pixels": 106148
+      },
+      "raw_high_pixels": 11652,
+      "raw_low_pixels": 3437,
+      "eligible_high_pixels": 11652,
+      "eligible_low_pixels": 3332,
+      "eligible_pixels": 14984,
+      "eligible_fraction_subject": 0.14116139729434374,
+      "retained_component_count": 9,
+      "selected_pixels": 14984,
+      "skip_reason": "",
+      "low_side_body_core_overlap": 0,
+      "low_side_head_context_overlap": 970,
+      "low_side_boundary_overlap": 2282,
+      "head_context_display_xywh": [
+        510,
+        106,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        416,
+        241,
+        52,
+        26
+      ],
+      "components": [
+        {
+          "frame_id": 18,
+          "component_id": 1,
+          "native_xywh": [
+            1008,
+            241,
+            150,
+            158
+          ],
+          "pixels": 11736,
+          "high_pixels": 11652,
+          "low_pixels": 84,
+          "head_context_overlap": 11736,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 1716,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 18,
+          "component_id": 2,
+          "native_xywh": [
+            609,
+            298,
+            62,
+            36
+          ],
+          "pixels": 186,
+          "high_pixels": 0,
+          "low_pixels": 186,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 186,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 18,
+          "component_id": 15,
+          "native_xywh": [
+            554,
+            358,
+            97,
+            8
+          ],
+          "pixels": 235,
+          "high_pixels": 0,
+          "low_pixels": 235,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 235,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 18,
+          "component_id": 17,
+          "native_xywh": [
+            496,
+            362,
+            30,
+            24
+          ],
+          "pixels": 144,
+          "high_pixels": 0,
+          "low_pixels": 144,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 144,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 18,
+          "component_id": 18,
+          "native_xywh": [
+            764,
+            364,
+            247,
+            75
+          ],
+          "pixels": 2017,
+          "high_pixels": 0,
+          "low_pixels": 2017,
+          "head_context_overlap": 886,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 996,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 18,
+          "component_id": 21,
+          "native_xywh": [
+            556,
+            372,
+            67,
+            12
+          ],
+          "pixels": 282,
+          "high_pixels": 0,
+          "low_pixels": 282,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 253,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 18,
+          "component_id": 22,
+          "native_xywh": [
+            500,
+            387,
+            51,
+            52
+          ],
+          "pixels": 192,
+          "high_pixels": 0,
+          "low_pixels": 192,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 192,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 18,
+          "component_id": 27,
+          "native_xywh": [
+            552,
+            439,
+            25,
+            15
+          ],
+          "pixels": 93,
+          "high_pixels": 0,
+          "low_pixels": 93,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 93,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 18,
+          "component_id": 31,
+          "native_xywh": [
+            1109,
+            506,
+            13,
+            32
+          ],
+          "pixels": 99,
+          "high_pixels": 0,
+          "low_pixels": 99,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 99,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        }
+      ],
+      "dual_anchor_attempts": [
+        {
+          "frame_id": 18,
+          "anchor_frame": 18,
+          "native_xywh": [
+            1012,
+            416,
+            35,
+            44
+          ],
+          "RGB_checks": {
+            "NCC": null,
+            "peak_margin": null,
+            "roundtrip_error_native": null
+          },
+          "RGB_matching_passed": true,
+          "failure_reason": "",
+          "anatomical_confirmation": "待用户确认",
+          "valid_pixels": 1540,
+          "foreground_fraction": 1.0,
+          "reference_d_distribution": {
+            "p10": 0.5843137502670288,
+            "p50": 0.5960784554481506,
+            "p90": 0.615686297416687,
+            "minimum": 0.45490196347236633,
+            "maximum": 0.6274510025978088,
+            "pixels": 1540
+          },
+          "reference_q_median": 152.0,
+          "reference_disparity": 0.596078431372549,
+          "program_reference_valid": true,
+          "adopted": false
+        },
+        {
+          "frame_id": 18,
+          "anchor_frame": 24,
+          "native_xywh": [
+            1021,
+            406,
+            34,
+            42
+          ],
+          "RGB_checks": {
+            "NCC": 0.8676400184631348,
+            "peak_margin": 0.38012585043907166,
+            "reverse_NCC": 0.867644190788269,
+            "roundtrip_error_native": 0.0
+          },
+          "RGB_matching_passed": true,
+          "failure_reason": "",
+          "anatomical_confirmation": "待用户确认",
+          "valid_pixels": 1428,
+          "foreground_fraction": 1.0,
+          "reference_d_distribution": {
+            "p10": 0.5960784554481506,
+            "p50": 0.6117647290229797,
+            "p90": 0.6274510025978088,
+            "minimum": 0.5882353186607361,
+            "maximum": 0.6392157077789307,
+            "pixels": 1428
+          },
+          "reference_q_median": 156.0,
+          "reference_disparity": 0.611764705882353,
+          "program_reference_valid": true,
+          "adopted": false
+        }
+      ]
+    },
+    {
+      "frame_id": 19,
+      "current_anchor": 18,
+      "current_native_xywh": [
+        1001,
+        416,
+        35,
+        44
+      ],
+      "current_RGB_checks": {
+        "NCC": 0.9274083375930786,
+        "peak_margin": 0.5033390522003174,
+        "reverse_NCC": 0.9274051189422607,
+        "roundtrip_error_native": 0.0
+      },
+      "current_reference_valid": true,
+      "current_reference_q": 154.0,
+      "current_reference_d": 0.6039215686274509,
+      "current_reference_d_distribution": {
+        "p10": 0.5882353186607361,
+        "p50": 0.6039215922355652,
+        "p90": 0.6235294342041016,
+        "minimum": 0.43921568989753723,
+        "maximum": 0.6313725709915161,
+        "pixels": 1536
+      },
+      "invalid_attempt_box_d_distribution": null,
+      "focus": 0.58506,
+      "subject_pixels": 106213,
+      "subject_d_distribution": {
+        "p10": 0.5176470875740051,
+        "p50": 0.5686274766921997,
+        "p90": 0.7254902124404907,
+        "minimum": 0.125490203499794,
+        "maximum": 0.7843137383460999,
+        "pixels": 106213
+      },
+      "raw_high_pixels": 11730,
+      "raw_low_pixels": 5242,
+      "eligible_high_pixels": 11730,
+      "eligible_low_pixels": 5119,
+      "eligible_pixels": 16849,
+      "eligible_fraction_subject": 0.15863406550987166,
+      "retained_component_count": 8,
+      "selected_pixels": 16849,
+      "skip_reason": "",
+      "low_side_body_core_overlap": 0,
+      "low_side_head_context_overlap": 1305,
+      "low_side_boundary_overlap": 2643,
+      "head_context_display_xywh": [
+        510,
+        105,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        411,
+        241,
+        52,
+        25
+      ],
+      "components": [
+        {
+          "frame_id": 19,
+          "component_id": 1,
+          "native_xywh": [
+            991,
+            240,
+            156,
+            159
+          ],
+          "pixels": 11878,
+          "high_pixels": 11730,
+          "low_pixels": 148,
+          "head_context_overlap": 11878,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 1747,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 19,
+          "component_id": 4,
+          "native_xywh": [
+            609,
+            293,
+            62,
+            31
+          ],
+          "pixels": 179,
+          "high_pixels": 0,
+          "low_pixels": 179,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 179,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 19,
+          "component_id": 10,
+          "native_xywh": [
+            552,
+            353,
+            95,
+            7
+          ],
+          "pixels": 292,
+          "high_pixels": 0,
+          "low_pixels": 292,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 289,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 19,
+          "component_id": 11,
+          "native_xywh": [
+            496,
+            357,
+            15,
+            22
+          ],
+          "pixels": 76,
+          "high_pixels": 0,
+          "low_pixels": 76,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 76,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 19,
+          "component_id": 14,
+          "native_xywh": [
+            774,
+            363,
+            228,
+            82
+          ],
+          "pixels": 3279,
+          "high_pixels": 0,
+          "low_pixels": 3279,
+          "head_context_overlap": 1157,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 1006,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 19,
+          "component_id": 15,
+          "native_xywh": [
+            545,
+            364,
+            71,
+            15
+          ],
+          "pixels": 391,
+          "high_pixels": 0,
+          "low_pixels": 391,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 319,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 19,
+          "component_id": 16,
+          "native_xywh": [
+            497,
+            381,
+            96,
+            77
+          ],
+          "pixels": 661,
+          "high_pixels": 0,
+          "low_pixels": 661,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 533,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 19,
+          "component_id": 28,
+          "native_xywh": [
+            1099,
+            509,
+            13,
+            30
+          ],
+          "pixels": 93,
+          "high_pixels": 0,
+          "low_pixels": 93,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 93,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        }
+      ],
+      "dual_anchor_attempts": [
+        {
+          "frame_id": 19,
+          "anchor_frame": 18,
+          "native_xywh": [
+            1001,
+            416,
+            35,
+            44
+          ],
+          "RGB_checks": {
+            "NCC": 0.9274083375930786,
+            "peak_margin": 0.5033390522003174,
+            "reverse_NCC": 0.9274051189422607,
+            "roundtrip_error_native": 0.0
+          },
+          "RGB_matching_passed": true,
+          "failure_reason": "",
+          "anatomical_confirmation": "待用户确认",
+          "valid_pixels": 1536,
+          "foreground_fraction": 0.9974025974025974,
+          "reference_d_distribution": {
+            "p10": 0.5882353186607361,
+            "p50": 0.6039215922355652,
+            "p90": 0.6235294342041016,
+            "minimum": 0.43921568989753723,
+            "maximum": 0.6313725709915161,
+            "pixels": 1536
+          },
+          "reference_q_median": 154.0,
+          "reference_disparity": 0.6039215686274509,
+          "program_reference_valid": true,
+          "adopted": false
+        },
+        {
+          "frame_id": 19,
+          "anchor_frame": 24,
+          "native_xywh": [
+            1010,
+            406,
+            34,
+            42
+          ],
+          "RGB_checks": {
+            "NCC": 0.8875090479850769,
+            "peak_margin": 0.40363821387290955,
+            "reverse_NCC": 0.8875153064727783,
+            "roundtrip_error_native": 0.0
+          },
+          "RGB_matching_passed": true,
+          "failure_reason": "",
+          "anatomical_confirmation": "待用户确认",
+          "valid_pixels": 1428,
+          "foreground_fraction": 1.0,
+          "reference_d_distribution": {
+            "p10": 0.6039215922355652,
+            "p50": 0.6196078658103943,
+            "p90": 0.6352941393852234,
+            "minimum": 0.5921568870544434,
+            "maximum": 0.6431372761726379,
+            "pixels": 1428
+          },
+          "reference_q_median": 158.0,
+          "reference_disparity": 0.6196078431372549,
+          "program_reference_valid": true,
+          "adopted": false
+        }
+      ]
+    },
+    {
+      "frame_id": 20,
+      "current_anchor": 18,
+      "current_native_xywh": [
+        991,
+        416,
+        35,
+        44
+      ],
+      "current_RGB_checks": {
+        "NCC": 0.8439076542854309,
+        "peak_margin": 0.44616442918777466,
+        "reverse_NCC": 0.8439076542854309,
+        "roundtrip_error_native": 0.0
+      },
+      "current_reference_valid": true,
+      "current_reference_q": 154.0,
+      "current_reference_d": 0.6039215686274509,
+      "current_reference_d_distribution": {
+        "p10": 0.5921568870544434,
+        "p50": 0.6039215922355652,
+        "p90": 0.6274510025978088,
+        "minimum": 0.5568627715110779,
+        "maximum": 0.6392157077789307,
+        "pixels": 1527
+      },
+      "invalid_attempt_box_d_distribution": null,
+      "focus": 0.58363,
+      "subject_pixels": 105786,
+      "subject_d_distribution": {
+        "p10": 0.5137255191802979,
+        "p50": 0.5647059082984924,
+        "p90": 0.729411780834198,
+        "minimum": 0.11372549086809158,
+        "maximum": 0.7921568751335144,
+        "pixels": 105786
+      },
+      "raw_high_pixels": 11917,
+      "raw_low_pixels": 6737,
+      "eligible_high_pixels": 11917,
+      "eligible_low_pixels": 6521,
+      "eligible_pixels": 18438,
+      "eligible_fraction_subject": 0.17429527536725087,
+      "retained_component_count": 6,
+      "selected_pixels": 18438,
+      "skip_reason": "",
+      "low_side_body_core_overlap": 0,
+      "low_side_head_context_overlap": 1151,
+      "low_side_boundary_overlap": 2649,
+      "head_context_display_xywh": [
+        508,
+        105,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        407,
+        240,
+        52,
+        26
+      ],
+      "components": [
+        {
+          "frame_id": 20,
+          "component_id": 1,
+          "native_xywh": [
+            982,
+            240,
+            155,
+            160
+          ],
+          "pixels": 12089,
+          "high_pixels": 11917,
+          "low_pixels": 172,
+          "head_context_overlap": 12089,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 1686,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 20,
+          "component_id": 2,
+          "native_xywh": [
+            610,
+            289,
+            41,
+            18
+          ],
+          "pixels": 131,
+          "high_pixels": 0,
+          "low_pixels": 131,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 129,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 20,
+          "component_id": 7,
+          "native_xywh": [
+            552,
+            348,
+            92,
+            11
+          ],
+          "pixels": 297,
+          "high_pixels": 0,
+          "low_pixels": 297,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 261,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 20,
+          "component_id": 9,
+          "native_xywh": [
+            493,
+            351,
+            107,
+            108
+          ],
+          "pixels": 2011,
+          "high_pixels": 0,
+          "low_pixels": 2011,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 771,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 20,
+          "component_id": 11,
+          "native_xywh": [
+            533,
+            358,
+            92,
+            16
+          ],
+          "pixels": 380,
+          "high_pixels": 0,
+          "low_pixels": 380,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 359,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 20,
+          "component_id": 14,
+          "native_xywh": [
+            773,
+            362,
+            217,
+            82
+          ],
+          "pixels": 3530,
+          "high_pixels": 0,
+          "low_pixels": 3530,
+          "head_context_overlap": 979,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 957,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        }
+      ],
+      "dual_anchor_attempts": [
+        {
+          "frame_id": 20,
+          "anchor_frame": 18,
+          "native_xywh": [
+            991,
+            416,
+            35,
+            44
+          ],
+          "RGB_checks": {
+            "NCC": 0.8439076542854309,
+            "peak_margin": 0.44616442918777466,
+            "reverse_NCC": 0.8439076542854309,
+            "roundtrip_error_native": 0.0
+          },
+          "RGB_matching_passed": true,
+          "failure_reason": "",
+          "anatomical_confirmation": "待用户确认",
+          "valid_pixels": 1527,
+          "foreground_fraction": 0.9915584415584415,
+          "reference_d_distribution": {
+            "p10": 0.5921568870544434,
+            "p50": 0.6039215922355652,
+            "p90": 0.6274510025978088,
+            "minimum": 0.5568627715110779,
+            "maximum": 0.6392157077789307,
+            "pixels": 1527
+          },
+          "reference_q_median": 154.0,
+          "reference_disparity": 0.6039215686274509,
+          "program_reference_valid": true,
+          "adopted": false
+        },
+        {
+          "frame_id": 20,
+          "anchor_frame": 24,
+          "native_xywh": [
+            999,
+            407,
+            34,
+            42
+          ],
+          "RGB_checks": {
+            "NCC": 0.8866266012191772,
+            "peak_margin": 0.4117365777492523,
+            "reverse_NCC": 0.8866223096847534,
+            "roundtrip_error_native": 0.0
+          },
+          "RGB_matching_passed": true,
+          "failure_reason": "",
+          "anatomical_confirmation": "待用户确认",
+          "valid_pixels": 1428,
+          "foreground_fraction": 1.0,
+          "reference_d_distribution": {
+            "p10": 0.6039215922355652,
+            "p50": 0.6196078658103943,
+            "p90": 0.6392157077789307,
+            "minimum": 0.5921568870544434,
+            "maximum": 0.6470588445663452,
+            "pixels": 1428
+          },
+          "reference_q_median": 158.0,
+          "reference_disparity": 0.6196078431372549,
+          "program_reference_valid": true,
+          "adopted": false
+        }
+      ]
+    },
+    {
+      "frame_id": 21,
+      "current_anchor": 18,
+      "current_native_xywh": [
+        984,
+        417,
+        35,
+        44
+      ],
+      "current_RGB_checks": {
+        "NCC": 0.695693850517273,
+        "peak_margin": 0.3391181230545044,
+        "reverse_NCC": 0.7282867431640625,
+        "roundtrip_error_native": 1.4142135623730951
+      },
+      "current_reference_valid": false,
+      "current_reference_q": null,
+      "current_reference_d": null,
+      "current_reference_d_distribution": null,
+      "invalid_attempt_box_d_distribution": {
+        "p10": 0.5909804105758667,
+        "p50": 0.6078431606292725,
+        "p90": 0.6274510025978088,
+        "minimum": 0.45490196347236633,
+        "maximum": 0.6431372761726379,
+        "pixels": 1528
+      },
+      "focus": 0.58568,
+      "subject_pixels": 105037,
+      "subject_d_distribution": {
+        "p10": 0.5137255191802979,
+        "p50": 0.5647059082984924,
+        "p90": 0.7450980544090271,
+        "minimum": 0.11372549086809158,
+        "maximum": 0.800000011920929,
+        "pixels": 105037
+      },
+      "raw_high_pixels": null,
+      "raw_low_pixels": null,
+      "eligible_high_pixels": null,
+      "eligible_low_pixels": null,
+      "eligible_pixels": null,
+      "eligible_fraction_subject": null,
+      "retained_component_count": null,
+      "selected_pixels": 0,
+      "skip_reason": "NCC below fixed0.8",
+      "low_side_body_core_overlap": null,
+      "low_side_head_context_overlap": null,
+      "low_side_boundary_overlap": null,
+      "head_context_display_xywh": [
+        509,
+        105,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        404,
+        240,
+        51,
+        25
+      ],
+      "components": [],
+      "dual_anchor_attempts": [
+        {
+          "frame_id": 21,
+          "anchor_frame": 18,
+          "native_xywh": [
+            984,
+            417,
+            35,
+            44
+          ],
+          "RGB_checks": {
+            "NCC": 0.695693850517273,
+            "peak_margin": 0.3391181230545044,
+            "reverse_NCC": 0.7282867431640625,
+            "roundtrip_error_native": 1.4142135623730951
+          },
+          "RGB_matching_passed": false,
+          "failure_reason": "NCC below0.8",
+          "anatomical_confirmation": "待用户确认",
+          "valid_pixels": 1528,
+          "foreground_fraction": 0.9922077922077922,
+          "reference_d_distribution": {
+            "p10": 0.5909804105758667,
+            "p50": 0.6078431606292725,
+            "p90": 0.6274510025978088,
+            "minimum": 0.45490196347236633,
+            "maximum": 0.6431372761726379,
+            "pixels": 1528
+          },
+          "reference_q_median": 155.0,
+          "reference_disparity": 0.6078431372549019,
+          "program_reference_valid": false,
+          "adopted": false
+        },
+        {
+          "frame_id": 21,
+          "anchor_frame": 24,
+          "native_xywh": [
+            992,
+            408,
+            34,
+            42
+          ],
+          "RGB_checks": {
+            "NCC": 0.9315577149391174,
+            "peak_margin": 0.4701211452484131,
+            "reverse_NCC": 0.9315535426139832,
+            "roundtrip_error_native": 0.0
+          },
+          "RGB_matching_passed": true,
+          "failure_reason": "",
+          "anatomical_confirmation": "待用户确认",
+          "valid_pixels": 1428,
+          "foreground_fraction": 1.0,
+          "reference_d_distribution": {
+            "p10": 0.6078431606292725,
+            "p50": 0.6235294342041016,
+            "p90": 0.6431372761726379,
+            "minimum": 0.5960784554481506,
+            "maximum": 0.6549019813537598,
+            "pixels": 1428
+          },
+          "reference_q_median": 159.0,
+          "reference_disparity": 0.6235294117647059,
+          "program_reference_valid": true,
+          "adopted": false
+        }
+      ]
+    },
+    {
+      "frame_id": 22,
+      "current_anchor": 24,
+      "current_native_xywh": [
+        984,
+        410,
+        34,
+        42
+      ],
+      "current_RGB_checks": {
+        "NCC": 0.9243146181106567,
+        "peak_margin": 0.4903302490711212,
+        "reverse_NCC": 0.9243146181106567,
+        "roundtrip_error_native": 0.0
+      },
+      "current_reference_valid": true,
+      "current_reference_q": 159.0,
+      "current_reference_d": 0.6235294117647059,
+      "current_reference_d_distribution": {
+        "p10": 0.6039215922355652,
+        "p50": 0.6235294342041016,
+        "p90": 0.6431372761726379,
+        "minimum": 0.5921568870544434,
+        "maximum": 0.6509804129600525,
+        "pixels": 1428
+      },
+      "invalid_attempt_box_d_distribution": null,
+      "focus": 0.58391,
+      "subject_pixels": 104840,
+      "subject_d_distribution": {
+        "p10": 0.5098039507865906,
+        "p50": 0.5647059082984924,
+        "p90": 0.7450980544090271,
+        "minimum": 0.10588235408067703,
+        "maximum": 0.8039215803146362,
+        "pixels": 104840
+      },
+      "raw_high_pixels": 11626,
+      "raw_low_pixels": 18179,
+      "eligible_high_pixels": 11626,
+      "eligible_low_pixels": 18064,
+      "eligible_pixels": 29690,
+      "eligible_fraction_subject": 0.2831934376192293,
+      "retained_component_count": 7,
+      "selected_pixels": 0,
+      "skip_reason": "eligible total exceeds25% of subject; entire frame skipped",
+      "low_side_body_core_overlap": 0,
+      "low_side_head_context_overlap": 4469,
+      "low_side_boundary_overlap": 5423,
+      "head_context_display_xywh": [
+        479,
+        101,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        420,
+        248,
+        51,
+        25
+      ],
+      "components": [
+        {
+          "frame_id": 22,
+          "component_id": 1,
+          "native_xywh": [
+            967,
+            241,
+            156,
+            161
+          ],
+          "pixels": 11827,
+          "high_pixels": 11626,
+          "low_pixels": 201,
+          "head_context_overlap": 11827,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 1682,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 22,
+          "component_id": 14,
+          "native_xywh": [
+            681,
+            324,
+            64,
+            31
+          ],
+          "pixels": 129,
+          "high_pixels": 0,
+          "low_pixels": 129,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 129,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 22,
+          "component_id": 19,
+          "native_xywh": [
+            551,
+            340,
+            94,
+            19
+          ],
+          "pixels": 903,
+          "high_pixels": 0,
+          "low_pixels": 903,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 836,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 22,
+          "component_id": 21,
+          "native_xywh": [
+            496,
+            343,
+            152,
+            138
+          ],
+          "pixels": 7009,
+          "high_pixels": 0,
+          "low_pixels": 7009,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 1669,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 22,
+          "component_id": 24,
+          "native_xywh": [
+            767,
+            359,
+            212,
+            104
+          ],
+          "pixels": 7533,
+          "high_pixels": 0,
+          "low_pixels": 7533,
+          "head_context_overlap": 4268,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 1077,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 22,
+          "component_id": 36,
+          "native_xywh": [
+            1020,
+            500,
+            70,
+            72
+          ],
+          "pixels": 671,
+          "high_pixels": 0,
+          "low_pixels": 671,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 460,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 22,
+          "component_id": 38,
+          "native_xywh": [
+            712,
+            510,
+            239,
+            67
+          ],
+          "pixels": 1618,
+          "high_pixels": 0,
+          "low_pixels": 1618,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 1051,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        }
+      ],
+      "dual_anchor_attempts": [
+        {
+          "frame_id": 22,
+          "anchor_frame": 18,
+          "native_xywh": [
+            977,
+            419,
+            35,
+            44
+          ],
+          "RGB_checks": {
+            "NCC": 0.49088016152381897,
+            "peak_margin": 0.08265846967697144,
+            "reverse_NCC": 0.6758805513381958,
+            "roundtrip_error_native": 6.324555320336759
+          },
+          "RGB_matching_passed": false,
+          "failure_reason": "NCC below0.8; roundtrip above3",
+          "anatomical_confirmation": "待用户确认",
+          "valid_pixels": 1527,
+          "foreground_fraction": 0.9915584415584415,
+          "reference_d_distribution": {
+            "p10": 0.5882353186607361,
+            "p50": 0.6078431606292725,
+            "p90": 0.6274510025978088,
+            "minimum": 0.43529412150382996,
+            "maximum": 0.6392157077789307,
+            "pixels": 1527
+          },
+          "reference_q_median": 155.0,
+          "reference_disparity": 0.6078431372549019,
+          "program_reference_valid": false,
+          "adopted": false
+        },
+        {
+          "frame_id": 22,
+          "anchor_frame": 24,
+          "native_xywh": [
+            984,
+            410,
+            34,
+            42
+          ],
+          "RGB_checks": {
+            "NCC": 0.9243146181106567,
+            "peak_margin": 0.4903302490711212,
+            "reverse_NCC": 0.9243146181106567,
+            "roundtrip_error_native": 0.0
+          },
+          "RGB_matching_passed": true,
+          "failure_reason": "",
+          "anatomical_confirmation": "待用户确认",
+          "valid_pixels": 1428,
+          "foreground_fraction": 1.0,
+          "reference_d_distribution": {
+            "p10": 0.6039215922355652,
+            "p50": 0.6235294342041016,
+            "p90": 0.6431372761726379,
+            "minimum": 0.5921568870544434,
+            "maximum": 0.6509804129600525,
+            "pixels": 1428
+          },
+          "reference_q_median": 159.0,
+          "reference_disparity": 0.6235294117647059,
+          "program_reference_valid": true,
+          "adopted": false
+        }
+      ]
+    },
+    {
+      "frame_id": 23,
+      "current_anchor": 24,
+      "current_native_xywh": [
+        978,
+        411,
+        34,
+        42
+      ],
+      "current_RGB_checks": {
+        "NCC": 0.9388423562049866,
+        "peak_margin": 0.5205235481262207,
+        "reverse_NCC": 0.9388315081596375,
+        "roundtrip_error_native": 0.0
+      },
+      "current_reference_valid": true,
+      "current_reference_q": 159.0,
+      "current_reference_d": 0.6235294117647059,
+      "current_reference_d_distribution": {
+        "p10": 0.6078431606292725,
+        "p50": 0.6235294342041016,
+        "p90": 0.6470588445663452,
+        "minimum": 0.5960784554481506,
+        "maximum": 0.658823549747467,
+        "pixels": 1428
+      },
+      "invalid_attempt_box_d_distribution": null,
+      "focus": 0.58473,
+      "subject_pixels": 103995,
+      "subject_d_distribution": {
+        "p10": 0.5098039507865906,
+        "p50": 0.5647059082984924,
+        "p90": 0.7568627595901489,
+        "minimum": 0.10980392247438431,
+        "maximum": 0.8117647171020508,
+        "pixels": 103995
+      },
+      "raw_high_pixels": 11918,
+      "raw_low_pixels": 18119,
+      "eligible_high_pixels": 11918,
+      "eligible_low_pixels": 18010,
+      "eligible_pixels": 29928,
+      "eligible_fraction_subject": 0.28778306649358143,
+      "retained_component_count": 8,
+      "selected_pixels": 0,
+      "skip_reason": "eligible total exceeds25% of subject; entire frame skipped",
+      "low_side_body_core_overlap": 0,
+      "low_side_head_context_overlap": 4172,
+      "low_side_boundary_overlap": 5449,
+      "head_context_display_xywh": [
+        481,
+        101,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        418,
+        248,
+        51,
+        24
+      ],
+      "components": [
+        {
+          "frame_id": 23,
+          "component_id": 1,
+          "native_xywh": [
+            962,
+            241,
+            154,
+            162
+          ],
+          "pixels": 12146,
+          "high_pixels": 11918,
+          "low_pixels": 228,
+          "head_context_overlap": 12146,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 1753,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 23,
+          "component_id": 2,
+          "native_xywh": [
+            618,
+            281,
+            14,
+            9
+          ],
+          "pixels": 64,
+          "high_pixels": 0,
+          "low_pixels": 64,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 63,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 23,
+          "component_id": 11,
+          "native_xywh": [
+            554,
+            337,
+            92,
+            20
+          ],
+          "pixels": 889,
+          "high_pixels": 0,
+          "low_pixels": 889,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 838,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 23,
+          "component_id": 12,
+          "native_xywh": [
+            500,
+            338,
+            151,
+            141
+          ],
+          "pixels": 6938,
+          "high_pixels": 0,
+          "low_pixels": 6938,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 1643,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 23,
+          "component_id": 14,
+          "native_xywh": [
+            706,
+            340,
+            47,
+            15
+          ],
+          "pixels": 106,
+          "high_pixels": 0,
+          "low_pixels": 106,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 106,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 23,
+          "component_id": 22,
+          "native_xywh": [
+            770,
+            358,
+            204,
+            106
+          ],
+          "pixels": 7437,
+          "high_pixels": 0,
+          "low_pixels": 7437,
+          "head_context_overlap": 3944,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 1029,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 23,
+          "component_id": 38,
+          "native_xywh": [
+            699,
+            499,
+            239,
+            78
+          ],
+          "pixels": 1680,
+          "high_pixels": 0,
+          "low_pixels": 1680,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 1091,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 23,
+          "component_id": 39,
+          "native_xywh": [
+            1019,
+            501,
+            66,
+            72
+          ],
+          "pixels": 668,
+          "high_pixels": 0,
+          "low_pixels": 668,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 451,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        }
+      ],
+      "dual_anchor_attempts": [
+        {
+          "frame_id": 23,
+          "anchor_frame": 18,
+          "native_xywh": [
+            969,
+            421,
+            35,
+            44
+          ],
+          "RGB_checks": {
+            "NCC": 0.45952385663986206,
+            "peak_margin": 0.1281569004058838,
+            "reverse_NCC": 0.7686853408813477,
+            "roundtrip_error_native": 13.45362404707371
+          },
+          "RGB_matching_passed": false,
+          "failure_reason": "NCC below0.8; roundtrip above3",
+          "anatomical_confirmation": "待用户确认",
+          "valid_pixels": 1539,
+          "foreground_fraction": 0.9993506493506493,
+          "reference_d_distribution": {
+            "p10": 0.5843137502670288,
+            "p50": 0.6078431606292725,
+            "p90": 0.6274510025978088,
+            "minimum": 0.4431372582912445,
+            "maximum": 0.6431372761726379,
+            "pixels": 1539
+          },
+          "reference_q_median": 155.0,
+          "reference_disparity": 0.6078431372549019,
+          "program_reference_valid": false,
+          "adopted": false
+        },
+        {
+          "frame_id": 23,
+          "anchor_frame": 24,
+          "native_xywh": [
+            978,
+            411,
+            34,
+            42
+          ],
+          "RGB_checks": {
+            "NCC": 0.9388423562049866,
+            "peak_margin": 0.5205235481262207,
+            "reverse_NCC": 0.9388315081596375,
+            "roundtrip_error_native": 0.0
+          },
+          "RGB_matching_passed": true,
+          "failure_reason": "",
+          "anatomical_confirmation": "待用户确认",
+          "valid_pixels": 1428,
+          "foreground_fraction": 1.0,
+          "reference_d_distribution": {
+            "p10": 0.6078431606292725,
+            "p50": 0.6235294342041016,
+            "p90": 0.6470588445663452,
+            "minimum": 0.5960784554481506,
+            "maximum": 0.658823549747467,
+            "pixels": 1428
+          },
+          "reference_q_median": 159.0,
+          "reference_disparity": 0.6235294117647059,
+          "program_reference_valid": true,
+          "adopted": false
+        }
+      ]
+    },
+    {
+      "frame_id": 24,
+      "current_anchor": 24,
+      "current_native_xywh": [
+        971,
+        412,
+        34,
+        42
+      ],
+      "current_RGB_checks": {
+        "NCC": null,
+        "peak_margin": null,
+        "roundtrip_error_native": null
+      },
+      "current_reference_valid": true,
+      "current_reference_q": 160.0,
+      "current_reference_d": 0.6274509803921569,
+      "current_reference_d_distribution": {
+        "p10": 0.6039215922355652,
+        "p50": 0.6274510025978088,
+        "p90": 0.648235023021698,
+        "minimum": 0.5921568870544434,
+        "maximum": 0.658823549747467,
+        "pixels": 1428
+      },
+      "invalid_attempt_box_d_distribution": null,
+      "focus": 0.58465,
+      "subject_pixels": 103605,
+      "subject_d_distribution": {
+        "p10": 0.5098039507865906,
+        "p50": 0.5607843399047852,
+        "p90": 0.7647058963775635,
+        "minimum": 0.10980392247438431,
+        "maximum": 0.8196078538894653,
+        "pixels": 103605
+      },
+      "raw_high_pixels": 12035,
+      "raw_low_pixels": 21589,
+      "eligible_high_pixels": 12035,
+      "eligible_low_pixels": 21424,
+      "eligible_pixels": 33459,
+      "eligible_fraction_subject": 0.32294773418271316,
+      "retained_component_count": 6,
+      "selected_pixels": 0,
+      "skip_reason": "eligible total exceeds25% of subject; entire frame skipped",
+      "low_side_body_core_overlap": 0,
+      "low_side_head_context_overlap": 3957,
+      "low_side_boundary_overlap": 5821,
+      "head_context_display_xywh": [
+        483,
+        102,
+        128,
+        160
+      ],
+      "body_display_xywh": [
+        416,
+        248,
+        51,
+        24
+      ],
+      "components": [
+        {
+          "frame_id": 24,
+          "component_id": 1,
+          "native_xywh": [
+            953,
+            242,
+            155,
+            161
+          ],
+          "pixels": 12089,
+          "high_pixels": 12035,
+          "low_pixels": 54,
+          "head_context_overlap": 12089,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 1746,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 24,
+          "component_id": 8,
+          "native_xywh": [
+            670,
+            305,
+            25,
+            23
+          ],
+          "pixels": 66,
+          "high_pixels": 0,
+          "low_pixels": 66,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 66,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 24,
+          "component_id": 11,
+          "native_xywh": [
+            555,
+            333,
+            92,
+            21
+          ],
+          "pixels": 908,
+          "high_pixels": 0,
+          "low_pixels": 908,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 842,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 24,
+          "component_id": 12,
+          "native_xywh": [
+            504,
+            334,
+            442,
+            245
+          ],
+          "pixels": 11180,
+          "high_pixels": 0,
+          "low_pixels": 11180,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 3162,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 24,
+          "component_id": 14,
+          "native_xywh": [
+            710,
+            339,
+            261,
+            128
+          ],
+          "pixels": 8401,
+          "high_pixels": 0,
+          "low_pixels": 8401,
+          "head_context_overlap": 3903,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 1188,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        },
+        {
+          "frame_id": 24,
+          "component_id": 35,
+          "native_xywh": [
+            1009,
+            495,
+            73,
+            81
+          ],
+          "pixels": 815,
+          "high_pixels": 0,
+          "low_pixels": 815,
+          "head_context_overlap": 0,
+          "body_core_overlap": 0,
+          "boundary_5px_overlap": 509,
+          "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+        }
+      ],
+      "dual_anchor_attempts": [
+        {
+          "frame_id": 24,
+          "anchor_frame": 18,
+          "native_xywh": [
+            963,
+            422,
+            35,
+            44
+          ],
+          "RGB_checks": {
+            "NCC": 0.47163695096969604,
+            "peak_margin": 0.14608147740364075,
+            "reverse_NCC": 0.795356273651123,
+            "roundtrip_error_native": 8.06225774829855
+          },
+          "RGB_matching_passed": false,
+          "failure_reason": "NCC below0.8; roundtrip above3",
+          "anatomical_confirmation": "待用户确认",
+          "valid_pixels": 1540,
+          "foreground_fraction": 1.0,
+          "reference_d_distribution": {
+            "p10": 0.5764706134796143,
+            "p50": 0.6078431606292725,
+            "p90": 0.6313725709915161,
+            "minimum": 0.4627451002597809,
+            "maximum": 0.6470588445663452,
+            "pixels": 1540
+          },
+          "reference_q_median": 155.0,
+          "reference_disparity": 0.6078431372549019,
+          "program_reference_valid": false,
+          "adopted": false
+        },
+        {
+          "frame_id": 24,
+          "anchor_frame": 24,
+          "native_xywh": [
+            971,
+            412,
+            34,
+            42
+          ],
+          "RGB_checks": {
+            "NCC": null,
+            "peak_margin": null,
+            "roundtrip_error_native": null
+          },
+          "RGB_matching_passed": true,
+          "failure_reason": "",
+          "anatomical_confirmation": "待用户确认",
+          "valid_pixels": 1428,
+          "foreground_fraction": 1.0,
+          "reference_d_distribution": {
+            "p10": 0.6039215922355652,
+            "p50": 0.6274510025978088,
+            "p90": 0.648235023021698,
+            "minimum": 0.5921568870544434,
+            "maximum": 0.658823549747467,
+            "pixels": 1428
+          },
+          "reference_q_median": 160.0,
+          "reference_disparity": 0.6274509803921569,
+          "program_reference_valid": true,
+          "adopted": false
+        }
+      ]
+    }
+  ],
+  "components": [
+    {
+      "frame_id": 18,
+      "component_id": 1,
+      "native_xywh": [
+        1008,
+        241,
+        150,
+        158
+      ],
+      "pixels": 11736,
+      "high_pixels": 11652,
+      "low_pixels": 84,
+      "head_context_overlap": 11736,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 1716,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 18,
+      "component_id": 2,
+      "native_xywh": [
+        609,
+        298,
+        62,
+        36
+      ],
+      "pixels": 186,
+      "high_pixels": 0,
+      "low_pixels": 186,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 186,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 18,
+      "component_id": 15,
+      "native_xywh": [
+        554,
+        358,
+        97,
+        8
+      ],
+      "pixels": 235,
+      "high_pixels": 0,
+      "low_pixels": 235,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 235,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 18,
+      "component_id": 17,
+      "native_xywh": [
+        496,
+        362,
+        30,
+        24
+      ],
+      "pixels": 144,
+      "high_pixels": 0,
+      "low_pixels": 144,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 144,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 18,
+      "component_id": 18,
+      "native_xywh": [
+        764,
+        364,
+        247,
+        75
+      ],
+      "pixels": 2017,
+      "high_pixels": 0,
+      "low_pixels": 2017,
+      "head_context_overlap": 886,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 996,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 18,
+      "component_id": 21,
+      "native_xywh": [
+        556,
+        372,
+        67,
+        12
+      ],
+      "pixels": 282,
+      "high_pixels": 0,
+      "low_pixels": 282,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 253,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 18,
+      "component_id": 22,
+      "native_xywh": [
+        500,
+        387,
+        51,
+        52
+      ],
+      "pixels": 192,
+      "high_pixels": 0,
+      "low_pixels": 192,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 192,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 18,
+      "component_id": 27,
+      "native_xywh": [
+        552,
+        439,
+        25,
+        15
+      ],
+      "pixels": 93,
+      "high_pixels": 0,
+      "low_pixels": 93,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 93,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 18,
+      "component_id": 31,
+      "native_xywh": [
+        1109,
+        506,
+        13,
+        32
+      ],
+      "pixels": 99,
+      "high_pixels": 0,
+      "low_pixels": 99,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 99,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 19,
+      "component_id": 1,
+      "native_xywh": [
+        991,
+        240,
+        156,
+        159
+      ],
+      "pixels": 11878,
+      "high_pixels": 11730,
+      "low_pixels": 148,
+      "head_context_overlap": 11878,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 1747,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 19,
+      "component_id": 4,
+      "native_xywh": [
+        609,
+        293,
+        62,
+        31
+      ],
+      "pixels": 179,
+      "high_pixels": 0,
+      "low_pixels": 179,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 179,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 19,
+      "component_id": 10,
+      "native_xywh": [
+        552,
+        353,
+        95,
+        7
+      ],
+      "pixels": 292,
+      "high_pixels": 0,
+      "low_pixels": 292,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 289,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 19,
+      "component_id": 11,
+      "native_xywh": [
+        496,
+        357,
+        15,
+        22
+      ],
+      "pixels": 76,
+      "high_pixels": 0,
+      "low_pixels": 76,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 76,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 19,
+      "component_id": 14,
+      "native_xywh": [
+        774,
+        363,
+        228,
+        82
+      ],
+      "pixels": 3279,
+      "high_pixels": 0,
+      "low_pixels": 3279,
+      "head_context_overlap": 1157,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 1006,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 19,
+      "component_id": 15,
+      "native_xywh": [
+        545,
+        364,
+        71,
+        15
+      ],
+      "pixels": 391,
+      "high_pixels": 0,
+      "low_pixels": 391,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 319,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 19,
+      "component_id": 16,
+      "native_xywh": [
+        497,
+        381,
+        96,
+        77
+      ],
+      "pixels": 661,
+      "high_pixels": 0,
+      "low_pixels": 661,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 533,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 19,
+      "component_id": 28,
+      "native_xywh": [
+        1099,
+        509,
+        13,
+        30
+      ],
+      "pixels": 93,
+      "high_pixels": 0,
+      "low_pixels": 93,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 93,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 20,
+      "component_id": 1,
+      "native_xywh": [
+        982,
+        240,
+        155,
+        160
+      ],
+      "pixels": 12089,
+      "high_pixels": 11917,
+      "low_pixels": 172,
+      "head_context_overlap": 12089,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 1686,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 20,
+      "component_id": 2,
+      "native_xywh": [
+        610,
+        289,
+        41,
+        18
+      ],
+      "pixels": 131,
+      "high_pixels": 0,
+      "low_pixels": 131,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 129,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 20,
+      "component_id": 7,
+      "native_xywh": [
+        552,
+        348,
+        92,
+        11
+      ],
+      "pixels": 297,
+      "high_pixels": 0,
+      "low_pixels": 297,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 261,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 20,
+      "component_id": 9,
+      "native_xywh": [
+        493,
+        351,
+        107,
+        108
+      ],
+      "pixels": 2011,
+      "high_pixels": 0,
+      "low_pixels": 2011,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 771,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 20,
+      "component_id": 11,
+      "native_xywh": [
+        533,
+        358,
+        92,
+        16
+      ],
+      "pixels": 380,
+      "high_pixels": 0,
+      "low_pixels": 380,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 359,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 20,
+      "component_id": 14,
+      "native_xywh": [
+        773,
+        362,
+        217,
+        82
+      ],
+      "pixels": 3530,
+      "high_pixels": 0,
+      "low_pixels": 3530,
+      "head_context_overlap": 979,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 957,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 22,
+      "component_id": 1,
+      "native_xywh": [
+        967,
+        241,
+        156,
+        161
+      ],
+      "pixels": 11827,
+      "high_pixels": 11626,
+      "low_pixels": 201,
+      "head_context_overlap": 11827,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 1682,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 22,
+      "component_id": 14,
+      "native_xywh": [
+        681,
+        324,
+        64,
+        31
+      ],
+      "pixels": 129,
+      "high_pixels": 0,
+      "low_pixels": 129,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 129,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 22,
+      "component_id": 19,
+      "native_xywh": [
+        551,
+        340,
+        94,
+        19
+      ],
+      "pixels": 903,
+      "high_pixels": 0,
+      "low_pixels": 903,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 836,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 22,
+      "component_id": 21,
+      "native_xywh": [
+        496,
+        343,
+        152,
+        138
+      ],
+      "pixels": 7009,
+      "high_pixels": 0,
+      "low_pixels": 7009,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 1669,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 22,
+      "component_id": 24,
+      "native_xywh": [
+        767,
+        359,
+        212,
+        104
+      ],
+      "pixels": 7533,
+      "high_pixels": 0,
+      "low_pixels": 7533,
+      "head_context_overlap": 4268,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 1077,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 22,
+      "component_id": 36,
+      "native_xywh": [
+        1020,
+        500,
+        70,
+        72
+      ],
+      "pixels": 671,
+      "high_pixels": 0,
+      "low_pixels": 671,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 460,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 22,
+      "component_id": 38,
+      "native_xywh": [
+        712,
+        510,
+        239,
+        67
+      ],
+      "pixels": 1618,
+      "high_pixels": 0,
+      "low_pixels": 1618,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 1051,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 23,
+      "component_id": 1,
+      "native_xywh": [
+        962,
+        241,
+        154,
+        162
+      ],
+      "pixels": 12146,
+      "high_pixels": 11918,
+      "low_pixels": 228,
+      "head_context_overlap": 12146,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 1753,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 23,
+      "component_id": 2,
+      "native_xywh": [
+        618,
+        281,
+        14,
+        9
+      ],
+      "pixels": 64,
+      "high_pixels": 0,
+      "low_pixels": 64,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 63,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 23,
+      "component_id": 11,
+      "native_xywh": [
+        554,
+        337,
+        92,
+        20
+      ],
+      "pixels": 889,
+      "high_pixels": 0,
+      "low_pixels": 889,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 838,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 23,
+      "component_id": 12,
+      "native_xywh": [
+        500,
+        338,
+        151,
+        141
+      ],
+      "pixels": 6938,
+      "high_pixels": 0,
+      "low_pixels": 6938,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 1643,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 23,
+      "component_id": 14,
+      "native_xywh": [
+        706,
+        340,
+        47,
+        15
+      ],
+      "pixels": 106,
+      "high_pixels": 0,
+      "low_pixels": 106,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 106,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 23,
+      "component_id": 22,
+      "native_xywh": [
+        770,
+        358,
+        204,
+        106
+      ],
+      "pixels": 7437,
+      "high_pixels": 0,
+      "low_pixels": 7437,
+      "head_context_overlap": 3944,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 1029,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 23,
+      "component_id": 38,
+      "native_xywh": [
+        699,
+        499,
+        239,
+        78
+      ],
+      "pixels": 1680,
+      "high_pixels": 0,
+      "low_pixels": 1680,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 1091,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 23,
+      "component_id": 39,
+      "native_xywh": [
+        1019,
+        501,
+        66,
+        72
+      ],
+      "pixels": 668,
+      "high_pixels": 0,
+      "low_pixels": 668,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 451,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 24,
+      "component_id": 1,
+      "native_xywh": [
+        953,
+        242,
+        155,
+        161
+      ],
+      "pixels": 12089,
+      "high_pixels": 12035,
+      "low_pixels": 54,
+      "head_context_overlap": 12089,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 1746,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 24,
+      "component_id": 8,
+      "native_xywh": [
+        670,
+        305,
+        25,
+        23
+      ],
+      "pixels": 66,
+      "high_pixels": 0,
+      "low_pixels": 66,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 66,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 24,
+      "component_id": 11,
+      "native_xywh": [
+        555,
+        333,
+        92,
+        21
+      ],
+      "pixels": 908,
+      "high_pixels": 0,
+      "low_pixels": 908,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 842,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 24,
+      "component_id": 12,
+      "native_xywh": [
+        504,
+        334,
+        442,
+        245
+      ],
+      "pixels": 11180,
+      "high_pixels": 0,
+      "low_pixels": 11180,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 3162,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 24,
+      "component_id": 14,
+      "native_xywh": [
+        710,
+        339,
+        261,
+        128
+      ],
+      "pixels": 8401,
+      "high_pixels": 0,
+      "low_pixels": 8401,
+      "head_context_overlap": 3903,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 1188,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    },
+    {
+      "frame_id": 24,
+      "component_id": 35,
+      "native_xywh": [
+        1009,
+        495,
+        73,
+        81
+      ],
+      "pixels": 815,
+      "high_pixels": 0,
+      "low_pixels": 815,
+      "head_context_overlap": 0,
+      "body_core_overlap": 0,
+      "boundary_5px_overlap": 509,
+      "location": "Input-defined rectangle/boundary proxies overlap; anatomical location pending user."
+    }
+  ],
+  "sensitivity": [
+    {
+      "frame_id": 18,
+      "reference_source": "historical_frame20_scalar_NOT_current_reference",
+      "source_reference_valid": null,
+      "reference_q": 154.0,
+      "reference_d": 0.6039215686274509,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 11266,
+      "eligible_low_pixels": 4702,
+      "eligible_total_pixels": 15968,
+      "fraction_subject": 0.15043147303764556,
+      "cap_would_skip": false,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 18,
+      "reference_source": "same_frame_anchor18_attempt",
+      "source_reference_valid": true,
+      "reference_q": 152.0,
+      "reference_d": 0.596078431372549,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 11652,
+      "eligible_low_pixels": 3332,
+      "eligible_total_pixels": 14984,
+      "fraction_subject": 0.14116139729434374,
+      "cap_would_skip": false,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 18,
+      "reference_source": "same_frame_anchor24_attempt",
+      "source_reference_valid": true,
+      "reference_q": 156.0,
+      "reference_d": 0.611764705882353,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 10840,
+      "eligible_low_pixels": 6921,
+      "eligible_total_pixels": 17761,
+      "fraction_subject": 0.16732298300486115,
+      "cap_would_skip": false,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 18,
+      "reference_source": "revision1_current",
+      "source_reference_valid": true,
+      "reference_q": 152.0,
+      "reference_d": 0.596078431372549,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 11652,
+      "eligible_low_pixels": 3332,
+      "eligible_total_pixels": 14984,
+      "fraction_subject": 0.14116139729434374,
+      "cap_would_skip": false,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 19,
+      "reference_source": "historical_frame20_scalar_NOT_current_reference",
+      "source_reference_valid": null,
+      "reference_q": 154.0,
+      "reference_d": 0.6039215686274509,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 11730,
+      "eligible_low_pixels": 5119,
+      "eligible_total_pixels": 16849,
+      "fraction_subject": 0.15863406550987166,
+      "cap_would_skip": false,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 19,
+      "reference_source": "same_frame_anchor18_attempt",
+      "source_reference_valid": true,
+      "reference_q": 154.0,
+      "reference_d": 0.6039215686274509,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 11730,
+      "eligible_low_pixels": 5119,
+      "eligible_total_pixels": 16849,
+      "fraction_subject": 0.15863406550987166,
+      "cap_would_skip": false,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 19,
+      "reference_source": "same_frame_anchor24_attempt",
+      "source_reference_valid": true,
+      "reference_q": 158.0,
+      "reference_d": 0.6196078431372549,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 10970,
+      "eligible_low_pixels": 11821,
+      "eligible_total_pixels": 22791,
+      "fraction_subject": 0.21457825313285567,
+      "cap_would_skip": false,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 19,
+      "reference_source": "revision1_current",
+      "source_reference_valid": true,
+      "reference_q": 154.0,
+      "reference_d": 0.6039215686274509,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 11730,
+      "eligible_low_pixels": 5119,
+      "eligible_total_pixels": 16849,
+      "fraction_subject": 0.15863406550987166,
+      "cap_would_skip": false,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 20,
+      "reference_source": "historical_frame20_scalar_NOT_current_reference",
+      "source_reference_valid": null,
+      "reference_q": 154.0,
+      "reference_d": 0.6039215686274509,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 11917,
+      "eligible_low_pixels": 6521,
+      "eligible_total_pixels": 18438,
+      "fraction_subject": 0.17429527536725087,
+      "cap_would_skip": false,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 20,
+      "reference_source": "same_frame_anchor18_attempt",
+      "source_reference_valid": true,
+      "reference_q": 154.0,
+      "reference_d": 0.6039215686274509,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 11917,
+      "eligible_low_pixels": 6521,
+      "eligible_total_pixels": 18438,
+      "fraction_subject": 0.17429527536725087,
+      "cap_would_skip": false,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 20,
+      "reference_source": "same_frame_anchor24_attempt",
+      "source_reference_valid": true,
+      "reference_q": 158.0,
+      "reference_d": 0.6196078431372549,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 11192,
+      "eligible_low_pixels": 14041,
+      "eligible_total_pixels": 25233,
+      "fraction_subject": 0.23852872780897283,
+      "cap_would_skip": false,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 20,
+      "reference_source": "revision1_current",
+      "source_reference_valid": true,
+      "reference_q": 154.0,
+      "reference_d": 0.6039215686274509,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 11917,
+      "eligible_low_pixels": 6521,
+      "eligible_total_pixels": 18438,
+      "fraction_subject": 0.17429527536725087,
+      "cap_would_skip": false,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 21,
+      "reference_source": "historical_frame20_scalar_NOT_current_reference",
+      "source_reference_valid": null,
+      "reference_q": 154.0,
+      "reference_d": 0.6039215686274509,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 12452,
+      "eligible_low_pixels": 5888,
+      "eligible_total_pixels": 18340,
+      "fraction_subject": 0.1746051391414454,
+      "cap_would_skip": false,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 21,
+      "reference_source": "same_frame_anchor18_attempt",
+      "source_reference_valid": false,
+      "reference_q": 155.0,
+      "reference_d": 0.6078431372549019,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 12288,
+      "eligible_low_pixels": 7986,
+      "eligible_total_pixels": 20274,
+      "fraction_subject": 0.19301769852528156,
+      "cap_would_skip": false,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 21,
+      "reference_source": "same_frame_anchor24_attempt",
+      "source_reference_valid": true,
+      "reference_q": 159.0,
+      "reference_d": 0.6235294117647059,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 11621,
+      "eligible_low_pixels": 16193,
+      "eligible_total_pixels": 27814,
+      "fraction_subject": 0.26480192694003063,
+      "cap_would_skip": true,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 22,
+      "reference_source": "historical_frame20_scalar_NOT_current_reference",
+      "source_reference_valid": null,
+      "reference_q": 154.0,
+      "reference_d": 0.6039215686274509,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 12340,
+      "eligible_low_pixels": 7776,
+      "eligible_total_pixels": 20116,
+      "fraction_subject": 0.1918733307897749,
+      "cap_would_skip": false,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 22,
+      "reference_source": "same_frame_anchor18_attempt",
+      "source_reference_valid": false,
+      "reference_q": 155.0,
+      "reference_d": 0.6078431372549019,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 12197,
+      "eligible_low_pixels": 9578,
+      "eligible_total_pixels": 21775,
+      "fraction_subject": 0.20769744372376955,
+      "cap_would_skip": false,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 22,
+      "reference_source": "same_frame_anchor24_attempt",
+      "source_reference_valid": true,
+      "reference_q": 159.0,
+      "reference_d": 0.6235294117647059,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 11626,
+      "eligible_low_pixels": 18064,
+      "eligible_total_pixels": 29690,
+      "fraction_subject": 0.2831934376192293,
+      "cap_would_skip": true,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 22,
+      "reference_source": "revision1_current",
+      "source_reference_valid": true,
+      "reference_q": 159.0,
+      "reference_d": 0.6235294117647059,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 11626,
+      "eligible_low_pixels": 18064,
+      "eligible_total_pixels": 29690,
+      "fraction_subject": 0.2831934376192293,
+      "cap_would_skip": true,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 23,
+      "reference_source": "historical_frame20_scalar_NOT_current_reference",
+      "source_reference_valid": null,
+      "reference_q": 154.0,
+      "reference_d": 0.6039215686274509,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 12782,
+      "eligible_low_pixels": 8082,
+      "eligible_total_pixels": 20864,
+      "fraction_subject": 0.20062503004952162,
+      "cap_would_skip": false,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 23,
+      "reference_source": "same_frame_anchor18_attempt",
+      "source_reference_valid": false,
+      "reference_q": 155.0,
+      "reference_d": 0.6078431372549019,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 12598,
+      "eligible_low_pixels": 9852,
+      "eligible_total_pixels": 22450,
+      "fraction_subject": 0.21587576325784893,
+      "cap_would_skip": false,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 23,
+      "reference_source": "same_frame_anchor24_attempt",
+      "source_reference_valid": true,
+      "reference_q": 159.0,
+      "reference_d": 0.6235294117647059,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 11918,
+      "eligible_low_pixels": 18010,
+      "eligible_total_pixels": 29928,
+      "fraction_subject": 0.28778306649358143,
+      "cap_would_skip": true,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 23,
+      "reference_source": "revision1_current",
+      "source_reference_valid": true,
+      "reference_q": 159.0,
+      "reference_d": 0.6235294117647059,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 11918,
+      "eligible_low_pixels": 18010,
+      "eligible_total_pixels": 29928,
+      "fraction_subject": 0.28778306649358143,
+      "cap_would_skip": true,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 24,
+      "reference_source": "historical_frame20_scalar_NOT_current_reference",
+      "source_reference_valid": null,
+      "reference_q": 154.0,
+      "reference_d": 0.6039215686274509,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 13109,
+      "eligible_low_pixels": 8121,
+      "eligible_total_pixels": 21230,
+      "fraction_subject": 0.20491289030452198,
+      "cap_would_skip": false,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 24,
+      "reference_source": "same_frame_anchor18_attempt",
+      "source_reference_valid": false,
+      "reference_q": 155.0,
+      "reference_d": 0.6078431372549019,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 12920,
+      "eligible_low_pixels": 9992,
+      "eligible_total_pixels": 22912,
+      "fraction_subject": 0.22114762801023116,
+      "cap_would_skip": false,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 24,
+      "reference_source": "same_frame_anchor24_attempt",
+      "source_reference_valid": true,
+      "reference_q": 160.0,
+      "reference_d": 0.6274509803921569,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 12035,
+      "eligible_low_pixels": 21424,
+      "eligible_total_pixels": 33459,
+      "fraction_subject": 0.32294773418271316,
+      "cap_would_skip": true,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    },
+    {
+      "frame_id": 24,
+      "reference_source": "revision1_current",
+      "source_reference_valid": true,
+      "reference_q": 160.0,
+      "reference_d": 0.6274509803921569,
+      "original_q_and_union_held_fixed": true,
+      "eligible_high_pixels": 12035,
+      "eligible_low_pixels": 21424,
+      "eligible_total_pixels": 33459,
+      "fraction_subject": 0.32294773418271316,
+      "cap_would_skip": true,
+      "adopted": false,
+      "interpretation": "Input scalar sensitivity only; cap pass is not correctness or adoption."
+    }
+  ],
+  "pending_control_proposals": [
+    {
+      "frame_id": 18,
+      "intervention_proposed": false,
+      "reference_source": "same-frame original q at existing anchor24 RGB-matched box",
+      "reference_native_xywh": [
+        1021,
+        406,
+        34,
+        42
+      ],
+      "reference_q": 156.0,
+      "program_reference_valid": true,
+      "user_reference_confirmed": false,
+      "head_context_display_xywh": [
+        510,
+        106,
+        128,
+        160
+      ],
+      "pending_target_pixels": 0,
+      "pending_fraction_subject": 0.0,
+      "target_mask": "B36/native/Pending_late_head/00018.png",
+      "user_target_confirmed": false,
+      "label": "人工辅助末段诊断候选；不是原规则结果",
+      "common_evaluation_target": "Same pending INPUT mask for A/R1/R2, not each condition treatment mask. Purity pending user.",
+      "no_intervention_if_reference_invalid": true
+    },
+    {
+      "frame_id": 19,
+      "intervention_proposed": false,
+      "reference_source": "same-frame original q at existing anchor24 RGB-matched box",
+      "reference_native_xywh": [
+        1010,
+        406,
+        34,
+        42
+      ],
+      "reference_q": 158.0,
+      "program_reference_valid": true,
+      "user_reference_confirmed": false,
+      "head_context_display_xywh": [
+        510,
+        105,
+        128,
+        160
+      ],
+      "pending_target_pixels": 0,
+      "pending_fraction_subject": 0.0,
+      "target_mask": "B36/native/Pending_late_head/00019.png",
+      "user_target_confirmed": false,
+      "label": "人工辅助末段诊断候选；不是原规则结果",
+      "common_evaluation_target": "Same pending INPUT mask for A/R1/R2, not each condition treatment mask. Purity pending user.",
+      "no_intervention_if_reference_invalid": true
+    },
+    {
+      "frame_id": 20,
+      "intervention_proposed": false,
+      "reference_source": "same-frame original q at existing anchor24 RGB-matched box",
+      "reference_native_xywh": [
+        999,
+        407,
+        34,
+        42
+      ],
+      "reference_q": 158.0,
+      "program_reference_valid": true,
+      "user_reference_confirmed": false,
+      "head_context_display_xywh": [
+        508,
+        105,
+        128,
+        160
+      ],
+      "pending_target_pixels": 0,
+      "pending_fraction_subject": 0.0,
+      "target_mask": "B36/native/Pending_late_head/00020.png",
+      "user_target_confirmed": false,
+      "label": "人工辅助末段诊断候选；不是原规则结果",
+      "common_evaluation_target": "Same pending INPUT mask for A/R1/R2, not each condition treatment mask. Purity pending user.",
+      "no_intervention_if_reference_invalid": true
+    },
+    {
+      "frame_id": 21,
+      "intervention_proposed": true,
+      "reference_source": "same-frame original q at existing anchor24 RGB-matched box",
+      "reference_native_xywh": [
+        992,
+        408,
+        34,
+        42
+      ],
+      "reference_q": 159.0,
+      "program_reference_valid": true,
+      "user_reference_confirmed": false,
+      "head_context_display_xywh": [
+        509,
+        105,
+        128,
+        160
+      ],
+      "pending_target_pixels": 11621,
+      "pending_fraction_subject": 0.1106372040328646,
+      "target_mask": "B36/native/Pending_late_head/00021.png",
+      "user_target_confirmed": false,
+      "label": "人工辅助末段诊断候选；不是原规则结果",
+      "common_evaluation_target": "Same pending INPUT mask for A/R1/R2, not each condition treatment mask. Purity pending user.",
+      "no_intervention_if_reference_invalid": true
+    },
+    {
+      "frame_id": 22,
+      "intervention_proposed": true,
+      "reference_source": "same-frame original q at existing anchor24 RGB-matched box",
+      "reference_native_xywh": [
+        984,
+        410,
+        34,
+        42
+      ],
+      "reference_q": 159.0,
+      "program_reference_valid": true,
+      "user_reference_confirmed": false,
+      "head_context_display_xywh": [
+        479,
+        101,
+        128,
+        160
+      ],
+      "pending_target_pixels": 11626,
+      "pending_fraction_subject": 0.11089278901182754,
+      "target_mask": "B36/native/Pending_late_head/00022.png",
+      "user_target_confirmed": false,
+      "label": "人工辅助末段诊断候选；不是原规则结果",
+      "common_evaluation_target": "Same pending INPUT mask for A/R1/R2, not each condition treatment mask. Purity pending user.",
+      "no_intervention_if_reference_invalid": true
+    },
+    {
+      "frame_id": 23,
+      "intervention_proposed": true,
+      "reference_source": "same-frame original q at existing anchor24 RGB-matched box",
+      "reference_native_xywh": [
+        978,
+        411,
+        34,
+        42
+      ],
+      "reference_q": 159.0,
+      "program_reference_valid": true,
+      "user_reference_confirmed": false,
+      "head_context_display_xywh": [
+        481,
+        101,
+        128,
+        160
+      ],
+      "pending_target_pixels": 11918,
+      "pending_fraction_subject": 0.11460166354151642,
+      "target_mask": "B36/native/Pending_late_head/00023.png",
+      "user_target_confirmed": false,
+      "label": "人工辅助末段诊断候选；不是原规则结果",
+      "common_evaluation_target": "Same pending INPUT mask for A/R1/R2, not each condition treatment mask. Purity pending user.",
+      "no_intervention_if_reference_invalid": true
+    },
+    {
+      "frame_id": 24,
+      "intervention_proposed": true,
+      "reference_source": "same-frame original q at existing anchor24 RGB-matched box",
+      "reference_native_xywh": [
+        971,
+        412,
+        34,
+        42
+      ],
+      "reference_q": 160.0,
+      "program_reference_valid": true,
+      "user_reference_confirmed": false,
+      "head_context_display_xywh": [
+        483,
+        102,
+        128,
+        160
+      ],
+      "pending_target_pixels": 12035,
+      "pending_fraction_subject": 0.11616234737705709,
+      "target_mask": "B36/native/Pending_late_head/00024.png",
+      "user_target_confirmed": false,
+      "label": "人工辅助末段诊断候选；不是原规则结果",
+      "common_evaluation_target": "Same pending INPUT mask for A/R1/R2, not each condition treatment mask. Purity pending user.",
+      "no_intervention_if_reference_invalid": true
+    }
+  ],
+  "protected_records": {
+    "configs/any2bokeh-B36-rule-b-20261021.json": "f81bc56fe4f4fa11349f42b52606c957baa2befcc9d25f982421fefe396875a2",
+    "03_实验记录/records/any2bokeh-B36-rule-b-20261021-selection.json": "202822f4aeec5309178f435ad976691b7b8d000b416221622f6ede9c899edae1",
+    "03_实验记录/records/any2bokeh-B36-rule-b-20261021-localization.json": "eb76ae2b10ba6f112dad7c136eaf5dd1f70c60b93c5cf627cabe1de05715bb81",
+    "03_实验记录/records/any2bokeh-B36-rule-b-inference-20261021.json": "d9d436a466ed969f5eb241c73d1075c538842c6fc77b7450d65f758b4c3a9e76",
+    "03_实验记录/records/any2bokeh-B36-rule-b-inference-20261021-user-review.json": "5c690c2a7d49066613456d6f3b3864c4e69ec1315fba6db302f56f4a74083824"
+  },
+  "history_preserved": true,
+  "new_inference_started": false,
+  "neural_inference_runs": 0,
+  "limitations": [
+    "No new predictions or visual quality verdicts.",
+    "Foreground coverage/NCC do not prove anatomical correspondence; both anchors require user review.",
+    "Frame21 official candidate fields remain null, not zero. Alternative attempts do not repair history.",
+    "Sensitivity preserves original per-frame q/union, not physical geometry; earlier-frame scalar is not truth.",
+    "Mixed head_context/body rectangles and boundary bands are overlapping spatial proxies, not an anatomical partition.",
+    "No continuous late-correction output exists; blur regression cause is not uniquely established."
+  ],
+  "conclusions": {
+    "observed": [
+      "Source21 was skipped by fixed NCC0.8 gate (observed0.69569), not an area test; current candidate fields remain unmeasured.",
+      "Source22-24 pass original reference checks but eligible total28.319/28.778/32.295% exceeds unchanged25% cap.",
+      {
+        "change_20_to_24": {
+          "high_pixels": 118,
+          "low_pixels": 14903,
+          "total_pixels": 15021
+        },
+        "interpretation": "Most eligible-area growth is on the low-disparity side, not high-side target growth."
+      },
+      {
+        "frame24_low_pixels": 21424,
+        "outside_mixed_head_context": 17467,
+        "fraction_outside_mixed_head_context": 0.8153005974607916,
+        "boundary5px_overlap": 5821,
+        "input_overlay_check": "Input-only overlay places major low-side components along the subject-label upper body/tail and lower outline; not an output quality judgement or true anatomy/segmentation-error verdict."
+      },
+      {
+        "frame24_fixed_original_q": true,
+        "reference_q154_eligible": 21230,
+        "reference_q160_eligible": 33459,
+        "low_q154": 8121,
+        "low_q160": 21424,
+        "interpretation": "Reference-scalar sensitivity at one fixed input; q154 is historical, not an approved/current reference."
+      },
+      "Same-frame anchor24 matches are about7-9 native pixels right and9-10 up relative to anchor18 attempts, with reference median4-5 q levels higher. Both manual anchors and matching anatomy remain pending user.",
+      "Anchor24->source21 passes fixed RGB checks, but the original bilateral candidate would still be26.480% of subject: fixing localization alone would not bypass the original area gate."
+    ],
+    "interpretation": "Reference patch selection and evolving input q/union both affect the candidate tail. Anchor switch contributes a patch/value discontinuity; it does not prove the reference is anatomically wrong or the depth physically wrong.",
+    "unresolved": [
+      "Which neck patch is anatomically comparable/appropriate across18-24, including manual anchors18/24.",
+      "Whether continued LOCAL CoC correction sustains the user-preferred late appearance without unwanted effects; no R2 predictions exist.",
+      "Unique cause of late blur, true physical geometry and separate temporal-module contributions remain unproven."
+    ],
+    "one_next_control": "Only after user confirms the displayed same-frame orange references and pink21-24 target: one manually assisted R2, originalR1 CoC0-20 bitwise preserved, late target replaced by same-frame reference then original CoC construction. Compare complete25frames to reusableA/R1 after provenance check; all fixed supports common across conditions. No cap increase or alternative inference search.",
+    "stop": "输入诊断材料已准备，等待用户确认；未启动新推理"
+  },
+  "reproduction": {
+    "environment": "/root/miniconda3/envs/any2bokeh/bin/python; CPU only; cv2 threads1",
+    "stages": [
+      "analyze",
+      "materials",
+      "summarize",
+      "verify"
+    ],
+    "command": "python scripts/diagnose_b36_rule_b_tail.py <stage>",
+    "browser": "python scripts/check_b36_rule_b_materials.py --config configs/any2bokeh-B36-rule-b-tail-20261021.json; existing8765 root, private headless Chrome GPU disabled",
+    "source_commit": "05ef3e8 before this task; author f7a16959 preserved",
+    "no_model_loaded": true,
+    "no_RNG_or_condition_tensor_modified": true,
+    "resources_observed": {
+      "CPU_quota_cores": 20,
+      "cgroup_memory_limit_GiB": 90,
+      "memory_current_GiB_at_final_check": 19.413360595703125,
+      "free_disk_GiB_at_start_approx": 402,
+      "GPU_used_for_this_task": false,
+      "author_checkout_verified_clean": true
+    }
+  }
+}

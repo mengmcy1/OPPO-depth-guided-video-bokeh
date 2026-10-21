@@ -1,0 +1,214 @@
+{
+  "status": "待用户确认；未生成新输出",
+  "plan": {
+    "label": "人工辅助末段诊断；待用户确认，不是revision1自动通过",
+    "reference": "For source21 use existing anchor24 independently matched to source21, contingent on fixed RGB checks and user confirmation. For22-24 retain current same-frame reference boxes. No copied frame20 scalar or coordinates.",
+    "late_mask": "For21-24 only, intersect the existing input-defined head_context rectangle and original subject union with HIGH-side pixels of the SAME two-sided,8-connected,min64 eligible components at abs(d-r)>0.10. Save this one proposal for user confirmation, including whether it covers the intended head. Retain <=25% cap; never raise it. No morphology/smoothing/CoC=0.",
+    "R2_0_20": "Must later be bitwise equal to saved R1 CoC, if inference is approved.",
+    "common_evaluation": "Before inference freeze proposed late high-side mask as a common INPUT-defined target support for A/R1/R2, separately from a full mixed head_context rectangle; neck reference, body_core excluding that fixed proposed target, near/far water use identical supports for all conditions. Not R1-empty vs R2-nonempty treatment masks. Head mask purity and reference anatomy require user confirmation.",
+    "approved": false,
+    "inference_started": false
+  },
+  "frames": [
+    {
+      "frame_id": 18,
+      "intervention_proposed": false,
+      "reference_source": "same-frame original q at existing anchor24 RGB-matched box",
+      "reference_native_xywh": [
+        1021,
+        406,
+        34,
+        42
+      ],
+      "reference_q": 156.0,
+      "program_reference_valid": true,
+      "user_reference_confirmed": false,
+      "head_context_display_xywh": [
+        510,
+        106,
+        128,
+        160
+      ],
+      "pending_target_pixels": 0,
+      "pending_fraction_subject": 0.0,
+      "target_mask": "B36/native/Pending_late_head/00018.png",
+      "user_target_confirmed": false,
+      "label": "人工辅助末段诊断候选；不是原规则结果",
+      "common_evaluation_target": "Same pending INPUT mask for A/R1/R2, not each condition treatment mask. Purity pending user.",
+      "no_intervention_if_reference_invalid": true
+    },
+    {
+      "frame_id": 19,
+      "intervention_proposed": false,
+      "reference_source": "same-frame original q at existing anchor24 RGB-matched box",
+      "reference_native_xywh": [
+        1010,
+        406,
+        34,
+        42
+      ],
+      "reference_q": 158.0,
+      "program_reference_valid": true,
+      "user_reference_confirmed": false,
+      "head_context_display_xywh": [
+        510,
+        105,
+        128,
+        160
+      ],
+      "pending_target_pixels": 0,
+      "pending_fraction_subject": 0.0,
+      "target_mask": "B36/native/Pending_late_head/00019.png",
+      "user_target_confirmed": false,
+      "label": "人工辅助末段诊断候选；不是原规则结果",
+      "common_evaluation_target": "Same pending INPUT mask for A/R1/R2, not each condition treatment mask. Purity pending user.",
+      "no_intervention_if_reference_invalid": true
+    },
+    {
+      "frame_id": 20,
+      "intervention_proposed": false,
+      "reference_source": "same-frame original q at existing anchor24 RGB-matched box",
+      "reference_native_xywh": [
+        999,
+        407,
+        34,
+        42
+      ],
+      "reference_q": 158.0,
+      "program_reference_valid": true,
+      "user_reference_confirmed": false,
+      "head_context_display_xywh": [
+        508,
+        105,
+        128,
+        160
+      ],
+      "pending_target_pixels": 0,
+      "pending_fraction_subject": 0.0,
+      "target_mask": "B36/native/Pending_late_head/00020.png",
+      "user_target_confirmed": false,
+      "label": "人工辅助末段诊断候选；不是原规则结果",
+      "common_evaluation_target": "Same pending INPUT mask for A/R1/R2, not each condition treatment mask. Purity pending user.",
+      "no_intervention_if_reference_invalid": true
+    },
+    {
+      "frame_id": 21,
+      "intervention_proposed": true,
+      "reference_source": "same-frame original q at existing anchor24 RGB-matched box",
+      "reference_native_xywh": [
+        992,
+        408,
+        34,
+        42
+      ],
+      "reference_q": 159.0,
+      "program_reference_valid": true,
+      "user_reference_confirmed": false,
+      "head_context_display_xywh": [
+        509,
+        105,
+        128,
+        160
+      ],
+      "pending_target_pixels": 11621,
+      "pending_fraction_subject": 0.1106372040328646,
+      "target_mask": "B36/native/Pending_late_head/00021.png",
+      "user_target_confirmed": false,
+      "label": "人工辅助末段诊断候选；不是原规则结果",
+      "common_evaluation_target": "Same pending INPUT mask for A/R1/R2, not each condition treatment mask. Purity pending user.",
+      "no_intervention_if_reference_invalid": true
+    },
+    {
+      "frame_id": 22,
+      "intervention_proposed": true,
+      "reference_source": "same-frame original q at existing anchor24 RGB-matched box",
+      "reference_native_xywh": [
+        984,
+        410,
+        34,
+        42
+      ],
+      "reference_q": 159.0,
+      "program_reference_valid": true,
+      "user_reference_confirmed": false,
+      "head_context_display_xywh": [
+        479,
+        101,
+        128,
+        160
+      ],
+      "pending_target_pixels": 11626,
+      "pending_fraction_subject": 0.11089278901182754,
+      "target_mask": "B36/native/Pending_late_head/00022.png",
+      "user_target_confirmed": false,
+      "label": "人工辅助末段诊断候选；不是原规则结果",
+      "common_evaluation_target": "Same pending INPUT mask for A/R1/R2, not each condition treatment mask. Purity pending user.",
+      "no_intervention_if_reference_invalid": true
+    },
+    {
+      "frame_id": 23,
+      "intervention_proposed": true,
+      "reference_source": "same-frame original q at existing anchor24 RGB-matched box",
+      "reference_native_xywh": [
+        978,
+        411,
+        34,
+        42
+      ],
+      "reference_q": 159.0,
+      "program_reference_valid": true,
+      "user_reference_confirmed": false,
+      "head_context_display_xywh": [
+        481,
+        101,
+        128,
+        160
+      ],
+      "pending_target_pixels": 11918,
+      "pending_fraction_subject": 0.11460166354151642,
+      "target_mask": "B36/native/Pending_late_head/00023.png",
+      "user_target_confirmed": false,
+      "label": "人工辅助末段诊断候选；不是原规则结果",
+      "common_evaluation_target": "Same pending INPUT mask for A/R1/R2, not each condition treatment mask. Purity pending user.",
+      "no_intervention_if_reference_invalid": true
+    },
+    {
+      "frame_id": 24,
+      "intervention_proposed": true,
+      "reference_source": "same-frame original q at existing anchor24 RGB-matched box",
+      "reference_native_xywh": [
+        971,
+        412,
+        34,
+        42
+      ],
+      "reference_q": 160.0,
+      "program_reference_valid": true,
+      "user_reference_confirmed": false,
+      "head_context_display_xywh": [
+        483,
+        102,
+        128,
+        160
+      ],
+      "pending_target_pixels": 12035,
+      "pending_fraction_subject": 0.11616234737705709,
+      "target_mask": "B36/native/Pending_late_head/00024.png",
+      "user_target_confirmed": false,
+      "label": "人工辅助末段诊断候选；不是原规则结果",
+      "common_evaluation_target": "Same pending INPUT mask for A/R1/R2, not each condition treatment mask. Purity pending user.",
+      "no_intervention_if_reference_invalid": true
+    }
+  ],
+  "intervention_source_frames": [
+    21,
+    22,
+    23,
+    24
+  ],
+  "all_0_20_CoC_must_match_R1_bitwise": true,
+  "author_commit": "f7a16959dd219080fb8eec0d32bb9602d8970c22",
+  "K": 16,
+  "compare_all_25_output_frames": true,
+  "no_inference_before_confirmation": true
+}

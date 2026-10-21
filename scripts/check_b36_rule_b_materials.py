@@ -132,6 +132,7 @@ def main():
     wait("document.getElementById('atb-viewer').dataset.frame==='13' && document.getElementById('frame-status').textContent.includes('PNG同步完成')")
     old_keys=['atb-failure-B1-user-20261009','atb-failure-B2-user-20261009']
     if is_output:old_keys.append('atb-B36-rule-b-input-selection-user-20261021')
+    old_keys.extend(c.get('additional_preserved_keys', []))
     for key in old_keys:js(f"localStorage.setItem({json.dumps(key)},'PRIVATE_PROFILE_SENTINEL')")
     js("document.getElementById('png-note').click()")
     wait("document.getElementById('import-context')")

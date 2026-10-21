@@ -1,0 +1,25 @@
+{
+  "scene": "mallard-water",
+  "sample_id": "B36",
+  "output": "outputs/any2bokeh-failure-analysis-20261009/B36-late-input-diagnosis-20261021",
+  "record_prefix": "03_实验记录/records/any2bokeh-B36-rule-b-tail-20261021",
+  "selection_config": "configs/any2bokeh-B36-rule-b-20261021.json",
+  "inference_config": "configs/any2bokeh-B36-rule-b-inference-20261021.json",
+  "focus_frames": [18, 19, 20, 21, 22, 23, 24],
+  "diagnostic_anchor_frames": [18, 24],
+  "reference_comparison": "Independently propagate each EXISTING RGB anchor to each focus frame using unchanged search/NCC/margin/roundtrip thresholds; save all attempts, including failures. A successful RGB match is not anatomical confirmation. No new hand-picked reference boxes or selection by disparity/cap/output.",
+  "sensitivity": "On each ORIGINAL frame, hold q and union fixed: compare each same-frame dual-anchor reference and historical frame20 reference as a named scalar probe. Failed-localization attempts are diagnostic-only. No probe is adopted because it passes the area cap. Historical frame20 scalar is not a same-frame reference or truth.",
+  "spatial_proxies": "Per component, separately count overlap with pre-existing input-defined head_context rectangle (mixed head/neck/background), body_core rectangle, and <=5-native-pixel subject boundary. Counts overlap and are not an anatomical partition. Component bbox/ID overlays allow user localization.",
+  "pending_control": {
+    "label": "人工辅助末段诊断；待用户确认，不是revision1自动通过",
+    "reference": "For source21 use existing anchor24 independently matched to source21, contingent on fixed RGB checks and user confirmation. For22-24 retain current same-frame reference boxes. No copied frame20 scalar or coordinates.",
+    "late_mask": "For21-24 only, intersect the existing input-defined head_context rectangle and original subject union with HIGH-side pixels of the SAME two-sided,8-connected,min64 eligible components at abs(d-r)>0.10. Save this one proposal for user confirmation, including whether it covers the intended head. Retain <=25% cap; never raise it. No morphology/smoothing/CoC=0.",
+    "R2_0_20": "Must later be bitwise equal to saved R1 CoC, if inference is approved.",
+    "common_evaluation": "Before inference freeze proposed late high-side mask as a common INPUT-defined target support for A/R1/R2, separately from a full mixed head_context rectangle; neck reference, body_core excluding that fixed proposed target, near/far water use identical supports for all conditions. Not R1-empty vs R2-nonempty treatment masks. Head mask purity and reference anatomy require user confirmation.",
+    "approved": false,
+    "inference_started": false
+  },
+  "review_storage_key": "atb-B36-rule-b-tail-input-user-20261021",
+  "additional_preserved_keys": ["atb-B36-rule-b-input-selection-user-20261021", "atb-B36-rule-b-output-user-20261021"],
+  "scope": "CPU input diagnosis only. Preserve revision1 and all original inputs/predictions. No model loading, no new CoC inference, no PPT/formal-table changes. Stop for user confirmation."
+}
