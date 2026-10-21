@@ -1,0 +1,36 @@
+你负责 FlashReFocus 的独立复现分支。
+
+主仓库：/root/autodl-tmp/OPPO-depth-guided-video-bokeh
+论文：01_文献/FlashReFocus- Interactive Image Refocusing in Seconds.pdf
+官方项目：https://ming053l.github.io/FlashReFocus/
+官方代码：https://github.com/ming053l/FlashReFocus
+
+目标：核实官方复现条件；条件具备时跑通官方示例，再提出接入现有 Synthetic / DAVIS benchmark 的 adapter。当前不训练、不跑全量评价、不修改已有 baseline 表。
+
+一、隔离协作
+先阅读 AGENTS.md、中央进度和本机存储说明。使用独立 Git worktree 和 repro/flashrefocus 分支，不能切换主工作区分支。主工作区正在制作 10.23 汇报和进行 ATB 实验，不修改或提交他人的文件。使用独立环境；大型权重、图像、日志不进 Git。结果写入 records 下独立小型 JSON；进度只在自己的 worktree 中简短补充，合并时保留主线最新内容。完成后提交推送自己的分支，不自行合并 main。
+
+二、首先重新核查权重状态
+截至 2026-10-21，官方 README 仍标注 stage1.pkl、refiner.pt、renderer.pt 待发布。Hugging Face Demo 的 engine.py 使用私有仓库 ming0531/FlashReFocus-weights 和服务端令牌加载这些文件。重新核查是否有新的官方公开发布或授权下载入口，记录日期、代码 commit、来源和缺失项。不寻找、使用他人私有令牌或绕过权限。
+
+如果权重仍缺：不以随机初始化、PiSA 原始权重或其他模型冒充 FlashReFocus；不训练，不下载完整训练集，不占 GPU 等待。完成代码与依赖、输入接口检查，交付准备结果后停在“等待专用权重”。在线 Demo 不等于本地可复现。
+
+三、权重可得后跑官方示例
+先检查 GPU，与 ATB 任务错开。固定官方代码版本及权重来源。先验证完整官方流程，保存输入、恢复图、深度和最终输出；再验证官方 deblurring=False 的仅渲染路径。记录 resize、RGB 范围、dtype、detail_weight、refiner、焦点坐标、strength、输出尺寸及 finite。检查一次必要的重复运行确定性。视觉质量由用户确认，不自动记作通过。
+
+四、提出 benchmark adapter，暂不批量运行
+1. 核对官方 depth 方向，以及外部 disparity、focus 的同步坐标转换。
+2. Synthetic 输入本来清晰，判断官方仅渲染路径的适用性。完整流程和仅渲染应明确区分，不能择优混报。
+3. 审核外部 geometry 和焦点入口，保留官方渲染行为。
+4. 官方 strength 原生范围与我们的 K=4/8/16/32 不同，不能直接套值或默认 K/32。提出独立小型控制标定，用输入几何和模糊响应确定固定映射，不用正式测试 GT 或论文分数逐片段选参数。
+5. 它是逐帧单图方法，没有原生时序保证。同一照片换焦点的缓存复用不能直接用于不同视频帧。不额外增加时序平滑等新模块冒充原方法。
+6. 效率区分完整流程、仅渲染与同图后续编辑；参数量和计时范围对应，不把论文后续编辑耗时直接填进视频 E2E 表。
+7. AnyBokeh 与本项目 Any-to-Bokeh 是不同方法，引用时不要混淆。
+
+五、交付
+- 可运行性表：组件、代码、权重、可用状态和阻塞原因。
+- 有权重时交付官方示例命令、输入输出和检查记录；无权重则明确未运行。
+- Adapter 差异表：RGB、geometry、focus、strength、精度、时序和计时边界。
+- 简短下一步及待确认项。
+
+不修改原有预测、基线配置或 PPT；不访问失败分析的来源隔离复核组；不启动新模块和训练。
