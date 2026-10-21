@@ -1,0 +1,2629 @@
+{
+  "status": "统计与配对推理完成，等待用户视觉复核",
+  "config": {
+    "name": "主体内离焦约束 / 主体清晰保护 V2",
+    "purpose": "Fixed diagnostic strategy, not depth correction or Ours. Q1 subject defocus distribution vs existing local detail observations; Q2 one tau across exploration sources and normal controls.",
+    "tau": 1,
+    "K": 16,
+    "native_size": [
+      1920,
+      1080
+    ],
+    "display_size": [
+      1024,
+      576
+    ],
+    "frames": 25,
+    "split_record": "03_实验记录/records/any2bokeh-failure-analysis-20261009-source-split.json",
+    "statistics_config": "configs/any2bokeh-subject-coc-statistics-20261021.json",
+    "selection_record": "03_实验记录/records/any2bokeh-subject-coc-statistics-20261021-selection.json",
+    "output": "outputs/any2bokeh-failure-analysis-20261009/subject-coc-clamp-v2-20261021",
+    "record_prefix": "03_实验记录/records/any2bokeh-subject-coc-clamp-v2-20261021",
+    "samples": [
+      {
+        "sample_id": "B36",
+        "scene_id": "mallard-water",
+        "role": "known assisted R2 comparator",
+        "instance_count": 1
+      },
+      {
+        "sample_id": "B20",
+        "scene_id": "stroller",
+        "role": "user-reported local blur",
+        "instance_count": 2
+      },
+      {
+        "sample_id": "B34",
+        "scene_id": "cows",
+        "role": "user-reported local blur",
+        "instance_count": 1
+      },
+      {
+        "sample_id": "B18",
+        "scene_id": "rhino",
+        "role": "user-reported overall normal",
+        "instance_count": 1
+      },
+      {
+        "sample_id": "B22",
+        "scene_id": "blackswan",
+        "role": "user-reported overall normal",
+        "instance_count": 1
+      },
+      {
+        "sample_id": "V2-stat-01",
+        "scene_id": "train",
+        "role": "highest eligible input-statistic rank4; no output inspected before selection",
+        "instance_count": 4
+      }
+    ],
+    "rule": "Each frame on ORIGINAL grid, d=q/255 float64; inside original DAVIS ID!=0 union clamp d to[focus-tau/K,focus+tau/K], outside unchanged. Convert resulting q-scale float to native FP32 and use exact original author abs->bilinear antialias Resize->CenterCrop->Normalize. No PNG re-quantization. Transplant CoC only. Original MPI remains from original q.",
+    "failure_policy": "Apply all25 frames, no per-frame skip, area limit, morphology, smoothing or hysteresis; no tau search or case-specific choice. Invalid input stops with evidence. Tiny FP32 deviations around exact mathematical cap are reported, not hidden by retuning.",
+    "mask_permission": "DAVIS GT target union now supplies per-pixel CoC constraints beyond its baseline role in computing focus scalar. Generator does not receive mask/alpha directly. Not predicted-mask deployment.",
+    "multi_instance": "Use entire union without choosing an easier ID. Per-ID statistics and outputs separate; may flatten genuine subject/object depth. Train4IDs and stroller2IDs disclosed.",
+    "execution": "Original author f7a16959, original FP16/native VAE FP32 upcast; load seed0; restore legacy saved scene-entry CPU/CUDA state, CPU generator0 per call; original8-frame windows/4overlap/8-8-9 outputs, padding and caches. Independent clean process per scene/condition. CUDA_VISIBLE_DEVICES=0, serial GPU.",
+    "RNG_metadata_scope": "Restore existing scene-boundary RNG metadata only, even when preceding legacy scene belongs to held-out split; never inspect that video's inputs, predictions or metrics.",
+    "A_policy": "First rerun full25 B18 A and compare all RGB8 bytes to frozen DAVIS PNGs (legacy has no float arrays). Equal: others reuse frozen A; B18 probe reused, B36 current paired A reused. Unequal: all6 have current-environment A, reusing B18 probe and already-current B36 A as explicitly authorized, rerunning other4; preserve/report legacy mismatch. No unnecessary B36 rerun.",
+    "region_policy": "Freeze masks BEFORE predictions: for each original nonzero ID AND independent union, nearest native limited-pixel mask intersect nearest ID display mask; remainder=ID minus limited. Exterior ring distance>=2 and<=6 display pixels from each ID/union, exclude ALL union foreground. Far background=distance>32 from UNION, same support shared across IDs (not independent repetitions). Euclidean precise distance; no intervention morphology. All A/V2 share exactly the same masks. B36 adds existing R2 input-defined target_head mask, held common for A/R2/V2, separate from full subject.",
+    "metrics": "RGB8 MAE vs cv2.INTER_LINEAR projected original RGB (same prior CPU diagnostic convention), full-image Sobel3x3 energy ratio on3x3-eroded support. RGB8 V2-A mean/max channel difference, counts; ring/background peak coordinates ties row-major. Float comparisons only if a real current A float exists; no PNG/255 surrogate float. Empty support null. Adjacent frame differences use pair mask union, no motion compensation: region change, not flicker.",
+    "B36_R2_comparison": "On common input-defined R2 head target, report A/R2/V2 MAE and edge ratio each frame; descriptive gap-fill fractions=(MAE_A-MAE_V2)/(MAE_A-MAE_R2) and(edge_V2-edge_A)/(edge_R2-edge_A), null if abs denominator<=1e-12, never clipped. These are input-relative numeric gaps, not recovered perceptual quality percentages.",
+    "keyframes": [
+      0,
+      6,
+      12,
+      18,
+      24
+    ],
+    "review_storage_key": "atb-subject-coc-clamp-v2-user-20261021",
+    "review_fields": [
+      "subject_clearer",
+      "depth_of_field_natural",
+      "background_blur_preserved",
+      "boundary_transition",
+      "temporal_stability"
+    ],
+    "stop": "统计与配对推理完成，等待用户视觉复核。Only six exploration sources; no held-out, training, PPT/talk/formal-table edits."
+  },
+  "created_UTC": "2026-10-21T16:13:07.034872+00:00",
+  "freeze": {
+    "config_sha256": "7abff84f19034b7c201d1dc6f30881ccb02b1e699b10d04e548034525f43a042",
+    "commit": "500888feab5dcc777dd7211baeb549f3bafffa2e",
+    "UTC": "2026-10-21T15:59:09.324981+00:00"
+  },
+  "launch": {
+    "pid": 46251,
+    "UTC": "2026-10-21T15:59:06.554227+00:00",
+    "command": "CUDA_VISIBLE_DEVICES=0 HF_HUB_OFFLINE=1 /root/miniconda3/envs/any2bokeh/bin/python scripts/run_subject_coc_v2.py run",
+    "log": "logs/subject-coc-clamp-v2-20261021.log",
+    "commit": "500888feab5dcc777dd7211baeb549f3bafffa2e",
+    "runner_sha256": "8c35307035cac7643b00dfb6a557efc7987d4678b876cadf6314bb8ff858e228"
+  },
+  "inference": {
+    "UTC": "2026-10-21T16:09:08.872726+00:00",
+    "scenes": [
+      "mallard-water",
+      "stroller",
+      "cows",
+      "rhino",
+      "blackswan",
+      "train"
+    ],
+    "V2_frames": 150,
+    "new_A_runs": 5,
+    "B36_A_reused": true,
+    "A_policy": "All six use current-environment A: B18 probe reused, B36 already-current paired A reused as explicitly required; other four A rerun."
+  },
+  "A_reproduction": {
+    "B18_RGB8_bitwise_equal": false,
+    "per_frame": [
+      {
+        "frame_id": 0,
+        "RGB8_different_bytes": 35876,
+        "RGB8_max_abs_diff": 1,
+        "RGB8_MAE": 0.02027497468171296
+      },
+      {
+        "frame_id": 1,
+        "RGB8_different_bytes": 37030,
+        "RGB8_max_abs_diff": 1,
+        "RGB8_MAE": 0.020927146629050927
+      },
+      {
+        "frame_id": 2,
+        "RGB8_different_bytes": 37006,
+        "RGB8_max_abs_diff": 1,
+        "RGB8_MAE": 0.02091358326099537
+      },
+      {
+        "frame_id": 3,
+        "RGB8_different_bytes": 36667,
+        "RGB8_max_abs_diff": 1,
+        "RGB8_MAE": 0.020722000687210647
+      },
+      {
+        "frame_id": 4,
+        "RGB8_different_bytes": 37126,
+        "RGB8_max_abs_diff": 1,
+        "RGB8_MAE": 0.020981400101273147
+      },
+      {
+        "frame_id": 5,
+        "RGB8_different_bytes": 37482,
+        "RGB8_max_abs_diff": 1,
+        "RGB8_MAE": 0.021182590060763888
+      },
+      {
+        "frame_id": 6,
+        "RGB8_different_bytes": 36532,
+        "RGB8_max_abs_diff": 1,
+        "RGB8_MAE": 0.020645706741898147
+      },
+      {
+        "frame_id": 7,
+        "RGB8_different_bytes": 33636,
+        "RGB8_max_abs_diff": 1,
+        "RGB8_MAE": 0.019009060329861112
+      },
+      {
+        "frame_id": 8,
+        "RGB8_different_bytes": 36794,
+        "RGB8_max_abs_diff": 1,
+        "RGB8_MAE": 0.02079377350983796
+      },
+      {
+        "frame_id": 9,
+        "RGB8_different_bytes": 37426,
+        "RGB8_max_abs_diff": 1,
+        "RGB8_MAE": 0.02115094220196759
+      },
+      {
+        "frame_id": 10,
+        "RGB8_different_bytes": 37670,
+        "RGB8_max_abs_diff": 1,
+        "RGB8_MAE": 0.02128883644386574
+      },
+      {
+        "frame_id": 11,
+        "RGB8_different_bytes": 37447,
+        "RGB8_max_abs_diff": 1,
+        "RGB8_MAE": 0.021162810149016203
+      },
+      {
+        "frame_id": 12,
+        "RGB8_different_bytes": 37663,
+        "RGB8_max_abs_diff": 1,
+        "RGB8_MAE": 0.021284880461516203
+      },
+      {
+        "frame_id": 13,
+        "RGB8_different_bytes": 37669,
+        "RGB8_max_abs_diff": 1,
+        "RGB8_MAE": 0.02128827130353009
+      },
+      {
+        "frame_id": 14,
+        "RGB8_different_bytes": 35939,
+        "RGB8_max_abs_diff": 1,
+        "RGB8_MAE": 0.020310578522858797
+      },
+      {
+        "frame_id": 15,
+        "RGB8_different_bytes": 33191,
+        "RGB8_max_abs_diff": 1,
+        "RGB8_MAE": 0.018757572880497685
+      },
+      {
+        "frame_id": 16,
+        "RGB8_different_bytes": 36251,
+        "RGB8_max_abs_diff": 1,
+        "RGB8_MAE": 0.020486902307581017
+      },
+      {
+        "frame_id": 17,
+        "RGB8_different_bytes": 38242,
+        "RGB8_max_abs_diff": 1,
+        "RGB8_MAE": 0.021612096715856483
+      },
+      {
+        "frame_id": 18,
+        "RGB8_different_bytes": 37776,
+        "RGB8_max_abs_diff": 1,
+        "RGB8_MAE": 0.021348741319444444
+      },
+      {
+        "frame_id": 19,
+        "RGB8_different_bytes": 37765,
+        "RGB8_max_abs_diff": 1,
+        "RGB8_MAE": 0.021342524775752315
+      },
+      {
+        "frame_id": 20,
+        "RGB8_different_bytes": 38228,
+        "RGB8_max_abs_diff": 1,
+        "RGB8_MAE": 0.02160418475115741
+      },
+      {
+        "frame_id": 21,
+        "RGB8_different_bytes": 39289,
+        "RGB8_max_abs_diff": 1,
+        "RGB8_MAE": 0.02220379864728009
+      },
+      {
+        "frame_id": 22,
+        "RGB8_different_bytes": 37236,
+        "RGB8_max_abs_diff": 1,
+        "RGB8_MAE": 0.021043565538194444
+      },
+      {
+        "frame_id": 23,
+        "RGB8_different_bytes": 32831,
+        "RGB8_max_abs_diff": 1,
+        "RGB8_MAE": 0.018554122359664353
+      },
+      {
+        "frame_id": 24,
+        "RGB8_different_bytes": 35720,
+        "RGB8_max_abs_diff": 1,
+        "RGB8_MAE": 0.020186812789351853
+      }
+    ],
+    "policy": "All six use current-environment A: B18 probe reused, B36 already-current paired A reused as explicitly required; other four A rerun.",
+    "old_frozen_float_available": false
+  },
+  "execution": [
+    {
+      "scene_id": "mallard-water",
+      "frames": 25,
+      "author_commit": "f7a16959dd219080fb8eec0d32bb9602d8970c22",
+      "A_source": "outputs/any2bokeh-failure-analysis-20261009/B36-rule-b-inference-20261021/native",
+      "A_float_available": true,
+      "input_hashes_verified": true,
+      "posterior_calls": 6,
+      "entry_end_RNG_verified": true,
+      "fixed_inputs_preserved": true,
+      "all25_finite": true,
+      "instance_count": 1,
+      "native_label_ids": [
+        1
+      ]
+    },
+    {
+      "scene_id": "stroller",
+      "frames": 25,
+      "author_commit": "f7a16959dd219080fb8eec0d32bb9602d8970c22",
+      "A_source": "outputs/any2bokeh-failure-analysis-20261009/subject-coc-clamp-v2-20261021/scenes/stroller/A",
+      "A_float_available": true,
+      "input_hashes_verified": true,
+      "posterior_calls": 6,
+      "entry_end_RNG_verified": true,
+      "fixed_inputs_preserved": true,
+      "all25_finite": true,
+      "instance_count": 2,
+      "native_label_ids": [
+        1,
+        2
+      ]
+    },
+    {
+      "scene_id": "cows",
+      "frames": 25,
+      "author_commit": "f7a16959dd219080fb8eec0d32bb9602d8970c22",
+      "A_source": "outputs/any2bokeh-failure-analysis-20261009/subject-coc-clamp-v2-20261021/scenes/cows/A",
+      "A_float_available": true,
+      "input_hashes_verified": true,
+      "posterior_calls": 6,
+      "entry_end_RNG_verified": true,
+      "fixed_inputs_preserved": true,
+      "all25_finite": true,
+      "instance_count": 1,
+      "native_label_ids": [
+        1
+      ]
+    },
+    {
+      "scene_id": "rhino",
+      "frames": 25,
+      "author_commit": "f7a16959dd219080fb8eec0d32bb9602d8970c22",
+      "A_source": "outputs/any2bokeh-failure-analysis-20261009/subject-coc-clamp-v2-20261021/scenes/rhino/A-check",
+      "A_float_available": true,
+      "input_hashes_verified": true,
+      "posterior_calls": 6,
+      "entry_end_RNG_verified": true,
+      "fixed_inputs_preserved": true,
+      "all25_finite": true,
+      "instance_count": 1,
+      "native_label_ids": [
+        1
+      ]
+    },
+    {
+      "scene_id": "blackswan",
+      "frames": 25,
+      "author_commit": "f7a16959dd219080fb8eec0d32bb9602d8970c22",
+      "A_source": "outputs/any2bokeh-failure-analysis-20261009/subject-coc-clamp-v2-20261021/scenes/blackswan/A",
+      "A_float_available": true,
+      "input_hashes_verified": true,
+      "posterior_calls": 6,
+      "entry_end_RNG_verified": true,
+      "fixed_inputs_preserved": true,
+      "all25_finite": true,
+      "instance_count": 1,
+      "native_label_ids": [
+        1
+      ]
+    },
+    {
+      "scene_id": "train",
+      "frames": 25,
+      "author_commit": "f7a16959dd219080fb8eec0d32bb9602d8970c22",
+      "A_source": "outputs/any2bokeh-failure-analysis-20261009/subject-coc-clamp-v2-20261021/scenes/train/A",
+      "A_float_available": true,
+      "input_hashes_verified": true,
+      "posterior_calls": 6,
+      "entry_end_RNG_verified": true,
+      "fixed_inputs_preserved": true,
+      "all25_finite": true,
+      "instance_count": 4,
+      "native_label_ids": [
+        1,
+        2,
+        3,
+        4
+      ]
+    }
+  ],
+  "region_summary": [
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "label_id": "1",
+      "region": "exterior_ring_2_6",
+      "valid_frames": 25,
+      "total_pixels": 133945,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.9728072467555091,
+      "clip_max_RGB8_channel_diff": 46,
+      "peak_frame": 24,
+      "first_peak_xy": [
+        550,
+        199
+      ]
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "label_id": "1",
+      "region": "far_background",
+      "valid_frames": 25,
+      "total_pixels": 13052038,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.06613840689093917,
+      "clip_max_RGB8_channel_diff": 8,
+      "peak_frame": 23,
+      "first_peak_xy": [
+        581,
+        329
+      ]
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "label_id": "1",
+      "region": "limited",
+      "valid_frames": 25,
+      "total_pixels": 190076,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 2.2839074896357245,
+      "clip_max_RGB8_channel_diff": 56,
+      "peak_frame": 23,
+      "first_peak_xy": [
+        589,
+        207
+      ]
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "label_id": "1",
+      "region": "remainder",
+      "valid_frames": 25,
+      "total_pixels": 582806,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.1424013022057655,
+      "clip_max_RGB8_channel_diff": 38,
+      "peak_frame": 21,
+      "first_peak_xy": [
+        526,
+        149
+      ]
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "label_id": "union",
+      "region": "B36_head_target",
+      "valid_frames": 25,
+      "total_pixels": 77375,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 4.412773290253097,
+      "clip_max_RGB8_channel_diff": 56,
+      "peak_frame": 23,
+      "first_peak_xy": [
+        589,
+        207
+      ]
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "label_id": "union",
+      "region": "exterior_ring_2_6",
+      "valid_frames": 25,
+      "total_pixels": 133945,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.9728072467555091,
+      "clip_max_RGB8_channel_diff": 46,
+      "peak_frame": 24,
+      "first_peak_xy": [
+        550,
+        199
+      ]
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "label_id": "union",
+      "region": "far_background",
+      "valid_frames": 25,
+      "total_pixels": 13052038,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.06613840689093917,
+      "clip_max_RGB8_channel_diff": 8,
+      "peak_frame": 23,
+      "first_peak_xy": [
+        581,
+        329
+      ]
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "label_id": "union",
+      "region": "limited",
+      "valid_frames": 25,
+      "total_pixels": 190076,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 2.2839074896357245,
+      "clip_max_RGB8_channel_diff": 56,
+      "peak_frame": 23,
+      "first_peak_xy": [
+        589,
+        207
+      ]
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "label_id": "union",
+      "region": "remainder",
+      "valid_frames": 25,
+      "total_pixels": 582806,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.1424013022057655,
+      "clip_max_RGB8_channel_diff": 38,
+      "peak_frame": 21,
+      "first_peak_xy": [
+        526,
+        149
+      ]
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "label_id": "1",
+      "region": "exterior_ring_2_6",
+      "valid_frames": 25,
+      "total_pixels": 107822,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.07450551217129467,
+      "clip_max_RGB8_channel_diff": 4,
+      "peak_frame": 15,
+      "first_peak_xy": [
+        300,
+        147
+      ]
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "label_id": "1",
+      "region": "far_background",
+      "valid_frames": 25,
+      "total_pixels": 12758714,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.01654876815954962,
+      "clip_max_RGB8_channel_diff": 1,
+      "peak_frame": 0,
+      "first_peak_xy": [
+        26,
+        0
+      ]
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "label_id": "1",
+      "region": "limited",
+      "valid_frames": 25,
+      "total_pixels": 25664,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.1977218412302577,
+      "clip_max_RGB8_channel_diff": 6,
+      "peak_frame": 24,
+      "first_peak_xy": [
+        340,
+        343
+      ]
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "label_id": "1",
+      "region": "remainder",
+      "valid_frames": 25,
+      "total_pixels": 307154,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.03663851574997125,
+      "clip_max_RGB8_channel_diff": 4,
+      "peak_frame": 15,
+      "first_peak_xy": [
+        299,
+        152
+      ]
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "label_id": "2",
+      "region": "exterior_ring_2_6",
+      "valid_frames": 25,
+      "total_pixels": 115773,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.02909717003676735,
+      "clip_max_RGB8_channel_diff": 2,
+      "peak_frame": 7,
+      "first_peak_xy": [
+        348,
+        213
+      ]
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "label_id": "2",
+      "region": "far_background",
+      "valid_frames": 25,
+      "total_pixels": 12758714,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.01654876815954962,
+      "clip_max_RGB8_channel_diff": 1,
+      "peak_frame": 0,
+      "first_peak_xy": [
+        26,
+        0
+      ]
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "label_id": "2",
+      "region": "limited",
+      "valid_frames": 25,
+      "total_pixels": 17493,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.05689895005621295,
+      "clip_max_RGB8_channel_diff": 2,
+      "peak_frame": 19,
+      "first_peak_xy": [
+        400,
+        230
+      ]
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "label_id": "2",
+      "region": "remainder",
+      "valid_frames": 25,
+      "total_pixels": 482761,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.029416902635741777,
+      "clip_max_RGB8_channel_diff": 3,
+      "peak_frame": 19,
+      "first_peak_xy": [
+        401,
+        227
+      ]
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "label_id": "union",
+      "region": "exterior_ring_2_6",
+      "valid_frames": 25,
+      "total_pixels": 215905,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.05083099820136942,
+      "clip_max_RGB8_channel_diff": 4,
+      "peak_frame": 15,
+      "first_peak_xy": [
+        300,
+        147
+      ]
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "label_id": "union",
+      "region": "far_background",
+      "valid_frames": 25,
+      "total_pixels": 12758714,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.01654876815954962,
+      "clip_max_RGB8_channel_diff": 1,
+      "peak_frame": 0,
+      "first_peak_xy": [
+        26,
+        0
+      ]
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "label_id": "union",
+      "region": "limited",
+      "valid_frames": 25,
+      "total_pixels": 43157,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.14064153362529058,
+      "clip_max_RGB8_channel_diff": 6,
+      "peak_frame": 24,
+      "first_peak_xy": [
+        340,
+        343
+      ]
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "label_id": "union",
+      "region": "remainder",
+      "valid_frames": 25,
+      "total_pixels": 789915,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.03222498623269592,
+      "clip_max_RGB8_channel_diff": 4,
+      "peak_frame": 15,
+      "first_peak_xy": [
+        299,
+        152
+      ]
+    },
+    {
+      "scene_id": "cows",
+      "sample_id": "B34",
+      "label_id": "1",
+      "region": "exterior_ring_2_6",
+      "valid_frames": 25,
+      "total_pixels": 265944,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.09888046606303083,
+      "clip_max_RGB8_channel_diff": 5,
+      "peak_frame": 7,
+      "first_peak_xy": [
+        551,
+        392
+      ]
+    },
+    {
+      "scene_id": "cows",
+      "sample_id": "B34",
+      "label_id": "1",
+      "region": "far_background",
+      "valid_frames": 25,
+      "total_pixels": 11052085,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.027113164620069432,
+      "clip_max_RGB8_channel_diff": 2,
+      "peak_frame": 21,
+      "first_peak_xy": [
+        1003,
+        280
+      ]
+    },
+    {
+      "scene_id": "cows",
+      "sample_id": "B34",
+      "label_id": "1",
+      "region": "limited",
+      "valid_frames": 25,
+      "total_pixels": 66257,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.3044206649863411,
+      "clip_max_RGB8_channel_diff": 12,
+      "peak_frame": 7,
+      "first_peak_xy": [
+        563,
+        388
+      ]
+    },
+    {
+      "scene_id": "cows",
+      "sample_id": "B34",
+      "label_id": "1",
+      "region": "remainder",
+      "valid_frames": 25,
+      "total_pixels": 1984353,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.033792878585614555,
+      "clip_max_RGB8_channel_diff": 3,
+      "peak_frame": 9,
+      "first_peak_xy": [
+        339,
+        330
+      ]
+    },
+    {
+      "scene_id": "cows",
+      "sample_id": "B34",
+      "label_id": "union",
+      "region": "exterior_ring_2_6",
+      "valid_frames": 25,
+      "total_pixels": 265944,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.09888046606303083,
+      "clip_max_RGB8_channel_diff": 5,
+      "peak_frame": 7,
+      "first_peak_xy": [
+        551,
+        392
+      ]
+    },
+    {
+      "scene_id": "cows",
+      "sample_id": "B34",
+      "label_id": "union",
+      "region": "far_background",
+      "valid_frames": 25,
+      "total_pixels": 11052085,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.027113164620069432,
+      "clip_max_RGB8_channel_diff": 2,
+      "peak_frame": 21,
+      "first_peak_xy": [
+        1003,
+        280
+      ]
+    },
+    {
+      "scene_id": "cows",
+      "sample_id": "B34",
+      "label_id": "union",
+      "region": "limited",
+      "valid_frames": 25,
+      "total_pixels": 66257,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.3044206649863411,
+      "clip_max_RGB8_channel_diff": 12,
+      "peak_frame": 7,
+      "first_peak_xy": [
+        563,
+        388
+      ]
+    },
+    {
+      "scene_id": "cows",
+      "sample_id": "B34",
+      "label_id": "union",
+      "region": "remainder",
+      "valid_frames": 25,
+      "total_pixels": 1984353,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.033792878585614555,
+      "clip_max_RGB8_channel_diff": 3,
+      "peak_frame": 9,
+      "first_peak_xy": [
+        339,
+        330
+      ]
+    },
+    {
+      "scene_id": "rhino",
+      "sample_id": "B18",
+      "label_id": "1",
+      "region": "exterior_ring_2_6",
+      "valid_frames": 25,
+      "total_pixels": 251967,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.2672638348143474,
+      "clip_max_RGB8_channel_diff": 21,
+      "peak_frame": 24,
+      "first_peak_xy": [
+        354,
+        379
+      ]
+    },
+    {
+      "scene_id": "rhino",
+      "sample_id": "B18",
+      "label_id": "1",
+      "region": "far_background",
+      "valid_frames": 25,
+      "total_pixels": 10450333,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.03938448659961361,
+      "clip_max_RGB8_channel_diff": 3,
+      "peak_frame": 20,
+      "first_peak_xy": [
+        191,
+        424
+      ]
+    },
+    {
+      "scene_id": "rhino",
+      "sample_id": "B18",
+      "label_id": "1",
+      "region": "limited",
+      "valid_frames": 25,
+      "total_pixels": 823910,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.2851893208400593,
+      "clip_max_RGB8_channel_diff": 26,
+      "peak_frame": 23,
+      "first_peak_xy": [
+        366,
+        399
+      ]
+    },
+    {
+      "scene_id": "rhino",
+      "sample_id": "B18",
+      "label_id": "1",
+      "region": "remainder",
+      "valid_frames": 25,
+      "total_pixels": 1800508,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.05528402724860614,
+      "clip_max_RGB8_channel_diff": 7,
+      "peak_frame": 22,
+      "first_peak_xy": [
+        225,
+        195
+      ]
+    },
+    {
+      "scene_id": "rhino",
+      "sample_id": "B18",
+      "label_id": "union",
+      "region": "exterior_ring_2_6",
+      "valid_frames": 25,
+      "total_pixels": 251967,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.2672638348143474,
+      "clip_max_RGB8_channel_diff": 21,
+      "peak_frame": 24,
+      "first_peak_xy": [
+        354,
+        379
+      ]
+    },
+    {
+      "scene_id": "rhino",
+      "sample_id": "B18",
+      "label_id": "union",
+      "region": "far_background",
+      "valid_frames": 25,
+      "total_pixels": 10450333,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.03938448659961361,
+      "clip_max_RGB8_channel_diff": 3,
+      "peak_frame": 20,
+      "first_peak_xy": [
+        191,
+        424
+      ]
+    },
+    {
+      "scene_id": "rhino",
+      "sample_id": "B18",
+      "label_id": "union",
+      "region": "limited",
+      "valid_frames": 25,
+      "total_pixels": 823910,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.2851893208400593,
+      "clip_max_RGB8_channel_diff": 26,
+      "peak_frame": 23,
+      "first_peak_xy": [
+        366,
+        399
+      ]
+    },
+    {
+      "scene_id": "rhino",
+      "sample_id": "B18",
+      "label_id": "union",
+      "region": "remainder",
+      "valid_frames": 25,
+      "total_pixels": 1800508,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.05528402724860614,
+      "clip_max_RGB8_channel_diff": 7,
+      "peak_frame": 22,
+      "first_peak_xy": [
+        225,
+        195
+      ]
+    },
+    {
+      "scene_id": "blackswan",
+      "sample_id": "B22",
+      "label_id": "1",
+      "region": "exterior_ring_2_6",
+      "valid_frames": 25,
+      "total_pixels": 219760,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.23875591554423006,
+      "clip_max_RGB8_channel_diff": 14,
+      "peak_frame": 12,
+      "first_peak_xy": [
+        618,
+        421
+      ]
+    },
+    {
+      "scene_id": "blackswan",
+      "sample_id": "B22",
+      "label_id": "1",
+      "region": "far_background",
+      "valid_frames": 25,
+      "total_pixels": 11768921,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.040160549410887654,
+      "clip_max_RGB8_channel_diff": 3,
+      "peak_frame": 0,
+      "first_peak_xy": [
+        83,
+        289
+      ]
+    },
+    {
+      "scene_id": "blackswan",
+      "sample_id": "B22",
+      "label_id": "1",
+      "region": "limited",
+      "valid_frames": 25,
+      "total_pixels": 607180,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.7307915280476959,
+      "clip_max_RGB8_channel_diff": 14,
+      "peak_frame": 12,
+      "first_peak_xy": [
+        561,
+        430
+      ]
+    },
+    {
+      "scene_id": "blackswan",
+      "sample_id": "B22",
+      "label_id": "1",
+      "region": "remainder",
+      "valid_frames": 25,
+      "total_pixels": 880657,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.13580391306339093,
+      "clip_max_RGB8_channel_diff": 8,
+      "peak_frame": 1,
+      "first_peak_xy": [
+        315,
+        308
+      ]
+    },
+    {
+      "scene_id": "blackswan",
+      "sample_id": "B22",
+      "label_id": "union",
+      "region": "exterior_ring_2_6",
+      "valid_frames": 25,
+      "total_pixels": 219760,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.23875591554423006,
+      "clip_max_RGB8_channel_diff": 14,
+      "peak_frame": 12,
+      "first_peak_xy": [
+        618,
+        421
+      ]
+    },
+    {
+      "scene_id": "blackswan",
+      "sample_id": "B22",
+      "label_id": "union",
+      "region": "far_background",
+      "valid_frames": 25,
+      "total_pixels": 11768921,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.040160549410887654,
+      "clip_max_RGB8_channel_diff": 3,
+      "peak_frame": 0,
+      "first_peak_xy": [
+        83,
+        289
+      ]
+    },
+    {
+      "scene_id": "blackswan",
+      "sample_id": "B22",
+      "label_id": "union",
+      "region": "limited",
+      "valid_frames": 25,
+      "total_pixels": 607180,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.7307915280476959,
+      "clip_max_RGB8_channel_diff": 14,
+      "peak_frame": 12,
+      "first_peak_xy": [
+        561,
+        430
+      ]
+    },
+    {
+      "scene_id": "blackswan",
+      "sample_id": "B22",
+      "label_id": "union",
+      "region": "remainder",
+      "valid_frames": 25,
+      "total_pixels": 880657,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.13580391306339093,
+      "clip_max_RGB8_channel_diff": 8,
+      "peak_frame": 1,
+      "first_peak_xy": [
+        315,
+        308
+      ]
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "label_id": "1",
+      "region": "exterior_ring_2_6",
+      "valid_frames": 25,
+      "total_pixels": 47419,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 2.281251537709919,
+      "clip_max_RGB8_channel_diff": 32,
+      "peak_frame": 14,
+      "first_peak_xy": [
+        296,
+        209
+      ]
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "label_id": "1",
+      "region": "far_background",
+      "valid_frames": 25,
+      "total_pixels": 10593750,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.13559815929203536,
+      "clip_max_RGB8_channel_diff": 4,
+      "peak_frame": 1,
+      "first_peak_xy": [
+        887,
+        227
+      ]
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "label_id": "1",
+      "region": "limited",
+      "valid_frames": 25,
+      "total_pixels": 302290,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 3.7824726807590947,
+      "clip_max_RGB8_channel_diff": 63,
+      "peak_frame": 0,
+      "first_peak_xy": [
+        289,
+        147
+      ]
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "label_id": "1",
+      "region": "remainder",
+      "valid_frames": 9,
+      "total_pixels": 1554,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 1.8912483912483913,
+      "clip_max_RGB8_channel_diff": 15,
+      "peak_frame": 21,
+      "first_peak_xy": [
+        223,
+        277
+      ]
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "label_id": "2",
+      "region": "exterior_ring_2_6",
+      "valid_frames": 25,
+      "total_pixels": 60620,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.6751952051028263,
+      "clip_max_RGB8_channel_diff": 26,
+      "peak_frame": 8,
+      "first_peak_xy": [
+        311,
+        191
+      ]
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "label_id": "2",
+      "region": "far_background",
+      "valid_frames": 25,
+      "total_pixels": 10593750,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.13559815929203536,
+      "clip_max_RGB8_channel_diff": 4,
+      "peak_frame": 1,
+      "first_peak_xy": [
+        887,
+        227
+      ]
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "label_id": "2",
+      "region": "limited",
+      "valid_frames": 25,
+      "total_pixels": 249191,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.9132004499894992,
+      "clip_max_RGB8_channel_diff": 40,
+      "peak_frame": 0,
+      "first_peak_xy": [
+        300,
+        166
+      ]
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "label_id": "2",
+      "region": "remainder",
+      "valid_frames": 25,
+      "total_pixels": 277885,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.1707205018862719,
+      "clip_max_RGB8_channel_diff": 20,
+      "peak_frame": 15,
+      "first_peak_xy": [
+        254,
+        272
+      ]
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "label_id": "3",
+      "region": "exterior_ring_2_6",
+      "valid_frames": 25,
+      "total_pixels": 86848,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.18507814419061652,
+      "clip_max_RGB8_channel_diff": 10,
+      "peak_frame": 0,
+      "first_peak_xy": [
+        407,
+        237
+      ]
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "label_id": "3",
+      "region": "far_background",
+      "valid_frames": 25,
+      "total_pixels": 10593750,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.13559815929203536,
+      "clip_max_RGB8_channel_diff": 4,
+      "peak_frame": 1,
+      "first_peak_xy": [
+        887,
+        227
+      ]
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "label_id": "3",
+      "region": "limited",
+      "valid_frames": 25,
+      "total_pixels": 240579,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.4814232885386228,
+      "clip_max_RGB8_channel_diff": 13,
+      "peak_frame": 16,
+      "first_peak_xy": [
+        590,
+        364
+      ]
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "label_id": "3",
+      "region": "remainder",
+      "valid_frames": 25,
+      "total_pixels": 440063,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.15440137737854204,
+      "clip_max_RGB8_channel_diff": 10,
+      "peak_frame": 10,
+      "first_peak_xy": [
+        628,
+        346
+      ]
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "label_id": "4",
+      "region": "exterior_ring_2_6",
+      "valid_frames": 25,
+      "total_pixels": 110861,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.2773503155603263,
+      "clip_max_RGB8_channel_diff": 18,
+      "peak_frame": 4,
+      "first_peak_xy": [
+        881,
+        335
+      ]
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "label_id": "4",
+      "region": "far_background",
+      "valid_frames": 25,
+      "total_pixels": 10593750,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.13559815929203536,
+      "clip_max_RGB8_channel_diff": 4,
+      "peak_frame": 1,
+      "first_peak_xy": [
+        887,
+        227
+      ]
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "label_id": "4",
+      "region": "limited",
+      "valid_frames": 25,
+      "total_pixels": 488336,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 1.3119778185511612,
+      "clip_max_RGB8_channel_diff": 28,
+      "peak_frame": 1,
+      "first_peak_xy": [
+        788,
+        354
+      ]
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "label_id": "4",
+      "region": "remainder",
+      "valid_frames": 25,
+      "total_pixels": 370574,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.23170091083922062,
+      "clip_max_RGB8_channel_diff": 21,
+      "peak_frame": 1,
+      "first_peak_xy": [
+        850,
+        316
+      ]
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "label_id": "union",
+      "region": "exterior_ring_2_6",
+      "valid_frames": 25,
+      "total_pixels": 295893,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.627850833465701,
+      "clip_max_RGB8_channel_diff": 32,
+      "peak_frame": 14,
+      "first_peak_xy": [
+        296,
+        209
+      ]
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "label_id": "union",
+      "region": "far_background",
+      "valid_frames": 25,
+      "total_pixels": 10593750,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.13559815929203536,
+      "clip_max_RGB8_channel_diff": 4,
+      "peak_frame": 1,
+      "first_peak_xy": [
+        887,
+        227
+      ]
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "label_id": "union",
+      "region": "limited",
+      "valid_frames": 25,
+      "total_pixels": 1280396,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 1.6615729300414346,
+      "clip_max_RGB8_channel_diff": 63,
+      "peak_frame": 0,
+      "first_peak_xy": [
+        289,
+        147
+      ]
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "label_id": "union",
+      "region": "remainder",
+      "valid_frames": 25,
+      "total_pixels": 1090076,
+      "pixel_weighted_V2_vs_A_RGB8_MAE": 0.18731568563415152,
+      "clip_max_RGB8_channel_diff": 21,
+      "peak_frame": 1,
+      "first_peak_xy": [
+        850,
+        316
+      ]
+    }
+  ],
+  "input_summary": [
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "label_id": "union",
+      "limited_native_fraction_clip_median": 0.23779010284852728,
+      "limited_native_pixels_min": 22240,
+      "limited_native_pixels_max": 34824,
+      "outside_union_condition_changed_min": 793,
+      "outside_union_condition_changed_max": 933,
+      "native_union_after_max": 1.0,
+      "actual_display_union_after_max": 5.050671577453613,
+      "actual_interior_after_max": 1.0
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "label_id": "1",
+      "limited_native_fraction_clip_median": 0.23779010284852728,
+      "limited_native_pixels_min": 22240,
+      "limited_native_pixels_max": 34824,
+      "outside_union_condition_changed_min": 793,
+      "outside_union_condition_changed_max": 933,
+      "native_union_after_max": 1.0,
+      "actual_display_union_after_max": 5.050671577453613,
+      "actual_interior_after_max": 1.0
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "label_id": "union",
+      "limited_native_fraction_clip_median": 0.0384122648201675,
+      "limited_native_pixels_min": 1869,
+      "limited_native_pixels_max": 15972,
+      "outside_union_condition_changed_min": 600,
+      "outside_union_condition_changed_max": 1255,
+      "native_union_after_max": 1.0,
+      "actual_display_union_after_max": 3.1348276138305664,
+      "actual_interior_after_max": 1.0
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "label_id": "1",
+      "limited_native_fraction_clip_median": 0.05765191005990819,
+      "limited_native_pixels_min": 1097,
+      "limited_native_pixels_max": 9677,
+      "outside_union_condition_changed_min": 600,
+      "outside_union_condition_changed_max": 1255,
+      "native_union_after_max": 1.0,
+      "actual_display_union_after_max": 3.1348276138305664,
+      "actual_interior_after_max": 1.0
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "label_id": "2",
+      "limited_native_fraction_clip_median": 0.03129199140016125,
+      "limited_native_pixels_min": 400,
+      "limited_native_pixels_max": 6395,
+      "outside_union_condition_changed_min": 600,
+      "outside_union_condition_changed_max": 1255,
+      "native_union_after_max": 1.0,
+      "actual_display_union_after_max": 3.1348276138305664,
+      "actual_interior_after_max": 1.0
+    },
+    {
+      "scene_id": "cows",
+      "sample_id": "B34",
+      "label_id": "union",
+      "limited_native_fraction_clip_median": 0.03306053610185659,
+      "limited_native_pixels_min": 6001,
+      "limited_native_pixels_max": 11059,
+      "outside_union_condition_changed_min": 1209,
+      "outside_union_condition_changed_max": 1475,
+      "native_union_after_max": 1.0,
+      "actual_display_union_after_max": 4.188638687133789,
+      "actual_interior_after_max": 1.0
+    },
+    {
+      "scene_id": "cows",
+      "sample_id": "B34",
+      "label_id": "1",
+      "limited_native_fraction_clip_median": 0.03306053610185659,
+      "limited_native_pixels_min": 6001,
+      "limited_native_pixels_max": 11059,
+      "outside_union_condition_changed_min": 1209,
+      "outside_union_condition_changed_max": 1475,
+      "native_union_after_max": 1.0,
+      "actual_display_union_after_max": 4.188638687133789,
+      "actual_interior_after_max": 1.0
+    },
+    {
+      "scene_id": "rhino",
+      "sample_id": "B18",
+      "label_id": "union",
+      "limited_native_fraction_clip_median": 0.3152789758335045,
+      "limited_native_pixels_min": 104150,
+      "limited_native_pixels_max": 128540,
+      "outside_union_condition_changed_min": 1335,
+      "outside_union_condition_changed_max": 1861,
+      "native_union_after_max": 1.0,
+      "actual_display_union_after_max": 6.017373561859131,
+      "actual_interior_after_max": 1.0853116512298584
+    },
+    {
+      "scene_id": "rhino",
+      "sample_id": "B18",
+      "label_id": "1",
+      "limited_native_fraction_clip_median": 0.3152789758335045,
+      "limited_native_pixels_min": 104150,
+      "limited_native_pixels_max": 128540,
+      "outside_union_condition_changed_min": 1335,
+      "outside_union_condition_changed_max": 1861,
+      "native_union_after_max": 1.0,
+      "actual_display_union_after_max": 6.017373561859131,
+      "actual_interior_after_max": 1.0853116512298584
+    },
+    {
+      "scene_id": "blackswan",
+      "sample_id": "B22",
+      "label_id": "union",
+      "limited_native_fraction_clip_median": 0.4120354717491475,
+      "limited_native_pixels_min": 77511,
+      "limited_native_pixels_max": 91603,
+      "outside_union_condition_changed_min": 1137,
+      "outside_union_condition_changed_max": 1411,
+      "native_union_after_max": 1.0,
+      "actual_display_union_after_max": 9.992430686950684,
+      "actual_interior_after_max": 1.0
+    },
+    {
+      "scene_id": "blackswan",
+      "sample_id": "B22",
+      "label_id": "1",
+      "limited_native_fraction_clip_median": 0.4120354717491475,
+      "limited_native_pixels_min": 77511,
+      "limited_native_pixels_max": 91603,
+      "outside_union_condition_changed_min": 1137,
+      "outside_union_condition_changed_max": 1411,
+      "native_union_after_max": 1.0,
+      "actual_display_union_after_max": 9.992430686950684,
+      "actual_interior_after_max": 1.0
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "label_id": "union",
+      "limited_native_fraction_clip_median": 0.5376902353298008,
+      "limited_native_pixels_min": 153426,
+      "limited_native_pixels_max": 205523,
+      "outside_union_condition_changed_min": 1622,
+      "outside_union_condition_changed_max": 2497,
+      "native_union_after_max": 1.0,
+      "actual_display_union_after_max": 5.951638221740723,
+      "actual_interior_after_max": 1.3520232439041138
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "label_id": "1",
+      "limited_native_fraction_clip_median": 1.0,
+      "limited_native_pixels_min": 26351,
+      "limited_native_pixels_max": 61691,
+      "outside_union_condition_changed_min": 1622,
+      "outside_union_condition_changed_max": 2497,
+      "native_union_after_max": 1.0,
+      "actual_display_union_after_max": 5.951638221740723,
+      "actual_interior_after_max": 1.3520232439041138
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "label_id": "2",
+      "limited_native_fraction_clip_median": 0.48607726419240144,
+      "limited_native_pixels_min": 15329,
+      "limited_native_pixels_max": 53041,
+      "outside_union_condition_changed_min": 1622,
+      "outside_union_condition_changed_max": 2497,
+      "native_union_after_max": 1.0,
+      "actual_display_union_after_max": 5.951638221740723,
+      "actual_interior_after_max": 1.3520232439041138
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "label_id": "3",
+      "limited_native_fraction_clip_median": 0.3612349382013756,
+      "limited_native_pixels_min": 14326,
+      "limited_native_pixels_max": 50440,
+      "outside_union_condition_changed_min": 1622,
+      "outside_union_condition_changed_max": 2497,
+      "native_union_after_max": 1.0,
+      "actual_display_union_after_max": 5.951638221740723,
+      "actual_interior_after_max": 1.3520232439041138
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "label_id": "4",
+      "limited_native_fraction_clip_median": 0.5533125329227279,
+      "limited_native_pixels_min": 25693,
+      "limited_native_pixels_max": 105225,
+      "outside_union_condition_changed_min": 1622,
+      "outside_union_condition_changed_max": 2497,
+      "native_union_after_max": 1.0,
+      "actual_display_union_after_max": 5.951638221740723,
+      "actual_interior_after_max": 1.3520232439041138
+    }
+  ],
+  "B36_R2_input_relative_comparison": [
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 0,
+      "label_id": "union",
+      "region": "B36_head_target",
+      "pixels": 2922,
+      "gradient_pixels": 2610,
+      "mask_path": "scenes/mallard-water/regions/00000/union-B36_head_target.png",
+      "A_RGB8_MAE": 9.801505817932922,
+      "A_gradient_energy_ratio": 0.40013471835115944,
+      "A_gradient_reason": "",
+      "V2_RGB8_MAE": 6.598220396988364,
+      "V2_gradient_energy_ratio": 0.5774165925643945,
+      "V2_gradient_reason": "",
+      "R2_RGB8_MAE": 4.230321697467488,
+      "R2_gradient_energy_ratio": 0.7595174607819707,
+      "R2_gradient_reason": "",
+      "V2_vs_A_RGB8_MAE": 3.7684234542550765,
+      "V2_vs_A_RGB8_max_channel_diff": 24,
+      "V2_vs_A_RGB8_different_bytes": 7798,
+      "V2_vs_A_first_peak_xy": [
+        698,
+        196
+      ],
+      "A_float_available": true,
+      "V2_vs_A_float_MAE": 0.01479536731466702,
+      "V2_vs_A_float_max": 0.09423828125,
+      "float_limit": "",
+      "MAE_gap_fill_vs_R2": 0.5749738927452546,
+      "edge_gap_fill_vs_R2": 0.49329545713332507
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 1,
+      "label_id": "union",
+      "region": "B36_head_target",
+      "pixels": 2867,
+      "gradient_pixels": 2553,
+      "mask_path": "scenes/mallard-water/regions/00001/union-B36_head_target.png",
+      "A_RGB8_MAE": 8.882920590628997,
+      "A_gradient_energy_ratio": 0.4340018872251806,
+      "A_gradient_reason": "",
+      "V2_RGB8_MAE": 5.8622253226369025,
+      "V2_gradient_energy_ratio": 0.6204535995925079,
+      "V2_gradient_reason": "",
+      "R2_RGB8_MAE": 3.7492152075340077,
+      "R2_gradient_energy_ratio": 0.8008813513547309,
+      "R2_gradient_reason": "",
+      "V2_vs_A_RGB8_MAE": 3.548540867341007,
+      "V2_vs_A_RGB8_max_channel_diff": 23,
+      "V2_vs_A_RGB8_different_bytes": 7714,
+      "V2_vs_A_first_peak_xy": [
+        693,
+        193
+      ],
+      "A_float_available": true,
+      "V2_vs_A_float_MAE": 0.01392732887902297,
+      "V2_vs_A_float_max": 0.08831787109375,
+      "float_limit": "",
+      "MAE_gap_fill_vs_R2": 0.5884044842033744,
+      "edge_gap_fill_vs_R2": 0.5082097271639291
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 2,
+      "label_id": "union",
+      "region": "B36_head_target",
+      "pixels": 2894,
+      "gradient_pixels": 2578,
+      "mask_path": "scenes/mallard-water/regions/00002/union-B36_head_target.png",
+      "A_RGB8_MAE": 9.011748445058743,
+      "A_gradient_energy_ratio": 0.4241096298174861,
+      "A_gradient_reason": "",
+      "V2_RGB8_MAE": 6.014282423404746,
+      "V2_gradient_energy_ratio": 0.5968804560807217,
+      "V2_gradient_reason": "",
+      "R2_RGB8_MAE": 3.63902326652845,
+      "R2_gradient_energy_ratio": 0.7874226742450375,
+      "R2_gradient_reason": "",
+      "V2_vs_A_RGB8_MAE": 3.4160331720801658,
+      "V2_vs_A_RGB8_max_channel_diff": 22,
+      "V2_vs_A_RGB8_different_bytes": 7723,
+      "V2_vs_A_first_peak_xy": [
+        721,
+        219
+      ],
+      "A_float_available": true,
+      "V2_vs_A_float_MAE": 0.01338155421758132,
+      "V2_vs_A_float_max": 0.08642578125,
+      "float_limit": "",
+      "MAE_gap_fill_vs_R2": 0.5579042147236634,
+      "edge_gap_fill_vs_R2": 0.47554259037260627
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 3,
+      "label_id": "union",
+      "region": "B36_head_target",
+      "pixels": 2864,
+      "gradient_pixels": 2550,
+      "mask_path": "scenes/mallard-water/regions/00003/union-B36_head_target.png",
+      "A_RGB8_MAE": 8.988710428305401,
+      "A_gradient_energy_ratio": 0.4307719412507546,
+      "A_gradient_reason": "",
+      "V2_RGB8_MAE": 6.04352886405959,
+      "V2_gradient_energy_ratio": 0.6037689702256729,
+      "V2_gradient_reason": "",
+      "R2_RGB8_MAE": 3.7207867783985105,
+      "R2_gradient_energy_ratio": 0.7852898124636871,
+      "R2_gradient_reason": "",
+      "V2_vs_A_RGB8_MAE": 3.356261638733706,
+      "V2_vs_A_RGB8_max_channel_diff": 19,
+      "V2_vs_A_RGB8_different_bytes": 7600,
+      "V2_vs_A_first_peak_xy": [
+        685,
+        179
+      ],
+      "A_float_available": true,
+      "V2_vs_A_float_MAE": 0.013149535855767447,
+      "V2_vs_A_float_max": 0.074951171875,
+      "float_limit": "",
+      "MAE_gap_fill_vs_R2": 0.5590782554902568,
+      "edge_gap_fill_vs_R2": 0.48797830242812174
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 4,
+      "label_id": "union",
+      "region": "B36_head_target",
+      "pixels": 2944,
+      "gradient_pixels": 2626,
+      "mask_path": "scenes/mallard-water/regions/00004/union-B36_head_target.png",
+      "A_RGB8_MAE": 8.984148550724637,
+      "A_gradient_energy_ratio": 0.40515432449426175,
+      "A_gradient_reason": "",
+      "V2_RGB8_MAE": 5.879302536231884,
+      "V2_gradient_energy_ratio": 0.5974387146709317,
+      "V2_gradient_reason": "",
+      "R2_RGB8_MAE": 3.598505434782609,
+      "R2_gradient_energy_ratio": 0.7861407895429066,
+      "R2_gradient_reason": "",
+      "V2_vs_A_RGB8_MAE": 3.583106884057971,
+      "V2_vs_A_RGB8_max_channel_diff": 24,
+      "V2_vs_A_RGB8_different_bytes": 7841,
+      "V2_vs_A_first_peak_xy": [
+        709,
+        219
+      ],
+      "A_float_available": true,
+      "V2_vs_A_float_MAE": 0.014052272274874258,
+      "V2_vs_A_float_max": 0.09283447265625,
+      "float_limit": "",
+      "MAE_gap_fill_vs_R2": 0.5765042257074381,
+      "edge_gap_fill_vs_R2": 0.5047013682024605
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 5,
+      "label_id": "union",
+      "region": "B36_head_target",
+      "pixels": 3012,
+      "gradient_pixels": 2694,
+      "mask_path": "scenes/mallard-water/regions/00005/union-B36_head_target.png",
+      "A_RGB8_MAE": 8.344621513944222,
+      "A_gradient_energy_ratio": 0.4148962695984203,
+      "A_gradient_reason": "",
+      "V2_RGB8_MAE": 5.199092518813634,
+      "V2_gradient_energy_ratio": 0.6210550454752812,
+      "V2_gradient_reason": "",
+      "R2_RGB8_MAE": 3.1357901726427624,
+      "R2_gradient_energy_ratio": 0.8166020492926137,
+      "R2_gradient_reason": "",
+      "V2_vs_A_RGB8_MAE": 3.5651837096060204,
+      "V2_vs_A_RGB8_max_channel_diff": 24,
+      "V2_vs_A_RGB8_different_bytes": 7941,
+      "V2_vs_A_first_peak_xy": [
+        669,
+        181
+      ],
+      "A_float_available": true,
+      "V2_vs_A_float_MAE": 0.01396742664960276,
+      "V2_vs_A_float_max": 0.09375,
+      "float_limit": "",
+      "MAE_gap_fill_vs_R2": 0.6038838251853741,
+      "edge_gap_fill_vs_R2": 0.5132083885718633
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 6,
+      "label_id": "union",
+      "region": "B36_head_target",
+      "pixels": 2979,
+      "gradient_pixels": 2661,
+      "mask_path": "scenes/mallard-water/regions/00006/union-B36_head_target.png",
+      "A_RGB8_MAE": 8.69564730894036,
+      "A_gradient_energy_ratio": 0.41740479501727623,
+      "A_gradient_reason": "",
+      "V2_RGB8_MAE": 6.008392077878483,
+      "V2_gradient_energy_ratio": 0.5859686740612072,
+      "V2_gradient_reason": "",
+      "R2_RGB8_MAE": 4.006154190444221,
+      "R2_gradient_energy_ratio": 0.753804352355099,
+      "R2_gradient_reason": "",
+      "V2_vs_A_RGB8_MAE": 3.0562828689716905,
+      "V2_vs_A_RGB8_max_channel_diff": 20,
+      "V2_vs_A_RGB8_different_bytes": 7723,
+      "V2_vs_A_first_peak_xy": [
+        665,
+        174
+      ],
+      "A_float_available": true,
+      "V2_vs_A_float_MAE": 0.012013153113734073,
+      "V2_vs_A_float_max": 0.0791015625,
+      "float_limit": "",
+      "MAE_gap_fill_vs_R2": 0.5730374612264376,
+      "edge_gap_fill_vs_R2": 0.5010823449885041
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 7,
+      "label_id": "union",
+      "region": "B36_head_target",
+      "pixels": 2872,
+      "gradient_pixels": 2555,
+      "mask_path": "scenes/mallard-water/regions/00007/union-B36_head_target.png",
+      "A_RGB8_MAE": 8.441388115134632,
+      "A_gradient_energy_ratio": 0.44050158801008815,
+      "A_gradient_reason": "",
+      "V2_RGB8_MAE": 5.666782729805014,
+      "V2_gradient_energy_ratio": 0.6236777716002977,
+      "V2_gradient_reason": "",
+      "R2_RGB8_MAE": 3.808147632311978,
+      "R2_gradient_energy_ratio": 0.7803159068588583,
+      "R2_gradient_reason": "",
+      "V2_vs_A_RGB8_MAE": 3.204503249767874,
+      "V2_vs_A_RGB8_max_channel_diff": 22,
+      "V2_vs_A_RGB8_different_bytes": 7551,
+      "V2_vs_A_first_peak_xy": [
+        658,
+        172
+      ],
+      "A_float_available": true,
+      "V2_vs_A_float_MAE": 0.012561985377149662,
+      "V2_vs_A_float_max": 0.086181640625,
+      "float_limit": "",
+      "MAE_gap_fill_vs_R2": 0.5988476953907814,
+      "edge_gap_fill_vs_R2": 0.539047866525394
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 8,
+      "label_id": "union",
+      "region": "B36_head_target",
+      "pixels": 2768,
+      "gradient_pixels": 2458,
+      "mask_path": "scenes/mallard-water/regions/00008/union-B36_head_target.png",
+      "A_RGB8_MAE": 8.655467244701349,
+      "A_gradient_energy_ratio": 0.43364744852632653,
+      "A_gradient_reason": "",
+      "V2_RGB8_MAE": 5.666184971098266,
+      "V2_gradient_energy_ratio": 0.6178784178071383,
+      "V2_gradient_reason": "",
+      "R2_RGB8_MAE": 3.71254816955684,
+      "R2_gradient_energy_ratio": 0.7660781223509352,
+      "R2_gradient_reason": "",
+      "V2_vs_A_RGB8_MAE": 3.4069123314065513,
+      "V2_vs_A_RGB8_max_channel_diff": 21,
+      "V2_vs_A_RGB8_different_bytes": 7375,
+      "V2_vs_A_first_peak_xy": [
+        651,
+        171
+      ],
+      "A_float_available": true,
+      "V2_vs_A_float_MAE": 0.013353492942618957,
+      "V2_vs_A_float_max": 0.079345703125,
+      "float_limit": "",
+      "MAE_gap_fill_vs_R2": 0.6047605125956244,
+      "edge_gap_fill_vs_R2": 0.5541936523523473
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 9,
+      "label_id": "union",
+      "region": "B36_head_target",
+      "pixels": 2753,
+      "gradient_pixels": 2439,
+      "mask_path": "scenes/mallard-water/regions/00009/union-B36_head_target.png",
+      "A_RGB8_MAE": 9.363482261775033,
+      "A_gradient_energy_ratio": 0.41189997189025657,
+      "A_gradient_reason": "",
+      "V2_RGB8_MAE": 6.050006054001695,
+      "V2_gradient_energy_ratio": 0.6068256251193861,
+      "V2_gradient_reason": "",
+      "R2_RGB8_MAE": 3.9497517859305002,
+      "R2_gradient_energy_ratio": 0.7640664013459013,
+      "R2_gradient_reason": "",
+      "V2_vs_A_RGB8_MAE": 3.7973120232473665,
+      "V2_vs_A_RGB8_max_channel_diff": 21,
+      "V2_vs_A_RGB8_different_bytes": 7484,
+      "V2_vs_A_first_peak_xy": [
+        642,
+        177
+      ],
+      "A_float_available": true,
+      "V2_vs_A_float_MAE": 0.014877013568945148,
+      "V2_vs_A_float_max": 0.08441162109375,
+      "float_limit": "",
+      "MAE_gap_fill_vs_R2": 0.6120504562533547,
+      "edge_gap_fill_vs_R2": 0.5535043573870244
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 10,
+      "label_id": "union",
+      "region": "B36_head_target",
+      "pixels": 3126,
+      "gradient_pixels": 2804,
+      "mask_path": "scenes/mallard-water/regions/00010/union-B36_head_target.png",
+      "A_RGB8_MAE": 8.58807848155257,
+      "A_gradient_energy_ratio": 0.4388839009838549,
+      "A_gradient_reason": "",
+      "V2_RGB8_MAE": 5.389422051610151,
+      "V2_gradient_energy_ratio": 0.6478717976134927,
+      "V2_gradient_reason": "",
+      "R2_RGB8_MAE": 3.183727873747068,
+      "R2_gradient_energy_ratio": 0.8327742991550134,
+      "R2_gradient_reason": "",
+      "V2_vs_A_RGB8_MAE": 3.667199829387929,
+      "V2_vs_A_RGB8_max_channel_diff": 29,
+      "V2_vs_A_RGB8_different_bytes": 8303,
+      "V2_vs_A_first_peak_xy": [
+        670,
+        206
+      ],
+      "A_float_available": true,
+      "V2_vs_A_float_MAE": 0.014381655194556493,
+      "V2_vs_A_float_max": 0.11102294921875,
+      "float_limit": "",
+      "MAE_gap_fill_vs_R2": 0.5918669350065112,
+      "edge_gap_fill_vs_R2": 0.5305737271077767
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 11,
+      "label_id": "union",
+      "region": "B36_head_target",
+      "pixels": 3175,
+      "gradient_pixels": 2855,
+      "mask_path": "scenes/mallard-water/regions/00011/union-B36_head_target.png",
+      "A_RGB8_MAE": 8.693333333333333,
+      "A_gradient_energy_ratio": 0.4739522196153592,
+      "A_gradient_reason": "",
+      "V2_RGB8_MAE": 5.345931758530184,
+      "V2_gradient_energy_ratio": 0.6738784295282704,
+      "V2_gradient_reason": "",
+      "R2_RGB8_MAE": 3.061522309711286,
+      "R2_gradient_energy_ratio": 0.8396794796229128,
+      "R2_gradient_reason": "",
+      "V2_vs_A_RGB8_MAE": 3.7608398950131234,
+      "V2_vs_A_RGB8_max_channel_diff": 23,
+      "V2_vs_A_RGB8_different_bytes": 8396,
+      "V2_vs_A_first_peak_xy": [
+        664,
+        204
+      ],
+      "A_float_available": true,
+      "V2_vs_A_float_MAE": 0.014784490229889476,
+      "V2_vs_A_float_max": 0.088623046875,
+      "float_limit": "",
+      "MAE_gap_fill_vs_R2": 0.5943739164476259,
+      "edge_gap_fill_vs_R2": 0.5466538368203179
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 12,
+      "label_id": "union",
+      "region": "B36_head_target",
+      "pixels": 3132,
+      "gradient_pixels": 2814,
+      "mask_path": "scenes/mallard-water/regions/00012/union-B36_head_target.png",
+      "A_RGB8_MAE": 8.046402724563643,
+      "A_gradient_energy_ratio": 0.46785527489587947,
+      "A_gradient_reason": "",
+      "V2_RGB8_MAE": 4.902085994040017,
+      "V2_gradient_energy_ratio": 0.6618597362102652,
+      "V2_gradient_reason": "",
+      "R2_RGB8_MAE": 2.9287994891443168,
+      "R2_gradient_energy_ratio": 0.8288338837368308,
+      "R2_gradient_reason": "",
+      "V2_vs_A_RGB8_MAE": 3.5478927203065136,
+      "V2_vs_A_RGB8_max_channel_diff": 29,
+      "V2_vs_A_RGB8_different_bytes": 8244,
+      "V2_vs_A_first_peak_xy": [
+        643,
+        209
+      ],
+      "A_float_available": true,
+      "V2_vs_A_float_MAE": 0.013905912929517048,
+      "V2_vs_A_float_max": 0.11309814453125,
+      "float_limit": "",
+      "MAE_gap_fill_vs_R2": 0.6144119787875636,
+      "edge_gap_fill_vs_R2": 0.5374403262766877
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 13,
+      "label_id": "union",
+      "region": "B36_head_target",
+      "pixels": 3083,
+      "gradient_pixels": 2767,
+      "mask_path": "scenes/mallard-water/regions/00013/union-B36_head_target.png",
+      "A_RGB8_MAE": 7.996972645691426,
+      "A_gradient_energy_ratio": 0.45210479463068554,
+      "A_gradient_reason": "",
+      "V2_RGB8_MAE": 4.723105200562223,
+      "V2_gradient_energy_ratio": 0.6740529243236802,
+      "V2_gradient_reason": "",
+      "R2_RGB8_MAE": 2.9286409341550437,
+      "R2_gradient_energy_ratio": 0.8439176303835942,
+      "R2_gradient_reason": "",
+      "V2_vs_A_RGB8_MAE": 3.7694885933614444,
+      "V2_vs_A_RGB8_max_channel_diff": 34,
+      "V2_vs_A_RGB8_different_bytes": 8185,
+      "V2_vs_A_first_peak_xy": [
+        646,
+        209
+      ],
+      "A_float_available": true,
+      "V2_vs_A_float_MAE": 0.014812692202340076,
+      "V2_vs_A_float_max": 0.13372802734375,
+      "float_limit": "",
+      "MAE_gap_fill_vs_R2": 0.6459457729803528,
+      "edge_gap_fill_vs_R2": 0.5664646725176793
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 14,
+      "label_id": "union",
+      "region": "B36_head_target",
+      "pixels": 3023,
+      "gradient_pixels": 2711,
+      "mask_path": "scenes/mallard-water/regions/00014/union-B36_head_target.png",
+      "A_RGB8_MAE": 8.975741537104422,
+      "A_gradient_energy_ratio": 0.4533789688329351,
+      "A_gradient_reason": "",
+      "V2_RGB8_MAE": 5.176094387473812,
+      "V2_gradient_energy_ratio": 0.6692296847088101,
+      "V2_gradient_reason": "",
+      "R2_RGB8_MAE": 3.182820597640313,
+      "R2_gradient_energy_ratio": 0.8427728717544755,
+      "R2_gradient_reason": "",
+      "V2_vs_A_RGB8_MAE": 4.354945418458485,
+      "V2_vs_A_RGB8_max_channel_diff": 36,
+      "V2_vs_A_RGB8_different_bytes": 8240,
+      "V2_vs_A_first_peak_xy": [
+        638,
+        209
+      ],
+      "A_float_available": true,
+      "V2_vs_A_float_MAE": 0.017070392537556038,
+      "V2_vs_A_float_max": 0.14385986328125,
+      "float_limit": "",
+      "MAE_gap_fill_vs_R2": 0.6559121364397748,
+      "edge_gap_fill_vs_R2": 0.5543248475551171
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 15,
+      "label_id": "union",
+      "region": "B36_head_target",
+      "pixels": 3070,
+      "gradient_pixels": 2758,
+      "mask_path": "scenes/mallard-water/regions/00015/union-B36_head_target.png",
+      "A_RGB8_MAE": 9.064603691639523,
+      "A_gradient_energy_ratio": 0.45363347040548313,
+      "A_gradient_reason": "",
+      "V2_RGB8_MAE": 5.2947882736156355,
+      "V2_gradient_energy_ratio": 0.6459387121449599,
+      "V2_gradient_reason": "",
+      "R2_RGB8_MAE": 3.3370249728555916,
+      "R2_gradient_energy_ratio": 0.7996497780425581,
+      "R2_gradient_reason": "",
+      "V2_vs_A_RGB8_MAE": 4.330727470141151,
+      "V2_vs_A_RGB8_max_channel_diff": 29,
+      "V2_vs_A_RGB8_different_bytes": 8393,
+      "V2_vs_A_first_peak_xy": [
+        627,
+        211
+      ],
+      "A_float_available": true,
+      "V2_vs_A_float_MAE": 0.0169581348033992,
+      "V2_vs_A_float_max": 0.11212158203125,
+      "float_limit": "",
+      "MAE_gap_fill_vs_R2": 0.6581865746620916,
+      "edge_gap_fill_vs_R2": 0.5557693018942315
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 16,
+      "label_id": "union",
+      "region": "B36_head_target",
+      "pixels": 3248,
+      "gradient_pixels": 2929,
+      "mask_path": "scenes/mallard-water/regions/00016/union-B36_head_target.png",
+      "A_RGB8_MAE": 8.868226600985222,
+      "A_gradient_energy_ratio": 0.4426048487653491,
+      "A_gradient_reason": "",
+      "V2_RGB8_MAE": 5.07491789819376,
+      "V2_gradient_energy_ratio": 0.6432533985346762,
+      "V2_gradient_reason": "",
+      "R2_RGB8_MAE": 3.0388957307060753,
+      "R2_gradient_energy_ratio": 0.7972471593618436,
+      "R2_gradient_reason": "",
+      "V2_vs_A_RGB8_MAE": 4.347906403940887,
+      "V2_vs_A_RGB8_max_channel_diff": 32,
+      "V2_vs_A_RGB8_different_bytes": 8770,
+      "V2_vs_A_first_peak_xy": [
+        593,
+        173
+      ],
+      "A_float_available": true,
+      "V2_vs_A_float_MAE": 0.017061883788586446,
+      "V2_vs_A_float_max": 0.125091552734375,
+      "float_limit": "",
+      "MAE_gap_fill_vs_R2": 0.6507279801411947,
+      "edge_gap_fill_vs_R2": 0.5657772459012126
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 17,
+      "label_id": "union",
+      "region": "B36_head_target",
+      "pixels": 3171,
+      "gradient_pixels": 2853,
+      "mask_path": "scenes/mallard-water/regions/00017/union-B36_head_target.png",
+      "A_RGB8_MAE": 9.143908335961315,
+      "A_gradient_energy_ratio": 0.40876248947125304,
+      "A_gradient_reason": "",
+      "V2_RGB8_MAE": 5.489540628613477,
+      "V2_gradient_energy_ratio": 0.6108335611758571,
+      "V2_gradient_reason": "",
+      "R2_RGB8_MAE": 3.496583622411437,
+      "R2_gradient_energy_ratio": 0.7631652915803915,
+      "R2_gradient_reason": "",
+      "V2_vs_A_RGB8_MAE": 4.249132765689057,
+      "V2_vs_A_RGB8_max_channel_diff": 28,
+      "V2_vs_A_RGB8_different_bytes": 8659,
+      "V2_vs_A_first_peak_xy": [
+        587,
+        173
+      ],
+      "A_float_available": true,
+      "V2_vs_A_float_MAE": 0.016635243955075044,
+      "V2_vs_A_float_max": 0.111846923828125,
+      "float_limit": "",
+      "MAE_gap_fill_vs_R2": 0.6470971464735773,
+      "edge_gap_fill_vs_R2": 0.5701734594140602
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 18,
+      "label_id": "union",
+      "region": "B36_head_target",
+      "pixels": 3309,
+      "gradient_pixels": 2986,
+      "mask_path": "scenes/mallard-water/regions/00018/union-B36_head_target.png",
+      "A_RGB8_MAE": 9.259091366978947,
+      "A_gradient_energy_ratio": 0.35231717615250846,
+      "A_gradient_reason": "",
+      "V2_RGB8_MAE": 5.2147678049763275,
+      "V2_gradient_energy_ratio": 0.5948236371829966,
+      "V2_gradient_reason": "",
+      "R2_RGB8_MAE": 3.3227561196736173,
+      "R2_gradient_energy_ratio": 0.7664226607152181,
+      "R2_gradient_reason": "",
+      "V2_vs_A_RGB8_MAE": 4.678150498640073,
+      "V2_vs_A_RGB8_max_channel_diff": 35,
+      "V2_vs_A_RGB8_different_bytes": 8998,
+      "V2_vs_A_first_peak_xy": [
+        587,
+        176
+      ],
+      "A_float_available": true,
+      "V2_vs_A_float_MAE": 0.018354575175514656,
+      "V2_vs_A_float_max": 0.13671875,
+      "float_limit": "",
+      "MAE_gap_fill_vs_R2": 0.6812828779908364,
+      "edge_gap_fill_vs_R2": 0.5856151876050905
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 19,
+      "label_id": "union",
+      "region": "B36_head_target",
+      "pixels": 3339,
+      "gradient_pixels": 3015,
+      "mask_path": "scenes/mallard-water/regions/00019/union-B36_head_target.png",
+      "A_RGB8_MAE": 9.41978636318259,
+      "A_gradient_energy_ratio": 0.3171831672790139,
+      "A_gradient_reason": "",
+      "V2_RGB8_MAE": 5.028651292802236,
+      "V2_gradient_energy_ratio": 0.5855001987536556,
+      "V2_gradient_reason": "",
+      "R2_RGB8_MAE": 3.4205850054906657,
+      "R2_gradient_energy_ratio": 0.7411446736628743,
+      "R2_gradient_reason": "",
+      "V2_vs_A_RGB8_MAE": 5.024059099530797,
+      "V2_vs_A_RGB8_max_channel_diff": 37,
+      "V2_vs_A_RGB8_different_bytes": 9268,
+      "V2_vs_A_first_peak_xy": [
+        576,
+        173
+      ],
+      "A_float_available": true,
+      "V2_vs_A_float_MAE": 0.019727198701782165,
+      "V2_vs_A_float_max": 0.148193359375,
+      "float_limit": "",
+      "MAE_gap_fill_vs_R2": 0.7319532732053118,
+      "edge_gap_fill_vs_R2": 0.6328806446680182
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 20,
+      "label_id": "union",
+      "region": "B36_head_target",
+      "pixels": 3379,
+      "gradient_pixels": 3055,
+      "mask_path": "scenes/mallard-water/regions/00020/union-B36_head_target.png",
+      "A_RGB8_MAE": 10.062641807240801,
+      "A_gradient_energy_ratio": 0.29257124889026725,
+      "A_gradient_reason": "",
+      "V2_RGB8_MAE": 4.94939331163066,
+      "V2_gradient_energy_ratio": 0.5891255664190816,
+      "V2_gradient_reason": "",
+      "R2_RGB8_MAE": 3.3129130906579856,
+      "R2_gradient_energy_ratio": 0.7526110611740113,
+      "R2_gradient_reason": "",
+      "V2_vs_A_RGB8_MAE": 5.771036795896221,
+      "V2_vs_A_RGB8_max_channel_diff": 38,
+      "V2_vs_A_RGB8_different_bytes": 9328,
+      "V2_vs_A_first_peak_xy": [
+        571,
+        173
+      ],
+      "A_float_available": true,
+      "V2_vs_A_float_MAE": 0.022646093128629956,
+      "V2_vs_A_float_max": 0.14788818359375,
+      "float_limit": "",
+      "MAE_gap_fill_vs_R2": 0.7575487416328083,
+      "edge_gap_fill_vs_R2": 0.6446275074686474
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 21,
+      "label_id": "union",
+      "region": "B36_head_target",
+      "pixels": 3315,
+      "gradient_pixels": 2986,
+      "mask_path": "scenes/mallard-water/regions/00021/union-B36_head_target.png",
+      "A_RGB8_MAE": 10.795776772247361,
+      "A_gradient_energy_ratio": 0.2914203273361484,
+      "A_gradient_reason": "",
+      "V2_RGB8_MAE": 5.545801910507793,
+      "V2_gradient_energy_ratio": 0.5789452914442927,
+      "V2_gradient_reason": "",
+      "R2_RGB8_MAE": 4.489492207139266,
+      "R2_gradient_energy_ratio": 0.665909018916483,
+      "R2_gradient_reason": "",
+      "V2_vs_A_RGB8_MAE": 5.949019607843137,
+      "V2_vs_A_RGB8_max_channel_diff": 43,
+      "V2_vs_A_RGB8_different_bytes": 9212,
+      "V2_vs_A_first_peak_xy": [
+        571,
+        176
+      ],
+      "A_float_available": true,
+      "V2_vs_A_float_MAE": 0.02332132875529769,
+      "V2_vs_A_float_max": 0.165771484375,
+      "float_limit": "",
+      "MAE_gap_fill_vs_R2": 0.8324988838573889,
+      "edge_gap_fill_vs_R2": 0.7677800974304321
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 22,
+      "label_id": "union",
+      "region": "B36_head_target",
+      "pixels": 3314,
+      "gradient_pixels": 2990,
+      "mask_path": "scenes/mallard-water/regions/00022/union-B36_head_target.png",
+      "A_RGB8_MAE": 11.241299537316435,
+      "A_gradient_energy_ratio": 0.33522117189835443,
+      "A_gradient_reason": "",
+      "V2_RGB8_MAE": 5.102695634681151,
+      "V2_gradient_energy_ratio": 0.6504163595951965,
+      "V2_gradient_reason": "",
+      "R2_RGB8_MAE": 4.19754576543955,
+      "R2_gradient_energy_ratio": 0.7204232008160788,
+      "R2_gradient_reason": "",
+      "V2_vs_A_RGB8_MAE": 6.905049285857976,
+      "V2_vs_A_RGB8_max_channel_diff": 49,
+      "V2_vs_A_RGB8_different_bytes": 9312,
+      "V2_vs_A_first_peak_xy": [
+        593,
+        206
+      ],
+      "A_float_available": true,
+      "V2_vs_A_float_MAE": 0.02708599548708191,
+      "V2_vs_A_float_max": 0.19189453125,
+      "float_limit": "",
+      "MAE_gap_fill_vs_R2": 0.871496094475146,
+      "edge_gap_fill_vs_R2": 0.8182594172269141
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 23,
+      "label_id": "union",
+      "region": "B36_head_target",
+      "pixels": 3397,
+      "gradient_pixels": 3070,
+      "mask_path": "scenes/mallard-water/regions/00023/union-B36_head_target.png",
+      "A_RGB8_MAE": 11.059464233146894,
+      "A_gradient_energy_ratio": 0.34133559655876095,
+      "A_gradient_reason": "",
+      "V2_RGB8_MAE": 5.014424492198999,
+      "V2_gradient_energy_ratio": 0.656271761803618,
+      "V2_gradient_reason": "",
+      "R2_RGB8_MAE": 4.1791777058188595,
+      "R2_gradient_energy_ratio": 0.7234253529246808,
+      "R2_gradient_reason": "",
+      "V2_vs_A_RGB8_MAE": 6.9234618781277595,
+      "V2_vs_A_RGB8_max_channel_diff": 56,
+      "V2_vs_A_RGB8_different_bytes": 9596,
+      "V2_vs_A_first_peak_xy": [
+        589,
+        207
+      ],
+      "A_float_available": true,
+      "V2_vs_A_float_MAE": 0.02714209284729537,
+      "V2_vs_A_float_max": 0.2205810546875,
+      "float_limit": "",
+      "MAE_gap_fill_vs_R2": 0.8786029065704465,
+      "edge_gap_fill_vs_R2": 0.8242465546321762
+    },
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 24,
+      "label_id": "union",
+      "region": "B36_head_target",
+      "pixels": 3419,
+      "gradient_pixels": 3089,
+      "mask_path": "scenes/mallard-water/regions/00024/union-B36_head_target.png",
+      "A_RGB8_MAE": 10.842449059179097,
+      "A_gradient_energy_ratio": 0.32982399353559133,
+      "A_gradient_reason": "",
+      "V2_RGB8_MAE": 4.954957589938578,
+      "V2_gradient_energy_ratio": 0.6299929188678266,
+      "V2_gradient_reason": "",
+      "R2_RGB8_MAE": 4.201813395729745,
+      "R2_gradient_energy_ratio": 0.6899736951909298,
+      "R2_gradient_reason": "",
+      "V2_vs_A_RGB8_MAE": 6.786389782587501,
+      "V2_vs_A_RGB8_max_channel_diff": 49,
+      "V2_vs_A_RGB8_different_bytes": 9625,
+      "V2_vs_A_first_peak_xy": [
+        586,
+        213
+      ],
+      "A_float_available": true,
+      "V2_vs_A_float_MAE": 0.02660736726647617,
+      "V2_vs_A_float_max": 0.19268798828125,
+      "float_limit": "",
+      "MAE_gap_fill_vs_R2": 0.8865855269919105,
+      "edge_gap_fill_vs_R2": 0.8334559877533801
+    }
+  ],
+  "B36_gap_description": "Unclipped input-relative MAE/gradient gap filling against R2, not a perceptual-quality recovery percentage.",
+  "cap_precision_note": "Native mathematical cap1 holds. Strict>1 fractions retained. Nearest-projected display interior can still include native outside-union filter support; input-only linear contribution audit documents maximal points. Small FP32 excess is separately visible in native_FP32_inside_max. No grid interchange or threshold tuning.",
+  "user_visual_review_completed": false,
+  "limitations": [
+    "Only6 exploration sources; no held-out videos or new neural metrics.",
+    "DAVIS GT union provides extra spatial condition permission beyond scalar focus, not predicted-mask deployment.",
+    "V2 is subject clear-protection, not depth correction or Ours. Multi-ID union can flatten genuine depth.",
+    "Closer to input RGB may just mean less defocus. Five human criteria remain separately pending.",
+    "Temporal regions are uncompensated pair unions, not flicker. Shared far-background repeated across IDs is not independent evidence."
+  ],
+  "input_mixing_audit": [
+    {
+      "scene_id": "mallard-water",
+      "sample_id": "B36",
+      "frame_id": 0,
+      "display_xy": [
+        670,
+        155
+      ],
+      "actual_interior_peak": 1.0,
+      "native_FP32_inside_max": 1.0,
+      "outside_union_filter_weight": 0.0,
+      "inside_union_contribution": 1.0,
+      "outside_union_contribution": 0.0,
+      "linear_sum_error": 0.0,
+      "scope": "Post-hoc input-only linear-resize contribution at per-source maximal interior point. No ROI/ranking/threshold/condition/output change; not an anatomical or true-depth verdict."
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "frame_id": 0,
+      "display_xy": [
+        323,
+        371
+      ],
+      "actual_interior_peak": 1.0,
+      "native_FP32_inside_max": 1.0,
+      "outside_union_filter_weight": 0.0,
+      "inside_union_contribution": 1.0,
+      "outside_union_contribution": 0.0,
+      "linear_sum_error": 0.0,
+      "scope": "Post-hoc input-only linear-resize contribution at per-source maximal interior point. No ROI/ranking/threshold/condition/output change; not an anatomical or true-depth verdict."
+    },
+    {
+      "scene_id": "cows",
+      "sample_id": "B34",
+      "frame_id": 0,
+      "display_xy": [
+        499,
+        326
+      ],
+      "actual_interior_peak": 1.0,
+      "native_FP32_inside_max": 1.0,
+      "outside_union_filter_weight": 0.0,
+      "inside_union_contribution": 1.0,
+      "outside_union_contribution": 0.0,
+      "linear_sum_error": 0.0,
+      "scope": "Post-hoc input-only linear-resize contribution at per-source maximal interior point. No ROI/ranking/threshold/condition/output change; not an anatomical or true-depth verdict."
+    },
+    {
+      "scene_id": "rhino",
+      "sample_id": "B18",
+      "frame_id": 17,
+      "display_xy": [
+        409,
+        391
+      ],
+      "actual_interior_peak": 1.0853116512298584,
+      "native_FP32_inside_max": 1.0,
+      "outside_union_filter_weight": 0.4464285969734192,
+      "inside_union_contribution": 0.5535714030265808,
+      "outside_union_contribution": 0.5317402482032776,
+      "linear_sum_error": 0.0,
+      "scope": "Post-hoc input-only linear-resize contribution at per-source maximal interior point. No ROI/ranking/threshold/condition/output change; not an anatomical or true-depth verdict."
+    },
+    {
+      "scene_id": "blackswan",
+      "sample_id": "B22",
+      "frame_id": 0,
+      "display_xy": [
+        531,
+        94
+      ],
+      "actual_interior_peak": 1.0,
+      "native_FP32_inside_max": 1.0,
+      "outside_union_filter_weight": 0.0,
+      "inside_union_contribution": 1.0,
+      "outside_union_contribution": 0.0,
+      "linear_sum_error": 0.0,
+      "scope": "Post-hoc input-only linear-resize contribution at per-source maximal interior point. No ROI/ranking/threshold/condition/output change; not an anatomical or true-depth verdict."
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "frame_id": 24,
+      "display_xy": [
+        183,
+        287
+      ],
+      "actual_interior_peak": 1.3520232439041138,
+      "native_FP32_inside_max": 1.0,
+      "outside_union_filter_weight": 0.1540178805589676,
+      "inside_union_contribution": 0.8459821939468384,
+      "outside_union_contribution": 0.5060410499572754,
+      "linear_sum_error": 0.0,
+      "scope": "Post-hoc input-only linear-resize contribution at per-source maximal interior point. No ROI/ranking/threshold/condition/output change; not an anatomical or true-depth verdict."
+    }
+  ],
+  "B36_R2_gap_clip_summary": {
+    "method": "median of25 per-frame un-clipped input-relative gap ratios",
+    "MAE": 0.6144119787875636,
+    "gradient": 0.5541936523523473,
+    "perceptual_quality_fraction": false
+  },
+  "verification": {
+    "UTC": "2026-10-21T16:17:25.972554+00:00",
+    "scenes": 6,
+    "V2_frames": 150,
+    "new_prediction_PNGs_verified": 150,
+    "all_finite": true,
+    "native_cap_tau1_verified": true,
+    "padding_and_fixed_inputs_verified": true,
+    "config_frozen_before_GPU": {
+      "config_sha256": "7abff84f19034b7c201d1dc6f30881ccb02b1e699b10d04e548034525f43a042",
+      "commit": "500888feab5dcc777dd7211baeb549f3bafffa2e",
+      "UTC": "2026-10-21T15:59:09.324981+00:00"
+    },
+    "all_videos_frames": 25,
+    "fps": 20,
+    "all_visual_fields": "待用户复核",
+    "user_visual_review_completed": false,
+    "HTTP_resources": 516,
+    "all_HTTP_200": true,
+    "HTTP_base": "http://127.0.0.1:8765/subject-coc-clamp-v2-20261021/",
+    "browser": {
+      "version": "Chrome/140.0.7339.16",
+      "private_profile": true,
+      "GPU_disabled": true,
+      "items": [
+        {
+          "sample_id": "B36",
+          "frames": 25,
+          "panels": 4,
+          "ROI_pixel_differences": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "speeds": true,
+          "adjacent": true,
+          "native_size": true
+        },
+        {
+          "sample_id": "B20",
+          "frames": 25,
+          "panels": 3,
+          "ROI_pixel_differences": [
+            0,
+            0,
+            0
+          ],
+          "speeds": true,
+          "adjacent": true,
+          "native_size": true
+        },
+        {
+          "sample_id": "B34",
+          "frames": 25,
+          "panels": 3,
+          "ROI_pixel_differences": [
+            0,
+            0,
+            0
+          ],
+          "speeds": true,
+          "adjacent": true,
+          "native_size": true
+        },
+        {
+          "sample_id": "B18",
+          "frames": 25,
+          "panels": 3,
+          "ROI_pixel_differences": [
+            0,
+            0,
+            0
+          ],
+          "speeds": true,
+          "adjacent": true,
+          "native_size": true
+        },
+        {
+          "sample_id": "B22",
+          "frames": 25,
+          "panels": 3,
+          "ROI_pixel_differences": [
+            0,
+            0,
+            0
+          ],
+          "speeds": true,
+          "adjacent": true,
+          "native_size": true
+        },
+        {
+          "sample_id": "V2-stat-01",
+          "frames": 25,
+          "panels": 3,
+          "ROI_pixel_differences": [
+            0,
+            0,
+            0
+          ],
+          "speeds": true,
+          "adjacent": true,
+          "native_size": true
+        }
+      ],
+      "five_separate_visual_fields_pending": true,
+      "manual_ROI": true,
+      "keyboard_navigation": true,
+      "context_transfer": true,
+      "save_reload_export": true,
+      "old_keys_preserved": true,
+      "JS_exceptions": 0,
+      "simulated_feedback_only_in_private_profile": true
+    }
+  },
+  "reproducible_commands": [
+    "/root/miniconda3/envs/any2bokeh/bin/python scripts/stat_subject_coc.py",
+    "git commit frozen configs/selection before GPU (500888f)",
+    "/root/miniconda3/envs/any2bokeh/bin/python scripts/run_subject_coc_v2.py prepare",
+    "CUDA_VISIBLE_DEVICES=0 HF_HUB_OFFLINE=1 /root/miniconda3/envs/any2bokeh/bin/python scripts/run_subject_coc_v2.py run",
+    "CUDA_VISIBLE_DEVICES='' /root/miniconda3/envs/any2bokeh/bin/python scripts/analyze_subject_coc_v2.py analyze",
+    "CUDA_VISIBLE_DEVICES='' /root/miniconda3/envs/any2bokeh/bin/python scripts/analyze_subject_coc_v2.py materials",
+    "CUDA_VISIBLE_DEVICES='' /root/miniconda3/envs/any2bokeh/bin/python scripts/analyze_subject_coc_v2.py input_mix_audit",
+    "CUDA_VISIBLE_DEVICES='' /root/miniconda3/envs/any2bokeh/bin/python scripts/analyze_subject_coc_v2.py report",
+    "CUDA_VISIBLE_DEVICES='' /root/miniconda3/envs/any2bokeh/bin/python scripts/analyze_subject_coc_v2.py verify",
+    "/root/miniconda3/bin/python scripts/check_subject_coc_v2_materials.py (private Chrome9229; existing HTTP8765 root)"
+  ],
+  "statistics_record": "03_实验记录/records/any2bokeh-subject-coc-statistics-20261021.json",
+  "preinference_config_commit": "500888feab5dcc777dd7211baeb549f3bafffa2e",
+  "freeze_config_and_runner_unchanged": true,
+  "runtime_environment": {
+    "GPU": "RTX4090D49140MiB; GPU0, serial;0MiB/0% and no compute process before launch",
+    "CPU_quota_cores": 20,
+    "cgroup_memory_limit_GiB": 90,
+    "disk_free_at_start_approx_GiB": 400,
+    "author_commit": "f7a16959dd219080fb8eec0d32bb9602d8970c22",
+    "precision": "native FP16 / VAE FP32 upcast",
+    "no_dependency_or_allocator_changes": true,
+    "new_inference_runs": 11,
+    "new_prediction_frames": 275,
+    "V2_frames": 150,
+    "heldout_video_inputs_predictions_metrics_opened": 0,
+    "RNG_metadata_only_exception": "Legacy scene-boundary state restored as frozen protocol; no previous video content viewed."
+  },
+  "outputs": {
+    "root": "outputs/any2bokeh-failure-analysis-20261009/subject-coc-clamp-v2-20261021",
+    "index": "outputs/any2bokeh-failure-analysis-20261009/subject-coc-clamp-v2-20261021/index.html",
+    "review": "outputs/any2bokeh-failure-analysis-20261009/subject-coc-clamp-v2-20261021/review.html",
+    "storage_key": "atb-subject-coc-clamp-v2-user-20261021"
+  },
+  "completion_gate": "统计与配对推理完成，等待用户视觉复核"
+}
