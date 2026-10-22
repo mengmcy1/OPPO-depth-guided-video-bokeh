@@ -1,0 +1,45 @@
+{
+  "status": "COST_PROBE_ONLY_NO_TRAINING",
+  "GPU": "NVIDIA GeForce RTX 4090 D",
+  "torch": "2.8.0+cu128",
+  "model": "candidate two-downsample UNet channels32/64/128, residual output; architecture not frozen",
+  "parameters": 471841,
+  "precision": "BF16 autocast, float32 parameters",
+  "rows": [
+    {
+      "batch": 4,
+      "height": 384,
+      "width": 384,
+      "warmup": 10,
+      "repeats": 30,
+      "mean_seconds": 0.018454603354136147,
+      "median_seconds": 0.01842424087226391,
+      "p95_seconds": 0.018902498111128808,
+      "peak_allocated_GiB": 0.889249324798584,
+      "compute_minutes_1000_steps": 0.30757672256893576,
+      "compute_minutes_5000_steps": 1.5378836128446791
+    },
+    {
+      "batch": 1,
+      "height": 436,
+      "width": 1024,
+      "warmup": 10,
+      "repeats": 30,
+      "mean_seconds": 0.015131734684109688,
+      "median_seconds": 0.015150513499975204,
+      "p95_seconds": 0.015588038042187691,
+      "peak_allocated_GiB": 0.6788778305053711,
+      "compute_minutes_1000_steps": 0.2521955780684948,
+      "compute_minutes_5000_steps": 1.260977890342474
+    }
+  ],
+  "optimizer_updates": 0,
+  "weights_unchanged": true,
+  "checkpoint_saved": false,
+  "timing_scope": "pinned cached batch H2D + forward + simple geometry/keep loss + backward; no optimizer, data decoding, validation, saving or ATB",
+  "caveats": [
+    "Cold-cache data preparation and full experiment elapsed time are separate.",
+    "No learning curve or convergence-time claim; number of steps not chosen by this probe.",
+    "Real training may require nonzero residual initialization or optimization details; probe shows only candidate cost."
+  ]
+}
