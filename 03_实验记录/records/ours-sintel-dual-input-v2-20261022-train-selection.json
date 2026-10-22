@@ -1,0 +1,117 @@
+{
+  "rows": [
+    {
+      "free": {
+        "scale": 0.337889045738242,
+        "shift": -0.0015594021172316355,
+        "endpoint_low": 0.03094576466829098,
+        "endpoint_high": 0.968684889365573,
+        "inverse_min": 0.09620071202516556,
+        "inverse_max": 2.871487855911255
+      },
+      "bounded": {
+        "scale": 0.337889045738242,
+        "shift": -0.0015594021172316355,
+        "endpoint_low": 0.03094576466829098,
+        "endpoint_high": 0.968684889365573,
+        "inverse_min": 0.09620071202516556,
+        "inverse_max": 2.871487855911255
+      },
+      "free_outside": 0.0,
+      "bounded_outside": 0.0,
+      "free_mse": 0.009221005253493786,
+      "bounded_mse": 0.009221005253493786,
+      "label_change_mean": 0.0,
+      "label_change_mae": 0.0,
+      "scale_ratio": 1.0,
+      "sequence": "ambush_4"
+    },
+    {
+      "free": {
+        "scale": 0.5253683348639626,
+        "shift": -0.0460178975782812,
+        "endpoint_low": 0.07374167326400642,
+        "endpoint_high": 0.8565354947473356,
+        "inverse_min": 0.22795353829860687,
+        "inverse_max": 1.7179440259933472
+      },
+      "bounded": {
+        "scale": 0.5253683348639626,
+        "shift": -0.0460178975782812,
+        "endpoint_low": 0.07374167326400642,
+        "endpoint_high": 0.8565354947473356,
+        "inverse_min": 0.22795353829860687,
+        "inverse_max": 1.7179440259933472
+      },
+      "free_outside": 0.0,
+      "bounded_outside": 0.0,
+      "free_mse": 0.004746504593640566,
+      "bounded_mse": 0.004746504593640566,
+      "label_change_mean": 0.0,
+      "label_change_mae": 0.0,
+      "scale_ratio": 1.0,
+      "sequence": "shaman_2"
+    },
+    {
+      "free": {
+        "scale": 1.053550106251123,
+        "shift": 0.027346296117052388,
+        "endpoint_low": 0.13402321346042803,
+        "endpoint_high": 0.9957417382581714,
+        "inverse_min": 0.10125471651554108,
+        "inverse_max": 0.9191735982894897
+      },
+      "bounded": {
+        "scale": 1.053550106251123,
+        "shift": 0.027346296117052388,
+        "endpoint_low": 0.13402321346042803,
+        "endpoint_high": 0.9957417382581714,
+        "inverse_min": 0.10125471651554108,
+        "inverse_max": 0.9191735982894897
+      },
+      "free_outside": 0.0,
+      "bounded_outside": 0.0,
+      "free_mse": 0.010466528125107288,
+      "bounded_mse": 0.010466528125107288,
+      "label_change_mean": 0.0,
+      "label_change_mae": 0.0,
+      "scale_ratio": 1.0,
+      "sequence": "bamboo_1"
+    },
+    {
+      "free": {
+        "scale": 0.7806381099630175,
+        "shift": -0.5384105480831138,
+        "endpoint_low": -0.11624059335906892,
+        "endpoint_high": 0.9757637928756752,
+        "inverse_min": 0.5408011078834534,
+        "inverse_max": 1.9396623373031616
+      },
+      "bounded": {
+        "scale": 0.6540873692009956,
+        "shift": -0.35373117391647185,
+        "endpoint_low": 0.0,
+        "endpoint_high": 0.9149774614284074,
+        "inverse_min": 0.5408011078834534,
+        "inverse_max": 1.9396623373031616
+      },
+      "free_outside": 0.09643151519495413,
+      "bounded_outside": 0.0,
+      "free_mse": 0.015034256502985954,
+      "bounded_mse": 0.017507953569293022,
+      "label_change_mean": 0.02128072828054428,
+      "label_change_mae": 0.038264740258455276,
+      "scale_ratio": 0.8378880826507212,
+      "sequence": "bandage_1"
+    }
+  ],
+  "train_residual_quantiles": {
+    "p25": 0.028637895360589027,
+    "p50": 0.050833288580179214,
+    "p90": 0.1765361726284027
+  },
+  "residual_sample_stride": 97,
+  "selection_uses": "four pilot_train families only; no dev pixels",
+  "decision": "bounded positive sequence-level affine: compatible 0..1 support without per-pixel reference clipping",
+  "cost": "Global contrast and fitting-error changes retained; no claim bounded mapping is physically more accurate."
+}

@@ -1,0 +1,58 @@
+{
+  "version": 2,
+  "stage": "data protocol pilot, not model training",
+  "frozen_at_utc": "2026-10-22T15:56:22.998841+00:00",
+  "source_config": "configs/ours-geometry-data-pilot-20261022.json",
+  "output_root": "data/processed/ours-geometry-pilot-20261022/dual-input-v2",
+  "mapping": "d_ref=a/Z+b; constrained sequence OLS, 0<=min target<=max target<=1, positive slope; preserve raw float VDA",
+  "mapping_support": "all finite pixels with 0.001<Z<70 across 25 frames; each clip independently fits labels only",
+  "selection_record": "03_实验记录/records/ours-sintel-dual-input-v2-20261022-train-selection.json",
+  "input": "RGB float32 0..1 (3 channels) + actual normalized float VDA input (1 channel)",
+  "model_output": "one unconstrained signed residual; preclamp output = actual input + residual",
+  "output_range": "geometry loss on preclamp float output; deployment geometry clips 0..1 and reports saturation, never renormalizes",
+  "atb_interface": "provisional: clip float disparity to [0,1], quantize once floor(255*d); original fixed focus/K; CoC transplant only; NOT executed or claimed verified",
+  "geometry_validity": "range/finite domain, not official confidence; invalid labels zero-filled only for storage and excluded from all losses",
+  "boundary_diagnostic": "3x3 inverse-depth relative range >0.05; dilate one pixel (5x5 total support). Include in geometry loss; report separately; not semantic annotation.",
+  "keep_rule": "S=valid & distance>=2 pixels from invalid/image border & outside diagnostic boundary & abs(original_d-reference)<=epsilon",
+  "keep_epsilon": 0.028637895360589027,
+  "keep_meaning": "train residual p25 near-reference subset, not calibrated reliable/correct region",
+  "keep_loss": "mean_S relu(abs(preclamp_output - actual_input) - epsilon); perturbed branch removes perturbation footprint from S; reference lies in zero-penalty band",
+  "geometry_loss": "mean_valid abs(preclamp_output-reference); weighting between losses still unset",
+  "perturbation": {
+    "seed": 20261022,
+    "amplitude_range": [
+      0.050833288580179214,
+      0.1765361726284027
+    ],
+    "amplitude_basis": "train only absolute residual p50..p90, stride97",
+    "area_fraction_range": [
+      0.01,
+      0.05
+    ],
+    "axis_ratio_range": [
+      0.5,
+      2.0
+    ],
+    "flat_radius": 0.75,
+    "max_attempts": 64,
+    "shape": "axis-aligned ellipse; raised-cosine taper in outer quarter of radius",
+    "fractions_per_clip": {
+      "zero": 0.2,
+      "positive": 0.4,
+      "negative": 0.4
+    },
+    "placement": "random geometry-independent location; entire footprint must lie in supervision domain; failed placement becomes documented no-op",
+    "clipping": "clip d+signed_amplitude*weight to [0,1]; report clipping and actual delta; no renormalization",
+    "temporal": "independent per-frame samples for framewise Student; no temporal-coherence claim"
+  },
+  "budget": "same total optimizer steps, batch size and base-frame schedule for natural-only/perturbed-only/joint; joint 50/50 within same budget; perturb branch includes 20% no-op",
+  "split_policy": "same six reserved source families; no new split or DAVIS/heldout access",
+  "focus_K": null,
+  "teacher": false,
+  "training": false,
+  "limitations": [
+    "range validity does not resolve transparency/anti-aliasing GT errors",
+    "fitting absorbs scale/shift; not independent metric-depth accuracy",
+    "pilot is 100 train/50 dev frames, not final corpus"
+  ]
+}
