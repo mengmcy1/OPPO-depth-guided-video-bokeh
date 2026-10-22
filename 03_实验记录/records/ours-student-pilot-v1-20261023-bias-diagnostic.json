@@ -1,0 +1,176 @@
+{
+  "scope": "post-hoc CPU control; median residual fitted on training pixels only, no dev tuning or new training",
+  "train_bias": 0.017254289239645004,
+  "rows": [
+    {
+      "scene": "cave_2",
+      "variant": "natural",
+      "model_change_mean": 0.015148690498718333,
+      "model_change_std": 0.01876298073255646,
+      "model_change_quantiles": [
+        -0.0458984375,
+        -0.01220703125,
+        0.02099609375,
+        0.0324706993997097,
+        0.03466796875
+      ],
+      "model_mae": 0.07299605680204313,
+      "constant_bias_mae": 0.08093722759592728,
+      "model_constant_difference_MAE": 0.013997498239637557,
+      "model_near_MAE": 0.019876032912412116,
+      "constant_near_MAE": 0.017648026406379393
+    },
+    {
+      "scene": "cave_2",
+      "variant": "perturbed",
+      "model_change_mean": 0.016413330810528905,
+      "model_change_std": 0.01799855864453082,
+      "model_change_quantiles": [
+        -0.033935546875,
+        -0.0084228515625,
+        0.0189208984375,
+        0.03759765625,
+        0.04248046875
+      ],
+      "model_mae": 0.0721174459464267,
+      "constant_bias_mae": 0.08093722759592728,
+      "model_constant_difference_MAE": 0.014517023421143414,
+      "model_near_MAE": 0.019108854321026495,
+      "constant_near_MAE": 0.017648026406379393
+    },
+    {
+      "scene": "cave_2",
+      "variant": "joint",
+      "model_change_mean": 0.015839787024625386,
+      "model_change_std": 0.017308922174240876,
+      "model_change_quantiles": [
+        -0.03515625,
+        -0.00836181640625,
+        0.0191650390625,
+        0.03466796875,
+        0.037109375
+      ],
+      "model_mae": 0.07248241809800934,
+      "constant_bias_mae": 0.08093722759592728,
+      "model_constant_difference_MAE": 0.013819823384842434,
+      "model_near_MAE": 0.01875937964170886,
+      "constant_near_MAE": 0.017648026406379393
+    },
+    {
+      "scene": "market_2",
+      "variant": "natural",
+      "model_change_mean": 0.003884103611588632,
+      "model_change_std": 0.03104858694171596,
+      "model_change_quantiles": [
+        -0.08544921875,
+        -0.04638671875,
+        0.013671875,
+        0.03173828125,
+        0.052978515625
+      ],
+      "model_mae": 0.04441302897177846,
+      "constant_bias_mae": 0.04336649628015152,
+      "model_constant_difference_MAE": 0.02252426215717653,
+      "model_near_MAE": 0.02040163163022242,
+      "constant_near_MAE": 0.013837524182393143
+    },
+    {
+      "scene": "market_2",
+      "variant": "perturbed",
+      "model_change_mean": 0.008885522566827187,
+      "model_change_std": 0.030076996454292144,
+      "model_change_quantiles": [
+        -0.08642578125,
+        -0.03369140625,
+        0.0159912109375,
+        0.03759765625,
+        0.0549316331744194
+      ],
+      "model_mae": 0.04546075085983766,
+      "constant_bias_mae": 0.04336649628015152,
+      "model_constant_difference_MAE": 0.021950237129741677,
+      "model_near_MAE": 0.022462493563838,
+      "constant_near_MAE": 0.013837524182393143
+    },
+    {
+      "scene": "market_2",
+      "variant": "joint",
+      "model_change_mean": 0.007542045582061828,
+      "model_change_std": 0.02950649321860693,
+      "model_change_quantiles": [
+        -0.0859375,
+        -0.03515625,
+        0.01556396484375,
+        0.0341796875,
+        0.052734375
+      ],
+      "model_mae": 0.04467825517734719,
+      "constant_bias_mae": 0.04336649628015152,
+      "model_constant_difference_MAE": 0.02127736656027746,
+      "model_near_MAE": 0.021180937162301253,
+      "constant_near_MAE": 0.013837524182393143
+    }
+  ],
+  "keep_diagnostics": [
+    {
+      "scene": "cave_2",
+      "variant": "natural",
+      "near_pixels": 1828831,
+      "harm_fraction": 0.6616959139472155,
+      "change_within_deadzone_fraction": 0.7997414741985454,
+      "harm_inside_deadzone_fraction_of_near": 0.5469362669377323,
+      "clipped_output_keep_penalty_mean": 0.0005901114762811217,
+      "interpretation": "clipped-output diagnostic of the frozen near-reference mask; not a counterfactual loss ablation or sole-cause proof"
+    },
+    {
+      "scene": "cave_2",
+      "variant": "perturbed",
+      "near_pixels": 1828831,
+      "harm_fraction": 0.6456135093947992,
+      "change_within_deadzone_fraction": 0.78100163437737,
+      "harm_inside_deadzone_fraction_of_near": 0.5001823569263645,
+      "clipped_output_keep_penalty_mean": 0.0011024254227710102,
+      "interpretation": "clipped-output diagnostic of the frozen near-reference mask; not a counterfactual loss ablation or sole-cause proof"
+    },
+    {
+      "scene": "cave_2",
+      "variant": "joint",
+      "near_pixels": 1828831,
+      "harm_fraction": 0.6444116487526732,
+      "change_within_deadzone_fraction": 0.7932914522993103,
+      "harm_inside_deadzone_fraction_of_near": 0.512612154977688,
+      "clipped_output_keep_penalty_mean": 0.0006413189370920073,
+      "interpretation": "clipped-output diagnostic of the frozen near-reference mask; not a counterfactual loss ablation or sole-cause proof"
+    },
+    {
+      "scene": "market_2",
+      "variant": "natural",
+      "near_pixels": 4251864,
+      "harm_fraction": 0.5583807478320096,
+      "change_within_deadzone_fraction": 0.6674712549601775,
+      "harm_inside_deadzone_fraction_of_near": 0.3536538327660527,
+      "clipped_output_keep_penalty_mean": 0.00381588353852149,
+      "interpretation": "clipped-output diagnostic of the frozen near-reference mask; not a counterfactual loss ablation or sole-cause proof"
+    },
+    {
+      "scene": "market_2",
+      "variant": "perturbed",
+      "near_pixels": 4251864,
+      "harm_fraction": 0.6027586959507641,
+      "change_within_deadzone_fraction": 0.4936053928347661,
+      "harm_inside_deadzone_fraction_of_near": 0.2607625737794059,
+      "clipped_output_keep_penalty_mean": 0.005167399021101508,
+      "interpretation": "clipped-output diagnostic of the frozen near-reference mask; not a counterfactual loss ablation or sole-cause proof"
+    },
+    {
+      "scene": "market_2",
+      "variant": "joint",
+      "near_pixels": 4251864,
+      "harm_fraction": 0.5837804313590463,
+      "change_within_deadzone_fraction": 0.5334410978337971,
+      "harm_inside_deadzone_fraction_of_near": 0.2859748101068143,
+      "clipped_output_keep_penalty_mean": 0.003993375250709464,
+      "interpretation": "clipped-output diagnostic of the frozen near-reference mask; not a counterfactual loss ablation or sole-cause proof"
+    }
+  ]
+}
