@@ -1,0 +1,90 @@
+{
+  "status": "EMPIRICAL_CONVENTION_CHECK",
+  "sources": [
+    "https://sintel.is.tue.mpg.de/depth",
+    "https://sintel.is.tue.mpg.de/stereo"
+  ],
+  "archive": "https://files.is.tue.mpg.de/jwulff/sintel/MPI-Sintel-stereo-training-20150305.zip",
+  "selection": "first frame of each preselected pilot family, no model-based selection",
+  "SDK_used": "official stereo sdk/python/sintel_io.py disparity_read",
+  "rows": [
+    {
+      "sequence": "ambush_4",
+      "frame": 1,
+      "fx": 1120.0,
+      "baseline_m": 0.1,
+      "pixels": 446464,
+      "axial_abs_px_median": 0.007766570814260021,
+      "axial_abs_px_p95": 0.014808520988978557,
+      "ray_abs_px_median": 1.2283362683683716,
+      "ray_abs_px_p95": 11.132345317293327,
+      "axial_fraction_within_0p002px": 0.12814919008027523
+    },
+    {
+      "sequence": "shaman_2",
+      "frame": 1,
+      "fx": 1600.0,
+      "baseline_m": 0.1,
+      "pixels": 446464,
+      "axial_abs_px_median": 0.007797707953084654,
+      "axial_abs_px_p95": 0.014843616004180759,
+      "ray_abs_px_median": 1.731885894006009,
+      "ray_abs_px_p95": 8.76120567068382,
+      "axial_fraction_within_0p002px": 0.1286262722190367
+    },
+    {
+      "sequence": "bamboo_1",
+      "frame": 1,
+      "fx": 800.0,
+      "baseline_m": 0.1,
+      "pixels": 446464,
+      "axial_abs_px_median": 0.007819378817321088,
+      "axial_abs_px_p95": 0.014848728450296366,
+      "ray_abs_px_median": 0.8338852529601715,
+      "ray_abs_px_p95": 7.054530020059573,
+      "axial_fraction_within_0p002px": 0.1277527415424312
+    },
+    {
+      "sequence": "bandage_1",
+      "frame": 1,
+      "fx": 896.0,
+      "baseline_m": 0.1,
+      "pixels": 446464,
+      "axial_abs_px_median": 0.007805146793060658,
+      "axial_abs_px_p95": 0.014847614321051236,
+      "ray_abs_px_median": 5.302516317859656,
+      "ray_abs_px_p95": 13.852140120060561,
+      "axial_fraction_within_0p002px": 0.12753323896215596
+    },
+    {
+      "sequence": "cave_2",
+      "frame": 1,
+      "fx": 1528.5941162109375,
+      "baseline_m": 0.1,
+      "pixels": 446464,
+      "axial_abs_px_median": 0.008099338962863634,
+      "axial_abs_px_p95": 0.015354003547483818,
+      "ray_abs_px_median": 0.19645204341742417,
+      "ray_abs_px_p95": 1.6679558112546107,
+      "axial_fraction_within_0p002px": 0.1236740252293578
+    },
+    {
+      "sequence": "market_2",
+      "frame": 1,
+      "fx": 3200.0,
+      "baseline_m": 0.1,
+      "pixels": 443993,
+      "axial_abs_px_median": 0.0078051596416557345,
+      "axial_abs_px_p95": 0.014826942989559905,
+      "ray_abs_px_median": 0.0679631929562845,
+      "ray_abs_px_p95": 0.256687557137632,
+      "axial_fraction_within_0p002px": 0.12487133806163611
+    }
+  ],
+  "scope": "Checks consistency with official stereo derived from known depth; not independent physical GT or all-frame accuracy.",
+  "raw_unchanged": true,
+  "conclusion": "Native depth is consistent with axial Z in six checked frames; do not apply ray-distance correction.",
+  "tolerance_basis": "Official README_stereo.txt: 16-bit R/G encoding causes disparity error below 0.016 pixel; all six p95 are below this bound. SDK additionally reads blue, observed zero.",
+  "acceptance": "all six axial p95 < 0.016 pixel and axial median < ray hypothesis median",
+  "renderer_background_evidence": "Blender v2.63 render_result.c SCE_PASS_Z initialization is 10e10; matches observed float32 99999997952. Supporting provenance inference, not exact Sintel exporter version proof."
+}

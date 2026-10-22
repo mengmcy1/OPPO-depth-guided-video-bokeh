@@ -1,0 +1,22 @@
+{
+  "status": "candidate label protocol for pipeline pilot; no Student training",
+  "input_config": "configs/ours-geometry-data-pilot-20261022.json",
+  "vda_root": "data/processed/ours-geometry-pilot-20261022/vda-native",
+  "output_root": "data/processed/ours-geometry-pilot-20261022/paired-natural-v1",
+  "record": "03_实验记录/records/ours-sintel-supervision-pilot-v1-20261022.json",
+  "depth_definition": "use native Sintel depth as axial Z only after official stereo consistency check",
+  "label_domain_m": [0.001, 70.0],
+  "label_domain_source": "https://github.com/DepthAnything/Video-Depth-Anything/blob/4f5ae23172ba60fd7bc11ef671cca678842c7072/benchmark/eval/eval.py#L164",
+  "label_domain_meaning": "pilot fitting and supervision domain borrowed from VDA evaluation; values outside are not declared incorrect GT",
+  "mapping": "d_ref = a / Z + b; one ordinary least-squares fit per complete 25-frame clip to native normalized float VDA; require a>0",
+  "fit_support": "all finite pixels strictly inside label_domain_m across 25 frames, equal pixel weights",
+  "input": "RGB + original normalized float VDA; no GT fitting of input, no q8 used as Student input in this pilot",
+  "output_clipping": "none; report target outside [0,1], do not hide affine extrapolation",
+  "validity": "depth range/finite plus finite target only; NOT confidence in edges/transparency or full GT annotation quality",
+  "coordinate_grid": "native 1024x436; no crop, padding, resizing or camera update",
+  "focus_K": "not defined for geometry-only pairs; must freeze before CoC loss or bokeh rendering",
+  "perturbation": "not generated; choose and freeze magnitudes from pilot_train residual statistics only",
+  "deployment": "reference mapping is training/analysis label construction; no GT, alignment or reference mask available to deployed Student",
+  "evaluation_limit": "pilot_dev uses its own GT only for reference construction; affine fit absorbs global scale/shift errors, not an independent metric-depth benchmark",
+  "geometry_scope": "selective geometry correction, not automatic whole-subject sharpness"
+}
