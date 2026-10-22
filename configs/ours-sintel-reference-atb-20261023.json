@@ -1,0 +1,22 @@
+{
+  "name": "Sintel aligned-reference CoC diagnostic, not physical Bokeh GT or strict quality upper bound",
+  "samples": ["ambush_4", "shaman_2"],
+  "selection": "first two pilot_train sequences in existing six-family manifest; no ATB output based selection",
+  "source_config": "configs/ours-geometry-data-pilot-20261022.json",
+  "label_config": "configs/ours-sintel-dual-input-v2.json",
+  "output": "outputs/ours-sintel-reference-atb-20261023",
+  "record_prefix": "03_实验记录/records/ours-sintel-reference-atb-20261023",
+  "variants": ["A", "A_repeat", "R"],
+  "author_commit": "f7a16959dd219080fb8eec0d32bb9602d8970c22",
+  "K": 16,
+  "focus": "mean of original VDA q8 in native first-frame center patch x496,y202,w32,h32 /255; round5; same scalar for all25 frames and both conditions; no GT/mask or semantic subject selection",
+  "grid": "native1024x436; edge-pad RGB6 top6 bottom to1024x448 (64 multiples), no resize; crop6 top/bottom for all statistics and review",
+  "geometry": "A uses existing VDA q8; R uses floor(255*d_ref) only on native valid label domain; outside domain and spatial padding keep A. GT mapping fixed by dual-input-v2; no re-fit or re-focus.",
+  "condition": "author WholeVid loader computes native CoC; transplant R CoC on all real slots only. RGB,K,MPI,weights,temporal padding remain A; original native8/8/9 output calls, 8-frame groups/4-overlap preserved",
+  "seed": 20261023,
+  "rng": "fresh model process per scene/variant; reset global CPU/CUDA seed after loading; CPU generator seed0 per pipeline call; log posterior RNG boundaries",
+  "precision": "original FP16 model, native encoder FP32 upcast; no scale1 patch, no microbatch or changed allocator",
+  "regions": "pre-output native masks: valid and8px image-margin; reference nominal CoC<=0.5, (0.5,2], >2; also decrease/increase >=0.5 from original. Not object masks or Bokeh GT.",
+  "metrics": "A_repeat bitwise reproducibility; R-A float/RGB8 response; inputRGB-relative MAE and gradient energy ratios in frozen masks, not perceptual quality scores; no uncompensated flicker claims",
+  "runtime_boundary": "only6 diagnostic25-frame calls, no training, no other baseline runs or DAVIS heldout access; visual conclusions by user"
+}

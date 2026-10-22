@@ -1,0 +1,893 @@
+{
+  "config": {
+    "name": "Sintel aligned-reference CoC diagnostic, not physical Bokeh GT or strict quality upper bound",
+    "samples": [
+      "ambush_4",
+      "shaman_2"
+    ],
+    "selection": "first two pilot_train sequences in existing six-family manifest; no ATB output based selection",
+    "source_config": "configs/ours-geometry-data-pilot-20261022.json",
+    "label_config": "configs/ours-sintel-dual-input-v2.json",
+    "output": "outputs/ours-sintel-reference-atb-20261023",
+    "record_prefix": "03_实验记录/records/ours-sintel-reference-atb-20261023",
+    "variants": [
+      "A",
+      "A_repeat",
+      "R"
+    ],
+    "author_commit": "f7a16959dd219080fb8eec0d32bb9602d8970c22",
+    "K": 16,
+    "focus": "mean of original VDA q8 in native first-frame center patch x496,y202,w32,h32 /255; round5; same scalar for all25 frames and both conditions; no GT/mask or semantic subject selection",
+    "grid": "native1024x436; edge-pad RGB6 top6 bottom to1024x448 (64 multiples), no resize; crop6 top/bottom for all statistics and review",
+    "geometry": "A uses existing VDA q8; R uses floor(255*d_ref) only on native valid label domain; outside domain and spatial padding keep A. GT mapping fixed by dual-input-v2; no re-fit or re-focus.",
+    "condition": "author WholeVid loader computes native CoC; transplant R CoC on all real slots only. RGB,K,MPI,weights,temporal padding remain A; original native8/8/9 output calls, 8-frame groups/4-overlap preserved",
+    "seed": 20261023,
+    "rng": "fresh model process per scene/variant; reset global CPU/CUDA seed after loading; CPU generator seed0 per pipeline call; log posterior RNG boundaries",
+    "precision": "original FP16 model, native encoder FP32 upcast; no scale1 patch, no microbatch or changed allocator",
+    "regions": "pre-output native masks: valid and8px image-margin; reference nominal CoC<=0.5, (0.5,2], >2; also decrease/increase >=0.5 from original. Not object masks or Bokeh GT.",
+    "metrics": "A_repeat bitwise reproducibility; R-A float/RGB8 response; inputRGB-relative MAE and gradient energy ratios in frozen masks, not perceptual quality scores; no uncompensated flicker claims",
+    "runtime_boundary": "only6 diagnostic25-frame calls, no training, no other baseline runs or DAVIS heldout access; visual conclusions by user"
+  },
+  "scenes": [
+    {
+      "scene": "ambush_4",
+      "focus": 0.04315,
+      "K": 16,
+      "groups": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        [
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        [
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23
+        ],
+        [
+          20,
+          21,
+          22,
+          23,
+          24
+        ]
+      ],
+      "real_slots": 45,
+      "padding_slots": 3,
+      "base_hashes": {
+        "pixel_values": "1f49a5f5e0ba25973f16ca9f9667dfc06c088e6b969f262972a3e2978ebfe644",
+        "coc": "bad28a4ab74baf1c9bdd19cc9f0775894b2d368037ee2485a992d5a60be46f72",
+        "k": "0f6a4ab1acd72b346cc2bde2f0c720d260843926a0946fbf93532704067e5cf9",
+        "mpi_mask": "b281ed1480e1631ac69486ab70210142f4289f01b402aefa3dec000c1444119e",
+        "weight": "cd42646c733c06572d8553db4c856b6349b226f6e84135d2c79f474c74b24f3e"
+      },
+      "R_coc_hash": "bb6dfc617dd4a659b24787884858b62f2cbe9d6c4c567489f4f236343e59ad78",
+      "regions": [
+        {
+          "frame": 0,
+          "source_frame": 1,
+          "regions": {
+            "near_focus": 83360,
+            "middle": 175696,
+            "far_defocus": 164304,
+            "reduce_defocus": 1513,
+            "increase_defocus": 236969,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 0.06254117647058821,
+          "reference_center_nominal_coc": 0.9409725490196078
+        },
+        {
+          "frame": 1,
+          "source_frame": 2,
+          "regions": {
+            "near_focus": 96627,
+            "middle": 168477,
+            "far_defocus": 158256,
+            "reduce_defocus": 995,
+            "increase_defocus": 228046,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 0.06294901960784316,
+          "reference_center_nominal_coc": 0.8154823529411764
+        },
+        {
+          "frame": 2,
+          "source_frame": 3,
+          "regions": {
+            "near_focus": 110378,
+            "middle": 162790,
+            "far_defocus": 150192,
+            "reduce_defocus": 23,
+            "increase_defocus": 221237,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 0.06294901960784316,
+          "reference_center_nominal_coc": 0.7527372549019608
+        },
+        {
+          "frame": 3,
+          "source_frame": 4,
+          "regions": {
+            "near_focus": 80949,
+            "middle": 86620,
+            "far_defocus": 255791,
+            "reduce_defocus": 848,
+            "increase_defocus": 284918,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 9.91352156862745,
+          "reference_center_nominal_coc": 13.99195294117647
+        },
+        {
+          "frame": 4,
+          "source_frame": 5,
+          "regions": {
+            "near_focus": 31291,
+            "middle": 33214,
+            "far_defocus": 358855,
+            "reduce_defocus": 111873,
+            "increase_defocus": 197552,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 9.850776470588235,
+          "reference_center_nominal_coc": 8.846854901960784
+        },
+        {
+          "frame": 5,
+          "source_frame": 6,
+          "regions": {
+            "near_focus": 9174,
+            "middle": 48869,
+            "far_defocus": 365317,
+            "reduce_defocus": 244810,
+            "increase_defocus": 92414,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 9.411560784313725,
+          "reference_center_nominal_coc": 7.2154823529411765
+        },
+        {
+          "frame": 6,
+          "source_frame": 7,
+          "regions": {
+            "near_focus": 43508,
+            "middle": 53176,
+            "far_defocus": 326676,
+            "reduce_defocus": 238710,
+            "increase_defocus": 88375,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 9.160580392156863,
+          "reference_center_nominal_coc": 6.462541176470588
+        },
+        {
+          "frame": 7,
+          "source_frame": 8,
+          "regions": {
+            "near_focus": 92627,
+            "middle": 45485,
+            "far_defocus": 285248,
+            "reduce_defocus": 208424,
+            "increase_defocus": 84515,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 8.658619607843137,
+          "reference_center_nominal_coc": 5.897835294117646
+        },
+        {
+          "frame": 8,
+          "source_frame": 9,
+          "regions": {
+            "near_focus": 112828,
+            "middle": 43534,
+            "far_defocus": 266998,
+            "reduce_defocus": 205991,
+            "increase_defocus": 64177,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 8.533129411764705,
+          "reference_center_nominal_coc": 5.521364705882353
+        },
+        {
+          "frame": 9,
+          "source_frame": 10,
+          "regions": {
+            "near_focus": 139445,
+            "middle": 45075,
+            "far_defocus": 238840,
+            "reduce_defocus": 191125,
+            "increase_defocus": 56048,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 7.717443137254902,
+          "reference_center_nominal_coc": 5.144894117647058
+        },
+        {
+          "frame": 10,
+          "source_frame": 11,
+          "regions": {
+            "near_focus": 156832,
+            "middle": 47081,
+            "far_defocus": 219447,
+            "reduce_defocus": 172884,
+            "increase_defocus": 50734,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 7.842933333333333,
+          "reference_center_nominal_coc": 4.705678431372549
+        },
+        {
+          "frame": 11,
+          "source_frame": 12,
+          "regions": {
+            "near_focus": 163889,
+            "middle": 41940,
+            "far_defocus": 217531,
+            "reduce_defocus": 170400,
+            "increase_defocus": 51448,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 7.6546980392156865,
+          "reference_center_nominal_coc": 4.39195294117647
+        },
+        {
+          "frame": 12,
+          "source_frame": 13,
+          "regions": {
+            "near_focus": 173003,
+            "middle": 39824,
+            "far_defocus": 210533,
+            "reduce_defocus": 163671,
+            "increase_defocus": 53011,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 7.529207843137254,
+          "reference_center_nominal_coc": 4.078227450980392
+        },
+        {
+          "frame": 13,
+          "source_frame": 14,
+          "regions": {
+            "near_focus": 202965,
+            "middle": 41460,
+            "far_defocus": 178935,
+            "reduce_defocus": 153941,
+            "increase_defocus": 31988,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 7.027247058823529,
+          "reference_center_nominal_coc": 3.639011764705882
+        },
+        {
+          "frame": 14,
+          "source_frame": 15,
+          "regions": {
+            "near_focus": 219913,
+            "middle": 36698,
+            "far_defocus": 166749,
+            "reduce_defocus": 146063,
+            "increase_defocus": 25494,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 5.082149019607843,
+          "reference_center_nominal_coc": 3.137050980392157
+        },
+        {
+          "frame": 15,
+          "source_frame": 16,
+          "regions": {
+            "near_focus": 210628,
+            "middle": 35868,
+            "far_defocus": 176864,
+            "reduce_defocus": 155082,
+            "increase_defocus": 19665,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 4.3292078431372545,
+          "reference_center_nominal_coc": 2.8233254901960785
+        },
+        {
+          "frame": 16,
+          "source_frame": 17,
+          "regions": {
+            "near_focus": 200664,
+            "middle": 42246,
+            "far_defocus": 180450,
+            "reduce_defocus": 157090,
+            "increase_defocus": 22691,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 4.078227450980392,
+          "reference_center_nominal_coc": 2.6350901960784316
+        },
+        {
+          "frame": 17,
+          "source_frame": 18,
+          "regions": {
+            "near_focus": 218015,
+            "middle": 43671,
+            "far_defocus": 161674,
+            "reduce_defocus": 143696,
+            "increase_defocus": 26512,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 3.8272470588235294,
+          "reference_center_nominal_coc": 2.384109803921569
+        },
+        {
+          "frame": 18,
+          "source_frame": 19,
+          "regions": {
+            "near_focus": 242726,
+            "middle": 54182,
+            "far_defocus": 126452,
+            "reduce_defocus": 129256,
+            "increase_defocus": 19964,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 3.639011764705882,
+          "reference_center_nominal_coc": 2.133129411764706
+        },
+        {
+          "frame": 19,
+          "source_frame": 20,
+          "regions": {
+            "near_focus": 248227,
+            "middle": 74208,
+            "far_defocus": 100925,
+            "reduce_defocus": 123247,
+            "increase_defocus": 18162,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 3.137050980392157,
+          "reference_center_nominal_coc": 1.8194039215686275
+        },
+        {
+          "frame": 20,
+          "source_frame": 21,
+          "regions": {
+            "near_focus": 274862,
+            "middle": 90341,
+            "far_defocus": 58157,
+            "reduce_defocus": 100427,
+            "increase_defocus": 8732,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 2.94881568627451,
+          "reference_center_nominal_coc": 1.6311686274509807
+        },
+        {
+          "frame": 21,
+          "source_frame": 22,
+          "regions": {
+            "near_focus": 316553,
+            "middle": 92386,
+            "far_defocus": 14421,
+            "reduce_defocus": 76112,
+            "increase_defocus": 408,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 0.00020392156862747424,
+          "reference_center_nominal_coc": 0.31352156862745095
+        },
+        {
+          "frame": 22,
+          "source_frame": 23,
+          "regions": {
+            "near_focus": 322598,
+            "middle": 97055,
+            "far_defocus": 3707,
+            "reduce_defocus": 75617,
+            "increase_defocus": 344,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 0.00020392156862747424,
+          "reference_center_nominal_coc": 0.31352156862745095
+        },
+        {
+          "frame": 23,
+          "source_frame": 24,
+          "regions": {
+            "near_focus": 317668,
+            "middle": 103639,
+            "far_defocus": 2053,
+            "reduce_defocus": 83291,
+            "increase_defocus": 334,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 3.450776470588236,
+          "reference_center_nominal_coc": 1.6939137254901961
+        },
+        {
+          "frame": 24,
+          "source_frame": 25,
+          "regions": {
+            "near_focus": 314858,
+            "middle": 107358,
+            "far_defocus": 1144,
+            "reduce_defocus": 88525,
+            "increase_defocus": 384,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 3.5135215686274512,
+          "reference_center_nominal_coc": 1.6311686274509807
+        }
+      ],
+      "reference_source": "dual-input-v2 bounded sequence fit",
+      "reference_MPI_discarded": true,
+      "GT_only_in_R": true,
+      "nonCoC_inputs_unchanged": true
+    },
+    {
+      "scene": "shaman_2",
+      "focus": 0.67314,
+      "K": 16,
+      "groups": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        [
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        [
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23
+        ],
+        [
+          20,
+          21,
+          22,
+          23,
+          24
+        ]
+      ],
+      "real_slots": 45,
+      "padding_slots": 3,
+      "base_hashes": {
+        "pixel_values": "a41924a1aa4e6faedd7b3221087214645917fa6a45eb09ad2f7608f31fa9eef7",
+        "coc": "fecdb5c312c3d0df66c4963d5c642f0099391173d2d46b60331f176fa3480962",
+        "k": "0f6a4ab1acd72b346cc2bde2f0c720d260843926a0946fbf93532704067e5cf9",
+        "mpi_mask": "6adc70b0a9763bafcc4708ec4cf23e2f7eb0957d46bd67127f1e7e0faf8a5999",
+        "weight": "cd42646c733c06572d8553db4c856b6349b226f6e84135d2c79f474c74b24f3e"
+      },
+      "R_coc_hash": "cc7a6f7407c3378189dbbe7f71e45edf642282fa6ebeaaaae099994f2cae8302",
+      "regions": [
+        {
+          "frame": 0,
+          "source_frame": 1,
+          "regions": {
+            "near_focus": 38206,
+            "middle": 139232,
+            "far_defocus": 245922,
+            "reduce_defocus": 162996,
+            "increase_defocus": 104739,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 0.2101521568627458,
+          "reference_center_nominal_coc": 1.0885835294117658
+        },
+        {
+          "frame": 1,
+          "source_frame": 2,
+          "regions": {
+            "near_focus": 37757,
+            "middle": 141396,
+            "far_defocus": 244207,
+            "reduce_defocus": 160693,
+            "increase_defocus": 104167,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 0.27289725490196126,
+          "reference_center_nominal_coc": 1.0885835294117658
+        },
+        {
+          "frame": 2,
+          "source_frame": 3,
+          "regions": {
+            "near_focus": 37460,
+            "middle": 143959,
+            "far_defocus": 241941,
+            "reduce_defocus": 159547,
+            "increase_defocus": 103637,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 0.3356423529411767,
+          "reference_center_nominal_coc": 1.1513286274509813
+        },
+        {
+          "frame": 3,
+          "source_frame": 4,
+          "regions": {
+            "near_focus": 37001,
+            "middle": 147146,
+            "far_defocus": 239213,
+            "reduce_defocus": 159247,
+            "increase_defocus": 103634,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 0.4172988235294106,
+          "reference_center_nominal_coc": 1.2768188235294122
+        },
+        {
+          "frame": 4,
+          "source_frame": 5,
+          "regions": {
+            "near_focus": 36479,
+            "middle": 149521,
+            "far_defocus": 237360,
+            "reduce_defocus": 159354,
+            "increase_defocus": 101817,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 0.3983874509803922,
+          "reference_center_nominal_coc": 1.3395639215686277
+        },
+        {
+          "frame": 5,
+          "source_frame": 6,
+          "regions": {
+            "near_focus": 36037,
+            "middle": 150684,
+            "far_defocus": 236639,
+            "reduce_defocus": 157624,
+            "increase_defocus": 99684,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 0.3356423529411767,
+          "reference_center_nominal_coc": 1.3395639215686277
+        },
+        {
+          "frame": 6,
+          "source_frame": 7,
+          "regions": {
+            "near_focus": 35651,
+            "middle": 151910,
+            "far_defocus": 235799,
+            "reduce_defocus": 157029,
+            "increase_defocus": 98044,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 0.27289725490196126,
+          "reference_center_nominal_coc": 1.3395639215686277
+        },
+        {
+          "frame": 7,
+          "source_frame": 8,
+          "regions": {
+            "near_focus": 35236,
+            "middle": 153681,
+            "far_defocus": 234443,
+            "reduce_defocus": 158613,
+            "increase_defocus": 95941,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 0.2918086274509797,
+          "reference_center_nominal_coc": 1.2768188235294122
+        },
+        {
+          "frame": 8,
+          "source_frame": 9,
+          "regions": {
+            "near_focus": 34634,
+            "middle": 155707,
+            "far_defocus": 233019,
+            "reduce_defocus": 159685,
+            "increase_defocus": 95262,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 0.2918086274509797,
+          "reference_center_nominal_coc": 1.2768188235294122
+        },
+        {
+          "frame": 9,
+          "source_frame": 10,
+          "regions": {
+            "near_focus": 33451,
+            "middle": 157809,
+            "far_defocus": 232100,
+            "reduce_defocus": 156248,
+            "increase_defocus": 94432,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 0.3356423529411767,
+          "reference_center_nominal_coc": 1.2768188235294122
+        },
+        {
+          "frame": 10,
+          "source_frame": 11,
+          "regions": {
+            "near_focus": 33055,
+            "middle": 158732,
+            "far_defocus": 231573,
+            "reduce_defocus": 153595,
+            "increase_defocus": 92145,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 0.3356423529411767,
+          "reference_center_nominal_coc": 1.3395639215686277
+        },
+        {
+          "frame": 11,
+          "source_frame": 12,
+          "regions": {
+            "near_focus": 33333,
+            "middle": 158675,
+            "far_defocus": 231352,
+            "reduce_defocus": 156652,
+            "increase_defocus": 90710,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 0.3983874509803922,
+          "reference_center_nominal_coc": 1.3395639215686277
+        },
+        {
+          "frame": 12,
+          "source_frame": 13,
+          "regions": {
+            "near_focus": 33846,
+            "middle": 158427,
+            "far_defocus": 231087,
+            "reduce_defocus": 155196,
+            "increase_defocus": 91332,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 0.3983874509803922,
+          "reference_center_nominal_coc": 1.3395639215686277
+        },
+        {
+          "frame": 13,
+          "source_frame": 14,
+          "regions": {
+            "near_focus": 34547,
+            "middle": 158033,
+            "far_defocus": 230780,
+            "reduce_defocus": 155116,
+            "increase_defocus": 90612,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 0.3983874509803922,
+          "reference_center_nominal_coc": 1.3395639215686277
+        },
+        {
+          "frame": 14,
+          "source_frame": 15,
+          "regions": {
+            "near_focus": 35575,
+            "middle": 157632,
+            "far_defocus": 230153,
+            "reduce_defocus": 152404,
+            "increase_defocus": 90964,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 0.3356423529411767,
+          "reference_center_nominal_coc": 1.4023090196078432
+        },
+        {
+          "frame": 15,
+          "source_frame": 16,
+          "regions": {
+            "near_focus": 37099,
+            "middle": 156498,
+            "far_defocus": 229763,
+            "reduce_defocus": 151193,
+            "increase_defocus": 90787,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 0.3983874509803922,
+          "reference_center_nominal_coc": 1.4650541176470586
+        },
+        {
+          "frame": 16,
+          "source_frame": 17,
+          "regions": {
+            "near_focus": 38934,
+            "middle": 155278,
+            "far_defocus": 229148,
+            "reduce_defocus": 150958,
+            "increase_defocus": 90438,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 0.5238776470588249,
+          "reference_center_nominal_coc": 1.5277992156862759
+        },
+        {
+          "frame": 17,
+          "source_frame": 18,
+          "regions": {
+            "near_focus": 42045,
+            "middle": 153066,
+            "far_defocus": 228249,
+            "reduce_defocus": 149670,
+            "increase_defocus": 88843,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 0.6493678431372558,
+          "reference_center_nominal_coc": 1.5277992156862759
+        },
+        {
+          "frame": 18,
+          "source_frame": 19,
+          "regions": {
+            "near_focus": 43829,
+            "middle": 152099,
+            "far_defocus": 227432,
+            "reduce_defocus": 147148,
+            "increase_defocus": 87952,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 0.8376031372549022,
+          "reference_center_nominal_coc": 1.7160345098039222
+        },
+        {
+          "frame": 19,
+          "source_frame": 20,
+          "regions": {
+            "near_focus": 45605,
+            "middle": 151252,
+            "far_defocus": 226503,
+            "reduce_defocus": 147687,
+            "increase_defocus": 89079,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 1.1513286274509813,
+          "reference_center_nominal_coc": 1.8415247058823532
+        },
+        {
+          "frame": 20,
+          "source_frame": 21,
+          "regions": {
+            "near_focus": 48131,
+            "middle": 149998,
+            "far_defocus": 225231,
+            "reduce_defocus": 148292,
+            "increase_defocus": 88303,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 1.2140737254901968,
+          "reference_center_nominal_coc": 1.9042698039215686
+        },
+        {
+          "frame": 21,
+          "source_frame": 22,
+          "regions": {
+            "near_focus": 50545,
+            "middle": 149106,
+            "far_defocus": 223709,
+            "reduce_defocus": 149611,
+            "increase_defocus": 86934,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 1.2768188235294122,
+          "reference_center_nominal_coc": 1.9042698039215686
+        },
+        {
+          "frame": 22,
+          "source_frame": 23,
+          "regions": {
+            "near_focus": 52162,
+            "middle": 149154,
+            "far_defocus": 222044,
+            "reduce_defocus": 152230,
+            "increase_defocus": 86448,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 1.3395639215686277,
+          "reference_center_nominal_coc": 1.8415247058823532
+        },
+        {
+          "frame": 23,
+          "source_frame": 24,
+          "regions": {
+            "near_focus": 53364,
+            "middle": 149687,
+            "far_defocus": 220309,
+            "reduce_defocus": 154804,
+            "increase_defocus": 86084,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 1.3395639215686277,
+          "reference_center_nominal_coc": 1.8415247058823532
+        },
+        {
+          "frame": 24,
+          "source_frame": 25,
+          "regions": {
+            "near_focus": 54481,
+            "middle": 150421,
+            "far_defocus": 218458,
+            "reduce_defocus": 155255,
+            "increase_defocus": 87578,
+            "all_valid": 423360
+          },
+          "original_center_nominal_coc": 1.3395639215686277,
+          "reference_center_nominal_coc": 1.8415247058823532
+        }
+      ],
+      "reference_source": "dual-input-v2 bounded sequence fit",
+      "reference_MPI_discarded": true,
+      "GT_only_in_R": true,
+      "nonCoC_inputs_unchanged": true
+    }
+  ]
+}
