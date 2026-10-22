@@ -88,7 +88,13 @@ def crop_batch(cache,plan,variant):
 
 def objective(out,x,target,valid,keep,eps):
     geo=((out-target).abs()*valid).sum()/valid.sum().clamp_min(1)
-    penalty=F.relu((out-x[:,3:4]).abs()-eps)
+    if C.get('keep_mode','symmetric_deadzone')=='symmetric_deadzone':
+        penalty=F.relu((out-x[:,3:4]).abs()-eps)
+    elif C['keep_mode']=='reference_interval':
+        low=torch.minimum(x[:,3:4],target);high=torch.maximum(x[:,3:4],target)
+        penalty=F.relu(low-out)+F.relu(out-high)
+    else:
+        raise ValueError('Unknown keep mode')
     preservation=(penalty*keep).sum()/keep.sum().clamp_min(1)
     return geo+C['keep_weight']*preservation,geo,preservation
 
@@ -213,5 +219,6 @@ def train(variant):
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('phase',choices=['smoke','train']);p.add_argument('--variant',choices=C['variants']);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('phase',choices=['smoke','train']);p.add_argument('--variant',choices=C['variants']);p.add_argument('--config',default=str(CFG));a=p.parse_args()
+    CFG=Path(a.config).resolve();C=json.loads(CFG.read_text());OUT=ROOT/C['output']
     smoke() if a.phase=='smoke' else train(a.variant)

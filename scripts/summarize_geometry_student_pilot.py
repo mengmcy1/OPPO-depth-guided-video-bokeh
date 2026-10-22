@@ -128,4 +128,6 @@ def verify():
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('phase',choices=['summarize','figures','verify']);a=p.parse_args();globals()[a.phase]()
+    p=argparse.ArgumentParser();p.add_argument('phase',choices=['summarize','figures','verify']);p.add_argument('--config',default='configs/ours-student-pilot-v1-20261023.json');a=p.parse_args()
+    C=json.loads((ROOT/a.config).read_text());OUT=ROOT/C['output'];PREFIX=ROOT/C['record_prefix']
+    globals()[a.phase]()

@@ -1,0 +1,55 @@
+{
+  "name": "Follow-up single-factor interval preservation pilot",
+  "data_manifest": "data/processed/ours-geometry-pilot-20261022/dual-input-v2/manifest.json",
+  "data_config": "configs/ours-sintel-dual-input-v2.json",
+  "output": "outputs/ours-student-interval-v2-20261023",
+  "record_prefix": "03_实验记录/records/ours-student-interval-v2-20261023",
+  "variants": [
+    "natural",
+    "perturbed",
+    "joint"
+  ],
+  "model": "GeometryResidualUNet, 4 inputs, widths32/64/128, two downsamples, zero-initialized single residual head, 471841 parameters",
+  "model_seed": 20261023,
+  "schedule_seed": 20261024,
+  "branch_seed": 20261025,
+  "steps": 2000,
+  "batch_size": 4,
+  "crop_hw": [
+    384,
+    384
+  ],
+  "augmentation": "same uniform native crop and horizontal flip schedule in all3 variants; no resize, color augmentation or depth renormalization",
+  "base_frame_schedule": "80 independent seeded permutations of100 training frames;8000 exposures per variant, same ordered frame/crop/flip tuples; four source families only",
+  "joint_schedule": "exactly2 natural and2 perturbed branch inputs per batch, shuffled with independent branch seed; same4000/4000 exposures; perturb source branch already contains20% no-op and crop may miss perturbation",
+  "optimizer": "AdamW",
+  "learning_rate": 0.0001,
+  "weight_decay": 0.0001,
+  "betas": [
+    0.9,
+    0.999
+  ],
+  "lr_schedule": "constant",
+  "gradient_clip_norm": 1.0,
+  "precision": "BF16 autocast forward, float32 residual addition/loss/parameters; no gradient scaling",
+  "tf32": false,
+  "geometry_loss": "mean over valid batch pixels abs(preclamp_prediction-fixed_reference)",
+  "keep_weight": 0.1,
+  "keep_loss": "mean_S [relu(min(actual_input,reference)-preclamp_prediction)+relu(preclamp_prediction-max(actual_input,reference))]; same S and weight0.1 as v1; reference used in training loss only",
+  "evaluation_steps": [
+    0,
+    500,
+    1000,
+    1500,
+    2000
+  ],
+  "evaluation": "full native1024x436 frames, no test-time augmentation/re-alignment; both natural and fixed perturb branches on dev; train and dev at step0 and2000; record preclamp and clipped geometry MAE, fixed regions and unsupported-domain changes",
+  "primary_summary": "unperturbed dev input, per-source valid-pixel MAE then equal weight over two dev sources; only final2000-step model is the fixed endpoint",
+  "checkpoint_selection": "none; final only, intermediate evaluation is descriptive learning curve and does not change any run",
+  "abort": "stop on nonfinite loss/gradient or implementation mismatch; preserve partial run, no automatic hyperparameter retry",
+  "scope": "Follow-up informed by v1 dev results; same pilot dev is development data, not independent confirmation. No extra data, ATB, VDA, teacher or DAVIS inference; fixed final2000, no hyperparameter retry.",
+  "keep_mode": "reference_interval",
+  "prior_config": "configs/ours-student-pilot-v1-20261023.json",
+  "single_factor": "keep-loss zero-penalty interval only; all model/data/seed/optimizer/steps/batch/crop/evaluation settings identical",
+  "acceptance": "point estimates, not significance: compare near-reference MAE per dev source and equal-source mean with v1 and unchanged input; retain global MAE and boundary/unsupported effects. Full success requires near-reference and global MAE no worse than unchanged input on both dev sources; lower harm than v1 alone is partial."
+}
