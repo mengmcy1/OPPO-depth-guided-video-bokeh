@@ -1,0 +1,104 @@
+{
+  "status": "RGB_DEPTH_CAMERA_PILOT_READY_VDA_AND_TARGET_COORDINATES_PENDING",
+  "date": "2026-10-22",
+  "sequences": [
+    {
+      "sequence": "ambush_4",
+      "source_family": "ambush",
+      "pilot_split": "pilot_train",
+      "frames": 25,
+      "size": [
+        1024,
+        436
+      ],
+      "numeric_valid_fraction_min": 1.0,
+      "depth_min_m": 0.3482515215873718,
+      "depth_max_m": 10.394933700561523
+    },
+    {
+      "sequence": "shaman_2",
+      "source_family": "shaman",
+      "pilot_split": "pilot_train",
+      "frames": 25,
+      "size": [
+        1024,
+        436
+      ],
+      "numeric_valid_fraction_min": 1.0,
+      "depth_min_m": 0.5820911526679993,
+      "depth_max_m": 4.386858940124512
+    },
+    {
+      "sequence": "bamboo_1",
+      "source_family": "bamboo",
+      "pilot_split": "pilot_train",
+      "frames": 25,
+      "size": [
+        1024,
+        436
+      ],
+      "numeric_valid_fraction_min": 1.0,
+      "depth_min_m": 1.0879337787628174,
+      "depth_max_m": 9.876083374023438
+    },
+    {
+      "sequence": "bandage_1",
+      "source_family": "bandage",
+      "pilot_split": "pilot_train",
+      "frames": 25,
+      "size": [
+        1024,
+        436
+      ],
+      "numeric_valid_fraction_min": 1.0,
+      "depth_min_m": 0.5155536532402039,
+      "depth_max_m": 1.8491085767745972
+    },
+    {
+      "sequence": "cave_2",
+      "source_family": "cave",
+      "pilot_split": "pilot_dev",
+      "frames": 25,
+      "size": [
+        1024,
+        436
+      ],
+      "numeric_valid_fraction_min": 1.0,
+      "depth_min_m": 1.7648515701293945,
+      "depth_max_m": 99999997952.0
+    },
+    {
+      "sequence": "market_2",
+      "source_family": "market",
+      "pilot_split": "pilot_dev",
+      "frames": 25,
+      "size": [
+        1024,
+        436
+      ],
+      "numeric_valid_fraction_min": 1.0,
+      "depth_min_m": 6.290897369384766,
+      "depth_max_m": 99999997952.0
+    }
+  ],
+  "total_frames": 150,
+  "pilot_train_frames": 100,
+  "pilot_dev_frames": 50,
+  "source_family_overlap": 0,
+  "official_SDK_depth_camera_equal": true,
+  "selected_raw_members_CRC_verified": 453,
+  "derived_numeric_validity_only": true,
+  "raw_bytes": 366363243,
+  "derived_reference_bytes": 217715181,
+  "model_inference_runs": 0,
+  "training_runs": 0,
+  "limitations": [
+    "Pilot scene-family disjointness only; same movie/assets across scenes possible. VDA literature already uses Sintel for evaluation; foundation model training exposure not audited. Not zero-shot or independent final benchmark.",
+    "Finite positive depth is only numeric validity, not transparency/occlusion/boundary reliability. No official depth-confidence mask assumed. Raw GT retained, no guessed far-plane cutoff.",
+    "Native aspect ratio retained; no stretching to ATB resolution. VDA input resize/crop/padding and intrinsics update not fixed.",
+    "No depth-confidence/occlusion mask, subject mask or bokeh GT downloaded/generated; all-frame finite positivity is not full annotation validity.",
+    "No VDA predictions or calibrated reference in VDA coordinates; not training-ready.",
+    "Depth stored in official units; axial-Z versus camera-ray distance convention must be resolved before metric projection/CoC calibration.",
+    "Spring sample initial HTTP read timed out; Sintel is starter pipeline data, not final corpus selection."
+  ]
+}
