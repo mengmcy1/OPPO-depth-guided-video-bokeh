@@ -1,0 +1,526 @@
+{
+  "created_UTC": "2026-10-22T05:33:00.358606+00:00",
+  "project_commit": "c166d44f4de6b3c248087e6f6c1f5111af68848a",
+  "output": "outputs/any2bokeh-failure-analysis-20261009/V2-local-input-output-check-20261022",
+  "source_V2": "outputs/any2bokeh-failure-analysis-20261009/subject-coc-clamp-v2-20261021",
+  "coordinate_system": "1024x576, xywh, integer half-open bounds; native left/top floor and right/bottom ceil by actual 1920/1024 scale",
+  "selection_order": "Saved after original RGB-only localization and old localization-record comparison, before any new ROI disparity/CoC/output statistics.",
+  "representative_frame_rule": "B20/B34 0/12/24; includes prior B20 frame24 and B34 frame12. Train 0/6/12 follows user early-frame observation, exact user frame unknown.",
+  "user_roi_confirmed": false,
+  "adult_or_child_shoe": "User clarified: 成人的鞋",
+  "historical_comparison": {
+    "B20": "frame24 adult shoe boxes and child-shoes box exactly reuse old B20 input diagnosis; earlier frames independently located on RGB",
+    "B34": "frame12 bell_core, bell_context and neck_comparison exactly reuse old B34 input diagnosis; frames0/24 independently located on RGB",
+    "train": "no previous numeric ROI; red last carriage opposite blue locomotive is a candidate requiring confirmation"
+  },
+  "limits": [
+    "Controls are adjacent comparisons only, never newly designated correction references.",
+    "Rectangles may mix shoe/bell/leg/background; full rectangle and target-ID intersection reported separately, neither is object-depth truth.",
+    "RGB-only anatomical localization is provisional, user confirms whether boxes match described problem.",
+    "Train is DOF-change evidence, not confirmed depth error.",
+    "No neural inference, no new condition intervention, no tau/mask changes."
+  ],
+  "rows": [
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "frame_id": 0,
+      "roi_id": "adult_shoe_image_left",
+      "display_xywh": [
+        313,
+        370,
+        24,
+        39
+      ],
+      "role": "problem_location_candidate",
+      "target_annotation_id": 1,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "frame_id": 0,
+      "roi_id": "adult_shoe_image_right",
+      "display_xywh": [
+        345,
+        407,
+        32,
+        20
+      ],
+      "role": "problem_location_candidate",
+      "target_annotation_id": 1,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "frame_id": 0,
+      "roi_id": "calf_image_left",
+      "display_xywh": [
+        325,
+        347,
+        14,
+        23
+      ],
+      "role": "adjacent_comparison_only",
+      "target_annotation_id": 1,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "frame_id": 0,
+      "roi_id": "calf_image_right",
+      "display_xywh": [
+        346,
+        374,
+        14,
+        28
+      ],
+      "role": "adjacent_comparison_only",
+      "target_annotation_id": 1,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "frame_id": 12,
+      "roi_id": "adult_shoe_image_left",
+      "display_xywh": [
+        235,
+        372,
+        31,
+        29
+      ],
+      "role": "problem_location_candidate",
+      "target_annotation_id": 1,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "frame_id": 12,
+      "roi_id": "adult_shoe_image_right",
+      "display_xywh": [
+        332,
+        383,
+        23,
+        24
+      ],
+      "role": "problem_location_candidate",
+      "target_annotation_id": 1,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "frame_id": 12,
+      "roi_id": "calf_image_left",
+      "display_xywh": [
+        248,
+        347,
+        15,
+        23
+      ],
+      "role": "adjacent_comparison_only",
+      "target_annotation_id": 1,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "frame_id": 12,
+      "roi_id": "calf_image_right",
+      "display_xywh": [
+        327,
+        354,
+        15,
+        26
+      ],
+      "role": "adjacent_comparison_only",
+      "target_annotation_id": 1,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "frame_id": 24,
+      "roi_id": "adult_shoe_image_left",
+      "display_xywh": [
+        335,
+        348,
+        43,
+        26
+      ],
+      "role": "problem_location_candidate",
+      "target_annotation_id": 1,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "frame_id": 24,
+      "roi_id": "adult_shoe_image_right",
+      "display_xywh": [
+        401,
+        360,
+        38,
+        29
+      ],
+      "role": "problem_location_candidate",
+      "target_annotation_id": 1,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "frame_id": 24,
+      "roi_id": "calf_image_left",
+      "display_xywh": [
+        340,
+        319,
+        15,
+        25
+      ],
+      "role": "adjacent_comparison_only",
+      "target_annotation_id": 1,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "frame_id": 24,
+      "roi_id": "calf_image_right",
+      "display_xywh": [
+        389,
+        327,
+        17,
+        27
+      ],
+      "role": "adjacent_comparison_only",
+      "target_annotation_id": 1,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "frame_id": 24,
+      "roi_id": "child_shoes_context",
+      "display_xywh": [
+        548,
+        284,
+        56,
+        46
+      ],
+      "role": "alternative_problem_location_candidate",
+      "target_annotation_id": 2,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": false
+    },
+    {
+      "scene_id": "stroller",
+      "sample_id": "B20",
+      "frame_id": 24,
+      "roi_id": "child_lower_leg_candidate",
+      "display_xywh": [
+        534,
+        296,
+        18,
+        13
+      ],
+      "role": "adjacent_comparison_only_pending_landmark",
+      "target_annotation_id": 2,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": false
+    },
+    {
+      "scene_id": "cows",
+      "sample_id": "B34",
+      "frame_id": 0,
+      "roi_id": "bell_core",
+      "display_xywh": [
+        651,
+        288,
+        13,
+        15
+      ],
+      "role": "problem_location_candidate",
+      "target_annotation_id": 1,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "cows",
+      "sample_id": "B34",
+      "frame_id": 0,
+      "roi_id": "bell_context",
+      "display_xywh": [
+        643,
+        281,
+        29,
+        32
+      ],
+      "role": "mixed_context_not_bell_segmentation",
+      "target_annotation_id": 1,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "cows",
+      "sample_id": "B34",
+      "frame_id": 0,
+      "roi_id": "neck_comparison",
+      "display_xywh": [
+        622,
+        231,
+        22,
+        30
+      ],
+      "role": "adjacent_comparison_only",
+      "target_annotation_id": 1,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "cows",
+      "sample_id": "B34",
+      "frame_id": 12,
+      "roi_id": "bell_core",
+      "display_xywh": [
+        647,
+        297,
+        11,
+        11
+      ],
+      "role": "problem_location_candidate",
+      "target_annotation_id": 1,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "cows",
+      "sample_id": "B34",
+      "frame_id": 12,
+      "roi_id": "bell_context",
+      "display_xywh": [
+        638,
+        289,
+        29,
+        28
+      ],
+      "role": "mixed_context_not_bell_segmentation",
+      "target_annotation_id": 1,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "cows",
+      "sample_id": "B34",
+      "frame_id": 12,
+      "roi_id": "neck_comparison",
+      "display_xywh": [
+        612,
+        228,
+        25,
+        32
+      ],
+      "role": "adjacent_comparison_only",
+      "target_annotation_id": 1,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "cows",
+      "sample_id": "B34",
+      "frame_id": 24,
+      "roi_id": "bell_core",
+      "display_xywh": [
+        614,
+        300,
+        13,
+        14
+      ],
+      "role": "problem_location_candidate",
+      "target_annotation_id": 1,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "cows",
+      "sample_id": "B34",
+      "frame_id": 24,
+      "roi_id": "bell_context",
+      "display_xywh": [
+        605,
+        292,
+        29,
+        31
+      ],
+      "role": "mixed_context_not_bell_segmentation",
+      "target_annotation_id": 1,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "cows",
+      "sample_id": "B34",
+      "frame_id": 24,
+      "roi_id": "neck_comparison",
+      "display_xywh": [
+        585,
+        243,
+        23,
+        29
+      ],
+      "role": "adjacent_comparison_only",
+      "target_annotation_id": 1,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "frame_id": 0,
+      "roi_id": "rear_carriage_core_candidate",
+      "display_xywh": [
+        245,
+        119,
+        55,
+        58
+      ],
+      "role": "DOF_change_location_candidate",
+      "target_annotation_id": null,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "frame_id": 0,
+      "roi_id": "rear_carriage_context_candidate",
+      "display_xywh": [
+        229,
+        88,
+        98,
+        143
+      ],
+      "role": "mixed_context_not_carriage_segmentation",
+      "target_annotation_id": null,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "frame_id": 6,
+      "roi_id": "rear_carriage_core_candidate",
+      "display_xywh": [
+        222,
+        145,
+        62,
+        57
+      ],
+      "role": "DOF_change_location_candidate",
+      "target_annotation_id": null,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "frame_id": 6,
+      "roi_id": "rear_carriage_context_candidate",
+      "display_xywh": [
+        204,
+        110,
+        117,
+        148
+      ],
+      "role": "mixed_context_not_carriage_segmentation",
+      "target_annotation_id": null,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "frame_id": 12,
+      "roi_id": "rear_carriage_core_candidate",
+      "display_xywh": [
+        208,
+        168,
+        60,
+        58
+      ],
+      "role": "DOF_change_location_candidate",
+      "target_annotation_id": null,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    },
+    {
+      "scene_id": "train",
+      "sample_id": "V2-stat-01",
+      "frame_id": 12,
+      "roi_id": "rear_carriage_context_candidate",
+      "display_xywh": [
+        176,
+        128,
+        139,
+        150
+      ],
+      "role": "mixed_context_not_carriage_segmentation",
+      "target_annotation_id": null,
+      "localization_status": "待用户确认",
+      "localization_method": "assistant manual input-RGB localization; separately localized each representative frame; no tracking or output-driven selection",
+      "active": true
+    }
+  ],
+  "user_clarification": {
+    "quote": "成人的鞋",
+    "meaning": "Adult target confirmed; precise boxes remain unconfirmed. Child candidates excluded from analysis, retained only as initial localization history."
+  },
+  "historical_records": [
+    "03_实验记录/records/any2bokeh-failure-analysis-20261009-B20-input-diagnosis.json",
+    "03_实验记录/records/any2bokeh-failure-analysis-20261014-B34-input-diagnosis.json"
+  ]
+}
