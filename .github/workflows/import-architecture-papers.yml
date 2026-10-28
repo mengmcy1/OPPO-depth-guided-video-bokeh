@@ -1,0 +1,60 @@
+name: Import architecture papers
+on:
+  push:
+    paths:
+      - .github/workflows/import-architecture-papers.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  import-papers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Download and validate official PDFs
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import urllib.request, time
+          papers = [["Gen3R-CVPR2026.pdf","https://openaccess.thecvf.com/content/CVPR2026/papers/Huang_Gen3R_3D_Scene_Generation_Meets_Feed-Forward_Reconstruction_CVPR_2026_paper.pdf"],["Bolt3D-ICCV2025.pdf","https://openaccess.thecvf.com/content/ICCV2025/papers/Szymanowicz_Bolt3D_Generating_3D_Scenes_in_Seconds_ICCV_2025_paper.pdf"],["WorldStereo-CVPR2026.pdf","https://openaccess.thecvf.com/content/CVPR2026/papers/Zhang_WorldStereo_Bridging_Camera-Guided_Video_Generation_and_Scene_Reconstruction_via_3D_CVPR_2026_paper.pdf"],["GEN3C-CVPR2025.pdf","https://openaccess.thecvf.com/content/CVPR2025/papers/Ren_GEN3C_3D-Informed_World-Consistent_Video_Generation_with_Precise_Camera_Control_CVPR_2025_paper.pdf"],["WorldReel-CVPR2026.pdf","https://openaccess.thecvf.com/content/CVPR2026/papers/Fang_WorldReel_4D_Video_Generation_with_Consistent_Geometry_and_Motion_Modeling_CVPR_2026_paper.pdf"],["Geometry-as-Context-CVPR2026.pdf","https://openaccess.thecvf.com/content/CVPR2026/papers/Hu_Geometry-as-context_Modulating_Explicit_3D_in_Scene-consistent_Video_Generation_to_Geometry_CVPR_2026_paper.pdf"],["DOF-GS-CVPR2025.pdf","https://openaccess.thecvf.com/content/CVPR2025/papers/Wang_DOF-GS_Adjustable_Depth-of-Field_3D_Gaussian_Splatting_for_Post-Capture_Refocusing_Defocus_CVPR_2025_paper.pdf"],["DoF-Gaussian-CVPR2025.pdf","https://openaccess.thecvf.com/content/CVPR2025/papers/Shen_DoF-Gaussian_Controllable_Depth-of-Field_for_3D_Gaussian_Splatting_CVPR_2025_paper.pdf"]]
+          dest = Path("01_文献")
+          dest.mkdir(exist_ok=True)
+          for filename, url in papers:
+              output = dest / filename
+              if output.exists() and output.stat().st_size > 10000 and output.open("rb").read(5) == b"%PDF-":
+                  print("Already present:", filename)
+                  continue
+              error = None
+              for attempt in range(3):
+                  try:
+                      req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 (research literature archival downloader)"})
+                      with urllib.request.urlopen(req,timeout=60) as response:
+                          data=response.read()
+                      if not data.startswith(b"%PDF-") or len(data)<10000:
+                          raise ValueError("Not a valid full PDF: "+str(len(data)))
+                      output.write_bytes(data)
+                      print("Downloaded:",filename,len(data))
+                      error=None
+                      break
+                  except Exception as exc:
+                      error=exc
+                      print("Attempt failed:",filename,repr(exc))
+                      time.sleep(2)
+              if error:
+                  print("Unable to download:",filename,repr(error))
+          PY
+      - name: Commit new papers
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- '01_文献/*.pdf'
+          if ! git diff --cached --quiet; then
+            git commit -m "docs: archive cross-domain architecture paper PDFs"
+            git push
+          else
+            echo "No new paper PDFs to commit"
+          fi
