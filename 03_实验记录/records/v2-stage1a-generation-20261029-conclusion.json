@@ -1,0 +1,50 @@
+{
+  "status": "COMPLETE_ORACLE_SANITY_FAILED",
+  "numeric_tokens_advantage": {
+    "dev": {
+      "Tokens_minus_Depth_PSNR": 1.787171876531655,
+      "Tokens_boundary_MAE_relative_increase": -0.3128502865575976,
+      "Oracle_minus_Identity_PSNR": 0.0590823560574556,
+      "tokens_screen_passed": true,
+      "oracle_sanity": false
+    },
+    "test": {
+      "Tokens_minus_Depth_PSNR": 3.0955461552264723,
+      "Tokens_boundary_MAE_relative_increase": -0.21093463900285248,
+      "Oracle_minus_Identity_PSNR": 0.08042240196001416,
+      "tokens_screen_passed": true,
+      "oracle_sanity": false
+    }
+  },
+  "overall_comparison_validated": false,
+  "reason": "Oracle fails predeclared +1dB above identity; final-depth arms not yet shown to exploit even correct geometry",
+  "qualified_finding": "Tokens help this small generator under this frozen budget, but geometry-vs-appearance and adapter capacity/optimization are confounded",
+  "training_fit": {
+    "RGB": {
+      "PSNR": 24.88198699951172,
+      "MAE": 0.028657112346263603,
+      "Identity_PSNR": 24.564618366956708,
+      "Identity_MAE": 0.028869823715649546
+    },
+    "Depth": {
+      "PSNR": 24.70318650007248,
+      "MAE": 0.02877018163562752,
+      "Identity_PSNR": 24.564618366956708,
+      "Identity_MAE": 0.028869823715649546
+    },
+    "Tokens": {
+      "PSNR": 29.337585520744323,
+      "MAE": 0.016664981347275898,
+      "Identity_PSNR": 24.564618366956708,
+      "Identity_MAE": 0.028869823715649546
+    },
+    "Oracle": {
+      "PSNR": 24.681642478704454,
+      "MAE": 0.02874806828331202,
+      "Identity_PSNR": 24.564618366956708,
+      "Identity_MAE": 0.028869823715649546
+    }
+  },
+  "next": "No automatic extra training. Next design needs a usable oracle/depth interface and a matched frozen visual-feature condition control.",
+  "no_full_ATB_or_real_video_claim": true
+}

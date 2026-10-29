@@ -126,7 +126,6 @@ def region_masks(alpha):
 
 
 def score_video(pred,target,regions,full=True):
-    from skimage.metrics import structural_similarity
     rows=[]
     for t,(p,y) in enumerate(zip(pred,target)):
         diff=p.astype(np.float32)-y.astype(np.float32)
@@ -135,9 +134,26 @@ def score_video(pred,target,regions,full=True):
             row=dict(frame=t,region=region,pixels=int(mask.sum()),MAE=float(np.abs(err).mean()) if err.size else None,
                 PSNR=float(-10*np.log10(max(mse,1e-12))) if mse is not None else None)
             if region=='all' and full:
-                row['SSIM']=float(structural_similarity(y[:,12:-12,12:-12].transpose(1,2,0).astype(np.float32),p[:,12:-12,12:-12].transpose(1,2,0).astype(np.float32),data_range=1.,channel_axis=2))
+                row['SSIM']=ssim_uniform7(y[:,12:-12,12:-12],p[:,12:-12,12:-12])
             rows.append(row)
     return rows
+
+
+def ssim_uniform7(a,b):
+    """skimage default SSIM: uniform7, sample covariance, data_range1, RGB mean.
+
+    OpenCV box filters avoid altering the frozen training environment merely
+    for the CPU evaluation dependency. Valid-window edges are excluded.
+    """
+    values=[]
+    for x,y in zip(a.astype(np.float32),b.astype(np.float32)):
+        mean=lambda v:cv2.boxFilter(v,-1,(7,7),normalize=True,borderType=cv2.BORDER_REFLECT)
+        ux,uy=mean(x),mean(y)
+        vx=(mean(x*x)-ux*ux)*(49/48);vy=(mean(y*y)-uy*uy)*(49/48)
+        vxy=(mean(x*y)-ux*uy)*(49/48)
+        score=((2*ux*uy+.01**2)*(2*vxy+.03**2))/((ux*ux+uy*uy+.01**2)*(vx+vy+.03**2))
+        values.append(float(score[3:-3,3:-3].mean(dtype=np.float64)))
+    return float(np.mean(values))
 
 
 def evaluate():
@@ -245,8 +261,39 @@ def report():
     print('REPORT_COMPLETE',dest,flush=True)
 
 
+def train_fit_diagnostic():
+    """Post-hoc fit check after fixed evaluation; no optimization/selection."""
+    setup(True);assert (OUT/'evaluation.json').exists()
+    rows=[];masks=focus_masks();parameter_updates={}
+    for kind in C['groups']:
+        model=model_load(kind);initial=VideoGenerationProbe(kind,C['seed'])
+        cp=torch.load(OUT/'heads'/kind/'final.pt',map_location='cpu',weights_only=True)
+        changes=[(cp['model'][n]-v).abs().flatten() for n,v in initial.state_dict().items() if n.startswith(('proj.','interaction.'))]
+        parameter_updates[kind]=float(torch.cat(changes).mean()) if changes else None
+        for s in [s for s in C['scenes'] if s['split']=='train']:
+            cache=load_cache([s],kind);values=[];identities=[]
+            with torch.inference_mode():
+                for g in range(5):
+                    for fi in range(2):
+                        for ki in range(2):
+                            x,m,k,cond,y=batch(cache,np.array([[0,g,fi,ki]]),kind,masks)
+                            with torch.autocast('cuda',dtype=torch.bfloat16):p=model(x,m,k,cond)
+                            for pred,store in [(p,values),(x,identities)]:
+                                e=(pred-y)[...,12:-12,12:-12]
+                                mse=e.square().mean((2,3,4));psnr=-10*torch.log10(mse.clamp_min(1e-12))
+                                store.append((float(psnr.mean()),float(e.abs().mean())))
+            rows.append(dict(scene=s['id'],kind=kind,PSNR=float(np.mean([v[0] for v in values])),MAE=float(np.mean([v[1] for v in values])),
+                Identity_PSNR=float(np.mean([v[0] for v in identities])),Identity_MAE=float(np.mean([v[1] for v in identities]))))
+            del cache
+        del model
+    rec=dict(posthoc=True,no_training_or_model_selection=True,rows=rows,adapter_mean_abs_weight_change=parameter_updates,
+        summary={k:{m:float(np.mean([r[m] for r in rows if r['kind']==k])) for m in ['PSNR','MAE','Identity_PSNR','Identity_MAE']} for k in C['groups']})
+    save_json(str(PREFIX)+'-training-fit-diagnostic.json',rec);print('TRAIN_FIT',rec['summary'],flush=True)
+
+
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('phase',choices=['train','evaluate','report']);p.add_argument('--kind',choices=C['groups']);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('phase',choices=['train','evaluate','report','train-fit']);p.add_argument('--kind',choices=C['groups']);a=p.parse_args()
     if a.phase=='train':assert a.kind;train(a.kind)
     elif a.phase=='evaluate':evaluate()
-    else:report()
+    elif a.phase=='report':report()
+    else:train_fit_diagnostic()
