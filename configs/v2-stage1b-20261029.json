@@ -1,0 +1,87 @@
+{
+  "name": "Stage1b observable-target Oracle diagnosis and pretrained visual-feature control",
+  "date_started": "2026-10-29",
+  "base_config": "configs/v2-stage1a-generation-20261029.json",
+  "base_commit": "2294ebb",
+  "output": "outputs/v2-stage1b-20261029",
+  "record_prefix": "03_实验记录/records/v2-stage1b-20261029",
+  "seed": 20261029,
+  "data": "reuse immutable Stage1a RGB/geometry/focus/K/split, no new scenes; gen08..11 previously seen, descriptive recheck not independent test",
+  "observable_target": {
+    "inputs": "only quantized input RGB and GT signed CoC; no raw foreground/hidden background/alpha read by target function",
+    "signed_CoC": "K*(1/Z_visible - 1/median(Z_visible in common focus box))",
+    "construction": "linear-light Gaussian bank radii0..11, sigma=radius/2, radius0 identity, reflect101; per-pixel interpolate adjacent integer radii according to abs(CoC), convert sRGB and store float16",
+    "meaning": "input-determined spatial gather blur, NOT physical bokeh GT or an occlusion model",
+    "control_normalizer_pixels": 10.666666666666668,
+    "target_tests": [
+      "CoC0 identity",
+      "constant RGB invariant",
+      "positive/negative same magnitude same target"
+    ]
+  },
+  "models": {
+    "shared_trunk": "unchanged Stage1a VideoGenerationProbe,395651 parameters, same seed initialization",
+    "small": "original2->32 Conv1x1 + SiLU,96 parameters",
+    "strong": "2->128->224->128->32 Conv1x1 SiLU layers + same FocusInteraction[feature,query,difference,product]128->32 SiLU;66336 parameters",
+    "Tokens": "same frozen VGGT stage1a features and same69696 parameter adapter, old checkpoint reused for ray target",
+    "DINO": "official independent DINOv2 ViT-L/14 reg4 weights; current-frame1024 + fixed5-frame same-position mean1024; same input resize518x294, grid21x37, same projection/normalization/FocusInteraction/trunk/seed/budget as VGGT",
+    "OracleLog": "original centered log-depth and log focal ratio clip[-4,4]/4",
+    "OracleCoC": "[signedCoC,absCoC] /10.6666667 from known GT geometry; includes K, amplitude change disclosed",
+    "DepthStrong": "predicted VGGT centered log-depth and log focal ratio; NOT claimed metric CoC, no test-GT scale fitting"
+  },
+  "observable_arms": [
+    "RGB",
+    "OracleLogSmall",
+    "OracleCoCSmall",
+    "OracleLogStrong",
+    "OracleCoCStrong"
+  ],
+  "ray_new_arms_if_gate": [
+    "DINO",
+    "DepthStrong",
+    "OracleLogStrong",
+    "OracleCoCSmall",
+    "OracleCoCStrong"
+  ],
+  "ray_existing_arms": {
+    "RGB": "RGB",
+    "DepthSmall": "Depth",
+    "VGGT": "Tokens",
+    "OracleLogSmall": "Oracle"
+  },
+  "conditional_policy": "Run five observable arms; full ray numeric-adapter block only if either CoC arm gains>=1dB over identity on BOTH train and legacy-dev source means. Regardless of that gate, run DINO ray arm for independently meaningful visual-feature comparison. No automatic extra optimization on failure.",
+  "train": {
+    "steps": 2000,
+    "batch_clips": 2,
+    "frames_per_clip": 5,
+    "lr": 0.0003,
+    "weight_decay": 0.0001,
+    "optimizer": "AdamW",
+    "gradient_clip": 5.0,
+    "loss": "RGB L1 only",
+    "precision": "BF16 forward, FP32 loss/residual",
+    "schedule": "exact existing Stage1a schedule.npy/questions.npy",
+    "checkpoint": "fixed final2000; no dev selection or retries for weak scores"
+  },
+  "evaluation": {
+    "primary": "source-equal mean of per-frame/focus/K PSNR,12px border excluded, same Stage1a metrics",
+    "secondary": [
+      "MAE",
+      "SSIM",
+      "boundary/core regions",
+      "focus/K strata",
+      "conditional-source-zeroing"
+    ],
+    "diagnostic_gate": ">=1dB OracleCoC over Identity in train AND legacy-dev; legacy-test reported separately, not used for gate",
+    "ray_gate": "VGGT-DINO PSNR>=0.3dB and boundary MAE no more than2percent worse; report both legacy source splits and each scene; NOT proof geometry alone caused gain",
+    "strong_numeric_factor": "log vs CoC paired at same adapter, small vs strong paired at same representation; strong bundles capacity and FocusInteraction, not a pure interaction ablation",
+    "limitations": [
+      "all four evaluation sources already seen",
+      "two-plane reference has fixed2m/6m geometry and limited focus coverage",
+      "DINO and VGGT differ in feature stage, training and frame interaction; matching adapter does not match backbones",
+      "observable target lacks occlusion optics; passing does not prove real bokeh",
+      "no Stage2/full diffusion/ATB/3DGS training, no benchmark modification"
+    ]
+  },
+  "artifacts": "design/config/code + results/training/cost/verification JSON/CSV + representative25-frame videos; user judges visual quality"
+}
