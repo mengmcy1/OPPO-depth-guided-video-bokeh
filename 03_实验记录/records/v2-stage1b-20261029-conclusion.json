@@ -1,0 +1,59 @@
+{
+  "status": "COMPLETE_COC_ORACLE_USABLE_VGGT_SPECIFIC_ADVANTAGE_NOT_SUPPORTED",
+  "observable_gate": {
+    "passed": true,
+    "qualifying_arms": [
+      "OracleCoCSmall"
+    ],
+    "CoC_minus_Identity_dB": {
+      "OracleCoCSmall": {
+        "train": 6.861113287586804,
+        "dev": 4.955481842864948,
+        "test": 6.231914435769944
+      },
+      "OracleCoCStrong": {
+        "train": 0.021123480029835662,
+        "dev": 0.017166973574354927,
+        "test": 0.02140330607197427
+      }
+    },
+    "test_not_used_for_gate": true
+  },
+  "ray_oracle": {
+    "dev": {
+      "small_CoC_minus_Identity_dB": 6.22264781246518,
+      "small_CoC_minus_small_log_dB": 6.163565456407724
+    },
+    "test": {
+      "small_CoC_minus_Identity_dB": 7.109629445023408,
+      "small_CoC_minus_small_log_dB": 7.029207043063394
+    }
+  },
+  "matched_feature_comparison": {
+    "dev": {
+      "VGGT_minus_DINO_dB": 0.44976321293725263,
+      "VGGT_boundary_MAE_relative_increase": 0.2675664457801792
+    },
+    "test": {
+      "VGGT_minus_DINO_dB": -2.4148702079399627,
+      "VGGT_boundary_MAE_relative_increase": 0.3945891084707476
+    }
+  },
+  "VGGT_joint_screen": {
+    "dev": false,
+    "test": false
+  },
+  "capacity_note": "Strong adapters did not outperform small CoC; strong observable CoC stayed near identity but strong ray CoC learned. Do not infer a universal capacity effect.",
+  "interpretation": [
+    "Same96-parameter adapter with CoC makes correct geometry useful under this budget; change includes scale and K placement, not only a physical formula.",
+    "DINO exceeds VGGT on both legacy-test sources; dev PSNR and boundary evidence differ. No robust VGGT-specific geometry advantage established.",
+    "DINO and VGGT differ in pretraining, feature layers and temporal aggregation; these results do not show geometry is useless.",
+    "Two-plane collage references can favor semantic/appearance separation; does not prove behavior on real volumetric scenes."
+  ],
+  "next": "Do not expand full VGGT/diffusion training. First design prediction-only relative-defocus calibration and preserve DINO/explicit-CoC controls; independent new sources only after freezing.",
+  "data_scope": "all legacy evaluation sources already inspected; no fresh independent generalization result",
+  "visual_review": "pending user",
+  "new_training_runs": 10,
+  "total_steps": 20000,
+  "training_loop_seconds": 768.311627715826
+}

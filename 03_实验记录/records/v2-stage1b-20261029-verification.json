@@ -1,0 +1,1701 @@
+{
+  "status": "PASS",
+  "config_sha256": "8a82c93608121dfe11b7516e6e8c9793a239681eb2688f40afc83dc0822962ab",
+  "prediction_metric_endpoint_checks": 448,
+  "checkpoint_final_group_replays": 80,
+  "reused_stage1a_source_arm_checks": 16,
+  "old_checkpoints_unchanged": true,
+  "matching_initial_trunk_and_schedule": true,
+  "paired_log_CoC_adapter_initialization_equal": true,
+  "observable_target_reconstructed_from_actual_condition_max_error": 0.000244140625,
+  "conditional_branch_respected": true,
+  "observable_gate": {
+    "passed": true,
+    "qualifying_arms": [
+      "OracleCoCSmall"
+    ],
+    "CoC_minus_Identity_dB": {
+      "OracleCoCSmall": {
+        "train": 6.861113287586804,
+        "dev": 4.955481842864948,
+        "test": 6.231914435769944
+      },
+      "OracleCoCStrong": {
+        "train": 0.021123480029835662,
+        "dev": 0.017166973574354927,
+        "test": 0.02140330607197427
+      }
+    },
+    "test_not_used_for_gate": true
+  },
+  "training": [
+    {
+      "phase": "observable",
+      "arm": "RGB",
+      "steps": 2000,
+      "clip_exposures": 4000,
+      "frame_exposures": 20000,
+      "config_sha256": "8a82c93608121dfe11b7516e6e8c9793a239681eb2688f40afc83dc0822962ab",
+      "initial_trunk_sha256": "521d60fdf86bb15262de64fd1b549add9ec8a102051269e17d06609edb7f4491",
+      "initial_adapter_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "schedule_sha256": "2361b2c29f486e7afc525c0bed9cdee0bdfccca55cbf76d83da9cc9ba4f4cf24",
+      "parameters": 395651,
+      "adapter_parameters": 0,
+      "training_seconds": 40.319756761193275,
+      "load_train_save_seconds": 41.69556415453553,
+      "peak_allocated_GiB": 1.5226211547851562,
+      "curves": [
+        {
+          "step": 1,
+          "L1": 0.012262660078704357,
+          "gradient_norm": 0.07466719299554825
+        },
+        {
+          "step": 100,
+          "L1": 0.009686234407126904,
+          "gradient_norm": 0.2617255747318268
+        },
+        {
+          "step": 200,
+          "L1": 0.0263634342700243,
+          "gradient_norm": 0.10010837763547897
+        },
+        {
+          "step": 300,
+          "L1": 0.023357214406132698,
+          "gradient_norm": 0.012713457457721233
+        },
+        {
+          "step": 400,
+          "L1": 0.017972774803638458,
+          "gradient_norm": 0.11205163598060608
+        },
+        {
+          "step": 500,
+          "L1": 0.01624288782477379,
+          "gradient_norm": 0.06187281012535095
+        },
+        {
+          "step": 600,
+          "L1": 0.023855620995163918,
+          "gradient_norm": 0.05530327185988426
+        },
+        {
+          "step": 700,
+          "L1": 0.010128740221261978,
+          "gradient_norm": 0.4404483735561371
+        },
+        {
+          "step": 800,
+          "L1": 0.03404645994305611,
+          "gradient_norm": 0.11094025522470474
+        },
+        {
+          "step": 900,
+          "L1": 0.03116058185696602,
+          "gradient_norm": 0.04909482225775719
+        },
+        {
+          "step": 1000,
+          "L1": 0.011781865730881691,
+          "gradient_norm": 0.029859881848096848
+        },
+        {
+          "step": 1100,
+          "L1": 0.022165246307849884,
+          "gradient_norm": 0.18404227495193481
+        },
+        {
+          "step": 1200,
+          "L1": 0.02807416394352913,
+          "gradient_norm": 0.11100095510482788
+        },
+        {
+          "step": 1300,
+          "L1": 0.009632288478314877,
+          "gradient_norm": 0.048648715019226074
+        },
+        {
+          "step": 1400,
+          "L1": 0.009630418382585049,
+          "gradient_norm": 0.1050616204738617
+        },
+        {
+          "step": 1500,
+          "L1": 0.008872267790138721,
+          "gradient_norm": 0.3225153088569641
+        },
+        {
+          "step": 1600,
+          "L1": 0.02110982872545719,
+          "gradient_norm": 0.08560443669557571
+        },
+        {
+          "step": 1700,
+          "L1": 0.01788603514432907,
+          "gradient_norm": 0.03493480011820793
+        },
+        {
+          "step": 1800,
+          "L1": 0.02396036870777607,
+          "gradient_norm": 0.09396427124738693
+        },
+        {
+          "step": 1900,
+          "L1": 0.03296548128128052,
+          "gradient_norm": 0.09032035619020462
+        },
+        {
+          "step": 2000,
+          "L1": 0.012569496408104897,
+          "gradient_norm": 0.06570234149694443
+        }
+      ],
+      "checkpoint_sha256": "ce1fb8471262386f17ada02694739300e0f3633345765ca8c5d9cc5e4891f361",
+      "torch": "2.8.0+cu128",
+      "gpu": "NVIDIA GeForce RTX 4090 D"
+    },
+    {
+      "phase": "observable",
+      "arm": "OracleLogSmall",
+      "steps": 2000,
+      "clip_exposures": 4000,
+      "frame_exposures": 20000,
+      "config_sha256": "8a82c93608121dfe11b7516e6e8c9793a239681eb2688f40afc83dc0822962ab",
+      "initial_trunk_sha256": "521d60fdf86bb15262de64fd1b549add9ec8a102051269e17d06609edb7f4491",
+      "initial_adapter_sha256": "548e020dd5f37b3faf9635d087d0c473f266a9889fc315fc6a11d6deb8aad37e",
+      "schedule_sha256": "2361b2c29f486e7afc525c0bed9cdee0bdfccca55cbf76d83da9cc9ba4f4cf24",
+      "parameters": 395747,
+      "adapter_parameters": 96,
+      "training_seconds": 44.85904151573777,
+      "load_train_save_seconds": 47.974176086485386,
+      "peak_allocated_GiB": 1.769134521484375,
+      "curves": [
+        {
+          "step": 1,
+          "L1": 0.012262660078704357,
+          "gradient_norm": 0.07466423511505127
+        },
+        {
+          "step": 100,
+          "L1": 0.00967602152377367,
+          "gradient_norm": 0.24687765538692474
+        },
+        {
+          "step": 200,
+          "L1": 0.026354551315307617,
+          "gradient_norm": 0.04496816545724869
+        },
+        {
+          "step": 300,
+          "L1": 0.023366251960396767,
+          "gradient_norm": 0.042097993195056915
+        },
+        {
+          "step": 400,
+          "L1": 0.01788651943206787,
+          "gradient_norm": 0.11827301979064941
+        },
+        {
+          "step": 500,
+          "L1": 0.016208749264478683,
+          "gradient_norm": 0.17360574007034302
+        },
+        {
+          "step": 600,
+          "L1": 0.02361631952226162,
+          "gradient_norm": 0.007481844630092382
+        },
+        {
+          "step": 700,
+          "L1": 0.010116136632859707,
+          "gradient_norm": 0.16737204790115356
+        },
+        {
+          "step": 800,
+          "L1": 0.033666085451841354,
+          "gradient_norm": 0.043402932584285736
+        },
+        {
+          "step": 900,
+          "L1": 0.03099672682583332,
+          "gradient_norm": 0.054784152656793594
+        },
+        {
+          "step": 1000,
+          "L1": 0.01179377268999815,
+          "gradient_norm": 0.06313453614711761
+        },
+        {
+          "step": 1100,
+          "L1": 0.022146455943584442,
+          "gradient_norm": 0.1625284105539322
+        },
+        {
+          "step": 1200,
+          "L1": 0.028072288259863853,
+          "gradient_norm": 0.10854312777519226
+        },
+        {
+          "step": 1300,
+          "L1": 0.009647408500313759,
+          "gradient_norm": 0.2012304961681366
+        },
+        {
+          "step": 1400,
+          "L1": 0.00960538163781166,
+          "gradient_norm": 0.10220058262348175
+        },
+        {
+          "step": 1500,
+          "L1": 0.008857849054038525,
+          "gradient_norm": 0.26978421211242676
+        },
+        {
+          "step": 1600,
+          "L1": 0.02111557126045227,
+          "gradient_norm": 0.16179558634757996
+        },
+        {
+          "step": 1700,
+          "L1": 0.01788731850683689,
+          "gradient_norm": 0.03791356459259987
+        },
+        {
+          "step": 1800,
+          "L1": 0.023959560319781303,
+          "gradient_norm": 0.14795754849910736
+        },
+        {
+          "step": 1900,
+          "L1": 0.03296958655118942,
+          "gradient_norm": 0.09118745476007462
+        },
+        {
+          "step": 2000,
+          "L1": 0.0125868059694767,
+          "gradient_norm": 0.08887578547000885
+        }
+      ],
+      "checkpoint_sha256": "c5d8747c1c4bddeb88de977c09def72c2332f8c56fd1877fbcf3a0f7567451c9",
+      "torch": "2.8.0+cu128",
+      "gpu": "NVIDIA GeForce RTX 4090 D"
+    },
+    {
+      "phase": "observable",
+      "arm": "OracleCoCSmall",
+      "steps": 2000,
+      "clip_exposures": 4000,
+      "frame_exposures": 20000,
+      "config_sha256": "8a82c93608121dfe11b7516e6e8c9793a239681eb2688f40afc83dc0822962ab",
+      "initial_trunk_sha256": "521d60fdf86bb15262de64fd1b549add9ec8a102051269e17d06609edb7f4491",
+      "initial_adapter_sha256": "548e020dd5f37b3faf9635d087d0c473f266a9889fc315fc6a11d6deb8aad37e",
+      "schedule_sha256": "2361b2c29f486e7afc525c0bed9cdee0bdfccca55cbf76d83da9cc9ba4f4cf24",
+      "parameters": 395747,
+      "adapter_parameters": 96,
+      "training_seconds": 44.91124610230327,
+      "load_train_save_seconds": 47.512113966047764,
+      "peak_allocated_GiB": 1.7733402252197266,
+      "curves": [
+        {
+          "step": 1,
+          "L1": 0.012262660078704357,
+          "gradient_norm": 0.0746648982167244
+        },
+        {
+          "step": 100,
+          "L1": 0.010054326616227627,
+          "gradient_norm": 0.33763498067855835
+        },
+        {
+          "step": 200,
+          "L1": 0.026046589016914368,
+          "gradient_norm": 0.09401695430278778
+        },
+        {
+          "step": 300,
+          "L1": 0.023370303213596344,
+          "gradient_norm": 0.0180454570800066
+        },
+        {
+          "step": 400,
+          "L1": 0.01785927824676037,
+          "gradient_norm": 0.07300301641225815
+        },
+        {
+          "step": 500,
+          "L1": 0.016241416335105896,
+          "gradient_norm": 0.23921751976013184
+        },
+        {
+          "step": 600,
+          "L1": 0.02370201051235199,
+          "gradient_norm": 0.004151792265474796
+        },
+        {
+          "step": 700,
+          "L1": 0.010082659311592579,
+          "gradient_norm": 0.4048272371292114
+        },
+        {
+          "step": 800,
+          "L1": 0.03400881588459015,
+          "gradient_norm": 0.2830808758735657
+        },
+        {
+          "step": 900,
+          "L1": 0.031001588329672813,
+          "gradient_norm": 0.034415315836668015
+        },
+        {
+          "step": 1000,
+          "L1": 0.011725516058504581,
+          "gradient_norm": 0.04143678769469261
+        },
+        {
+          "step": 1100,
+          "L1": 0.021441644057631493,
+          "gradient_norm": 0.16133661568164825
+        },
+        {
+          "step": 1200,
+          "L1": 0.025736398994922638,
+          "gradient_norm": 0.10119093209505081
+        },
+        {
+          "step": 1300,
+          "L1": 0.008772339671850204,
+          "gradient_norm": 0.30176421999931335
+        },
+        {
+          "step": 1400,
+          "L1": 0.007231071125715971,
+          "gradient_norm": 0.06732717156410217
+        },
+        {
+          "step": 1500,
+          "L1": 0.006368827074766159,
+          "gradient_norm": 0.1898353546857834
+        },
+        {
+          "step": 1600,
+          "L1": 0.010962511412799358,
+          "gradient_norm": 0.1742274910211563
+        },
+        {
+          "step": 1700,
+          "L1": 0.012455359101295471,
+          "gradient_norm": 0.12506785988807678
+        },
+        {
+          "step": 1800,
+          "L1": 0.011822340078651905,
+          "gradient_norm": 0.2077796459197998
+        },
+        {
+          "step": 1900,
+          "L1": 0.018047114834189415,
+          "gradient_norm": 0.10053003579378128
+        },
+        {
+          "step": 2000,
+          "L1": 0.005852628964930773,
+          "gradient_norm": 0.11485736817121506
+        }
+      ],
+      "checkpoint_sha256": "cc468f44fb2801df139313dff29f1dda3648b814d3bd93cf0c66b8bf92288bec",
+      "torch": "2.8.0+cu128",
+      "gpu": "NVIDIA GeForce RTX 4090 D"
+    },
+    {
+      "phase": "observable",
+      "arm": "OracleLogStrong",
+      "steps": 2000,
+      "clip_exposures": 4000,
+      "frame_exposures": 20000,
+      "config_sha256": "8a82c93608121dfe11b7516e6e8c9793a239681eb2688f40afc83dc0822962ab",
+      "initial_trunk_sha256": "521d60fdf86bb15262de64fd1b549add9ec8a102051269e17d06609edb7f4491",
+      "initial_adapter_sha256": "c3ed4a9e7ab6251a7be5f5075fd1afde463a0dc82893302d3d5aed868f3ff4b2",
+      "schedule_sha256": "2361b2c29f486e7afc525c0bed9cdee0bdfccca55cbf76d83da9cc9ba4f4cf24",
+      "parameters": 461987,
+      "adapter_parameters": 66336,
+      "training_seconds": 109.99358874931931,
+      "load_train_save_seconds": 113.21630534157157,
+      "peak_allocated_GiB": 4.203127861022949,
+      "curves": [
+        {
+          "step": 1,
+          "L1": 0.012262660078704357,
+          "gradient_norm": 0.0746675431728363
+        },
+        {
+          "step": 100,
+          "L1": 0.009676243178546429,
+          "gradient_norm": 0.24597077071666718
+        },
+        {
+          "step": 200,
+          "L1": 0.02637530490756035,
+          "gradient_norm": 0.13851147890090942
+        },
+        {
+          "step": 300,
+          "L1": 0.023359252139925957,
+          "gradient_norm": 0.020250925794243813
+        },
+        {
+          "step": 400,
+          "L1": 0.017956681549549103,
+          "gradient_norm": 0.08154492825269699
+        },
+        {
+          "step": 500,
+          "L1": 0.016242578625679016,
+          "gradient_norm": 0.08255599439144135
+        },
+        {
+          "step": 600,
+          "L1": 0.02385208196938038,
+          "gradient_norm": 0.04982253909111023
+        },
+        {
+          "step": 700,
+          "L1": 0.010143561288714409,
+          "gradient_norm": 0.45124495029449463
+        },
+        {
+          "step": 800,
+          "L1": 0.034048281610012054,
+          "gradient_norm": 0.11460454016923904
+        },
+        {
+          "step": 900,
+          "L1": 0.03116239607334137,
+          "gradient_norm": 0.05631645396351814
+        },
+        {
+          "step": 1000,
+          "L1": 0.011782508343458176,
+          "gradient_norm": 0.03573086857795715
+        },
+        {
+          "step": 1100,
+          "L1": 0.02215569093823433,
+          "gradient_norm": 0.18426263332366943
+        },
+        {
+          "step": 1200,
+          "L1": 0.028083980083465576,
+          "gradient_norm": 0.12169120460748672
+        },
+        {
+          "step": 1300,
+          "L1": 0.009643535129725933,
+          "gradient_norm": 0.17848774790763855
+        },
+        {
+          "step": 1400,
+          "L1": 0.00962606817483902,
+          "gradient_norm": 0.11143592745065689
+        },
+        {
+          "step": 1500,
+          "L1": 0.008855896070599556,
+          "gradient_norm": 0.2537798285484314
+        },
+        {
+          "step": 1600,
+          "L1": 0.02111170068383217,
+          "gradient_norm": 0.09628831595182419
+        },
+        {
+          "step": 1700,
+          "L1": 0.01788780838251114,
+          "gradient_norm": 0.0433305948972702
+        },
+        {
+          "step": 1800,
+          "L1": 0.023966850712895393,
+          "gradient_norm": 0.10983838140964508
+        },
+        {
+          "step": 1900,
+          "L1": 0.03296656161546707,
+          "gradient_norm": 0.09064161777496338
+        },
+        {
+          "step": 2000,
+          "L1": 0.012565577402710915,
+          "gradient_norm": 0.04961984232068062
+        }
+      ],
+      "checkpoint_sha256": "0cf8214d9bc30abcfa9e15d9f671a8c4f1c942179b57f066ddb3691dd18e56a0",
+      "torch": "2.8.0+cu128",
+      "gpu": "NVIDIA GeForce RTX 4090 D"
+    },
+    {
+      "phase": "observable",
+      "arm": "OracleCoCStrong",
+      "steps": 2000,
+      "clip_exposures": 4000,
+      "frame_exposures": 20000,
+      "config_sha256": "8a82c93608121dfe11b7516e6e8c9793a239681eb2688f40afc83dc0822962ab",
+      "initial_trunk_sha256": "521d60fdf86bb15262de64fd1b549add9ec8a102051269e17d06609edb7f4491",
+      "initial_adapter_sha256": "c3ed4a9e7ab6251a7be5f5075fd1afde463a0dc82893302d3d5aed868f3ff4b2",
+      "schedule_sha256": "2361b2c29f486e7afc525c0bed9cdee0bdfccca55cbf76d83da9cc9ba4f4cf24",
+      "parameters": 461987,
+      "adapter_parameters": 66336,
+      "training_seconds": 109.8098557293415,
+      "load_train_save_seconds": 111.96428226307034,
+      "peak_allocated_GiB": 4.207460403442383,
+      "curves": [
+        {
+          "step": 1,
+          "L1": 0.012262660078704357,
+          "gradient_norm": 0.07466766238212585
+        },
+        {
+          "step": 100,
+          "L1": 0.009669333696365356,
+          "gradient_norm": 0.2288748323917389
+        },
+        {
+          "step": 200,
+          "L1": 0.026360899209976196,
+          "gradient_norm": 0.06107389181852341
+        },
+        {
+          "step": 300,
+          "L1": 0.023360516875982285,
+          "gradient_norm": 0.030354443937540054
+        },
+        {
+          "step": 400,
+          "L1": 0.017964491620659828,
+          "gradient_norm": 0.09538289904594421
+        },
+        {
+          "step": 500,
+          "L1": 0.016248637810349464,
+          "gradient_norm": 0.1263759285211563
+        },
+        {
+          "step": 600,
+          "L1": 0.023850327357649803,
+          "gradient_norm": 0.046517252922058105
+        },
+        {
+          "step": 700,
+          "L1": 0.010110939852893353,
+          "gradient_norm": 0.4383009076118469
+        },
+        {
+          "step": 800,
+          "L1": 0.034047652035951614,
+          "gradient_norm": 0.10866787284612656
+        },
+        {
+          "step": 900,
+          "L1": 0.031162157654762268,
+          "gradient_norm": 0.05427483096718788
+        },
+        {
+          "step": 1000,
+          "L1": 0.01178203895688057,
+          "gradient_norm": 0.029503148049116135
+        },
+        {
+          "step": 1100,
+          "L1": 0.022116640582680702,
+          "gradient_norm": 0.08206299692392349
+        },
+        {
+          "step": 1200,
+          "L1": 0.028099235147237778,
+          "gradient_norm": 0.1472804695367813
+        },
+        {
+          "step": 1300,
+          "L1": 0.009652839042246342,
+          "gradient_norm": 0.19918082654476166
+        },
+        {
+          "step": 1400,
+          "L1": 0.009695799089968204,
+          "gradient_norm": 0.12052357196807861
+        },
+        {
+          "step": 1500,
+          "L1": 0.008891894482076168,
+          "gradient_norm": 0.3353233337402344
+        },
+        {
+          "step": 1600,
+          "L1": 0.02114032208919525,
+          "gradient_norm": 0.19283977150917053
+        },
+        {
+          "step": 1700,
+          "L1": 0.017884492874145508,
+          "gradient_norm": 0.06922763586044312
+        },
+        {
+          "step": 1800,
+          "L1": 0.023818811401724815,
+          "gradient_norm": 0.17926092445850372
+        },
+        {
+          "step": 1900,
+          "L1": 0.032785333693027496,
+          "gradient_norm": 0.03446672484278679
+        },
+        {
+          "step": 2000,
+          "L1": 0.012567373923957348,
+          "gradient_norm": 0.08462926000356674
+        }
+      ],
+      "checkpoint_sha256": "a355407f085e15ecc67afedd71687218cd3e59111a389b3470b9b171b1d11519",
+      "torch": "2.8.0+cu128",
+      "gpu": "NVIDIA GeForce RTX 4090 D"
+    },
+    {
+      "phase": "ray",
+      "arm": "DINO",
+      "steps": 2000,
+      "clip_exposures": 4000,
+      "frame_exposures": 20000,
+      "config_sha256": "8a82c93608121dfe11b7516e6e8c9793a239681eb2688f40afc83dc0822962ab",
+      "initial_trunk_sha256": "521d60fdf86bb15262de64fd1b549add9ec8a102051269e17d06609edb7f4491",
+      "initial_adapter_sha256": "fe176f201a4a355507d462c315f1b5abd4cc92ee9c0cb9c2fee1575d7dd2f1ef",
+      "schedule_sha256": "2361b2c29f486e7afc525c0bed9cdee0bdfccca55cbf76d83da9cc9ba4f4cf24",
+      "parameters": 465347,
+      "adapter_parameters": 69696,
+      "training_seconds": 43.380748979747295,
+      "load_train_save_seconds": 45.352413941174746,
+      "peak_allocated_GiB": 2.1832308769226074,
+      "curves": [
+        {
+          "step": 1,
+          "L1": 0.023084184154868126,
+          "gradient_norm": 0.04300586134195328
+        },
+        {
+          "step": 100,
+          "L1": 0.01704707369208336,
+          "gradient_norm": 0.2194603532552719
+        },
+        {
+          "step": 200,
+          "L1": 0.026338137686252594,
+          "gradient_norm": 0.059315018355846405
+        },
+        {
+          "step": 300,
+          "L1": 0.025543009862303734,
+          "gradient_norm": 0.06825855374336243
+        },
+        {
+          "step": 400,
+          "L1": 0.01765233464539051,
+          "gradient_norm": 0.11444438248872757
+        },
+        {
+          "step": 500,
+          "L1": 0.01704264059662819,
+          "gradient_norm": 0.15792369842529297
+        },
+        {
+          "step": 600,
+          "L1": 0.021912161260843277,
+          "gradient_norm": 0.060091063380241394
+        },
+        {
+          "step": 700,
+          "L1": 0.02037106640636921,
+          "gradient_norm": 0.03671650588512421
+        },
+        {
+          "step": 800,
+          "L1": 0.029178574681282043,
+          "gradient_norm": 0.13595353066921234
+        },
+        {
+          "step": 900,
+          "L1": 0.02349710464477539,
+          "gradient_norm": 0.03910931572318077
+        },
+        {
+          "step": 1000,
+          "L1": 0.00886186957359314,
+          "gradient_norm": 0.08118753880262375
+        },
+        {
+          "step": 1100,
+          "L1": 0.015226293355226517,
+          "gradient_norm": 0.06335386633872986
+        },
+        {
+          "step": 1200,
+          "L1": 0.016654569655656815,
+          "gradient_norm": 0.18545107543468475
+        },
+        {
+          "step": 1300,
+          "L1": 0.009524515829980373,
+          "gradient_norm": 0.13830532133579254
+        },
+        {
+          "step": 1400,
+          "L1": 0.009178105741739273,
+          "gradient_norm": 0.14843952655792236
+        },
+        {
+          "step": 1500,
+          "L1": 0.007595045026391745,
+          "gradient_norm": 0.2543233633041382
+        },
+        {
+          "step": 1600,
+          "L1": 0.011384272016584873,
+          "gradient_norm": 0.14978095889091492
+        },
+        {
+          "step": 1700,
+          "L1": 0.009767444804310799,
+          "gradient_norm": 0.03083154559135437
+        },
+        {
+          "step": 1800,
+          "L1": 0.011774457059800625,
+          "gradient_norm": 0.12857671082019806
+        },
+        {
+          "step": 1900,
+          "L1": 0.015114309266209602,
+          "gradient_norm": 0.23294606804847717
+        },
+        {
+          "step": 2000,
+          "L1": 0.0057139010168612,
+          "gradient_norm": 0.10334033519029617
+        }
+      ],
+      "checkpoint_sha256": "faad8ec0347d44479bf47f3e1ff57b98427494616b3929dcdb0767421012712f",
+      "torch": "2.8.0+cu128",
+      "gpu": "NVIDIA GeForce RTX 4090 D"
+    },
+    {
+      "phase": "ray",
+      "arm": "DepthStrong",
+      "steps": 2000,
+      "clip_exposures": 4000,
+      "frame_exposures": 20000,
+      "config_sha256": "8a82c93608121dfe11b7516e6e8c9793a239681eb2688f40afc83dc0822962ab",
+      "initial_trunk_sha256": "521d60fdf86bb15262de64fd1b549add9ec8a102051269e17d06609edb7f4491",
+      "initial_adapter_sha256": "c3ed4a9e7ab6251a7be5f5075fd1afde463a0dc82893302d3d5aed868f3ff4b2",
+      "schedule_sha256": "2361b2c29f486e7afc525c0bed9cdee0bdfccca55cbf76d83da9cc9ba4f4cf24",
+      "parameters": 461987,
+      "adapter_parameters": 66336,
+      "training_seconds": 110.113246422261,
+      "load_train_save_seconds": 112.40013085305691,
+      "peak_allocated_GiB": 4.203127861022949,
+      "curves": [
+        {
+          "step": 1,
+          "L1": 0.023084184154868126,
+          "gradient_norm": 0.04300715774297714
+        },
+        {
+          "step": 100,
+          "L1": 0.01660970039665699,
+          "gradient_norm": 0.1369325816631317
+        },
+        {
+          "step": 200,
+          "L1": 0.026650413870811462,
+          "gradient_norm": 0.03412327542901039
+        },
+        {
+          "step": 300,
+          "L1": 0.025526756420731544,
+          "gradient_norm": 0.0028171150479465723
+        },
+        {
+          "step": 400,
+          "L1": 0.01767466776072979,
+          "gradient_norm": 0.08041439205408096
+        },
+        {
+          "step": 500,
+          "L1": 0.01709498092532158,
+          "gradient_norm": 0.027342673391103745
+        },
+        {
+          "step": 600,
+          "L1": 0.0215320847928524,
+          "gradient_norm": 0.029751688241958618
+        },
+        {
+          "step": 700,
+          "L1": 0.020470591261982918,
+          "gradient_norm": 0.32262247800827026
+        },
+        {
+          "step": 800,
+          "L1": 0.03651128336787224,
+          "gradient_norm": 0.08094403147697449
+        },
+        {
+          "step": 900,
+          "L1": 0.030860358849167824,
+          "gradient_norm": 0.023776913061738014
+        },
+        {
+          "step": 1000,
+          "L1": 0.011863948777318,
+          "gradient_norm": 0.029432492330670357
+        },
+        {
+          "step": 1100,
+          "L1": 0.026797516271471977,
+          "gradient_norm": 0.04897440969944
+        },
+        {
+          "step": 1200,
+          "L1": 0.023430170491337776,
+          "gradient_norm": 0.10344406217336655
+        },
+        {
+          "step": 1300,
+          "L1": 0.015621272847056389,
+          "gradient_norm": 0.07731695473194122
+        },
+        {
+          "step": 1400,
+          "L1": 0.014643745496869087,
+          "gradient_norm": 0.044303324073553085
+        },
+        {
+          "step": 1500,
+          "L1": 0.019199363887310028,
+          "gradient_norm": 0.16340653598308563
+        },
+        {
+          "step": 1600,
+          "L1": 0.028049271553754807,
+          "gradient_norm": 0.04895125702023506
+        },
+        {
+          "step": 1700,
+          "L1": 0.016575206071138382,
+          "gradient_norm": 0.06531837582588196
+        },
+        {
+          "step": 1800,
+          "L1": 0.022479312494397163,
+          "gradient_norm": 0.18593254685401917
+        },
+        {
+          "step": 1900,
+          "L1": 0.030765539035201073,
+          "gradient_norm": 0.08583781123161316
+        },
+        {
+          "step": 2000,
+          "L1": 0.013767160475254059,
+          "gradient_norm": 0.0592588372528553
+        }
+      ],
+      "checkpoint_sha256": "03395cb817c529bf1b028eb4ea5296f7de6ef43463eadf6098b489c4efc84349",
+      "torch": "2.8.0+cu128",
+      "gpu": "NVIDIA GeForce RTX 4090 D"
+    },
+    {
+      "phase": "ray",
+      "arm": "OracleLogStrong",
+      "steps": 2000,
+      "clip_exposures": 4000,
+      "frame_exposures": 20000,
+      "config_sha256": "8a82c93608121dfe11b7516e6e8c9793a239681eb2688f40afc83dc0822962ab",
+      "initial_trunk_sha256": "521d60fdf86bb15262de64fd1b549add9ec8a102051269e17d06609edb7f4491",
+      "initial_adapter_sha256": "c3ed4a9e7ab6251a7be5f5075fd1afde463a0dc82893302d3d5aed868f3ff4b2",
+      "schedule_sha256": "2361b2c29f486e7afc525c0bed9cdee0bdfccca55cbf76d83da9cc9ba4f4cf24",
+      "parameters": 461987,
+      "adapter_parameters": 66336,
+      "training_seconds": 109.80315713956952,
+      "load_train_save_seconds": 112.12109408155084,
+      "peak_allocated_GiB": 4.203127861022949,
+      "curves": [
+        {
+          "step": 1,
+          "L1": 0.023084184154868126,
+          "gradient_norm": 0.04300715774297714
+        },
+        {
+          "step": 100,
+          "L1": 0.016606658697128296,
+          "gradient_norm": 0.10752124339342117
+        },
+        {
+          "step": 200,
+          "L1": 0.026648780331015587,
+          "gradient_norm": 0.030799517408013344
+        },
+        {
+          "step": 300,
+          "L1": 0.025528503581881523,
+          "gradient_norm": 0.02257678657770157
+        },
+        {
+          "step": 400,
+          "L1": 0.017668217420578003,
+          "gradient_norm": 0.0668521374464035
+        },
+        {
+          "step": 500,
+          "L1": 0.01709883287549019,
+          "gradient_norm": 0.019626248627901077
+        },
+        {
+          "step": 600,
+          "L1": 0.02154538221657276,
+          "gradient_norm": 0.052058394998311996
+        },
+        {
+          "step": 700,
+          "L1": 0.020449010655283928,
+          "gradient_norm": 0.309763103723526
+        },
+        {
+          "step": 800,
+          "L1": 0.03651004657149315,
+          "gradient_norm": 0.07636065781116486
+        },
+        {
+          "step": 900,
+          "L1": 0.030867034569382668,
+          "gradient_norm": 0.04173225536942482
+        },
+        {
+          "step": 1000,
+          "L1": 0.011863005347549915,
+          "gradient_norm": 0.016757801175117493
+        },
+        {
+          "step": 1100,
+          "L1": 0.026655562222003937,
+          "gradient_norm": 0.01520423125475645
+        },
+        {
+          "step": 1200,
+          "L1": 0.023451298475265503,
+          "gradient_norm": 0.0889250785112381
+        },
+        {
+          "step": 1300,
+          "L1": 0.01643258146941662,
+          "gradient_norm": 0.04553207755088806
+        },
+        {
+          "step": 1400,
+          "L1": 0.014469902031123638,
+          "gradient_norm": 0.011923803016543388
+        },
+        {
+          "step": 1500,
+          "L1": 0.01910894550383091,
+          "gradient_norm": 0.09745918214321136
+        },
+        {
+          "step": 1600,
+          "L1": 0.028686868026852608,
+          "gradient_norm": 0.027246324345469475
+        },
+        {
+          "step": 1700,
+          "L1": 0.016303732991218567,
+          "gradient_norm": 0.011376425623893738
+        },
+        {
+          "step": 1800,
+          "L1": 0.022437280043959618,
+          "gradient_norm": 0.19309118390083313
+        },
+        {
+          "step": 1900,
+          "L1": 0.030276773497462273,
+          "gradient_norm": 0.022024981677532196
+        },
+        {
+          "step": 2000,
+          "L1": 0.013922394253313541,
+          "gradient_norm": 0.14531302452087402
+        }
+      ],
+      "checkpoint_sha256": "b32acb2f242912e31464f0f6a89dd092480fb131228071120c00a64d4ac1b417",
+      "torch": "2.8.0+cu128",
+      "gpu": "NVIDIA GeForce RTX 4090 D"
+    },
+    {
+      "phase": "ray",
+      "arm": "OracleCoCSmall",
+      "steps": 2000,
+      "clip_exposures": 4000,
+      "frame_exposures": 20000,
+      "config_sha256": "8a82c93608121dfe11b7516e6e8c9793a239681eb2688f40afc83dc0822962ab",
+      "initial_trunk_sha256": "521d60fdf86bb15262de64fd1b549add9ec8a102051269e17d06609edb7f4491",
+      "initial_adapter_sha256": "548e020dd5f37b3faf9635d087d0c473f266a9889fc315fc6a11d6deb8aad37e",
+      "schedule_sha256": "2361b2c29f486e7afc525c0bed9cdee0bdfccca55cbf76d83da9cc9ba4f4cf24",
+      "parameters": 395747,
+      "adapter_parameters": 96,
+      "training_seconds": 45.21429154276848,
+      "load_train_save_seconds": 47.3225134126842,
+      "peak_allocated_GiB": 1.7733402252197266,
+      "curves": [
+        {
+          "step": 1,
+          "L1": 0.023084184154868126,
+          "gradient_norm": 0.04300602152943611
+        },
+        {
+          "step": 100,
+          "L1": 0.01663792133331299,
+          "gradient_norm": 0.14053967595100403
+        },
+        {
+          "step": 200,
+          "L1": 0.026400744915008545,
+          "gradient_norm": 0.052495915442705154
+        },
+        {
+          "step": 300,
+          "L1": 0.02554972469806671,
+          "gradient_norm": 0.01676803082227707
+        },
+        {
+          "step": 400,
+          "L1": 0.017571425065398216,
+          "gradient_norm": 0.09070251882076263
+        },
+        {
+          "step": 500,
+          "L1": 0.017029497772455215,
+          "gradient_norm": 0.13205333054065704
+        },
+        {
+          "step": 600,
+          "L1": 0.021411212161183357,
+          "gradient_norm": 0.05200516805052757
+        },
+        {
+          "step": 700,
+          "L1": 0.020427348092198372,
+          "gradient_norm": 0.07226339727640152
+        },
+        {
+          "step": 800,
+          "L1": 0.03496120870113373,
+          "gradient_norm": 0.0998629704117775
+        },
+        {
+          "step": 900,
+          "L1": 0.030284535139799118,
+          "gradient_norm": 0.03560016676783562
+        },
+        {
+          "step": 1000,
+          "L1": 0.010826248675584793,
+          "gradient_norm": 0.02946077287197113
+        },
+        {
+          "step": 1100,
+          "L1": 0.016112886369228363,
+          "gradient_norm": 0.12907636165618896
+        },
+        {
+          "step": 1200,
+          "L1": 0.016244269907474518,
+          "gradient_norm": 0.22237437963485718
+        },
+        {
+          "step": 1300,
+          "L1": 0.009589687921106815,
+          "gradient_norm": 0.2095225602388382
+        },
+        {
+          "step": 1400,
+          "L1": 0.009232583455741405,
+          "gradient_norm": 0.042275749146938324
+        },
+        {
+          "step": 1500,
+          "L1": 0.008289067074656487,
+          "gradient_norm": 0.27386659383773804
+        },
+        {
+          "step": 1600,
+          "L1": 0.011503569781780243,
+          "gradient_norm": 0.12333692610263824
+        },
+        {
+          "step": 1700,
+          "L1": 0.009390009567141533,
+          "gradient_norm": 0.20344875752925873
+        },
+        {
+          "step": 1800,
+          "L1": 0.011618643067777157,
+          "gradient_norm": 0.16980931162834167
+        },
+        {
+          "step": 1900,
+          "L1": 0.015138184651732445,
+          "gradient_norm": 0.19712944328784943
+        },
+        {
+          "step": 2000,
+          "L1": 0.005209697876125574,
+          "gradient_norm": 0.18935713171958923
+        }
+      ],
+      "checkpoint_sha256": "4d5f830bf036452e9cd783a10eb008e8dc91cdf0836aed0aee88610f0497d735",
+      "torch": "2.8.0+cu128",
+      "gpu": "NVIDIA GeForce RTX 4090 D"
+    },
+    {
+      "phase": "ray",
+      "arm": "OracleCoCStrong",
+      "steps": 2000,
+      "clip_exposures": 4000,
+      "frame_exposures": 20000,
+      "config_sha256": "8a82c93608121dfe11b7516e6e8c9793a239681eb2688f40afc83dc0822962ab",
+      "initial_trunk_sha256": "521d60fdf86bb15262de64fd1b549add9ec8a102051269e17d06609edb7f4491",
+      "initial_adapter_sha256": "c3ed4a9e7ab6251a7be5f5075fd1afde463a0dc82893302d3d5aed868f3ff4b2",
+      "schedule_sha256": "2361b2c29f486e7afc525c0bed9cdee0bdfccca55cbf76d83da9cc9ba4f4cf24",
+      "parameters": 461987,
+      "adapter_parameters": 66336,
+      "training_seconds": 109.9066947735846,
+      "load_train_save_seconds": 112.80314642563462,
+      "peak_allocated_GiB": 4.207460403442383,
+      "curves": [
+        {
+          "step": 1,
+          "L1": 0.023084184154868126,
+          "gradient_norm": 0.04300715774297714
+        },
+        {
+          "step": 100,
+          "L1": 0.016609815880656242,
+          "gradient_norm": 0.13990195095539093
+        },
+        {
+          "step": 200,
+          "L1": 0.026649972423911095,
+          "gradient_norm": 0.03261823579668999
+        },
+        {
+          "step": 300,
+          "L1": 0.02553096041083336,
+          "gradient_norm": 0.020492006093263626
+        },
+        {
+          "step": 400,
+          "L1": 0.017670420929789543,
+          "gradient_norm": 0.0711207166314125
+        },
+        {
+          "step": 500,
+          "L1": 0.01709151640534401,
+          "gradient_norm": 0.01928221620619297
+        },
+        {
+          "step": 600,
+          "L1": 0.021545639261603355,
+          "gradient_norm": 0.04570537060499191
+        },
+        {
+          "step": 700,
+          "L1": 0.020457809790968895,
+          "gradient_norm": 0.32956555485725403
+        },
+        {
+          "step": 800,
+          "L1": 0.036503445357084274,
+          "gradient_norm": 0.06351137906312943
+        },
+        {
+          "step": 900,
+          "L1": 0.030818795785307884,
+          "gradient_norm": 0.053526926785707474
+        },
+        {
+          "step": 1000,
+          "L1": 0.011958696879446507,
+          "gradient_norm": 0.05550838261842728
+        },
+        {
+          "step": 1100,
+          "L1": 0.02690190263092518,
+          "gradient_norm": 0.07796505093574524
+        },
+        {
+          "step": 1200,
+          "L1": 0.023089926689863205,
+          "gradient_norm": 0.06668376922607422
+        },
+        {
+          "step": 1300,
+          "L1": 0.014359341003000736,
+          "gradient_norm": 0.2932185232639313
+        },
+        {
+          "step": 1400,
+          "L1": 0.009599496610462666,
+          "gradient_norm": 0.05006807669997215
+        },
+        {
+          "step": 1500,
+          "L1": 0.009220525622367859,
+          "gradient_norm": 0.15260307490825653
+        },
+        {
+          "step": 1600,
+          "L1": 0.012709683738648891,
+          "gradient_norm": 0.22042544186115265
+        },
+        {
+          "step": 1700,
+          "L1": 0.010883202776312828,
+          "gradient_norm": 0.11024213582277298
+        },
+        {
+          "step": 1800,
+          "L1": 0.011981959454715252,
+          "gradient_norm": 0.335276335477829
+        },
+        {
+          "step": 1900,
+          "L1": 0.016864055767655373,
+          "gradient_norm": 0.1119648814201355
+        },
+        {
+          "step": 2000,
+          "L1": 0.007093845866620541,
+          "gradient_norm": 0.09128318727016449
+        }
+      ],
+      "checkpoint_sha256": "6e37339744d58ac324b6aed3b814d226e04ab91da48a03b231fe626dedd16922",
+      "torch": "2.8.0+cu128",
+      "gpu": "NVIDIA GeForce RTX 4090 D"
+    }
+  ],
+  "targets": {
+    "controls": {
+      "zero_CoC_max_error": 1.1920928955078125e-07,
+      "constant_max_error": 5.960464477539063e-08,
+      "signed_magnitude_symmetry": true,
+      "target_function_inputs": "RGB and signed CoC only; no alpha/hidden layers"
+    },
+    "scenes": [
+      {
+        "scene": "gen_00",
+        "shape": [
+          25,
+          2,
+          2,
+          3,
+          252,
+          448
+        ],
+        "seconds": 2.3959711752831936,
+        "target_sha256": "6435f74369c710442dfb42ff22da530c730f460d1cdea96709575382ee8a8198",
+        "source_RGB_sha256": "747f8dbb0a95db0ebfc34d5a3ce319dbf333da656bc3cedef1b0cbb8fc4f8a0b",
+        "source_depth_sha256": "76715d075e4e0919949d578245b85ab5b7a9c06e49e5f55160e1c1ed6879f88d"
+      },
+      {
+        "scene": "gen_01",
+        "shape": [
+          25,
+          2,
+          2,
+          3,
+          252,
+          448
+        ],
+        "seconds": 1.4837704598903656,
+        "target_sha256": "1b91aeed79e64313521459be16fcb06f80261ac01f12a7d1ce4ab2ac684b1338",
+        "source_RGB_sha256": "c15af86a77becac7582e4de00109a3e075f7ff50b8550bec48718a91bce90e8f",
+        "source_depth_sha256": "443367723758ab62a42b9466a6b00630b3bdbf88be23d9a9dfa6342a25f0dcab"
+      },
+      {
+        "scene": "gen_02",
+        "shape": [
+          25,
+          2,
+          2,
+          3,
+          252,
+          448
+        ],
+        "seconds": 1.5313390493392944,
+        "target_sha256": "8cf76a15bfe75154b8ac7db40089b1cd318830be558c301f60bf6dec0e3f6a8a",
+        "source_RGB_sha256": "11038a388059501e95a6d93551d90b69dffd80f44cedcf2595ebb4e2b5ad2992",
+        "source_depth_sha256": "f67ace5c8520a91e62d99a2ad402a5e6fcf9bc35fcab57c759706a9d81dc6e12"
+      },
+      {
+        "scene": "gen_03",
+        "shape": [
+          25,
+          2,
+          2,
+          3,
+          252,
+          448
+        ],
+        "seconds": 1.4596391171216965,
+        "target_sha256": "128baaaebd79fd2baa0779bb4f97b12c0961c8112fa782b770fcf8dcefe0965a",
+        "source_RGB_sha256": "2861770c433fe68e6513a9345f3c7adb400a6b64e172cdb74022e748e4dcd836",
+        "source_depth_sha256": "2b53608b8520564ef4bcddf0411657d65ad1ba2e4fcfcd2be6267153bef2b8f9"
+      },
+      {
+        "scene": "gen_04",
+        "shape": [
+          25,
+          2,
+          2,
+          3,
+          252,
+          448
+        ],
+        "seconds": 1.4653976783156395,
+        "target_sha256": "3598636a57a32a22866dbdfa92100ddb91738cbfc1c118531fe4ef68f64e5c56",
+        "source_RGB_sha256": "c54d81528cd1bd1710211cd47094aff2c808b2b7db9c44da5df7e6d5be742365",
+        "source_depth_sha256": "2c9aaab13b51e893f5efac790b28fbec842769377ecb20657e5476dbca8837e7"
+      },
+      {
+        "scene": "gen_05",
+        "shape": [
+          25,
+          2,
+          2,
+          3,
+          252,
+          448
+        ],
+        "seconds": 1.5270460210740566,
+        "target_sha256": "f36326f54e74303a9d1f63e222c9f568d9aa2e17f8d23b037258d05d0eaf018b",
+        "source_RGB_sha256": "04bf9bc0520f52205b529098890e509ae0ef382c1ea57ec00ba7bfaa0f1b830e",
+        "source_depth_sha256": "ceb8435c92a4efab136905ff1034ec5cd080638631ba350c79857304fae18b8a"
+      },
+      {
+        "scene": "gen_06",
+        "shape": [
+          25,
+          2,
+          2,
+          3,
+          252,
+          448
+        ],
+        "seconds": 1.4313327185809612,
+        "target_sha256": "87dfd074e4afec6545a2aeba5738d8cd2e1e0e7dcafef07d039a6f1b4934b934",
+        "source_RGB_sha256": "dd35609576a0e5c4f4ec2ddf5641b84a70b2f4f2768393a23edfbba8333d4bf1",
+        "source_depth_sha256": "ff042eef7fe3f606333642a0d510e2eb20e2e40272f1f495e5564e01faf26fd2"
+      },
+      {
+        "scene": "gen_07",
+        "shape": [
+          25,
+          2,
+          2,
+          3,
+          252,
+          448
+        ],
+        "seconds": 1.4708433784544468,
+        "target_sha256": "dbfca81bb9284dfee599e372218a8b085f7e4e00a6404638da263dcc346afd6e",
+        "source_RGB_sha256": "5e8ef7649572e394d691439acb1c7e4ff703a34942345e68843455424b97e5aa",
+        "source_depth_sha256": "7ec9ea65a11043fe7c480e2fb9d1586115e273f21cd3bbbdcfbbd373fabb8e00"
+      },
+      {
+        "scene": "gen_08",
+        "shape": [
+          25,
+          2,
+          2,
+          3,
+          252,
+          448
+        ],
+        "seconds": 1.5952449552714825,
+        "target_sha256": "4b809c71c7738ff9da96e78012c8e45dd30adaaacc752275e50a6247312bf285",
+        "source_RGB_sha256": "9135d2c0c5940a078deec54dc4889b7f7d3306785fbecd05a61ab4ebe960f2e9",
+        "source_depth_sha256": "ffebaa31d121140fc209cf7ac033164290985b3021f14e7b8f05d4a76e944b13"
+      },
+      {
+        "scene": "gen_09",
+        "shape": [
+          25,
+          2,
+          2,
+          3,
+          252,
+          448
+        ],
+        "seconds": 1.4694794453680515,
+        "target_sha256": "6097ccfe6da45541b7dc84fd009b99463a89e8b7a19e0a340d334a8f2cd77fc3",
+        "source_RGB_sha256": "be6846dddb8d26012cb62d4243aed79c83c0d51f5cbeeaf87e24fc4c76df3ad9",
+        "source_depth_sha256": "265af02b5d6e96a01ba43d08636d983c2ba148fd6b26803edf91deeccab17e94"
+      },
+      {
+        "scene": "gen_10",
+        "shape": [
+          25,
+          2,
+          2,
+          3,
+          252,
+          448
+        ],
+        "seconds": 1.5207026191055775,
+        "target_sha256": "99695f421c7e6cfea0928cdbcd820c7a1774f2f70bbc0f556bd92e142dcc433b",
+        "source_RGB_sha256": "7ba202a73ca951e0ebd07df96112cb61ebd28d5cfcd5872e2b167189ec271260",
+        "source_depth_sha256": "0c9eeb58585c1ca61e5e13497d517f8077b9bce807620dde7dee28cc6225fb2b"
+      },
+      {
+        "scene": "gen_11",
+        "shape": [
+          25,
+          2,
+          2,
+          3,
+          252,
+          448
+        ],
+        "seconds": 1.412142127752304,
+        "target_sha256": "dcbd9194fc50c555dadb0991a6c7714e16e8e7ec8fd05a073f62c8431bd56c48",
+        "source_RGB_sha256": "b15ec17fe3e67c01a29cd1f627da4e69cfb7934d7607b4d31cab96a98b118b97",
+        "source_depth_sha256": "0b6539c0c96f11099f605431ff3dfdc76634366c4e62b1e996256069db4a1a8d"
+      }
+    ],
+    "config_sha256": "8a82c93608121dfe11b7516e6e8c9793a239681eb2688f40afc83dc0822962ab",
+    "targets": 1200,
+    "original_data_immutable": true,
+    "not_physical_bokeh_reference": true
+  },
+  "DINO": {
+    "scenes": [
+      {
+        "scene": "gen_00",
+        "seconds": 1.7213845066726208,
+        "peak_allocated_GiB": 1.2646598815917969,
+        "output_shape": [
+          25,
+          2048,
+          21,
+          37
+        ],
+        "weight_sha256": "36e4deffbaef061a2576705b0c36f93621e2ae20bf6274694821b0b492551b51",
+        "frozen": true
+      },
+      {
+        "scene": "gen_01",
+        "seconds": 1.3313616514205933,
+        "peak_allocated_GiB": 1.2639503479003906,
+        "output_shape": [
+          25,
+          2048,
+          21,
+          37
+        ],
+        "weight_sha256": "36e4deffbaef061a2576705b0c36f93621e2ae20bf6274694821b0b492551b51",
+        "frozen": true
+      },
+      {
+        "scene": "gen_02",
+        "seconds": 1.3325882628560066,
+        "peak_allocated_GiB": 1.2639503479003906,
+        "output_shape": [
+          25,
+          2048,
+          21,
+          37
+        ],
+        "weight_sha256": "36e4deffbaef061a2576705b0c36f93621e2ae20bf6274694821b0b492551b51",
+        "frozen": true
+      },
+      {
+        "scene": "gen_03",
+        "seconds": 1.3554900288581848,
+        "peak_allocated_GiB": 1.2639503479003906,
+        "output_shape": [
+          25,
+          2048,
+          21,
+          37
+        ],
+        "weight_sha256": "36e4deffbaef061a2576705b0c36f93621e2ae20bf6274694821b0b492551b51",
+        "frozen": true
+      },
+      {
+        "scene": "gen_04",
+        "seconds": 1.4085999354720116,
+        "peak_allocated_GiB": 1.2639503479003906,
+        "output_shape": [
+          25,
+          2048,
+          21,
+          37
+        ],
+        "weight_sha256": "36e4deffbaef061a2576705b0c36f93621e2ae20bf6274694821b0b492551b51",
+        "frozen": true
+      },
+      {
+        "scene": "gen_05",
+        "seconds": 1.350845631211996,
+        "peak_allocated_GiB": 1.2639503479003906,
+        "output_shape": [
+          25,
+          2048,
+          21,
+          37
+        ],
+        "weight_sha256": "36e4deffbaef061a2576705b0c36f93621e2ae20bf6274694821b0b492551b51",
+        "frozen": true
+      },
+      {
+        "scene": "gen_06",
+        "seconds": 1.3303713276982307,
+        "peak_allocated_GiB": 1.2639503479003906,
+        "output_shape": [
+          25,
+          2048,
+          21,
+          37
+        ],
+        "weight_sha256": "36e4deffbaef061a2576705b0c36f93621e2ae20bf6274694821b0b492551b51",
+        "frozen": true
+      },
+      {
+        "scene": "gen_07",
+        "seconds": 1.38309708237648,
+        "peak_allocated_GiB": 1.2639503479003906,
+        "output_shape": [
+          25,
+          2048,
+          21,
+          37
+        ],
+        "weight_sha256": "36e4deffbaef061a2576705b0c36f93621e2ae20bf6274694821b0b492551b51",
+        "frozen": true
+      },
+      {
+        "scene": "gen_08",
+        "seconds": 1.3860659934580326,
+        "peak_allocated_GiB": 1.2639503479003906,
+        "output_shape": [
+          25,
+          2048,
+          21,
+          37
+        ],
+        "weight_sha256": "36e4deffbaef061a2576705b0c36f93621e2ae20bf6274694821b0b492551b51",
+        "frozen": true
+      },
+      {
+        "scene": "gen_09",
+        "seconds": 1.360006995499134,
+        "peak_allocated_GiB": 1.2639503479003906,
+        "output_shape": [
+          25,
+          2048,
+          21,
+          37
+        ],
+        "weight_sha256": "36e4deffbaef061a2576705b0c36f93621e2ae20bf6274694821b0b492551b51",
+        "frozen": true
+      },
+      {
+        "scene": "gen_10",
+        "seconds": 1.381344512104988,
+        "peak_allocated_GiB": 1.2639503479003906,
+        "output_shape": [
+          25,
+          2048,
+          21,
+          37
+        ],
+        "weight_sha256": "36e4deffbaef061a2576705b0c36f93621e2ae20bf6274694821b0b492551b51",
+        "frozen": true
+      },
+      {
+        "scene": "gen_11",
+        "seconds": 1.3594220764935017,
+        "peak_allocated_GiB": 1.2639503479003906,
+        "output_shape": [
+          25,
+          2048,
+          21,
+          37
+        ],
+        "weight_sha256": "36e4deffbaef061a2576705b0c36f93621e2ae20bf6274694821b0b492551b51",
+        "frozen": true
+      }
+    ],
+    "weight_sha256": "36e4deffbaef061a2576705b0c36f93621e2ae20bf6274694821b0b492551b51",
+    "parameter_count": 304372736,
+    "compared_to_VGGT": "same RGB five-frame groups/grid/adapter; feature stages and cross-frame processing differ"
+  },
+  "initial_checks": {
+    "config_sha256": "8a82c93608121dfe11b7516e6e8c9793a239681eb2688f40afc83dc0822962ab",
+    "rows": [
+      {
+        "arm": "RGB",
+        "parameters": 395651,
+        "adapter_parameters": 0,
+        "identity_at_initialization": true,
+        "output_gradient_finite_nonzero": true
+      },
+      {
+        "arm": "OracleLogSmall",
+        "parameters": 395747,
+        "adapter_parameters": 96,
+        "identity_at_initialization": true,
+        "output_gradient_finite_nonzero": true
+      },
+      {
+        "arm": "OracleCoCSmall",
+        "parameters": 395747,
+        "adapter_parameters": 96,
+        "identity_at_initialization": true,
+        "output_gradient_finite_nonzero": true
+      },
+      {
+        "arm": "OracleLogStrong",
+        "parameters": 461987,
+        "adapter_parameters": 66336,
+        "identity_at_initialization": true,
+        "output_gradient_finite_nonzero": true
+      },
+      {
+        "arm": "OracleCoCStrong",
+        "parameters": 461987,
+        "adapter_parameters": 66336,
+        "identity_at_initialization": true,
+        "output_gradient_finite_nonzero": true
+      },
+      {
+        "arm": "DINO",
+        "parameters": 465347,
+        "adapter_parameters": 69696,
+        "identity_at_initialization": true,
+        "output_gradient_finite_nonzero": true
+      }
+    ],
+    "matching_trunk": true,
+    "trunk_sha256": "521d60fdf86bb15262de64fd1b549add9ec8a102051269e17d06609edb7f4491"
+  },
+  "no_new_independent_test": true,
+  "visual_review": "user pending"
+}
