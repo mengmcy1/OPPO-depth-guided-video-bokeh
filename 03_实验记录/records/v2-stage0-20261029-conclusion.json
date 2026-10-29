@@ -1,0 +1,45 @@
+{
+  "experiment": "architecture V2 Stage0, not Student/clamp V2",
+  "completed_methods": [
+    "P0",
+    "P1",
+    "P2",
+    "P2plus",
+    "P3"
+  ],
+  "engineering_screen": {
+    "P3_minus_P2plus_Macro_F1": 0.06342085261470798,
+    "P3_minus_P2plus_boundary_Macro_F1": 0.07731647599174063,
+    "per_dev_source_delta": {
+      "cave_2": 0.04210827831218533,
+      "market_2": 0.08473342691723063
+    },
+    "source_directions_consistent": true,
+    "engineering_pass": true,
+    "criterion": "source-equal dev Macro-F1 +0.02; boundary Macro-F1 no worse than -0.01; source direction reported separately",
+    "independent_test": false,
+    "statistical_significance_claim": false,
+    "Stage1_started": false
+  },
+  "observed": "P3 exceeds learned-depth P2plus by6.3421 percentage points in dev source-equal Macro-F1 and7.7316 in boundary; both dev sources improve. Direct-depth P2 remains best at72.6150 vs P3 67.8336.",
+  "supports": [
+    "Under this fixed learned readout, intermediate tokens improve over learned depth, with consistent direction in two development sources.",
+    "P3 exceeds matched-head P0 on primary Macro-F1; backbone cost/geometry pretraining differ."
+  ],
+  "does_not_support": [
+    "Intermediate tokens are generally superior to the same VGGT final depth: direct P2 is4.7814 points above P3.",
+    "P3 universally dominates VDA: P1 Balanced Accuracy is slightly higher, despite P3 primary Macro-F1 being higher.",
+    "Bokeh quality gains, physical CoC accuracy, fine-structure accuracy, temporal stability or unseen-source generalization."
+  ],
+  "P2plus_limit": "Scalar log-depth sampled at patch centers and masked mean focus pooling; P2 uses dense depth and median focus with trained thresholds. The weaker P2plus can reflect readout/optimization/spatial information loss; no unique cause established. Projection parameters differ131136 vs128, shared relation parameters41347.",
+  "next_step": "Stage0 complete; worth a controlled follow-up discussion. Audit whether learned-depth readout preserves dense final-depth information, then preregister independent source verification; no automatic retraining, layer/threshold sweep or Stage1.",
+  "boundaries": [
+    "one seed;4 train and2 already-used development source families;750 focus questions are not750 independent videos",
+    "raw finite-positive axial Z only; no reliable transparency/mixed-pixel exclusion",
+    "P1 has25-frame context and different original resolution; VGGT/P0 have fixed5-frame groups",
+    "all3 trainable groups final1000-step checkpoints; no best-dev selection"
+  ],
+  "verification": "all90 confusion matrices verified; train-only rule calibrations match direct CMs; six matching-batch/precision checkpoint replays pass",
+  "output": "outputs/v2-stage0-20261029",
+  "records_prefix": "03_实验记录/records/v2-stage0-20261029"
+}

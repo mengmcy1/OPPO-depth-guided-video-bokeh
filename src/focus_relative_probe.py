@@ -70,7 +70,7 @@ def make_focus_masks(config):
     return masks
 
 
-def build_labels(root, config):
+def build_labels(root, config, config_path=None):
     out = root/config['output']
     dest=out/'data'
     dest.mkdir(parents=True,exist_ok=True)
@@ -125,7 +125,7 @@ def build_labels(root, config):
     class_counts=np.sum([r['label_counts'] for r in train],axis=0)
     assert (class_counts>0).all()
     weights=(class_counts/class_counts.sum())**-.5;weights/=weights.mean()
-    plan=dict(config_sha256=sha(root/'configs/v2-stage0-20261029.json'),questions=manifests,
+    plan=dict(config_sha256=sha(config_path or root/'configs/v2-stage0-20261029.json'),questions=manifests,
               frames=150,sources=6,train_questions=len(train),dev_questions=sum(r['split']=='pilot_dev' and r['valid_problem'] for r in manifests),
               training_class_counts=class_counts.tolist(),training_loss_weights=weights.tolist(),
               coordinate_check=dict(native_wh=[nw,nh],model_wh=[w,h],xindex_first_last=xindex[[0,-1]].tolist(),yindex_first_last=yindex[[0,-1]].tolist(),

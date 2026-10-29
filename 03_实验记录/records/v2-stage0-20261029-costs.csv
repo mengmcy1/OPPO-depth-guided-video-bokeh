@@ -1,0 +1,6 @@
+﻿stage,method,frames,steps,executed_parameters,trainable_parameters,compute_seconds,including_preprocess_cache_seconds,peak_allocated_GiB,peak_reserved_GiB,scope
+feature extraction,P0,150,0,304372736,0,0.9569132290780544,4.1825708784163,1.236811637878418,1.291015625,DINO+parameter-free group mean; first group includes cold-start effects
+feature extraction,VGGT,150,0,941766882,0,4.466944567859173,8.00903145596385,4.314382553100586,5.8359375,"shared VGGT aggregator+depth cost, not counted3 times"
+head training,P0,100,1000,172483,172483,4.743203241378069,5.990268226712942,0.4268646240234375,0.505859375,fixed1000 steps /8000 question exposures; no backbone forward
+head training,P2plus,100,1000,41475,41475,4.876691225916147,5.939778871834278,0.11207437515258789,0.142578125,fixed1000 steps /8000 question exposures; no backbone forward
+head training,P3,100,1000,172483,172483,4.692217279225588,6.438503958284855,0.4268646240234375,0.505859375,fixed1000 steps /8000 question exposures; no backbone forward

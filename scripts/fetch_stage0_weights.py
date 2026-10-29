@@ -16,13 +16,19 @@ def fetch(url,path,size,expected=None):
     part=path.with_suffix(path.suffix+'.part');offset=part.stat().st_size if part.exists() else 0
     assert offset<=size
     chunks=path.parent/(path.name+'-chunks');chunks.mkdir(exist_ok=True)
-    ranges=[(a,min(a+32*1024**2,size)-1) for a in range(offset,size,32*1024**2)]
+    ranges=[];a=offset
+    while a<size:
+        # Reuse completed large chunks from the first resume attempt; only the
+        # missing ranges are divided into smaller requests to avoid long stalls.
+        b=min(a+32*1024**2,size)-1
+        if not (chunks/f'{a}-{b}.bin').exists():b=min(a+4*1024**2,size)-1
+        ranges.append((a,b));a=b+1
     def one(pair):
         a,b=pair;p=chunks/f'{a}-{b}.bin'
         if p.exists():assert p.stat().st_size==b-a+1;return p
         for attempt in range(6):
             try:
-                r=requests.get(url+f'?stage0_range={a}-{b}&attempt={attempt}',headers={'Range':f'bytes={a}-{b}'},timeout=(30,90))
+                r=requests.get(url+f'?stage0_small_range={a}-{b}&attempt={attempt}',headers={'Range':f'bytes={a}-{b}'},timeout=(20,20))
                 r.raise_for_status();assert r.status_code==206 and r.headers.get('Content-Range')==f'bytes {a}-{b}/{size}',(r.status_code,r.headers.get('Content-Range'))
                 assert len(r.content)==b-a+1
                 temp=p.with_suffix('.part');temp.write_bytes(r.content);temp.rename(p)

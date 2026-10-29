@@ -62,7 +62,7 @@ def prepare(c,out):
     if (out/'prepared.json').exists():
         assert read_json(out/'prepared.json')['config_sha256']==sha(CFG)
         print('REUSE_PREPARED',flush=True);return
-    checks=self_checks();manifest=build_labels(ROOT,c)
+    checks=self_checks();manifest=build_labels(ROOT,c,CFG)
     assert manifest['train_questions']==500 and manifest['dev_questions']==250
     # Fixed RNG schedule, reused byte-for-byte by each trainable group.
     schedule=[];rng=np.random.default_rng(c['seed']);need=c['training']['steps']*c['training']['batch_size']
@@ -71,6 +71,9 @@ def prepare(c,out):
     save_json(out/'prepared.json',dict(config_sha256=sha(CFG),checks=checks,train_questions=500,dev_questions=250,
               training_schedule_sha256=sha(out/'training-schedule.npy'),training_class_counts=manifest['training_class_counts'],
               training_loss_weights=manifest['training_loss_weights'],frozen_before_dev_results=True))
+    if not (out/'implementation-checks.json').exists():
+        save_json(out/'implementation-checks.json',dict(self_checks=checks,
+            scope='Independent reproduction; detailed original-run recovery is retained in v2-stage0-20261029-verification.json.'))
     write_csv(ROOT/(c['record_prefix']+'-manifest.csv'),manifest['questions'])
     # Fixed input/label previews for every source, before model extraction.
     previews=out/'alignment';previews.mkdir(exist_ok=True)
@@ -90,6 +93,10 @@ def prepare(c,out):
 
 
 def extract(c,out,kind):
+    if (out/f'{kind}-extraction.json').exists():
+        prior=read_json(out/f'{kind}-extraction.json')
+        assert len(prior['groups'])==30
+        print('REUSE_COMPLETE_EXTRACTION',kind,flush=True);return
     setup(c,True);VGGT,vit_large,load_images=imports(c)
     start=time.monotonic()
     if kind=='VGGT':
@@ -327,6 +334,9 @@ def evaluate(c,out):
 
 
 def report(c,out):
+    if (ROOT/(c['record_prefix']+'-resources.json')).exists():
+        assert (out/'report/index.html').exists()
+        print('REUSE_REPORT',flush=True);return
     palette=np.array([[237,105,65],[100,194,108],[77,128,222],[160,160,160]],np.uint8)
     report=out/'report';report.mkdir(exist_ok=True)
     for s in c['sequences']:
@@ -346,23 +356,36 @@ def report(c,out):
     html+='</table>'
     for s in c['sequences']:html+='<h2>'+s['sequence']+' / '+s['split']+'</h2><a href="'+s['sequence']+'.png"><img src="'+s['sequence']+'.png"></a>'
     (report/'index.html').write_text(html)
+    vda_parameter_file=out/'VDA-parameters.json'
+    if not vda_parameter_file.exists():
+        # Reuse the already measured architecture count, not a new VDA forward.
+        prior=read_json(ROOT/'03_实验记录/records/v2-stage0-20261029-resources.json')['VDA_parameters']
+        save_json(vda_parameter_file,prior)
     resource=dict(extractions={k:read_json(out/(k+'-extraction.json')) for k in ['P0','VGGT']},
                   training={m:read_json(out/'heads'/m/'training.json') for m in ['P0','P2plus','P3']},
+                  VDA_parameters=read_json(vda_parameter_file),
                   VDA_existing_cost=read_json(ROOT/c['vda_root']/'summary.json'),
                   cost_limit='actual current feature/heading costs; shared VGGT extraction not counted 3 times, no end-to-end bokeh cost comparison')
     save_json(ROOT/(c['record_prefix']+'-resources.json'),resource)
 
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('stage',choices=['prepare','extract-vggt','extract-p0','train-p0','train-p2plus','train-p3','evaluate','report','all']);args=parser.parse_args()
+    global CFG
+    parser=argparse.ArgumentParser();parser.add_argument('stage',choices=['prepare','extract-vggt','extract-p0','train-p0','train-p2plus','train-p3','evaluate','report','all'])
+    parser.add_argument('--config',default=str(CFG),help='For independent reproduction copy frozen config and change output/record_prefix only.')
+    args=parser.parse_args();CFG=Path(args.config).resolve()
     c=read_json(CFG);out=ROOT/c['output'];out.mkdir(parents=True,exist_ok=True);setup(c)
     stages=['prepare','extract-vggt','extract-p0','train-p0','train-p2plus','train-p3','evaluate','report']
     if args.stage=='all':
-        save_json(out/'launch.json',dict(pid=os.getpid(),UTC=datetime.now(timezone.utc).isoformat(),command=sys.argv,
+        launch=dict(pid=os.getpid(),UTC=datetime.now(timezone.utc).isoformat(),command=sys.argv,
                   code_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),config_sha256=sha(CFG),
-                  nvidia_smi=subprocess.check_output(['nvidia-smi'],text=True)))
+                  nvidia_smi=subprocess.check_output(['nvidia-smi'],text=True))
+        if (out/'launch.json').exists():
+            assert read_json(out/'launch.json')['config_sha256']==sha(CFG)
+            print('RESUME_EXISTING_LAUNCH',flush=True)
+        else:save_json(out/'launch.json',launch)
         for stage in stages:
-            subprocess.run([sys.executable,__file__,stage],check=True,cwd=ROOT)
+            subprocess.run([sys.executable,__file__,stage,'--config',str(CFG)],check=True,cwd=ROOT)
         return
     if args.stage=='prepare':prepare(c,out)
     elif args.stage.startswith('extract-'):extract(c,out,'VGGT' if args.stage=='extract-vggt' else 'P0')
