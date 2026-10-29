@@ -1,0 +1,121 @@
+{
+  "name": "new-source P2plus readout check, no new V2/Student/Bokeh line",
+  "selection_rule": "metadata-only hash order of four previously unused source families, then first lexical complete sequence",
+  "candidate_family_order": [
+    "temple",
+    "sleeping",
+    "mountain",
+    "alley"
+  ],
+  "sequences": [
+    {
+      "sequence": "temple_2",
+      "source_family": "temple",
+      "split": "independent",
+      "frames": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25
+      ]
+    },
+    {
+      "sequence": "sleeping_1",
+      "source_family": "sleeping",
+      "split": "independent",
+      "frames": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25
+      ]
+    }
+  ],
+  "raw_root": "data/raw/MPI-Sintel-stage0-p2plus-audit-20261029",
+  "archives": {
+    "depth": {
+      "url": "https://files.is.tue.mpg.de/jwulff/sintel/MPI-Sintel-depth-training-20150305.zip",
+      "bytes": 1601251750
+    },
+    "images": {
+      "url": "https://files.is.tue.mpg.de/sintel/MPI-Sintel-training_images.zip",
+      "bytes": 1780524916
+    }
+  },
+  "output": "outputs/v2-stage0-p2plus-audit-20261029/independent",
+  "base_config": "configs/v2-stage0-20261029.json",
+  "audit_config": "configs/v2-stage0-p2plus-audit-20261029.json",
+  "models": [
+    "dense_P2",
+    "sampled_matched_rule",
+    "dense_mean_rule",
+    "P2plus_original",
+    "P2plus_dense_grid",
+    "P3_frozen"
+  ],
+  "thresholds": {
+    "dense_P2": 0.13,
+    "sampled_matched_rule": 0.14,
+    "dense_mean_rule": 0.16
+  },
+  "primary_pair": [
+    "P2plus_dense_grid",
+    "P2plus_original"
+  ],
+  "primary_metric": "source-equal Macro-F1, fixed3 denominator",
+  "engineering_delta_min": 0.02,
+  "boundary_delta_min": -0.01,
+  "secondary_pair": [
+    "P3_frozen",
+    "P2plus_dense_grid"
+  ],
+  "checkpoint_selection": "fixed step1000, original four training sources only, no independent adaptation",
+  "label_focus_protocol": "unchanged original fixed5 focus boxes, raw axial Z ratio, finite-positive valid, same boundary definition",
+  "limitations": [
+    "new sources for this project only; not proof foundation-model pretraining never saw them",
+    "Sintel same film/assets/domain; no real-video generalization claim",
+    "not DAVIS source-isolated heldout group; no DAVIS accessed"
+  ]
+}

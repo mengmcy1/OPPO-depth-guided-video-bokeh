@@ -173,7 +173,10 @@ def scene_features(c,out,name,method):
     if method=='P2plus':
         d=torch.from_numpy(np.load(out/'features'/name/'depth.npy')).unsqueeze(1)
         log=torch.log(d);center=log.flatten(2).median(dim=2).values[:,:,None,None]
-        return F.interpolate(log-center,size=(16,37),mode='nearest-exact')
+        # Historical Stage0 defaults stay unchanged. A separate, frozen audit
+        # config may change this one spatial-grid factor for P2+ only.
+        grid=tuple(c.get('P2plus_spatial_grid',[16,37]))
+        return F.interpolate(log-center,size=grid,mode='nearest-exact')
     kind='P0' if method=='P0' else 'VGGT'
     return torch.from_numpy(np.concatenate([np.load(out/'features'/name/f'{kind}-group{g}.npy') for g in range(5)]))
 
