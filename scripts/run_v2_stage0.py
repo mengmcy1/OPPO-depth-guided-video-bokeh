@@ -95,7 +95,7 @@ def prepare(c,out):
 def extract(c,out,kind):
     if (out/f'{kind}-extraction.json').exists():
         prior=read_json(out/f'{kind}-extraction.json')
-        assert len(prior['groups'])==30
+        assert len(prior['groups'])==len(c['sequences'])*len(c['context']['groups_native_frames'])
         print('REUSE_COMPLETE_EXTRACTION',kind,flush=True);return
     setup(c,True);VGGT,vit_large,load_images=imports(c)
     start=time.monotonic()

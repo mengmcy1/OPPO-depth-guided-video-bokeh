@@ -1,0 +1,459 @@
+{
+  "status": "PASS",
+  "training_unchanged_keys": [
+    "steps",
+    "frame_focus_exposures",
+    "training_schedule_sha256",
+    "initial_relation_sha256",
+    "trainable_parameters",
+    "projection_parameters",
+    "relation_parameters"
+  ],
+  "only_config_intervention": "P2plus spatial grid",
+  "parameter_count": 41475,
+  "optimizer_step": 1000,
+  "checkpoint_finite": true,
+  "raw_members_CRC_verified": 153,
+  "metadata_family_hash_order": [
+    "temple",
+    "sleeping",
+    "mountain",
+    "alley"
+  ],
+  "new_prediction_arrays_CM_recomputed": 18,
+  "matched_batch_first_last_frame_reloads": 24,
+  "old_label_bitwise_rebuild": [
+    "ambush_4",
+    "shaman_2",
+    "bamboo_1",
+    "bandage_1",
+    "cave_2",
+    "market_2"
+  ],
+  "train_only_rule_thresholds": {
+    "sampled_matched_rule": 0.14,
+    "dense_mean_rule": 0.16
+  },
+  "direct_dense_rule_matches_original_confusions": true,
+  "independent_screen": {
+    "dense_minus_original": 0.003393055157534741,
+    "boundary_delta": 0.04861255550121779,
+    "screen_passed": false,
+    "P3_minus_dense": -0.030609499613003632
+  },
+  "dense_training": {
+    "method": "P2plus",
+    "steps": 1000,
+    "frame_focus_exposures": 8000,
+    "training_questions": 500,
+    "training_schedule_sha256": "37b1e194d3e4804d0ae9f41858a64957345143c815c6c4f9f1bbdc57adbf01a6",
+    "initial_relation_sha256": "59bfac425da4597084772215e083e5142af509a1d9c9468de71057ded64429b5",
+    "trainable_parameters": 41475,
+    "projection_parameters": 128,
+    "relation_parameters": 41347,
+    "train_loop_seconds": 36.59140707179904,
+    "total_cache_train_save_seconds": 38.06550206243992,
+    "peak_allocated_GiB": 2.7860960960388184,
+    "peak_reserved_GiB": 4.162109375,
+    "final_loss": 0.48156917095184326,
+    "curves": [
+      {
+        "step": 1,
+        "loss": 1.1002519130706787,
+        "gradient_norm": 0.20578162372112274
+      },
+      {
+        "step": 100,
+        "loss": 0.49541276693344116,
+        "gradient_norm": 0.329672634601593
+      },
+      {
+        "step": 200,
+        "loss": 0.387227863073349,
+        "gradient_norm": 0.3588089048862457
+      },
+      {
+        "step": 300,
+        "loss": 0.6634688377380371,
+        "gradient_norm": 0.7985225319862366
+      },
+      {
+        "step": 400,
+        "loss": 0.5613612532615662,
+        "gradient_norm": 0.17832528054714203
+      },
+      {
+        "step": 500,
+        "loss": 0.4239358901977539,
+        "gradient_norm": 0.4392882287502289
+      },
+      {
+        "step": 600,
+        "loss": 0.542956531047821,
+        "gradient_norm": 0.4634758234024048
+      },
+      {
+        "step": 700,
+        "loss": 0.5093609094619751,
+        "gradient_norm": 0.5047664642333984
+      },
+      {
+        "step": 800,
+        "loss": 0.49869951605796814,
+        "gradient_norm": 0.4303894340991974
+      },
+      {
+        "step": 900,
+        "loss": 0.4421473443508148,
+        "gradient_norm": 0.5750287771224976
+      },
+      {
+        "step": 1000,
+        "loss": 0.48156917095184326,
+        "gradient_norm": 0.3425915539264679
+      }
+    ],
+    "all_loss_and_gradient_finite": true,
+    "final_step_only": true
+  },
+  "new_VGGT_extraction": {
+    "kind": "VGGT",
+    "weight": "models/VGGT-stage0/model.pt",
+    "weight_sha256": "d15bf50a8615c8225ed48b51ea5cac673d82442ec0309036df555a053253afe0",
+    "full_checkpoint_tensor_parameters": 1256537516,
+    "executed_model_parameters": 941766882,
+    "load_seconds": 10.380865916609764,
+    "groups": [
+      {
+        "kind": "VGGT",
+        "sequence": "temple_2",
+        "group_index": 0,
+        "frames": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "input_shape": [
+          5,
+          3,
+          224,
+          518
+        ],
+        "feature_shape": [
+          5,
+          2048,
+          16,
+          37
+        ],
+        "feature_dtype": "float16 CPU cache from BF16 backbone",
+        "patch_start": 5,
+        "compute_seconds": 0.5905303508043289,
+        "elapsed_preprocess_forward_cache_seconds": 0.7175855562090874,
+        "peak_allocated_GiB": 4.314382553100586,
+        "peak_reserved_GiB": 5.8359375,
+        "all_finite": true,
+        "pretrained_frozen": true
+      },
+      {
+        "kind": "VGGT",
+        "sequence": "temple_2",
+        "group_index": 1,
+        "frames": [
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "input_shape": [
+          5,
+          3,
+          224,
+          518
+        ],
+        "feature_shape": [
+          5,
+          2048,
+          16,
+          37
+        ],
+        "feature_dtype": "float16 CPU cache from BF16 backbone",
+        "patch_start": 5,
+        "compute_seconds": 0.12688328325748444,
+        "elapsed_preprocess_forward_cache_seconds": 0.24697696045041084,
+        "peak_allocated_GiB": 4.314382553100586,
+        "peak_reserved_GiB": 5.8359375,
+        "all_finite": true,
+        "pretrained_frozen": true
+      },
+      {
+        "kind": "VGGT",
+        "sequence": "temple_2",
+        "group_index": 2,
+        "frames": [
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "input_shape": [
+          5,
+          3,
+          224,
+          518
+        ],
+        "feature_shape": [
+          5,
+          2048,
+          16,
+          37
+        ],
+        "feature_dtype": "float16 CPU cache from BF16 backbone",
+        "patch_start": 5,
+        "compute_seconds": 0.12208713218569756,
+        "elapsed_preprocess_forward_cache_seconds": 0.22508542612195015,
+        "peak_allocated_GiB": 4.314382553100586,
+        "peak_reserved_GiB": 5.8359375,
+        "all_finite": true,
+        "pretrained_frozen": true
+      },
+      {
+        "kind": "VGGT",
+        "sequence": "temple_2",
+        "group_index": 3,
+        "frames": [
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "input_shape": [
+          5,
+          3,
+          224,
+          518
+        ],
+        "feature_shape": [
+          5,
+          2048,
+          16,
+          37
+        ],
+        "feature_dtype": "float16 CPU cache from BF16 backbone",
+        "patch_start": 5,
+        "compute_seconds": 0.12219562008976936,
+        "elapsed_preprocess_forward_cache_seconds": 0.21933607384562492,
+        "peak_allocated_GiB": 4.314382553100586,
+        "peak_reserved_GiB": 5.8359375,
+        "all_finite": true,
+        "pretrained_frozen": true
+      },
+      {
+        "kind": "VGGT",
+        "sequence": "temple_2",
+        "group_index": 4,
+        "frames": [
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "input_shape": [
+          5,
+          3,
+          224,
+          518
+        ],
+        "feature_shape": [
+          5,
+          2048,
+          16,
+          37
+        ],
+        "feature_dtype": "float16 CPU cache from BF16 backbone",
+        "patch_start": 5,
+        "compute_seconds": 0.12218950688838959,
+        "elapsed_preprocess_forward_cache_seconds": 0.22362766787409782,
+        "peak_allocated_GiB": 4.314382553100586,
+        "peak_reserved_GiB": 5.8359375,
+        "all_finite": true,
+        "pretrained_frozen": true
+      },
+      {
+        "kind": "VGGT",
+        "sequence": "sleeping_1",
+        "group_index": 0,
+        "frames": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "input_shape": [
+          5,
+          3,
+          224,
+          518
+        ],
+        "feature_shape": [
+          5,
+          2048,
+          16,
+          37
+        ],
+        "feature_dtype": "float16 CPU cache from BF16 backbone",
+        "patch_start": 5,
+        "compute_seconds": 0.12230493128299713,
+        "elapsed_preprocess_forward_cache_seconds": 0.23444460332393646,
+        "peak_allocated_GiB": 4.314382553100586,
+        "peak_reserved_GiB": 5.8359375,
+        "all_finite": true,
+        "pretrained_frozen": true
+      },
+      {
+        "kind": "VGGT",
+        "sequence": "sleeping_1",
+        "group_index": 1,
+        "frames": [
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "input_shape": [
+          5,
+          3,
+          224,
+          518
+        ],
+        "feature_shape": [
+          5,
+          2048,
+          16,
+          37
+        ],
+        "feature_dtype": "float16 CPU cache from BF16 backbone",
+        "patch_start": 5,
+        "compute_seconds": 0.12247131019830704,
+        "elapsed_preprocess_forward_cache_seconds": 0.2340409941971302,
+        "peak_allocated_GiB": 4.314382553100586,
+        "peak_reserved_GiB": 5.8359375,
+        "all_finite": true,
+        "pretrained_frozen": true
+      },
+      {
+        "kind": "VGGT",
+        "sequence": "sleeping_1",
+        "group_index": 2,
+        "frames": [
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "input_shape": [
+          5,
+          3,
+          224,
+          518
+        ],
+        "feature_shape": [
+          5,
+          2048,
+          16,
+          37
+        ],
+        "feature_dtype": "float16 CPU cache from BF16 backbone",
+        "patch_start": 5,
+        "compute_seconds": 0.12153388932347298,
+        "elapsed_preprocess_forward_cache_seconds": 0.23390638455748558,
+        "peak_allocated_GiB": 4.314382553100586,
+        "peak_reserved_GiB": 5.8359375,
+        "all_finite": true,
+        "pretrained_frozen": true
+      },
+      {
+        "kind": "VGGT",
+        "sequence": "sleeping_1",
+        "group_index": 3,
+        "frames": [
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "input_shape": [
+          5,
+          3,
+          224,
+          518
+        ],
+        "feature_shape": [
+          5,
+          2048,
+          16,
+          37
+        ],
+        "feature_dtype": "float16 CPU cache from BF16 backbone",
+        "patch_start": 5,
+        "compute_seconds": 0.12222330644726753,
+        "elapsed_preprocess_forward_cache_seconds": 0.2328643687069416,
+        "peak_allocated_GiB": 4.314382553100586,
+        "peak_reserved_GiB": 5.8359375,
+        "all_finite": true,
+        "pretrained_frozen": true
+      },
+      {
+        "kind": "VGGT",
+        "sequence": "sleeping_1",
+        "group_index": 4,
+        "frames": [
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "input_shape": [
+          5,
+          3,
+          224,
+          518
+        ],
+        "feature_shape": [
+          5,
+          2048,
+          16,
+          37
+        ],
+        "feature_dtype": "float16 CPU cache from BF16 backbone",
+        "patch_start": 5,
+        "compute_seconds": 0.13001911342144012,
+        "elapsed_preprocess_forward_cache_seconds": 0.2594446875154972,
+        "peak_allocated_GiB": 4.314382553100586,
+        "peak_reserved_GiB": 5.8359375,
+        "all_finite": true,
+        "pretrained_frozen": true
+      }
+    ],
+    "total_compute_seconds": 1.7024384438991547,
+    "total_preprocess_forward_cache_seconds": 2.827312722802162,
+    "peak_allocated_GiB": 4.314382553100586,
+    "peak_reserved_GiB": 5.8359375,
+    "python": "3.10.21 (main, Aug 27 2026, 14:42:07) [GCC 14.3.0]",
+    "torch": "2.8.0+cu128",
+    "numpy": "2.1.2",
+    "gpu": "NVIDIA GeForce RTX 4090 D",
+    "backbone_frozen": true
+  },
+  "note": "No Bokeh prediction, no temporal claim; new-source check within same Sintel domain, not foundation-pretraining isolation"
+}
