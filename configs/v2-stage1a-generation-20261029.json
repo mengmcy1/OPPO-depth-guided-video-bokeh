@@ -93,7 +93,8 @@
       "alpha": "data/raw/VideoMatte240K_HEVC/VideoMatte240K/train/pha/0330.mp4",
       "background": "data/raw/BG-20k/train/h_3fdf7360.jpg",
       "foreground_source_id": "VideoMatte240K:train:0330",
-      "background_source_id": "BG-20k:h_3fdf7360"
+      "background_source_id": "BG-20k:h_3fdf7360",
+      "source_start_frame": 26
     },
     {
       "id": "gen_10",
@@ -157,7 +158,8 @@
     "target_dtype": "float16 linear-render then sRGB, independently stored; RGB input PNG8 reloaded by all methods",
     "label": "synthetic layered-renderer reference, not measured real bokeh GT",
     "focus_depth": "median known visible binary depth in same user-box; GT focus only renderer/oracle, not deployable arms",
-    "normalization": "sRGB RGB/target in[0,1], no scene-dependent normalization"
+    "normalization": "sRGB RGB/target in[0,1], no scene-dependent normalization",
+    "source_start_policy": "Default0; if first25 contain empty foreground, earliest consecutive25 with alpha>128 present, fixed before rendering/model outputs; gen09 start26; IDs/splits unchanged"
   },
   "geometry": {
     "base_stage0_config": "configs/v2-stage0-20261029.json",
