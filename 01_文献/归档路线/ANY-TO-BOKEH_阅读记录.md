@@ -4,7 +4,7 @@
 
 - **题目**：Any-to-Bokeh: Arbitrary-Subject Video Refocusing with Video Diffusion Model
 - **会议**：ICLR 2026
-- **仓库原文**：`01_文献/ANY-TO-BOKEH.pdf`
+- **仓库原文**：`01_文献/归档路线/ANY-TO-BOKEH.pdf`
 - **记录目的**：判断该工作对当前项目 Q1～Q11 的帮助，重点关注显式几何先验、焦平面相关表示、时序建模、Depth/Disparity 鲁棒性、Decoder 细节恢复与视频级 Bokeh 控制。
 
 ---

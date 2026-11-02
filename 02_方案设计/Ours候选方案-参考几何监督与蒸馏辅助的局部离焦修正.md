@@ -222,8 +222,8 @@ S的定义和阈值在开发数据上确定后固定，不以“没人报告异�
 - [本轮局部诊断完整归档](../03_实验记录/历史阶段记录/2026-10-22_ATB局部CoC诊断与主体限幅V2阶段记录.md)
 - [ATB架构及实际条件路径](ATB架构数据流与研究切入点.md)
 - [10月15日蒸馏候选讨论（历史）](蒸馏辅助的视频局部深度修正-候选思路.md)：保留原文，其中MPI条件路径及实验状态以10月21日后实测和中央进度为准。
-- [MagicBokeh本地论文](../01_文献/MagicBokeh-CVPR2026.pdf)
-- [FlashReFocus本地论文](../01_文献/FlashReFocus-%20Interactive%20Image%20Refocusing%20in%20Seconds.pdf)
+- [MagicBokeh本地论文](../01_文献/归档路线/MagicBokeh-CVPR2026.pdf)
+- [FlashReFocus本地论文](../01_文献/归档路线/FlashReFocus-%20Interactive%20Image%20Refocusing%20in%20Seconds.pdf)
 
 
 ---

@@ -5,7 +5,7 @@
 - **题目**：Bokeh Diffusion: Defocus Blur Control in Text-to-Image Diffusion Models
 - **会议**：ACM SIGGRAPH Asia 2025
 - **作者**：Armando Fortes, Tianyi Wei, Shangchen Zhou, Xingang Pan
-- **仓库原文**：01_文献/Siggraph2025-Bokeh Diffusion- Defocus Blur Control in Text-to-Image Diffusion Models.pdf
+- **仓库原文**：01_文献/归档路线/Siggraph2025-Bokeh Diffusion- Defocus Blur Control in Text-to-Image Diffusion Models.pdf
 - **记录目的**：判断该工作对当前项目 Q1～Q11 的帮助，重点关注物理 Defocus 参数、Synthetic + Real 混合数据、复杂边缘 Bokeh、控制信息注入和生成式 Bokeh 对 Physical Renderer 的启发。
 
 ---

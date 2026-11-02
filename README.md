@@ -36,10 +36,12 @@ logs/                 本地运行日志，不提交 Git
 
 参考论文：
 
-- `01_文献/03257-AAAI26.HuangY-CV.pdf`：BokehFlow；
-- `01_文献/03980-AAAI26.WangQ-CV.pdf`：BokehCrafter；
-- `01_文献/ANY-TO-BOKEH.pdf`：Any-to-Bokeh；
-- `01_文献/MagicBokeh-CVPR2026.pdf`：MagicBokeh；
-- `01_文献/Siggraph2025-Bokeh Diffusion- Defocus Blur Control in Text-to-Image Diffusion Models.pdf`：Bokeh Diffusion。
+- `01_文献/3DGS路线/`：3DGS 虚化路线待读论文，按阅读顺序分为 `01_`–`06_` 子目录，`07_选读` 为备选论文；
+- `01_文献/归档路线/`：此前各路线的论文与阅读记录，其中主要 baseline 论文：
+  - `01_文献/归档路线/03257-AAAI26.HuangY-CV.pdf`：BokehFlow；
+  - `01_文献/归档路线/03980-AAAI26.WangQ-CV.pdf`：BokehCrafter；
+  - `01_文献/归档路线/ANY-TO-BOKEH.pdf`：Any-to-Bokeh；
+  - `01_文献/归档路线/MagicBokeh-CVPR2026.pdf`：MagicBokeh；
+  - `01_文献/归档路线/Siggraph2025-Bokeh Diffusion- Defocus Blur Control in Text-to-Image Diffusion Models.pdf`：Bokeh Diffusion。
 
 参考论文的权利归原作者及相应权利人所有。
