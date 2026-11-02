@@ -4,7 +4,7 @@
 >
 > 依据：ATB 官方公开推理/预处理代码 + 本仓库实验记录；**不是新方法设计定稿**，运行结论均链接到对应实验记录。
 >
-> 核对日期：2026-10-21。包含10月15日正式干预，以及10月21日固定作者版本`f7a16959`的MPI静态/CPU核查和B36预训练MPI-only不变性、CoC阳性对照。具体更新以[当前实验进度](../03_实验记录/当前实验进度与方法论.md)为准。
+> 核对日期：2026-10-21。包含10月15日正式干预，以及10月21日固定作者版本`f7a16959`的MPI静态/CPU核查和B36预训练MPI-only不变性、CoC阳性对照。具体更新以[当前实验进度](../../03_实验记录/当前实验进度与方法论.md)为准。
 >
 > **版本提醒：本项目固定公开UNet在down/mid/up传递MPI Mask时将其置零。下面分别说明接口设计和当前实际执行，不能把分区生成等同分区已生效；也不能据此推断作者论文或私有训练使用相同设置。**
 
@@ -103,7 +103,7 @@ mpi_mask = torch.zeros_like(mpi_mask <= threshold).bool().to(dtype)
 
 这会丢弃原分区标签，向下传递全零图。代码位置见固定版本的[down路径](https://github.com/vivoCameraResearch/any-to-bokeh/blob/f7a16959dd219080fb8eec0d32bb9602d8970c22/models/unet.py#L454)、[mid路径](https://github.com/vivoCameraResearch/any-to-bokeh/blob/f7a16959dd219080fb8eec0d32bb9602d8970c22/models/unet.py#L473)、[up路径](https://github.com/vivoCameraResearch/any-to-bokeh/blob/f7a16959dd219080fb8eec0d32bb9602d8970c22/models/unet.py#L490)。这是一项版本行为发现，未判定作者意图，也不自动修改为非零分区。
 
-**证据层次**：静态路径和CPU小模块证据保留于[原核查记录](../03_实验记录/records/any2bokeh-MPI-mask-code-audit-20261021.json)。随后已完成B36预训练25帧五组实测：A-repeat、MPI有效槽全零/全三与A的float位模式及RGB8均一致；48次fuser Mask全零，主/附加RGB key允许比例100%/0%；只改既定源帧0的CoC、保留原MPI仍有响应。见[运行结果](../03_实验记录/records/any2bokeh-B36-MPI-invariance-20261021.json)和方向C。结论限定当前版本及所测输入。
+**证据层次**：静态路径和CPU小模块证据保留于[原核查记录](../../03_实验记录/records/any2bokeh-MPI-mask-code-audit-20261021.json)。随后已完成B36预训练25帧五组实测：A-repeat、MPI有效槽全零/全三与A的float位模式及RGB8均一致；48次fuser Mask全零，主/附加RGB key允许比例100%/0%；只改既定源帧0的CoC、保留原MPI仍有响应。见[运行结果](../../03_实验记录/records/any2bokeh-B36-MPI-invariance-20261021.json)和方向C。结论限定当前版本及所测输入。
 
 ### 2.3 RGB 帧同时进入 ViT 和 VAE：不是先后串联
 
@@ -260,7 +260,7 @@ A/B/C分别使用同一份缓存后CPU输入，断言RGB、CoC、K、权重与pa
 
 旁路记录UNet收到的原MPI，以及down/mid/up送入fuser的Mask；保存形状、取值范围、非零比例及调用次数。必要时记录最终attention key mask的主/附加两部分，不改变返回值或注意力实现。比较完整float输出的最大绝对差、不同元素数，以及RGB8不同字节数；PNG一样但float不一样时不能称逐位等价。
 
-**实测结果**：5组独立进程共125帧，恢复相同场景入口CPU/CUDA状态，原生8/8/9调用；每组6次RGB→CoC posterior采样的对应随机状态一致。16个fuser每组48次（down18/mid3/up27），实际均收到零Mask；真实MPI替换进入UNet，padding保持原值。A-repeat/B/C相对A的float数值差、uint32位模式差、RGB8字节差均0。D的float最大/平均差为0.156860352/0.000116971761，不同float元素8,318,616，RGB8不同字节1,246,773，影响帧0–7，8–24不变。完整逐次路径及中央进度两张主表见[结果JSON](../03_实验记录/records/any2bokeh-B36-MPI-invariance-20261021.json)。
+**实测结果**：5组独立进程共125帧，恢复相同场景入口CPU/CUDA状态，原生8/8/9调用；每组6次RGB→CoC posterior采样的对应随机状态一致。16个fuser每组48次（down18/mid3/up27），实际均收到零Mask；真实MPI替换进入UNet，padding保持原值。A-repeat/B/C相对A的float数值差、uint32位模式差、RGB8字节差均0。D的float最大/平均差为0.156860352/0.000116971761，不同float元素8,318,616，RGB8不同字节1,246,773，影响帧0–7，8–24不变。完整逐次路径及中央进度两张主表见[结果JSON](../../03_实验记录/records/any2bokeh-B36-MPI-invariance-20261021.json)。
 
 **解释与限制**：当前固定版本在该输入中不使用传入MPI分区标签，CoC有有效输出响应；MPIAttention仍执行主token注意力、K嵌入和前馈。D固定头部ROI的RGB8平均变化为5.8023灰度级，这是响应量，不是质量分数；新输出观感由用户判断。本轮只干预源帧0，不能称全25帧局部修正或时序质量已验证，不能外推其他版本/作者私有实现。
 
@@ -312,7 +312,7 @@ VAE 相关的两个编码阶段和最后「拼接 + 解码」阶段合计 **80.3
 1. MPI核验、B36完整视频局部修正、35段输入统计、六来源V2及鞋/铃铛输入—输出核查已完成。B36的R2和V2有用户正面反馈，但V2未明显改善B20/B34，train清晰度变化不等于几何错误修复；B33弱响应和B19反向对照保留。
 2. 先明确希望得到“几何合理的浅景深”还是“选中主体整体清晰”，以及实际可获得的mask/深度输入。现有GT mask诊断不能直接充当部署能力证据。
 3. 围绕选择性局部CoC修正、可靠参考与时序稳定提出最小候选，和简单主体限幅区分；先核查已有方法和创新差异，不提前宣布模块有效或必须训练。
-4. 方案讨论确定后，再决定最小验证与代码实现。当前不启动推理、训练、阈值搜索、MPI启用或来源隔离复核。详细证据与最新决定见[中央进度](../03_实验记录/当前实验进度与方法论.md)及其阶段归档。
+4. 方案讨论确定后，再决定最小验证与代码实现。当前不启动推理、训练、阈值搜索、MPI启用或来源隔离复核。详细证据与最新决定见[中央进度](../../03_实验记录/当前实验进度与方法论.md)及其阶段归档。
 
 原则：
 
@@ -355,15 +355,15 @@ VAE 相关的两个编码阶段和最后「拼接 + 解码」阶段合计 **80.3
 
 **本仓库：**
 
-- [当前实验进度与方法论](../03_实验记录/当前实验进度与方法论.md)
-- [Benchmark 与 Baseline 统一评价协议](../03_实验记录/Benchmark与Baseline统一评价协议.md)
+- [当前实验进度与方法论](../../03_实验记录/当前实验进度与方法论.md)
+- [Benchmark 与 Baseline 统一评价协议](../../03_实验记录/历史阶段记录/Benchmark与Baseline统一评价协议.md)
 - [ATB 改进候选方案：几何可靠性与时序推理](ATB改进候选方案-几何可靠性与时序推理.md)
-- [ATB 模块分析记录](../03_实验记录/records/any2bokeh-native-module-profile-4090d-20261001.json)
-- [Encoder scale=1 优化记录](../03_实验记录/records/any2bokeh-encoder-scale1-experiment-4090d-20261008.json)
-- [B33 受控诊断](../03_实验记录/records/any2bokeh-B33-causal-diagnosis-20261015.json)
-- [B36 受控诊断](../03_实验记录/records/any2bokeh-B36-causal-diagnosis-20261015.json)
-- [固定版本MPI静态路径与CPU模块核查](../03_实验记录/records/any2bokeh-MPI-mask-code-audit-20261021.json)
-- [B36预训练MPI-only不变性与CoC阳性对照](../03_实验记录/records/any2bokeh-B36-MPI-invariance-20261021.json)
+- [ATB 模块分析记录](../../03_实验记录/records/any2bokeh-native-module-profile-4090d-20261001.json)
+- [Encoder scale=1 优化记录](../../03_实验记录/records/any2bokeh-encoder-scale1-experiment-4090d-20261008.json)
+- [B33 受控诊断](../../03_实验记录/records/any2bokeh-B33-causal-diagnosis-20261015.json)
+- [B36 受控诊断](../../03_实验记录/records/any2bokeh-B36-causal-diagnosis-20261015.json)
+- [固定版本MPI静态路径与CPU模块核查](../../03_实验记录/records/any2bokeh-MPI-mask-code-audit-20261021.json)
+- [B36预训练MPI-only不变性与CoC阳性对照](../../03_实验记录/records/any2bokeh-B36-MPI-invariance-20261021.json)
 
 ---
 

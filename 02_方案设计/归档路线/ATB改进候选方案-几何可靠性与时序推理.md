@@ -519,7 +519,7 @@ WOIS 路线建议至少区分：
 ### 仓库现有记录
 
 - `03_实验记录/当前实验进度与方法论.md`
-- `03_实验记录/Benchmark与Baseline统一评价协议.md`
+- `03_实验记录/历史阶段记录/Benchmark与Baseline统一评价协议.md`
 - `03_实验记录/records/any2bokeh-native-module-profile-4090d-20261001.json`
 - `03_实验记录/records/any2bokeh-encoder-scale1-experiment-4090d-20261008.json`
 - `03_实验记录/records/any2bokeh-failure-analysis-20261009-A-analysis.json`

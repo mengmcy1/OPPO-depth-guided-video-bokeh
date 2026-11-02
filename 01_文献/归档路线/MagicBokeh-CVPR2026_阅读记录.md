@@ -147,7 +147,8 @@ Attention
 =
 Softmaxleft(
 rac{QK^T+M}{sqrt d}
-ight)V
+
+ight)V
 ]
 
 其中 (M) 是 Focus-aware Mask / Attention Bias。
@@ -485,9 +486,11 @@ MagicBokeh 的训练数据同样使用了基于物理 / ray-tracing 思路的 Bo
 
 [
 RGB+Geometry
-ightarrow
+
+ightarrow
 Renderer
-ightarrow
+
+ightarrow
 Synthetic Bokeh
 ]
 
@@ -560,7 +563,8 @@ MagicBokeh 没有 Alpha Head，因此不能直接回答：
 
 [
 Depth Edge
-ightarrow
+
+ightarrow
 Alpha
 ]
 
@@ -735,9 +739,11 @@ Mask+Confidence
 
 [
 Depth / Disparity
-ightarrow
+
+ightarrow
 Focus	ext{-}Relative Geometry
-ightarrow
+
+ightarrow
 Defocus / CoC
 ]
 
@@ -745,7 +751,8 @@ Defocus / CoC
 
 [
 Depth
-ightarrow
+
+ightarrow
 Bokeh
 ]
 
@@ -809,7 +816,7 @@ Q4, Q5, Q8, Q10, Q11
 
 教师输出是预测参考而非真实三维真值。同架构蒸馏在这里用于鲁棒性，不意味着模型压缩。教师本身漏掉细结构时，直接蒸馏可能保留该错误。
 
-项目启发：先确认可靠的几何参考，再考虑训练局部修正模块。更多帧、更高分辨率、更强模型只是教师候选，需要验证局部优势。已知合成几何属于直接监督，可与蒸馏组合。具体候选见[蒸馏辅助的视频局部深度修正](../../02_方案设计/蒸馏辅助的视频局部深度修正-候选思路.md)。
+项目启发：先确认可靠的几何参考，再考虑训练局部修正模块。更多帧、更高分辨率、更强模型只是教师候选，需要验证局部优势。已知合成几何属于直接监督，可与蒸馏组合。具体候选见[蒸馏辅助的视频局部深度修正](../../02_方案设计/归档路线/蒸馏辅助的视频局部深度修正-候选思路.md)。
 
 ## 24.2 对焦区域注意力：控制哪些位置互相参考
 

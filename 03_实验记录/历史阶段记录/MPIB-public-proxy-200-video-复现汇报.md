@@ -762,7 +762,7 @@ K增大时PSNR下降，K32的LPIPS/FD/RM明显更大，与已知饱和限制相�
 - 全量结果记录：`03_实验记录/records/any2bokeh-mpib-public-proxy-200-20260928.json`（原五项指标及恢复记录）
 - 本轮补算：`03_实验记录/records/any2bokeh-author-public-metrics-200-20260928.json`（TorchMetrics、FVD、VFID-I及适配/验证）
 - 方法论：`03_实验记录/当前实验进度与方法论.md`
-- 评价协议：`03_实验记录/Benchmark与Baseline统一评价协议.md`
+- 评价协议：`03_实验记录/历史阶段记录/Benchmark与Baseline统一评价协议.md`
 
 ### 外部依据
 
@@ -794,7 +794,7 @@ K增大时PSNR下降，K32的LPIPS/FD/RM明显更大，与已知饱和限制相�
 | Any-to-Bokeh | 0.95011 | 0.95400 | -0.00389 | 0.944 | +0.00611 |
 | MagicBokeh（DAVIS union区域辅助选焦） | 0.66962 | 0.66919 | +0.00043 | — | — |
 
-MagicBokeh新增量化：VEPI-public-mp4 **0.66962**，VEPI-png **0.66919**，MP4−PNG **+0.00043**。输入为DAVIS非零标注union辅助的自身深度单点选焦，非共享VDA数值条件；多实例/组件选择限制及批准规则见上文。预检200帧及全量1250帧的选点、坐标、原生条件、种子、RGB/finite核验通过，不按VEPI或观感回调。原六行数值与定性列保持原样；新增行不自动填视觉质量结论，也不把新全量输出用于来源隔离组失败发现。[新增逐帧/逐视频及七方法同口径记录](records/magicbokeh-davis-50-20261015.json)、[最终程序核验](records/magicbokeh-davis-final-check-20261015.json)。
+MagicBokeh新增量化：VEPI-public-mp4 **0.66962**，VEPI-png **0.66919**，MP4−PNG **+0.00043**。输入为DAVIS非零标注union辅助的自身深度单点选焦，非共享VDA数值条件；多实例/组件选择限制及批准规则见上文。预检200帧及全量1250帧的选点、坐标、原生条件、种子、RGB/finite核验通过，不按VEPI或观感回调。原六行数值与定性列保持原样；新增行不自动填视觉质量结论，也不把新全量输出用于来源隔离组失败发现。[新增逐帧/逐视频及七方法同口径记录](../records/magicbokeh-davis-50-20261015.json)、[最终程序核验](../records/magicbokeh-davis-final-check-20261015.json)。
 
 
 论文参考沿用上文§4.2 ICLR2026正式版Table1。本轮五方法与论文差值绝对值约0.0061–0.0167，DeepLens差值为+0.21396；这些只是声明条件下的外部对照，不能据此声称复原了作者私有adapter或超过原论文整体质量。本轮BokehMe和Any-to-Bokeh的VEPI排序交换；DeepLens采用原生DepthNet+UI默认aperture0.5，部分背景虚化较轻，该分数不能单独证明其bokeh质量改善。主VEPI衡量前景边缘保留，AIF原样输出就能在PNG自比达到1。
@@ -815,7 +815,7 @@ MagicBokeh新增量化：VEPI-public-mp4 **0.66962**，VEPI-png **0.66919**，MP
 
 定性终审保留了breakdance的旁观者清晰层与分割变化、horsejump-high的时变虚化、kite-surf的细绳/水花、soapbox坡缘补全等现象。连续25帧以PNG接触图逐帧复核，没有宣称实时播放盲评、无闪烁或完整时序质量排名；全部MP4保留供播放。固定集合内未发现新的客观实现错误，按既定规则冻结，不扩大候选或为了排名重跑。
 
-证据：[最终复核](records/davis-final-review-20260929.json)、[六方法逐帧指标](records/davis-six-method-50-20260929.json)、[全量完整性](records/davis-six-method-integrity-20260929.json)、[Table2](Benchmark与Baseline统一评价协议.md#table-2davis-real-world)。Efficiency正式保留下文Table 3A模型成本与Table 3B完整25帧流水；硬件版本分开报告。
+证据：[最终复核](../records/davis-final-review-20260929.json)、[六方法逐帧指标](../records/davis-six-method-50-20260929.json)、[全量完整性](../records/davis-six-method-integrity-20260929.json)、[Table2](Benchmark与Baseline统一评价协议.md#table-2davis-real-world)。Efficiency正式保留下文Table 3A模型成本与Table 3B完整25帧流水；硬件版本分开报告。
 
 ## Table 3A 模型级计算成本（按硬件分开报告）
 
@@ -833,7 +833,7 @@ MagicBokeh新增量化：VEPI-public-mp4 **0.66962**，VEPI-png **0.66919**，MP
 
 六种GPU方法各4个固定输入×5次正式重复，共120个正式计时样本。逐帧方法测第0帧；ATB保留25帧真实8/8/9输出调用，模型段约20.083秒再除以25，不是独立单帧在线延迟。参数量及GFLOPs覆盖口径复用，计时/显存重新测量。原始记录中的附带E2E字段不是六方法完整25帧Table 3B复测，不能据此填新卡3B。
 
-证据：[4090 D六方法原始结果](records/table3-4090d-20261001.json)。两台GPU结果分开保留，不计算跨硬件方法加速比。
+证据：[4090 D六方法原始结果](../records/table3-4090d-20261001.json)。两台GPU结果分开保留，不计算跨硬件方法加速比。
 
 ### RTX PRO 6000 Blackwell：2026-09-30原始测量
 
@@ -870,7 +870,7 @@ MagicBokeh的1024×576原生输出由六个512×512重叠图块组成；B配置1
 
 论文硬件和私有计时边界没有完全复原，因此本表只称 ATB-style reproduced cost，不将本轮与论文 Time 直接相除宣称同硬件加速比。
 
-证据：[原五方法计时](records/efficiency-3a-20260930.json)、[最终复核及覆盖边界](records/efficiency-3a-final-review-20260930.json)、[计时入口一致性](records/efficiency-entry-parity-20260930.json)、[MagicBokeh B同配置补测](records/magicbokeh-frozen-B-table3-20260930.json)、[原生Auto-LDF对照](records/magicbokeh-native-and-table3-20260930.json)。
+证据：[原五方法计时](../records/efficiency-3a-20260930.json)、[最终复核及覆盖边界](../records/efficiency-3a-final-review-20260930.json)、[计时入口一致性](../records/efficiency-entry-parity-20260930.json)、[MagicBokeh B同配置补测](../records/magicbokeh-frozen-B-table3-20260930.json)、[原生Auto-LDF对照](../records/magicbokeh-native-and-table3-20260930.json)。
 
 ## Table 3B：25-frame Video E2E Efficiency under Given Inputs
 
@@ -918,11 +918,11 @@ GPU补充峰值使用PyTorch口径，CPU不填PyTorch显存：
 
 MagicBokeh B的Core=DAdepth网络forward+六图块生成器/GPU拼接，E2E另计读取、每帧估深外围处理、GT目标辅助选点、条件/传输和PIL/AdaIN；与模型计算成本表的generator-only口径不同。CPU RSS不能当作GPU显存。原有模型成本、质量及DAVIS结果未重跑，模型/精度/adapter/batch/缓存未改。
 
-证据：[当前服务器七方法原始逐次数据、std/by-K及旧新硬件对照](records/video-e2e-4090d-20261001.json)。完整每帧计时单元/日志保存在`outputs/video-e2e-4090d-20261001/`及对应`logs/`；已完成项目可按入口恢复而跳过，未完成尝试保留并整项重启以保持随机流。旧PRO6000及旧CPU表保留原硬件标注，旧机MagicBokeh E2E缺项仍留空。
+证据：[当前服务器七方法原始逐次数据、std/by-K及旧新硬件对照](../records/video-e2e-4090d-20261001.json)。完整每帧计时单元/日志保存在`outputs/video-e2e-4090d-20261001/`及对应`logs/`；已完成项目可按入口恢复而跳过，未完成尝试保留并整项重启以保持随机流。旧PRO6000及旧CPU表保留原硬件标注，旧机MagicBokeh E2E缺项仍留空。
 
 E2E-given-inputs从已给输入的读取/解码开始，包括适配、必要分层/修复、推理、传输和后处理，直到25张1024×576 CPU RGB uint8就绪；排除模型加载、首次CUDA context、benchmark外部geometry/GT alpha生成、最终写盘及MP4编码。FPS=25/平均E2E秒数，Core同时单列。
 
-证据：[3B原始计时](records/efficiency-track-a-3ab-20260930.json)、[3B最终复核](records/efficiency-3b-final-review-20260930.json)、[阶段归档](历史阶段记录/2026-09-30_Efficiency_3A与3B测量.md)。旧数据的std、by-K、内存采样与CPU/GPU边界保持原记录。MagicBokeh B本轮按下述完整方法边界补测。
+证据：[3B原始计时](../records/efficiency-track-a-3ab-20260930.json)、[3B最终复核](../records/efficiency-3b-final-review-20260930.json)、[阶段归档](2026-09-30_Efficiency_3A与3B测量.md)。旧数据的std、by-K、内存采样与CPU/GPU边界保持原记录。MagicBokeh B本轮按下述完整方法边界补测。
 
 **MagicBokeh B本轮边界**：沿用冻结原生模型与点控adapter，E2E包括每帧重新DAdepth估深、读取已给目标metadata/layer alpha并计算可见区域、B选点、PNG8与defocus/focus-mask条件构造/传输、六图块生成与GPU拼接、CPU PIL/AdaIN及25帧uint8 RGB输出。外部benchmark geometry/alpha原始生成、模型加载、写盘/编码与指标排除；LDF自动选焦不属于B。Core单列DAdepth网络forward及生成器GPU段之和，与模型计算成本表的generator-only边界明确区分。逐帧种子/精度从原冻结B完整入口继承，未复用旧深度/条件/输出。配置`configs/magicbokeh-video-e2e.json`，入口`scripts/run_video_e2e.py`；当前执行产物在`outputs/video-e2e-4090d-20261001/`，原始日志在对应`logs/`。
 
@@ -984,7 +984,7 @@ E2E-given-inputs从已给输入的读取/解码开始，包括适配、必要分
 - **机制证据**：配对memory history显示encoder残差返回分配120→60次，其中4.5 GiB返回请求24→12次；编码高requested区间由5笔并发4.5 GiB降为4笔（约18.003296 GiB），内部高点从残差返回转至conv1附近。非encoder的ResNet返回位置244次分配不变，与decoder/UNet未应用该改动一致。
 - **边界**：仅保证已测四片段及预热的等价性，未扩大为所有输入保证；时间收益是该设备/输入上的实测，不是普遍加速保证。候选用显式开关单列，**原正式效率表与原生基线不替换**；定位为ATB实现效率优化，不是Ours创新。16→8编码微批量保留为已被本轮替代的暂缓历史候选。
 
-证据：[4090 D模块与allocator诊断](records/any2bokeh-native-module-profile-4090d-20261001.json)、[单因素实验](records/any2bokeh-encoder-scale1-experiment-4090d-20261008.json)；旧卡对照见[首轮模块分析](records/any2bokeh-native-module-profile-20260930.json)。产物`outputs/any2bokeh-scale1-experiment-20261008/`、`outputs/any2bokeh-allocator-supplement-20261001/`、`outputs/any2bokeh-memory-history-20261001/`。
+证据：[4090 D模块与allocator诊断](../records/any2bokeh-native-module-profile-4090d-20261001.json)、[单因素实验](../records/any2bokeh-encoder-scale1-experiment-4090d-20261008.json)；旧卡对照见[首轮模块分析](../records/any2bokeh-native-module-profile-20260930.json)。产物`outputs/any2bokeh-scale1-experiment-20261008/`、`outputs/any2bokeh-allocator-supplement-20261001/`、`outputs/any2bokeh-memory-history-20261001/`。
 
 ## 当前研究主线与执行边界（2026-10-01更正）
 
@@ -997,4 +997,4 @@ E2E-given-inputs从已给输入的读取/解码开始，包括适配、必要分
 3. **Any-to-Bokeh Failure Analysis**：基于现有200段Synthetic和DAVIS固定视频，系统筛选边界/遮挡/细结构、大运动、强虚化、focus/control变化等可重复失败；
 4. **冻结 Ours**：只选择有明确问题证据、可做受控消融且具有实际价值的方向，不再为了符合旧计划强行加入低帧率Depth completion、Token Merging或三头结构。
 
-MagicBokeh已补DAVIS50×25量化，原六方法结果与ATB机制分析材料保持独立；新增视觉判断待用户复核。首轮profile确认VAE编码/解码约占81%模型段时间，RGB/CoC编码峰值约34.29GiB，RGB FP32缓存6.47GiB；下一步验证缓存/重叠编码的优化假设及失败机制，Ours尚未冻结。证据：[模块分析](records/any2bokeh-native-module-profile-20260930.json)。
+MagicBokeh已补DAVIS50×25量化，原六方法结果与ATB机制分析材料保持独立；新增视觉判断待用户复核。首轮profile确认VAE编码/解码约占81%模型段时间，RGB/CoC编码峰值约34.29GiB，RGB FP32缓存6.47GiB；下一步验证缓存/重叠编码的优化假设及失败机制，Ours尚未冻结。证据：[模块分析](../records/any2bokeh-native-module-profile-20260930.json)。
