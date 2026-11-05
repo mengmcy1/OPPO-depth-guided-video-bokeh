@@ -295,7 +295,8 @@ def _summarize(state, config, reason, commit=False):
         row=next(r for r in rows if r['method']==method and r['dataset']=='deblurnerf' and r['scene']=='cake')
         reference=config['paper_reference'].get(method+'_cake')
         cake_comparison.append({'method':method,'status':row['status'],'measured':row,'paper':reference,
-                                'delta':{k:row[k]-reference[k] for k in ['psnr','ssim','lpips'] if k in row and k in reference} if reference else None})
+                                'comparison_protocol':'native metric when available; unified RGB/VGG retained separately',
+                                'delta':{k:row.get('native_'+k,row[k])-reference[k] for k in ['psnr','ssim','lpips'] if k in row and k in reference} if reference else None})
     estimates={}
     for method in config['methods']:
         cake=next(j for j in state['jobs'] if j['method']==method and j['dataset']=='deblurnerf' and j['scene']=='cake')
@@ -310,7 +311,7 @@ def _summarize(state, config, reason, commit=False):
         reference=config['paper_reference'].get(row['method']+'_real_mean',{})
         comparison={'method':row['method'],'completed_scenes':row['completed_scenes'],'measured':row,'paper':reference}
         if row['completed_scenes']==reference.get('scenes'):
-            comparison['delta']={key:row[key]-reference[key] for key in ['psnr','ssim','lpips'] if key in row and key in reference}
+            comparison['delta']={key:row.get('native_'+key,row[key])-reference[key] for key in ['psnr','ssim','lpips'] if key in row and key in reference}
             comparison['native_delta']={key:row['native_'+key]-reference[key] for key in ['psnr','ssim','lpips'] if 'native_'+key in row and key in reference}
         paper_means.append(comparison)
     cake_table=[{'method':r['method'],'status':r['status'],**{k:r['measured'][k] for k in ['psnr','ssim','lpips','native_psnr','native_ssim','native_lpips'] if k in r['measured']},
