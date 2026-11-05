@@ -215,8 +215,10 @@ def _summarize(state, config, reason, commit=False):
         protocol = 'A' if job['dataset'] == 'deblurnerf' else 'r0'
         score = result.get('summary', {}).get(protocol, {}).get('unified', {})
         native = result.get('summary', {}).get(protocol, {}).get('native', {})
+        metadata=read(Path(job.get('output',job['base_output']))/'model-metadata.json',{})
         rows.append({'method': job['method'], 'dataset': job['dataset'], 'scene': job['scene'], 'status': job['status'], **score,
                      **{'native_'+key: value for key,value in native.items() if key in {'psnr','ssim','lpips'}},
+                     **{key:metadata[key] for key in ['gaussians','optimized_parameters','model_bytes','focal_planes_in_optimizer'] if key in metadata},
                      'reason': job.get('reason', ''), 'output': job.get('output', '')})
         for name, value in result.get('summary', {}).items():
             if not name.startswith('r1-'): continue
@@ -228,9 +230,15 @@ def _summarize(state, config, reason, commit=False):
             if values: calibration.append(values)
         if job['priority'] == 0 and job.get('kind') != 'author':
             efficiency = read(Path(job.get('output', job['base_output']))/'training-efficiency.json', {})
+            colmap=read(PREP/'colmap.json',{}).get('runs',{}).get('deblurnerf/cake',{})
             training.append({'method': job['method'], 'status': job['status'],
+                'colmap_seconds':sum(value for stage in ['sparse','dense'] for value in colmap.get(stage,{}).get('seconds',{}).values()) if job['method']=='dofgaussian' and colmap else None,
+                'geometry_source':'fresh official COLMAP pipeline' if job['method']=='dofgaussian' else 'provided original sparse model; original reconstruction time unavailable',
+                'total_seconds':efficiency.get('total_training_call_seconds'),
                 'gaussian_seconds': efficiency.get('gaussian_seconds'), 'depth_prior_seconds': efficiency.get('depth_prior_seconds'),
                 'torch_gaussian_peak_bytes': efficiency.get('torch_gaussian_peak_bytes'),
+                'torch_depth_prior_peak_bytes':efficiency.get('torch_depth_prior_peak_bytes'),
+                'nvidia_depth_prior_peak_mib':efficiency.get('sampling',{}).get('depth_prior',{}).get('nvidia_peak_mib'),
                 'nvidia_gaussian_peak_mib': efficiency.get('sampling', {}).get('gaussian', {}).get('nvidia_peak_mib'),
                 'gpu_utilization': efficiency.get('sampling', {}).get('gaussian', {}).get('mean_gpu_utilization'), 'efficiency_valid': efficiency.get('efficiency_valid')})
     for job in state['jobs']:
@@ -278,9 +286,20 @@ def _summarize(state, config, reason, commit=False):
         remaining=[j for j in state['jobs'] if j['method']==method and not j.get('kind') and j['status'] not in {'evaluated','failed','blocked','trained','rendered','rendering','evaluating'}]
         if seconds:estimates[method]={'remaining_training_jobs':len(remaining),'cake_seconds':seconds,
                                       'estimated_serial_training_seconds':seconds*sum(1.75 if j['scene']=='coral' and method=='dofgs' else 1 for j in remaining)}
+    paper_means=[]
+    for row in averages:
+        if row['dataset']!='deblurnerf':continue
+        reference=config['paper_reference'].get(row['method']+'_real_mean',{})
+        comparison={'method':row['method'],'completed_scenes':row['completed_scenes'],'measured':row,'paper':reference}
+        if row['completed_scenes']==reference.get('scenes'):
+            comparison['delta']={key:row[key]-reference[key] for key in ['psnr','ssim','lpips'] if key in row and key in reference}
+            comparison['native_delta']={key:row['native_'+key]-reference[key] for key in ['psnr','ssim','lpips'] if 'native_'+key in row and key in reference}
+        paper_means.append(comparison)
+    cake_table=[{'method':r['method'],'status':r['status'],**{k:r['measured'][k] for k in ['psnr','ssim','lpips','native_psnr','native_ssim','native_lpips'] if k in r['measured']},
+                 **{'paper_'+k:v for k,v in (r['paper'] or {}).items() if k in ['psnr','ssim','lpips']},**{'delta_'+k:v for k,v in (r['delta'] or {}).items()}} for r in cake_comparison]
     summary = {'generated_at': datetime.now(timezone.utc).isoformat(), 'reason': reason, 'report_at': config['report_at'],
                'jobs': rows, 'averages_completed_scenes_only': averages, 'cake_training_efficiency': training,
-               'author_retrained': author, 'author_paper_comparison':author_comparison,'cake_paper_comparison':cake_comparison, 'paper_references': config['paper_reference'],
+               'author_retrained': author, 'author_paper_comparison':author_comparison,'cake_paper_comparison':cake_comparison,'method_paper_means':paper_means, 'paper_references': config['paper_reference'],
                'R1': r1, 'regional_R1': regional, 'bokehme_calibration': calibration,
                'R1_averages_completed_scenes_only':r1_averages,
                'memory_profiles_mib': state.get('memory_profiles', {}), 'parallel_limit': state.get('parallel_limit', 1),
@@ -303,14 +322,15 @@ def _summarize(state, config, reason, commit=False):
         'Native SSIM on[-1,1] and native Alex LPIPS can differ from unified3DGS SSIM and VGG LPIPS; both are preserved. DOF-GS native metric has no LPIPS.',
         'Author checkpoints are retrained releases, not the original paper checkpoints. Paper comparison is marked incomplete until all10 scenes are evaluated.'
     ]
+    summary['implementation_notes'].append('CoCoGaussian supplementary Table5 includes book and omits turtle; the user explicitly requested six validated scenes excluding both, so its published seven-scene DoF-NeRF mean is not directly compared.')
     RECORD.mkdir(parents=True, exist_ok=True)
     write(RECORD/(PREFIX+'-summary.json'), summary)
-    for name, table in [('A-and-R0', rows), ('averages', averages), ('training-efficiency', training), ('author-retrained', author), ('R1',r1), ('R1-averages',r1_averages), ('regional-R1',regional)]:
+    for name, table in [('A-and-R0', rows), ('averages', averages), ('training-efficiency', training), ('author-retrained', author), ('cake-paper',cake_table), ('R1',r1), ('R1-averages',r1_averages), ('regional-R1',regional)]:
         fields = sorted(set().union(*(r.keys() for r in table))) if table else ['status']
         with (RECORD/(PREFIX+'-'+name+'.csv')).open('w', newline='') as stream:
             writer = csv.DictWriter(stream, fieldnames=fields, lineterminator='\n'); writer.writeheader(); writer.writerows(table)
     if reason.startswith('stage'):
-        for suffix in ['summary.json','A-and-R0.csv','averages.csv','training-efficiency.csv','author-retrained.csv','R1.csv','R1-averages.csv','regional-R1.csv']:
+        for suffix in ['summary.json','A-and-R0.csv','averages.csv','training-efficiency.csv','author-retrained.csv','cake-paper.csv','R1.csv','R1-averages.csv','regional-R1.csv']:
             snapshot=RECORD/(PREFIX+'-stage-'+suffix)
             if not snapshot.exists():shutil.copy2(RECORD/(PREFIX+'-'+suffix),snapshot)
     progress = ROOT/'03_实验记录/当前实验进度与方法论.md'
@@ -442,10 +462,10 @@ def main():
             if process.poll() is None: continue
             job['status'] = 'evaluated' if process.returncode == 0 else 'failed'; job['finished_at'] = now
             cpu.pop(key)
-            if job['priority'] == 0 and job['method'] == 'dofgaussian' and process.returncode == 0:
+            if job['dataset']=='deblurnerf' and job['scene']=='cake' and config['paper_reference'].get(job['method']+'_cake') and process.returncode == 0:
                 result = read(Path(job['output'])/'evaluation.json', {})['summary']['A']['unified']['psnr']
-                delta = result-config['paper_reference']['dofgaussian_cake']['psnr']
-                state['quality_gates']['dofgaussian'] = {'cake_psnr_delta': delta, 'passed': abs(delta) <= config['quality_gate_psnr_db'],
+                delta = result-config['paper_reference'][job['method']+'_cake']['psnr']
+                state['quality_gates'][job['method']] = {'cake_psnr_delta': delta, 'passed': abs(delta) <= config['quality_gate_psnr_db'],
                     'diagnosis': 'Check canonical/native GT, resolution, hold and renderer before expanding if outside threshold'}
             if job.get('kind') == 'author' and job['scene'] == 'cake' and process.returncode == 0:
                 reference = read(Path(job['output'])/'evaluation.json', {}).get('summary', {}).get('A', {}).get('unified', {}).get('psnr')

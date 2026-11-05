@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T11:49:14.282764+00:00",
+  "generated_at": "2026-11-05T11:52:02.181836+00:00",
   "reason": "startup",
   "report_at": "2026-11-06T09:00:00+08:00",
   "jobs": [
@@ -690,9 +690,14 @@
     {
       "method": "dofgs",
       "status": "training",
+      "colmap_seconds": null,
+      "geometry_source": "provided original sparse model; original reconstruction time unavailable",
+      "total_seconds": null,
       "gaussian_seconds": null,
       "depth_prior_seconds": null,
       "torch_gaussian_peak_bytes": null,
+      "torch_depth_prior_peak_bytes": null,
+      "nvidia_depth_prior_peak_mib": null,
       "nvidia_gaussian_peak_mib": null,
       "gpu_utilization": null,
       "efficiency_valid": null
@@ -700,9 +705,14 @@
     {
       "method": "dofgaussian",
       "status": "queued",
+      "colmap_seconds": 1946.671086590737,
+      "geometry_source": "fresh official COLMAP pipeline",
+      "total_seconds": null,
       "gaussian_seconds": null,
       "depth_prior_seconds": null,
       "torch_gaussian_peak_bytes": null,
+      "torch_depth_prior_peak_bytes": null,
+      "nvidia_depth_prior_peak_mib": null,
       "nvidia_gaussian_peak_mib": null,
       "gpu_utilization": null,
       "efficiency_valid": null
@@ -710,9 +720,14 @@
     {
       "method": "cocogaussian",
       "status": "queued",
+      "colmap_seconds": null,
+      "geometry_source": "provided original sparse model; original reconstruction time unavailable",
+      "total_seconds": null,
       "gaussian_seconds": null,
       "depth_prior_seconds": null,
       "torch_gaussian_peak_bytes": null,
+      "torch_depth_prior_peak_bytes": null,
+      "nvidia_depth_prior_peak_mib": null,
       "nvidia_gaussian_peak_mib": null,
       "gpu_utilization": null,
       "efficiency_valid": null
@@ -720,9 +735,14 @@
     {
       "method": "mipsplatting",
       "status": "queued",
+      "colmap_seconds": null,
+      "geometry_source": "provided original sparse model; original reconstruction time unavailable",
+      "total_seconds": null,
       "gaussian_seconds": null,
       "depth_prior_seconds": null,
       "torch_gaussian_peak_bytes": null,
+      "torch_depth_prior_peak_bytes": null,
+      "nvidia_depth_prior_peak_mib": null,
       "nvidia_gaussian_peak_mib": null,
       "gpu_utilization": null,
       "efficiency_valid": null
@@ -827,8 +847,14 @@
         "reason": "",
         "output": ""
       },
-      "paper": null,
-      "delta": null
+      "paper": {
+        "psnr": 26.65,
+        "ssim": 0.8043,
+        "lpips": 0.1037,
+        "source": "https://openaccess.thecvf.com/content/CVPR2025/supplemental/Lee_CoCoGaussian_Leveraging_Circle_CVPR_2025_supplemental.pdf",
+        "table": 4
+      },
+      "delta": {}
     },
     {
       "method": "mipsplatting",
@@ -845,6 +871,72 @@
       "delta": null
     }
   ],
+  "method_paper_means": [
+    {
+      "method": "dofgs",
+      "completed_scenes": 0,
+      "measured": {
+        "method": "dofgs",
+        "dataset": "deblurnerf",
+        "completed_scenes": 0
+      },
+      "paper": {
+        "psnr": 24.12,
+        "ssim": 0.7667,
+        "scenes": 10,
+        "source": "https://openaccess.thecvf.com/content/CVPR2025/papers/Wang_DOF-GS_Adjustable_Depth-of-Field_3D_Gaussian_Splatting_for_Post-Capture_Refocusing_Defocus_CVPR_2025_paper.pdf"
+      }
+    },
+    {
+      "method": "dofgaussian",
+      "completed_scenes": 0,
+      "measured": {
+        "method": "dofgaussian",
+        "dataset": "deblurnerf",
+        "completed_scenes": 0
+      },
+      "paper": {
+        "psnr": 23.97,
+        "ssim": 0.756,
+        "lpips": 0.093,
+        "scenes": 10,
+        "source": "https://openaccess.thecvf.com/content/CVPR2025/papers/Shen_DoF-Gaussian_Controllable_Depth-of-Field_for_3D_Gaussian_Splatting_CVPR_2025_paper.pdf"
+      }
+    },
+    {
+      "method": "cocogaussian",
+      "completed_scenes": 0,
+      "measured": {
+        "method": "cocogaussian",
+        "dataset": "deblurnerf",
+        "completed_scenes": 0
+      },
+      "paper": {
+        "psnr": 23.7,
+        "ssim": 0.7531,
+        "lpips": 0.0825,
+        "scenes": 10,
+        "source": "https://openaccess.thecvf.com/content/CVPR2025/papers/Lee_CoCoGaussian_Leveraging_Circle_of_Confusion_for_Gaussian_Splatting_from_Defocused_CVPR_2025_paper.pdf"
+      }
+    },
+    {
+      "method": "mipsplatting",
+      "completed_scenes": 0,
+      "measured": {
+        "method": "mipsplatting",
+        "dataset": "deblurnerf",
+        "completed_scenes": 0
+      },
+      "paper": {
+        "psnr": 21.23,
+        "ssim": 0.6292,
+        "scenes": 10,
+        "source": "https://arxiv.org/html/2405.17351v3",
+        "table": 1,
+        "reported_by": "DOF-GS authors; not Mip-Splatting original paper"
+      }
+    }
+  ],
   "paper_references": {
     "dofgs_real_mean": {
       "psnr": 24.12,
@@ -857,6 +949,35 @@
       "ssim": 0.808,
       "lpips": 0.101,
       "source": "https://openaccess.thecvf.com/content/CVPR2025/papers/Shen_DoF-Gaussian_Controllable_Depth-of-Field_for_3D_Gaussian_Splatting_CVPR_2025_paper.pdf"
+    },
+    "dofgaussian_real_mean": {
+      "psnr": 23.97,
+      "ssim": 0.756,
+      "lpips": 0.093,
+      "scenes": 10,
+      "source": "https://openaccess.thecvf.com/content/CVPR2025/papers/Shen_DoF-Gaussian_Controllable_Depth-of-Field_for_3D_Gaussian_Splatting_CVPR_2025_paper.pdf"
+    },
+    "cocogaussian_cake": {
+      "psnr": 26.65,
+      "ssim": 0.8043,
+      "lpips": 0.1037,
+      "source": "https://openaccess.thecvf.com/content/CVPR2025/supplemental/Lee_CoCoGaussian_Leveraging_Circle_CVPR_2025_supplemental.pdf",
+      "table": 4
+    },
+    "cocogaussian_real_mean": {
+      "psnr": 23.7,
+      "ssim": 0.7531,
+      "lpips": 0.0825,
+      "scenes": 10,
+      "source": "https://openaccess.thecvf.com/content/CVPR2025/papers/Lee_CoCoGaussian_Leveraging_Circle_of_Confusion_for_Gaussian_Splatting_from_Defocused_CVPR_2025_paper.pdf"
+    },
+    "mipsplatting_real_mean": {
+      "psnr": 21.23,
+      "ssim": 0.6292,
+      "scenes": 10,
+      "source": "https://arxiv.org/html/2405.17351v3",
+      "table": 1,
+      "reported_by": "DOF-GS authors; not Mip-Splatting original paper"
     }
   },
   "R1": [],
@@ -868,7 +989,7 @@
   "parallel_throughput_decisions": [],
   "throughput": {
     "completed_trainings": 0,
-    "elapsed_since_first_training_seconds": 282.65795159339905,
+    "elapsed_since_first_training_seconds": 450.0989489555359,
     "parallel_times_are_reference_only": true
   },
   "quality_gates": {},
@@ -1778,6 +1899,7 @@
     "CoCo auxiliary kernel/focal-plane state is saved after timed training; camera UID mapping is restored from training metadata. Actual focal_planes optimizer membership is recorded per model without changing official training.",
     "CoCo E4 scales learned position offsets only; scale/rotation heads remain as learned. Zero radius uses the base Gaussian renderer.",
     "Native SSIM on[-1,1] and native Alex LPIPS can differ from unified3DGS SSIM and VGG LPIPS; both are preserved. DOF-GS native metric has no LPIPS.",
-    "Author checkpoints are retrained releases, not the original paper checkpoints. Paper comparison is marked incomplete until all10 scenes are evaluated."
+    "Author checkpoints are retrained releases, not the original paper checkpoints. Paper comparison is marked incomplete until all10 scenes are evaluated.",
+    "CoCoGaussian supplementary Table5 includes book and omits turtle; the user explicitly requested six validated scenes excluding both, so its published seven-scene DoF-NeRF mean is not directly compared."
   ]
 }
