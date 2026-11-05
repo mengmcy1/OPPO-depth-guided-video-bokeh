@@ -156,6 +156,28 @@ def preparation_state():
             'visibility': read(PREP/'visibility-check.json', {})}
 
 
+def update_throughput_limit(state, job):
+    """Reduce future concurrency if a completed batch fails to beat cake throughput."""
+    if job['priority'] != 1: return
+    efficiency=read(Path(job['output'])/'training-efficiency.json',{})
+    cake=next(j for j in state['jobs'] if j['method']==job['method'] and j['dataset']=='deblurnerf' and j['scene']=='cake')
+    baseline=read(Path(cake.get('output',cake['base_output']))/'training-efficiency.json',{}).get('total_training_call_seconds')
+    if not baseline or efficiency.get('efficiency_valid'):return
+    records=state.setdefault('packing_observations',[])
+    records.append({'method':job['method'],'scene':job['scene'],'start':job['started_at'],'end':job['trained_at'],
+                    'cake_equivalent_seconds':baseline*(1.75 if job['method']=='dofgs' and job['scene']=='coral' else 1),
+                    'gpu_utilization':efficiency.get('sampling',{}).get('gaussian',{}).get('mean_gpu_utilization',0)})
+    count=state.get('packing_last_count',0)
+    if len(records)-count<6 or state['parallel_limit']<=1:return
+    batch=records[count:];state['packing_last_count']=len(records)
+    speedup=sum(r['cake_equivalent_seconds'] for r in batch)/max(1,max(r['end'] for r in batch)-min(r['start'] for r in batch))
+    utilization=sum(r['gpu_utilization'] for r in batch)/len(batch)
+    decision={'jobs':len(batch),'cake_normalized_throughput_ratio':speedup,'mean_gpu_utilization':utilization,
+              'limit_before':state['parallel_limit'],'note':'scene complexity differs; cake-normalized heuristic, not a formal efficiency measurement'}
+    if utilization>=90 and speedup<=1.05:state['parallel_limit']-=1
+    decision['limit_after']=state['parallel_limit'];state.setdefault('packing_decisions',[]).append(decision)
+
+
 def commit_report(files, message):
     def git(*args): return subprocess.check_output(['git', '-c', 'core.quotepath=false', *args], cwd=ROOT, text=True, stderr=subprocess.STDOUT).strip()
     try:
@@ -262,6 +284,7 @@ def _summarize(state, config, reason, commit=False):
                'R1': r1, 'regional_R1': regional, 'bokehme_calibration': calibration,
                'R1_averages_completed_scenes_only':r1_averages,
                'memory_profiles_mib': state.get('memory_profiles', {}), 'parallel_limit': state.get('parallel_limit', 1),
+               'parallel_throughput_decisions':state.get('packing_decisions',[]),
                'throughput': state.get('throughput', {}), 'quality_gates': state.get('quality_gates', {}),
                'pending': [r for r in rows if r['status'] not in {'evaluated'}],
                'eta': {'measured_cake_based':estimates,'estimated_remaining_training_lower_bound_seconds':sum(v['estimated_serial_training_seconds'] for v in estimates.values())/max(1,state.get('parallel_limit',1)),
@@ -371,6 +394,7 @@ def main():
             return
         if phase == 'train':
             job['trained_at'] = time.time(); job['status'] = 'trained'
+            update_throughput_limit(state,job)
             if job['priority'] == 0:
                 data = read(Path(job['output'])/'training-efficiency.json', {})
                 peak = max((r.get('nvidia_peak_mib', 0) for r in data.get('sampling', {}).values()), default=0)
