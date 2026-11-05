@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-05T12:51:06.824128+00:00",
-  "reason": "continuation",
+  "generated_at": "2026-11-05T12:57:52.539735+00:00",
+  "reason": "continuation-verified",
   "report_at": "2026-11-06T09:00:00+08:00",
   "jobs": [
     {
@@ -69,7 +69,7 @@
       "dataset": "deblurnerf",
       "scene": "caps",
       "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "reason": "Dense reconstruction is incomplete",
       "output": ""
     },
     {
@@ -101,7 +101,7 @@
       "dataset": "deblurnerf",
       "scene": "cisco",
       "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "reason": "Dense reconstruction is incomplete",
       "output": ""
     },
     {
@@ -1203,96 +1203,259 @@
       "id": "dofgaussian-deblurnerf-caps",
       "status": "dependency_wait",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
-      "observed_at": 1793883066.8190608
+      "observed_at": 1793883096.8412738
     },
     {
       "id": "dofgaussian-deblurnerf-cisco",
       "status": "dependency_wait",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
-      "observed_at": 1793883066.8190622
+      "observed_at": 1793883096.8412755
     },
     {
       "id": "dofgaussian-deblurnerf-coral",
       "status": "dependency_wait",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
-      "observed_at": 1793883066.8190632
+      "observed_at": 1793883096.8412766
     },
     {
       "id": "dofgaussian-deblurnerf-cupcake",
       "status": "dependency_wait",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
-      "observed_at": 1793883066.8190644
+      "observed_at": 1793883096.8412776
     },
     {
       "id": "dofgaussian-deblurnerf-cups",
       "status": "dependency_wait",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
-      "observed_at": 1793883066.8190653
+      "observed_at": 1793883096.8412788
     },
     {
       "id": "dofgaussian-deblurnerf-daisy",
       "status": "dependency_wait",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
-      "observed_at": 1793883066.8190663
+      "observed_at": 1793883096.8412797
     },
     {
       "id": "dofgaussian-deblurnerf-sausage",
       "status": "dependency_wait",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
-      "observed_at": 1793883066.8190675
+      "observed_at": 1793883096.8412807
     },
     {
       "id": "dofgaussian-deblurnerf-seal",
       "status": "dependency_wait",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
-      "observed_at": 1793883066.8190684
+      "observed_at": 1793883096.8412817
     },
     {
       "id": "dofgaussian-deblurnerf-tools",
       "status": "dependency_wait",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
-      "observed_at": 1793883066.8190691
+      "observed_at": 1793883096.8412826
     },
     {
       "id": "dofgaussian-dofnerf-mix-amiya",
       "status": "dependency_wait",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
-      "observed_at": 1793883066.8191173
+      "observed_at": 1793883096.8413298
     },
     {
       "id": "dofgaussian-dofnerf-mix-camera",
       "status": "dependency_wait",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
-      "observed_at": 1793883066.8192363
+      "observed_at": 1793883096.8414478
     },
     {
       "id": "dofgaussian-dofnerf-mix-plant",
       "status": "dependency_wait",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
-      "observed_at": 1793883066.819347
+      "observed_at": 1793883096.8415637
     },
     {
       "id": "dofgaussian-dofnerf-mix-kendo",
       "status": "dependency_wait",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
-      "observed_at": 1793883066.8194616
+      "observed_at": 1793883096.8416767
     },
     {
       "id": "dofgaussian-dofnerf-mix-desk",
       "status": "dependency_wait",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
-      "observed_at": 1793883066.8195736
+      "observed_at": 1793883096.8417885
     },
     {
       "id": "dofgaussian-dofnerf-mix-shelf",
       "status": "dependency_wait",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
-      "observed_at": 1793883066.8196874
+      "observed_at": 1793883096.8419003
     }
   ],
+  "colmap_progress": {
+    "deblurnerf/cake": {
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocuscake",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscake",
+      "sparse": {
+        "registered_images": 34,
+        "total_images": 34,
+        "all_registered": true,
+        "seconds": {
+          "feature_extractor": 2.120845790952444,
+          "exhaustive_matcher": 3.9642997346818447,
+          "mapper": 135.23097459971905
+        },
+        "model": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscake/sparse/0"
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 2.0442762337625027,
+          "patch_match_stereo": 1190.1272579059005,
+          "stereo_fusion": 613.1834323257208
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscake/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscake/dense/fused.ply.vis",
+        "fused_points": 7457637,
+        "expected_depth_maps": 34,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "status": "complete"
+    },
+    "deblurnerf/caps": {
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocuscaps",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscaps",
+      "status": "running",
+      "started_at": 1793882828.5356572,
+      "geometry_source": "new SIMPLE_RADIAL reconstruction"
+    },
+    "deblurnerf/cisco": {
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocuscisco",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscisco",
+      "status": "running",
+      "started_at": 1793882828.5366802,
+      "geometry_source": "new SIMPLE_RADIAL reconstruction",
+      "adopted_native_commands": [
+        141881
+      ]
+    },
+    "dofnerf/sparse/amiya": {
+      "status": "complete",
+      "registered_images": 24,
+      "total_images": 24,
+      "provided_geometry_used": true,
+      "geometry_identical_across_layouts": true,
+      "details": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/logs/dof-gs-repro-2026-11-05/provided-poses.json"
+    },
+    "dofnerf/sparse/camera": {
+      "status": "complete",
+      "registered_images": 24,
+      "total_images": 24,
+      "provided_geometry_used": true,
+      "geometry_identical_across_layouts": true,
+      "details": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/logs/dof-gs-repro-2026-11-05/provided-poses.json"
+    },
+    "dofnerf/sparse/plant": {
+      "status": "complete",
+      "registered_images": 24,
+      "total_images": 24,
+      "provided_geometry_used": true,
+      "geometry_identical_across_layouts": true,
+      "details": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/logs/dof-gs-repro-2026-11-05/provided-poses.json"
+    },
+    "dofnerf/sparse/kendo": {
+      "status": "complete",
+      "registered_images": 20,
+      "total_images": 20,
+      "provided_geometry_used": true,
+      "geometry_identical_across_layouts": true,
+      "details": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/logs/dof-gs-repro-2026-11-05/provided-poses.json"
+    },
+    "dofnerf/sparse/desk": {
+      "status": "complete",
+      "registered_images": 24,
+      "total_images": 24,
+      "provided_geometry_used": true,
+      "geometry_identical_across_layouts": true,
+      "details": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/logs/dof-gs-repro-2026-11-05/provided-poses.json"
+    },
+    "dofnerf/sparse/shelf": {
+      "status": "complete",
+      "registered_images": 24,
+      "total_images": 24,
+      "provided_geometry_used": true,
+      "geometry_identical_across_layouts": true,
+      "details": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/logs/dof-gs-repro-2026-11-05/provided-poses.json"
+    },
+    "deblurnerf/coral": {
+      "status": "queued",
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocuscoral",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscoral",
+      "requested_at": 1793883154.830219
+    },
+    "deblurnerf/cupcake": {
+      "status": "queued",
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocuscupcake",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscupcake",
+      "requested_at": 1793883154.8308554
+    },
+    "deblurnerf/cups": {
+      "status": "queued",
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocuscups",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscups",
+      "requested_at": 1793883154.8313208
+    },
+    "deblurnerf/daisy": {
+      "status": "queued",
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocusdaisy",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocusdaisy",
+      "requested_at": 1793883154.8317673
+    },
+    "deblurnerf/sausage": {
+      "status": "queued",
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocussausage",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocussausage",
+      "requested_at": 1793883154.832203
+    },
+    "deblurnerf/seal": {
+      "status": "queued",
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocusseal",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocusseal",
+      "requested_at": 1793883154.832643
+    },
+    "deblurnerf/tools": {
+      "status": "queued",
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocustools",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocustools",
+      "requested_at": 1793883154.8330889
+    }
+  },
+  "gpu_reservations": {
+    "145893": {
+      "reserve_mib": 3513,
+      "kind": "dofgs-deblurnerf-caps:train",
+      "exclusive": false,
+      "registered_at": 1793882704.9219358
+    },
+    "145907": {
+      "reserve_mib": 3513,
+      "kind": "dofgs-deblurnerf-cisco:train",
+      "exclusive": false,
+      "registered_at": 1793882752.167594
+    },
+    "141881": {
+      "reserve_mib": 4096,
+      "kind": "adopted COLMAP",
+      "registered_at": 1793882828.545327
+    },
+    "147593": {
+      "reserve_mib": 16384,
+      "kind": "cocogaussian-deblurnerf-cake:train",
+      "exclusive": false,
+      "registered_at": 1793882828.9385107
+    }
+  },
   "throughput": {
     "completed_trainings": 2,
-    "elapsed_since_first_training_seconds": 4000.791387796402,
+    "elapsed_since_first_training_seconds": 4403.157015323639,
     "parallel_times_are_reference_only": true
   },
   "quality_gates": {
@@ -1337,7 +1500,7 @@
       "dataset": "deblurnerf",
       "scene": "caps",
       "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "reason": "Dense reconstruction is incomplete",
       "output": ""
     },
     {
@@ -1369,7 +1532,7 @@
       "dataset": "deblurnerf",
       "scene": "cisco",
       "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "reason": "Dense reconstruction is incomplete",
       "output": ""
     },
     {

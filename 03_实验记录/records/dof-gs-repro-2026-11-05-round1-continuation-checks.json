@@ -1,0 +1,27 @@
+{
+  "checked_at": "2026-11-05T12:57:36.238314+00:00",
+  "scope": "user supplementary instructions2026-11-05 20:35+08:00",
+  "report_at": "2026-11-06T09:00:00+08:00",
+  "provided_geometry_scenes": 6,
+  "native_split_checks": {
+    "passed": 18,
+    "total": 18
+  },
+  "colmap_parallel_pipelines": 2,
+  "global_gpu_limit": {
+    "processes": 4,
+    "reserved_memory_mib": 40960,
+    "colmap_reserve_per_gpu_command_mib": 4096
+  },
+  "author_completed": 1,
+  "author_total": 10,
+  "colmap_deferred_jobs": 15,
+  "exclusive_measurements_pendingP3": [
+    "dofgaussian",
+    "cocogaussian",
+    "mipsplatting"
+  ],
+  "reason_dofgaussian": "author cake GPU-rendered PNG was created before training finished; overlap is proven by output timestamp and lastGPU sample; original timing preserved as parallel reference",
+  "ssim": "verified against original3DGS source;0.89559853 unified vs0.80201383 native; native is report primary",
+  "script_checks": "py_compile; supplied extrinsics/point positions unchanged; identical geometry across3 layouts; exact497x331 PINHOLE; original-pixel roundtrip evaluated on6 scenes"
+}

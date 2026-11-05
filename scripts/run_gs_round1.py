@@ -190,12 +190,14 @@ def commit_report(files, message):
             git('merge', '--ff-only', 'origin/'+branch)
         staged = set(git('diff', '--cached', '--name-only').splitlines())
         if staged-set(files): raise RuntimeError('Unrelated staged edits preserved')
-        original=PREP/'central-progress-initial.txt'
-        if original.exists():
-            text=(ROOT/'03_实验记录/当前实验进度与方法论.md').read_text()
+        def without_owned_status(text):
             for marker in ['DOF-GS 前期准备执行状态（2026-11-05）','3DGS 第一轮执行（2026-11-05）']:
                 text=re.sub(r'\n\n\*\*'+re.escape(marker)+r'\*\*[^\n]*(?:\n(?!\n)[^\n]*)*','',text)
-            if text!=original.read_text():raise RuntimeError('Progress document has other edits; preserve them for review')
+            return text
+        progress_name='03_实验记录/当前实验进度与方法论.md'
+        head_progress=subprocess.check_output(['git','show','HEAD:'+progress_name],cwd=ROOT,text=True)
+        if without_owned_status((ROOT/progress_name).read_text())!=without_owned_status(head_progress):
+            raise RuntimeError('Progress document has unrelated uncommitted edits; preserve them for review')
         for name in files:
             if (ROOT/name).stat().st_size>3*1024**2:raise RuntimeError('Oversized deliverable: '+name)
         git('diff', '--check', '--', *files); git('add', '--', *files); git('diff', '--cached', '--check')
@@ -216,10 +218,13 @@ def _summarize(state, config, reason, commit=False):
         score = result.get('summary', {}).get(protocol, {}).get('unified', {})
         native = result.get('summary', {}).get(protocol, {}).get('native', {})
         metadata=read(Path(job.get('output',job['base_output']))/'model-metadata.json',{})
+        rendering=read(Path(job.get('output',job['base_output']))/'rendered/pairs.json',{})
         rows.append({'method': job['method'], 'dataset': job['dataset'], 'scene': job['scene'], 'status': job['status'], **score,
                      **{'native_'+key: value for key,value in native.items() if key in {'psnr','ssim','lpips'}},
                      **{key:metadata[key] for key in ['gaussians','optimized_parameters','model_bytes','focal_planes_in_optimizer'] if key in metadata},
                      'reason': job.get('reason', ''), 'output': job.get('output', '')})
+        if rendering.get('r1_training_check_passed') is False:
+            rows[-1]['r1_status']='blocked: own-parameter training-view reproduction check failed; R0 retained'
         if 'ssim' in score:
             rows[-1]['unified_ssim']=score['ssim']
             if config.get('report_primary_ssim')=='native' and 'ssim' in native:
@@ -319,6 +324,8 @@ def _summarize(state, config, reason, commit=False):
                'parallel_throughput_decisions':state.get('packing_decisions',[]),
                'ssim_audit':read(RECORD/(PREFIX+'-ssim-audit.json'),{'status':'pending','report_primary':'official native'}),
                'deferred_due_to_colmap':[{'id':j['id'],'status':j['status'],**j['colmap_delay']} for j in state['jobs'] if j.get('colmap_delay')],
+               'colmap_progress':read(PREP/'colmap.json',{}).get('runs',{}),
+               'gpu_reservations':read(Path(os.environ['TMPDIR'])/'dof-gs-round1-gpu-reservations.json',{}),
                'throughput': state.get('throughput', {}), 'quality_gates': state.get('quality_gates', {}),
                'pending': [r for r in rows if r['status'] not in {'evaluated'}],
                'eta': {'measured_cake_based':estimates,'estimated_remaining_training_lower_bound_seconds':sum(v['estimated_serial_training_seconds'] for v in estimates.values())/max(1,state.get('parallel_limit',1)),
