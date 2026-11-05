@@ -582,6 +582,9 @@ def main():
             for job in candidates:
                 parallel_prep=config.get('concurrent_preparation',False)
                 if len(active) >= (1 if retries or priority==0 and not parallel_prep else state['parallel_limit']): break
+                if job['priority']>0 and job['method'] in config['methods'] and job['status']=='queued':
+                    cake=next(j for j in state['jobs'] if j['method']==job['method'] and j['dataset']=='deblurnerf' and j['scene']=='cake')
+                    if cake['status']!='evaluated':continue
                 if job.get('kind')=='author' and any(j.get('kind')=='author' for _,j,_ in active.values()):continue
                 if job['priority']==0 and job.get('kind')!='author' and any(j['priority']==0 and j.get('kind')!='author' for _,j,_ in active.values()):continue
                 exclusive = bool(retries) or job['priority']==0 and not parallel_prep
