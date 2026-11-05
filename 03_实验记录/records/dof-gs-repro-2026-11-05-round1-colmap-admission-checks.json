@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "checks": [
+    "reserve two COLMAP slots",
+    "admit COLMAP itself",
+    "two COLMAP plus one model allow another model",
+    "short render can use a gap",
+    "normal packing resumes"
+  ],
+  "policy": "while continuation has pending work, reserve up to2 of4GPU slots and4096MiB per COLMAP command; existing workers continue; short renders can use gaps; return to normal packing when continuation finishes"
+}

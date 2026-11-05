@@ -8,6 +8,25 @@ import subprocess
 import time
 import sys
 
+ROOT=Path(__file__).resolve().parents[1]
+
+
+def colmap_demand():
+    log=ROOT/'logs/dof-gs-repro-2026-11-05'
+    if (log/'round1-colmap-continuation.finished').exists():return 0
+    try:
+        if not alive((log/'round1-colmap-continuation.pid').read_text().strip()):return 0
+        runs=json.loads((log/'colmap.json').read_text())['runs']
+    except (OSError,ValueError,KeyError):return 0
+    pending=[r for key,r in runs.items() if (key.startswith('deblurnerf/') or key.startswith('dofnerf/dense/mix/')) and r.get('status') in {'queued','running'}]
+    return min(2,len(pending))
+
+
+def colmap_slot_hold(kind,others,data,demand,exclusive=False):
+    if exclusive or not kind.endswith(':train'):return False
+    active=sum('colmap' in data.get(p,{}).get('kind','').lower() for p in others)
+    return len(others)+1+max(0,demand-active)>4
+
 
 def alive(pid):
     try:return Path(f'/proc/{pid}/stat').read_text().split()[2]!='Z'
@@ -49,7 +68,8 @@ def gpu_slot(memory,kind,exclusive=False):
             except (OSError,ValueError):author_pending=False
             replay_active=any(data.get(p,{}).get('kind','').startswith('author-') for p in others)
             replay_lane=author_pending and not kind.startswith('author-') and not replay_active and len(others)>=3
-            if not blocked_exclusive and not replay_lane and (not exclusive or not others) and len(others)<4 and total+memory<=40960:
+            preparation_lane=colmap_slot_hold(kind,others,data,colmap_demand(),exclusive)
+            if not blocked_exclusive and not replay_lane and not preparation_lane and (not exclusive or not others) and len(others)<4 and total+memory<=40960:
                 data[pid]={'reserve_mib':memory,'kind':kind,'exclusive':exclusive,'registered_at':time.time()}
                 break
         time.sleep(3)

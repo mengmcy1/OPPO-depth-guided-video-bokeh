@@ -18,6 +18,7 @@ import subprocess
 import sys
 import time
 import re
+from gs_round1_resources import colmap_demand
 
 ROOT = Path(__file__).resolve().parents[1]
 WORK = ROOT.parent
@@ -585,10 +586,20 @@ def main():
                 if job['priority']==0 and job.get('kind')!='author' and any(j['priority']==0 and j.get('kind')!='author' for _,j,_ in active.values()):continue
                 exclusive = bool(retries) or job['priority']==0 and not parallel_prep
                 if exclusive and (active or not gpu_empty()): break
+                phase = 'bokehme' if job.get('kind')=='bokehme' else 'render' if job['status'] in {'trained', 'render_retry'} or job.get('kind') == 'author' else 'train'
+                demand=colmap_demand() if parallel_prep and not exclusive else 0
+                if phase in {'train','bokehme'}:
+                    training_active=sum(p in {'train','bokehme'} for _,_,p in active.values())
+                    if training_active>=max(1,state['parallel_limit']-demand):continue
                 reserve = state['memory_profiles'].get(job['method'], config['unknown_memory_mib'])
                 total = unknown_gpu_memory(active)+sum(state['memory_profiles'].get(j['method'], config['unknown_memory_mib']) for _, j, _ in active.values())
+                if demand and phase in {'train','bokehme'}:
+                    reservations=read(Path(os.environ['TMPDIR'])/'dof-gs-round1-gpu-reservations.json',{})
+                    prep_pids={pid for pid,row in reservations.items() if 'colmap' in row.get('kind','').lower()}
+                    observed=subprocess.check_output(['nvidia-smi','--query-compute-apps=pid,used_gpu_memory','--format=csv,noheader,nounits'],text=True)
+                    prep_actual=sum(float(row.split(',')[1]) for row in observed.splitlines() if row.split(',')[0].strip() in prep_pids)
+                    total+=max(0,demand*4096-prep_actual)
                 if not exclusive and total+reserve > config['memory_budget_mib']: continue
-                phase = 'bokehme' if job.get('kind')=='bokehme' else 'render' if job['status'] in {'trained', 'render_retry'} or job.get('kind') == 'author' else 'train'
                 if phase in {'train','bokehme'}:
                     job['attempt'] += 1; job['output'] = str(Path(job['base_output'])/('attempt-'+str(job['attempt'])))
                     job['exclusive'] = exclusive; job['started_at'] = now
