@@ -267,8 +267,11 @@ def _summarize(state, config, reason, commit=False):
         rows[-1]['schedule_group']=job_group(job,config)
         rows[-1]['schedule_phase']=schedule_mode(config)
         if job['status'] in {'queued','dependency_wait','retry'} and job_order(job,config,state['jobs']) is None:
-            rows[-1]['deferred_until']=config['report_at']
-            rows[-1]['schedule_note']='retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up'
+            if rows[-1]['schedule_phase']=='priority' and rows[-1]['schedule_group']=='B_selected':
+                rows[-1]['schedule_note']='secondary scene waits for complete amiya pipeline and sufficient remaining time; otherwise resumes after report'
+            else:
+                rows[-1]['deferred_until']=config['report_at']
+                rows[-1]['schedule_note']='retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up'
         for name, value in result.get('summary', {}).items():
             if not name.startswith('r1-'): continue
             r1.append({'method': job['method'], 'scene': job['scene'], 'mode': name[3:], 'views': value['views'],
