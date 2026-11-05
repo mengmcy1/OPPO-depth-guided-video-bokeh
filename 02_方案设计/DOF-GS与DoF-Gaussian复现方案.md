@@ -1,7 +1,7 @@
 # DOF-GS 与 DoF-Gaussian 复现方案
 
 > 记录日期：2026-11-05。用户确认写入；范围按“必做 + 建议”执行，“可选”和“后续阶段”的项目届时再确认。
-> 同日按用户意见修订：CoCoGaussian 改为必做；明确 Mip-Splatting 是非光学虚化基线；新增 DoF-NeRF 真实数据集作为有真值的重对焦评测（E10）；更正修改版 COLMAP 的来源。
+> 同日按用户意见修订（第 3 节数据细节为同日补充）：CoCoGaussian 改为必做；明确 Mip-Splatting 是非光学虚化基线；新增 DoF-NeRF 真实数据集作为有真值的重对焦评测（E10）；更正修改版 COLMAP 的来源。
 > **状态：方案阶段，尚未克隆代码、安装环境、下载数据或训练。** 结果另记中央进度和 `03_实验记录/records/`，本文件不预写结论。
 > 方法机制、源码与论文的差异见阅读笔记：[DOF-GS 总结](../01_文献/3DGS路线/01_高斯景深与动态离焦/DOF-GS_CVPR2025总结.md)、[DoF-Gaussian 总结](../01_文献/3DGS路线/01_高斯景深与动态离焦/DoF-Gaussian_CVPR2025总结.md)、[两者对比](../01_文献/3DGS路线/01_高斯景深与动态离焦/DOF-GS_vs_DoF-Gaussian.md)。
 
@@ -40,17 +40,69 @@ DoF-Gaussian Table 2 的自建合成重对焦数据集（含 δA、δF）未公�
 
 ## 3. 数据与划分
 
-- **Deblur-NeRF 真实离焦 10 场景、合成离焦 5 场景**。两个仓库各自提供 Google Drive 数据包：DOF-GS 的包含合成场景的 COLMAP 结果；DoF-Gaussian 需要用作者修改版 COLMAP 生成稀疏深度。
-- **测试视角**：每隔 8 张取 1 张（llffhold=8），按场景划分，不跨场景混用。开始前核对两个仓库选出的是同一批文件，并核对测试分辨率（DOF-GS 为 600×400，DoF-Gaussian 为 `-r 4`）。
-- **数据包差异**：两个仓库的数据包与 COLMAP 结果可能不同。主表各用官方默认流程，差异写入记录；E1 统一协议时，以同一份图像和测试列表为准。
-- **DoF-NeRF 真实数据集**（ACM MM 2022，[仓库](https://github.com/zijinwuzijin/DoF-NeRF)，数据在其 Google Drive）：用于 E10 有真值的重对焦评测。
-  - 共 7 个场景：amiya、camera、plant、kendo、desk、shelf、turtle，每个场景 20–30 个视角；
-  - 拍摄设备为 Sony ILCE-7RM2 + FE 35mm f/1.8，固定三脚架、遥控快门；
-  - 每个视角拍三张：小光圈全清晰一张，f/4 对焦前景、f/4 对焦背景各一张；
-  - 相机位姿由 COLMAP 从全清晰图估计；原图 3976×2652，原论文在 497×331 下训练和评价，每 9 张取 1 张作测试。
+### 3.1 数据来源（2026-11-05 只读核查）
 
-  三张照片来自同一视角、同一支镜头，所以“对焦前景”和“对焦背景”两张就是真实光学条件下的重对焦真值，前景边缘的部分遮挡也是真实成像。
-- 原始数据只读；需要写入 COLMAP 中间结果的流程使用副本（见第 7 节）。
+| 数据 | 来源 | 内容与大小 | 用途 |
+|---|---|---|---|
+| Deblur-NeRF 原始数据 | Deblur-NeRF 官方 Google Drive（DOF-GS、DoF-Gaussian 两个 README 的“真实离焦数据”链接指向同一个 `real_defocus_blur` 文件夹） | 真实离焦 11 场景（含论文不用的 bush）；每个场景含 `images/`（jpg）、`images_4/`（png）、`sparse/0/`（含 `points3D.bin`）、`poses_bounds.npy`、`hold=N` 文件；同一 Drive 还有合成离焦 5 场景、`synthetic_gt/`、`blend_files/`（cozyroom、factory、outdoorpool、tanabata 四个 .blend） | A 组主数据；DOF-GS、Mip-Splatting 直接使用，DoF-Gaussian 使用其副本；`blend_files` 供 E8b |
+| DOF-GS 作者数据 | DOF-GS README 的第二个 Drive 链接 | 合成离焦 5 场景（带 COLMAP 结果）；作者重训的 `real_results`（10 场景）、`synthetic_results`（5 场景） | DOF-GS 合成场景；用重训结果核对评价脚本 |
+| Deblurring 3DGS 数据包 | `deblur_dataset.zip`（2.6G） | 4 类数据，含真实离焦；作者重新跑了 COLMAP 生成点云，声明图像与原始数据相同 | CoCoGaussian 的官方数据来源（其代码基于 Deblurring 3DGS）；需核对图像是否与原始数据逐字节相同 |
+| DoF-NeRF 数据 | DoF-NeRF 官方 Drive | `DoF_RealWorld_Data.zip`（3.4G）、`DoF_Synthetic_Data.zip`（2.1G，BokehMe 生成，可选） | E10 |
+
+Drive 下载注意：gdown 下载文件夹时单个文件夹最多 50 个文件，而 daisy 场景有 52 张图，需按文件逐个下载并核对数量；遇到配额限制时由用户手动下载上传。
+
+### 3.2 Deblur-NeRF 的测试划分：按场景的 hold 值
+
+Deblur-NeRF 的训练图是离焦图，每隔 N 张插有一张**清晰的测试图**，N 写在每个场景的 `hold=N` 文件中，各场景不同；测试视角为序号 `idx % N == 0` 的图像。按统一的 8 划分会把离焦图当成真值，必须按场景取值：
+
+| 场景 | bush | cake | caps | cisco | coral | cupcake | cups | daisy | sausage | seal | tools |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| hold | 13 | 9 | 5 | 7 | 10 | 6 | 8 | 8 | 6 | 6 | 7 |
+| 图像数 | 50 | 34 | 34 | 45 | 49 | 44 | 43 | 52 | 39 | 39 | 41 |
+
+主表用除 bush 外的 10 个场景，与两篇论文一致。合成 5 场景的 hold 以 DOF-GS 的 `scene_info.yaml` 为准（已见 cozy2room、factory 为 8）。
+
+各方法读取 hold 的方式不同，执行时必须核对每个场景选出的测试文件一致：
+
+| 方法 | 读取方式 | 要求 |
+|---|---|---|
+| DOF-GS | `config_files/scene_info.yaml` 的 `holdout`，已与上表一致 | 保持 |
+| DoF-Gaussian | 命令行 `--llffhold`，参数默认 5；README 示例对 cupcake 传了 8（实际应为 6） | 每个场景按上表传值 |
+| CoCoGaussian | 自动读取场景目录中的 `hold=N` 文件，缺失时默认 8 | 确认场景目录含该文件 |
+| Mip-Splatting | 以其代码为准；若只支持固定值，做最小改动接收按场景的值并记录 | 按上表 |
+
+测试分辨率：DOF-GS 论文为 600×400，DoF-Gaussian 为 `-r 4`；执行时核对 `images/` 与 `images_4/` 的实际尺寸，统一以 `images_4/` 的分辨率评价。
+
+### 3.3 各方法使用的 Deblur-NeRF 数据
+
+- **DOF-GS、Mip-Splatting**：Deblur-NeRF 原始数据，用原始 `sparse/0`。
+- **DoF-Gaussian**：原始数据的副本。按官方流程运行 `colmap.sh`（用修改版 COLMAP，见第 9 节）；它会写入 `sparse/` 和 `dense/`，所以先把副本中的原始 `sparse/` 改名保留，再运行。训练需要 `dense/fused.ply.vis` 和各训练图的 `dense/stereo/depth_maps/*.geometric.bin`。
+- **CoCoGaussian**：Deblurring 3DGS 数据包中的真实离焦数据（作者重跑的 COLMAP）。
+- **同一份图像**：四种方法的 COLMAP 结果来源不同，属于各自官方流程，写入记录；E1 统一协议时以原始图像和上表的测试划分为准，并核对 Deblurring 3DGS 包的图像与原始数据是否逐字节相同。
+
+### 3.4 DoF-NeRF 真实数据：E10 场景组织
+
+数据概况：7 个场景（amiya、camera、plant、kendo、desk、shelf、turtle），每个场景 20–30 个视角；Sony ILCE-7RM2 + FE 35mm f/1.8，三脚架、遥控快门；每个视角三张——小光圈全清晰一张，f/4 对焦前景、f/4 对焦背景各一张；原图 3976×2652，原论文在 497×331 下训练和评价，1/9 的图作测试，训练图对焦前景、对焦背景各半。同一视角的三张照片相机位姿相同，所以对焦前景、对焦背景两张就是真实光学下的重对焦真值，前景边缘的部分遮挡也是真实成像。
+
+为了让四种方法不改加载代码就能读取，把每个场景整理成 Deblur-NeRF 的格式（原始数据只读，整理结果放 `data/processed/dofnerf-scenes/<布局>/<场景>/`）：
+
+| 布局 | 训练视角放入的图 | 测试视角放入的图 | 用于 |
+|---|---|---|---|
+| `mix` | 按视角顺序，对焦前景、对焦背景交替，各半 | 全清晰图 | R0、R1 |
+| `fg` | 全部用对焦前景图 | 全清晰图 | R2（训练只见前景对焦） |
+| `bg` | 全部用对焦背景图 | 全清晰图 | R2（训练只见背景对焦） |
+
+- 视角按文件名排序，序号 `idx % 9 == 0` 为测试视角，写 `hold=9`；三种布局的测试视角相同。
+- 分辨率：`images/` 为原图的 1/2（1988×1326），`images_4/` 为 497×331（与原论文一致），面积平均下采样。
+- 每个场景写一份清单（视角序号、训练/测试角色、该视角三张原图的文件名、放入 `images/` 的是哪一张）。R1、R2 的真值从清单取对应的对焦前景、对焦背景图。
+
+COLMAP 约定：
+- 每个场景只在 `mix` 布局的图上运行一次 COLMAP（相机模型 SIMPLE_RADIAL，与 `colmap.sh` 一致），与 Deblur-NeRF 的惯例相同：训练视角是离焦图，测试视角是全清晰图，训练视角的全清晰图不参与，避免方法间接看到训练视角的清晰信息。
+- `fg`、`bg` 布局复用同一个稀疏模型，只把图像名换成对应布局的文件，保证三种布局的几何完全相同。
+- DoF-Gaussian 另需每种布局各自的稠密结果：在固定的稀疏模型上运行去畸变、patch match、stereo fusion，只用该布局自己的训练图。
+- 若部分视角注册失败，停下记录，由用户决定是否改用全清晰图估计位姿（DoF-NeRF 原论文的做法）。数据包若自带位姿，保留作对照，不默认使用。
+
+对焦距离：整理前读取照片 EXIF 中的对焦距离，统计每个场景对焦前景、对焦背景两种模式是否各自一致，结果用于第 6.1 节的镜头参数设定。
 
 ## 4. 对比方法
 
@@ -166,7 +218,7 @@ NeRF 类方法（Deblur-NeRF、DP-NeRF、DoF-NeRF、PDRF）引用论文数值，
 └── .cache/                   conda 包、pip 包、TORCH_HOME 缓存
 ```
 
-项目内：原始数据 `data/raw/DeblurNeRF/`、`data/raw/DoF-NeRF/`（只读，各仓库用软链接指向）；DoF-Gaussian 的 `colmap.sh` 会写入数据目录，因此使用副本 `data/processed/deblurnerf-dofgaussian/`；大产物 `outputs/dof-gs-repro-<启动日期>/<方法>/`，日志 `logs/` 同名目录；小型指标写入 `03_实验记录/records/`，前缀 `dof-gs-repro-<启动日期>`。
+项目内原始数据（只读，各仓库用软链接指向）：`data/raw/DeblurNeRF/`（Deblur-NeRF 官方数据）、`data/raw/DOFGS-author/`（DOF-GS 合成场景与重训结果）、`data/raw/Deblurring3DGS/`（`deblur_dataset.zip` 解压）、`data/raw/DoF-NeRF/`。派生数据：`data/processed/deblurnerf-dofgaussian/`（DoF-Gaussian 的副本与 COLMAP 结果，`colmap.sh` 会写入数据目录）、`data/processed/dofnerf-scenes/{mix,fg,bg}/`（第 3.4 节）、`data/processed/dofnerf-dofgaussian/`（DoF-Gaussian 在三种布局上的稠密结果）；大产物 `outputs/dof-gs-repro-<启动日期>/<方法>/`，日志 `logs/` 同名目录；小型指标写入 `03_实验记录/records/`，前缀 `dof-gs-repro-<启动日期>`。
 
 安装注意：
 
@@ -177,7 +229,7 @@ NeRF 类方法（Deblur-NeRF、DP-NeRF、DoF-NeRF、PDRF）引用论文数值，
 
 ## 8. 执行步骤与停止点
 
-1. **准备**（不占 GPU）：克隆 4 个仓库，建环境，编译光栅化扩展，编译修改版 COLMAP；下载 Deblur-NeRF 真实与合成数据、DoF-NeRF 真实数据、DOF-GS 作者重训场景。
+1. **准备**（一次性完成，含少量 GPU 用于 COLMAP 稠密重建）：克隆 4 个仓库，建环境，编译光栅化扩展，编译修改版 COLMAP；按第 3 节下载并核对各数据，整理 DoF-NeRF 三种布局，运行 COLMAP，核对每种方法读到的训练/测试划分。
 2. **单场景跑通**：defocuscake 上 4 个方法各训练一次，DOF-GS 与 DoF-Gaussian 对照论文该场景数值；评价 DOF-GS 作者重训场景，核对评价脚本。**停止点**：差距明显时先排查数据、分辨率与评价口径，不直接铺开全量。
 3. **主表**：Deblur-NeRF 真实 10 场景跑 4 个方法；合成 5 场景跑 DOF-GS；统一脚本出表（E1、E2）。
 4. **效率**：按第 5.2 节测量，并完成 E4。
