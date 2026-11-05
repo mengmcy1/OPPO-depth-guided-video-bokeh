@@ -239,13 +239,15 @@ def commit_report(files, message):
         for name in files:
             if (ROOT/name).stat().st_size>3*1024**2:raise RuntimeError('Oversized deliverable: '+name)
         git('diff', '--check', '--', *files); git('add', '--', *files); git('diff', '--cached', '--check')
-        if not git('diff', '--cached', '--name-only'): return {'status': 'no_changes', 'commit': git('rev-parse', 'HEAD')}
+        if not git('diff', '--cached', '--name-only'):
+            if ahead:git('push','origin',branch)
+            return {'status': 'pushed' if ahead else 'no_changes', 'commit': git('rev-parse', 'HEAD')}
         author, email = git('log', '-1', '--format=%an'), git('log', '-1', '--format=%ae')
         git('-c', 'user.name='+author, '-c', 'user.email='+email, 'commit', '-m', message)
         commit = git('rev-parse', 'HEAD'); git('push', 'origin', branch)
         return {'status': 'pushed', 'commit': commit}
     except Exception as exc:
-        return {'status': 'blocked', 'error': str(exc)}
+        return {'status': 'blocked', 'error': str(exc),'output':getattr(exc,'output',None)}
 
 
 def _summarize(state, config, reason, commit=False):
