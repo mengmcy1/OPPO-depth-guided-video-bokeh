@@ -1,31 +1,52 @@
 {
-  "generated_at": "2026-11-05T11:52:02.181836+00:00",
-  "reason": "startup",
+  "generated_at": "2026-11-05T12:51:06.824128+00:00",
+  "reason": "continuation",
   "report_at": "2026-11-06T09:00:00+08:00",
   "jobs": [
     {
       "method": "dofgs",
       "dataset": "deblurnerf",
       "scene": "cake",
+      "status": "evaluated",
+      "lpips": 0.1453018356114626,
+      "psnr": 26.728560174825756,
+      "ssim": 0.8020138293504715,
+      "native_psnr": 26.728230787822973,
+      "native_ssim": 0.8020138293504715,
+      "gaussians": 285560,
+      "optimized_parameters": 16859496,
+      "model_bytes": 72011724,
+      "reason": "",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgs/deblurnerf/cake/attempt-1",
+      "unified_ssim": 0.8955985009670258,
+      "ssim_protocol": "official native"
+    },
+    {
+      "method": "dofgaussian",
+      "dataset": "deblurnerf",
+      "scene": "cake",
+      "status": "evaluated",
+      "lpips": 0.16134056076407433,
+      "ssim": 0.7938385456800461,
+      "psnr": 26.26632908894559,
+      "native_lpips": 0.11802030354738235,
+      "native_ssim": 0.7938385456800461,
+      "native_psnr": 26.280658335162,
+      "gaussians": 87310,
+      "optimized_parameters": 5537961,
+      "model_bytes": 22005347,
+      "reason": "",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/deblurnerf/cake/attempt-1",
+      "unified_ssim": 0.887551873922348,
+      "ssim_protocol": "official native"
+    },
+    {
+      "method": "cocogaussian",
+      "dataset": "deblurnerf",
+      "scene": "cake",
       "status": "training",
       "reason": "",
-      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgs/deblurnerf/cake/attempt-1"
-    },
-    {
-      "method": "dofgaussian",
-      "dataset": "deblurnerf",
-      "scene": "cake",
-      "status": "queued",
-      "reason": "",
-      "output": ""
-    },
-    {
-      "method": "cocogaussian",
-      "dataset": "deblurnerf",
-      "scene": "cake",
-      "status": "queued",
-      "reason": "",
-      "output": ""
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/cocogaussian/deblurnerf/cake/attempt-1"
     },
     {
       "method": "mipsplatting",
@@ -39,9 +60,9 @@
       "method": "dofgs",
       "dataset": "deblurnerf",
       "scene": "caps",
-      "status": "queued",
+      "status": "training",
       "reason": "",
-      "output": ""
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgs/deblurnerf/caps/attempt-1"
     },
     {
       "method": "dofgaussian",
@@ -71,9 +92,9 @@
       "method": "dofgs",
       "dataset": "deblurnerf",
       "scene": "cisco",
-      "status": "queued",
+      "status": "training",
       "reason": "",
-      "output": ""
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgs/deblurnerf/cisco/attempt-1"
     },
     {
       "method": "dofgaussian",
@@ -295,8 +316,8 @@
       "method": "dofgs",
       "dataset": "deblurnerf",
       "scene": "tools",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: FileNotFoundError: No such file: '/root/autodl-tmp/.cache/tmp/gs-split-ehkofwtb/scene/images/010.jpg'",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
@@ -311,24 +332,24 @@
       "method": "cocogaussian",
       "dataset": "deblurnerf",
       "scene": "tools",
-      "status": "dependency_wait",
-      "reason": "Raw image count/decoding/hold not passed",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "mipsplatting",
       "dataset": "deblurnerf",
       "scene": "tools",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: FileNotFoundError: [Errno 2] No such file or directory: '/root/autodl-tmp/.cache/tmp/gs-split-5k2mk35l/scene/images/010.jpg'",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "dofgs",
       "dataset": "dofnerf-mix",
       "scene": "amiya",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
@@ -343,20 +364,28 @@
       "method": "cocogaussian",
       "dataset": "dofnerf-mix",
       "scene": "amiya",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "mipsplatting",
       "dataset": "dofnerf-mix",
       "scene": "amiya",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "dofgs",
+      "dataset": "dofnerf-mix",
+      "scene": "camera",
+      "status": "queued",
+      "reason": "",
+      "output": ""
+    },
+    {
+      "method": "dofgaussian",
       "dataset": "dofnerf-mix",
       "scene": "camera",
       "status": "dependency_wait",
@@ -364,35 +393,27 @@
       "output": ""
     },
     {
-      "method": "dofgaussian",
-      "dataset": "dofnerf-mix",
-      "scene": "camera",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
-      "output": ""
-    },
-    {
       "method": "cocogaussian",
       "dataset": "dofnerf-mix",
       "scene": "camera",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "mipsplatting",
       "dataset": "dofnerf-mix",
       "scene": "camera",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "dofgs",
       "dataset": "dofnerf-mix",
       "scene": "plant",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
@@ -407,24 +428,24 @@
       "method": "cocogaussian",
       "dataset": "dofnerf-mix",
       "scene": "plant",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "mipsplatting",
       "dataset": "dofnerf-mix",
       "scene": "plant",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "dofgs",
       "dataset": "dofnerf-mix",
       "scene": "kendo",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
@@ -439,24 +460,24 @@
       "method": "cocogaussian",
       "dataset": "dofnerf-mix",
       "scene": "kendo",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "mipsplatting",
       "dataset": "dofnerf-mix",
       "scene": "kendo",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "dofgs",
       "dataset": "dofnerf-mix",
       "scene": "desk",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
@@ -471,24 +492,24 @@
       "method": "cocogaussian",
       "dataset": "dofnerf-mix",
       "scene": "desk",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "mipsplatting",
       "dataset": "dofnerf-mix",
       "scene": "desk",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "dofgs",
       "dataset": "dofnerf-mix",
       "scene": "shelf",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
@@ -503,33 +524,33 @@
       "method": "cocogaussian",
       "dataset": "dofnerf-mix",
       "scene": "shelf",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "mipsplatting",
       "dataset": "dofnerf-mix",
       "scene": "shelf",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "dofgs",
       "dataset": "author-retrained",
       "scene": "cake",
-      "status": "queued",
+      "status": "evaluated",
       "reason": "",
-      "output": ""
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgs/author-retrained/cake/attempt-1"
     },
     {
       "method": "dofgs",
       "dataset": "author-retrained",
       "scene": "caps",
-      "status": "queued",
+      "status": "rendering",
       "reason": "",
-      "output": ""
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgs/author-retrained/caps/attempt-1"
     },
     {
       "method": "dofgs",
@@ -591,8 +612,8 @@
       "method": "dofgs",
       "dataset": "author-retrained",
       "scene": "tools",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: FileNotFoundError: No such file: '/root/autodl-tmp/.cache/tmp/gs-split-ehkofwtb/scene/images/010.jpg'",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
@@ -648,7 +669,13 @@
     {
       "method": "dofgs",
       "dataset": "deblurnerf",
-      "completed_scenes": 0
+      "completed_scenes": 1,
+      "psnr": 26.728560174825756,
+      "ssim": 0.8020138293504715,
+      "lpips": 0.1453018356114626,
+      "native_psnr": 26.728230787822973,
+      "native_ssim": 0.8020138293504715,
+      "unified_ssim": 0.8955985009670258
     },
     {
       "method": "dofgs",
@@ -658,7 +685,14 @@
     {
       "method": "dofgaussian",
       "dataset": "deblurnerf",
-      "completed_scenes": 0
+      "completed_scenes": 1,
+      "psnr": 26.26632908894559,
+      "ssim": 0.7938385456800461,
+      "lpips": 0.16134056076407433,
+      "native_psnr": 26.280658335162,
+      "native_ssim": 0.7938385456800461,
+      "native_lpips": 0.11802030354738235,
+      "unified_ssim": 0.887551873922348
     },
     {
       "method": "dofgaussian",
@@ -689,6 +723,42 @@
   "cake_training_efficiency": [
     {
       "method": "dofgs",
+      "status": "evaluated",
+      "colmap_seconds": null,
+      "geometry_source": "provided original sparse model; original reconstruction time unavailable",
+      "total_seconds": 1829.0484382025898,
+      "gaussian_seconds": 1829.0484430231154,
+      "depth_prior_seconds": 0.0,
+      "torch_gaussian_peak_bytes": 1744024064,
+      "torch_depth_prior_peak_bytes": 0,
+      "nvidia_depth_prior_peak_mib": 0,
+      "nvidia_gaussian_peak_mib": 2728.0,
+      "gpu_utilization": 41.47818648417451,
+      "efficiency_valid": true,
+      "measurement_label": "exclusive formal",
+      "initial_cake_training_seconds": 1829.0484382025898,
+      "exclusive_supplement": {}
+    },
+    {
+      "method": "dofgaussian",
+      "status": "evaluated",
+      "colmap_seconds": 1946.671086590737,
+      "geometry_source": "fresh official COLMAP pipeline",
+      "total_seconds": 1514.6940248943865,
+      "gaussian_seconds": 1449.2506840229034,
+      "depth_prior_seconds": 65.44334184750915,
+      "torch_gaussian_peak_bytes": 512859136,
+      "torch_depth_prior_peak_bytes": 11735149568,
+      "nvidia_depth_prior_peak_mib": 14660.0,
+      "nvidia_gaussian_peak_mib": 14660.0,
+      "gpu_utilization": 15.920454545454545,
+      "efficiency_valid": false,
+      "measurement_label": "parallel reference; exclusive measurement pendingP3",
+      "initial_cake_training_seconds": 1514.6940248943865,
+      "exclusive_supplement": {}
+    },
+    {
+      "method": "cocogaussian",
       "status": "training",
       "colmap_seconds": null,
       "geometry_source": "provided original sparse model; original reconstruction time unavailable",
@@ -700,37 +770,10 @@
       "nvidia_depth_prior_peak_mib": null,
       "nvidia_gaussian_peak_mib": null,
       "gpu_utilization": null,
-      "efficiency_valid": null
-    },
-    {
-      "method": "dofgaussian",
-      "status": "queued",
-      "colmap_seconds": 1946.671086590737,
-      "geometry_source": "fresh official COLMAP pipeline",
-      "total_seconds": null,
-      "gaussian_seconds": null,
-      "depth_prior_seconds": null,
-      "torch_gaussian_peak_bytes": null,
-      "torch_depth_prior_peak_bytes": null,
-      "nvidia_depth_prior_peak_mib": null,
-      "nvidia_gaussian_peak_mib": null,
-      "gpu_utilization": null,
-      "efficiency_valid": null
-    },
-    {
-      "method": "cocogaussian",
-      "status": "queued",
-      "colmap_seconds": null,
-      "geometry_source": "provided original sparse model; original reconstruction time unavailable",
-      "total_seconds": null,
-      "gaussian_seconds": null,
-      "depth_prior_seconds": null,
-      "torch_gaussian_peak_bytes": null,
-      "torch_depth_prior_peak_bytes": null,
-      "nvidia_depth_prior_peak_mib": null,
-      "nvidia_gaussian_peak_mib": null,
-      "gpu_utilization": null,
-      "efficiency_valid": null
+      "efficiency_valid": null,
+      "measurement_label": "parallel reference; exclusive measurement pendingP3",
+      "initial_cake_training_seconds": null,
+      "exclusive_supplement": {}
     },
     {
       "method": "mipsplatting",
@@ -745,17 +788,26 @@
       "nvidia_depth_prior_peak_mib": null,
       "nvidia_gaussian_peak_mib": null,
       "gpu_utilization": null,
-      "efficiency_valid": null
+      "efficiency_valid": null,
+      "measurement_label": "parallel reference; exclusive measurement pendingP3",
+      "initial_cake_training_seconds": null,
+      "exclusive_supplement": {}
     }
   ],
   "author_retrained": [
     {
       "scene": "cake",
-      "status": "queued"
+      "status": "evaluated",
+      "lpips": 0.14712988585233688,
+      "psnr": 26.85970545590697,
+      "ssim": 0.8057977855205536,
+      "native_psnr": 26.854371896996962,
+      "native_ssim": 0.8057977855205536,
+      "unified_ssim": 0.896817997097969
     },
     {
       "scene": "caps",
-      "status": "queued"
+      "status": "rendering"
     },
     {
       "scene": "cisco",
@@ -787,12 +839,19 @@
     },
     {
       "scene": "tools",
-      "status": "dependency_wait"
+      "status": "queued"
     }
   ],
   "author_paper_comparison": {
-    "completed_scenes": 0,
-    "mean": {},
+    "completed_scenes": 1,
+    "mean": {
+      "psnr": 26.85970545590697,
+      "ssim": 0.8057977855205536,
+      "lpips": 0.14712988585233688,
+      "native_psnr": 26.854371896996962,
+      "native_ssim": 0.8057977855205536,
+      "unified_ssim": 0.896817997097969
+    },
     "checkpoint": "author retrained; original paper checkpoint was lost",
     "paper": {
       "psnr": 24.12,
@@ -805,28 +864,49 @@
   "cake_paper_comparison": [
     {
       "method": "dofgs",
-      "status": "training",
+      "status": "evaluated",
       "measured": {
         "method": "dofgs",
         "dataset": "deblurnerf",
         "scene": "cake",
-        "status": "training",
+        "status": "evaluated",
+        "lpips": 0.1453018356114626,
+        "psnr": 26.728560174825756,
+        "ssim": 0.8020138293504715,
+        "native_psnr": 26.728230787822973,
+        "native_ssim": 0.8020138293504715,
+        "gaussians": 285560,
+        "optimized_parameters": 16859496,
+        "model_bytes": 72011724,
         "reason": "",
-        "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgs/deblurnerf/cake/attempt-1"
+        "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgs/deblurnerf/cake/attempt-1",
+        "unified_ssim": 0.8955985009670258,
+        "ssim_protocol": "official native"
       },
       "paper": null,
       "delta": null
     },
     {
       "method": "dofgaussian",
-      "status": "queued",
+      "status": "evaluated",
       "measured": {
         "method": "dofgaussian",
         "dataset": "deblurnerf",
         "scene": "cake",
-        "status": "queued",
+        "status": "evaluated",
+        "lpips": 0.16134056076407433,
+        "ssim": 0.7938385456800461,
+        "psnr": 26.26632908894559,
+        "native_lpips": 0.11802030354738235,
+        "native_ssim": 0.7938385456800461,
+        "native_psnr": 26.280658335162,
+        "gaussians": 87310,
+        "optimized_parameters": 5537961,
+        "model_bytes": 22005347,
         "reason": "",
-        "output": ""
+        "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/deblurnerf/cake/attempt-1",
+        "unified_ssim": 0.887551873922348,
+        "ssim_protocol": "official native"
       },
       "paper": {
         "psnr": 26.83,
@@ -834,18 +914,22 @@
         "lpips": 0.101,
         "source": "https://openaccess.thecvf.com/content/CVPR2025/papers/Shen_DoF-Gaussian_Controllable_Depth-of-Field_for_3D_Gaussian_Splatting_CVPR_2025_paper.pdf"
       },
-      "delta": {}
+      "delta": {
+        "psnr": -0.5636709110544089,
+        "ssim": -0.01416145431995397,
+        "lpips": 0.06034056076407432
+      }
     },
     {
       "method": "cocogaussian",
-      "status": "queued",
+      "status": "training",
       "measured": {
         "method": "cocogaussian",
         "dataset": "deblurnerf",
         "scene": "cake",
-        "status": "queued",
+        "status": "training",
         "reason": "",
-        "output": ""
+        "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/cocogaussian/deblurnerf/cake/attempt-1"
       },
       "paper": {
         "psnr": 26.65,
@@ -874,11 +958,17 @@
   "method_paper_means": [
     {
       "method": "dofgs",
-      "completed_scenes": 0,
+      "completed_scenes": 1,
       "measured": {
         "method": "dofgs",
         "dataset": "deblurnerf",
-        "completed_scenes": 0
+        "completed_scenes": 1,
+        "psnr": 26.728560174825756,
+        "ssim": 0.8020138293504715,
+        "lpips": 0.1453018356114626,
+        "native_psnr": 26.728230787822973,
+        "native_ssim": 0.8020138293504715,
+        "unified_ssim": 0.8955985009670258
       },
       "paper": {
         "psnr": 24.12,
@@ -889,11 +979,18 @@
     },
     {
       "method": "dofgaussian",
-      "completed_scenes": 0,
+      "completed_scenes": 1,
       "measured": {
         "method": "dofgaussian",
         "dataset": "deblurnerf",
-        "completed_scenes": 0
+        "completed_scenes": 1,
+        "psnr": 26.26632908894559,
+        "ssim": 0.7938385456800461,
+        "lpips": 0.16134056076407433,
+        "native_psnr": 26.280658335162,
+        "native_ssim": 0.7938385456800461,
+        "native_lpips": 0.11802030354738235,
+        "unified_ssim": 0.887551873922348
       },
       "paper": {
         "psnr": 23.97,
@@ -984,39 +1081,240 @@
   "regional_R1": [],
   "bokehme_calibration": [],
   "R1_averages_completed_scenes_only": [],
-  "memory_profiles_mib": {},
+  "memory_profiles_mib": {
+    "dofgs": 3513,
+    "dofgaussian": 16638
+  },
   "parallel_limit": 4,
   "parallel_throughput_decisions": [],
+  "ssim_audit": {
+    "status": "verified_no_unified_implementation_error",
+    "source": "https://raw.githubusercontent.com/graphdeco-inria/gaussian-splatting/main/utils/loss_utils.py",
+    "source_sha256": "e4c69eca823525d3057c5441953c5b7c83ddb21d579039d7e82cdb13d35d3455",
+    "window": 11,
+    "sigma": 1.5,
+    "channels": "RGB",
+    "input_range": [
+      0,
+      1
+    ],
+    "normalization": "uint8 converted to float32 and divided by255 once",
+    "per_view": [
+      {
+        "image": "000",
+        "shape": [
+          1,
+          3,
+          400,
+          600
+        ],
+        "prediction_range": [
+          0.0,
+          1.0
+        ],
+        "truth_range": [
+          0.0,
+          1.0
+        ],
+        "dtype": "torch.float32",
+        "official_3dgs_ssim": 0.8532623052597046,
+        "unified_ssim": 0.8532623052597046,
+        "3dgs_ssim_native_gt": 0.8546321988105774,
+        "native_dofgs_ssim": 0.7601714730262756
+      },
+      {
+        "image": "009",
+        "shape": [
+          1,
+          3,
+          400,
+          600
+        ],
+        "prediction_range": [
+          0.0,
+          1.0
+        ],
+        "truth_range": [
+          0.0,
+          1.0
+        ],
+        "dtype": "torch.float32",
+        "official_3dgs_ssim": 0.8974557518959045,
+        "unified_ssim": 0.8974557518959045,
+        "3dgs_ssim_native_gt": 0.8990598320960999,
+        "native_dofgs_ssim": 0.8014892935752869
+      },
+      {
+        "image": "018",
+        "shape": [
+          1,
+          3,
+          400,
+          600
+        ],
+        "prediction_range": [
+          0.0,
+          1.0
+        ],
+        "truth_range": [
+          0.0,
+          1.0
+        ],
+        "dtype": "torch.float32",
+        "official_3dgs_ssim": 0.9162716269493103,
+        "unified_ssim": 0.9162716269493103,
+        "3dgs_ssim_native_gt": 0.9177423715591431,
+        "native_dofgs_ssim": 0.8289551734924316
+      },
+      {
+        "image": "027",
+        "shape": [
+          1,
+          3,
+          400,
+          600
+        ],
+        "prediction_range": [
+          0.0,
+          1.0
+        ],
+        "truth_range": [
+          0.0,
+          1.0
+        ],
+        "dtype": "torch.float32",
+        "official_3dgs_ssim": 0.9154044389724731,
+        "unified_ssim": 0.9154044389724731,
+        "3dgs_ssim_native_gt": 0.9167796969413757,
+        "native_dofgs_ssim": 0.8174393773078918
+      }
+    ],
+    "means": {
+      "official_3dgs_ssim": 0.8955985307693481,
+      "unified_ssim": 0.8955985307693481,
+      "3dgs_ssim_native_gt": 0.897053524851799,
+      "native_dofgs_ssim": 0.8020138293504715
+    },
+    "cause": "DOF-GS native transforms RGB to[-1,1] and uses skimage default uniform7x7 SSIM with data_range2; 3DGS uses0..1 Gaussian11x11 SSIM. GT resize differences are separately measured.",
+    "report_policy": "native SSIM is primary for paper comparison; verified3DGS SSIM retained explicitly as unified_ssim; do not change a correct implementation to match a different metric."
+  },
+  "deferred_due_to_colmap": [
+    {
+      "id": "dofgaussian-deblurnerf-caps",
+      "status": "dependency_wait",
+      "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
+      "observed_at": 1793883066.8190608
+    },
+    {
+      "id": "dofgaussian-deblurnerf-cisco",
+      "status": "dependency_wait",
+      "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
+      "observed_at": 1793883066.8190622
+    },
+    {
+      "id": "dofgaussian-deblurnerf-coral",
+      "status": "dependency_wait",
+      "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
+      "observed_at": 1793883066.8190632
+    },
+    {
+      "id": "dofgaussian-deblurnerf-cupcake",
+      "status": "dependency_wait",
+      "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
+      "observed_at": 1793883066.8190644
+    },
+    {
+      "id": "dofgaussian-deblurnerf-cups",
+      "status": "dependency_wait",
+      "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
+      "observed_at": 1793883066.8190653
+    },
+    {
+      "id": "dofgaussian-deblurnerf-daisy",
+      "status": "dependency_wait",
+      "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
+      "observed_at": 1793883066.8190663
+    },
+    {
+      "id": "dofgaussian-deblurnerf-sausage",
+      "status": "dependency_wait",
+      "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
+      "observed_at": 1793883066.8190675
+    },
+    {
+      "id": "dofgaussian-deblurnerf-seal",
+      "status": "dependency_wait",
+      "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
+      "observed_at": 1793883066.8190684
+    },
+    {
+      "id": "dofgaussian-deblurnerf-tools",
+      "status": "dependency_wait",
+      "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
+      "observed_at": 1793883066.8190691
+    },
+    {
+      "id": "dofgaussian-dofnerf-mix-amiya",
+      "status": "dependency_wait",
+      "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
+      "observed_at": 1793883066.8191173
+    },
+    {
+      "id": "dofgaussian-dofnerf-mix-camera",
+      "status": "dependency_wait",
+      "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
+      "observed_at": 1793883066.8192363
+    },
+    {
+      "id": "dofgaussian-dofnerf-mix-plant",
+      "status": "dependency_wait",
+      "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
+      "observed_at": 1793883066.819347
+    },
+    {
+      "id": "dofgaussian-dofnerf-mix-kendo",
+      "status": "dependency_wait",
+      "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
+      "observed_at": 1793883066.8194616
+    },
+    {
+      "id": "dofgaussian-dofnerf-mix-desk",
+      "status": "dependency_wait",
+      "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
+      "observed_at": 1793883066.8195736
+    },
+    {
+      "id": "dofgaussian-dofnerf-mix-shelf",
+      "status": "dependency_wait",
+      "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
+      "observed_at": 1793883066.8196874
+    }
+  ],
   "throughput": {
-    "completed_trainings": 0,
-    "elapsed_since_first_training_seconds": 450.0989489555359,
+    "completed_trainings": 2,
+    "elapsed_since_first_training_seconds": 4000.791387796402,
     "parallel_times_are_reference_only": true
   },
-  "quality_gates": {},
+  "quality_gates": {
+    "dofgs": {
+      "cake_psnr_delta": -0.13114528108121348,
+      "reference": "author retrained checkpoint, not original paper checkpoint",
+      "passed": true
+    },
+    "dofgaussian": {
+      "cake_psnr_delta": -0.5636709110544089,
+      "passed": true,
+      "diagnosis": "Check canonical/native GT, resolution, hold and renderer before expanding if outside threshold"
+    }
+  },
   "pending": [
     {
-      "method": "dofgs",
+      "method": "cocogaussian",
       "dataset": "deblurnerf",
       "scene": "cake",
       "status": "training",
       "reason": "",
-      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgs/deblurnerf/cake/attempt-1"
-    },
-    {
-      "method": "dofgaussian",
-      "dataset": "deblurnerf",
-      "scene": "cake",
-      "status": "queued",
-      "reason": "",
-      "output": ""
-    },
-    {
-      "method": "cocogaussian",
-      "dataset": "deblurnerf",
-      "scene": "cake",
-      "status": "queued",
-      "reason": "",
-      "output": ""
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/cocogaussian/deblurnerf/cake/attempt-1"
     },
     {
       "method": "mipsplatting",
@@ -1030,9 +1328,9 @@
       "method": "dofgs",
       "dataset": "deblurnerf",
       "scene": "caps",
-      "status": "queued",
+      "status": "training",
       "reason": "",
-      "output": ""
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgs/deblurnerf/caps/attempt-1"
     },
     {
       "method": "dofgaussian",
@@ -1062,9 +1360,9 @@
       "method": "dofgs",
       "dataset": "deblurnerf",
       "scene": "cisco",
-      "status": "queued",
+      "status": "training",
       "reason": "",
-      "output": ""
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgs/deblurnerf/cisco/attempt-1"
     },
     {
       "method": "dofgaussian",
@@ -1286,8 +1584,8 @@
       "method": "dofgs",
       "dataset": "deblurnerf",
       "scene": "tools",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: FileNotFoundError: No such file: '/root/autodl-tmp/.cache/tmp/gs-split-ehkofwtb/scene/images/010.jpg'",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
@@ -1302,24 +1600,24 @@
       "method": "cocogaussian",
       "dataset": "deblurnerf",
       "scene": "tools",
-      "status": "dependency_wait",
-      "reason": "Raw image count/decoding/hold not passed",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "mipsplatting",
       "dataset": "deblurnerf",
       "scene": "tools",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: FileNotFoundError: [Errno 2] No such file or directory: '/root/autodl-tmp/.cache/tmp/gs-split-5k2mk35l/scene/images/010.jpg'",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "dofgs",
       "dataset": "dofnerf-mix",
       "scene": "amiya",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
@@ -1334,20 +1632,28 @@
       "method": "cocogaussian",
       "dataset": "dofnerf-mix",
       "scene": "amiya",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "mipsplatting",
       "dataset": "dofnerf-mix",
       "scene": "amiya",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "dofgs",
+      "dataset": "dofnerf-mix",
+      "scene": "camera",
+      "status": "queued",
+      "reason": "",
+      "output": ""
+    },
+    {
+      "method": "dofgaussian",
       "dataset": "dofnerf-mix",
       "scene": "camera",
       "status": "dependency_wait",
@@ -1355,35 +1661,27 @@
       "output": ""
     },
     {
-      "method": "dofgaussian",
-      "dataset": "dofnerf-mix",
-      "scene": "camera",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
-      "output": ""
-    },
-    {
       "method": "cocogaussian",
       "dataset": "dofnerf-mix",
       "scene": "camera",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "mipsplatting",
       "dataset": "dofnerf-mix",
       "scene": "camera",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "dofgs",
       "dataset": "dofnerf-mix",
       "scene": "plant",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
@@ -1398,24 +1696,24 @@
       "method": "cocogaussian",
       "dataset": "dofnerf-mix",
       "scene": "plant",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "mipsplatting",
       "dataset": "dofnerf-mix",
       "scene": "plant",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "dofgs",
       "dataset": "dofnerf-mix",
       "scene": "kendo",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
@@ -1430,24 +1728,24 @@
       "method": "cocogaussian",
       "dataset": "dofnerf-mix",
       "scene": "kendo",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "mipsplatting",
       "dataset": "dofnerf-mix",
       "scene": "kendo",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "dofgs",
       "dataset": "dofnerf-mix",
       "scene": "desk",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
@@ -1462,24 +1760,24 @@
       "method": "cocogaussian",
       "dataset": "dofnerf-mix",
       "scene": "desk",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "mipsplatting",
       "dataset": "dofnerf-mix",
       "scene": "desk",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "dofgs",
       "dataset": "dofnerf-mix",
       "scene": "shelf",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
@@ -1494,22 +1792,14 @@
       "method": "cocogaussian",
       "dataset": "dofnerf-mix",
       "scene": "shelf",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
       "method": "mipsplatting",
       "dataset": "dofnerf-mix",
       "scene": "shelf",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
-      "output": ""
-    },
-    {
-      "method": "dofgs",
-      "dataset": "author-retrained",
-      "scene": "cake",
       "status": "queued",
       "reason": "",
       "output": ""
@@ -1518,9 +1808,9 @@
       "method": "dofgs",
       "dataset": "author-retrained",
       "scene": "caps",
-      "status": "queued",
+      "status": "rendering",
       "reason": "",
-      "output": ""
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgs/author-retrained/caps/attempt-1"
     },
     {
       "method": "dofgs",
@@ -1582,8 +1872,8 @@
       "method": "dofgs",
       "dataset": "author-retrained",
       "scene": "tools",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: FileNotFoundError: No such file: '/root/autodl-tmp/.cache/tmp/gs-split-ehkofwtb/scene/images/010.jpg'",
+      "status": "queued",
+      "reason": "",
       "output": ""
     },
     {
@@ -1636,8 +1926,19 @@
     }
   ],
   "eta": {
-    "measured_cake_based": {},
-    "estimated_remaining_training_lower_bound_seconds": 0.0,
+    "measured_cake_based": {
+      "dofgs": {
+        "remaining_training_jobs": 15,
+        "cake_seconds": 1829.0484382025898,
+        "estimated_serial_training_seconds": 28807.51290169079
+      },
+      "dofgaussian": {
+        "remaining_training_jobs": 15,
+        "cake_seconds": 1514.6940248943865,
+        "estimated_serial_training_seconds": 22720.410373415798
+      }
+    },
+    "estimated_remaining_training_lower_bound_seconds": 12881.980818776647,
     "scope": "rough training estimate only; excludes pending data, COLMAP, render/evaluation and P3; scene sizes and concurrent slowdown vary; methods without a completed cake remain unknown"
   },
   "regions": {
@@ -1891,7 +2192,7 @@
     "CoCo offset-scaled E4"
   ],
   "implementation_notes": [
-    "DoF-NeRF supplied poses retained for comparison, not used: the explicit preparation request requires fresh mix-only COLMAP, overriding the plan document preference.",
+    "Updated2026-11-05 20:35+08:00: DoF-NeRF supplied poses/points are matched to sharp filenames, scaled to497x331, and radial camera/images rectified into PINHOLE derived views. Predictions/depth/alpha are reprojected to canonical original pixels for unified evaluation and BokehMe; original GT and masks are unchanged.",
     "DoF-NeRF native training view links images_4 as images and uses resolution1 to preserve exact497x331; scaling1326/4 would round height to332. Camera FOV is preserved.",
     "DOF-GS DoF-NeRF uses official cake configuration at40k; the public repository has no per-scene DoF-NeRF configuration. No test-based hyperparameter fitting.",
     "DOF-GS rendering preserves the saved band_limit/kernel_size settings, as official render.py does.",

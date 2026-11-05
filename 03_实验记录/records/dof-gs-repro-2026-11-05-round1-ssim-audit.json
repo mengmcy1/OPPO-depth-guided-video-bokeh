@@ -1,0 +1,111 @@
+{
+  "status": "verified_no_unified_implementation_error",
+  "source": "https://raw.githubusercontent.com/graphdeco-inria/gaussian-splatting/main/utils/loss_utils.py",
+  "source_sha256": "e4c69eca823525d3057c5441953c5b7c83ddb21d579039d7e82cdb13d35d3455",
+  "window": 11,
+  "sigma": 1.5,
+  "channels": "RGB",
+  "input_range": [
+    0,
+    1
+  ],
+  "normalization": "uint8 converted to float32 and divided by255 once",
+  "per_view": [
+    {
+      "image": "000",
+      "shape": [
+        1,
+        3,
+        400,
+        600
+      ],
+      "prediction_range": [
+        0.0,
+        1.0
+      ],
+      "truth_range": [
+        0.0,
+        1.0
+      ],
+      "dtype": "torch.float32",
+      "official_3dgs_ssim": 0.8532623052597046,
+      "unified_ssim": 0.8532623052597046,
+      "3dgs_ssim_native_gt": 0.8546321988105774,
+      "native_dofgs_ssim": 0.7601714730262756
+    },
+    {
+      "image": "009",
+      "shape": [
+        1,
+        3,
+        400,
+        600
+      ],
+      "prediction_range": [
+        0.0,
+        1.0
+      ],
+      "truth_range": [
+        0.0,
+        1.0
+      ],
+      "dtype": "torch.float32",
+      "official_3dgs_ssim": 0.8974557518959045,
+      "unified_ssim": 0.8974557518959045,
+      "3dgs_ssim_native_gt": 0.8990598320960999,
+      "native_dofgs_ssim": 0.8014892935752869
+    },
+    {
+      "image": "018",
+      "shape": [
+        1,
+        3,
+        400,
+        600
+      ],
+      "prediction_range": [
+        0.0,
+        1.0
+      ],
+      "truth_range": [
+        0.0,
+        1.0
+      ],
+      "dtype": "torch.float32",
+      "official_3dgs_ssim": 0.9162716269493103,
+      "unified_ssim": 0.9162716269493103,
+      "3dgs_ssim_native_gt": 0.9177423715591431,
+      "native_dofgs_ssim": 0.8289551734924316
+    },
+    {
+      "image": "027",
+      "shape": [
+        1,
+        3,
+        400,
+        600
+      ],
+      "prediction_range": [
+        0.0,
+        1.0
+      ],
+      "truth_range": [
+        0.0,
+        1.0
+      ],
+      "dtype": "torch.float32",
+      "official_3dgs_ssim": 0.9154044389724731,
+      "unified_ssim": 0.9154044389724731,
+      "3dgs_ssim_native_gt": 0.9167796969413757,
+      "native_dofgs_ssim": 0.8174393773078918
+    }
+  ],
+  "means": {
+    "official_3dgs_ssim": 0.8955985307693481,
+    "unified_ssim": 0.8955985307693481,
+    "3dgs_ssim_native_gt": 0.897053524851799,
+    "native_dofgs_ssim": 0.8020138293504715
+  },
+  "cause": "DOF-GS native transforms RGB to[-1,1] and uses skimage default uniform7x7 SSIM with data_range2; 3DGS uses0..1 Gaussian11x11 SSIM. GT resize differences are separately measured.",
+  "report_policy": "native SSIM is primary for paper comparison; verified3DGS SSIM retained explicitly as unified_ssim; do not change a correct implementation to match a different metric."
+}

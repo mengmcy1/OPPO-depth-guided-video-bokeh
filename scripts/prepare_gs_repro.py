@@ -85,7 +85,7 @@ def write_poses_bounds(scene, workspace):
 
 def copy_scene(source, destination, preserve_sparse=False):
     destination.mkdir(parents=True, exist_ok=True)
-    for name in ('images', 'images_4', 'poses_bounds.npy', 'manifest.json'):
+    for name in ('images', 'images_4', 'poses_bounds.npy', 'manifest.json', 'rectification.json', 'rectification-maps'):
         item = source/name
         target = destination/name
         if not item.exists() or target.exists():
@@ -105,12 +105,13 @@ def copy_scene(source, destination, preserve_sparse=False):
 def execute(colmap, command, arguments, log):
     disk_check()
     pending = Path(os.environ['TMPDIR'])/'dof-gs-round1-exclusive.pending'
-    while pending.exists(): time.sleep(5)
+    overlap = os.environ.get('GS_COLMAP_TRAINING_OVERLAP')=='1'
+    while pending.exists() and not overlap: time.sleep(5)
     gpu_lock = None
     if command in {'feature_extractor', 'exhaustive_matcher', 'patch_match_stereo'}:
         gpu_lock = (Path(os.environ['TMPDIR'])/'dof-gs-gpu.lock').open('a')
-        fcntl.flock(gpu_lock, fcntl.LOCK_EX)
-        while pending.exists():
+        fcntl.flock(gpu_lock, fcntl.LOCK_SH if overlap else fcntl.LOCK_EX)
+        while pending.exists() and not overlap:
             fcntl.flock(gpu_lock, fcntl.LOCK_UN); time.sleep(5); fcntl.flock(gpu_lock, fcntl.LOCK_EX)
         subprocess.run(['nvidia-smi'], check=True)
     start = time.monotonic()
@@ -118,8 +119,14 @@ def execute(colmap, command, arguments, log):
         argv = [str(colmap), command] + list(map(str, arguments))
         stream.write('\nCOMMAND '+json.dumps(argv)+'\n'); stream.flush()
         try:
-            subprocess.run(argv, stdout=stream, stderr=subprocess.STDOUT,
-                           env=dict(os.environ, CUDA_VISIBLE_DEVICES='0'), check=True)
+            if gpu_lock:
+                wrapper=Path(__file__).with_name('gs_round1_resources.py')
+                subprocess.run([sys.executable,str(wrapper),'4096','colmap:'+command,*argv],
+                               stdout=stream,stderr=subprocess.STDOUT,
+                               env=dict(os.environ,CUDA_VISIBLE_DEVICES='0'),check=True)
+            else:
+                subprocess.run(argv, stdout=stream, stderr=subprocess.STDOUT,
+                               env=dict(os.environ, CUDA_VISIBLE_DEVICES='0'), check=True)
         finally:
             if gpu_lock: gpu_lock.close()
     disk_check()
@@ -200,7 +207,7 @@ def colmap_phase(args):
         except (OSError, ValueError, subprocess.SubprocessError) as exc:
             row['status'] = 'blocked'; row['error'] = str(exc)
         report['runs'][key] = row; save(args.record, report)
-    scenes_root = processed/'dofnerf-scenes'
+    scenes_root = processed/('dofnerf-scenes-provided' if (args.logs/'provided-poses.finished').exists() else 'dofnerf-scenes')
     for name in ([x for x in ('amiya', 'camera', 'plant', 'kendo', 'desk', 'shelf', 'turtle') if not args.scenes or x in args.scenes] if args.dataset != 'deblurnerf' else []):
         key = 'dofnerf/sparse/'+name
         row = report['runs'].get(key, {})
@@ -211,12 +218,13 @@ def colmap_phase(args):
             sparse_colmap = args.colmap if available else args.sparse_colmap
             if not sparse_colmap or not sparse_colmap.is_file():
                 raise FileNotFoundError('Modified COLMAP unavailable; sparse fallback must be explicitly recorded')
+            provided=(mix/'rectification.json').exists()
             row = sparse(mix, sparse_colmap, args.logs/('colmap-dofnerf-'+name+'.log'), cpu_sift=not available)
             row['colmap_executable'] = str(sparse_colmap)
             row['fallback_unmodified_colmap'] = not available
             if not row['all_registered']:
                 raise ValueError('Registration incomplete; all-sharp pose estimation is not authorized')
-            write_poses_bounds(mix, args.workspace)
+            if not provided:write_poses_bounds(mix, args.workspace)
             import filecmp
             for layout in ('fg', 'bg'):
                 target = scenes_root/layout/name
@@ -227,17 +235,18 @@ def colmap_phase(args):
                 if not filecmp.cmp(mix/'sparse/0/images.bin', target/'sparse/0/images.bin', shallow=False):
                     raise ValueError('Copied camera poses differ: '+str(target))
             row['geometry_identical_across_layouts'] = True
-            row['poses_bounds'] = 'standard LLFF conversion from estimated mix sparse model; no provided geometry used'
+            row['poses_bounds'] = 'provided geometry renamed/scaled/rectified, world poses unchanged' if provided else 'standard LLFF conversion from estimated mix sparse model; no provided geometry used'
             row['status'] = 'complete'
         except (OSError, ValueError, subprocess.SubprocessError) as exc:
             row['status'] = 'blocked'; row['error'] = str(exc)
         report['runs'][key] = row; save(args.record, report)
         for layout in ('mix', 'fg', 'bg'):
             dense_key = f'dofnerf/dense/{layout}/{name}'
+            if report['runs'].get(dense_key,{}).get('status')=='complete':continue
             if row['status'] != 'complete' or not available:
                 report['runs'][dense_key] = {'status': 'blocked', 'error': 'Sparse stage blocked or modified COLMAP unavailable'}
                 continue
-            target = processed/'dofnerf-dofgaussian'/layout/name
+            target = processed/('dofnerf-dofgaussian-provided' if scenes_root.name.endswith('provided') else 'dofnerf-dofgaussian')/layout/name
             dense_row = {'output': str(target), 'fixed_geometry_source': str(mix/'sparse/0')}
             try:
                 copy_scene(scenes_root/layout/name, target)
@@ -329,13 +338,19 @@ def split_phase(args):
     for layout in ('mix', 'fg', 'bg'):
         for name in ('amiya', 'camera', 'plant', 'kendo', 'desk', 'shelf', 'turtle'):
             for method in METHODS:
-                directory = 'dofnerf-dofgaussian' if method == 'dofgaussian' else 'dofnerf-scenes'
+                provided=(processed/'dofnerf-scenes-provided'/layout/name/'rectification.json').exists()
+                directory = ('dofnerf-dofgaussian-provided' if provided else 'dofnerf-dofgaussian') if method == 'dofgaussian' else ('dofnerf-scenes-provided' if provided else 'dofnerf-scenes')
                 targets.append((method, 'dofnerf-'+layout, name, processed/directory/layout/name, 9, False))
     previous = json.loads(args.record.with_suffix('.json').read_text()).get('checks', []) if args.record.with_suffix('.json').exists() else []
+    if args.dataset!='all':
+        targets=[t for t in targets if t[1].startswith('dofnerf')== (args.dataset=='dofnerf')]
+    if args.scenes:targets=[t for t in targets if t[2] in args.scenes]
+    if args.layouts:targets=[t for t in targets if not t[1].startswith('dofnerf') or t[1].split('-')[-1] in args.layouts]
     cache = {(r['method'], r['dataset'], r['scene']): r for r in previous if r.get('matches') is True}
-    details = []
+    selected={(m,d,n) for m,d,n,*_ in targets}
+    details = [r for r in previous if (r['method'],r['dataset'],r['scene']) not in selected]
     for method, dataset, name, source, hold, synthetic in targets:
-        if (method, dataset, name) in cache:
+        if (method, dataset, name) in cache and cache[(method,dataset,name)].get('source')==str(source):
             details.append(cache[(method, dataset, name)]); continue
         disk_check()
         output = args.logs/(f'split-{method}-{dataset}-{name}.json')
@@ -380,13 +395,16 @@ def main():
     parser.add_argument('--synthetic', action='store_true')
     parser.add_argument('--dataset', choices=['all', 'deblurnerf', 'dofnerf'], default='all')
     parser.add_argument('--scenes', nargs='*')
+    parser.add_argument('--layouts', nargs='*',choices=['mix','fg','bg'])
     args = parser.parse_args()
     if args.phase == 'colmap':
         with (Path(os.environ['TMPDIR'])/'dof-gs-colmap-pipeline.lock').open('a') as lock:
             fcntl.flock(lock, fcntl.LOCK_EX)
             colmap_phase(args)
     elif args.phase == 'splits':
-        split_phase(args)
+        with (args.logs/'split-record.lock').open('a') as lock:
+            fcntl.flock(lock,fcntl.LOCK_EX)
+            split_phase(args)
     else:
         split_worker(args)
 

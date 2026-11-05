@@ -220,6 +220,10 @@ def _summarize(state, config, reason, commit=False):
                      **{'native_'+key: value for key,value in native.items() if key in {'psnr','ssim','lpips'}},
                      **{key:metadata[key] for key in ['gaussians','optimized_parameters','model_bytes','focal_planes_in_optimizer'] if key in metadata},
                      'reason': job.get('reason', ''), 'output': job.get('output', '')})
+        if 'ssim' in score:
+            rows[-1]['unified_ssim']=score['ssim']
+            if config.get('report_primary_ssim')=='native' and 'ssim' in native:
+                rows[-1]['ssim']=native['ssim'];rows[-1]['ssim_protocol']='official native'
         for name, value in result.get('summary', {}).items():
             if not name.startswith('r1-'): continue
             r1.append({'method': job['method'], 'scene': job['scene'], 'mode': name[3:], 'views': value['views'], **value['unified']})
@@ -230,6 +234,9 @@ def _summarize(state, config, reason, commit=False):
             if values: calibration.append(values)
         if job['priority'] == 0 and job.get('kind') != 'author':
             efficiency = read(Path(job.get('output', job['base_output']))/'training-efficiency.json', {})
+            reference=efficiency
+            measured=state.get('exclusive_training_measurements',{}).get(job['method'],{})
+            if measured.get('status')=='complete':efficiency=read(Path(measured['output'])/'training-efficiency.json',efficiency)
             colmap=read(PREP/'colmap.json',{}).get('runs',{}).get('deblurnerf/cake',{})
             training.append({'method': job['method'], 'status': job['status'],
                 'colmap_seconds':sum(value for stage in ['sparse','dense'] for value in colmap.get(stage,{}).get('seconds',{}).values()) if job['method']=='dofgaussian' and colmap else None,
@@ -241,12 +248,18 @@ def _summarize(state, config, reason, commit=False):
                 'nvidia_depth_prior_peak_mib':efficiency.get('sampling',{}).get('depth_prior',{}).get('nvidia_peak_mib'),
                 'nvidia_gaussian_peak_mib': efficiency.get('sampling', {}).get('gaussian', {}).get('nvidia_peak_mib'),
                 'gpu_utilization': efficiency.get('sampling', {}).get('gaussian', {}).get('mean_gpu_utilization'), 'efficiency_valid': efficiency.get('efficiency_valid')})
+            training[-1].update(measurement_label='exclusive formal' if efficiency.get('efficiency_valid') else 'parallel reference; exclusive measurement pendingP3',
+                                initial_cake_training_seconds=reference.get('total_training_call_seconds'),
+                                exclusive_supplement=measured)
     for job in state['jobs']:
         if job.get('kind') != 'author': continue
         result = read(Path(job.get('output', job['base_output']))/'evaluation.json', {})
         values=result.get('summary', {}).get('A', {})
         author.append({'scene': job['scene'], 'status': job['status'], **values.get('unified', {}),
                        **{'native_'+key:value for key,value in values.get('native',{}).items()}})
+        if 'ssim' in values.get('unified',{}):
+            author[-1]['unified_ssim']=values['unified']['ssim']
+            if config.get('report_primary_ssim')=='native':author[-1]['ssim']=values.get('native',{}).get('ssim',author[-1]['ssim'])
     averages = []
     for method in config['methods']:
         for dataset in ['deblurnerf', 'dofnerf-mix']:
@@ -254,7 +267,7 @@ def _summarize(state, config, reason, commit=False):
             row = {'method': method, 'dataset': dataset, 'completed_scenes': len(completed)}
             if completed:
                 row.update({metric: sum(r[metric] for r in completed)/len(completed) for metric in ['psnr', 'ssim', 'lpips']})
-                for metric in ['native_psnr','native_ssim','native_lpips']:
+                for metric in ['native_psnr','native_ssim','native_lpips','unified_ssim']:
                     available=[r[metric] for r in completed if metric in r]
                     if available:row[metric]=sum(available)/len(available)
             averages.append(row)
@@ -265,13 +278,13 @@ def _summarize(state, config, reason, commit=False):
             if selected:r1_averages.append({'method':method,'mode':mode,'completed_scenes':len(selected),**{key:sum(r[key] for r in selected)/len(selected) for key in ['psnr','ssim','lpips']}})
     author_complete=[row for row in author if 'psnr' in row]
     author_mean={key:sum(row[key] for row in author_complete if key in row)/sum(key in row for row in author_complete)
-                 for key in ['psnr','ssim','lpips','native_psnr','native_ssim'] if any(key in row for row in author_complete)}
+                 for key in ['psnr','ssim','lpips','native_psnr','native_ssim','unified_ssim'] if any(key in row for row in author_complete)}
     author_comparison={'completed_scenes':len(author_complete),'mean':author_mean,'checkpoint':'author retrained; original paper checkpoint was lost',
                        'paper':config['paper_reference']['dofgs_real_mean'],
                        'protocol_difference':'native SSIM uses skimage on [-1,1]; unified SSIM uses3DGS on[0,1]; native LPIPS unavailable'}
     if len(author_complete)==10:
         author_comparison['native_delta_from_paper']={metric:author_mean['native_'+metric]-config['paper_reference']['dofgs_real_mean'][metric] for metric in ['psnr','ssim']}
-        author_comparison['unified_delta_from_paper']={metric:author_mean[metric]-config['paper_reference']['dofgs_real_mean'][metric] for metric in ['psnr','ssim']}
+        author_comparison['unified_delta_from_paper']={metric:author_mean['unified_ssim' if metric=='ssim' else metric]-config['paper_reference']['dofgs_real_mean'][metric] for metric in ['psnr','ssim']}
     cake_comparison=[]
     for method in config['methods']:
         row=next(r for r in rows if r['method']==method and r['dataset']=='deblurnerf' and r['scene']=='cake')
@@ -304,6 +317,8 @@ def _summarize(state, config, reason, commit=False):
                'R1_averages_completed_scenes_only':r1_averages,
                'memory_profiles_mib': state.get('memory_profiles', {}), 'parallel_limit': state.get('parallel_limit', 1),
                'parallel_throughput_decisions':state.get('packing_decisions',[]),
+               'ssim_audit':read(RECORD/(PREFIX+'-ssim-audit.json'),{'status':'pending','report_primary':'official native'}),
+               'deferred_due_to_colmap':[{'id':j['id'],'status':j['status'],**j['colmap_delay']} for j in state['jobs'] if j.get('colmap_delay')],
                'throughput': state.get('throughput', {}), 'quality_gates': state.get('quality_gates', {}),
                'pending': [r for r in rows if r['status'] not in {'evaluated'}],
                'eta': {'measured_cake_based':estimates,'estimated_remaining_training_lower_bound_seconds':sum(v['estimated_serial_training_seconds'] for v in estimates.values())/max(1,state.get('parallel_limit',1)),
@@ -312,7 +327,7 @@ def _summarize(state, config, reason, commit=False):
                'benchmark': [read(p) for p in LOG.glob('benchmark-*.json') if read(p,{}).get('status') in {'benchmarked','failed'}],
                'self_written': ['official-function training wrapper/measurement and auxiliary serialization', 'R1 renderers', 'unified/native evaluation', 'CPU DA-V2 regions', 'BokehMe training-view calibration', 'CoCo offset-scaled E4']}
     summary['implementation_notes']=[
-        'DoF-NeRF supplied poses retained for comparison, not used: the explicit preparation request requires fresh mix-only COLMAP, overriding the plan document preference.',
+        'Updated2026-11-05 20:35+08:00: DoF-NeRF supplied poses/points are matched to sharp filenames, scaled to497x331, and radial camera/images rectified into PINHOLE derived views. Predictions/depth/alpha are reprojected to canonical original pixels for unified evaluation and BokehMe; original GT and masks are unchanged.',
         'DoF-NeRF native training view links images_4 as images and uses resolution1 to preserve exact497x331; scaling1326/4 would round height to332. Camera FOV is preserved.',
         'DOF-GS DoF-NeRF uses official cake configuration at40k; the public repository has no per-scene DoF-NeRF configuration. No test-based hyperparameter fitting.',
         'DOF-GS rendering preserves the saved band_limit/kernel_size settings, as official render.py does.',
@@ -336,7 +351,7 @@ def _summarize(state, config, reason, commit=False):
     progress = ROOT/'03_实验记录/当前实验进度与方法论.md'
     text = progress.read_text(); marker = '**3DGS 第一轮执行（2026-11-05）**'
     done = sum(r['status'] == 'evaluated' for r in rows); running = sum(r['status'] in {'training', 'rendering', 'evaluating'} for r in rows)
-    paragraph = marker+f'：已完成 {done}/{len(rows)} 个方法×场景，运行中 {running} 个；按 P0 cake 独占实测→P1→P2→P3 排队，显存预算40GiB、最多4任务，具体失败与依赖阻塞见 records。\n阶段汇总见 [round1 summary](records/'+PREFIX+'-summary.json)；平均值仅包含实际完成场景，报告时间 '+config['report_at']+'，到点汇总不停止队列。'
+    paragraph = marker+f'：已完成 {done}/{len(rows)} 个方法×场景，运行中 {running} 个；作者重训即评，COLMAP最多两路与训练并行，总显存预算40GiB、最多4个GPU任务；受并行影响的cake计时标参考，P3补独占。\n阶段汇总见 [round1 summary](records/'+PREFIX+'-summary.json)；SSIM主列保留官方口径，统一3DGS口径及差异核查另列；平均值仅包含实际完成场景，报告时间 '+config['report_at']+'，到点汇总不停止队列。'
     if (RECORD/(PREFIX+'-stage-summary.json')).exists():paragraph+=' 截止时刻快照见 [stage summary](records/'+PREFIX+'-stage-summary.json)。'
     if marker in text:
         start = text.index(marker); end = text.find('\n\n', start); text = text[:start]+paragraph+text[end if end >= 0 else len(text):]
@@ -381,6 +396,37 @@ def post_benchmarks(state,config):
     state['postprocessing']={'phase':'finished'};write(LOG/'queue.json',state)
 
 
+def post_training_measurements(state,config):
+    """Supplement contaminated cake timing only after the quality queue finishes."""
+    marker=Path(os.environ['TMPDIR'])/'dof-gs-round1-exclusive.pending'
+    continuation=PREP/'round1-colmap-continuation.finished'
+    if (PREP/'round1-colmap-continuation.pid').exists():
+        while not continuation.exists():time.sleep(10)
+    marker.write_text(str(os.getpid()))
+    try:
+        for method in config['methods']:
+            cake=next(j for j in state['jobs'] if j['method']==method and j['dataset']=='deblurnerf' and j['scene']=='cake')
+            if not cake.get('output') or not (Path(cake['output'])/'model-metadata.json').exists():continue
+            initial=read(Path(cake['output'])/'training-efficiency.json',{})
+            if initial.get('efficiency_valid'):continue
+            output=Path(cake['base_output'])/'efficiency-exclusive'
+            entry=state.setdefault('exclusive_training_measurements',{}).setdefault(method,{'output':str(output),'status':'pending'})
+            if (output/'model-metadata.json').exists() and read(output/'training-efficiency.json',{}).get('efficiency_valid'):
+                entry['status']='complete';continue
+            while not gpu_empty():time.sleep(5)
+            job=dict(cake,id='exclusive-efficiency-'+method,output=str(output),exclusive=True,reserved_memory_mib=state['memory_profiles'].get(method,16384))
+            path=LOG/('exclusive-efficiency-'+method+'.json');write(path,job)
+            entry.update(status='running',started_at=time.time());write(LOG/'queue.json',state)
+            process=command([WORK/'envs'/method/'bin/python',ROOT/'scripts/gs_round1_method.py','train','--job',path],LOG/('exclusive-efficiency-'+method+'.log'),environment(method))
+            code=process.wait()
+            if code:
+                retry=output.with_name('efficiency-exclusive-retry');job['output']=str(retry);entry['output']=str(retry);write(path,job)
+                process=command([WORK/'envs'/method/'bin/python',ROOT/'scripts/gs_round1_method.py','train','--job',path],LOG/('exclusive-efficiency-'+method+'-retry.log'),environment(method));code=process.wait()
+            entry.update(status='complete' if code==0 else 'failed',finished_at=time.time());write(LOG/'queue.json',state)
+    finally:
+        if marker.exists():marker.unlink()
+
+
 def summarize(state, config, reason, commit=False):
     with (Path(os.environ['TMPDIR'])/'dof-gs-round1-report.lock').open('a') as lock:
         fcntl.flock(lock,fcntl.LOCK_EX)
@@ -395,6 +441,17 @@ def main():
     args = parser.parse_args(); LOG.mkdir(parents=True, exist_ok=True)
     config = read(args.config); state_path = LOG/'queue.json'
     state = read(state_path, {'jobs': create_jobs(config), 'memory_profiles': {}, 'parallel_limit': config['max_parallel'], 'quality_gates': {}, 'started_at': time.time()})
+    for job in state['jobs']:
+        if job.get('kind')=='author' and config.get('author_replay_immediate'):
+            job['allow_gpu_overlap']=True
+        if job['method']=='dofgaussian' and job['scene']!='cake' and job['status']=='dependency_wait':
+            job.setdefault('colmap_delay',{'reason':'awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00','observed_at':time.time()})
+        if job['dataset']=='dofnerf-mix' and job.get('kind')!='bokehme' and job['status'] in {'queued','dependency_wait','blocked'}:
+            directory='dofnerf-dofgaussian-provided' if job['method']=='dofgaussian' else 'dofnerf-scenes-provided'
+            target=ROOT/'data/processed'/directory/'mix'/job['scene']
+            if (ROOT/'data/processed/dofnerf-scenes-provided/mix'/job['scene']/'rectification.json').exists():
+                job['source']=str(target)
+                job['geometry_protocol']='supplied poses; exact497x331 rectification; evaluation reprojected to original pixels'
     if args.report_only:
         result=summarize(state,config,args.reason,commit=True)
         if result.get('status')=='blocked':raise SystemExit(2)
@@ -433,6 +490,10 @@ def main():
             update_throughput_limit(state,job)
             if job['priority'] == 0:
                 data = read(Path(job['output'])/'training-efficiency.json', {})
+                interference=read(Path(job['output'])/'timing-interference.json',{})
+                if interference:
+                    data.update(efficiency_valid=False,measurement_label='parallel reference',interference=interference)
+                    write(Path(job['output'])/'training-efficiency.json',data)
                 peak = max((r.get('nvidia_peak_mib', 0) for r in data.get('sampling', {}).values()), default=0)
                 state['memory_profiles'][job['method']] = math.ceil(peak*1.1+512)
             return
@@ -452,7 +513,9 @@ def main():
                     job.update(status='blocked',reason='DOF-GS parent '+parent['status']); continue
             if job['status'] not in {'dependency_wait', 'blocked'} or job.get('reason', '').startswith('Cake quality'): continue
             reason = dependency(job, prep)
-            if not reason: job.update(status='queued', reason='')
+            if not reason:
+                job.update(status='queued', reason='')
+                if job.get('colmap_delay'):job['colmap_delay'].setdefault('resolved_at',now)
             elif prep['final']: job.update(status='blocked', reason=reason)
         if shutil.disk_usage('/').free < 1024**3: raise RuntimeError('System disk below1GiB; queue stopped')
         for key, (process, job, phase) in list(active.items()):
@@ -494,17 +557,25 @@ def main():
                 job.update(status='blocked', reason='No successful exclusive cake memory measurement')
         retries = [j for j in state['jobs'] if j['status'] in {'retry', 'render_retry'}]
         exclusive_pending = Path(os.environ['TMPDIR'])/'dof-gs-round1-exclusive.pending'
-        if unfinished_cake or retries:
+        if (unfinished_cake and not config.get('concurrent_preparation')) or retries:
             exclusive_pending.write_text(str(os.getpid()))
         elif exclusive_pending.exists():
             exclusive_pending.unlink()
-        candidates = [j for j in state['jobs'] if j['priority'] == priority and j['status'] in {'queued', 'trained'}]
+        if config.get('concurrent_preparation'):
+            candidates=[j for j in state['jobs'] if j['status'] in {'queued','trained'} and
+                        (j['priority']==0 or j['priority']==1 and state['memory_profiles'].get(j['method']) or priority==2 and j['priority']==2)]
+            candidates.sort(key=lambda j:(0 if j.get('kind')=='author' else 1 if j['priority']==0 else 2,j['priority']))
+        else:
+            candidates = [j for j in state['jobs'] if j['priority'] == priority and j['status'] in {'queued', 'trained'}]
         if priority==2:candidates.sort(key=lambda job:job.get('kind')!='bokehme')
         if retries and not active: candidates = retries[:1]
         if not retries or not active:
             for job in candidates:
-                if len(active) >= (1 if priority == 0 or retries else state['parallel_limit']): break
-                exclusive = priority == 0 or bool(retries)
+                parallel_prep=config.get('concurrent_preparation',False)
+                if len(active) >= (1 if retries or priority==0 and not parallel_prep else state['parallel_limit']): break
+                if job.get('kind')=='author' and any(j.get('kind')=='author' for _,j,_ in active.values()):continue
+                if job['priority']==0 and job.get('kind')!='author' and any(j['priority']==0 and j.get('kind')!='author' for _,j,_ in active.values()):continue
+                exclusive = bool(retries) or job['priority']==0 and not parallel_prep
                 if exclusive and (active or not gpu_empty()): break
                 reserve = state['memory_profiles'].get(job['method'], config['unknown_memory_mib'])
                 total = unknown_gpu_memory(active)+sum(state['memory_profiles'].get(j['method'], config['unknown_memory_mib']) for _, j, _ in active.values())
@@ -519,6 +590,9 @@ def main():
                     if 'output' not in job:
                         job['output'] = str(Path(job['base_output'])/'attempt-1'); job['exclusive'] = exclusive
                 jobfile = LOG/(job['id']+'.json'); write(jobfile, job)
+                job['reserved_memory_mib']=reserve
+                if not exclusive:job['measurement_label']='parallel reference' if job['priority']==0 else 'parallel'
+                write(jobfile,job)
                 arguments = [Path('/root/miniconda3/envs/any2bokeh/bin/python'),ROOT/'scripts/gs_round1_bokehme.py','--job',jobfile] if phase=='bokehme' else [WORK/'envs'/job['method']/'bin/python', ROOT/'scripts/gs_round1_method.py', phase, '--job', jobfile]
                 process = command(arguments,
                                   LOG/(job['id']+'-'+phase+'-'+str(job['attempt'])+'.log'), environment(job['method']))
@@ -536,6 +610,7 @@ def main():
         time.sleep(10)
     write(LOG/'training-queue.finished', {'finished_at': time.time()})
     summarize(state, config, 'training-complete', commit=True)
+    post_training_measurements(state,config)
     post_benchmarks(state,config)
     plot=command([WORK/'envs/dofgs/bin/python',ROOT/'scripts/plot_gs_round1.py'],LOG/'plot.log',environment('dofgs'))
     plot.wait()

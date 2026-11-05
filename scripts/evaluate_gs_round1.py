@@ -87,10 +87,11 @@ def evaluate(manifest, output, regions=None):
                   'lpips': float(criterion(prediction, truth))}
         row = dict(pair, unified=scores, resolution=list(prediction.shape[-2:][::-1]))
         native_gt = tensor(pair.get('native_truth', pair['truth']))
+        native_prediction=tensor(pair.get('native_prediction',pair['prediction']))
         if pair['protocol'] in {'A', 'r0'}:
-            row['native'] = native_scores(function, prediction, native_gt) if function else {
-                'psnr': -10*math.log10(max(float((prediction-native_gt).square().mean()), 1e-16)),
-                'ssim': float(official_loss.ssim(prediction, native_gt)), 'lpips': float(criterion(prediction, native_gt))}
+            row['native'] = native_scores(function, native_prediction, native_gt) if function else {
+                'psnr': -10*math.log10(max(float((native_prediction-native_gt).square().mean()), 1e-16)),
+                'ssim': float(official_loss.ssim(native_prediction, native_gt)), 'lpips': float(criterion(native_prediction, native_gt))}
         if regions and pair['protocol'].startswith('r1-'):
             mode = pair['protocol'].split('-')[-1]
             masks = np.load(regions/data['scene']/(pair['image']+'.npz'))

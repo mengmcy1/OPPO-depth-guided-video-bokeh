@@ -18,6 +18,7 @@ import sys
 import threading
 import time
 import traceback
+from gs_round1_resources import gpu_slot
 
 PROJECT = Path(__file__).resolve().parents[1]
 WORKSPACE = PROJECT.parent
@@ -44,7 +45,8 @@ def data_view(source, destination, low_resolution=False):
     image_source = source/('images_4' if low_resolution else 'images')
     for name, target in [('images', image_source), ('images_4', source/'images_4'),
                          ('poses_bounds.npy', source/'poses_bounds.npy'),
-                         ('manifest.json', source/'manifest.json'), ('dense', source/'dense')]:
+                         ('manifest.json', source/'manifest.json'), ('dense', source/'dense'),
+                         ('rectification.json',source/'rectification.json'),('rectification-maps',source/'rectification-maps')]:
         link = destination/name
         if target.exists() and not link.exists():
             link.symlink_to(target.resolve(), target_is_directory=target.is_dir())
@@ -263,6 +265,20 @@ def render_views(job):
     manifest = json.loads((source/'manifest.json').read_text()) if (source/'manifest.json').exists() else None
     by_name = {Path(v['output_filename']).stem: v for v in manifest['views']} if manifest else {}
     original = Path(meta['original_source'])
+    rectification=json.loads((original/'rectification.json').read_text()) if (original/'rectification.json').exists() else None
+    canonical=Path(rectification['canonical_source']) if rectification else original
+    maps={}
+    def original_pixels(value,camera):
+        if rectification is None:return value
+        cid=rectification['image_camera_ids'][camera.image_name+'.png']
+        if cid not in maps:maps[cid]=np.load(original/'rectification-maps'/f'{cid}.npz')
+        mapping=maps[cid]
+        return cv2.remap(value,mapping['to_original_x'],mapping['to_original_y'],cv2.INTER_LINEAR,borderMode=cv2.BORDER_REPLICATE)
+    def save_prediction(image,path,camera):
+        if rectification is None:save_image(image,path);return
+        array=image.detach().permute(1,2,0).cpu().numpy()
+        array=original_pixels(array,camera)
+        assert cv2.imwrite(str(path),cv2.cvtColor((array*255).round().clip(0,255).astype(np.uint8),cv2.COLOR_RGB2BGR))
     training = sorted(scene.getTrainCameras(), key=lambda c: c.image_name)
     training_indices = {c.image_name: i for i, c in enumerate(training)}
     mode_parameters = {}
@@ -332,23 +348,26 @@ def render_views(job):
             base = destination/'r0'/role; base.mkdir(parents=True, exist_ok=True)
             result = draw(camera); image = result['render'].clamp(0, 1)
             assert torch.isfinite(image).all(), 'Non-finite render'
-            prediction = base/(camera.image_name+'.png'); save_image(image, prediction)
+            prediction = base/(camera.image_name+'.png'); save_prediction(image, prediction,camera)
+            native_prediction=base/(camera.image_name+'-native-pred.png')
+            if rectification:save_image(image,native_prediction)
+            else:native_prediction=prediction
             native_gt = base/(camera.image_name+'-native-gt.png'); save_image(camera.original_image[:3], native_gt)
-            gt_candidates = sorted((original/'images_4').glob(camera.image_name+'.*'))
+            gt_candidates = sorted((canonical/'images_4').glob(camera.image_name+'.*'))
             assert len(gt_candidates) == 1, gt_candidates
             pairs.append({'protocol': 'r0' if manifest else 'A', 'role': role, 'image': camera.image_name,
-                          'prediction': str(prediction), 'truth': str(gt_candidates[0]), 'native_truth': str(native_gt)})
+                          'prediction': str(prediction), 'truth': str(gt_candidates[0]), 'native_truth': str(native_gt),'native_prediction':str(native_prediction)})
             if job['method'] == 'dofgs' and manifest:
                 white = torch.ones_like(gaussian.get_xyz)
                 alpha = function(camera, gaussian, pipe, torch.zeros_like(bg), focal_distance=torch.ones(1, 1, device='cuda'),
                                  K_apert=torch.zeros(1, 1, device='cuda'), override_color=white, **extra)['render'][0]
                 depth = result['depth'].squeeze()/alpha.clamp_min(1e-5)
-                np.save(base/(camera.image_name+'-depth.npy'), depth.cpu().numpy())
-                np.save(base/(camera.image_name+'-alpha.npy'), alpha.cpu().numpy())
+                np.save(base/(camera.image_name+'-depth.npy'), original_pixels(depth.cpu().numpy(),camera))
+                np.save(base/(camera.image_name+'-alpha.npy'), original_pixels(alpha.cpu().numpy(),camera))
             if manifest and role == 'test' and job['method'] != 'mipsplatting' and r1_pass:
                 for mode in ['fg', 'bg']:
                     target = destination/'r1'/mode; target.mkdir(parents=True, exist_ok=True)
-                    prediction = target/(camera.image_name+'.png'); save_image(draw(camera, mode)['render'].clamp(0, 1), prediction)
+                    prediction = target/(camera.image_name+'.png'); save_prediction(draw(camera, mode)['render'].clamp(0, 1), prediction,camera)
                     raw = PROJECT/'data/raw/DoF-NeRF/DoF_RealWorld_Data'/job['scene']/by_name[camera.image_name]['source_files'][mode]
                     truth = target/(camera.image_name+'-gt.png')
                     assert cv2.imwrite(str(truth), cv2.resize(cv2.imread(str(raw)), (497, 331), interpolation=cv2.INTER_AREA))
@@ -482,15 +501,22 @@ def main():
         os.execve(sys.executable, [sys.executable, *sys.argv], dict(os.environ, LD_LIBRARY_PATH=library+':'+cuda+':'+os.environ.get('LD_LIBRARY_PATH', '')))
     guard(); subprocess.run(['nvidia-smi'], check=True)
     gpu_lock = (Path(os.environ['TMPDIR'])/'dof-gs-gpu.lock').open('a')
-    fcntl.flock(gpu_lock, fcntl.LOCK_EX if job.get('exclusive') else fcntl.LOCK_SH)
-    repo = WORKSPACE/REPOS[job['method']]; sys.path.insert(0, str(repo)); os.chdir(repo)
-    if args.phase == 'train': train(job)
-    elif args.phase == 'render':
-        import torch
-        with torch.no_grad(): render_views(job)
+    if job.get('kind')=='author' and job.get('allow_gpu_overlap'):
+        # User explicitly prioritized author replay while the current exclusive cake run finishes.
+        used = float(subprocess.check_output(['nvidia-smi','--id=0','--query-gpu=memory.used','--format=csv,noheader,nounits'],text=True).strip())
+        if used + 4096 > 40960: raise RuntimeError('Author replay would exceed the40GiB GPU budget')
     else:
-        import torch
-        with torch.no_grad(): benchmark(job)
+        fcntl.flock(gpu_lock, fcntl.LOCK_EX if job.get('exclusive') else fcntl.LOCK_SH)
+    reserve=job.get('reserved_memory_mib',4096 if job.get('kind')=='author' else 16384)
+    with gpu_slot(reserve,job['id']+':'+args.phase,exclusive=bool(job.get('exclusive'))):
+        repo = WORKSPACE/REPOS[job['method']]; sys.path.insert(0, str(repo)); os.chdir(repo)
+        if args.phase == 'train': train(job)
+        elif args.phase == 'render':
+            import torch
+            with torch.no_grad(): render_views(job)
+        else:
+            import torch
+            with torch.no_grad(): benchmark(job)
 
 
 if __name__ == '__main__': main()
