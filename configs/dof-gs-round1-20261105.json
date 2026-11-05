@@ -1,0 +1,23 @@
+{
+  "report_at": "2026-11-06T09:00:00+08:00",
+  "report_timezone": "Asia/Shanghai",
+  "methods": ["dofgs", "dofgaussian", "cocogaussian", "mipsplatting"],
+  "real_scenes": ["cake", "caps", "cisco", "coral", "cupcake", "cups", "daisy", "sausage", "seal", "tools"],
+  "dofnerf_scenes": ["amiya", "camera", "plant", "kendo", "desk", "shelf"],
+  "max_parallel": 4,
+  "memory_budget_mib": 40960,
+  "unknown_memory_mib": 16384,
+  "quality_gate_psnr_db": 1.0,
+  "quality_gate_action": "investigate cake data, split, resolution and metrics before expanding the affected method",
+  "r1_training_check_min_psnr_db": 15.0,
+  "benchmark_scenes": ["cake", "caps"],
+  "benchmark_warmup": 10,
+  "benchmark_repeats": 50,
+  "e4_radii_pixels": [0, 2, 4, 8, 16, 32],
+  "bokehme": {"gamma": 2.2, "highlight": false, "defocus_scale": 10.0, "focus_grid": [0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1.0], "K_grid": [0, 2, 4, 8, 12, 16, 24, 32], "disparity_percentiles": [1, 99]},
+  "regions": {"model": "DepthAnythingV2-vitl", "weights": "models/MagicBokeh/DAdepth.pth", "device": "cpu", "input_size": 518, "gradient_quantile": 0.9, "dilation_radius": 2, "difference_sigma": 1.0, "focus_difference_threshold": 0.03},
+  "paper_reference": {
+    "dofgs_real_mean": {"psnr": 24.12, "ssim": 0.7667, "scenes": 10, "source": "https://openaccess.thecvf.com/content/CVPR2025/papers/Wang_DOF-GS_Adjustable_Depth-of-Field_3D_Gaussian_Splatting_for_Post-Capture_Refocusing_Defocus_CVPR_2025_paper.pdf"},
+    "dofgaussian_cake": {"psnr": 26.83, "ssim": 0.808, "lpips": 0.101, "source": "https://openaccess.thecvf.com/content/CVPR2025/papers/Shen_DoF-Gaussian_Controllable_Depth-of-Field_for_3D_Gaussian_Splatting_CVPR_2025_paper.pdf"}
+  }
+}

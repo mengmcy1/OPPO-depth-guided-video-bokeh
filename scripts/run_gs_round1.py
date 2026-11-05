@@ -1,0 +1,486 @@
+#!/usr/bin/env python3
+"""Simple persistent round-one queue: exclusive cake runs, then memory packing.
+
+Run with nohup after preparing the method scripts. Progress and child process IDs
+are saved on the data disk. A dated report is generated without stopping jobs.
+"""
+import argparse
+from collections import defaultdict
+import csv
+import fcntl
+from datetime import datetime, timezone
+import json
+import math
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import time
+import re
+
+ROOT = Path(__file__).resolve().parents[1]
+WORK = ROOT.parent
+PREFIX = 'dof-gs-repro-2026-11-05-round1'
+LOG = ROOT/'logs'/PREFIX
+OUT = ROOT/'outputs/dof-gs-repro-2026-11-05'
+PREP = ROOT/'logs/dof-gs-repro-2026-11-05'
+RECORD = ROOT/'03_实验记录/records'
+HOLDS = {'cake': 9, 'caps': 5, 'cisco': 7, 'coral': 10, 'cupcake': 6, 'cups': 8, 'daisy': 8, 'sausage': 6, 'seal': 6, 'tools': 7}
+
+
+def write(path, data):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_suffix(path.suffix+'.tmp')
+    temporary.write_text(json.dumps(data, ensure_ascii=False, indent=2)+'\n'); temporary.replace(path)
+
+
+def read(path, default=None):
+    try: return json.loads(path.read_text())
+    except (OSError, ValueError): return default
+
+
+def command(arguments, log, environment=None):
+    with log.open('a') as stream:
+        stream.write('\nCOMMAND '+json.dumps(list(map(str, arguments)))+'\n'); stream.flush()
+        return subprocess.Popen(list(map(str, arguments)), cwd=ROOT, stdin=subprocess.DEVNULL,
+                                stdout=stream, stderr=subprocess.STDOUT, env=environment, close_fds=True)
+
+
+def environment(method):
+    env = dict(os.environ, CUDA_VISIBLE_DEVICES='0', PYTHONNOUSERSITE='1', OPENBLAS_NUM_THREADS='1',
+               MKL_NUM_THREADS='1', OMP_NUM_THREADS='4', TORCH_HOME=str(WORK/'.cache/torch'),
+               HF_HOME=str(WORK/'.cache/huggingface'), TMPDIR=str(WORK/'.cache/tmp'),
+               PIP_CACHE_DIR=str(WORK/'.cache/pip'), CONDA_PKGS_DIRS=str(WORK/'.cache/conda-pkgs'),
+               CUDA_CACHE_PATH=str(WORK/'.cache/cuda'), MPLCONFIGDIR=str(WORK/'.cache/matplotlib'),
+               CUPY_CACHE_DIR=str(WORK/'.cache/cupy'), TRITON_CACHE_DIR=str(WORK/'.cache/triton'),
+               XDG_CACHE_HOME=str(WORK/'.cache'))
+    prefix = Path('/root/miniconda3/envs/any2bokeh') if method == 'bokehme' else WORK/'envs'/method
+    env['CONDA_PREFIX'] = str(prefix); env['PATH'] = str(prefix/'bin')+':'+env['PATH']
+    env['CUDA_HOME'] = '/usr/local/cuda-12.8' if method in {'dofgaussian','bokehme'} else str(prefix)
+    env['LD_LIBRARY_PATH'] = str(prefix/'lib')+':'+str(Path(env['CUDA_HOME'])/'lib64')+':'+env.get('LD_LIBRARY_PATH', '')
+    return env
+
+
+def gpu_empty():
+    output = subprocess.check_output(['nvidia-smi', '--query-compute-apps=pid', '--format=csv,noheader,nounits'], text=True)
+    return not output.strip()
+
+
+class AdoptedProcess:
+    """Observe a surviving child after a queue process is restarted."""
+    def __init__(self, job, phase):
+        self.pid=job['pid'];self.job=job;self.phase=phase;self.returncode=None
+    def poll(self):
+        try:
+            if Path(f'/proc/{self.pid}/stat').read_text().split()[2]!='Z':return None
+        except OSError:pass
+        output=Path(self.job['output'])
+        marker=output/('model-metadata.json' if self.phase=='train' else 'evaluation.json' if self.phase=='evaluate' else 'rendered/pairs.json')
+        self.returncode=0 if marker.exists() else 1
+        return self.returncode
+
+
+def unknown_gpu_memory(active):
+    known = {process.pid for process, _, _ in active.values()}
+    rows = subprocess.check_output(['nvidia-smi', '--query-compute-apps=pid,used_gpu_memory', '--format=csv,noheader,nounits'], text=True)
+    return sum(float(row.split(',')[1]) for row in rows.splitlines() if int(row.split(',')[0]) not in known)
+
+
+def create_jobs(config):
+    jobs = []
+    for dataset, scenes in [('deblurnerf', config['real_scenes']), ('dofnerf-mix', config['dofnerf_scenes'])]:
+        for scene in scenes:
+            for method in config['methods']:
+                if dataset == 'deblurnerf':
+                    source = ROOT/('data/processed/deblurnerf-dofgaussian' if method == 'dofgaussian' else
+                                   'data/raw/Deblurring3DGS/deblur_dataset/real_defocus_blur' if method == 'cocogaussian' else
+                                   'data/raw/DeblurNeRF/real_defocus_blur')/('defocus'+scene)
+                else:
+                    source = ROOT/'data/processed'/('dofnerf-dofgaussian' if method == 'dofgaussian' else 'dofnerf-scenes')/'mix'/scene
+                jobs.append({'id': method+'-'+dataset+'-'+scene, 'method': method, 'dataset': dataset, 'scene': scene,
+                             'hold': HOLDS[scene] if dataset == 'deblurnerf' else 9, 'source': str(source),
+                             'base_output': str(OUT/method/dataset/scene), 'priority': 0 if scene == 'cake' and dataset == 'deblurnerf' else 1 if dataset == 'deblurnerf' else 2,
+                             'attempt': 0, 'status': 'queued'})
+    for scene in config['real_scenes']:
+        model = ROOT/'data/raw/DOFGS-author/real_results'/('real_'+scene)
+        jobs.append({'id': 'author-'+scene, 'kind': 'author', 'method': 'dofgs', 'dataset': 'author-retrained',
+                     'scene': scene, 'hold': HOLDS[scene], 'source': str(ROOT/'data/raw/DeblurNeRF/real_defocus_blur'/('defocus'+scene)),
+                     'model': str(model), 'base_output': str(OUT/'dofgs/author-retrained'/scene), 'priority': 0, 'attempt': 0, 'status': 'queued'})
+    for scene in config['dofnerf_scenes']:
+        jobs.append({'id': 'bokehme-'+scene, 'kind': 'bokehme', 'method': 'bokehme', 'dataset': 'dofnerf-mix',
+                     'scene': scene, 'hold': 9, 'source': str(ROOT/'data/processed/dofnerf-scenes/mix'/scene),
+                     'base_output': str(OUT/'bokehme/dofnerf-mix'/scene), 'priority': 2, 'attempt': 0, 'status': 'dependency_wait'})
+    return jobs
+
+
+def dependency(job, prep):
+    if job.get('kind') == 'bokehme':
+        return 'Awaiting DOF-GS reconstructed training views' if not job.get('dofgs_output') or not (Path(job['dofgs_output'])/'rendered/pairs.json').exists() else None
+    env = prep['environments'].get(job['method'], {})
+    if env.get('rasterization', {}).get('status') != 'passed' or any(v.get('status') != 'passed' for v in env.get('imports', {}).values()):
+        return 'Environment self-check/import not passed'
+    dataset = 'deblurring3dgs-real' if job['method'] == 'cocogaussian' and job['dataset'] == 'deblurnerf' else 'deblurnerf-real' if job['dataset'] in {'deblurnerf', 'author-retrained'} else 'dofnerf-mix'
+    checks = [r for r in prep['splits'] if r['method'] == job['method'] and r['dataset'] == dataset and r['scene'] == job['scene']]
+    if len(checks) != 1 or checks[0].get('matches') is not True:
+        return 'Official split reader not passed: '+str(checks[0].get('error', '') if checks else 'missing row')
+    if job.get('kind') == 'author' and not (Path(job['model'])/'point_cloud').is_dir():
+        candidates = [p for p in (ROOT/'data/raw/DOFGS-author/real_results').rglob('real_'+job['scene']) if (p/'point_cloud').is_dir()]
+        if len(candidates) == 1: job['model'] = str(candidates[0])
+        else: return 'Author retrained checkpoint unavailable'
+    if job['dataset'] in {'deblurnerf', 'author-retrained'}:
+        scene = prep['manifest'].get('real_scenes', {}).get(job['scene'], {})
+        if not scene.get('matches_baseline'): return 'Raw image count/decoding/hold not passed'
+        if job['method'] == 'cocogaussian':
+            compare = prep['manifest'].get('sha256_comparisons', {}).get(job['scene'], {})
+            if not compare.get('hold_matches') or not all(r.get('identical') for r in compare.get('directories', {}).values()):
+                return 'CoCo image/hold comparison not passed'
+    if job['method'] == 'dofgaussian':
+        key = 'deblurnerf/'+job['scene'] if job['dataset'] == 'deblurnerf' else 'dofnerf/dense/mix/'+job['scene']
+        if prep['colmap'].get('runs', {}).get(key, {}).get('status') != 'complete':
+            return 'Dense reconstruction is incomplete'
+        if prep['colmap'].get('visibility_parse_check', {}).get('status') != 'passed':
+            return 'Modified visibility parser not passed'
+    return None
+
+
+def preparation_state():
+    final = (PREP/'workflow.finished').exists()
+    env_record = read(RECORD/'dof-gs-repro-2026-11-05-environments.json', {})
+    environments = env_record.get('environments', {}) if final else {
+        name: read(PREP/('environment-'+name+'.json'), {}) for name in ['dofgs','dofgaussian','mipsplatting','cocogaussian']}
+    return {'environments': environments,
+            'splits': read((RECORD/'dof-gs-repro-2026-11-05-split-check.json') if final else PREP/'split-check.json', {}).get('checks', []),
+            'manifest': read((RECORD/'dof-gs-repro-2026-11-05-data-manifest.json') if final else PREP/'data-manifest.json', {}),
+            'colmap': read((RECORD/'dof-gs-repro-2026-11-05-colmap.json') if final else PREP/'colmap.json', {}), 'final': final,
+            'visibility': read(PREP/'visibility-check.json', {})}
+
+
+def commit_report(files, message):
+    def git(*args): return subprocess.check_output(['git', '-c', 'core.quotepath=false', *args], cwd=ROOT, text=True, stderr=subprocess.STDOUT).strip()
+    try:
+        remote=git('remote','get-url','origin')
+        if re.search(r'https?://[^/]*@',remote):raise RuntimeError('Credential-bearing remote rejected')
+        git('fetch', 'origin'); branch = git('branch', '--show-current')
+        ahead, behind = map(int, git('rev-list', '--left-right', '--count', 'HEAD...origin/'+branch).split())
+        if behind:
+            if ahead: raise RuntimeError('Remote/local diverged; no automatic history rewriting')
+            git('merge', '--ff-only', 'origin/'+branch)
+        staged = set(git('diff', '--cached', '--name-only').splitlines())
+        if staged-set(files): raise RuntimeError('Unrelated staged edits preserved')
+        original=PREP/'central-progress-initial.txt'
+        if original.exists():
+            text=(ROOT/'03_实验记录/当前实验进度与方法论.md').read_text()
+            for marker in ['DOF-GS 前期准备执行状态（2026-11-05）','3DGS 第一轮执行（2026-11-05）']:
+                text=re.sub(r'\n\n\*\*'+re.escape(marker)+r'\*\*[^\n]*(?:\n(?!\n)[^\n]*)*','',text)
+            if text!=original.read_text():raise RuntimeError('Progress document has other edits; preserve them for review')
+        for name in files:
+            if (ROOT/name).stat().st_size>3*1024**2:raise RuntimeError('Oversized deliverable: '+name)
+        git('diff', '--check', '--', *files); git('add', '--', *files); git('diff', '--cached', '--check')
+        if not git('diff', '--cached', '--name-only'): return {'status': 'no_changes', 'commit': git('rev-parse', 'HEAD')}
+        author, email = git('log', '-1', '--format=%an'), git('log', '-1', '--format=%ae')
+        git('-c', 'user.name='+author, '-c', 'user.email='+email, 'commit', '-m', message)
+        commit = git('rev-parse', 'HEAD'); git('push', 'origin', branch)
+        return {'status': 'pushed', 'commit': commit}
+    except Exception as exc:
+        return {'status': 'blocked', 'error': str(exc)}
+
+
+def _summarize(state, config, reason, commit=False):
+    rows = []; training = []; author = []; r1 = []; regional = []; calibration = []
+    for job in state['jobs']:
+        result = read(Path(job.get('output', job['base_output']))/'evaluation.json', {})
+        protocol = 'A' if job['dataset'] == 'deblurnerf' else 'r0'
+        score = result.get('summary', {}).get(protocol, {}).get('unified', {})
+        native = result.get('summary', {}).get(protocol, {}).get('native', {})
+        rows.append({'method': job['method'], 'dataset': job['dataset'], 'scene': job['scene'], 'status': job['status'], **score,
+                     **{'native_'+key: value for key,value in native.items() if key in {'psnr','ssim','lpips'}},
+                     'reason': job.get('reason', ''), 'output': job.get('output', '')})
+        for name, value in result.get('summary', {}).items():
+            if not name.startswith('r1-'): continue
+            r1.append({'method': job['method'], 'scene': job['scene'], 'mode': name[3:], 'views': value['views'], **value['unified']})
+            for region, scores in value.get('regions', {}).items():
+                regional.append({'method': job['method'], 'scene': job['scene'], 'mode': name[3:], 'region': region, **scores})
+        if job.get('kind') == 'bokehme':
+            values = read(Path(job.get('output', job['base_output']))/'calibration.json', {})
+            if values: calibration.append(values)
+        if job['priority'] == 0 and job.get('kind') != 'author':
+            efficiency = read(Path(job.get('output', job['base_output']))/'training-efficiency.json', {})
+            training.append({'method': job['method'], 'status': job['status'],
+                'gaussian_seconds': efficiency.get('gaussian_seconds'), 'depth_prior_seconds': efficiency.get('depth_prior_seconds'),
+                'torch_gaussian_peak_bytes': efficiency.get('torch_gaussian_peak_bytes'),
+                'nvidia_gaussian_peak_mib': efficiency.get('sampling', {}).get('gaussian', {}).get('nvidia_peak_mib'),
+                'gpu_utilization': efficiency.get('sampling', {}).get('gaussian', {}).get('mean_gpu_utilization'), 'efficiency_valid': efficiency.get('efficiency_valid')})
+    for job in state['jobs']:
+        if job.get('kind') != 'author': continue
+        result = read(Path(job.get('output', job['base_output']))/'evaluation.json', {})
+        values=result.get('summary', {}).get('A', {})
+        author.append({'scene': job['scene'], 'status': job['status'], **values.get('unified', {}),
+                       **{'native_'+key:value for key,value in values.get('native',{}).items()}})
+    averages = []
+    for method in config['methods']:
+        for dataset in ['deblurnerf', 'dofnerf-mix']:
+            completed = [row for row in rows if row['method'] == method and row['dataset'] == dataset and 'psnr' in row]
+            row = {'method': method, 'dataset': dataset, 'completed_scenes': len(completed)}
+            if completed:
+                row.update({metric: sum(r[metric] for r in completed)/len(completed) for metric in ['psnr', 'ssim', 'lpips']})
+                for metric in ['native_psnr','native_ssim','native_lpips']:
+                    available=[r[metric] for r in completed if metric in r]
+                    if available:row[metric]=sum(available)/len(available)
+            averages.append(row)
+    r1_averages=[]
+    for method in [*config['methods'],'bokehme']:
+        for mode in ['fg','bg']:
+            selected=[row for row in r1 if row['method']==method and row['mode']==mode]
+            if selected:r1_averages.append({'method':method,'mode':mode,'completed_scenes':len(selected),**{key:sum(r[key] for r in selected)/len(selected) for key in ['psnr','ssim','lpips']}})
+    author_complete=[row for row in author if 'psnr' in row]
+    author_mean={key:sum(row[key] for row in author_complete if key in row)/sum(key in row for row in author_complete)
+                 for key in ['psnr','ssim','lpips','native_psnr','native_ssim'] if any(key in row for row in author_complete)}
+    author_comparison={'completed_scenes':len(author_complete),'mean':author_mean,'checkpoint':'author retrained; original paper checkpoint was lost',
+                       'paper':config['paper_reference']['dofgs_real_mean'],
+                       'protocol_difference':'native SSIM uses skimage on [-1,1]; unified SSIM uses3DGS on[0,1]; native LPIPS unavailable'}
+    if len(author_complete)==10:
+        author_comparison['native_delta_from_paper']={metric:author_mean['native_'+metric]-config['paper_reference']['dofgs_real_mean'][metric] for metric in ['psnr','ssim']}
+        author_comparison['unified_delta_from_paper']={metric:author_mean[metric]-config['paper_reference']['dofgs_real_mean'][metric] for metric in ['psnr','ssim']}
+    cake_comparison=[]
+    for method in config['methods']:
+        row=next(r for r in rows if r['method']==method and r['dataset']=='deblurnerf' and r['scene']=='cake')
+        reference=config['paper_reference'].get(method+'_cake')
+        cake_comparison.append({'method':method,'status':row['status'],'measured':row,'paper':reference,
+                                'delta':{k:row[k]-reference[k] for k in ['psnr','ssim','lpips'] if k in row and k in reference} if reference else None})
+    estimates={}
+    for method in config['methods']:
+        cake=next(j for j in state['jobs'] if j['method']==method and j['dataset']=='deblurnerf' and j['scene']=='cake')
+        timing=read(Path(cake.get('output',cake['base_output']))/'training-efficiency.json',{})
+        seconds=timing.get('total_training_call_seconds') if timing.get('status')=='trained' else None
+        remaining=[j for j in state['jobs'] if j['method']==method and not j.get('kind') and j['status'] not in {'evaluated','failed','blocked','trained','rendered','rendering','evaluating'}]
+        if seconds:estimates[method]={'remaining_training_jobs':len(remaining),'cake_seconds':seconds,
+                                      'estimated_serial_training_seconds':seconds*sum(1.75 if j['scene']=='coral' and method=='dofgs' else 1 for j in remaining)}
+    summary = {'generated_at': datetime.now(timezone.utc).isoformat(), 'reason': reason, 'report_at': config['report_at'],
+               'jobs': rows, 'averages_completed_scenes_only': averages, 'cake_training_efficiency': training,
+               'author_retrained': author, 'author_paper_comparison':author_comparison,'cake_paper_comparison':cake_comparison, 'paper_references': config['paper_reference'],
+               'R1': r1, 'regional_R1': regional, 'bokehme_calibration': calibration,
+               'R1_averages_completed_scenes_only':r1_averages,
+               'memory_profiles_mib': state.get('memory_profiles', {}), 'parallel_limit': state.get('parallel_limit', 1),
+               'throughput': state.get('throughput', {}), 'quality_gates': state.get('quality_gates', {}),
+               'pending': [r for r in rows if r['status'] not in {'evaluated'}],
+               'eta': {'measured_cake_based':estimates,'estimated_remaining_training_lower_bound_seconds':sum(v['estimated_serial_training_seconds'] for v in estimates.values())/max(1,state.get('parallel_limit',1)),
+                       'scope':'rough training estimate only; excludes pending data, COLMAP, render/evaluation and P3; scene sizes and concurrent slowdown vary; methods without a completed cake remain unknown'},
+               'regions': read(OUT/'regions/regions-approved.json', {'status': 'awaiting_visual_review'}),
+               'benchmark': [read(p) for p in LOG.glob('benchmark-*.json') if read(p,{}).get('status') in {'benchmarked','failed'}],
+               'self_written': ['official-function training wrapper/measurement and auxiliary serialization', 'R1 renderers', 'unified/native evaluation', 'CPU DA-V2 regions', 'BokehMe training-view calibration', 'CoCo offset-scaled E4']}
+    RECORD.mkdir(parents=True, exist_ok=True)
+    write(RECORD/(PREFIX+'-summary.json'), summary)
+    for name, table in [('A-and-R0', rows), ('averages', averages), ('training-efficiency', training), ('author-retrained', author), ('R1',r1), ('R1-averages',r1_averages), ('regional-R1',regional)]:
+        fields = sorted(set().union(*(r.keys() for r in table))) if table else ['status']
+        with (RECORD/(PREFIX+'-'+name+'.csv')).open('w', newline='') as stream:
+            writer = csv.DictWriter(stream, fieldnames=fields, lineterminator='\n'); writer.writeheader(); writer.writerows(table)
+    progress = ROOT/'03_实验记录/当前实验进度与方法论.md'
+    text = progress.read_text(); marker = '**3DGS 第一轮执行（2026-11-05）**'
+    done = sum(r['status'] == 'evaluated' for r in rows); running = sum(r['status'] in {'training', 'rendering', 'evaluating'} for r in rows)
+    paragraph = marker+f'：已完成 {done}/{len(rows)} 个方法×场景，运行中 {running} 个；按 P0 cake 独占实测→P1→P2→P3 排队，显存预算40GiB、最多4任务，具体失败与依赖阻塞见 records。\n阶段汇总见 [round1 summary](records/'+PREFIX+'-summary.json)；平均值仅包含实际完成场景，报告时间 '+config['report_at']+'，到点汇总不停止队列。'
+    if marker in text:
+        start = text.index(marker); end = text.find('\n\n', start); text = text[:start]+paragraph+text[end if end >= 0 else len(text):]
+    else:
+        start = text.index('**DOF-GS 前期准备执行状态'); end = text.find('\n\n', start); text = text[:end]+'\n\n'+paragraph+text[end:]
+    progress.write_text(text)
+    if commit:
+        files = [str(p.relative_to(ROOT)) for p in sorted(RECORD.glob(PREFIX+'-*'))]
+        files += ['03_实验记录/当前实验进度与方法论.md', 'configs/dof-gs-round1-20261105.json']
+        files += [str(p.relative_to(ROOT)) for p in sorted((ROOT/'scripts').glob('*gs_round1*.py'))]
+        files += ['scripts/prepare_dofnerf_scenes.py', 'scripts/prepare_gs_repro.py']
+        if (PREP/'workflow.finished').exists() and read(PREP/'git-result.json', {}).get('status') != 'pushed':
+            files += [str(p.relative_to(ROOT)) for p in sorted(RECORD.glob('dof-gs-repro-2026-11-05-*')) if not p.name.startswith(PREFIX)]
+        result=commit_report(files, '记录3DGS第一轮'+reason+'：实际完成场景与运行队列')
+        write(LOG/('git-'+reason+'.json'), result)
+        return result
+
+
+def post_benchmarks(state,config):
+    marker=Path(os.environ['TMPDIR'])/'dof-gs-round1-exclusive.pending'
+    marker.write_text(str(os.getpid()))
+    try:
+        for method in config['methods']:
+            for scene in config['benchmark_scenes']:
+                job=next(j for j in state['jobs'] if j['method']==method and j['dataset']=='deblurnerf' and j['scene']==scene)
+                if not job.get('output') or not (Path(job['output'])/'model-metadata.json').exists():continue
+                destination=LOG/('benchmark-'+method+'-'+scene+'.json')
+                if read(destination,{}).get('status')=='benchmarked':continue
+                while not gpu_empty():time.sleep(5)
+                bench=dict(job,exclusive=True,model=job['output'],benchmark_output=str(destination))
+                path=LOG/('benchmark-job-'+method+'-'+scene+'.json');write(path,bench)
+                state['postprocessing']={'phase':'benchmark','method':method,'scene':scene};write(LOG/'queue.json',state)
+                process=command([WORK/'envs'/method/'bin/python',ROOT/'scripts/gs_round1_method.py','benchmark','--job',path],
+                                LOG/('benchmark-'+method+'-'+scene+'.log'),environment(method))
+                code=process.wait()
+                if code:
+                    process=command([WORK/'envs'/method/'bin/python',ROOT/'scripts/gs_round1_method.py','benchmark','--job',path],
+                                    LOG/('benchmark-'+method+'-'+scene+'-retry.log'),environment(method))
+                    if process.wait():write(destination,{'status':'failed','method':method,'scene':scene,'reason':'benchmark failed twice; see logs'})
+    finally:
+        if marker.exists():marker.unlink()
+    state['postprocessing']={'phase':'finished'};write(LOG/'queue.json',state)
+
+
+def summarize(state, config, reason, commit=False):
+    with (Path(os.environ['TMPDIR'])/'dof-gs-round1-report.lock').open('a') as lock:
+        fcntl.flock(lock,fcntl.LOCK_EX)
+        return _summarize(state,config,reason,commit)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--config', type=Path, default=ROOT/'configs/dof-gs-round1-20261105.json')
+    parser.add_argument('--report-only', action='store_true')
+    parser.add_argument('--reason', default='stage')
+    args = parser.parse_args(); LOG.mkdir(parents=True, exist_ok=True)
+    config = read(args.config); state_path = LOG/'queue.json'
+    state = read(state_path, {'jobs': create_jobs(config), 'memory_profiles': {}, 'parallel_limit': config['max_parallel'], 'quality_gates': {}, 'started_at': time.time()})
+    if args.report_only:
+        result=summarize(state,config,args.reason,commit=True)
+        if result.get('status')=='blocked':raise SystemExit(2)
+        return
+    instance = (Path(os.environ['TMPDIR'])/'dof-gs-round1-queue.lock').open('a')
+    fcntl.flock(instance,fcntl.LOCK_EX|fcntl.LOCK_NB)
+    write(state_path, state)
+    waiting_report_written = False
+    while not (PREP/'priority-cake-prep.finished').exists() and not (PREP/'workflow.finished').exists():
+        write(LOG/'waiting.json', {'status': 'waiting_for_prep', 'time': time.time(), 'report_at': read(args.config)['report_at']})
+        config = read(args.config)
+        if time.time() >= datetime.fromisoformat(config['report_at']).timestamp() and not waiting_report_written:
+            summarize(state, config, 'stage-waiting-for-prep', commit=True); waiting_report_written = True
+        if shutil.disk_usage('/').free < 1024**3: raise RuntimeError('System disk below1GiB')
+        time.sleep(15)
+    prep = preparation_state()
+    if 'visibility_parse_check' not in prep['colmap']: prep['colmap']['visibility_parse_check'] = prep['visibility']
+    for job in state['jobs']:
+        if job['status'] not in {'queued','dependency_wait','blocked'}:continue
+        reason = dependency(job, prep)
+        if reason: job.update(status='blocked' if prep['final'] else 'dependency_wait', reason=reason)
+    active = {}; cpu = {}; last_summary = 0; report_written = waiting_report_written
+    for job in state['jobs']:
+        if job['status'] in {'training','rendering','evaluating'} and job.get('pid'):
+            phase=job.get('phase','evaluate' if job['status']=='evaluating' else 'train' if job['status']=='training' else 'render')
+            process=AdoptedProcess(job,phase)
+            if phase=='evaluate':cpu[job['id']]=(process,job)
+            else:active[job['id']]=(process,job,phase)
+    def finish_gpu(job, phase, code):
+        if code:
+            job.update(status='retry' if job['attempt'] < 2 and phase in {'train','bokehme'} else
+                       'render_retry' if phase == 'render' and job.get('render_attempt', 0) < 2 else 'failed', reason=f'{phase} exit={code}')
+            return
+        if phase == 'train':
+            job['trained_at'] = time.time(); job['status'] = 'trained'
+            if job['priority'] == 0:
+                data = read(Path(job['output'])/'training-efficiency.json', {})
+                peak = max((r.get('nvidia_peak_mib', 0) for r in data.get('sampling', {}).values()), default=0)
+                state['memory_profiles'][job['method']] = math.ceil(peak*1.1+512)
+            return
+        job['status'] = 'rendered'
+        if phase=='bokehme':
+            memory=read(Path(job['output'])/'bokehme-efficiency.json',{}).get('nvidia_peak_mib',0)
+            state['memory_profiles']['bokehme']=math.ceil(memory*1.1+512)
+    while True:
+        config = read(args.config); now = time.time()
+        prep = preparation_state()
+        if 'visibility_parse_check' not in prep['colmap']: prep['colmap']['visibility_parse_check'] = prep['visibility']
+        for job in state['jobs']:
+            if job.get('kind') == 'bokehme':
+                parent = next(j for j in state['jobs'] if j['method']=='dofgs' and j['dataset']=='dofnerf-mix' and j['scene']==job['scene'])
+                if parent.get('output'): job['dofgs_output'] = parent['output']
+                if parent['status'] in {'blocked','failed'}:
+                    job.update(status='blocked',reason='DOF-GS parent '+parent['status']); continue
+            if job['status'] not in {'dependency_wait', 'blocked'} or job.get('reason', '').startswith('Cake quality'): continue
+            reason = dependency(job, prep)
+            if not reason: job.update(status='queued', reason='')
+            elif prep['final']: job.update(status='blocked', reason=reason)
+        if shutil.disk_usage('/').free < 1024**3: raise RuntimeError('System disk below1GiB; queue stopped')
+        for key, (process, job, phase) in list(active.items()):
+            if process.poll() is None: continue
+            finish_gpu(job, phase, process.returncode); active.pop(key)
+        for key, (process, job) in list(cpu.items()):
+            if process.poll() is None: continue
+            job['status'] = 'evaluated' if process.returncode == 0 else 'failed'; job['finished_at'] = now
+            cpu.pop(key)
+            if job['priority'] == 0 and job['method'] == 'dofgaussian' and process.returncode == 0:
+                result = read(Path(job['output'])/'evaluation.json', {})['summary']['A']['unified']['psnr']
+                delta = result-config['paper_reference']['dofgaussian_cake']['psnr']
+                state['quality_gates']['dofgaussian'] = {'cake_psnr_delta': delta, 'passed': abs(delta) <= config['quality_gate_psnr_db'],
+                    'diagnosis': 'Check canonical/native GT, resolution, hold and renderer before expanding if outside threshold'}
+            if job.get('kind') == 'author' and job['scene'] == 'cake' and process.returncode == 0:
+                reference = read(Path(job['output'])/'evaluation.json', {}).get('summary', {}).get('A', {}).get('unified', {}).get('psnr')
+                trained = next(j for j in state['jobs'] if j['method'] == 'dofgs' and j['dataset'] == 'deblurnerf' and j['scene'] == 'cake')
+                value = read(Path(trained.get('output', trained['base_output']))/'evaluation.json', {}).get('summary', {}).get('A', {}).get('unified', {}).get('psnr')
+                if reference is not None and value is not None:
+                    delta = value-reference
+                    state['quality_gates']['dofgs'] = {'cake_psnr_delta': delta, 'reference': 'author retrained checkpoint, not original paper checkpoint',
+                                                       'passed': abs(delta) <= config['quality_gate_psnr_db']}
+        for job in state['jobs']:
+            if job['status'] == 'rendered' and len(cpu) < 2:
+                destination = Path(job['output'])/'evaluation.json'
+                arguments = [WORK/'envs/gs-base-cu118/bin/python', ROOT/'scripts/evaluate_gs_round1.py',
+                             '--manifest', Path(job['output'])/'rendered/pairs.json', '--output', destination]
+                if (OUT/'regions/regions-approved.json').exists(): arguments += ['--regions', OUT/'regions']
+                process = command(arguments, LOG/(job['id']+'-evaluate.log'), environment('gs-base-cu118'))
+                cpu[job['id']] = (process, job); job['status'] = 'evaluating';job['phase']='evaluate';job['pid']=process.pid
+        unfinished_cake = [j for j in state['jobs'] if j['priority'] == 0 and j['status'] not in {'evaluated', 'failed', 'blocked', 'dependency_wait'}]
+        unfinished_A = [j for j in state['jobs'] if j['priority'] == 1 and j['status'] not in {'evaluated', 'failed', 'blocked', 'dependency_wait'}]
+        priority = 0 if unfinished_cake else 1 if unfinished_A else 2
+        for job in state['jobs']:
+            if job['priority'] > 0 and state['quality_gates'].get(job['method'], {}).get('passed') is False and job['status'] == 'queued':
+                job.update(status='blocked', reason='Cake quality gate requires diagnosis before expansion')
+            cake_failed = any(j['method'] == job['method'] and j['dataset'] == 'deblurnerf' and j['scene'] == 'cake' and j['status'] in {'failed', 'blocked'} for j in state['jobs'])
+            if job.get('kind')!='bokehme' and job['priority'] > 0 and cake_failed and not state['memory_profiles'].get(job['method']) and job['status'] == 'queued':
+                job.update(status='blocked', reason='No successful exclusive cake memory measurement')
+        retries = [j for j in state['jobs'] if j['status'] in {'retry', 'render_retry'}]
+        exclusive_pending = Path(os.environ['TMPDIR'])/'dof-gs-round1-exclusive.pending'
+        if unfinished_cake or retries:
+            exclusive_pending.write_text(str(os.getpid()))
+        elif exclusive_pending.exists():
+            exclusive_pending.unlink()
+        candidates = [j for j in state['jobs'] if j['priority'] == priority and j['status'] in {'queued', 'trained'}]
+        if priority==2:candidates.sort(key=lambda job:job.get('kind')!='bokehme')
+        if retries and not active: candidates = retries[:1]
+        if not retries or not active:
+            for job in candidates:
+                if len(active) >= (1 if priority == 0 or retries else state['parallel_limit']): break
+                exclusive = priority == 0 or bool(retries)
+                if exclusive and (active or not gpu_empty()): break
+                reserve = state['memory_profiles'].get(job['method'], config['unknown_memory_mib'])
+                total = unknown_gpu_memory(active)+sum(state['memory_profiles'].get(j['method'], config['unknown_memory_mib']) for _, j, _ in active.values())
+                if not exclusive and total+reserve > config['memory_budget_mib']: continue
+                phase = 'bokehme' if job.get('kind')=='bokehme' else 'render' if job['status'] in {'trained', 'render_retry'} or job.get('kind') == 'author' else 'train'
+                if phase in {'train','bokehme'}:
+                    job['attempt'] += 1; job['output'] = str(Path(job['base_output'])/('attempt-'+str(job['attempt'])))
+                    job['exclusive'] = exclusive; job['started_at'] = now
+                if phase == 'render':
+                    job['exclusive'] = exclusive
+                    job['render_attempt'] = job.get('render_attempt', 0)+1
+                    if 'output' not in job:
+                        job['output'] = str(Path(job['base_output'])/'attempt-1'); job['exclusive'] = exclusive
+                jobfile = LOG/(job['id']+'.json'); write(jobfile, job)
+                arguments = [Path('/root/miniconda3/envs/any2bokeh/bin/python'),ROOT/'scripts/gs_round1_bokehme.py','--job',jobfile] if phase=='bokehme' else [WORK/'envs'/job['method']/'bin/python', ROOT/'scripts/gs_round1_method.py', phase, '--job', jobfile]
+                process = command(arguments,
+                                  LOG/(job['id']+'-'+phase+'-'+str(job['attempt'])+'.log'), environment(job['method']))
+                active[job['id']] = (process, job, phase); job['status'] = 'training' if phase in {'train','bokehme'} else 'rendering'; job['pid'] = process.pid; job['phase']=phase
+        state['throughput'] = {'completed_trainings': sum('trained_at' in j for j in state['jobs']),
+                               'elapsed_since_first_training_seconds': now-min([j['started_at'] for j in state['jobs'] if 'started_at' in j] or [now]),
+                               'parallel_times_are_reference_only': True}
+        write(state_path, state)
+        due = datetime.fromisoformat(config['report_at']).timestamp()
+        if now >= due and not report_written:
+            summarize(state, config, 'stage', commit=True); report_written = True
+        elif now-last_summary > 300:
+            summarize(state, config, 'running'); last_summary = now
+        if not active and not cpu and all(j['status'] in {'evaluated', 'failed', 'blocked'} for j in state['jobs']): break
+        time.sleep(10)
+    write(LOG/'training-queue.finished', {'finished_at': time.time()})
+    summarize(state, config, 'training-complete', commit=True)
+    post_benchmarks(state,config)
+    plot=command([WORK/'envs/dofgs/bin/python',ROOT/'scripts/plot_gs_round1.py'],LOG/'plot.log',environment('dofgs'))
+    plot.wait()
+    summarize(state,config,'complete',commit=True)
+    write(LOG/'round1.finished',{'finished_at':time.time()})
+
+
+if __name__ == '__main__': main()
