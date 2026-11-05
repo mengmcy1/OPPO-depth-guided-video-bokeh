@@ -236,6 +236,10 @@ def load_model(job):
         path = model/'defocus_params'/f'iteration_{iteration}'/'defocus_params.pth'
         if path.exists(): gaussian.load_defocus_params(str(path))
         extra['tone_map'] = ToneMapping(getattr(args, 'tonemap_type', 'none')).cuda()
+        from functools import partial
+        band_limit = getattr(args, 'band_limit', False)
+        if isinstance(band_limit, str): band_limit = band_limit.lower() != 'false'
+        render = partial(render, band_limit=band_limit, kernel_size=float(getattr(args, 'kernel_size', .1)))
     elif job['method'] == 'cocogaussian' and (model/'coco-kernel.pt').exists():
         state = torch.load(model/'coco-kernel.pt', map_location='cpu')
         saved_uids = {c['name']: c['uid'] for c in meta['train_cameras']}

@@ -292,16 +292,32 @@ def _summarize(state, config, reason, commit=False):
                'regions': read(OUT/'regions/regions-approved.json', {'status': 'awaiting_visual_review'}),
                'benchmark': [read(p) for p in LOG.glob('benchmark-*.json') if read(p,{}).get('status') in {'benchmarked','failed'}],
                'self_written': ['official-function training wrapper/measurement and auxiliary serialization', 'R1 renderers', 'unified/native evaluation', 'CPU DA-V2 regions', 'BokehMe training-view calibration', 'CoCo offset-scaled E4']}
+    summary['implementation_notes']=[
+        'DoF-NeRF supplied poses retained for comparison, not used: the explicit preparation request requires fresh mix-only COLMAP, overriding the plan document preference.',
+        'DoF-NeRF native training view links images_4 as images and uses resolution1 to preserve exact497x331; scaling1326/4 would round height to332. Camera FOV is preserved.',
+        'DOF-GS DoF-NeRF uses official cake configuration at40k; the public repository has no per-scene DoF-NeRF configuration. No test-based hyperparameter fitting.',
+        'DOF-GS rendering preserves the saved band_limit/kernel_size settings, as official render.py does.',
+        'DoF-Gaussian custom R1 uses10*activated_K and gamma2, matching official train.py, rather than render_bokeh function defaults.',
+        'CoCo auxiliary kernel/focal-plane state is saved after timed training; camera UID mapping is restored from training metadata. Actual focal_planes optimizer membership is recorded per model without changing official training.',
+        'CoCo E4 scales learned position offsets only; scale/rotation heads remain as learned. Zero radius uses the base Gaussian renderer.',
+        'Native SSIM on[-1,1] and native Alex LPIPS can differ from unified3DGS SSIM and VGG LPIPS; both are preserved. DOF-GS native metric has no LPIPS.',
+        'Author checkpoints are retrained releases, not the original paper checkpoints. Paper comparison is marked incomplete until all10 scenes are evaluated.'
+    ]
     RECORD.mkdir(parents=True, exist_ok=True)
     write(RECORD/(PREFIX+'-summary.json'), summary)
     for name, table in [('A-and-R0', rows), ('averages', averages), ('training-efficiency', training), ('author-retrained', author), ('R1',r1), ('R1-averages',r1_averages), ('regional-R1',regional)]:
         fields = sorted(set().union(*(r.keys() for r in table))) if table else ['status']
         with (RECORD/(PREFIX+'-'+name+'.csv')).open('w', newline='') as stream:
             writer = csv.DictWriter(stream, fieldnames=fields, lineterminator='\n'); writer.writeheader(); writer.writerows(table)
+    if reason.startswith('stage'):
+        for suffix in ['summary.json','A-and-R0.csv','averages.csv','training-efficiency.csv','author-retrained.csv','R1.csv','R1-averages.csv','regional-R1.csv']:
+            snapshot=RECORD/(PREFIX+'-stage-'+suffix)
+            if not snapshot.exists():shutil.copy2(RECORD/(PREFIX+'-'+suffix),snapshot)
     progress = ROOT/'03_实验记录/当前实验进度与方法论.md'
     text = progress.read_text(); marker = '**3DGS 第一轮执行（2026-11-05）**'
     done = sum(r['status'] == 'evaluated' for r in rows); running = sum(r['status'] in {'training', 'rendering', 'evaluating'} for r in rows)
     paragraph = marker+f'：已完成 {done}/{len(rows)} 个方法×场景，运行中 {running} 个；按 P0 cake 独占实测→P1→P2→P3 排队，显存预算40GiB、最多4任务，具体失败与依赖阻塞见 records。\n阶段汇总见 [round1 summary](records/'+PREFIX+'-summary.json)；平均值仅包含实际完成场景，报告时间 '+config['report_at']+'，到点汇总不停止队列。'
+    if (RECORD/(PREFIX+'-stage-summary.json')).exists():paragraph+=' 截止时刻快照见 [stage summary](records/'+PREFIX+'-stage-summary.json)。'
     if marker in text:
         start = text.index(marker); end = text.find('\n\n', start); text = text[:start]+paragraph+text[end if end >= 0 else len(text):]
     else:
