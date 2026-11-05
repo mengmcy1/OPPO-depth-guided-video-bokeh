@@ -371,7 +371,8 @@ def _summarize(state, config, reason, commit=False):
                'metric_protocols':{'primary':'official native PSNR/SSIM when available; unified values are separate',
                     'unified':'RGB0..1 PSNR; 3DGS11x11 Gaussian SSIM sigma1.5; LPIPS VGGv0.1 with3DGS0..1 input convention',
                     'official_lpips':{'dofgs':'unavailable; leave blank','dofgaussian':'Alex onRGB-1..1','cocogaussian':'Alex onRGB-1..1','mipsplatting':'VGG onRGB0..1','bokehme':'no official metric function; unified values only'},
-                    'R1':'official metric functions, where available, evaluate the self-written R1 renders; this does not imply an official R1 command exists'},
+                    'R1':'official metric functions, where available, evaluate the self-written R1 renders; this does not imply an official R1 command exists',
+                    'regional_R1':'unified metric maps; no official regional evaluation script is available'},
                'jobs': rows, 'averages_completed_scenes_only': averages, 'cake_training_efficiency': training,
                'author_retrained': author, 'author_paper_comparison':author_comparison,'cake_paper_comparison':cake_comparison,'method_paper_means':paper_means, 'paper_references': config['paper_reference'],
                'R1': r1, 'regional_R1': regional, 'bokehme_calibration': calibration,
@@ -416,6 +417,7 @@ def _summarize(state, config, reason, commit=False):
     text = progress.read_text(); marker = '**3DGS 第一轮执行（2026-11-05）**'
     done = sum(r['status'] == 'evaluated' for r in rows); running = sum(r['status'] in {'training', 'rendering', 'evaluating'} for r in rows)
     paragraph = marker+f'：已完成 {done}/{len(rows)} 个方法×场景，运行中 {running} 个；按23:45调整优先完成三方法×五场景共同子集，再推进amiya、camera；最多4任务、40GiB，现有任务继续，08:30后收尾，09:00汇总落盘后恢复完整队列。\n阶段汇总见 [round1 summary](records/'+PREFIX+'-summary.json)；PSNR/SSIM以官方口径为主，统一口径和LPIPS VGG/官方值另列；共同平均仅使用三方法都有结果的相同场景集合，报告时间 '+config['report_at']+'。'
+    paragraph+=' 当前调度模式：'+{'priority':'汇报前优先队列','wrap_up':'08:30收尾','awaiting_report':'等待阶段汇总落盘','full':'完整队列'}[schedule_mode(config)]+'。'
     if (RECORD/(PREFIX+'-stage-summary.json')).exists():paragraph+=' 截止时刻快照见 [stage summary](records/'+PREFIX+'-stage-summary.json)。'
     if marker in text:
         start = text.index(marker); end = text.find('\n\n', start); text = text[:start]+paragraph+text[end if end >= 0 else len(text):]
