@@ -167,7 +167,8 @@ def dense(scene, colmap, log):
     if not (target/'fused.ply').exists() or not (target/'fused.ply.vis').exists():
         elapsed['stereo_fusion'] = execute(colmap, 'stereo_fusion',
             ['--workspace_path', target, '--workspace_format', 'COLMAP', '--input_type', 'geometric',
-             '--output_path', target/'fused.ply', '--StereoFusion.min_num_pixels', '2'], log)
+             '--output_path', target/'fused.ply', '--StereoFusion.min_num_pixels', '2',
+             '--StereoFusion.num_threads', '8'], log)
     missing = [name for name in expected if not (target/'stereo/depth_maps'/name).exists()]
     with (target/'fused.ply.vis').open('rb') as stream:
         count = struct.unpack('<Q', stream.read(8))[0]
