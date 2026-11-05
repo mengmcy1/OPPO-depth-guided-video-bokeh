@@ -1,31 +1,167 @@
 {
   "report_at": "2026-11-06T09:00:00+08:00",
   "report_timezone": "Asia/Shanghai",
-  "methods": ["dofgs", "dofgaussian", "cocogaussian", "mipsplatting"],
-  "real_scenes": ["cake", "caps", "cisco", "coral", "cupcake", "cups", "daisy", "sausage", "seal", "tools"],
-  "dofnerf_scenes": ["amiya", "camera", "plant", "kendo", "desk", "shelf"],
+  "methods": [
+    "dofgs",
+    "dofgaussian",
+    "cocogaussian",
+    "mipsplatting"
+  ],
+  "real_scenes": [
+    "cake",
+    "caps",
+    "cisco",
+    "coral",
+    "cupcake",
+    "cups",
+    "daisy",
+    "sausage",
+    "seal",
+    "tools"
+  ],
+  "dofnerf_scenes": [
+    "amiya",
+    "camera",
+    "plant",
+    "kendo",
+    "desk",
+    "shelf"
+  ],
   "max_parallel": 4,
   "memory_budget_mib": 40960,
   "unknown_memory_mib": 16384,
   "concurrent_preparation": true,
   "author_replay_immediate": true,
-  "parallel_cake_methods": ["cocogaussian", "mipsplatting"],
+  "parallel_cake_methods": [
+    "cocogaussian",
+    "mipsplatting"
+  ],
   "report_primary_ssim": "native",
   "quality_gate_psnr_db": 1.0,
   "quality_gate_action": "investigate cake data, split, resolution and metrics before expanding the affected method",
   "r1_training_check_min_psnr_db": 15.0,
-  "benchmark_scenes": ["cake", "caps"],
+  "benchmark_scenes": [
+    "cake",
+    "caps"
+  ],
   "benchmark_warmup": 10,
   "benchmark_repeats": 50,
-  "e4_radii_pixels": [0, 2, 4, 8, 16, 32],
-  "bokehme": {"gamma": 2.2, "highlight": false, "defocus_scale": 10.0, "focus_grid": [0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1.0], "K_grid": [0, 2, 4, 8, 12, 16, 24, 32], "disparity_percentiles": [1, 99]},
-  "regions": {"model": "DepthAnythingV2-vitl", "weights": "models/MagicBokeh/DAdepth.pth", "device": "cpu", "input_size": 518, "gradient_quantile": 0.9, "dilation_radius": 2, "difference_sigma": 1.0, "focus_difference_threshold": 0.03},
+  "e4_radii_pixels": [
+    0,
+    2,
+    4,
+    8,
+    16,
+    32
+  ],
+  "bokehme": {
+    "gamma": 2.2,
+    "highlight": false,
+    "defocus_scale": 10.0,
+    "focus_grid": [
+      0,
+      0.125,
+      0.25,
+      0.375,
+      0.5,
+      0.625,
+      0.75,
+      0.875,
+      1.0
+    ],
+    "K_grid": [
+      0,
+      2,
+      4,
+      8,
+      12,
+      16,
+      24,
+      32
+    ],
+    "disparity_percentiles": [
+      1,
+      99
+    ]
+  },
+  "regions": {
+    "model": "DepthAnythingV2-vitl",
+    "weights": "models/MagicBokeh/DAdepth.pth",
+    "device": "cpu",
+    "input_size": 518,
+    "gradient_quantile": 0.9,
+    "dilation_radius": 2,
+    "difference_sigma": 1.0,
+    "focus_difference_threshold": 0.03
+  },
   "paper_reference": {
-    "dofgs_real_mean": {"psnr": 24.12, "ssim": 0.7667, "scenes": 10, "source": "https://openaccess.thecvf.com/content/CVPR2025/papers/Wang_DOF-GS_Adjustable_Depth-of-Field_3D_Gaussian_Splatting_for_Post-Capture_Refocusing_Defocus_CVPR_2025_paper.pdf"},
-    "dofgaussian_cake": {"psnr": 26.83, "ssim": 0.808, "lpips": 0.101, "source": "https://openaccess.thecvf.com/content/CVPR2025/papers/Shen_DoF-Gaussian_Controllable_Depth-of-Field_for_3D_Gaussian_Splatting_CVPR_2025_paper.pdf"},
-    "dofgaussian_real_mean": {"psnr": 23.97, "ssim": 0.756, "lpips": 0.093, "scenes": 10, "source": "https://openaccess.thecvf.com/content/CVPR2025/papers/Shen_DoF-Gaussian_Controllable_Depth-of-Field_for_3D_Gaussian_Splatting_CVPR_2025_paper.pdf"},
-    "cocogaussian_cake": {"psnr": 26.65, "ssim": 0.8043, "lpips": 0.1037, "source": "https://openaccess.thecvf.com/content/CVPR2025/supplemental/Lee_CoCoGaussian_Leveraging_Circle_CVPR_2025_supplemental.pdf", "table": 4},
-    "cocogaussian_real_mean": {"psnr": 23.70, "ssim": 0.7531, "lpips": 0.0825, "scenes": 10, "source": "https://openaccess.thecvf.com/content/CVPR2025/papers/Lee_CoCoGaussian_Leveraging_Circle_of_Confusion_for_Gaussian_Splatting_from_Defocused_CVPR_2025_paper.pdf"},
-    "mipsplatting_real_mean": {"psnr": 21.23, "ssim": 0.6292, "scenes": 10, "source": "https://arxiv.org/html/2405.17351v3", "table": 1, "reported_by": "DOF-GS authors; not Mip-Splatting original paper"}
+    "dofgs_real_mean": {
+      "psnr": 24.12,
+      "ssim": 0.7667,
+      "scenes": 10,
+      "source": "https://openaccess.thecvf.com/content/CVPR2025/papers/Wang_DOF-GS_Adjustable_Depth-of-Field_3D_Gaussian_Splatting_for_Post-Capture_Refocusing_Defocus_CVPR_2025_paper.pdf"
+    },
+    "dofgaussian_cake": {
+      "psnr": 26.83,
+      "ssim": 0.808,
+      "lpips": 0.101,
+      "source": "https://openaccess.thecvf.com/content/CVPR2025/papers/Shen_DoF-Gaussian_Controllable_Depth-of-Field_for_3D_Gaussian_Splatting_CVPR_2025_paper.pdf"
+    },
+    "dofgaussian_real_mean": {
+      "psnr": 23.97,
+      "ssim": 0.756,
+      "lpips": 0.093,
+      "scenes": 10,
+      "source": "https://openaccess.thecvf.com/content/CVPR2025/papers/Shen_DoF-Gaussian_Controllable_Depth-of-Field_for_3D_Gaussian_Splatting_CVPR_2025_paper.pdf"
+    },
+    "cocogaussian_cake": {
+      "psnr": 26.65,
+      "ssim": 0.8043,
+      "lpips": 0.1037,
+      "source": "https://openaccess.thecvf.com/content/CVPR2025/supplemental/Lee_CoCoGaussian_Leveraging_Circle_CVPR_2025_supplemental.pdf",
+      "table": 4
+    },
+    "cocogaussian_real_mean": {
+      "psnr": 23.7,
+      "ssim": 0.7531,
+      "lpips": 0.0825,
+      "scenes": 10,
+      "source": "https://openaccess.thecvf.com/content/CVPR2025/papers/Lee_CoCoGaussian_Leveraging_Circle_of_Confusion_for_Gaussian_Splatting_from_Defocused_CVPR_2025_paper.pdf"
+    },
+    "mipsplatting_real_mean": {
+      "psnr": 21.23,
+      "ssim": 0.6292,
+      "scenes": 10,
+      "source": "https://arxiv.org/html/2405.17351v3",
+      "table": 1,
+      "reported_by": "DOF-GS authors; not Mip-Splatting original paper"
+    }
+  },
+  "report_primary_psnr": "native",
+  "priority_window": {
+    "enabled": true,
+    "requested_at": "2026-11-05T23:45:00+08:00",
+    "launch_until": "2026-11-06T08:30:00+08:00",
+    "common_methods": [
+      "dofgs",
+      "dofgaussian",
+      "mipsplatting"
+    ],
+    "common_scenes": [
+      "cake",
+      "caps",
+      "cisco",
+      "coral",
+      "cupcake"
+    ],
+    "dofnerf_scenes": [
+      "amiya",
+      "camera"
+    ],
+    "primary_dofnerf_scene": "amiya",
+    "secondary_min_remaining_seconds": 5400,
+    "resume_after_report": true,
+    "scope_unchanged": true,
+    "wrap_up": "after08:30 preserve running jobs and allow render/evaluation; hold new training/COLMAP until09:00 report artifacts are saved"
   }
 }

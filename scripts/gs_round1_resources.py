@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 import time
 import sys
+from gs_round1_schedule import read as read_schedule,CONFIG,colmap_order
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -18,7 +19,9 @@ def colmap_demand():
         if not alive((log/'round1-colmap-continuation.pid').read_text().strip()):return 0
         runs=json.loads((log/'colmap.json').read_text())['runs']
     except (OSError,ValueError,KeyError):return 0
-    pending=[r for key,r in runs.items() if (key.startswith('deblurnerf/') or key.startswith('dofnerf/dense/mix/')) and r.get('status') in {'queued','running'}]
+    config=read_schedule(CONFIG,{})
+    pending=[r for key,r in runs.items() if (key.startswith('deblurnerf/') or key.startswith('dofnerf/dense/mix/')) and
+             (r.get('status')=='running' or r.get('status')=='queued' and colmap_order(key,config) is not None)]
     return min(2,len(pending))
 
 

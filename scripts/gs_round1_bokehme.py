@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/'src'))
 from baselines.bokehme import setup, predict
 from gs_round1_method import Sampler, write
+from gs_round1_resources import gpu_slot
 
 
 def rgb(path):
@@ -32,6 +33,11 @@ def main():
     subprocess.run(['nvidia-smi'], check=True)
     lock = (Path(os.environ['TMPDIR'])/'dof-gs-gpu.lock').open('a')
     fcntl.flock(lock, fcntl.LOCK_EX if job.get('exclusive') else fcntl.LOCK_SH)
+    with gpu_slot(job.get('reserved_memory_mib',16384),job['id']+':train',exclusive=bool(job.get('exclusive'))):
+        run(job)
+
+
+def run(job):
     config = json.loads((ROOT/'configs/dof-gs-round1-20261105.json').read_text())['bokehme']
     model_output = Path(job['dofgs_output'])
     source = ROOT/'data/processed/dofnerf-scenes/mix'/job['scene']

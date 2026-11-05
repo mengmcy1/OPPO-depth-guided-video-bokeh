@@ -19,6 +19,7 @@ import sys
 import time
 import re
 from gs_round1_resources import colmap_demand
+from gs_round1_schedule import schedule_mode,job_group,job_order,REPORT_READY
 
 ROOT = Path(__file__).resolve().parents[1]
 WORK = ROOT.parent
@@ -39,6 +40,42 @@ def write(path, data):
 def read(path, default=None):
     try: return json.loads(path.read_text())
     except (OSError, ValueError): return default
+
+
+def reported_metrics(unified,native,config):
+    if not unified:return {}
+    result=dict(unified)
+    result.update(unified_psnr=unified.get('psnr'),unified_ssim=unified.get('ssim'),
+                  lpips_vgg=unified.get('lpips'),lpips_official=native.get('lpips'),
+                  official_psnr=native.get('psnr'),official_ssim=native.get('ssim'),
+                  lpips_note='unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable')
+    if config.get('report_primary_psnr')=='native' and 'psnr' in native:result['psnr']=native['psnr']
+    if config.get('report_primary_ssim')=='native' and 'ssim' in native:result['ssim']=native['ssim']
+    result['primary_protocol']='official native' if native else 'unified; official metric unavailable'
+    return result
+
+
+def common_subset_tables(rows,config):
+    policy=config.get('priority_window',{})
+    methods=policy.get('common_methods',['dofgs','dofgaussian','mipsplatting'])
+    scenes=policy.get('common_scenes',['cake','caps','cisco','coral','cupcake'])
+    table=[r.copy() for r in rows if r['dataset']=='deblurnerf' and r['method'] in methods and r['scene'] in scenes]
+    complete={method:{r['scene'] for r in table if r['method']==method and isinstance(r.get('psnr'),(int,float))} for method in methods}
+    shared=[scene for scene in scenes if all(scene in complete[m] for m in methods)]
+    averages=[]
+    metrics=['psnr','ssim','official_psnr','official_ssim','unified_psnr','unified_ssim','lpips_vgg','lpips_official']
+    for method in methods:
+        selected=[r for r in table if r['method']==method and r['scene'] in shared]
+        average={'method':method,'completed_scenes':len(shared),'scene_names':','.join(shared),'comparable':bool(shared)}
+        for metric in metrics:
+            values=[r[metric] for r in selected if isinstance(r.get(metric),(int,float))]
+            average[metric]=sum(values)/len(values) if len(values)==len(shared) and values else None
+        averages.append(average)
+    for row in table:row['in_shared_completed_subset']=row['scene'] in shared
+    return {'methods':methods,'planned_scenes':scenes,'shared_completed_scenes':shared,
+            'completed_scene_count':len(shared),'per_scene':table,'averages':averages,
+            'missing_by_method':{m:[s for s in scenes if s not in complete[m]] for m in methods},
+            'comparison_rule':'only average the identical completed scene intersection across all3methods; method-specific means on differing sets are descriptive only'}
 
 
 def command(arguments, log, environment=None):
@@ -226,13 +263,16 @@ def _summarize(state, config, reason, commit=False):
                      'reason': job.get('reason', ''), 'output': job.get('output', '')})
         if rendering.get('r1_training_check_passed') is False:
             rows[-1]['r1_status']='blocked: own-parameter training-view reproduction check failed; R0 retained'
-        if 'ssim' in score:
-            rows[-1]['unified_ssim']=score['ssim']
-            if config.get('report_primary_ssim')=='native' and 'ssim' in native:
-                rows[-1]['ssim']=native['ssim'];rows[-1]['ssim_protocol']='official native'
+        rows[-1].update(reported_metrics(score,native,config))
+        rows[-1]['schedule_group']=job_group(job,config)
+        rows[-1]['schedule_phase']=schedule_mode(config)
+        if job['status'] in {'queued','dependency_wait','retry'} and job_order(job,config,state['jobs']) is None:
+            rows[-1]['deferred_until']=config['report_at']
+            rows[-1]['schedule_note']='retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up'
         for name, value in result.get('summary', {}).items():
             if not name.startswith('r1-'): continue
-            r1.append({'method': job['method'], 'scene': job['scene'], 'mode': name[3:], 'views': value['views'], **value['unified']})
+            r1.append({'method': job['method'], 'scene': job['scene'], 'mode': name[3:], 'views': value['views'],
+                       **reported_metrics(value['unified'],value.get('native',{}),config)})
             for region, scores in value.get('regions', {}).items():
                 regional.append({'method': job['method'], 'scene': job['scene'], 'mode': name[3:], 'region': region, **scores})
         if job.get('kind') == 'bokehme':
@@ -263,34 +303,43 @@ def _summarize(state, config, reason, commit=False):
         values=result.get('summary', {}).get('A', {})
         author.append({'scene': job['scene'], 'status': job['status'], **values.get('unified', {}),
                        **{'native_'+key:value for key,value in values.get('native',{}).items()}})
-        if 'ssim' in values.get('unified',{}):
-            author[-1]['unified_ssim']=values['unified']['ssim']
-            if config.get('report_primary_ssim')=='native':author[-1]['ssim']=values.get('native',{}).get('ssim',author[-1]['ssim'])
+        author[-1].update(reported_metrics(values.get('unified',{}),values.get('native',{}),config))
     averages = []
     for method in config['methods']:
         for dataset in ['deblurnerf', 'dofnerf-mix']:
             completed = [row for row in rows if row['method'] == method and row['dataset'] == dataset and 'psnr' in row]
-            row = {'method': method, 'dataset': dataset, 'completed_scenes': len(completed)}
+            row = {'method': method, 'dataset': dataset, 'completed_scenes': len(completed),
+                   'scene_names':','.join(sorted(r['scene'] for r in completed)),'comparison_allowed':False}
             if completed:
                 row.update({metric: sum(r[metric] for r in completed)/len(completed) for metric in ['psnr', 'ssim', 'lpips']})
-                for metric in ['native_psnr','native_ssim','native_lpips','unified_ssim']:
-                    available=[r[metric] for r in completed if metric in r]
+                for metric in ['native_psnr','native_ssim','native_lpips','unified_psnr','unified_ssim','lpips_vgg','lpips_official']:
+                    available=[r[metric] for r in completed if isinstance(r.get(metric),(int,float))]
                     if available:row[metric]=sum(available)/len(available)
             averages.append(row)
+    for row in averages:
+        peers=[r for r in averages if r['dataset']==row['dataset']]
+        row['comparison_allowed']=bool(row['completed_scenes']) and len({r['scene_names'] for r in peers})==1
+    common=common_subset_tables(rows,config)
     r1_averages=[]
     for method in [*config['methods'],'bokehme']:
         for mode in ['fg','bg']:
             selected=[row for row in r1 if row['method']==method and row['mode']==mode]
-            if selected:r1_averages.append({'method':method,'mode':mode,'completed_scenes':len(selected),**{key:sum(r[key] for r in selected)/len(selected) for key in ['psnr','ssim','lpips']}})
+            if selected:
+                average={'method':method,'mode':mode,'completed_scenes':len(selected),'scene_names':','.join(sorted(r['scene'] for r in selected)),
+                         **{key:sum(r[key] for r in selected)/len(selected) for key in ['psnr','ssim','lpips']}}
+                for metric in ['official_psnr','official_ssim','unified_psnr','unified_ssim','lpips_vgg','lpips_official']:
+                    values=[r[metric] for r in selected if isinstance(r.get(metric),(int,float))]
+                    average[metric]=sum(values)/len(values) if len(values)==len(selected) else None
+                r1_averages.append(average)
     author_complete=[row for row in author if 'psnr' in row]
     author_mean={key:sum(row[key] for row in author_complete if key in row)/sum(key in row for row in author_complete)
-                 for key in ['psnr','ssim','lpips','native_psnr','native_ssim','unified_ssim'] if any(key in row for row in author_complete)}
+                 for key in ['psnr','ssim','lpips','native_psnr','native_ssim','unified_psnr','unified_ssim'] if any(key in row for row in author_complete)}
     author_comparison={'completed_scenes':len(author_complete),'mean':author_mean,'checkpoint':'author retrained; original paper checkpoint was lost',
                        'paper':config['paper_reference']['dofgs_real_mean'],
                        'protocol_difference':'native SSIM uses skimage on [-1,1]; unified SSIM uses3DGS on[0,1]; native LPIPS unavailable'}
     if len(author_complete)==10:
         author_comparison['native_delta_from_paper']={metric:author_mean['native_'+metric]-config['paper_reference']['dofgs_real_mean'][metric] for metric in ['psnr','ssim']}
-        author_comparison['unified_delta_from_paper']={metric:author_mean['unified_ssim' if metric=='ssim' else metric]-config['paper_reference']['dofgs_real_mean'][metric] for metric in ['psnr','ssim']}
+        author_comparison['unified_delta_from_paper']={metric:author_mean['unified_'+metric]-config['paper_reference']['dofgs_real_mean'][metric] for metric in ['psnr','ssim']}
     cake_comparison=[]
     for method in config['methods']:
         row=next(r for r in rows if r['method']==method and r['dataset']=='deblurnerf' and r['scene']=='cake')
@@ -318,6 +367,11 @@ def _summarize(state, config, reason, commit=False):
     cake_table=[{'method':r['method'],'status':r['status'],**{k:r['measured'][k] for k in ['psnr','ssim','lpips','native_psnr','native_ssim','native_lpips'] if k in r['measured']},
                  **{'paper_'+k:v for k,v in (r['paper'] or {}).items() if k in ['psnr','ssim','lpips']},**{'delta_'+k:v for k,v in (r['delta'] or {}).items()}} for r in cake_comparison]
     summary = {'generated_at': datetime.now(timezone.utc).isoformat(), 'reason': reason, 'report_at': config['report_at'],
+               'priority_window':config.get('priority_window',{}),'schedule_phase':schedule_mode(config),'common_subset':common,
+               'metric_protocols':{'primary':'official native PSNR/SSIM when available; unified values are separate',
+                    'unified':'RGB0..1 PSNR; 3DGS11x11 Gaussian SSIM sigma1.5; LPIPS VGGv0.1 with3DGS0..1 input convention',
+                    'official_lpips':{'dofgs':'unavailable; leave blank','dofgaussian':'Alex onRGB-1..1','cocogaussian':'Alex onRGB-1..1','mipsplatting':'VGG onRGB0..1','bokehme':'no official metric function; unified values only'},
+                    'R1':'official metric functions, where available, evaluate the self-written R1 renders; this does not imply an official R1 command exists'},
                'jobs': rows, 'averages_completed_scenes_only': averages, 'cake_training_efficiency': training,
                'author_retrained': author, 'author_paper_comparison':author_comparison,'cake_paper_comparison':cake_comparison,'method_paper_means':paper_means, 'paper_references': config['paper_reference'],
                'R1': r1, 'regional_R1': regional, 'bokehme_calibration': calibration,
@@ -349,24 +403,27 @@ def _summarize(state, config, reason, commit=False):
     summary['implementation_notes'].append('CoCoGaussian supplementary Table5 includes book and omits turtle; the user explicitly requested six validated scenes excluding both, so its published seven-scene DoF-NeRF mean is not directly compared.')
     RECORD.mkdir(parents=True, exist_ok=True)
     write(RECORD/(PREFIX+'-summary.json'), summary)
-    for name, table in [('A-and-R0', rows), ('averages', averages), ('training-efficiency', training), ('author-retrained', author), ('cake-paper',cake_table), ('R1',r1), ('R1-averages',r1_averages), ('regional-R1',regional)]:
+    for name, table in [('A-and-R0', rows), ('averages', averages), ('A-common-subset',common['per_scene']),('A-common-averages',common['averages']),('training-efficiency', training), ('author-retrained', author), ('cake-paper',cake_table), ('R1',r1), ('R1-averages',r1_averages), ('regional-R1',regional)]:
         fields = sorted(set().union(*(r.keys() for r in table))) if table else ['status']
         with (RECORD/(PREFIX+'-'+name+'.csv')).open('w', newline='') as stream:
             writer = csv.DictWriter(stream, fieldnames=fields, lineterminator='\n'); writer.writeheader(); writer.writerows(table)
-    if reason.startswith('stage'):
-        for suffix in ['summary.json','A-and-R0.csv','averages.csv','training-efficiency.csv','author-retrained.csv','cake-paper.csv','R1.csv','R1-averages.csv','regional-R1.csv']:
+    stage_due=reason.startswith('stage') and time.time()>=datetime.fromisoformat(config['report_at']).timestamp()
+    if stage_due:
+        for suffix in ['summary.json','A-and-R0.csv','averages.csv','A-common-subset.csv','A-common-averages.csv','training-efficiency.csv','author-retrained.csv','cake-paper.csv','R1.csv','R1-averages.csv','regional-R1.csv']:
             snapshot=RECORD/(PREFIX+'-stage-'+suffix)
             if not snapshot.exists():shutil.copy2(RECORD/(PREFIX+'-'+suffix),snapshot)
     progress = ROOT/'03_实验记录/当前实验进度与方法论.md'
     text = progress.read_text(); marker = '**3DGS 第一轮执行（2026-11-05）**'
     done = sum(r['status'] == 'evaluated' for r in rows); running = sum(r['status'] in {'training', 'rendering', 'evaluating'} for r in rows)
-    paragraph = marker+f'：已完成 {done}/{len(rows)} 个方法×场景，运行中 {running} 个；作者重训即评，COLMAP最多两路与训练并行，总显存预算40GiB、最多4个GPU任务；受并行影响的cake计时标参考，P3补独占。\n阶段汇总见 [round1 summary](records/'+PREFIX+'-summary.json)；SSIM主列保留官方口径，统一3DGS口径及差异核查另列；平均值仅包含实际完成场景，报告时间 '+config['report_at']+'，到点汇总不停止队列。'
+    paragraph = marker+f'：已完成 {done}/{len(rows)} 个方法×场景，运行中 {running} 个；按23:45调整优先完成三方法×五场景共同子集，再推进amiya、camera；最多4任务、40GiB，现有任务继续，08:30后收尾，09:00汇总落盘后恢复完整队列。\n阶段汇总见 [round1 summary](records/'+PREFIX+'-summary.json)；PSNR/SSIM以官方口径为主，统一口径和LPIPS VGG/官方值另列；共同平均仅使用三方法都有结果的相同场景集合，报告时间 '+config['report_at']+'。'
     if (RECORD/(PREFIX+'-stage-summary.json')).exists():paragraph+=' 截止时刻快照见 [stage summary](records/'+PREFIX+'-stage-summary.json)。'
     if marker in text:
         start = text.index(marker); end = text.find('\n\n', start); text = text[:start]+paragraph+text[end if end >= 0 else len(text):]
     else:
         start = text.index('**DOF-GS 前期准备执行状态'); end = text.find('\n\n', start); text = text[:end]+'\n\n'+paragraph+text[end:]
     progress.write_text(text)
+    if stage_due:
+        write(REPORT_READY,{'completed_at':time.time(),'artifact':str(RECORD/(PREFIX+'-stage-summary.json')),'full_queue_may_resume':True})
     if commit:
         files = [str(p.relative_to(ROOT)) for p in sorted(RECORD.glob(PREFIX+'-*'))]
         files += ['03_实验记录/当前实验进度与方法论.md', 'configs/dof-gs-round1-20261105.json']
@@ -512,6 +569,10 @@ def main():
             state['memory_profiles']['bokehme']=math.ceil(memory*1.1+512)
     while True:
         config = read(args.config); now = time.time()
+        mode=schedule_mode(config,now)
+        if state.get('schedule_phase')!=mode:
+            state.setdefault('schedule_history',[]).append({'phase':mode,'at':now})
+            state['schedule_phase']=mode
         prep = preparation_state()
         if 'visibility_parse_check' not in prep['colmap']: prep['colmap']['visibility_parse_check'] = prep['visibility']
         for job in state['jobs']:
@@ -564,19 +625,24 @@ def main():
             cake_failed = any(j['method'] == job['method'] and j['dataset'] == 'deblurnerf' and j['scene'] == 'cake' and j['status'] in {'failed', 'blocked'} for j in state['jobs'])
             if job.get('kind')!='bokehme' and job['priority'] > 0 and cake_failed and not state['memory_profiles'].get(job['method']) and job['status'] == 'queued':
                 job.update(status='blocked', reason='No successful exclusive cake memory measurement')
-        retries = [j for j in state['jobs'] if j['status'] in {'retry', 'render_retry'}]
+        retries = [j for j in state['jobs'] if j['status'] in {'retry', 'render_retry'} and
+                   job_order(j,config,state['jobs'],now,phase='render' if j['status']=='render_retry' else 'train') is not None]
         exclusive_pending = Path(os.environ['TMPDIR'])/'dof-gs-round1-exclusive.pending'
         if (unfinished_cake and not config.get('concurrent_preparation')) or retries:
             exclusive_pending.write_text(str(os.getpid()))
         elif exclusive_pending.exists():
             exclusive_pending.unlink()
-        if config.get('concurrent_preparation'):
+        if mode!='full':
+            candidates=[j for j in state['jobs'] if j['status'] in {'queued','trained'} and
+                        job_order(j,config,state['jobs'],now,phase='render' if j['status']=='trained' or j.get('kind')=='author' else 'train') is not None]
+            candidates.sort(key=lambda j:job_order(j,config,state['jobs'],now,phase='render' if j['status']=='trained' or j.get('kind')=='author' else 'train'))
+        elif config.get('concurrent_preparation'):
             candidates=[j for j in state['jobs'] if j['status'] in {'queued','trained'} and
                         (j['priority']==0 or j['priority']==1 and state['memory_profiles'].get(j['method']) or priority==2 and j['priority']==2)]
             candidates.sort(key=lambda j:(0 if j.get('kind')=='author' else 1 if j['priority']==0 else 2,j['priority']))
         else:
             candidates = [j for j in state['jobs'] if j['priority'] == priority and j['status'] in {'queued', 'trained'}]
-        if priority==2:candidates.sort(key=lambda job:job.get('kind')!='bokehme')
+        if mode=='full' and priority==2:candidates.sort(key=lambda job:job.get('kind')!='bokehme')
         if retries and not active: candidates = retries[:1]
         if not retries or not active:
             for job in candidates:
@@ -628,7 +694,7 @@ def main():
             summarize(state, config, 'stage', commit=True); report_written = True
         elif now-last_summary > 300:
             summarize(state, config, 'running'); last_summary = now
-        if not active and not cpu and all(j['status'] in {'evaluated', 'failed', 'blocked'} for j in state['jobs']): break
+        if mode=='full' and not active and not cpu and all(j['status'] in {'evaluated', 'failed', 'blocked'} for j in state['jobs']): break
         time.sleep(10)
     write(LOG/'training-queue.finished', {'finished_at': time.time()})
     summarize(state, config, 'training-complete', commit=True)

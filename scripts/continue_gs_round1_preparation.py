@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Complete missing real scenes with at most two concurrent COLMAP pipelines."""
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor, wait, FIRST_COMPLETED
 import fcntl
 import json
 import os
@@ -8,6 +8,7 @@ from pathlib import Path
 import time
 import traceback
 import prepare_gs_repro as prep
+from gs_round1_schedule import read,CONFIG,colmap_order,schedule_mode
 
 ROOT=Path(__file__).resolve().parents[1]
 LOG=ROOT/'logs/dof-gs-repro-2026-11-05'
@@ -33,6 +34,7 @@ def run(item):
         if existing.get('status')=='complete':return key,'already_complete'
         row={'source':str(source),'output':str(target),'status':'running','started_at':time.time(),
              'geometry_source':'new SIMPLE_RADIAL reconstruction' if rebuild_sparse else 'provided poses/points, matched by sharp-image names; rectified at497x331'}
+        if existing.get('started_at'):row['previous_started_at']=existing['started_at']
         update(key,row)
         try:
             # A coordinator reload must not duplicate an already running native command.
@@ -70,16 +72,30 @@ def main():
         jobs=[('deblurnerf/'+name,ROOT/'data/raw/DeblurNeRF/real_defocus_blur'/('defocus'+name),
                ROOT/'data/processed/deblurnerf-dofgaussian'/('defocus'+name),True)
               for name in ['caps','cisco','coral','cupcake','cups','daisy','sausage','seal','tools']]
-        with ThreadPoolExecutor(max_workers=2) as pool:
-            for future in as_completed([pool.submit(run,item) for item in jobs]):print(future.result(),flush=True)
         marker=LOG/'provided-poses.finished'
         while not marker.exists():time.sleep(5)
         prepared=json.loads(marker.read_text())
-        jobs=[('dofnerf/dense/mix/'+name,ROOT/'data/processed/dofnerf-scenes-provided/mix'/name,
+        jobs += [('dofnerf/dense/mix/'+name,ROOT/'data/processed/dofnerf-scenes-provided/mix'/name,
                ROOT/'data/processed/dofnerf-dofgaussian-provided/mix'/name,False)
               for name,row in prepared.items() if row.get('status')=='prepared']
+        completed=set();active={}
         with ThreadPoolExecutor(max_workers=2) as pool:
-            for future in as_completed([pool.submit(run,item) for item in jobs]):print(future.result(),flush=True)
+            while len(completed)<len(jobs) or active:
+                config=read(CONFIG,{})
+                runs=read(LOG/'colmap.json',{}).get('runs',{})
+                for item in jobs:
+                    if runs.get(item[0],{}).get('status')=='complete':completed.add(item[0])
+                pending=[item for item in jobs if item[0] not in completed and item[0] not in active.values() and
+                         (runs.get(item[0],{}).get('status')=='running' or colmap_order(item[0],config) is not None)]
+                pending.sort(key=lambda item:(-1,0) if runs.get(item[0],{}).get('status')=='running' else colmap_order(item[0],config))
+                for item in pending[:max(0,2-len(active))]:active[pool.submit(run,item)]=item[0]
+                prep.save(LOG/'colmap-schedule-status.json',{'phase':schedule_mode(config),'active':list(active.values()),
+                    'deferred':[item[0] for item in jobs if item[0] not in completed and item[0] not in active.values() and colmap_order(item[0],config) is None]})
+                if active:
+                    finished,_=wait(active,timeout=5,return_when=FIRST_COMPLETED)
+                    for future in finished:
+                        key=active.pop(future);completed.add(key);print(future.result(),flush=True)
+                elif len(completed)<len(jobs):time.sleep(5)
     prep.save(LOG/'round1-colmap-continuation.finished',{'finished_at':time.time()})
 
 

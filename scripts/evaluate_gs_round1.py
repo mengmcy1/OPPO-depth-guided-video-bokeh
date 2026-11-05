@@ -88,7 +88,7 @@ def evaluate(manifest, output, regions=None):
         row = dict(pair, unified=scores, resolution=list(prediction.shape[-2:][::-1]))
         native_gt = tensor(pair.get('native_truth', pair['truth']))
         native_prediction=tensor(pair.get('native_prediction',pair['prediction']))
-        if pair['protocol'] in {'A', 'r0'}:
+        if pair['protocol'] in {'A', 'r0'} or function is not None:
             row['native'] = native_scores(function, native_prediction, native_gt) if function else {
                 'psnr': -10*math.log10(max(float((native_prediction-native_gt).square().mean()), 1e-16)),
                 'ssim': float(official_loss.ssim(native_prediction, native_gt)), 'lpips': float(criterion(native_prediction, native_gt))}
