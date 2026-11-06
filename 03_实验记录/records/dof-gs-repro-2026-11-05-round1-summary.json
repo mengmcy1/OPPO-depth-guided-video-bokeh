@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-06T09:17:16.546935+00:00",
+  "generated_at": "2026-11-06T10:02:54.770390+00:00",
   "reason": "evaluated-results",
   "report_at": "2026-11-06T09:00:00+08:00",
   "priority_window": {
@@ -1392,9 +1392,26 @@
       "method": "dofgaussian",
       "dataset": "deblurnerf",
       "scene": "seal",
-      "status": "training",
+      "status": "evaluated",
+      "ssim": 0.7943461622510638,
+      "lpips": 0.14139589773757116,
+      "psnr": 25.55780376812956,
+      "native_ssim": 0.7943461622510638,
+      "native_lpips": 0.089998759329319,
+      "native_psnr": 25.55780376812956,
+      "gaussians": 89430,
+      "optimized_parameters": 5663045,
+      "model_bytes": 22539651,
       "reason": "",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/deblurnerf/seal/attempt-1",
+      "unified_psnr": 25.49312667523057,
+      "unified_ssim": 0.8804557834352765,
+      "lpips_vgg": 0.14139589773757116,
+      "lpips_official": 0.089998759329319,
+      "official_psnr": 25.55780376812956,
+      "official_ssim": 0.7943461622510638,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "official native",
       "schedule_group": "after_report",
       "schedule_phase": "full"
     },
@@ -1402,9 +1419,9 @@
       "method": "cocogaussian",
       "dataset": "deblurnerf",
       "scene": "seal",
-      "status": "queued",
+      "status": "training",
       "reason": "",
-      "output": "",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/cocogaussian/deblurnerf/seal/attempt-1",
       "schedule_group": "after_report",
       "schedule_phase": "full"
     },
@@ -1959,19 +1976,19 @@
     {
       "method": "dofgaussian",
       "dataset": "deblurnerf",
-      "completed_scenes": 8,
-      "scene_names": "cake,caps,cisco,coral,cupcake,cups,daisy,sausage",
+      "completed_scenes": 9,
+      "scene_names": "cake,caps,cisco,coral,cupcake,cups,daisy,sausage,seal",
       "comparison_allowed": false,
-      "psnr": 22.624593038164534,
-      "ssim": 0.710346664098047,
-      "lpips": 0.15287729168111194,
-      "native_psnr": 22.624593038164534,
-      "native_ssim": 0.710346664098047,
-      "native_lpips": 0.10975802340378454,
-      "unified_psnr": 22.62614051513839,
-      "unified_ssim": 0.8568555779134234,
-      "lpips_vgg": 0.15287729168111194,
-      "lpips_official": 0.10975802340378454
+      "psnr": 22.95050534149398,
+      "ssim": 0.7196799416706045,
+      "lpips": 0.15160158124294074,
+      "native_psnr": 22.95050534149398,
+      "native_ssim": 0.7196799416706045,
+      "native_lpips": 0.10756254961773282,
+      "unified_psnr": 22.94469453292641,
+      "unified_ssim": 0.8594778229714071,
+      "lpips_vgg": 0.15160158124294074,
+      "lpips_official": 0.10756254961773282
     },
     {
       "method": "dofgaussian",
@@ -2498,23 +2515,23 @@
     },
     {
       "method": "dofgaussian",
-      "completed_scenes": 8,
+      "completed_scenes": 9,
       "measured": {
         "method": "dofgaussian",
         "dataset": "deblurnerf",
-        "completed_scenes": 8,
-        "scene_names": "cake,caps,cisco,coral,cupcake,cups,daisy,sausage",
+        "completed_scenes": 9,
+        "scene_names": "cake,caps,cisco,coral,cupcake,cups,daisy,sausage,seal",
         "comparison_allowed": false,
-        "psnr": 22.624593038164534,
-        "ssim": 0.710346664098047,
-        "lpips": 0.15287729168111194,
-        "native_psnr": 22.624593038164534,
-        "native_ssim": 0.710346664098047,
-        "native_lpips": 0.10975802340378454,
-        "unified_psnr": 22.62614051513839,
-        "unified_ssim": 0.8568555779134234,
-        "lpips_vgg": 0.15287729168111194,
-        "lpips_official": 0.10975802340378454
+        "psnr": 22.95050534149398,
+        "ssim": 0.7196799416706045,
+        "lpips": 0.15160158124294074,
+        "native_psnr": 22.95050534149398,
+        "native_ssim": 0.7196799416706045,
+        "native_lpips": 0.10756254961773282,
+        "unified_psnr": 22.94469453292641,
+        "unified_ssim": 0.8594778229714071,
+        "lpips_vgg": 0.15160158124294074,
+        "lpips_official": 0.10756254961773282
       },
       "paper": {
         "psnr": 23.97,
@@ -3066,7 +3083,7 @@
     },
     {
       "id": "dofgaussian-deblurnerf-seal",
-      "status": "training",
+      "status": "evaluated",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
       "observed_at": 1793883096.8412817,
       "resolved_at": 1793936509.1380503
@@ -3951,16 +3968,16 @@
       "exclusive": false,
       "registered_at": 1793956175.4355462
     },
-    "978687": {
-      "reserve_mib": 16638,
-      "kind": "dofgaussian-deblurnerf-seal:train",
+    "22521": {
+      "reserve_mib": 6164,
+      "kind": "cocogaussian-deblurnerf-seal:train",
       "exclusive": false,
-      "registered_at": 1793956616.7785103
+      "registered_at": 1793959364.997529
     }
   },
   "throughput": {
-    "completed_trainings": 35,
-    "elapsed_since_first_training_seconds": 77572.01985836029,
+    "completed_trainings": 36,
+    "elapsed_since_first_training_seconds": 80310.2425980568,
     "parallel_times_are_reference_only": true
   },
   "quality_gates": {
@@ -4002,22 +4019,12 @@
       "schedule_phase": "full"
     },
     {
-      "method": "dofgaussian",
+      "method": "cocogaussian",
       "dataset": "deblurnerf",
       "scene": "seal",
       "status": "training",
       "reason": "",
-      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/deblurnerf/seal/attempt-1",
-      "schedule_group": "after_report",
-      "schedule_phase": "full"
-    },
-    {
-      "method": "cocogaussian",
-      "dataset": "deblurnerf",
-      "scene": "seal",
-      "status": "queued",
-      "reason": "",
-      "output": "",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/cocogaussian/deblurnerf/seal/attempt-1",
       "schedule_group": "after_report",
       "schedule_phase": "full"
     },
@@ -4340,9 +4347,9 @@
         "estimated_serial_training_seconds": 10974.290629215539
       },
       "dofgaussian": {
-        "remaining_training_jobs": 8,
+        "remaining_training_jobs": 7,
         "cake_seconds": 1514.6940248943865,
-        "estimated_serial_training_seconds": 12117.552199155092
+        "estimated_serial_training_seconds": 10602.858174260706
       },
       "cocogaussian": {
         "remaining_training_jobs": 9,
@@ -4355,7 +4362,7 @@
         "estimated_serial_training_seconds": 16098.093954764307
       }
     },
-    "estimated_remaining_training_lower_bound_seconds": 42640.74263010919,
+    "estimated_remaining_training_lower_bound_seconds": 42135.84462181106,
     "scope": "rough training estimate only; excludes pending data, COLMAP, render/evaluation and P3; scene sizes and concurrent slowdown vary; methods without a completed cake remain unknown"
   },
   "regions": {
