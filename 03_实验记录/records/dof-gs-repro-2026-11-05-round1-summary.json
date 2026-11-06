@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-06T06:33:25.907211+00:00",
+  "generated_at": "2026-11-06T06:42:17.525111+00:00",
   "reason": "evaluated-results",
   "report_at": "2026-11-06T09:00:00+08:00",
   "priority_window": {
@@ -1021,9 +1021,27 @@
       "method": "cocogaussian",
       "dataset": "deblurnerf",
       "scene": "cupcake",
-      "status": "training",
+      "status": "evaluated",
+      "psnr": 22.531438954139823,
+      "lpips": 0.09874792490154505,
+      "ssim": 0.7511095926165581,
+      "native_psnr": 22.531438954139823,
+      "native_lpips": 0.07559664873406291,
+      "native_ssim": 0.7511095926165581,
+      "gaussians": 378913,
+      "optimized_parameters": 22415534,
+      "model_bytes": 94217394,
+      "focal_planes_in_optimizer": true,
       "reason": "",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/cocogaussian/deblurnerf/cupcake/attempt-1",
+      "unified_psnr": 22.564733914566506,
+      "unified_ssim": 0.8470843881368637,
+      "lpips_vgg": 0.09874792490154505,
+      "lpips_official": 0.07559664873406291,
+      "official_psnr": 22.531438954139823,
+      "official_ssim": 0.7511095926165581,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "official native",
       "schedule_group": "after_report",
       "schedule_phase": "full"
     },
@@ -1078,9 +1096,9 @@
       "method": "cocogaussian",
       "dataset": "deblurnerf",
       "scene": "cups",
-      "status": "queued",
+      "status": "training",
       "reason": "",
-      "output": "",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/cocogaussian/deblurnerf/cups/attempt-1",
       "schedule_group": "after_report",
       "schedule_phase": "full"
     },
@@ -1727,7 +1745,7 @@
       "dataset": "deblurnerf",
       "completed_scenes": 5,
       "scene_names": "cake,caps,cisco,coral,cupcake",
-      "comparison_allowed": false,
+      "comparison_allowed": true,
       "psnr": 22.636982319538806,
       "ssim": 0.7234316545299121,
       "lpips": 0.14027848990367991,
@@ -1757,7 +1775,7 @@
       "dataset": "deblurnerf",
       "completed_scenes": 5,
       "scene_names": "cake,caps,cisco,coral,cupcake",
-      "comparison_allowed": false,
+      "comparison_allowed": true,
       "psnr": 22.697794152912127,
       "ssim": 0.7226891391617911,
       "lpips": 0.15182395771678006,
@@ -1779,19 +1797,19 @@
     {
       "method": "cocogaussian",
       "dataset": "deblurnerf",
-      "completed_scenes": 4,
-      "scene_names": "cake,caps,cisco,coral",
-      "comparison_allowed": false,
-      "psnr": 22.583842224718037,
-      "ssim": 0.709748725699527,
-      "lpips": 0.14225618506648713,
-      "native_psnr": 22.583842224718037,
-      "native_ssim": 0.709748725699527,
-      "native_lpips": 0.10829729654693178,
-      "unified_psnr": 22.586874688069933,
-      "unified_ssim": 0.861447660518544,
-      "lpips_vgg": 0.14225618506648713,
-      "lpips_official": 0.10829729654693178
+      "completed_scenes": 5,
+      "scene_names": "cake,caps,cisco,coral,cupcake",
+      "comparison_allowed": true,
+      "psnr": 22.573361570602394,
+      "ssim": 0.7180208990829332,
+      "lpips": 0.1335545330334987,
+      "native_psnr": 22.573361570602394,
+      "native_ssim": 0.7180208990829332,
+      "native_lpips": 0.101757166984358,
+      "unified_psnr": 22.582446533369247,
+      "unified_ssim": 0.8585750060422079,
+      "lpips_vgg": 0.1335545330334987,
+      "lpips_official": 0.101757166984358
     },
     {
       "method": "cocogaussian",
@@ -1805,7 +1823,7 @@
       "dataset": "deblurnerf",
       "completed_scenes": 5,
       "scene_names": "cake,caps,cisco,coral,cupcake",
-      "comparison_allowed": false,
+      "comparison_allowed": true,
       "psnr": 20.51261552017561,
       "ssim": 0.7324077592577253,
       "lpips": 0.31073911357138834,
@@ -2275,7 +2293,7 @@
         "dataset": "deblurnerf",
         "completed_scenes": 5,
         "scene_names": "cake,caps,cisco,coral,cupcake",
-        "comparison_allowed": false,
+        "comparison_allowed": true,
         "psnr": 22.636982319538806,
         "ssim": 0.7234316545299121,
         "lpips": 0.14027848990367991,
@@ -2300,7 +2318,7 @@
         "dataset": "deblurnerf",
         "completed_scenes": 5,
         "scene_names": "cake,caps,cisco,coral,cupcake",
-        "comparison_allowed": false,
+        "comparison_allowed": true,
         "psnr": 22.697794152912127,
         "ssim": 0.7226891391617911,
         "lpips": 0.15182395771678006,
@@ -2322,23 +2340,23 @@
     },
     {
       "method": "cocogaussian",
-      "completed_scenes": 4,
+      "completed_scenes": 5,
       "measured": {
         "method": "cocogaussian",
         "dataset": "deblurnerf",
-        "completed_scenes": 4,
-        "scene_names": "cake,caps,cisco,coral",
-        "comparison_allowed": false,
-        "psnr": 22.583842224718037,
-        "ssim": 0.709748725699527,
-        "lpips": 0.14225618506648713,
-        "native_psnr": 22.583842224718037,
-        "native_ssim": 0.709748725699527,
-        "native_lpips": 0.10829729654693178,
-        "unified_psnr": 22.586874688069933,
-        "unified_ssim": 0.861447660518544,
-        "lpips_vgg": 0.14225618506648713,
-        "lpips_official": 0.10829729654693178
+        "completed_scenes": 5,
+        "scene_names": "cake,caps,cisco,coral,cupcake",
+        "comparison_allowed": true,
+        "psnr": 22.573361570602394,
+        "ssim": 0.7180208990829332,
+        "lpips": 0.1335545330334987,
+        "native_psnr": 22.573361570602394,
+        "native_ssim": 0.7180208990829332,
+        "native_lpips": 0.101757166984358,
+        "unified_psnr": 22.582446533369247,
+        "unified_ssim": 0.8585750060422079,
+        "lpips_vgg": 0.1335545330334987,
+        "lpips_official": 0.101757166984358
       },
       "paper": {
         "psnr": 23.7,
@@ -2356,7 +2374,7 @@
         "dataset": "deblurnerf",
         "completed_scenes": 5,
         "scene_names": "cake,caps,cisco,coral,cupcake",
-        "comparison_allowed": false,
+        "comparison_allowed": true,
         "psnr": 20.51261552017561,
         "ssim": 0.7324077592577253,
         "lpips": 0.31073911357138834,
@@ -3719,12 +3737,6 @@
     }
   },
   "gpu_reservations": {
-    "703916": {
-      "reserve_mib": 6164,
-      "kind": "cocogaussian-deblurnerf-cupcake:train",
-      "exclusive": false,
-      "registered_at": 1793939249.2262259
-    },
     "785128": {
       "reserve_mib": 3513,
       "kind": "dofgs-deblurnerf-cups:train",
@@ -3736,11 +3748,17 @@
       "kind": "dofgaussian-deblurnerf-cups:train",
       "exclusive": false,
       "registered_at": 1793946796.2109723
+    },
+    "833212": {
+      "reserve_mib": 6164,
+      "kind": "cocogaussian-deblurnerf-cups:train",
+      "exclusive": false,
+      "registered_at": 1793947317.7161024
     }
   },
   "throughput": {
-    "completed_trainings": 23,
-    "elapsed_since_first_training_seconds": 67741.38445830345,
+    "completed_trainings": 24,
+    "elapsed_since_first_training_seconds": 68273.00214529037,
     "parallel_times_are_reference_only": true
   },
   "quality_gates": {
@@ -3761,16 +3779,6 @@
     }
   },
   "pending": [
-    {
-      "method": "cocogaussian",
-      "dataset": "deblurnerf",
-      "scene": "cupcake",
-      "status": "training",
-      "reason": "",
-      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/cocogaussian/deblurnerf/cupcake/attempt-1",
-      "schedule_group": "after_report",
-      "schedule_phase": "full"
-    },
     {
       "method": "dofgs",
       "dataset": "deblurnerf",
@@ -3795,9 +3803,9 @@
       "method": "cocogaussian",
       "dataset": "deblurnerf",
       "scene": "cups",
-      "status": "queued",
+      "status": "training",
       "reason": "",
-      "output": "",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/cocogaussian/deblurnerf/cups/attempt-1",
       "schedule_group": "after_report",
       "schedule_phase": "full"
     },
@@ -4245,9 +4253,9 @@
         "estimated_serial_training_seconds": 16661.634273838252
       },
       "cocogaussian": {
-        "remaining_training_jobs": 12,
+        "remaining_training_jobs": 11,
         "cake_seconds": 9859.143456354737,
-        "estimated_serial_training_seconds": 118309.72147625685
+        "estimated_serial_training_seconds": 108450.57801990211
       },
       "mipsplatting": {
         "remaining_training_jobs": 9,
@@ -4255,7 +4263,7 @@
         "estimated_serial_training_seconds": 24147.14093214646
       }
     },
-    "estimated_remaining_training_lower_bound_seconds": 58526.64420868829,
+    "estimated_remaining_training_lower_bound_seconds": 55240.263056570046,
     "scope": "rough training estimate only; excludes pending data, COLMAP, render/evaluation and P3; scene sizes and concurrent slowdown vary; methods without a completed cake remain unknown"
   },
   "regions": {
