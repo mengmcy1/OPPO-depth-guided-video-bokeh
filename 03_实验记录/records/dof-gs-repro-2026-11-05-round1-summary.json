@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-06T11:22:49.819934+00:00",
+  "generated_at": "2026-11-06T11:30:21.199375+00:00",
   "reason": "evaluated-results",
   "report_at": "2026-11-06T09:00:00+08:00",
   "priority_window": {
@@ -1453,9 +1453,27 @@
       "method": "cocogaussian",
       "dataset": "deblurnerf",
       "scene": "seal",
-      "status": "training",
+      "status": "evaluated",
+      "ssim": 0.797377347946167,
+      "lpips": 0.11745124416691917,
+      "psnr": 24.462174421406385,
+      "native_ssim": 0.797377347946167,
+      "native_lpips": 0.09030580733503614,
+      "native_psnr": 24.462174421406385,
+      "gaussians": 1010365,
+      "optimized_parameters": 59671198,
+      "model_bytes": 250817491,
+      "focal_planes_in_optimizer": true,
       "reason": "",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/cocogaussian/deblurnerf/seal/attempt-1",
+      "unified_psnr": 24.444697000401618,
+      "unified_ssim": 0.8990992648260934,
+      "lpips_vgg": 0.11745124416691917,
+      "lpips_official": 0.09030580733503614,
+      "official_psnr": 24.462174421406385,
+      "official_ssim": 0.797377347946167,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "official native",
       "schedule_group": "after_report",
       "schedule_phase": "full"
     },
@@ -2101,19 +2119,19 @@
     {
       "method": "cocogaussian",
       "dataset": "deblurnerf",
-      "completed_scenes": 8,
-      "scene_names": "cake,caps,cisco,coral,cupcake,cups,daisy,sausage",
+      "completed_scenes": 9,
+      "scene_names": "cake,caps,cisco,coral,cupcake,cups,daisy,sausage,seal",
       "comparison_allowed": false,
-      "psnr": 22.656750926650066,
-      "ssim": 0.7143494555017068,
-      "lpips": 0.1264857152754086,
-      "native_psnr": 22.656750926650066,
-      "native_ssim": 0.7143494555017068,
-      "native_lpips": 0.09524803003684307,
-      "unified_psnr": 22.662230559287757,
-      "unified_ssim": 0.8651209133011953,
-      "lpips_vgg": 0.1264857152754086,
-      "lpips_official": 0.09524803003684307
+      "psnr": 22.857353537178547,
+      "ssim": 0.7235747768844246,
+      "lpips": 0.12548188515224312,
+      "native_psnr": 22.857353537178547,
+      "native_ssim": 0.7235747768844246,
+      "native_lpips": 0.09469889418108673,
+      "unified_psnr": 22.860282386078186,
+      "unified_ssim": 0.8688962856928506,
+      "lpips_vgg": 0.12548188515224312,
+      "lpips_official": 0.09469889418108673
     },
     {
       "method": "cocogaussian",
@@ -2662,23 +2680,23 @@
     },
     {
       "method": "cocogaussian",
-      "completed_scenes": 8,
+      "completed_scenes": 9,
       "measured": {
         "method": "cocogaussian",
         "dataset": "deblurnerf",
-        "completed_scenes": 8,
-        "scene_names": "cake,caps,cisco,coral,cupcake,cups,daisy,sausage",
+        "completed_scenes": 9,
+        "scene_names": "cake,caps,cisco,coral,cupcake,cups,daisy,sausage,seal",
         "comparison_allowed": false,
-        "psnr": 22.656750926650066,
-        "ssim": 0.7143494555017068,
-        "lpips": 0.1264857152754086,
-        "native_psnr": 22.656750926650066,
-        "native_ssim": 0.7143494555017068,
-        "native_lpips": 0.09524803003684307,
-        "unified_psnr": 22.662230559287757,
-        "unified_ssim": 0.8651209133011953,
-        "lpips_vgg": 0.1264857152754086,
-        "lpips_official": 0.09524803003684307
+        "psnr": 22.857353537178547,
+        "ssim": 0.7235747768844246,
+        "lpips": 0.12548188515224312,
+        "native_psnr": 22.857353537178547,
+        "native_ssim": 0.7235747768844246,
+        "native_lpips": 0.09469889418108673,
+        "unified_psnr": 22.860282386078186,
+        "unified_ssim": 0.8688962856928506,
+        "lpips_vgg": 0.12548188515224312,
+        "lpips_official": 0.09469889418108673
       },
       "paper": {
         "psnr": 23.7,
@@ -4091,12 +4109,6 @@
     }
   },
   "gpu_reservations": {
-    "22521": {
-      "reserve_mib": 6164,
-      "kind": "cocogaussian-deblurnerf-seal:train",
-      "exclusive": false,
-      "registered_at": 1793959364.997529
-    },
     "80965": {
       "reserve_mib": 6164,
       "kind": "cocogaussian-deblurnerf-tools:train",
@@ -4105,8 +4117,8 @@
     }
   },
   "throughput": {
-    "completed_trainings": 42,
-    "elapsed_since_first_training_seconds": 85105.29048991203,
+    "completed_trainings": 43,
+    "elapsed_since_first_training_seconds": 85556.66911745071,
     "parallel_times_are_reference_only": true
   },
   "quality_gates": {
@@ -4127,16 +4139,6 @@
     }
   },
   "pending": [
-    {
-      "method": "cocogaussian",
-      "dataset": "deblurnerf",
-      "scene": "seal",
-      "status": "training",
-      "reason": "",
-      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/cocogaussian/deblurnerf/seal/attempt-1",
-      "schedule_group": "after_report",
-      "schedule_phase": "full"
-    },
     {
       "method": "cocogaussian",
       "dataset": "deblurnerf",
@@ -4421,9 +4423,9 @@
         "estimated_serial_training_seconds": 9088.16414936632
       },
       "cocogaussian": {
-        "remaining_training_jobs": 8,
+        "remaining_training_jobs": 7,
         "cake_seconds": 9859.143456354737,
-        "estimated_serial_training_seconds": 78873.1476508379
+        "estimated_serial_training_seconds": 69014.00419448316
       },
       "mipsplatting": {
         "remaining_training_jobs": 4,
@@ -4431,7 +4433,7 @@
         "estimated_serial_training_seconds": 10732.062636509538
       }
     },
-    "estimated_remaining_training_lower_bound_seconds": 35336.522729841374,
+    "estimated_remaining_training_lower_bound_seconds": 32050.141577723127,
     "scope": "rough training estimate only; excludes pending data, COLMAP, render/evaluation and P3; scene sizes and concurrent slowdown vary; methods without a completed cake remain unknown"
   },
   "regions": {
