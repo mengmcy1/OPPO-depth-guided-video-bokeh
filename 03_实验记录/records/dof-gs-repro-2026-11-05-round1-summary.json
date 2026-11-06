@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-06T11:57:17.268265+00:00",
+  "generated_at": "2026-11-06T11:58:30.180657+00:00",
   "reason": "evaluated-results",
   "report_at": "2026-11-06T09:00:00+08:00",
   "priority_window": {
@@ -1642,9 +1642,9 @@
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
       "scene": "amiya",
-      "status": "queued",
+      "status": "training",
       "reason": "Requeued after verified batch-axis/environment repair",
-      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/amiya/attempt-2",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/amiya/attempt-3",
       "schedule_group": "B_selected",
       "schedule_phase": "full"
     },
@@ -1715,9 +1715,9 @@
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
       "scene": "camera",
-      "status": "queued",
+      "status": "training",
       "reason": "Requeued after verified batch-axis/environment repair",
-      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/camera/attempt-2",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/camera/attempt-3",
       "schedule_group": "B_selected",
       "schedule_phase": "full"
     },
@@ -2022,7 +2022,7 @@
       "method": "bokehme",
       "dataset": "dofnerf-mix",
       "scene": "amiya",
-      "status": "training",
+      "status": "evaluated",
       "reason": "Requeued after verified batch-axis/environment repair",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/bokehme/dofnerf-mix/amiya/attempt-3",
       "schedule_group": "B_selected",
@@ -2032,7 +2032,7 @@
       "method": "bokehme",
       "dataset": "dofnerf-mix",
       "scene": "camera",
-      "status": "training",
+      "status": "evaluated",
       "reason": "Requeued after verified batch-axis/environment repair",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/bokehme/dofnerf-mix/camera/attempt-3",
       "schedule_group": "B_selected",
@@ -2883,6 +2883,74 @@
       "official_ssim": 0.9325694044431051,
       "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
       "primary_protocol": "official native"
+    },
+    {
+      "method": "bokehme",
+      "scene": "amiya",
+      "mode": "fg",
+      "views": 3,
+      "lpips": 0.10334989180167516,
+      "psnr": 28.334987351404106,
+      "ssim": 0.95409228404363,
+      "unified_psnr": 28.334987351404106,
+      "unified_ssim": 0.95409228404363,
+      "lpips_vgg": 0.10334989180167516,
+      "lpips_official": null,
+      "official_psnr": null,
+      "official_ssim": null,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "unified; official metric unavailable"
+    },
+    {
+      "method": "bokehme",
+      "scene": "amiya",
+      "mode": "bg",
+      "views": 3,
+      "lpips": 0.07298789421717326,
+      "psnr": 31.232484806629838,
+      "ssim": 0.9621931115786234,
+      "unified_psnr": 31.232484806629838,
+      "unified_ssim": 0.9621931115786234,
+      "lpips_vgg": 0.07298789421717326,
+      "lpips_official": null,
+      "official_psnr": null,
+      "official_ssim": null,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "unified; official metric unavailable"
+    },
+    {
+      "method": "bokehme",
+      "scene": "camera",
+      "mode": "fg",
+      "views": 3,
+      "psnr": 26.490551358617694,
+      "ssim": 0.9368802706400553,
+      "lpips": 0.07646283507347107,
+      "unified_psnr": 26.490551358617694,
+      "unified_ssim": 0.9368802706400553,
+      "lpips_vgg": 0.07646283507347107,
+      "lpips_official": null,
+      "official_psnr": null,
+      "official_ssim": null,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "unified; official metric unavailable"
+    },
+    {
+      "method": "bokehme",
+      "scene": "camera",
+      "mode": "bg",
+      "views": 3,
+      "psnr": 30.551485789252297,
+      "ssim": 0.957692563533783,
+      "lpips": 0.05964303885897001,
+      "unified_psnr": 30.551485789252297,
+      "unified_ssim": 0.957692563533783,
+      "lpips_vgg": 0.05964303885897001,
+      "lpips_official": null,
+      "official_psnr": null,
+      "official_ssim": null,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "unified; official metric unavailable"
     }
   ],
   "regional_R1": [
@@ -3017,9 +3085,1746 @@
       "lpips": 0.06416939198970795,
       "pixels": 7997.0,
       "fraction": 0.048611913170868104
+    },
+    {
+      "method": "bokehme",
+      "scene": "amiya",
+      "mode": "fg",
+      "region": "boundary",
+      "lpips": 0.10424505919218063,
+      "fraction": 0.20191643314063637,
+      "pixels": 33216.666666666664,
+      "ssim": 0.920846700668335,
+      "psnr": 23.666783353961772
+    },
+    {
+      "method": "bokehme",
+      "scene": "amiya",
+      "mode": "fg",
+      "region": "in_focus",
+      "lpips": 0.10170265287160873,
+      "fraction": 0.7637972852219055,
+      "pixels": 125650.0,
+      "ssim": 0.9646263122558594,
+      "psnr": 34.80261143197634
+    },
+    {
+      "method": "bokehme",
+      "scene": "amiya",
+      "mode": "fg",
+      "region": "out_of_focus",
+      "lpips": 0.13312403112649918,
+      "fraction": 0.03428628163745818,
+      "pixels": 5640.333333333333,
+      "ssim": 0.8810099760691324,
+      "psnr": 20.984782205390992
+    },
+    {
+      "method": "bokehme",
+      "scene": "amiya",
+      "mode": "bg",
+      "region": "boundary",
+      "lpips": 0.07142741978168488,
+      "fraction": 0.20191643314063637,
+      "pixels": 33216.666666666664,
+      "ssim": 0.9405791560808817,
+      "psnr": 26.930384943360895
+    },
+    {
+      "method": "bokehme",
+      "scene": "amiya",
+      "mode": "bg",
+      "region": "in_focus",
+      "lpips": 0.07206015785535176,
+      "fraction": 0.7264270416051191,
+      "pixels": 119502.33333333333,
+      "ssim": 0.9697873592376709,
+      "psnr": 35.775726401508706
+    },
+    {
+      "method": "bokehme",
+      "scene": "amiya",
+      "mode": "bg",
+      "region": "out_of_focus",
+      "lpips": 0.10057600090901057,
+      "fraction": 0.0716565252542445,
+      "pixels": 11788.0,
+      "ssim": 0.9295025865236918,
+      "psnr": 26.165110971239418
+    },
+    {
+      "method": "bokehme",
+      "scene": "camera",
+      "mode": "fg",
+      "region": "boundary",
+      "psnr": 23.059130556456285,
+      "fraction": 0.19573635164461087,
+      "lpips": 0.07955041031042735,
+      "pixels": 32200.0,
+      "ssim": 0.9098735650380453
+    },
+    {
+      "method": "bokehme",
+      "scene": "camera",
+      "mode": "fg",
+      "region": "in_focus",
+      "psnr": 32.28682574755821,
+      "fraction": 0.7046468134081426,
+      "lpips": 0.07386166354020436,
+      "pixels": 115919.33333333333,
+      "ssim": 0.9488746126492819
+    },
+    {
+      "method": "bokehme",
+      "scene": "camera",
+      "mode": "fg",
+      "region": "out_of_focus",
+      "psnr": 19.670941953482885,
+      "fraction": 0.09961683494724642,
+      "lpips": 0.10635512818892796,
+      "pixels": 16387.666666666668,
+      "ssim": 0.8703251878420512
+    },
+    {
+      "method": "bokehme",
+      "scene": "camera",
+      "mode": "bg",
+      "region": "boundary",
+      "psnr": 26.73268085839297,
+      "fraction": 0.19573635164461087,
+      "lpips": 0.05992231021324793,
+      "pixels": 32200.0,
+      "ssim": 0.9382814367612203
+    },
+    {
+      "method": "bokehme",
+      "scene": "camera",
+      "mode": "bg",
+      "region": "in_focus",
+      "psnr": 34.4210004036896,
+      "fraction": 0.755651735184521,
+      "lpips": 0.05936332046985626,
+      "pixels": 124310.0,
+      "ssim": 0.9637994567553202
+    },
+    {
+      "method": "bokehme",
+      "scene": "camera",
+      "mode": "bg",
+      "region": "out_of_focus",
+      "psnr": 24.350268680220328,
+      "fraction": 0.048611913170868104,
+      "lpips": 0.06245124091704687,
+      "pixels": 7997.0,
+      "ssim": 0.9326126376787821
     }
   ],
-  "bokehme_calibration": [],
+  "bokehme_calibration": [
+    {
+      "scene": "amiya",
+      "grid_config": {
+        "gamma": 2.2,
+        "highlight": false,
+        "defocus_scale": 10.0,
+        "focus_grid": [
+          0,
+          0.125,
+          0.25,
+          0.375,
+          0.5,
+          0.625,
+          0.75,
+          0.875,
+          1.0
+        ],
+        "K_grid": [
+          0,
+          2,
+          4,
+          8,
+          12,
+          16,
+          24,
+          32
+        ],
+        "disparity_percentiles": [
+          1,
+          99
+        ]
+      },
+      "chosen": {
+        "fg": {
+          "focus": 0.875,
+          "K": 4,
+          "mean_training_l1": 0.011019821871410717,
+          "training_images": [
+            "001",
+            "003",
+            "005",
+            "007",
+            "010",
+            "012",
+            "014",
+            "016",
+            "019",
+            "021",
+            "023"
+          ],
+          "grid": [
+            {
+              "focus": 0,
+              "K": 0,
+              "mean_training_l1": 0.01274322151121768
+            },
+            {
+              "focus": 0,
+              "K": 2,
+              "mean_training_l1": 0.01681446343321692
+            },
+            {
+              "focus": 0,
+              "K": 4,
+              "mean_training_l1": 0.021199168468063526
+            },
+            {
+              "focus": 0,
+              "K": 8,
+              "mean_training_l1": 0.029629027301614933
+            },
+            {
+              "focus": 0,
+              "K": 12,
+              "mean_training_l1": 0.037443197924982415
+            },
+            {
+              "focus": 0,
+              "K": 16,
+              "mean_training_l1": 0.045051980086348274
+            },
+            {
+              "focus": 0,
+              "K": 24,
+              "mean_training_l1": 0.05792455612258478
+            },
+            {
+              "focus": 0,
+              "K": 32,
+              "mean_training_l1": 0.06961846961216493
+            },
+            {
+              "focus": 0.125,
+              "K": 0,
+              "mean_training_l1": 0.012743221172554926
+            },
+            {
+              "focus": 0.125,
+              "K": 2,
+              "mean_training_l1": 0.01650216303427111
+            },
+            {
+              "focus": 0.125,
+              "K": 4,
+              "mean_training_l1": 0.020262988114898853
+            },
+            {
+              "focus": 0.125,
+              "K": 8,
+              "mean_training_l1": 0.027442047372460365
+            },
+            {
+              "focus": 0.125,
+              "K": 12,
+              "mean_training_l1": 0.033804172480648216
+            },
+            {
+              "focus": 0.125,
+              "K": 16,
+              "mean_training_l1": 0.039783693850040436
+            },
+            {
+              "focus": 0.125,
+              "K": 24,
+              "mean_training_l1": 0.05046783150597052
+            },
+            {
+              "focus": 0.125,
+              "K": 32,
+              "mean_training_l1": 0.05977374823255972
+            },
+            {
+              "focus": 0.25,
+              "K": 0,
+              "mean_training_l1": 0.01274322151121768
+            },
+            {
+              "focus": 0.25,
+              "K": 2,
+              "mean_training_l1": 0.015901150689883667
+            },
+            {
+              "focus": 0.25,
+              "K": 4,
+              "mean_training_l1": 0.01913379217413339
+            },
+            {
+              "focus": 0.25,
+              "K": 8,
+              "mean_training_l1": 0.02495441297915849
+            },
+            {
+              "focus": 0.25,
+              "K": 12,
+              "mean_training_l1": 0.030093031681396744
+            },
+            {
+              "focus": 0.25,
+              "K": 16,
+              "mean_training_l1": 0.034909931434826416
+            },
+            {
+              "focus": 0.25,
+              "K": 24,
+              "mean_training_l1": 0.04360729828476906
+            },
+            {
+              "focus": 0.25,
+              "K": 32,
+              "mean_training_l1": 0.05098926851695234
+            },
+            {
+              "focus": 0.375,
+              "K": 0,
+              "mean_training_l1": 0.012743221426551992
+            },
+            {
+              "focus": 0.375,
+              "K": 2,
+              "mean_training_l1": 0.014982036653567444
+            },
+            {
+              "focus": 0.375,
+              "K": 4,
+              "mean_training_l1": 0.017414015548473053
+            },
+            {
+              "focus": 0.375,
+              "K": 8,
+              "mean_training_l1": 0.021801232783631844
+            },
+            {
+              "focus": 0.375,
+              "K": 12,
+              "mean_training_l1": 0.025970503010533073
+            },
+            {
+              "focus": 0.375,
+              "K": 16,
+              "mean_training_l1": 0.030111482028256763
+            },
+            {
+              "focus": 0.375,
+              "K": 24,
+              "mean_training_l1": 0.03842543065547943
+            },
+            {
+              "focus": 0.375,
+              "K": 32,
+              "mean_training_l1": 0.045962398702448067
+            },
+            {
+              "focus": 0.5,
+              "K": 0,
+              "mean_training_l1": 0.012743221426551992
+            },
+            {
+              "focus": 0.5,
+              "K": 2,
+              "mean_training_l1": 0.013663900508122011
+            },
+            {
+              "focus": 0.5,
+              "K": 4,
+              "mean_training_l1": 0.015254019505598328
+            },
+            {
+              "focus": 0.5,
+              "K": 8,
+              "mean_training_l1": 0.01848143618553877
+            },
+            {
+              "focus": 0.5,
+              "K": 12,
+              "mean_training_l1": 0.0226401263339953
+            },
+            {
+              "focus": 0.5,
+              "K": 16,
+              "mean_training_l1": 0.027177659794688225
+            },
+            {
+              "focus": 0.5,
+              "K": 24,
+              "mean_training_l1": 0.03634259883653034
+            },
+            {
+              "focus": 0.5,
+              "K": 32,
+              "mean_training_l1": 0.044523859904571014
+            },
+            {
+              "focus": 0.625,
+              "K": 0,
+              "mean_training_l1": 0.012743221426551992
+            },
+            {
+              "focus": 0.625,
+              "K": 2,
+              "mean_training_l1": 0.012361424805765802
+            },
+            {
+              "focus": 0.625,
+              "K": 4,
+              "mean_training_l1": 0.013217756609347734
+            },
+            {
+              "focus": 0.625,
+              "K": 8,
+              "mean_training_l1": 0.01621956124224446
+            },
+            {
+              "focus": 0.625,
+              "K": 12,
+              "mean_training_l1": 0.02122535996816375
+            },
+            {
+              "focus": 0.625,
+              "K": 16,
+              "mean_training_l1": 0.026440004733475773
+            },
+            {
+              "focus": 0.625,
+              "K": 24,
+              "mean_training_l1": 0.0359281176193194
+            },
+            {
+              "focus": 0.625,
+              "K": 32,
+              "mean_training_l1": 0.044121274893934075
+            },
+            {
+              "focus": 0.75,
+              "K": 0,
+              "mean_training_l1": 0.012743221172554926
+            },
+            {
+              "focus": 0.75,
+              "K": 2,
+              "mean_training_l1": 0.011609834703532133
+            },
+            {
+              "focus": 0.75,
+              "K": 4,
+              "mean_training_l1": 0.011376073922623287
+            },
+            {
+              "focus": 0.75,
+              "K": 8,
+              "mean_training_l1": 0.015464332716708834
+            },
+            {
+              "focus": 0.75,
+              "K": 12,
+              "mean_training_l1": 0.021204092116518455
+            },
+            {
+              "focus": 0.75,
+              "K": 16,
+              "mean_training_l1": 0.02675065736879002
+            },
+            {
+              "focus": 0.75,
+              "K": 24,
+              "mean_training_l1": 0.03671473163095387
+            },
+            {
+              "focus": 0.75,
+              "K": 32,
+              "mean_training_l1": 0.0449591377242045
+            },
+            {
+              "focus": 0.875,
+              "K": 0,
+              "mean_training_l1": 0.012743220918557861
+            },
+            {
+              "focus": 0.875,
+              "K": 2,
+              "mean_training_l1": 0.011197225360030478
+            },
+            {
+              "focus": 0.875,
+              "K": 4,
+              "mean_training_l1": 0.011019821871410717
+            },
+            {
+              "focus": 0.875,
+              "K": 8,
+              "mean_training_l1": 0.016643961891531944
+            },
+            {
+              "focus": 0.875,
+              "K": 12,
+              "mean_training_l1": 0.023174535821784626
+            },
+            {
+              "focus": 0.875,
+              "K": 16,
+              "mean_training_l1": 0.028995048424059696
+            },
+            {
+              "focus": 0.875,
+              "K": 24,
+              "mean_training_l1": 0.03905832462690093
+            },
+            {
+              "focus": 0.875,
+              "K": 32,
+              "mean_training_l1": 0.048227263445203956
+            },
+            {
+              "focus": 1.0,
+              "K": 0,
+              "mean_training_l1": 0.012743221426551992
+            },
+            {
+              "focus": 1.0,
+              "K": 2,
+              "mean_training_l1": 0.011046499183232134
+            },
+            {
+              "focus": 1.0,
+              "K": 4,
+              "mean_training_l1": 0.012282404371283272
+            },
+            {
+              "focus": 1.0,
+              "K": 8,
+              "mean_training_l1": 0.02076132053678686
+            },
+            {
+              "focus": 1.0,
+              "K": 12,
+              "mean_training_l1": 0.028731314296072178
+            },
+            {
+              "focus": 1.0,
+              "K": 16,
+              "mean_training_l1": 0.0355329384857958
+            },
+            {
+              "focus": 1.0,
+              "K": 24,
+              "mean_training_l1": 0.04761058633977717
+            },
+            {
+              "focus": 1.0,
+              "K": 32,
+              "mean_training_l1": 0.058215239508585495
+            }
+          ]
+        },
+        "bg": {
+          "focus": 0.125,
+          "K": 2,
+          "mean_training_l1": 0.0077956818975508215,
+          "training_images": [
+            "002",
+            "004",
+            "006",
+            "008",
+            "011",
+            "013",
+            "015",
+            "017",
+            "020",
+            "022"
+          ],
+          "grid": [
+            {
+              "focus": 0,
+              "K": 0,
+              "mean_training_l1": 0.010544642899185419
+            },
+            {
+              "focus": 0,
+              "K": 2,
+              "mean_training_l1": 0.00820419187657535
+            },
+            {
+              "focus": 0,
+              "K": 4,
+              "mean_training_l1": 0.013975949119776487
+            },
+            {
+              "focus": 0,
+              "K": 8,
+              "mean_training_l1": 0.02532738782465458
+            },
+            {
+              "focus": 0,
+              "K": 12,
+              "mean_training_l1": 0.03484419211745262
+            },
+            {
+              "focus": 0,
+              "K": 16,
+              "mean_training_l1": 0.043457623571157455
+            },
+            {
+              "focus": 0,
+              "K": 24,
+              "mean_training_l1": 0.0568667121231556
+            },
+            {
+              "focus": 0,
+              "K": 32,
+              "mean_training_l1": 0.068788430839777
+            },
+            {
+              "focus": 0.125,
+              "K": 0,
+              "mean_training_l1": 0.010544642899185419
+            },
+            {
+              "focus": 0.125,
+              "K": 2,
+              "mean_training_l1": 0.0077956818975508215
+            },
+            {
+              "focus": 0.125,
+              "K": 4,
+              "mean_training_l1": 0.011285836715251208
+            },
+            {
+              "focus": 0.125,
+              "K": 8,
+              "mean_training_l1": 0.021010388061404227
+            },
+            {
+              "focus": 0.125,
+              "K": 12,
+              "mean_training_l1": 0.0289414094761014
+            },
+            {
+              "focus": 0.125,
+              "K": 16,
+              "mean_training_l1": 0.03615792170166969
+            },
+            {
+              "focus": 0.125,
+              "K": 24,
+              "mean_training_l1": 0.04805253781378269
+            },
+            {
+              "focus": 0.125,
+              "K": 32,
+              "mean_training_l1": 0.05814653858542442
+            },
+            {
+              "focus": 0.25,
+              "K": 0,
+              "mean_training_l1": 0.010544642899185419
+            },
+            {
+              "focus": 0.25,
+              "K": 2,
+              "mean_training_l1": 0.0078072357457131146
+            },
+            {
+              "focus": 0.25,
+              "K": 4,
+              "mean_training_l1": 0.009179850341752172
+            },
+            {
+              "focus": 0.25,
+              "K": 8,
+              "mean_training_l1": 0.017236150428652765
+            },
+            {
+              "focus": 0.25,
+              "K": 12,
+              "mean_training_l1": 0.02407360840588808
+            },
+            {
+              "focus": 0.25,
+              "K": 16,
+              "mean_training_l1": 0.030146078765392305
+            },
+            {
+              "focus": 0.25,
+              "K": 24,
+              "mean_training_l1": 0.040666162967681885
+            },
+            {
+              "focus": 0.25,
+              "K": 32,
+              "mean_training_l1": 0.04881412833929062
+            },
+            {
+              "focus": 0.375,
+              "K": 0,
+              "mean_training_l1": 0.010544642899185419
+            },
+            {
+              "focus": 0.375,
+              "K": 2,
+              "mean_training_l1": 0.008314375486224889
+            },
+            {
+              "focus": 0.375,
+              "K": 4,
+              "mean_training_l1": 0.008592853881418705
+            },
+            {
+              "focus": 0.375,
+              "K": 8,
+              "mean_training_l1": 0.014844531193375587
+            },
+            {
+              "focus": 0.375,
+              "K": 12,
+              "mean_training_l1": 0.02085896339267492
+            },
+            {
+              "focus": 0.375,
+              "K": 16,
+              "mean_training_l1": 0.026229638420045377
+            },
+            {
+              "focus": 0.375,
+              "K": 24,
+              "mean_training_l1": 0.03588168062269688
+            },
+            {
+              "focus": 0.375,
+              "K": 32,
+              "mean_training_l1": 0.04402283281087875
+            },
+            {
+              "focus": 0.5,
+              "K": 0,
+              "mean_training_l1": 0.010544642899185419
+            },
+            {
+              "focus": 0.5,
+              "K": 2,
+              "mean_training_l1": 0.009463088773190974
+            },
+            {
+              "focus": 0.5,
+              "K": 4,
+              "mean_training_l1": 0.009565860126167535
+            },
+            {
+              "focus": 0.5,
+              "K": 8,
+              "mean_training_l1": 0.013919664733111858
+            },
+            {
+              "focus": 0.5,
+              "K": 12,
+              "mean_training_l1": 0.01952355317771435
+            },
+            {
+              "focus": 0.5,
+              "K": 16,
+              "mean_training_l1": 0.024702205695211886
+            },
+            {
+              "focus": 0.5,
+              "K": 24,
+              "mean_training_l1": 0.03432291671633721
+            },
+            {
+              "focus": 0.5,
+              "K": 32,
+              "mean_training_l1": 0.042747126147150996
+            },
+            {
+              "focus": 0.625,
+              "K": 0,
+              "mean_training_l1": 0.010544642899185419
+            },
+            {
+              "focus": 0.625,
+              "K": 2,
+              "mean_training_l1": 0.011027772538363933
+            },
+            {
+              "focus": 0.625,
+              "K": 4,
+              "mean_training_l1": 0.011608102452009916
+            },
+            {
+              "focus": 0.625,
+              "K": 8,
+              "mean_training_l1": 0.01434644591063261
+            },
+            {
+              "focus": 0.625,
+              "K": 12,
+              "mean_training_l1": 0.019249328412115574
+            },
+            {
+              "focus": 0.625,
+              "K": 16,
+              "mean_training_l1": 0.024364698305726053
+            },
+            {
+              "focus": 0.625,
+              "K": 24,
+              "mean_training_l1": 0.033801825158298014
+            },
+            {
+              "focus": 0.625,
+              "K": 32,
+              "mean_training_l1": 0.042057928070425986
+            },
+            {
+              "focus": 0.75,
+              "K": 0,
+              "mean_training_l1": 0.010544642899185419
+            },
+            {
+              "focus": 0.75,
+              "K": 2,
+              "mean_training_l1": 0.012287634424865246
+            },
+            {
+              "focus": 0.75,
+              "K": 4,
+              "mean_training_l1": 0.014165867120027542
+            },
+            {
+              "focus": 0.75,
+              "K": 8,
+              "mean_training_l1": 0.0172645203769207
+            },
+            {
+              "focus": 0.75,
+              "K": 12,
+              "mean_training_l1": 0.02110235095024109
+            },
+            {
+              "focus": 0.75,
+              "K": 16,
+              "mean_training_l1": 0.025572489947080612
+            },
+            {
+              "focus": 0.75,
+              "K": 24,
+              "mean_training_l1": 0.03475368283689022
+            },
+            {
+              "focus": 0.75,
+              "K": 32,
+              "mean_training_l1": 0.04264280945062637
+            },
+            {
+              "focus": 0.875,
+              "K": 0,
+              "mean_training_l1": 0.010544642899185419
+            },
+            {
+              "focus": 0.875,
+              "K": 2,
+              "mean_training_l1": 0.013176407106220723
+            },
+            {
+              "focus": 0.875,
+              "K": 4,
+              "mean_training_l1": 0.016095112543553114
+            },
+            {
+              "focus": 0.875,
+              "K": 8,
+              "mean_training_l1": 0.021087132021784784
+            },
+            {
+              "focus": 0.875,
+              "K": 12,
+              "mean_training_l1": 0.02570983227342367
+            },
+            {
+              "focus": 0.875,
+              "K": 16,
+              "mean_training_l1": 0.030007808469235897
+            },
+            {
+              "focus": 0.875,
+              "K": 24,
+              "mean_training_l1": 0.03844599388539791
+            },
+            {
+              "focus": 0.875,
+              "K": 32,
+              "mean_training_l1": 0.046582641825079915
+            },
+            {
+              "focus": 1.0,
+              "K": 0,
+              "mean_training_l1": 0.010544642712920905
+            },
+            {
+              "focus": 1.0,
+              "K": 2,
+              "mean_training_l1": 0.013797508552670479
+            },
+            {
+              "focus": 1.0,
+              "K": 4,
+              "mean_training_l1": 0.017113277968019248
+            },
+            {
+              "focus": 1.0,
+              "K": 8,
+              "mean_training_l1": 0.023281545750796794
+            },
+            {
+              "focus": 1.0,
+              "K": 12,
+              "mean_training_l1": 0.02941812351346016
+            },
+            {
+              "focus": 1.0,
+              "K": 16,
+              "mean_training_l1": 0.0352696605026722
+            },
+            {
+              "focus": 1.0,
+              "K": 24,
+              "mean_training_l1": 0.04606567360460758
+            },
+            {
+              "focus": 1.0,
+              "K": 32,
+              "mean_training_l1": 0.05588218234479427
+            }
+          ]
+        }
+      },
+      "depth_conversion": "alpha-normalized Gaussian z expectation -> reciprocal depth; alpha>0.01; global1/99 percentiles from training views only; clip0..1, invalid0",
+      "training_disparity_bounds": [
+        0.023489399738609792,
+        0.05725377827882767
+      ],
+      "test_images_used_for_fitting": false,
+      "aif_input": "DOF-GS PNG8 all-in-focus reconstruction, float32 depth/alpha",
+      "adapter": "existing src/baselines/bokehme.py, official gamma2.2 and defocus_scale10"
+    },
+    {
+      "scene": "camera",
+      "grid_config": {
+        "gamma": 2.2,
+        "highlight": false,
+        "defocus_scale": 10.0,
+        "focus_grid": [
+          0,
+          0.125,
+          0.25,
+          0.375,
+          0.5,
+          0.625,
+          0.75,
+          0.875,
+          1.0
+        ],
+        "K_grid": [
+          0,
+          2,
+          4,
+          8,
+          12,
+          16,
+          24,
+          32
+        ],
+        "disparity_percentiles": [
+          1,
+          99
+        ]
+      },
+      "chosen": {
+        "fg": {
+          "focus": 0.75,
+          "K": 2,
+          "mean_training_l1": 0.010638923807577654,
+          "training_images": [
+            "001",
+            "003",
+            "005",
+            "007",
+            "010",
+            "012",
+            "014",
+            "016",
+            "019",
+            "021",
+            "023"
+          ],
+          "grid": [
+            {
+              "focus": 0,
+              "K": 0,
+              "mean_training_l1": 0.011955204589123076
+            },
+            {
+              "focus": 0,
+              "K": 2,
+              "mean_training_l1": 0.017532267946411263
+            },
+            {
+              "focus": 0,
+              "K": 4,
+              "mean_training_l1": 0.02288949303328991
+            },
+            {
+              "focus": 0,
+              "K": 8,
+              "mean_training_l1": 0.03169017471373081
+            },
+            {
+              "focus": 0,
+              "K": 12,
+              "mean_training_l1": 0.039463498036969795
+            },
+            {
+              "focus": 0,
+              "K": 16,
+              "mean_training_l1": 0.046762297776612366
+            },
+            {
+              "focus": 0,
+              "K": 24,
+              "mean_training_l1": 0.05967149409380826
+            },
+            {
+              "focus": 0,
+              "K": 32,
+              "mean_training_l1": 0.07211217893795534
+            },
+            {
+              "focus": 0.125,
+              "K": 0,
+              "mean_training_l1": 0.011955204589123076
+            },
+            {
+              "focus": 0.125,
+              "K": 2,
+              "mean_training_l1": 0.016362166370857845
+            },
+            {
+              "focus": 0.125,
+              "K": 4,
+              "mean_training_l1": 0.02113158729943362
+            },
+            {
+              "focus": 0.125,
+              "K": 8,
+              "mean_training_l1": 0.028536761179566383
+            },
+            {
+              "focus": 0.125,
+              "K": 12,
+              "mean_training_l1": 0.034950545904311264
+            },
+            {
+              "focus": 0.125,
+              "K": 16,
+              "mean_training_l1": 0.04085067050023512
+            },
+            {
+              "focus": 0.125,
+              "K": 24,
+              "mean_training_l1": 0.05125462162223729
+            },
+            {
+              "focus": 0.125,
+              "K": 32,
+              "mean_training_l1": 0.06075534529306672
+            },
+            {
+              "focus": 0.25,
+              "K": 0,
+              "mean_training_l1": 0.011955204589123076
+            },
+            {
+              "focus": 0.25,
+              "K": 2,
+              "mean_training_l1": 0.014723301187834957
+            },
+            {
+              "focus": 0.25,
+              "K": 4,
+              "mean_training_l1": 0.0188842812045054
+            },
+            {
+              "focus": 0.25,
+              "K": 8,
+              "mean_training_l1": 0.02443571693517945
+            },
+            {
+              "focus": 0.25,
+              "K": 12,
+              "mean_training_l1": 0.029304965822534126
+            },
+            {
+              "focus": 0.25,
+              "K": 16,
+              "mean_training_l1": 0.03398290632123297
+            },
+            {
+              "focus": 0.25,
+              "K": 24,
+              "mean_training_l1": 0.043236978352069855
+            },
+            {
+              "focus": 0.25,
+              "K": 32,
+              "mean_training_l1": 0.05172740871256048
+            },
+            {
+              "focus": 0.375,
+              "K": 0,
+              "mean_training_l1": 0.011955204589123076
+            },
+            {
+              "focus": 0.375,
+              "K": 2,
+              "mean_training_l1": 0.013021229596977884
+            },
+            {
+              "focus": 0.375,
+              "K": 4,
+              "mean_training_l1": 0.015918965620750732
+            },
+            {
+              "focus": 0.375,
+              "K": 8,
+              "mean_training_l1": 0.020293735137039966
+            },
+            {
+              "focus": 0.375,
+              "K": 12,
+              "mean_training_l1": 0.024794327095150948
+            },
+            {
+              "focus": 0.375,
+              "K": 16,
+              "mean_training_l1": 0.02949871461499821
+            },
+            {
+              "focus": 0.375,
+              "K": 24,
+              "mean_training_l1": 0.038583024658940056
+            },
+            {
+              "focus": 0.375,
+              "K": 32,
+              "mean_training_l1": 0.0467092249203812
+            },
+            {
+              "focus": 0.5,
+              "K": 0,
+              "mean_training_l1": 0.011955204589123076
+            },
+            {
+              "focus": 0.5,
+              "K": 2,
+              "mean_training_l1": 0.011707049963826483
+            },
+            {
+              "focus": 0.5,
+              "K": 4,
+              "mean_training_l1": 0.01287980606271462
+            },
+            {
+              "focus": 0.5,
+              "K": 8,
+              "mean_training_l1": 0.016785549169236965
+            },
+            {
+              "focus": 0.5,
+              "K": 12,
+              "mean_training_l1": 0.02189329368146983
+            },
+            {
+              "focus": 0.5,
+              "K": 16,
+              "mean_training_l1": 0.02691265026276762
+            },
+            {
+              "focus": 0.5,
+              "K": 24,
+              "mean_training_l1": 0.03614917245100845
+            },
+            {
+              "focus": 0.5,
+              "K": 32,
+              "mean_training_l1": 0.04429172148758715
+            },
+            {
+              "focus": 0.625,
+              "K": 0,
+              "mean_training_l1": 0.011955204589123076
+            },
+            {
+              "focus": 0.625,
+              "K": 2,
+              "mean_training_l1": 0.010965945199131966
+            },
+            {
+              "focus": 0.625,
+              "K": 4,
+              "mean_training_l1": 0.011016633276912298
+            },
+            {
+              "focus": 0.625,
+              "K": 8,
+              "mean_training_l1": 0.01542804381725463
+            },
+            {
+              "focus": 0.625,
+              "K": 12,
+              "mean_training_l1": 0.02124008925800974
+            },
+            {
+              "focus": 0.625,
+              "K": 16,
+              "mean_training_l1": 0.026675862514159897
+            },
+            {
+              "focus": 0.625,
+              "K": 24,
+              "mean_training_l1": 0.036211432719772514
+            },
+            {
+              "focus": 0.625,
+              "K": 32,
+              "mean_training_l1": 0.044341471723534844
+            },
+            {
+              "focus": 0.75,
+              "K": 0,
+              "mean_training_l1": 0.011955204589123076
+            },
+            {
+              "focus": 0.75,
+              "K": 2,
+              "mean_training_l1": 0.010638923807577654
+            },
+            {
+              "focus": 0.75,
+              "K": 4,
+              "mean_training_l1": 0.011246130632405931
+            },
+            {
+              "focus": 0.75,
+              "K": 8,
+              "mean_training_l1": 0.018069792284884235
+            },
+            {
+              "focus": 0.75,
+              "K": 12,
+              "mean_training_l1": 0.02527942457659678
+            },
+            {
+              "focus": 0.75,
+              "K": 16,
+              "mean_training_l1": 0.03167765621434559
+            },
+            {
+              "focus": 0.75,
+              "K": 24,
+              "mean_training_l1": 0.042961735617030754
+            },
+            {
+              "focus": 0.75,
+              "K": 32,
+              "mean_training_l1": 0.052024820311502976
+            },
+            {
+              "focus": 0.875,
+              "K": 0,
+              "mean_training_l1": 0.011955204589123076
+            },
+            {
+              "focus": 0.875,
+              "K": 2,
+              "mean_training_l1": 0.010765466585078022
+            },
+            {
+              "focus": 0.875,
+              "K": 4,
+              "mean_training_l1": 0.013745085674930702
+            },
+            {
+              "focus": 0.875,
+              "K": 8,
+              "mean_training_l1": 0.023812212557955223
+            },
+            {
+              "focus": 0.875,
+              "K": 12,
+              "mean_training_l1": 0.03283765133131634
+            },
+            {
+              "focus": 0.875,
+              "K": 16,
+              "mean_training_l1": 0.04060711576180025
+            },
+            {
+              "focus": 0.875,
+              "K": 24,
+              "mean_training_l1": 0.05381492457606576
+            },
+            {
+              "focus": 0.875,
+              "K": 32,
+              "mean_training_l1": 0.06476507403633812
+            },
+            {
+              "focus": 1.0,
+              "K": 0,
+              "mean_training_l1": 0.011955204589123076
+            },
+            {
+              "focus": 1.0,
+              "K": 2,
+              "mean_training_l1": 0.01163487517359582
+            },
+            {
+              "focus": 1.0,
+              "K": 4,
+              "mean_training_l1": 0.01714098318056627
+            },
+            {
+              "focus": 1.0,
+              "K": 8,
+              "mean_training_l1": 0.030088504099033096
+            },
+            {
+              "focus": 1.0,
+              "K": 12,
+              "mean_training_l1": 0.04091142829168926
+            },
+            {
+              "focus": 1.0,
+              "K": 16,
+              "mean_training_l1": 0.050279184159907425
+            },
+            {
+              "focus": 1.0,
+              "K": 24,
+              "mean_training_l1": 0.06598443842746994
+            },
+            {
+              "focus": 1.0,
+              "K": 32,
+              "mean_training_l1": 0.07911833917552774
+            }
+          ]
+        },
+        "bg": {
+          "focus": 0.125,
+          "K": 4,
+          "mean_training_l1": 0.00954570947214961,
+          "training_images": [
+            "002",
+            "004",
+            "006",
+            "008",
+            "011",
+            "013",
+            "015",
+            "017",
+            "020",
+            "022"
+          ],
+          "grid": [
+            {
+              "focus": 0,
+              "K": 0,
+              "mean_training_l1": 0.015417730156332254
+            },
+            {
+              "focus": 0,
+              "K": 2,
+              "mean_training_l1": 0.010355431959033013
+            },
+            {
+              "focus": 0,
+              "K": 4,
+              "mean_training_l1": 0.011186991166323424
+            },
+            {
+              "focus": 0,
+              "K": 8,
+              "mean_training_l1": 0.022043471969664098
+            },
+            {
+              "focus": 0,
+              "K": 12,
+              "mean_training_l1": 0.03137562107294798
+            },
+            {
+              "focus": 0,
+              "K": 16,
+              "mean_training_l1": 0.03976599872112274
+            },
+            {
+              "focus": 0,
+              "K": 24,
+              "mean_training_l1": 0.05353020988404751
+            },
+            {
+              "focus": 0,
+              "K": 32,
+              "mean_training_l1": 0.06635444238781929
+            },
+            {
+              "focus": 0.125,
+              "K": 0,
+              "mean_training_l1": 0.015417730156332254
+            },
+            {
+              "focus": 0.125,
+              "K": 2,
+              "mean_training_l1": 0.010998741909861564
+            },
+            {
+              "focus": 0.125,
+              "K": 4,
+              "mean_training_l1": 0.00954570947214961
+            },
+            {
+              "focus": 0.125,
+              "K": 8,
+              "mean_training_l1": 0.017195841204375027
+            },
+            {
+              "focus": 0.125,
+              "K": 12,
+              "mean_training_l1": 0.024919728003442287
+            },
+            {
+              "focus": 0.125,
+              "K": 16,
+              "mean_training_l1": 0.03175625335425138
+            },
+            {
+              "focus": 0.125,
+              "K": 24,
+              "mean_training_l1": 0.04340041019022465
+            },
+            {
+              "focus": 0.125,
+              "K": 32,
+              "mean_training_l1": 0.05370594970881939
+            },
+            {
+              "focus": 0.25,
+              "K": 0,
+              "mean_training_l1": 0.015417730156332254
+            },
+            {
+              "focus": 0.25,
+              "K": 2,
+              "mean_training_l1": 0.012337367329746485
+            },
+            {
+              "focus": 0.25,
+              "K": 4,
+              "mean_training_l1": 0.00980887319892645
+            },
+            {
+              "focus": 0.25,
+              "K": 8,
+              "mean_training_l1": 0.014234953094273806
+            },
+            {
+              "focus": 0.25,
+              "K": 12,
+              "mean_training_l1": 0.020738329738378525
+            },
+            {
+              "focus": 0.25,
+              "K": 16,
+              "mean_training_l1": 0.02655745018273592
+            },
+            {
+              "focus": 0.25,
+              "K": 24,
+              "mean_training_l1": 0.03689059726893902
+            },
+            {
+              "focus": 0.25,
+              "K": 32,
+              "mean_training_l1": 0.045545319095253944
+            },
+            {
+              "focus": 0.375,
+              "K": 0,
+              "mean_training_l1": 0.015417730249464513
+            },
+            {
+              "focus": 0.375,
+              "K": 2,
+              "mean_training_l1": 0.014058497361838817
+            },
+            {
+              "focus": 0.375,
+              "K": 4,
+              "mean_training_l1": 0.012194985430687666
+            },
+            {
+              "focus": 0.375,
+              "K": 8,
+              "mean_training_l1": 0.012987163383513689
+            },
+            {
+              "focus": 0.375,
+              "K": 12,
+              "mean_training_l1": 0.017671617772430183
+            },
+            {
+              "focus": 0.375,
+              "K": 16,
+              "mean_training_l1": 0.02266482524573803
+            },
+            {
+              "focus": 0.375,
+              "K": 24,
+              "mean_training_l1": 0.03189124967902899
+            },
+            {
+              "focus": 0.375,
+              "K": 32,
+              "mean_training_l1": 0.04001806527376175
+            },
+            {
+              "focus": 0.5,
+              "K": 0,
+              "mean_training_l1": 0.015417730156332254
+            },
+            {
+              "focus": 0.5,
+              "K": 2,
+              "mean_training_l1": 0.015595794562250376
+            },
+            {
+              "focus": 0.5,
+              "K": 4,
+              "mean_training_l1": 0.015288309007883073
+            },
+            {
+              "focus": 0.5,
+              "K": 8,
+              "mean_training_l1": 0.015460318792611361
+            },
+            {
+              "focus": 0.5,
+              "K": 12,
+              "mean_training_l1": 0.017962476052343846
+            },
+            {
+              "focus": 0.5,
+              "K": 16,
+              "mean_training_l1": 0.021750148572027683
+            },
+            {
+              "focus": 0.5,
+              "K": 24,
+              "mean_training_l1": 0.030071562528610228
+            },
+            {
+              "focus": 0.5,
+              "K": 32,
+              "mean_training_l1": 0.03803571909666061
+            },
+            {
+              "focus": 0.625,
+              "K": 0,
+              "mean_training_l1": 0.015417730156332254
+            },
+            {
+              "focus": 0.625,
+              "K": 2,
+              "mean_training_l1": 0.016687037888914347
+            },
+            {
+              "focus": 0.625,
+              "K": 4,
+              "mean_training_l1": 0.017996640130877494
+            },
+            {
+              "focus": 0.625,
+              "K": 8,
+              "mean_training_l1": 0.019834209606051444
+            },
+            {
+              "focus": 0.625,
+              "K": 12,
+              "mean_training_l1": 0.022282584756612777
+            },
+            {
+              "focus": 0.625,
+              "K": 16,
+              "mean_training_l1": 0.025412064976990223
+            },
+            {
+              "focus": 0.625,
+              "K": 24,
+              "mean_training_l1": 0.03249033764004707
+            },
+            {
+              "focus": 0.625,
+              "K": 32,
+              "mean_training_l1": 0.039426235109567644
+            },
+            {
+              "focus": 0.75,
+              "K": 0,
+              "mean_training_l1": 0.015417730156332254
+            },
+            {
+              "focus": 0.75,
+              "K": 2,
+              "mean_training_l1": 0.017342833522707223
+            },
+            {
+              "focus": 0.75,
+              "K": 4,
+              "mean_training_l1": 0.01907062381505966
+            },
+            {
+              "focus": 0.75,
+              "K": 8,
+              "mean_training_l1": 0.02259194515645504
+            },
+            {
+              "focus": 0.75,
+              "K": 12,
+              "mean_training_l1": 0.026738773845136166
+            },
+            {
+              "focus": 0.75,
+              "K": 16,
+              "mean_training_l1": 0.031103978119790553
+            },
+            {
+              "focus": 0.75,
+              "K": 24,
+              "mean_training_l1": 0.03973778821527958
+            },
+            {
+              "focus": 0.75,
+              "K": 32,
+              "mean_training_l1": 0.047565150260925296
+            },
+            {
+              "focus": 0.875,
+              "K": 0,
+              "mean_training_l1": 0.015417730156332254
+            },
+            {
+              "focus": 0.875,
+              "K": 2,
+              "mean_training_l1": 0.017553499713540078
+            },
+            {
+              "focus": 0.875,
+              "K": 4,
+              "mean_training_l1": 0.01890482995659113
+            },
+            {
+              "focus": 0.875,
+              "K": 8,
+              "mean_training_l1": 0.024007233791053295
+            },
+            {
+              "focus": 0.875,
+              "K": 12,
+              "mean_training_l1": 0.03040205892175436
+            },
+            {
+              "focus": 0.875,
+              "K": 16,
+              "mean_training_l1": 0.036815376579761507
+            },
+            {
+              "focus": 0.875,
+              "K": 24,
+              "mean_training_l1": 0.04875788278877735
+            },
+            {
+              "focus": 0.875,
+              "K": 32,
+              "mean_training_l1": 0.059116308391094205
+            },
+            {
+              "focus": 1.0,
+              "K": 0,
+              "mean_training_l1": 0.015417730156332254
+            },
+            {
+              "focus": 1.0,
+              "K": 2,
+              "mean_training_l1": 0.01704464918002486
+            },
+            {
+              "focus": 1.0,
+              "K": 4,
+              "mean_training_l1": 0.018669017031788825
+            },
+            {
+              "focus": 1.0,
+              "K": 8,
+              "mean_training_l1": 0.026579726301133633
+            },
+            {
+              "focus": 1.0,
+              "K": 12,
+              "mean_training_l1": 0.035659970715641975
+            },
+            {
+              "focus": 1.0,
+              "K": 16,
+              "mean_training_l1": 0.044386616349220274
+            },
+            {
+              "focus": 1.0,
+              "K": 24,
+              "mean_training_l1": 0.059684489667415616
+            },
+            {
+              "focus": 1.0,
+              "K": 32,
+              "mean_training_l1": 0.07269633784890175
+            }
+          ]
+        }
+      },
+      "depth_conversion": "alpha-normalized Gaussian z expectation -> reciprocal depth; alpha>0.01; global1/99 percentiles from training views only; clip0..1, invalid0",
+      "training_disparity_bounds": [
+        0.028260862454771996,
+        0.06786454871296882
+      ],
+      "test_images_used_for_fitting": false,
+      "aif_input": "DOF-GS PNG8 all-in-focus reconstruction, float32 depth/alpha",
+      "adapter": "existing src/baselines/bokehme.py, official gamma2.2 and defocus_scale10"
+    }
+  ],
   "R1_averages_completed_scenes_only": [
     {
       "method": "dofgs",
@@ -3050,13 +4855,44 @@
       "unified_ssim": 0.9557034969329834,
       "lpips_vgg": 0.07173040943841139,
       "lpips_official": null
+    },
+    {
+      "method": "bokehme",
+      "mode": "fg",
+      "completed_scenes": 2,
+      "scene_names": "amiya,camera",
+      "psnr": 27.4127693550109,
+      "ssim": 0.9454862773418427,
+      "lpips": 0.0899063634375731,
+      "official_psnr": null,
+      "official_ssim": null,
+      "unified_psnr": 27.4127693550109,
+      "unified_ssim": 0.9454862773418427,
+      "lpips_vgg": 0.0899063634375731,
+      "lpips_official": null
+    },
+    {
+      "method": "bokehme",
+      "mode": "bg",
+      "completed_scenes": 2,
+      "scene_names": "amiya,camera",
+      "psnr": 30.89198529794107,
+      "ssim": 0.9599428375562031,
+      "lpips": 0.06631546653807163,
+      "official_psnr": null,
+      "official_ssim": null,
+      "unified_psnr": 30.89198529794107,
+      "unified_ssim": 0.9599428375562031,
+      "lpips_vgg": 0.06631546653807163,
+      "lpips_official": null
     }
   ],
   "memory_profiles_mib": {
     "dofgs": 3513,
     "dofgaussian": 16638,
     "cocogaussian": 6164,
-    "mipsplatting": 3692
+    "mipsplatting": 3692,
+    "bokehme": 1144
   },
   "parallel_limit": 3,
   "parallel_throughput_decisions": [
@@ -3286,14 +5122,14 @@
     },
     {
       "id": "dofgaussian-dofnerf-mix-amiya",
-      "status": "queued",
+      "status": "training",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
       "observed_at": 1793883096.8413298,
       "resolved_at": 1793897805.639917
     },
     {
       "id": "dofgaussian-dofnerf-mix-camera",
-      "status": "queued",
+      "status": "training",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
       "observed_at": 1793883096.8414478,
       "resolved_at": 1793897865.8950233
@@ -4144,10 +5980,29 @@
       "error": "Sparse stage blocked or modified COLMAP unavailable"
     }
   },
-  "gpu_reservations": {},
+  "gpu_reservations": {
+    "112011": {
+      "reserve_mib": 6164,
+      "kind": "cocogaussian-dofnerf-mix-amiya:train",
+      "exclusive": false,
+      "registered_at": 1793966237.5374265
+    },
+    "113051": {
+      "reserve_mib": 16638,
+      "kind": "dofgaussian-dofnerf-mix-amiya:train",
+      "exclusive": false,
+      "registered_at": 1793966270.4025567
+    },
+    "113056": {
+      "reserve_mib": 16638,
+      "kind": "dofgaussian-dofnerf-mix-camera:train",
+      "exclusive": false,
+      "registered_at": 1793966270.5011904
+    }
+  },
   "throughput": {
     "completed_trainings": 44,
-    "elapsed_since_first_training_seconds": 87172.41181254387,
+    "elapsed_since_first_training_seconds": 87245.64903998375,
     "parallel_times_are_reference_only": true
   },
   "quality_gates": {
@@ -4172,9 +6027,9 @@
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
       "scene": "amiya",
-      "status": "queued",
+      "status": "training",
       "reason": "Requeued after verified batch-axis/environment repair",
-      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/amiya/attempt-2",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/amiya/attempt-3",
       "schedule_group": "B_selected",
       "schedule_phase": "full"
     },
@@ -4192,9 +6047,9 @@
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
       "scene": "camera",
-      "status": "queued",
+      "status": "training",
       "reason": "Requeued after verified batch-axis/environment repair",
-      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/camera/attempt-2",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/camera/attempt-3",
       "schedule_group": "B_selected",
       "schedule_phase": "full"
     },
@@ -4366,26 +6221,6 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "full"
-    },
-    {
-      "method": "bokehme",
-      "dataset": "dofnerf-mix",
-      "scene": "amiya",
-      "status": "training",
-      "reason": "Requeued after verified batch-axis/environment repair",
-      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/bokehme/dofnerf-mix/amiya/attempt-3",
-      "schedule_group": "B_selected",
-      "schedule_phase": "full"
-    },
-    {
-      "method": "bokehme",
-      "dataset": "dofnerf-mix",
-      "scene": "camera",
-      "status": "training",
-      "reason": "Requeued after verified batch-axis/environment repair",
-      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/bokehme/dofnerf-mix/camera/attempt-3",
-      "schedule_group": "B_selected",
       "schedule_phase": "full"
     },
     {
