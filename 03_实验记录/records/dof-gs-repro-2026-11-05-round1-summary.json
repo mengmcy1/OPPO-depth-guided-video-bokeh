@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-06T14:02:06.861688+00:00",
+  "generated_at": "2026-11-06T14:03:18.446243+00:00",
   "reason": "evaluated-results",
   "report_at": "2026-11-06T09:00:00+08:00",
   "priority_window": {
@@ -1953,12 +1953,27 @@
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
       "scene": "kendo",
-      "status": "rendering",
+      "status": "evaluated",
+      "psnr": 7.174276737679972,
+      "lpips": 0.6852880318959554,
+      "ssim": 0.24756173292795816,
+      "native_psnr": 7.174276737679972,
+      "native_lpips": 0.99638565381368,
+      "native_ssim": 0.24756173292795816,
       "gaussians": 935,
       "optimized_parameters": 441810,
       "model_bytes": 238781,
       "reason": "",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/kendo/attempt-1",
+      "r1_status": "blocked: own-parameter training-view reproduction check failed; R0 retained",
+      "unified_psnr": 7.169213770276573,
+      "unified_ssim": 0.01743701472878456,
+      "lpips_vgg": 0.6852880318959554,
+      "lpips_official": 0.99638565381368,
+      "official_psnr": 7.174276737679972,
+      "official_ssim": 0.24756173292795816,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "official native",
       "schedule_group": "after_report",
       "schedule_phase": "full"
     },
@@ -1976,9 +1991,9 @@
       "method": "mipsplatting",
       "dataset": "dofnerf-mix",
       "scene": "kendo",
-      "status": "queued",
+      "status": "training",
       "reason": "",
-      "output": "",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/mipsplatting/dofnerf-mix/kendo/attempt-1",
       "schedule_group": "after_report",
       "schedule_phase": "full"
     },
@@ -2244,7 +2259,7 @@
       "dataset": "dofnerf-mix",
       "completed_scenes": 3,
       "scene_names": "amiya,camera,plant",
-      "comparison_allowed": true,
+      "comparison_allowed": false,
       "psnr": 30.494062954455597,
       "ssim": 0.9182984828948975,
       "lpips": 0.08601799234747887,
@@ -2274,19 +2289,19 @@
     {
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
-      "completed_scenes": 3,
-      "scene_names": "amiya,camera,plant",
-      "comparison_allowed": true,
-      "psnr": 6.926213318464529,
-      "ssim": 0.32331585449477035,
-      "lpips": 0.5578295124901667,
-      "native_psnr": 6.926213318464529,
-      "native_ssim": 0.32331585449477035,
-      "native_lpips": 0.851993547545539,
-      "unified_psnr": 6.924112420789593,
-      "unified_ssim": 0.029870389029383656,
-      "lpips_vgg": 0.5578295124901667,
-      "lpips_official": 0.851993547545539
+      "completed_scenes": 4,
+      "scene_names": "amiya,camera,kendo,plant",
+      "comparison_allowed": false,
+      "psnr": 6.988229173268389,
+      "ssim": 0.30437732410306734,
+      "lpips": 0.5896941423416139,
+      "native_psnr": 6.988229173268389,
+      "native_ssim": 0.30437732410306734,
+      "native_lpips": 0.8880915741125743,
+      "unified_psnr": 6.985387758161338,
+      "unified_ssim": 0.02676204545423388,
+      "lpips_vgg": 0.5896941423416139,
+      "lpips_official": 0.8880915741125743
     },
     {
       "method": "cocogaussian",
@@ -2310,7 +2325,7 @@
       "dataset": "dofnerf-mix",
       "completed_scenes": 3,
       "scene_names": "amiya,camera,plant",
-      "comparison_allowed": true,
+      "comparison_allowed": false,
       "psnr": 28.922348543091314,
       "ssim": 0.9007980161243014,
       "lpips": 0.0904676044980685,
@@ -2344,7 +2359,7 @@
       "dataset": "dofnerf-mix",
       "completed_scenes": 3,
       "scene_names": "amiya,camera,plant",
-      "comparison_allowed": true,
+      "comparison_allowed": false,
       "psnr": 27.11687946902933,
       "ssim": 0.8977469868130153,
       "lpips": 0.1604308063785235,
@@ -6639,7 +6654,7 @@
     },
     {
       "id": "dofgaussian-dofnerf-mix-kendo",
-      "status": "rendering",
+      "status": "evaluated",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
       "observed_at": 1793883096.8416767,
       "resolved_at": 1793942576.7343643
@@ -7488,11 +7503,17 @@
       "kind": "cocogaussian-dofnerf-mix-kendo:train",
       "exclusive": false,
       "registered_at": 1793973706.9528277
+    },
+    "236206": {
+      "reserve_mib": 3692,
+      "kind": "mipsplatting-dofnerf-mix-kendo:train",
+      "exclusive": false,
+      "registered_at": 1793973748.5609562
     }
   },
   "throughput": {
     "completed_trainings": 53,
-    "elapsed_since_first_training_seconds": 94662.25061178207,
+    "elapsed_since_first_training_seconds": 94733.91024923325,
     "parallel_times_are_reference_only": true
   },
   "quality_gates": {
@@ -7524,19 +7545,6 @@
       "schedule_phase": "full"
     },
     {
-      "method": "dofgaussian",
-      "dataset": "dofnerf-mix",
-      "scene": "kendo",
-      "status": "rendering",
-      "gaussians": 935,
-      "optimized_parameters": 441810,
-      "model_bytes": 238781,
-      "reason": "",
-      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/kendo/attempt-1",
-      "schedule_group": "after_report",
-      "schedule_phase": "full"
-    },
-    {
       "method": "cocogaussian",
       "dataset": "dofnerf-mix",
       "scene": "kendo",
@@ -7550,9 +7558,9 @@
       "method": "mipsplatting",
       "dataset": "dofnerf-mix",
       "scene": "kendo",
-      "status": "queued",
+      "status": "training",
       "reason": "",
-      "output": "",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/mipsplatting/dofnerf-mix/kendo/attempt-1",
       "schedule_group": "after_report",
       "schedule_phase": "full"
     },
