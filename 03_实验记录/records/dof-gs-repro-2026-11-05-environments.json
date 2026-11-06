@@ -1,0 +1,1558 @@
+{
+  "environments": {
+    "dofgs": {
+      "environment": "dofgs",
+      "path": "/root/autodl-tmp/envs/dofgs",
+      "python": "3.9.25",
+      "repository": "/root/autodl-tmp/DOFGS_implementation",
+      "commit": "cfd635c7d215eec1cbb104c6f6d139b29278ece7",
+      "imports": {
+        "diff_dof_gs_rasterizer": {
+          "status": "passed",
+          "file": "/root/autodl-tmp/envs/dofgs/lib/python3.9/site-packages/diff_dof_gs_rasterizer/__init__.py"
+        },
+        "simple_knn._C": {
+          "status": "passed",
+          "file": "/root/autodl-tmp/envs/dofgs/lib/python3.9/site-packages/simple_knn/_C.cpython-39-x86_64-linux-gnu.so"
+        },
+        "src.model_dofgs.gaussian_model": {
+          "status": "passed",
+          "file": "/root/autodl-tmp/DOFGS_implementation/src/model_dofgs/gaussian_model.py"
+        },
+        "src.model_dofgs.renderer": {
+          "status": "passed",
+          "file": "/root/autodl-tmp/DOFGS_implementation/src/model_dofgs/renderer/__init__.py"
+        },
+        "src.model_dofgs.neural_module": {
+          "status": "passed",
+          "file": "/root/autodl-tmp/DOFGS_implementation/src/model_dofgs/neural_module.py"
+        }
+      },
+      "rasterization": {
+        "status": "passed",
+        "gaussians": 1000,
+        "resolution": [
+          256,
+          256
+        ],
+        "forward_backward": true,
+        "finite_outputs_and_gradients": true,
+        "output_mean": 0.022764047607779503,
+        "knn_gpu_passed": true
+      },
+      "packages": {
+        "scipy": "1.13.1",
+        "packaging": "26.3",
+        "tqdm": "4.70.1",
+        "PySocks": "1.7.1",
+        "tifffile": "2024.8.30",
+        "pillow": "11.3.0",
+        "idna": "3.20",
+        "setuptools": "80.9.0",
+        "ninja": "1.13.2",
+        "ConfigArgParse": "1.9.0",
+        "mpmath": "1.3.0",
+        "torch": "2.0.1+cu118",
+        "ImageIO": "2.37.2",
+        "plyfile": "0.8.1",
+        "scikit-image": "0.22.0",
+        "lit": "15.0.7",
+        "sympy": "1.14.0",
+        "MarkupSafe": "3.0.2",
+        "filelock": "3.19.1",
+        "lpips": "0.1.4",
+        "certifi": "2026.10.23",
+        "ExifRead": "3.5.1",
+        "gdown": "5.2.2",
+        "numpy": "1.24.1",
+        "torchaudio": "2.0.2+cu118",
+        "beautifulsoup4": "4.15.0",
+        "charset-normalizer": "3.5.2",
+        "networkx": "3.2.1",
+        "Jinja2": "3.1.6",
+        "cmake": "3.25.0",
+        "requests": "2.32.5",
+        "opencv-python": "4.4.0.46",
+        "soupsieve": "2.8.4",
+        "torchvision": "0.15.2+cu118",
+        "urllib3": "2.6.3",
+        "lazy-loader": "0.6",
+        "triton": "2.0.0",
+        "typing_extensions": "4.16.0",
+        "wheel": "0.45.1",
+        "pip": "26.0.1",
+        "pytz": "2026.6",
+        "shapely": "2.0.7",
+        "pyliblzfse": "0.4.1",
+        "antlr4-python3-runtime": "4.9.3",
+        "zipp": "3.23.1",
+        "xxhash": "4.0.2",
+        "websockets": "15.0.1",
+        "vhacdx": "0.1.1",
+        "tzdata": "2026.6",
+        "trimesh": "4.12.2",
+        "threadpoolctl": "3.7.0",
+        "svg.path": "7.1",
+        "six": "1.17.0",
+        "rtree": "1.4.1",
+        "rpds-py": "0.27.1",
+        "PyYAML": "6.0.1",
+        "pyparsing": "3.3.3",
+        "Pygments": "2.21.0",
+        "psutil": "7.2.2",
+        "protobuf": "6.33.6",
+        "nodeenv": "1.11.1",
+        "msgpack": "1.1.2",
+        "mdurl": "0.1.2",
+        "mapbox_earcut": "2.1.0",
+        "manifold3d": "3.5.4",
+        "lxml": "6.1.3",
+        "kiwisolver": "1.4.7",
+        "joblib": "1.5.3",
+        "jaxtyping": "0.2.36",
+        "h11": "0.16.0",
+        "fonttools": "4.60.2",
+        "exceptiongroup": "1.3.1",
+        "eval_type_backport": "0.4.0",
+        "embreex": "4.4.0.post1",
+        "docstring_parser": "0.18.0",
+        "cycler": "0.12.1",
+        "contourpy": "1.3.0",
+        "colorlog": "6.12.0",
+        "attrs": "26.1.0",
+        "tensorboardX": "2.6.2.2",
+        "scikit-learn": "1.4.0",
+        "referencing": "0.36.2",
+        "python-dateutil": "3.0.0",
+        "omegaconf": "2.3.0",
+        "markdown-it-py": "3.0.0",
+        "importlib_resources": "6.5.2",
+        "importlib_metadata": "8.7.1",
+        "httpcore": "1.0.9",
+        "anyio": "4.12.1",
+        "typeguard": "4.5.2",
+        "rich": "15.0.0",
+        "pycollada": "0.9.3",
+        "pandas": "2.3.3",
+        "matplotlib": "3.9.4",
+        "jsonschema-specifications": "2025.9.1",
+        "httpx": "0.28.1",
+        "tyro": "1.0.17",
+        "seaborn": "0.13.2",
+        "jsonschema": "4.25.1",
+        "yourdfpy": "0.0.60",
+        "viser": "0.1.10",
+        "kornia": "0.6.0",
+        "torch-cluster": "1.6.3+pt20cu118",
+        "torch_efficient_distloss": "0.1.3",
+        "lightning-utilities": "0.15.2",
+        "torchtyping": "0.1.4",
+        "torchmetrics": "1.3.0",
+        "diff_dof_gs_rasterizer": "0.0.0",
+        "simple_knn": "0.0.0"
+      },
+      "nvcc": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2022 NVIDIA Corporation\nBuilt on Wed_Sep_21_10:33:58_PDT_2022\nCuda compilation tools, release 11.8, V11.8.89\nBuild cuda_11.8.r11.8/compiler.31833905_0",
+      "torch": "2.0.1+cu118",
+      "torch_cuda": "11.8",
+      "cuda_visible_devices": "0",
+      "extension_repair": {
+        "diff_dof_gs_rasterizer": {
+          "returncode": 0
+        },
+        "simple_knn._C": {
+          "returncode": 0
+        }
+      }
+    },
+    "dofgaussian": {
+      "environment": "dofgaussian",
+      "path": "/root/autodl-tmp/envs/dofgaussian",
+      "python": "3.9.25",
+      "repository": "/root/autodl-tmp/DoF-Gaussian",
+      "commit": "a33dda66b4824121eac4127aa86452ebcd2f5771",
+      "imports": {
+        "diff_gaussian_rasterization": {
+          "status": "passed",
+          "file": "/root/autodl-tmp/envs/dofgaussian/lib/python3.9/site-packages/diff_gaussian_rasterization/__init__.py"
+        },
+        "simple_knn._C": {
+          "status": "passed",
+          "file": "/root/autodl-tmp/envs/dofgaussian/lib/python3.9/site-packages/simple_knn/_C.cpython-39-x86_64-linux-gnu.so"
+        },
+        "scene": {
+          "status": "passed",
+          "file": "/root/autodl-tmp/DoF-Gaussian/scene/__init__.py"
+        },
+        "gaussian_renderer": {
+          "status": "passed",
+          "file": "/root/autodl-tmp/DoF-Gaussian/gaussian_renderer/__init__.py"
+        },
+        "bokeh_renderer.utils": {
+          "status": "passed",
+          "file": "/root/autodl-tmp/DoF-Gaussian/bokeh_renderer/utils.py"
+        },
+        "bokeh_renderer.depth_priors": {
+          "status": "passed",
+          "file": "/root/autodl-tmp/DoF-Gaussian/bokeh_renderer/depth_priors.py"
+        }
+      },
+      "rasterization": {
+        "status": "passed",
+        "gaussians": 1000,
+        "resolution": [
+          256,
+          256
+        ],
+        "forward_backward": true,
+        "finite_outputs_and_gradients": true,
+        "output_mean": 0.022776123136281967,
+        "knn_gpu_passed": true
+      },
+      "packages": {
+        "rpds-py": "0.27.1",
+        "wheel": "0.45.1",
+        "pip": "26.0.1",
+        "mpmath": "1.3.0",
+        "urllib3": "1.26.13",
+        "typing_extensions": "4.16.0",
+        "sympy": "1.14.0",
+        "pillow": "11.3.0",
+        "numpy": "1.26.4",
+        "networkx": "3.2.1",
+        "MarkupSafe": "3.0.2",
+        "idna": "3.4",
+        "fsspec": "2025.10.0",
+        "filelock": "3.19.1",
+        "charset-normalizer": "2.1.1",
+        "certifi": "2022.12.7",
+        "triton": "2.1.0",
+        "requests": "2.28.1",
+        "Jinja2": "3.1.6",
+        "torch": "2.1.2+cu121",
+        "torchvision": "0.16.2+cu121",
+        "torchaudio": "2.1.2+cu121",
+        "six": "1.17.0",
+        "scipy": "1.13.1",
+        "retrying": "1.4.2",
+        "setuptools": "69.5.1",
+        "ninja": "1.13.2",
+        "pytz": "2026.6",
+        "pure_eval": "0.2.4",
+        "ptyprocess": "0.7.0",
+        "fastjsonschema": "2.21.2",
+        "addict": "2.4.0",
+        "zipp": "3.23.1",
+        "widgetsnbextension": "4.0.16",
+        "Werkzeug": "3.1.9",
+        "wcwidth": "0.9.4",
+        "tzdata": "2026.6",
+        "typing-inspection": "0.4.2",
+        "trimesh": "4.12.2",
+        "traitlets": "5.15.1",
+        "tqdm": "4.70.1",
+        "tifffile": "2024.8.30",
+        "threadpoolctl": "3.7.0",
+        "PyYAML": "6.0.3",
+        "pyquaternion": "0.9.9",
+        "pyparsing": "3.3.3",
+        "Pygments": "2.21.0",
+        "pydantic_core": "2.46.5",
+        "plyfile": "1.1.3",
+        "platformdirs": "4.4.0",
+        "pexpect": "4.9.0",
+        "parso": "0.8.7",
+        "packaging": "26.3",
+        "opencv-python": "4.11.0.86",
+        "nest-asyncio": "1.6.0",
+        "narwhals": "2.21.0",
+        "kiwisolver": "1.4.7",
+        "jupyterlab_widgets": "3.0.17",
+        "joblib": "1.5.3",
+        "janus": "2.0.0",
+        "itsdangerous": "2.2.0",
+        "ImageIO": "2.37.2",
+        "fonttools": "4.60.2",
+        "executing": "2.3.0",
+        "exceptiongroup": "1.3.1",
+        "decorator": "5.3.1",
+        "cycler": "0.12.1",
+        "contourpy": "1.3.0",
+        "ConfigArgParse": "1.9.0",
+        "comm": "0.2.3",
+        "click": "8.1.8",
+        "blinker": "1.9.0",
+        "attrs": "26.1.0",
+        "asttokens": "3.0.2",
+        "annotated-types": "0.7.0",
+        "stack-data": "0.6.3",
+        "scikit-learn": "1.6.1",
+        "referencing": "0.36.2",
+        "python-dateutil": "3.0.0",
+        "pydantic": "2.13.5",
+        "prompt_toolkit": "3.0.52",
+        "plotly": "7.1.0",
+        "matplotlib-inline": "0.2.2",
+        "lazy-loader": "0.6",
+        "jupyter_core": "5.8.1",
+        "jedi": "0.19.2",
+        "importlib_resources": "6.5.2",
+        "importlib_metadata": "8.7.1",
+        "scikit-image": "0.24.0",
+        "pandas": "2.3.3",
+        "matplotlib": "3.9.4",
+        "jsonschema-specifications": "2025.9.1",
+        "ipython": "8.18.1",
+        "Flask": "3.1.3",
+        "jsonschema": "4.25.1",
+        "ipywidgets": "8.1.9",
+        "dash": "4.5.0",
+        "nbformat": "5.10.4",
+        "open3d": "0.19.0",
+        "wget": "3.2",
+        "fastrlock": "0.8.4",
+        "tensorboard-data-server": "0.7.2",
+        "protobuf": "6.33.6",
+        "h5py": "3.14.0",
+        "grpcio": "1.80.0",
+        "cupy-cuda12x": "11.6.0",
+        "absl-py": "2.3.1",
+        "tensorboardX": "2.6.5",
+        "Markdown": "3.9",
+        "tensorboard": "2.21.0",
+        "diff_gaussian_rasterization": "0.0.0",
+        "simple_knn": "0.0.0"
+      },
+      "nvcc": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Fri_Feb_21_20:23:50_PST_2025\nCuda compilation tools, release 12.8, V12.8.93\nBuild cuda_12.8.r12.8/compiler.35583870_0",
+      "torch": "2.1.2+cu121",
+      "torch_cuda": "12.1",
+      "cuda_visible_devices": "0"
+    },
+    "mipsplatting": {
+      "environment": "mipsplatting",
+      "path": "/root/autodl-tmp/envs/mipsplatting",
+      "python": "3.9.25",
+      "repository": "/root/autodl-tmp/mip-splatting",
+      "commit": "dda02ab5ecf45d6edb8c540d9bb65c7e451345a9",
+      "imports": {
+        "diff_gaussian_rasterization": {
+          "status": "passed",
+          "file": "/root/autodl-tmp/envs/mipsplatting/lib/python3.9/site-packages/diff_gaussian_rasterization/__init__.py"
+        },
+        "simple_knn._C": {
+          "status": "passed",
+          "file": "/root/autodl-tmp/envs/mipsplatting/lib/python3.9/site-packages/simple_knn/_C.cpython-39-x86_64-linux-gnu.so"
+        },
+        "scene": {
+          "status": "passed",
+          "file": "/root/autodl-tmp/mip-splatting/scene/__init__.py"
+        },
+        "gaussian_renderer": {
+          "status": "passed",
+          "file": "/root/autodl-tmp/mip-splatting/gaussian_renderer/__init__.py"
+        }
+      },
+      "rasterization": {
+        "status": "passed",
+        "gaussians": 1000,
+        "resolution": [
+          256,
+          256
+        ],
+        "forward_backward": true,
+        "finite_outputs_and_gradients": true,
+        "output_mean": 0.022763319313526154,
+        "knn_gpu_passed": true
+      },
+      "packages": {
+        "scipy": "1.13.1",
+        "ImageIO": "2.37.2",
+        "urllib3": "2.6.3",
+        "lit": "15.0.7",
+        "filelock": "3.19.1",
+        "typing_extensions": "4.16.0",
+        "idna": "3.20",
+        "opencv-python": "4.8.1.78",
+        "numpy": "1.24.1",
+        "beautifulsoup4": "4.15.0",
+        "plyfile": "0.8.1",
+        "Jinja2": "3.1.6",
+        "mpmath": "1.3.0",
+        "networkx": "3.2.1",
+        "ConfigArgParse": "1.9.0",
+        "charset-normalizer": "3.5.2",
+        "torchaudio": "2.0.2+cu118",
+        "torchvision": "0.15.2+cu118",
+        "scikit-image": "0.22.0",
+        "torch": "2.0.1+cu118",
+        "ExifRead": "3.5.1",
+        "requests": "2.32.5",
+        "soupsieve": "2.8.4",
+        "ninja": "1.13.2",
+        "lazy-loader": "0.6",
+        "tqdm": "4.70.1",
+        "cmake": "3.25.0",
+        "setuptools": "80.9.0",
+        "sympy": "1.14.0",
+        "packaging": "26.3",
+        "MarkupSafe": "3.0.2",
+        "triton": "2.0.0",
+        "tifffile": "2024.8.30",
+        "PySocks": "1.7.1",
+        "certifi": "2026.10.23",
+        "lpips": "0.1.4",
+        "gdown": "5.2.2",
+        "pillow": "11.3.0",
+        "wheel": "0.45.1",
+        "pip": "26.0.1",
+        "pytz": "2026.6",
+        "pure_eval": "0.2.4",
+        "ptyprocess": "0.7.0",
+        "GPUtil": "1.4.0",
+        "fastjsonschema": "2.21.2",
+        "addict": "2.4.0",
+        "zipp": "3.23.1",
+        "widgetsnbextension": "4.0.16",
+        "Werkzeug": "3.1.9",
+        "wcwidth": "0.9.4",
+        "tzdata": "2026.6",
+        "typing-inspection": "0.4.2",
+        "traitlets": "5.15.1",
+        "threadpoolctl": "3.7.0",
+        "six": "1.17.0",
+        "rpds-py": "0.27.1",
+        "retrying": "1.4.2",
+        "PyYAML": "6.0.3",
+        "pyquaternion": "0.9.9",
+        "pyparsing": "3.3.3",
+        "Pygments": "2.21.0",
+        "pydantic_core": "2.46.5",
+        "platformdirs": "4.4.0",
+        "pexpect": "4.9.0",
+        "parso": "0.8.7",
+        "nest-asyncio": "1.6.0",
+        "narwhals": "2.21.0",
+        "kiwisolver": "1.4.7",
+        "jupyterlab_widgets": "3.0.17",
+        "joblib": "1.5.3",
+        "janus": "2.0.0",
+        "itsdangerous": "2.2.0",
+        "fonttools": "4.60.2",
+        "executing": "2.3.0",
+        "exceptiongroup": "1.3.1",
+        "decorator": "5.3.1",
+        "cycler": "0.12.1",
+        "contourpy": "1.3.0",
+        "comm": "0.2.3",
+        "click": "8.1.8",
+        "blinker": "1.9.0",
+        "attrs": "26.1.0",
+        "asttokens": "3.0.2",
+        "annotated-types": "0.7.0",
+        "stack-data": "0.6.3",
+        "scikit-learn": "1.6.1",
+        "referencing": "0.36.2",
+        "python-dateutil": "3.0.0",
+        "pydantic": "2.13.5",
+        "prompt_toolkit": "3.0.52",
+        "plotly": "7.1.0",
+        "matplotlib-inline": "0.2.2",
+        "jupyter_core": "5.8.1",
+        "jedi": "0.19.2",
+        "importlib_resources": "6.5.2",
+        "importlib_metadata": "8.7.1",
+        "pandas": "2.3.3",
+        "matplotlib": "3.9.4",
+        "jsonschema-specifications": "2025.9.1",
+        "ipython": "8.18.1",
+        "Flask": "3.1.3",
+        "jsonschema": "4.25.1",
+        "ipywidgets": "8.1.9",
+        "dash": "4.5.0",
+        "nbformat": "5.10.4",
+        "open3d": "0.19.0",
+        "simple_knn": "0.0.0",
+        "diff_gaussian_rasterization": "0.0.0"
+      },
+      "nvcc": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2022 NVIDIA Corporation\nBuilt on Wed_Sep_21_10:33:58_PDT_2022\nCuda compilation tools, release 11.8, V11.8.89\nBuild cuda_11.8.r11.8/compiler.31833905_0",
+      "torch": "2.0.1+cu118",
+      "torch_cuda": "11.8",
+      "cuda_visible_devices": "0",
+      "extension_repair": {
+        "diff_gaussian_rasterization": {
+          "returncode": 0
+        }
+      }
+    },
+    "cocogaussian": {
+      "environment": "cocogaussian",
+      "path": "/root/autodl-tmp/envs/cocogaussian",
+      "python": "3.9.25",
+      "repository": "/root/autodl-tmp/CoCoGaussian",
+      "commit": "108aa50fb7dcd7df2b7333cbe1f12e78481c2e6c",
+      "imports": {
+        "diff_gaussian_rasterization": {
+          "status": "passed",
+          "file": "/root/autodl-tmp/envs/cocogaussian/lib/python3.9/site-packages/diff_gaussian_rasterization/__init__.py"
+        },
+        "simple_knn._C": {
+          "status": "passed",
+          "file": "/root/autodl-tmp/envs/cocogaussian/lib/python3.9/site-packages/simple_knn/_C.cpython-39-x86_64-linux-gnu.so"
+        },
+        "scene": {
+          "status": "passed",
+          "file": "/root/autodl-tmp/CoCoGaussian/scene/__init__.py"
+        },
+        "gaussian_renderer": {
+          "status": "passed",
+          "file": "/root/autodl-tmp/CoCoGaussian/gaussian_renderer/__init__.py"
+        },
+        "scene.coco_kernel": {
+          "status": "passed",
+          "file": "/root/autodl-tmp/CoCoGaussian/scene/coco_kernel.py"
+        }
+      },
+      "rasterization": {
+        "status": "passed",
+        "gaussians": 1000,
+        "resolution": [
+          256,
+          256
+        ],
+        "forward_backward": true,
+        "finite_outputs_and_gradients": true,
+        "output_mean": 0.023761644959449768,
+        "knn_gpu_passed": true
+      },
+      "packages": {
+        "requests": "2.32.5",
+        "torchaudio": "2.0.2+cu118",
+        "certifi": "2026.10.23",
+        "ConfigArgParse": "1.9.0",
+        "mpmath": "1.3.0",
+        "torch": "2.0.1+cu118",
+        "lazy-loader": "0.6",
+        "MarkupSafe": "3.0.2",
+        "cmake": "3.25.0",
+        "tqdm": "4.70.1",
+        "soupsieve": "2.8.4",
+        "scipy": "1.13.1",
+        "triton": "2.0.0",
+        "sympy": "1.14.0",
+        "filelock": "3.19.1",
+        "beautifulsoup4": "4.15.0",
+        "tifffile": "2024.8.30",
+        "typing_extensions": "4.16.0",
+        "networkx": "3.2.1",
+        "charset-normalizer": "3.5.2",
+        "pillow": "11.3.0",
+        "numpy": "1.24.1",
+        "setuptools": "80.9.0",
+        "packaging": "26.3",
+        "lpips": "0.1.4",
+        "ExifRead": "3.5.1",
+        "idna": "3.20",
+        "plyfile": "0.8.1",
+        "lit": "15.0.7",
+        "opencv-python": "4.8.1.78",
+        "PySocks": "1.7.1",
+        "ImageIO": "2.37.2",
+        "Jinja2": "3.1.6",
+        "gdown": "5.2.2",
+        "ninja": "1.13.2",
+        "urllib3": "2.6.3",
+        "torchvision": "0.15.2+cu118",
+        "wheel": "0.45.1",
+        "pip": "26.0.1",
+        "PyWavelets": "1.6.0",
+        "scikit-image": "0.19.3",
+        "diff_gaussian_rasterization": "0.0.0",
+        "simple_knn": "0.0.0"
+      },
+      "nvcc": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2022 NVIDIA Corporation\nBuilt on Wed_Sep_21_10:33:58_PDT_2022\nCuda compilation tools, release 11.8, V11.8.89\nBuild cuda_11.8.r11.8/compiler.31833905_0",
+      "torch": "2.0.1+cu118",
+      "torch_cuda": "11.8",
+      "cuda_visible_devices": "0"
+    },
+    "gs-base-cu118": {
+      "path": "/root/autodl-tmp/envs/gs-base-cu118",
+      "conda_packages": [
+        {
+          "name": "_libgcc_mutex",
+          "version": "0.1",
+          "build": "main"
+        },
+        {
+          "name": "_openmp_mutex",
+          "version": "5.1",
+          "build": "52_gnu"
+        },
+        {
+          "name": "ld_impl_linux-64",
+          "version": "2.44",
+          "build": "h9e0c5a2_3"
+        },
+        {
+          "name": "tzdata",
+          "version": "2026c",
+          "build": "he532380_0"
+        },
+        {
+          "name": "libgcc",
+          "version": "15.2.0",
+          "build": "h69a1729_8"
+        },
+        {
+          "name": "libexpat",
+          "version": "2.10.0",
+          "build": "h7354ed3_0"
+        },
+        {
+          "name": "libgcc-ng",
+          "version": "15.2.0",
+          "build": "h166f726_8"
+        },
+        {
+          "name": "libstdcxx",
+          "version": "15.2.0",
+          "build": "h39759b7_8"
+        },
+        {
+          "name": "libzlib",
+          "version": "1.3.2",
+          "build": "h47b2149_0"
+        },
+        {
+          "name": "pthread-stubs",
+          "version": "0.3",
+          "build": "h47b2149_2"
+        },
+        {
+          "name": "xorg-xorgproto",
+          "version": "2025.1",
+          "build": "h47b2149_0"
+        },
+        {
+          "name": "xz",
+          "version": "5.8.4",
+          "build": "h140a991_0"
+        },
+        {
+          "name": "bzip2",
+          "version": "1.0.8",
+          "build": "h5eee18b_6"
+        },
+        {
+          "name": "expat",
+          "version": "2.10.0",
+          "build": "h7354ed3_0"
+        },
+        {
+          "name": "libffi",
+          "version": "3.4.8",
+          "build": "h06d3fd0_3"
+        },
+        {
+          "name": "libnsl",
+          "version": "2.0.0",
+          "build": "h5eee18b_0"
+        },
+        {
+          "name": "libuuid",
+          "version": "1.41.5",
+          "build": "h5eee18b_0"
+        },
+        {
+          "name": "ncurses",
+          "version": "6.6",
+          "build": "hfaaeb4e_0"
+        },
+        {
+          "name": "xorg-libxau",
+          "version": "1.0.12",
+          "build": "h9b100fa_0"
+        },
+        {
+          "name": "xorg-libxdmcp",
+          "version": "1.1.5",
+          "build": "h9b100fa_0"
+        },
+        {
+          "name": "zlib",
+          "version": "1.3.2",
+          "build": "h47b2149_0"
+        },
+        {
+          "name": "libxcb",
+          "version": "1.17.0",
+          "build": "h9b100fa_0"
+        },
+        {
+          "name": "readline",
+          "version": "8.3",
+          "build": "hc2a1206_0"
+        },
+        {
+          "name": "sqlite",
+          "version": "3.53.4",
+          "build": "h795bf6d_0"
+        },
+        {
+          "name": "xorg-libx11",
+          "version": "1.8.14",
+          "build": "h65de747_0"
+        },
+        {
+          "name": "tk",
+          "version": "8.6.15",
+          "build": "h54e0aa7_0"
+        },
+        {
+          "name": "python",
+          "version": "3.9.25",
+          "build": "h0dcde21_1"
+        },
+        {
+          "name": "setuptools",
+          "version": "80.9.0",
+          "build": "py39h06a4308_0"
+        },
+        {
+          "name": "wheel",
+          "version": "0.45.1",
+          "build": "py39h06a4308_0"
+        },
+        {
+          "name": "pip",
+          "version": "26.0.1",
+          "build": "pyhc872135_1"
+        },
+        {
+          "name": "cuda-nvcc",
+          "version": "11.8.89",
+          "build": "0"
+        },
+        {
+          "name": "ca-certificates",
+          "version": "2026.10.23",
+          "build": "hbd8a1cb_0"
+        },
+        {
+          "name": "cuda-cccl",
+          "version": "11.8.89",
+          "build": "0"
+        },
+        {
+          "name": "openssl",
+          "version": "3.6.5",
+          "build": "h781a0a9_0"
+        },
+        {
+          "name": "cuda-cudart-dev",
+          "version": "11.8.89",
+          "build": "0"
+        },
+        {
+          "name": "cuda-version",
+          "version": "11.8",
+          "build": "h70ddcb2_3"
+        },
+        {
+          "name": "cuda-cudart",
+          "version": "11.8.89",
+          "build": "0"
+        }
+      ]
+    },
+    "colmap-build": {
+      "path": "/root/autodl-tmp/envs/colmap-build",
+      "conda_packages": [
+        {
+          "name": "cuda-nvcc",
+          "version": "11.8.89",
+          "build": "0"
+        },
+        {
+          "name": "ca-certificates",
+          "version": "2026.10.23",
+          "build": "hbd8a1cb_0"
+        },
+        {
+          "name": "cuda-cccl",
+          "version": "11.8.89",
+          "build": "0"
+        },
+        {
+          "name": "cuda-version",
+          "version": "13.5",
+          "build": "h3499c3b_3"
+        },
+        {
+          "name": "libglvnd",
+          "version": "1.7.0",
+          "build": "ha4b6fd6_5"
+        },
+        {
+          "name": "libgomp",
+          "version": "16.2.0",
+          "build": "he0feb66_7"
+        },
+        {
+          "name": "libzlib",
+          "version": "1.3.2",
+          "build": "h25fd6f3_3"
+        },
+        {
+          "name": "tzdata",
+          "version": "2026e",
+          "build": "h5d301ff_0"
+        },
+        {
+          "name": "_openmp_mutex",
+          "version": "4.5",
+          "build": "20_gnu"
+        },
+        {
+          "name": "cuda-cudart_linux-64",
+          "version": "13.5.37",
+          "build": "h528332f_0"
+        },
+        {
+          "name": "libopengl",
+          "version": "1.7.0",
+          "build": "ha4b6fd6_5"
+        },
+        {
+          "name": "zstd",
+          "version": "1.5.7",
+          "build": "hb78ec9c_7"
+        },
+        {
+          "name": "ld_impl_linux-64",
+          "version": "2.46.1",
+          "build": "default_hbd61a6d_103"
+        },
+        {
+          "name": "libgcc",
+          "version": "16.2.0",
+          "build": "ha9f2e26_7"
+        },
+        {
+          "name": "aws-c-common",
+          "version": "0.14.3",
+          "build": "hb03c661_0"
+        },
+        {
+          "name": "bzip2",
+          "version": "1.0.8",
+          "build": "hda65f42_10"
+        },
+        {
+          "name": "c-ares",
+          "version": "1.34.9",
+          "build": "hebe6cf0_0"
+        },
+        {
+          "name": "keyutils",
+          "version": "1.6.3",
+          "build": "h7cc23a3_1"
+        },
+        {
+          "name": "libdeflate",
+          "version": "1.25",
+          "build": "hd45a770_1"
+        },
+        {
+          "name": "libev",
+          "version": "4.33",
+          "build": "h280c20c_3"
+        },
+        {
+          "name": "libexpat",
+          "version": "2.9.0",
+          "build": "hd2095e1_0"
+        },
+        {
+          "name": "libffi",
+          "version": "3.7.0",
+          "build": "h81df57d_1"
+        },
+        {
+          "name": "libgcc-ng",
+          "version": "16.2.0",
+          "build": "h69a702a_7"
+        },
+        {
+          "name": "libgfortran5",
+          "version": "16.2.0",
+          "build": "h6b99dfc_7"
+        },
+        {
+          "name": "libiconv",
+          "version": "1.18",
+          "build": "h0cb94f2_3"
+        },
+        {
+          "name": "libjpeg-turbo",
+          "version": "3.2.1",
+          "build": "h7cc23a3_0"
+        },
+        {
+          "name": "liblzma",
+          "version": "5.8.3",
+          "build": "hb03c661_1"
+        },
+        {
+          "name": "libnsl",
+          "version": "2.0.1",
+          "build": "hb9d3cd8_1"
+        },
+        {
+          "name": "libpng",
+          "version": "1.6.59",
+          "build": "h922cc85_0"
+        },
+        {
+          "name": "libsqlite",
+          "version": "3.53.4",
+          "build": "h0737f62_102"
+        },
+        {
+          "name": "libstdcxx",
+          "version": "16.2.0",
+          "build": "h934c35e_7"
+        },
+        {
+          "name": "libuuid",
+          "version": "2.42.4",
+          "build": "hcfc3c73_0"
+        },
+        {
+          "name": "libuv",
+          "version": "1.52.1",
+          "build": "h280c20c_1"
+        },
+        {
+          "name": "libwebp-base",
+          "version": "1.6.0",
+          "build": "hd42ef1d_1"
+        },
+        {
+          "name": "libxcrypt",
+          "version": "4.4.38",
+          "build": "h280c20c_0"
+        },
+        {
+          "name": "ncurses",
+          "version": "6.6",
+          "build": "hdb14827_1"
+        },
+        {
+          "name": "openssl",
+          "version": "3.6.5",
+          "build": "h781a0a9_0"
+        },
+        {
+          "name": "pthread-stubs",
+          "version": "0.4",
+          "build": "h7cc23a3_1004"
+        },
+        {
+          "name": "rhash",
+          "version": "1.4.6",
+          "build": "hb03c661_2"
+        },
+        {
+          "name": "tk",
+          "version": "8.6.13",
+          "build": "noxft_h1df4ec4_4"
+        },
+        {
+          "name": "xorg-libxau",
+          "version": "1.0.12",
+          "build": "h7cc23a3_2"
+        },
+        {
+          "name": "xorg-libxdmcp",
+          "version": "1.1.5",
+          "build": "h7cc23a3_2"
+        },
+        {
+          "name": "xorg-xorgproto",
+          "version": "2025.1",
+          "build": "hebe6cf0_3"
+        },
+        {
+          "name": "aws-c-cal",
+          "version": "0.9.15",
+          "build": "h6bbde05_1"
+        },
+        {
+          "name": "aws-c-compression",
+          "version": "0.3.2",
+          "build": "h01ee8f8_5"
+        },
+        {
+          "name": "aws-c-sdkutils",
+          "version": "0.2.7",
+          "build": "h01ee8f8_3"
+        },
+        {
+          "name": "aws-checksums",
+          "version": "0.2.10",
+          "build": "h01ee8f8_5"
+        },
+        {
+          "name": "cuda-cudart",
+          "version": "13.5.37",
+          "build": "h393e864_0"
+        },
+        {
+          "name": "eigen",
+          "version": "3.4.0",
+          "build": "h54a6638_2"
+        },
+        {
+          "name": "gflags",
+          "version": "2.2.2",
+          "build": "h5888daf_1005"
+        },
+        {
+          "name": "gmp",
+          "version": "6.3.0",
+          "build": "hfd2156b_3"
+        },
+        {
+          "name": "imath",
+          "version": "3.2.3",
+          "build": "h923cf36_1"
+        },
+        {
+          "name": "jxrlib",
+          "version": "1.1",
+          "build": "hd590300_3"
+        },
+        {
+          "name": "lerc",
+          "version": "4.3.0",
+          "build": "he78707d_0"
+        },
+        {
+          "name": "libaec",
+          "version": "1.1.7",
+          "build": "h659bb9a_0"
+        },
+        {
+          "name": "libedit",
+          "version": "3.1.20260512",
+          "build": "pl5321h373387f_0"
+        },
+        {
+          "name": "libgfortran",
+          "version": "16.2.0",
+          "build": "h69a702a_7"
+        },
+        {
+          "name": "libglu",
+          "version": "9.0.3",
+          "build": "h5888daf_1"
+        },
+        {
+          "name": "liblzma-devel",
+          "version": "5.8.3",
+          "build": "hb03c661_1"
+        },
+        {
+          "name": "libnghttp2",
+          "version": "1.71.0",
+          "build": "hc5e5977_0"
+        },
+        {
+          "name": "libssh2",
+          "version": "1.11.1",
+          "build": "h6154650_1"
+        },
+        {
+          "name": "libstdcxx-ng",
+          "version": "16.2.0",
+          "build": "hdf11a46_7"
+        },
+        {
+          "name": "libxcb",
+          "version": "1.17.0",
+          "build": "hb83e432_2"
+        },
+        {
+          "name": "lz4-c",
+          "version": "1.10.0",
+          "build": "hee9eb32_2"
+        },
+        {
+          "name": "metis",
+          "version": "5.1.0",
+          "build": "h86e3903_1008"
+        },
+        {
+          "name": "ninja",
+          "version": "1.13.2",
+          "build": "h171cf75_1"
+        },
+        {
+          "name": "readline",
+          "version": "8.3",
+          "build": "hd6e31c0_1"
+        },
+        {
+          "name": "s2n",
+          "version": "1.7.6",
+          "build": "h7e3ee7f_0"
+        },
+        {
+          "name": "xz-gpl-tools",
+          "version": "5.8.3",
+          "build": "ha02ee65_1"
+        },
+        {
+          "name": "xz-tools",
+          "version": "5.8.3",
+          "build": "hb03c661_1"
+        },
+        {
+          "name": "aws-c-io",
+          "version": "0.27.5",
+          "build": "h4f381ba_1"
+        },
+        {
+          "name": "cuda-cudart-dev",
+          "version": "11.8.89",
+          "build": "0"
+        },
+        {
+          "name": "glog",
+          "version": "0.6.0",
+          "build": "h6f12383_0"
+        },
+        {
+          "name": "icu",
+          "version": "70.1",
+          "build": "h27087fc_0"
+        },
+        {
+          "name": "krb5",
+          "version": "1.22.2",
+          "build": "hbc21106_2"
+        },
+        {
+          "name": "libopenblas",
+          "version": "0.3.34",
+          "build": "pthreads_hf13c14d_2"
+        },
+        {
+          "name": "libtiff",
+          "version": "4.7.2",
+          "build": "hcc2c06a_1"
+        },
+        {
+          "name": "mpfr",
+          "version": "4.2.2",
+          "build": "ha2cb11d_1"
+        },
+        {
+          "name": "python",
+          "version": "3.9.23",
+          "build": "hc30ae73_0_cpython"
+        },
+        {
+          "name": "sqlite",
+          "version": "3.53.4",
+          "build": "h6e79ffa_102"
+        },
+        {
+          "name": "xorg-libx11",
+          "version": "1.8.14",
+          "build": "hb83e432_0"
+        },
+        {
+          "name": "xz",
+          "version": "5.8.3",
+          "build": "ha02ee65_1"
+        },
+        {
+          "name": "aws-c-http",
+          "version": "0.11.0",
+          "build": "hbe094ff_5"
+        },
+        {
+          "name": "boost-cpp",
+          "version": "1.74.0",
+          "build": "h75c5d50_8"
+        },
+        {
+          "name": "lcms2",
+          "version": "2.20",
+          "build": "h9073bf1_0"
+        },
+        {
+          "name": "libblas",
+          "version": "3.11.0",
+          "build": "12_h4a7cf45_openblas"
+        },
+        {
+          "name": "libcurl",
+          "version": "8.21.0",
+          "build": "hcf29cc6_1"
+        },
+        {
+          "name": "libglx",
+          "version": "1.7.0",
+          "build": "ha4b6fd6_5"
+        },
+        {
+          "name": "libxml2",
+          "version": "2.10.3",
+          "build": "hca2bb57_4"
+        },
+        {
+          "name": "openjpeg",
+          "version": "2.5.4",
+          "build": "heb1ab33_2"
+        },
+        {
+          "name": "openjph",
+          "version": "0.32.0",
+          "build": "h2a08dbc_1"
+        },
+        {
+          "name": "setuptools",
+          "version": "80.9.0",
+          "build": "pyhff2d567_0"
+        },
+        {
+          "name": "wheel",
+          "version": "0.45.1",
+          "build": "pyhd8ed1ab_1"
+        },
+        {
+          "name": "xorg-libxext",
+          "version": "1.3.7",
+          "build": "h7cc23a3_1"
+        },
+        {
+          "name": "xorg-libxfixes",
+          "version": "6.0.2",
+          "build": "h7cc23a3_1"
+        },
+        {
+          "name": "aws-c-auth",
+          "version": "0.10.4",
+          "build": "h4610da3_2"
+        },
+        {
+          "name": "cmake",
+          "version": "3.31.8",
+          "build": "hc85cc9f_0"
+        },
+        {
+          "name": "libcblas",
+          "version": "3.11.0",
+          "build": "12_h0358290_openblas"
+        },
+        {
+          "name": "libgl",
+          "version": "1.7.0",
+          "build": "ha4b6fd6_5"
+        },
+        {
+          "name": "libglx-devel",
+          "version": "1.7.0",
+          "build": "ha4b6fd6_5"
+        },
+        {
+          "name": "libhwloc",
+          "version": "2.9.1",
+          "build": "hd6dc26d_0"
+        },
+        {
+          "name": "liblapack",
+          "version": "3.11.0",
+          "build": "12_h47877c9_openblas"
+        },
+        {
+          "name": "openexr",
+          "version": "3.5.3",
+          "build": "hff7ccaf_0"
+        },
+        {
+          "name": "pip",
+          "version": "25.2",
+          "build": "pyh8b19718_0"
+        },
+        {
+          "name": "xorg-libxi",
+          "version": "1.8.4",
+          "build": "h7cc23a3_0"
+        },
+        {
+          "name": "xorg-libxxf86vm",
+          "version": "1.1.7",
+          "build": "hb03c661_0"
+        },
+        {
+          "name": "aws-c-s3",
+          "version": "0.13.1",
+          "build": "h7508075_1"
+        },
+        {
+          "name": "freeglut",
+          "version": "3.2.2",
+          "build": "h215f996_4"
+        },
+        {
+          "name": "glew",
+          "version": "2.3.0",
+          "build": "h71661d4_0"
+        },
+        {
+          "name": "libgl-devel",
+          "version": "1.7.0",
+          "build": "ha4b6fd6_5"
+        },
+        {
+          "name": "tbb",
+          "version": "2021.9.0",
+          "build": "hf52228f_0"
+        },
+        {
+          "name": "hdf5",
+          "version": "2.2.0",
+          "build": "nompi_hc529623_100"
+        },
+        {
+          "name": "jasper",
+          "version": "4.2.9",
+          "build": "hd038ad9_2"
+        },
+        {
+          "name": "suitesparse",
+          "version": "5.10.1",
+          "build": "h9e50725_1"
+        },
+        {
+          "name": "ceres-solver",
+          "version": "2.1.0",
+          "build": "h2ea6fbf_2"
+        },
+        {
+          "name": "flann",
+          "version": "1.9.2",
+          "build": "h7118410_6"
+        },
+        {
+          "name": "libraw",
+          "version": "0.22.3",
+          "build": "hab3bfc1_0"
+        },
+        {
+          "name": "freeimage",
+          "version": "3.18.0",
+          "build": "h3038e8d_27"
+        },
+        {
+          "name": "libcurand",
+          "version": "10.3.0.86",
+          "build": "0"
+        },
+        {
+          "name": "libcurand-dev",
+          "version": "10.3.0.86",
+          "build": "0"
+        }
+      ]
+    }
+  },
+  "repositories": {
+    "DOFGS_implementation": {
+      "path": "/root/autodl-tmp/DOFGS_implementation",
+      "commit": "cfd635c7d215eec1cbb104c6f6d139b29278ece7",
+      "local_patch": "diff --git a/render.py b/render.py\nindex f2ab97a..94c4c13 100644\n--- a/render.py\n+++ b/render.py\n@@ -222,7 +222,7 @@ if __name__ == \"__main__\":\n     render = import_class_from_file(f'src/{conf.model_version}/renderer/__init__.py', 'render')\n         \n     # load information for all scenes within the scene_list:\n-    scene_dict = load_yaml_file('config_files/scene_info.yaml')\n+    scene_dict = load_yaml_file(conf.get('scene_info_path', 'config_files/scene_info.yaml'))\n \n     if len(test_scene_list) == 1 and test_scene_list[0] == 'all':\n         test_scene_list = [item for item in scene_dict.keys() if 'bush' not in item]\n@@ -281,4 +281,4 @@ if __name__ == \"__main__\":\n         \n         # render and compute metrics\n         render_sets(GaussianModel, model.extract(cur_args), test_iteration, pipeline.extract(cur_args), \n-                    cur_args.skip_train, cur_args.skip_test)\n\\ No newline at end of file\n+                    cur_args.skip_train, cur_args.skip_test)\ndiff --git a/train.py b/train.py\nindex e20670a..7e1a514 100644\n--- a/train.py\n+++ b/train.py\n@@ -98,7 +98,7 @@ if __name__ == \"__main__\":\n     training = import_class_from_file(f'src/{conf.model_version}/training.py', 'training')\n     \n     # load_scene_info:\n-    scene_dict = load_yaml_file('config_files/scene_info.yaml')\n+    scene_dict = load_yaml_file(conf.get('scene_info_path', 'config_files/scene_info.yaml'))\n         \n     # setup the remaining parameters\n     parser = ArgumentParser(description=\"Training script parameters\")\n@@ -214,4 +214,4 @@ if __name__ == \"__main__\":\n          \n         # All done\n         print(f\"\\nTraining Scene {idx:d} complete.\")\n-        \n\\ No newline at end of file\n+        \n"
+    },
+    "DoF-Gaussian": {
+      "path": "/root/autodl-tmp/DoF-Gaussian",
+      "commit": "a33dda66b4824121eac4127aa86452ebcd2f5771",
+      "local_patch": "diff --git a/arguments/__pycache__/__init__.cpython-39.pyc b/arguments/__pycache__/__init__.cpython-39.pyc\nindex 378388d..b25025e 100644\nBinary files a/arguments/__pycache__/__init__.cpython-39.pyc and b/arguments/__pycache__/__init__.cpython-39.pyc differ\ndiff --git a/bokeh_renderer/__pycache__/depth_priors.cpython-39.pyc b/bokeh_renderer/__pycache__/depth_priors.cpython-39.pyc\nindex d8c4265..5b24025 100644\nBinary files a/bokeh_renderer/__pycache__/depth_priors.cpython-39.pyc and b/bokeh_renderer/__pycache__/depth_priors.cpython-39.pyc differ\ndiff --git a/bokeh_renderer/__pycache__/scatter.cpython-39.pyc b/bokeh_renderer/__pycache__/scatter.cpython-39.pyc\nindex 5d58f19..a886d84 100644\nBinary files a/bokeh_renderer/__pycache__/scatter.cpython-39.pyc and b/bokeh_renderer/__pycache__/scatter.cpython-39.pyc differ\ndiff --git a/bokeh_renderer/__pycache__/scatter_ex.cpython-39.pyc b/bokeh_renderer/__pycache__/scatter_ex.cpython-39.pyc\nindex 037d654..9297295 100644\nBinary files a/bokeh_renderer/__pycache__/scatter_ex.cpython-39.pyc and b/bokeh_renderer/__pycache__/scatter_ex.cpython-39.pyc differ\ndiff --git a/bokeh_renderer/__pycache__/utils.cpython-39.pyc b/bokeh_renderer/__pycache__/utils.cpython-39.pyc\nindex cbeb5d3..5d7ed9c 100644\nBinary files a/bokeh_renderer/__pycache__/utils.cpython-39.pyc and b/bokeh_renderer/__pycache__/utils.cpython-39.pyc differ\ndiff --git a/gaussian_renderer/__pycache__/__init__.cpython-39.pyc b/gaussian_renderer/__pycache__/__init__.cpython-39.pyc\nindex 8d96a1b..0e36a46 100644\nBinary files a/gaussian_renderer/__pycache__/__init__.cpython-39.pyc and b/gaussian_renderer/__pycache__/__init__.cpython-39.pyc differ\ndiff --git a/gaussian_renderer/__pycache__/network_gui.cpython-39.pyc b/gaussian_renderer/__pycache__/network_gui.cpython-39.pyc\nindex f002ac7..4df2165 100644\nBinary files a/gaussian_renderer/__pycache__/network_gui.cpython-39.pyc and b/gaussian_renderer/__pycache__/network_gui.cpython-39.pyc differ\ndiff --git a/models/depth_priors/__pycache__/__init__.cpython-39.pyc b/models/depth_priors/__pycache__/__init__.cpython-39.pyc\nindex 8657b59..4197bd3 100644\nBinary files a/models/depth_priors/__pycache__/__init__.cpython-39.pyc and b/models/depth_priors/__pycache__/__init__.cpython-39.pyc differ\ndiff --git a/models/depth_priors/__pycache__/depth_model.cpython-39.pyc b/models/depth_priors/__pycache__/depth_model.cpython-39.pyc\nindex eccfd07..acd7702 100644\nBinary files a/models/depth_priors/__pycache__/depth_model.cpython-39.pyc and b/models/depth_priors/__pycache__/depth_model.cpython-39.pyc differ\ndiff --git a/models/depth_priors/__pycache__/mannequin_challenge_model.cpython-39.pyc b/models/depth_priors/__pycache__/mannequin_challenge_model.cpython-39.pyc\nindex e884019..30b81cd 100644\nBinary files a/models/depth_priors/__pycache__/mannequin_challenge_model.cpython-39.pyc and b/models/depth_priors/__pycache__/mannequin_challenge_model.cpython-39.pyc differ\ndiff --git a/models/depth_priors/mannequin_challenge/models/__pycache__/base_model.cpython-39.pyc b/models/depth_priors/mannequin_challenge/models/__pycache__/base_model.cpython-39.pyc\nindex 4d2741c..e6085a6 100644\nBinary files a/models/depth_priors/mannequin_challenge/models/__pycache__/base_model.cpython-39.pyc and b/models/depth_priors/mannequin_challenge/models/__pycache__/base_model.cpython-39.pyc differ\ndiff --git a/models/depth_priors/mannequin_challenge/models/__pycache__/hourglass.cpython-39.pyc b/models/depth_priors/mannequin_challenge/models/__pycache__/hourglass.cpython-39.pyc\nindex e975e38..88095d6 100644\nBinary files a/models/depth_priors/mannequin_challenge/models/__pycache__/hourglass.cpython-39.pyc and b/models/depth_priors/mannequin_challenge/models/__pycache__/hourglass.cpython-39.pyc differ\ndiff --git a/models/depth_priors/mannequin_challenge/models/__pycache__/networks.cpython-39.pyc b/models/depth_priors/mannequin_challenge/models/__pycache__/networks.cpython-39.pyc\nindex 91a435a..ac4f4b2 100644\nBinary files a/models/depth_priors/mannequin_challenge/models/__pycache__/networks.cpython-39.pyc and b/models/depth_priors/mannequin_challenge/models/__pycache__/networks.cpython-39.pyc differ\ndiff --git a/models/depth_priors/mannequin_challenge/models/__pycache__/pix2pix_model.cpython-39.pyc b/models/depth_priors/mannequin_challenge/models/__pycache__/pix2pix_model.cpython-39.pyc\nindex 025d0f4..da1d634 100644\nBinary files a/models/depth_priors/mannequin_challenge/models/__pycache__/pix2pix_model.cpython-39.pyc and b/models/depth_priors/mannequin_challenge/models/__pycache__/pix2pix_model.cpython-39.pyc differ\ndiff --git a/models/depth_priors/mannequin_challenge/options/__pycache__/base_options.cpython-39.pyc b/models/depth_priors/mannequin_challenge/options/__pycache__/base_options.cpython-39.pyc\nindex 8d772df..c7e3954 100644\nBinary files a/models/depth_priors/mannequin_challenge/options/__pycache__/base_options.cpython-39.pyc and b/models/depth_priors/mannequin_challenge/options/__pycache__/base_options.cpython-39.pyc differ\ndiff --git a/models/depth_priors/mannequin_challenge/options/__pycache__/train_options.cpython-39.pyc b/models/depth_priors/mannequin_challenge/options/__pycache__/train_options.cpython-39.pyc\nindex ed09401..7e562dd 100644\nBinary files a/models/depth_priors/mannequin_challenge/options/__pycache__/train_options.cpython-39.pyc and b/models/depth_priors/mannequin_challenge/options/__pycache__/train_options.cpython-39.pyc differ\ndiff --git a/models/depth_priors/mannequin_challenge/util/__pycache__/util.cpython-39.pyc b/models/depth_priors/mannequin_challenge/util/__pycache__/util.cpython-39.pyc\nindex b9874c8..fc21121 100644\nBinary files a/models/depth_priors/mannequin_challenge/util/__pycache__/util.cpython-39.pyc and b/models/depth_priors/mannequin_challenge/util/__pycache__/util.cpython-39.pyc differ\ndiff --git a/scene/__pycache__/__init__.cpython-39.pyc b/scene/__pycache__/__init__.cpython-39.pyc\nindex 283edbb..aac2855 100644\nBinary files a/scene/__pycache__/__init__.cpython-39.pyc and b/scene/__pycache__/__init__.cpython-39.pyc differ\ndiff --git a/scene/__pycache__/appearance_network.cpython-39.pyc b/scene/__pycache__/appearance_network.cpython-39.pyc\nindex 27539e6..8e4598f 100644\nBinary files a/scene/__pycache__/appearance_network.cpython-39.pyc and b/scene/__pycache__/appearance_network.cpython-39.pyc differ\ndiff --git a/scene/__pycache__/cameras.cpython-39.pyc b/scene/__pycache__/cameras.cpython-39.pyc\nindex 79809db..a19bdb8 100644\nBinary files a/scene/__pycache__/cameras.cpython-39.pyc and b/scene/__pycache__/cameras.cpython-39.pyc differ\ndiff --git a/scene/__pycache__/colmap_loader.cpython-39.pyc b/scene/__pycache__/colmap_loader.cpython-39.pyc\nindex b9af4a4..8ae07c2 100644\nBinary files a/scene/__pycache__/colmap_loader.cpython-39.pyc and b/scene/__pycache__/colmap_loader.cpython-39.pyc differ\ndiff --git a/scene/__pycache__/dataset_readers.cpython-39.pyc b/scene/__pycache__/dataset_readers.cpython-39.pyc\nindex 1f4b18e..d8f260c 100644\nBinary files a/scene/__pycache__/dataset_readers.cpython-39.pyc and b/scene/__pycache__/dataset_readers.cpython-39.pyc differ\ndiff --git a/scene/__pycache__/gaussian_model.cpython-39.pyc b/scene/__pycache__/gaussian_model.cpython-39.pyc\nindex 2bd29cd..23861c1 100644\nBinary files a/scene/__pycache__/gaussian_model.cpython-39.pyc and b/scene/__pycache__/gaussian_model.cpython-39.pyc differ\ndiff --git a/submodules/simple-knn/build/lib.linux-x86_64-cpython-39/simple_knn/_C.cpython-39-x86_64-linux-gnu.so b/submodules/simple-knn/build/lib.linux-x86_64-cpython-39/simple_knn/_C.cpython-39-x86_64-linux-gnu.so\nold mode 100644\nnew mode 100755\nindex 7258ea3..e54c9c9\nBinary files a/submodules/simple-knn/build/lib.linux-x86_64-cpython-39/simple_knn/_C.cpython-39-x86_64-linux-gnu.so and b/submodules/simple-knn/build/lib.linux-x86_64-cpython-39/simple_knn/_C.cpython-39-x86_64-linux-gnu.so differ\ndiff --git a/submodules/simple-knn/build/temp.linux-x86_64-cpython-39/ext.o b/submodules/simple-knn/build/temp.linux-x86_64-cpython-39/ext.o\nindex c337260..8d914d7 100644\nBinary files a/submodules/simple-knn/build/temp.linux-x86_64-cpython-39/ext.o and b/submodules/simple-knn/build/temp.linux-x86_64-cpython-39/ext.o differ\ndiff --git a/submodules/simple-knn/build/temp.linux-x86_64-cpython-39/simple_knn.o b/submodules/simple-knn/build/temp.linux-x86_64-cpython-39/simple_knn.o\nindex fb43720..43bfced 100644\nBinary files a/submodules/simple-knn/build/temp.linux-x86_64-cpython-39/simple_knn.o and b/submodules/simple-knn/build/temp.linux-x86_64-cpython-39/simple_knn.o differ\ndiff --git a/submodules/simple-knn/build/temp.linux-x86_64-cpython-39/spatial.o b/submodules/simple-knn/build/temp.linux-x86_64-cpython-39/spatial.o\nindex 640110f..b6ad4fb 100644\nBinary files a/submodules/simple-knn/build/temp.linux-x86_64-cpython-39/spatial.o and b/submodules/simple-knn/build/temp.linux-x86_64-cpython-39/spatial.o differ\ndiff --git a/submodules/simple-knn/simple_knn.cu b/submodules/simple-knn/simple_knn.cu\nindex e72e4c9..df436d0 100644\n--- a/submodules/simple-knn/simple_knn.cu\n+++ b/submodules/simple-knn/simple_knn.cu\n@@ -1,3 +1,4 @@\n+#include <cfloat>\n /*\n  * Copyright (C) 2023, Inria\n  * GRAPHDECO research group, https://team.inria.fr/graphdeco\ndiff --git a/utils/__pycache__/camera_utils.cpython-39.pyc b/utils/__pycache__/camera_utils.cpython-39.pyc\nindex 7241daa..b411063 100644\nBinary files a/utils/__pycache__/camera_utils.cpython-39.pyc and b/utils/__pycache__/camera_utils.cpython-39.pyc differ\ndiff --git a/utils/__pycache__/colmap_read_model.cpython-39.pyc b/utils/__pycache__/colmap_read_model.cpython-39.pyc\nindex a133847..7c136aa 100644\nBinary files a/utils/__pycache__/colmap_read_model.cpython-39.pyc and b/utils/__pycache__/colmap_read_model.cpython-39.pyc differ\ndiff --git a/utils/__pycache__/colmap_utils.cpython-39.pyc b/utils/__pycache__/colmap_utils.cpython-39.pyc\nindex e53f84e..57833aa 100644\nBinary files a/utils/__pycache__/colmap_utils.cpython-39.pyc and b/utils/__pycache__/colmap_utils.cpython-39.pyc differ\ndiff --git a/utils/__pycache__/general_utils.cpython-39.pyc b/utils/__pycache__/general_utils.cpython-39.pyc\nindex b55726f..14b7481 100644\nBinary files a/utils/__pycache__/general_utils.cpython-39.pyc and b/utils/__pycache__/general_utils.cpython-39.pyc differ\ndiff --git a/utils/__pycache__/graphics_utils.cpython-39.pyc b/utils/__pycache__/graphics_utils.cpython-39.pyc\nindex 5750743..cb0ade9 100644\nBinary files a/utils/__pycache__/graphics_utils.cpython-39.pyc and b/utils/__pycache__/graphics_utils.cpython-39.pyc differ\ndiff --git a/utils/__pycache__/image_utils.cpython-39.pyc b/utils/__pycache__/image_utils.cpython-39.pyc\nindex 84d596d..e7e7ae7 100644\nBinary files a/utils/__pycache__/image_utils.cpython-39.pyc and b/utils/__pycache__/image_utils.cpython-39.pyc differ\ndiff --git a/utils/__pycache__/io_utils.cpython-39.pyc b/utils/__pycache__/io_utils.cpython-39.pyc\nindex a6ae1dd..0ca3161 100644\nBinary files a/utils/__pycache__/io_utils.cpython-39.pyc and b/utils/__pycache__/io_utils.cpython-39.pyc differ\ndiff --git a/utils/__pycache__/loss_utils.cpython-39.pyc b/utils/__pycache__/loss_utils.cpython-39.pyc\nindex 4991dc0..f57e3e0 100644\nBinary files a/utils/__pycache__/loss_utils.cpython-39.pyc and b/utils/__pycache__/loss_utils.cpython-39.pyc differ\ndiff --git a/utils/__pycache__/sh_utils.cpython-39.pyc b/utils/__pycache__/sh_utils.cpython-39.pyc\nindex 12716c4..fc2c458 100644\nBinary files a/utils/__pycache__/sh_utils.cpython-39.pyc and b/utils/__pycache__/sh_utils.cpython-39.pyc differ\ndiff --git a/utils/__pycache__/system_utils.cpython-39.pyc b/utils/__pycache__/system_utils.cpython-39.pyc\nindex 86880f3..7ac01e4 100644\nBinary files a/utils/__pycache__/system_utils.cpython-39.pyc and b/utils/__pycache__/system_utils.cpython-39.pyc differ\n"
+    },
+    "mip-splatting": {
+      "path": "/root/autodl-tmp/mip-splatting",
+      "commit": "dda02ab5ecf45d6edb8c540d9bb65c7e451345a9",
+      "local_patch": "diff --git a/arguments/__init__.py b/arguments/__init__.py\nindex 312355e..98b654d 100644\n--- a/arguments/__init__.py\n+++ b/arguments/__init__.py\n@@ -54,6 +54,7 @@ class ModelParams(ParamGroup):\n         self._white_background = False\n         self.data_device = \"cuda\"\n         self.eval = False\n+        self.llffhold = 8\n         self._kernel_size = 0.1\n         # self.use_spatial_gaussian_bias = False\n         self.ray_jitter = False\ndiff --git a/scene/__init__.py b/scene/__init__.py\nindex 3cb592f..4c7e84d 100644\n--- a/scene/__init__.py\n+++ b/scene/__init__.py\n@@ -41,7 +41,7 @@ class Scene:\n         self.test_cameras = {}\n \n         if os.path.exists(os.path.join(args.source_path, \"sparse\")):\n-            scene_info = sceneLoadTypeCallbacks[\"Colmap\"](args.source_path, args.images, args.eval)\n+            scene_info = sceneLoadTypeCallbacks[\"Colmap\"](args.source_path, args.images, args.eval, llffhold=args.llffhold)\n         elif os.path.exists(os.path.join(args.source_path, \"transforms_train.json\")):\n             print(\"Found transforms_train.json file, assuming Blender data set!\")\n             scene_info = sceneLoadTypeCallbacks[\"Blender\"](args.source_path, args.white_background, args.eval)\n@@ -93,4 +93,4 @@ class Scene:\n         return self.train_cameras[scale]\n \n     def getTestCameras(self, scale=1.0):\n-        return self.test_cameras[scale]\n\\ No newline at end of file\n+        return self.test_cameras[scale]\ndiff --git a/submodules/diff-gaussian-rasterization/diff_gaussian_rasterization.egg-info/PKG-INFO b/submodules/diff-gaussian-rasterization/diff_gaussian_rasterization.egg-info/PKG-INFO\nindex dc4fd79..01d1924 100644\n--- a/submodules/diff-gaussian-rasterization/diff_gaussian_rasterization.egg-info/PKG-INFO\n+++ b/submodules/diff-gaussian-rasterization/diff_gaussian_rasterization.egg-info/PKG-INFO\n@@ -1,4 +1,5 @@\n-Metadata-Version: 2.1\n-Name: diff-gaussian-rasterization\n+Metadata-Version: 2.4\n+Name: diff_gaussian_rasterization\n Version: 0.0.0\n License-File: LICENSE.md\n+Dynamic: license-file\n"
+    },
+    "CoCoGaussian": {
+      "path": "/root/autodl-tmp/CoCoGaussian",
+      "commit": "108aa50fb7dcd7df2b7333cbe1f12e78481c2e6c",
+      "local_patch": ""
+    }
+  },
+  "deviations": [
+    "All new environments/caches/temp files are on the data disk; existing environments untouched.",
+    "Python 3.9 patch release is resolved by conda; DOF-GS official Python=3.9.18.",
+    "Mip-Splatting and CoCoGaussian use Python3.9/torch2.0.1+cu118/nvcc11.8 for gcc11 and Ada compatibility.",
+    "DoF-Gaussian fixes torch2.1.2/vision0.16.2/audio2.1.2 cu121 and uses system nvcc12.8; minor CUDA mismatch recorded.",
+    "DOF-GS attempts binary opencv4.4.0.46 and falls back to4.5.5.64 if no Python3.9 wheel exists.",
+    "DoF-Gaussian missing README dependencies include simple-knn, cupy-cuda12x11.6.0, tensorboard, wget and h5py.",
+    "NumPy constrained below2 for old PyTorch binary compatibility; CuPy11.6 retains compile_with_cache.",
+    "Mip-Splatting adds llffhold argument and passes it to its reader; no algorithm changes.",
+    "DoF-NeRF source contains8 scenes, extra book excluded; ambiguous turtle triplets blocked.",
+    "Updated2026-11-05 20:35+08:00: DoF-NeRF uses supplied sharp-view poses/points after name matching; exact497x331 standard rectification yields PINHOLE cameras; exports are reprojected to original pixels.",
+    "Conda shared-cache lock conflicts resolved by sequential locked conda operations; no config files changed."
+  ],
+  "cocogaussian_submodules": {
+    "diff-gaussian-rasterization": "59f5f77e3ddbac3ed9db93ec2cfe99ed6c5d121d",
+    "simple-knn": "86710c2d4b46680c02301765dd79e465819c8f19"
+  },
+  "disk": {
+    "/": {
+      "total": 32212254720,
+      "used": 29424951296,
+      "free": 2787303424
+    },
+    "/root/autodl-tmp": {
+      "total": 898721906688,
+      "used": 646136745984,
+      "free": 252585160704
+    }
+  },
+  "disk_usage": "5.0G\t/root/autodl-tmp/envs/gs-base-cu118\n5.0G\t/root/autodl-tmp/envs/dofgs\n6.2G\t/root/autodl-tmp/envs/dofgaussian\n6.1G\t/root/autodl-tmp/envs/mipsplatting\n4.8G\t/root/autodl-tmp/envs/cocogaussian\n877M\t/root/autodl-tmp/envs/colmap-build\n9.8G\t/root/autodl-tmp/.cache\n40G\t/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw\n64G\t/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed\n",
+  "dofgs_dofnerf_config": {
+    "path": "/root/autodl-tmp/DOFGS_implementation/config_files/scene_info_dofnerf.yaml",
+    "content": "dofnerf_mix_amiya:\n  source_path: /root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/mix/amiya\n  holdout: 9\ndofnerf_mix_camera:\n  source_path: /root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/mix/camera\n  holdout: 9\ndofnerf_mix_plant:\n  source_path: /root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/mix/plant\n  holdout: 9\ndofnerf_mix_kendo:\n  source_path: /root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/mix/kendo\n  holdout: 9\ndofnerf_mix_desk:\n  source_path: /root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/mix/desk\n  holdout: 9\ndofnerf_mix_shelf:\n  source_path: /root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/mix/shelf\n  holdout: 9\ndofnerf_mix_turtle:\n  source_path: /root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/mix/turtle\n  holdout: 9\ndofnerf_fg_amiya:\n  source_path: /root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/fg/amiya\n  holdout: 9\ndofnerf_fg_camera:\n  source_path: /root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/fg/camera\n  holdout: 9\ndofnerf_fg_plant:\n  source_path: /root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/fg/plant\n  holdout: 9\ndofnerf_fg_kendo:\n  source_path: /root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/fg/kendo\n  holdout: 9\ndofnerf_fg_desk:\n  source_path: /root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/fg/desk\n  holdout: 9\ndofnerf_fg_shelf:\n  source_path: /root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/fg/shelf\n  holdout: 9\ndofnerf_fg_turtle:\n  source_path: /root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/fg/turtle\n  holdout: 9\ndofnerf_bg_amiya:\n  source_path: /root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/bg/amiya\n  holdout: 9\ndofnerf_bg_camera:\n  source_path: /root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/bg/camera\n  holdout: 9\ndofnerf_bg_plant:\n  source_path: /root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/bg/plant\n  holdout: 9\ndofnerf_bg_kendo:\n  source_path: /root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/bg/kendo\n  holdout: 9\ndofnerf_bg_desk:\n  source_path: /root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/bg/desk\n  holdout: 9\ndofnerf_bg_shelf:\n  source_path: /root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/bg/shelf\n  holdout: 9\ndofnerf_bg_turtle:\n  source_path: /root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/bg/turtle\n  holdout: 9\n",
+    "usage": "Set scene_info_path in the method config; original scene_info.yaml unchanged."
+  },
+  "dofgaussian_bundled_weights": {
+    "/root/autodl-tmp/DoF-Gaussian/models/depth_priors/mc.pth": 21619796,
+    "/root/autodl-tmp/DoF-Gaussian/lpips/weights/v0.1/alex.pth": 6009,
+    "/root/autodl-tmp/DoF-Gaussian/lpips/weights/v0.1/squeeze.pth": 10811,
+    "/root/autodl-tmp/DoF-Gaussian/lpips/weights/v0.1/vgg.pth": 7289
+  },
+  "script_validation": {
+    "status": "passed",
+    "checks": [
+      "training rank alternation gives equal fg/bg",
+      "idx%9 test selection identical in three layouts",
+      "half and 497x331 sizes",
+      "source images unchanged",
+      "idempotent rerun",
+      "ambiguous triplet rejected",
+      "COLMAP binary read and standard LLFF pose/bounds conversion",
+      "camera shutter gap validated by original EXIF timestamps",
+      "actual turtle ambiguous triplets rejected"
+    ]
+  },
+  "compilation_patches": {
+    "dofgs-diff-gaussian-rasterization-dof-build-patch.json": [
+      {
+        "change": "Pin CUDA runtime11.8.89 and cuda-version11.8",
+        "reason": "cuda-cudart-dev11.8 accepts >=11.8 and the solver selected runtime13.3, leaving a dangling libcudart.so link",
+        "returncode": 0
+      }
+    ],
+    "dofgs-simple-knn-build-patch.json": [
+      {
+        "change": "Pin CUDA runtime11.8.89 and cuda-version11.8",
+        "reason": "cuda-cudart-dev11.8 accepts >=11.8 and the solver selected runtime13.3, leaving a dangling libcudart.so link",
+        "returncode": 1
+      }
+    ],
+    "dofgaussian-simple-knn-build-patch.json": [
+      {
+        "file": "/root/autodl-tmp/DoF-Gaussian/submodules/simple-knn/simple_knn.cu",
+        "added_headers": [
+          "cfloat"
+        ],
+        "reason": "Compilation error for missing standard type/float constant"
+      }
+    ],
+    "mipsplatting-diff-gaussian-rasterization-build-patch.json": [
+      {
+        "change": "Pin CUDA runtime11.8.89 and cuda-version11.8",
+        "reason": "cuda-cudart-dev11.8 accepts >=11.8 and the solver selected runtime13.3, leaving a dangling libcudart.so link",
+        "returncode": 1
+      }
+    ],
+    "mipsplatting-simple-knn-build-patch.json": [
+      {
+        "change": "Pin CUDA runtime11.8.89 and cuda-version11.8",
+        "reason": "cuda-cudart-dev11.8 accepts >=11.8 and the solver selected runtime13.3, leaving a dangling libcudart.so link",
+        "returncode": 0
+      }
+    ]
+  },
+  "torch_wheel_cache": {
+    "torch-wheel-cu121": {
+      "file": "/root/autodl-tmp/.cache/pip/repro-wheels/torch-2.1.2+cu121-cp39-cp39-linux_x86_64.whl",
+      "status": "complete",
+      "sha256": "eaaf6907e3723c0ca6a91df5e01a7eef8cabec93120e9a50739f5a5f14a2aa46",
+      "official_sha256": "eaaf6907e3723c0ca6a91df5e01a7eef8cabec93120e9a50739f5a5f14a2aa46",
+      "bytes": 2200673357
+    },
+    "torch-wheel-cu118": {
+      "file": "/root/autodl-tmp/.cache/pip/repro-wheels/torch-2.0.1+cu118-cp39-cp39-linux_x86_64.whl",
+      "status": "complete",
+      "sha256": "eb55f29db5744eda8a96f5594e637daed0d52278273005de759970e67cfa6a5a",
+      "official_sha256": "eb55f29db5744eda8a96f5594e637daed0d52278273005de759970e67cfa6a5a",
+      "bytes": 2267322772
+    }
+  },
+  "dataset_links": [
+    {
+      "link": "/root/autodl-tmp/DOFGS_implementation/data/DeblurNeRF_data/real_defocus_blur",
+      "target": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur",
+      "target_exists": true
+    },
+    {
+      "link": "/root/autodl-tmp/DOFGS_implementation/data/DeblurNeRF_data/synthetic_defocus_blur",
+      "target": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DOFGS-author/synthetic_defocus_blur",
+      "target_exists": false
+    },
+    {
+      "link": "/root/autodl-tmp/DOFGS_implementation/data/dofnerf-scenes",
+      "target": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes",
+      "target_exists": true
+    },
+    {
+      "link": "/root/autodl-tmp/DoF-Gaussian/data/deblurnerf-dofgaussian",
+      "target": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian",
+      "target_exists": true
+    },
+    {
+      "link": "/root/autodl-tmp/DoF-Gaussian/data/dofnerf-dofgaussian",
+      "target": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian",
+      "target_exists": false
+    },
+    {
+      "link": "/root/autodl-tmp/mip-splatting/data/real_defocus_blur",
+      "target": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur",
+      "target_exists": true
+    },
+    {
+      "link": "/root/autodl-tmp/mip-splatting/data/dofnerf-scenes",
+      "target": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes",
+      "target_exists": true
+    },
+    {
+      "link": "/root/autodl-tmp/CoCoGaussian/data/Deblurring3DGS",
+      "target": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/Deblurring3DGS/deblur_dataset",
+      "target_exists": true
+    },
+    {
+      "link": "/root/autodl-tmp/CoCoGaussian/data/dofnerf-scenes",
+      "target": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes",
+      "target_exists": true
+    }
+  ],
+  "next_round_notes": [
+    "The preparation component performs no training; the separately authorized round1 queue concurrently trains/evaluates models and owns its own records.",
+    "Official readers can write points3D.ply. Split checks use writable temporary sparse copies; training must likewise preserve raw inputs.",
+    "Use the scene-specific hold values, DoF-Gaussian resolution4, and DOF-GS scene_info_path for DoF-NeRF.",
+    "Inspect blocked/error rows in split-check and COLMAP records before single-scene training; turtle needs corrected source data or a user-approved protocol.",
+    "gdown hardcodes its cache location; download process redirects its module-local home to the data disk without changing HOME/configs."
+  ]
+}

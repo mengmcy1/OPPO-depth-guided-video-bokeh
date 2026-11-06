@@ -1,0 +1,903 @@
+{
+  "runs": {
+    "deblurnerf/cake": {
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocuscake",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscake",
+      "sparse": {
+        "registered_images": 34,
+        "total_images": 34,
+        "all_registered": true,
+        "seconds": {
+          "feature_extractor": 2.120845790952444,
+          "exhaustive_matcher": 3.9642997346818447,
+          "mapper": 135.23097459971905
+        },
+        "model": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscake/sparse/0"
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 2.0442762337625027,
+          "patch_match_stereo": 1190.1272579059005,
+          "stereo_fusion": 613.1834323257208
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscake/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscake/dense/fused.ply.vis",
+        "fused_points": 7457637,
+        "expected_depth_maps": 34,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "status": "complete"
+    },
+    "deblurnerf/caps": {
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocuscaps",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscaps",
+      "status": "complete",
+      "started_at": 1793882828.5356572,
+      "geometry_source": "new SIMPLE_RADIAL reconstruction",
+      "sparse": {
+        "registered_images": 34,
+        "total_images": 34,
+        "all_registered": true,
+        "seconds": {},
+        "model": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscaps/sparse/0"
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 2.3662113808095455,
+          "patch_match_stereo": 5619.113921388984,
+          "stereo_fusion": 657.9307675994933
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscaps/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscaps/dense/fused.ply.vis",
+        "fused_points": 8587398,
+        "expected_depth_maps": 34,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "finished_at": 1793889108.1220345
+    },
+    "deblurnerf/cisco": {
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocuscisco",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscisco",
+      "status": "complete",
+      "started_at": 1793882828.5366802,
+      "geometry_source": "new SIMPLE_RADIAL reconstruction",
+      "adopted_native_commands": [
+        141881
+      ],
+      "timing_note": "previous command continues unchanged; previous stage timings remain in native logs",
+      "sparse": {
+        "registered_images": 45,
+        "total_images": 45,
+        "all_registered": true,
+        "seconds": {},
+        "model": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscisco/sparse/0"
+      },
+      "dense": {
+        "seconds": {
+          "stereo_fusion": 752.0305180847645
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscisco/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscisco/dense/fused.ply.vis",
+        "fused_points": 9308131,
+        "expected_depth_maps": 45,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "finished_at": 1793886436.4606938
+    },
+    "dofnerf/sparse/amiya": {
+      "registered_images": 24,
+      "total_images": 24,
+      "all_registered": true,
+      "seconds": {},
+      "model": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/amiya/sparse/0",
+      "colmap_executable": "/root/autodl-tmp/tools/colmap-point-visibility/install/bin/colmap",
+      "fallback_unmodified_colmap": false,
+      "geometry_identical_across_layouts": true,
+      "poses_bounds": "provided geometry renamed/scaled/rectified, world poses unchanged",
+      "status": "complete"
+    },
+    "dofnerf/sparse/camera": {
+      "registered_images": 24,
+      "total_images": 24,
+      "all_registered": true,
+      "seconds": {},
+      "model": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/camera/sparse/0",
+      "colmap_executable": "/root/autodl-tmp/tools/colmap-point-visibility/install/bin/colmap",
+      "fallback_unmodified_colmap": false,
+      "geometry_identical_across_layouts": true,
+      "poses_bounds": "provided geometry renamed/scaled/rectified, world poses unchanged",
+      "status": "complete"
+    },
+    "dofnerf/sparse/plant": {
+      "registered_images": 24,
+      "total_images": 24,
+      "all_registered": true,
+      "seconds": {},
+      "model": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/plant/sparse/0",
+      "colmap_executable": "/root/autodl-tmp/tools/colmap-point-visibility/install/bin/colmap",
+      "fallback_unmodified_colmap": false,
+      "geometry_identical_across_layouts": true,
+      "poses_bounds": "provided geometry renamed/scaled/rectified, world poses unchanged",
+      "status": "complete"
+    },
+    "dofnerf/sparse/kendo": {
+      "registered_images": 20,
+      "total_images": 20,
+      "all_registered": true,
+      "seconds": {},
+      "model": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/kendo/sparse/0",
+      "colmap_executable": "/root/autodl-tmp/tools/colmap-point-visibility/install/bin/colmap",
+      "fallback_unmodified_colmap": false,
+      "geometry_identical_across_layouts": true,
+      "poses_bounds": "provided geometry renamed/scaled/rectified, world poses unchanged",
+      "status": "complete"
+    },
+    "dofnerf/sparse/desk": {
+      "registered_images": 24,
+      "total_images": 24,
+      "all_registered": true,
+      "seconds": {},
+      "model": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/desk/sparse/0",
+      "colmap_executable": "/root/autodl-tmp/tools/colmap-point-visibility/install/bin/colmap",
+      "fallback_unmodified_colmap": false,
+      "geometry_identical_across_layouts": true,
+      "poses_bounds": "provided geometry renamed/scaled/rectified, world poses unchanged",
+      "status": "complete"
+    },
+    "dofnerf/sparse/shelf": {
+      "registered_images": 24,
+      "total_images": 24,
+      "all_registered": true,
+      "seconds": {},
+      "model": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/shelf/sparse/0",
+      "colmap_executable": "/root/autodl-tmp/tools/colmap-point-visibility/install/bin/colmap",
+      "fallback_unmodified_colmap": false,
+      "geometry_identical_across_layouts": true,
+      "poses_bounds": "provided geometry renamed/scaled/rectified, world poses unchanged",
+      "status": "complete"
+    },
+    "deblurnerf/coral": {
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocuscoral",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscoral",
+      "status": "complete",
+      "started_at": 1793897376.039603,
+      "geometry_source": "new SIMPLE_RADIAL reconstruction",
+      "previous_started_at": 1793894344.7230337,
+      "adopted_native_commands": [
+        423143
+      ],
+      "timing_note": "previous command continues unchanged; previous stage timings remain in native logs",
+      "sparse": {
+        "registered_images": 49,
+        "total_images": 49,
+        "all_registered": true,
+        "seconds": {},
+        "model": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscoral/sparse/0"
+      },
+      "dense": {
+        "seconds": {},
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscoral/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscoral/dense/fused.ply.vis",
+        "fused_points": 12323898,
+        "expected_depth_maps": 49,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "finished_at": 1793897412.0947745
+    },
+    "deblurnerf/cupcake": {
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocuscupcake",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscupcake",
+      "status": "complete",
+      "started_at": 1793897376.0419858,
+      "geometry_source": "new SIMPLE_RADIAL reconstruction",
+      "previous_started_at": 1793894344.7239056,
+      "adopted_native_commands": [
+        373799
+      ],
+      "timing_note": "previous command continues unchanged; previous stage timings remain in native logs",
+      "sparse": {
+        "registered_images": 44,
+        "total_images": 44,
+        "all_registered": true,
+        "seconds": {},
+        "model": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscupcake/sparse/0"
+      },
+      "dense": {
+        "seconds": {
+          "stereo_fusion": 47.50963616743684
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscupcake/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscupcake/dense/fused.ply.vis",
+        "fused_points": 10706331,
+        "expected_depth_maps": 44,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "finished_at": 1793897468.6147258
+    },
+    "deblurnerf/cups": {
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocuscups",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscups",
+      "status": "complete",
+      "started_at": 1793926808.528042,
+      "geometry_source": "new SIMPLE_RADIAL reconstruction",
+      "sparse": {
+        "registered_images": 43,
+        "total_images": 43,
+        "all_registered": true,
+        "seconds": {
+          "feature_extractor": 2.3675595335662365,
+          "exhaustive_matcher": 10.867607831954956,
+          "mapper": 975.1502412110567
+        },
+        "model": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscups/sparse/0"
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 6.164540193974972,
+          "patch_match_stereo": 3674.4156396873295,
+          "stereo_fusion": 55.57350133731961
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscups/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscups/dense/fused.ply.vis",
+        "fused_points": 9680503,
+        "expected_depth_maps": 43,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "finished_at": 1793931533.752911
+    },
+    "deblurnerf/daisy": {
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocusdaisy",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocusdaisy",
+      "status": "complete",
+      "started_at": 1793926808.5275006,
+      "geometry_source": "new SIMPLE_RADIAL reconstruction",
+      "sparse": {
+        "registered_images": 52,
+        "total_images": 52,
+        "all_registered": true,
+        "seconds": {
+          "feature_extractor": 13.409049719572067,
+          "exhaustive_matcher": 7.676699459552765,
+          "mapper": 1174.5790525190532
+        },
+        "model": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocusdaisy/sparse/0"
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 5.493735563009977,
+          "patch_match_stereo": 4224.392466291785,
+          "stereo_fusion": 85.91292132437229
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocusdaisy/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocusdaisy/dense/fused.ply.vis",
+        "fused_points": 21636549,
+        "expected_depth_maps": 52,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "finished_at": 1793932320.758999
+    },
+    "deblurnerf/sausage": {
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocussausage",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocussausage",
+      "status": "complete",
+      "started_at": 1793931533.7593381,
+      "geometry_source": "new SIMPLE_RADIAL reconstruction",
+      "sparse": {
+        "registered_images": 39,
+        "total_images": 39,
+        "all_registered": true,
+        "seconds": {
+          "feature_extractor": 10.186421170830727,
+          "exhaustive_matcher": 10.370483845472336,
+          "mapper": 445.84186651185155
+        },
+        "model": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocussausage/sparse/0"
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 3.0112007409334183,
+          "patch_match_stereo": 3215.994703784585,
+          "stereo_fusion": 53.030877981334925
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocussausage/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocussausage/dense/fused.ply.vis",
+        "fused_points": 16349424,
+        "expected_depth_maps": 39,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "finished_at": 1793935272.8166137
+    },
+    "deblurnerf/seal": {
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocusseal",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocusseal",
+      "status": "complete",
+      "started_at": 1793932320.7641428,
+      "geometry_source": "new SIMPLE_RADIAL reconstruction",
+      "sparse": {
+        "registered_images": 39,
+        "total_images": 39,
+        "all_registered": true,
+        "seconds": {
+          "feature_extractor": 13.93519027903676,
+          "exhaustive_matcher": 11.308069098740816,
+          "mapper": 607.6919284872711
+        },
+        "model": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocusseal/sparse/0"
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 3.4871104806661606,
+          "patch_match_stereo": 3482.3832487240434,
+          "stereo_fusion": 59.81930599734187
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocusseal/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocusseal/dense/fused.ply.vis",
+        "fused_points": 15606236,
+        "expected_depth_maps": 39,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "finished_at": 1793936500.1258187
+    },
+    "deblurnerf/tools": {
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocustools",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocustools",
+      "status": "complete",
+      "started_at": 1793935272.8235037,
+      "geometry_source": "new SIMPLE_RADIAL reconstruction",
+      "sparse": {
+        "registered_images": 41,
+        "total_images": 41,
+        "all_registered": true,
+        "seconds": {
+          "feature_extractor": 15.429922603070736,
+          "exhaustive_matcher": 13.828846734017134,
+          "mapper": 133.30042862519622
+        },
+        "model": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocustools/sparse/0"
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 3.328926406800747,
+          "patch_match_stereo": 2795.0325576774776,
+          "stereo_fusion": 48.37285067886114
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocustools/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocustools/dense/fused.ply.vis",
+        "fused_points": 10011783,
+        "expected_depth_maps": 41,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "finished_at": 1793938282.786098
+    },
+    "dofnerf/dense/mix/amiya": {
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/amiya",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/mix/amiya",
+      "status": "complete",
+      "started_at": 1793897412.0991797,
+      "geometry_source": "provided poses/points, matched by sharp-image names; rectified at497x331",
+      "sparse": {
+        "registered_images": 24,
+        "total_images": 24,
+        "fixed_supplied_poses": true
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 0.15996992588043213,
+          "patch_match_stereo": 383.4511725977063,
+          "stereo_fusion": 1.6127768494188786
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/mix/amiya/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/mix/amiya/dense/fused.ply.vis",
+        "fused_points": 233006,
+        "expected_depth_maps": 24,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "finished_at": 1793897797.5722663
+    },
+    "dofnerf/dense/mix/camera": {
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/camera",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/mix/camera",
+      "status": "complete",
+      "started_at": 1793897468.6194541,
+      "geometry_source": "provided poses/points, matched by sharp-image names; rectified at497x331",
+      "sparse": {
+        "registered_images": 24,
+        "total_images": 24,
+        "fixed_supplied_poses": true
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 0.1605047583580017,
+          "patch_match_stereo": 386.30393347889185,
+          "stereo_fusion": 1.4996646493673325
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/mix/camera/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/mix/camera/dense/fused.ply.vis",
+        "fused_points": 261170,
+        "expected_depth_maps": 24,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "finished_at": 1793897856.8006732
+    },
+    "dofnerf/dense/mix/plant": {
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/plant",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/mix/plant",
+      "status": "complete",
+      "started_at": 1793936500.132156,
+      "geometry_source": "provided poses/points, matched by sharp-image names; rectified at497x331",
+      "sparse": {
+        "registered_images": 24,
+        "total_images": 24,
+        "fixed_supplied_poses": true
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 0.1998380720615387,
+          "patch_match_stereo": 357.2793926410377,
+          "stereo_fusion": 1.482153419405222
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/mix/plant/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/mix/plant/dense/fused.ply.vis",
+        "fused_points": 268652,
+        "expected_depth_maps": 24,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "finished_at": 1793936859.3436363
+    },
+    "dofnerf/dense/mix/kendo": {
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/kendo",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/mix/kendo",
+      "status": "complete",
+      "started_at": 1793936859.3499532,
+      "geometry_source": "provided poses/points, matched by sharp-image names; rectified at497x331",
+      "sparse": {
+        "registered_images": 20,
+        "total_images": 20,
+        "fixed_supplied_poses": true
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 0.19169818982481956,
+          "patch_match_stereo": 286.00245040282607,
+          "stereo_fusion": 1.3631606362760067
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/mix/kendo/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/mix/kendo/dense/fused.ply.vis",
+        "fused_points": 265749,
+        "expected_depth_maps": 20,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "finished_at": 1793937147.142182
+    },
+    "dofnerf/dense/mix/desk": {
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/desk",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/mix/desk",
+      "status": "complete",
+      "started_at": 1793937147.1488209,
+      "geometry_source": "provided poses/points, matched by sharp-image names; rectified at497x331",
+      "sparse": {
+        "registered_images": 24,
+        "total_images": 24,
+        "fixed_supplied_poses": true
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 0.1757507063448429,
+          "patch_match_stereo": 328.1760104075074,
+          "stereo_fusion": 1.499950785189867
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/mix/desk/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/mix/desk/dense/fused.ply.vis",
+        "fused_points": 312479,
+        "expected_depth_maps": 24,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "finished_at": 1793937477.219483
+    },
+    "dofnerf/dense/mix/shelf": {
+      "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/shelf",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/mix/shelf",
+      "status": "complete",
+      "started_at": 1793937477.2258303,
+      "geometry_source": "provided poses/points, matched by sharp-image names; rectified at497x331",
+      "sparse": {
+        "registered_images": 24,
+        "total_images": 24,
+        "fixed_supplied_poses": true
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 0.16389700770378113,
+          "patch_match_stereo": 336.1688399352133,
+          "stereo_fusion": 1.5052669160068035
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/mix/shelf/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/mix/shelf/dense/fused.ply.vis",
+        "fused_points": 308251,
+        "expected_depth_maps": 24,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "finished_at": 1793937815.3042905
+    },
+    "dofnerf/dense/fg/amiya": {
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/fg/amiya",
+      "fixed_geometry_source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/amiya/sparse/0",
+      "sparse": {
+        "registered_images": 24,
+        "total_images": 24
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 0.16581645607948303,
+          "patch_match_stereo": 348.9984540194273,
+          "stereo_fusion": 1.531711358577013
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/fg/amiya/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/fg/amiya/dense/fused.ply.vis",
+        "fused_points": 209124,
+        "expected_depth_maps": 24,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "status": "complete"
+    },
+    "dofnerf/dense/bg/amiya": {
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/bg/amiya",
+      "fixed_geometry_source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/amiya/sparse/0",
+      "sparse": {
+        "registered_images": 24,
+        "total_images": 24
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 0.150087408721447,
+          "patch_match_stereo": 292.9127768576145,
+          "stereo_fusion": 1.3913717307150364
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/bg/amiya/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/bg/amiya/dense/fused.ply.vis",
+        "fused_points": 199593,
+        "expected_depth_maps": 24,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "status": "complete"
+    },
+    "dofnerf/dense/fg/camera": {
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/fg/camera",
+      "fixed_geometry_source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/camera/sparse/0",
+      "sparse": {
+        "registered_images": 24,
+        "total_images": 24
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 0.14879576489329338,
+          "patch_match_stereo": 284.5552900880575,
+          "stereo_fusion": 1.4000783562660217
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/fg/camera/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/fg/camera/dense/fused.ply.vis",
+        "fused_points": 211497,
+        "expected_depth_maps": 24,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "status": "complete"
+    },
+    "dofnerf/dense/bg/camera": {
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/bg/camera",
+      "fixed_geometry_source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/camera/sparse/0",
+      "sparse": {
+        "registered_images": 24,
+        "total_images": 24
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 0.17441917583346367,
+          "patch_match_stereo": 310.6866965070367,
+          "stereo_fusion": 1.5011653639376163
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/bg/camera/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/bg/camera/dense/fused.ply.vis",
+        "fused_points": 240391,
+        "expected_depth_maps": 24,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "status": "complete"
+    },
+    "dofnerf/dense/fg/plant": {
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/fg/plant",
+      "fixed_geometry_source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/plant/sparse/0",
+      "sparse": {
+        "registered_images": 24,
+        "total_images": 24
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 0.16098014637827873,
+          "patch_match_stereo": 261.44224597141147,
+          "stereo_fusion": 1.395805511623621
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/fg/plant/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/fg/plant/dense/fused.ply.vis",
+        "fused_points": 258710,
+        "expected_depth_maps": 24,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "status": "complete"
+    },
+    "dofnerf/dense/bg/plant": {
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/bg/plant",
+      "fixed_geometry_source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/plant/sparse/0",
+      "sparse": {
+        "registered_images": 24,
+        "total_images": 24
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 0.15139707922935486,
+          "patch_match_stereo": 253.90886569023132,
+          "stereo_fusion": 1.4119597971439362
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/bg/plant/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/bg/plant/dense/fused.ply.vis",
+        "fused_points": 238997,
+        "expected_depth_maps": 24,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "status": "complete"
+    },
+    "dofnerf/dense/fg/kendo": {
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/fg/kendo",
+      "fixed_geometry_source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/kendo/sparse/0",
+      "sparse": {
+        "registered_images": 20,
+        "total_images": 20
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 0.18256361037492752,
+          "patch_match_stereo": 217.19789933785796,
+          "stereo_fusion": 1.325874898582697
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/fg/kendo/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/fg/kendo/dense/fused.ply.vis",
+        "fused_points": 238866,
+        "expected_depth_maps": 20,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "status": "complete"
+    },
+    "dofnerf/dense/bg/kendo": {
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/bg/kendo",
+      "fixed_geometry_source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/kendo/sparse/0",
+      "sparse": {
+        "registered_images": 20,
+        "total_images": 20
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 0.175796739757061,
+          "patch_match_stereo": 210.6449657380581,
+          "stereo_fusion": 1.3320633433759212
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/bg/kendo/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/bg/kendo/dense/fused.ply.vis",
+        "fused_points": 271985,
+        "expected_depth_maps": 20,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "status": "complete"
+    },
+    "dofnerf/dense/fg/desk": {
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/fg/desk",
+      "fixed_geometry_source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/desk/sparse/0",
+      "sparse": {
+        "registered_images": 24,
+        "total_images": 24
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 0.16078033670783043,
+          "patch_match_stereo": 305.76617651060224,
+          "stereo_fusion": 1.4673718363046646
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/fg/desk/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/fg/desk/dense/fused.ply.vis",
+        "fused_points": 290676,
+        "expected_depth_maps": 24,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "status": "complete"
+    },
+    "dofnerf/dense/bg/desk": {
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/bg/desk",
+      "fixed_geometry_source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/desk/sparse/0",
+      "sparse": {
+        "registered_images": 24,
+        "total_images": 24
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 0.14438870921730995,
+          "patch_match_stereo": 326.2633565813303,
+          "stereo_fusion": 1.5260216519236565
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/bg/desk/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/bg/desk/dense/fused.ply.vis",
+        "fused_points": 300247,
+        "expected_depth_maps": 24,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "status": "complete"
+    },
+    "dofnerf/dense/fg/shelf": {
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/fg/shelf",
+      "fixed_geometry_source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/shelf/sparse/0",
+      "sparse": {
+        "registered_images": 24,
+        "total_images": 24
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 0.15840429812669754,
+          "patch_match_stereo": 325.34418204426765,
+          "stereo_fusion": 1.3761514648795128
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/fg/shelf/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/fg/shelf/dense/fused.ply.vis",
+        "fused_points": 295212,
+        "expected_depth_maps": 24,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "status": "complete"
+    },
+    "dofnerf/dense/bg/shelf": {
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/bg/shelf",
+      "fixed_geometry_source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/shelf/sparse/0",
+      "sparse": {
+        "registered_images": 24,
+        "total_images": 24
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 0.1599908582866192,
+          "patch_match_stereo": 355.680850751698,
+          "stereo_fusion": 1.4680548310279846
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/bg/shelf/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/bg/shelf/dense/fused.ply.vis",
+        "fused_points": 293741,
+        "expected_depth_maps": 24,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "status": "complete"
+    },
+    "dofnerf/sparse/turtle": {
+      "status": "blocked",
+      "error": "DoF-NeRF scene was not prepared: turtle"
+    },
+    "dofnerf/dense/mix/turtle": {
+      "status": "blocked",
+      "error": "Sparse stage blocked or modified COLMAP unavailable"
+    },
+    "dofnerf/dense/fg/turtle": {
+      "status": "blocked",
+      "error": "Sparse stage blocked or modified COLMAP unavailable"
+    },
+    "dofnerf/dense/bg/turtle": {
+      "status": "blocked",
+      "error": "Sparse stage blocked or modified COLMAP unavailable"
+    }
+  },
+  "executable": "/root/autodl-tmp/tools/colmap-point-visibility/install/bin/colmap",
+  "protocol": "DoF-Gaussian colmap.sh; SIMPLE_RADIAL; guided exhaustive matching; fusion min_num_pixels=2",
+  "max_parallel_pipelines": 2,
+  "build": {
+    "route": "A",
+    "source_commit": "c84269d693246d8294307cc32f851813f18b6a2d",
+    "install": "/root/autodl-tmp/tools/colmap-point-visibility/install",
+    "local_patch": "",
+    "flags": "GUI=OFF OPENGL=OFF CUDA=ON CUDA_ARCHS=8.6 CUDA_NVCC_FLAGS=--std=c++14 BOOST_STATIC=OFF CGAL=OFF CXX_STANDARD=14",
+    "pixel_visibility_source_verified": true,
+    "command_checks": {
+      "colmap": {
+        "returncode": 0,
+        "output": "COLMAP 3.7 -- Structure-from-Motion and Multi-View Stereo\n              (Commit c84269d6 on 2021-08-30 with CUDA)\n\nUsage:\n  colmap [command] [options]\n\nDocumentation:\n  https://colmap.github.io/\n\nExample usage:\n  colmap help [ -h, --help ]\n  colmap gui\n  colmap gui -h [ --help ]\n  colmap automatic_reconstructor -h [ --help ]\n  colmap automatic_reconstructor --image_path IMAGES --workspace_path WORKSPACE\n  colmap feature_extractor --image_path IMAGES --database_path DATABASE\n  colmap exhaustive_matcher --database_path DATABASE\n  colmap mapper --image_path IMAGES --database_path DATABASE --output_path MODEL\n  ...\n\nAvailable commands:\n  help\n  gui\n  automatic_reconstructor\n  bundle_adjuster\n  color_extractor\n  database_cleaner\n  database_creator\n  database_merger\n  delaunay_mesher\n  exhaustive_matcher\n  feature_extractor\n  feature_importer\n  hierarchical_mapper\n  image_deleter\n  image_filterer\n  image_rectifier\n  image_registrator\n  image_undistorter\n  image_undistorter_standalone\n  mapper\n  matches_importer\n  model_aligner\n  model_analyzer\n  model_comparer\n  model_converter\n  model_cropper\n  model_merger\n  model_orientation_aligner\n  model_splitter\n  model_transformer\n  patch_match_stereo\n  point_filtering\n  point_triangulator\n  poisson_mesher\n  project_generator\n  rig_bundle_adjuster\n  sequential_matcher\n  spatial_matcher\n  stereo_fusion\n  transitive_matcher\n  vocab_tree_builder\n  vocab_tree_matcher\n  vocab_tree_retriever\n\n"
+      },
+      "patch_match_stereo": {
+        "returncode": 0,
+        "output": "COLMAP 3.7 (Commit c84269d6 on 2021-08-30 with CUDA)\n\nOptions can either be specified via command-line or by defining\nthem in a .ini project file passed to `--project_path`.\n\n  -h [ --help ] \n  --random_seed arg (=0)\n  --log_to_stderr arg (=0)\n  --log_level arg (=2)\n  --project_path arg\n  --workspace_path arg                  Path to the folder containing the \n                                        undistorted images\n  --workspace_format arg (=COLMAP)      {COLMAP, PMVS}\n  --pmvs_option_name arg (=option-all)\n  --config_path arg\n  --PatchMatchStereo.max_image_size arg (=-1)\n  --PatchMatchStereo.gpu_index arg (=-1)\n  --PatchMatchStereo.depth_min arg (=-1)\n  --PatchMatchStereo.depth_max arg (=-1)\n  --PatchMatchStereo.window_radius arg (=5)\n  --PatchMatchStereo.window_step arg (=1)\n  --PatchMatchStereo.sigma_spatial arg (=-1)\n  --PatchMatchStereo.sigma_color arg (=0.20000000298023224)\n  --PatchMatchStereo.num_samples arg (=15)\n  --PatchMatchStereo.ncc_sigma arg (=0.60000002384185791)\n  --PatchMatchStereo.min_triangulation_angle arg (=1)\n  --PatchMatchStereo.incident_angle_sigma arg (=0.89999997615814209)\n  --PatchMatchStereo.num_iterations arg (=5)\n  --PatchMatchStereo.geom_consistency arg (=1)\n  --PatchMatchStereo.geom_consistency_regularizer arg (=0.30000001192092896)\n  --PatchMatchStereo.geom_consistency_max_cost arg (=3)\n  --PatchMatchStereo.filter arg (=1)\n  --PatchMatchStereo.filter_min_ncc arg (=0.10000000149011612)\n  --PatchMatchStereo.filter_min_triangulation_angle arg (=3)\n  --PatchMatchStereo.filter_min_num_consistent arg (=2)\n  --PatchMatchStereo.filter_geom_consistency_max_cost arg (=1)\n  --PatchMatchStereo.cache_size arg (=32)\n  --PatchMatchStereo.allow_missing_files arg (=0)\n  --PatchMatchStereo.write_consistency_graph arg (=0)\n\n"
+      },
+      "stereo_fusion": {
+        "returncode": 0,
+        "output": "COLMAP 3.7 (Commit c84269d6 on 2021-08-30 with CUDA)\n\nOptions can either be specified via command-line or by defining\nthem in a .ini project file passed to `--project_path`.\n\n  -h [ --help ] \n  --random_seed arg (=0)\n  --log_to_stderr arg (=0)\n  --log_level arg (=2)\n  --project_path arg\n  --workspace_path arg\n  --workspace_format arg (=COLMAP)      {COLMAP, PMVS}\n  --pmvs_option_name arg (=option-all)\n  --input_type arg (=geometric)         {photometric, geometric}\n  --output_type arg (=PLY)              {BIN, TXT, PLY}\n  --output_path arg\n  --bbox_path arg\n  --StereoFusion.mask_path arg\n  --StereoFusion.num_threads arg (=-1)\n  --StereoFusion.max_image_size arg (=-1)\n  --StereoFusion.min_num_pixels arg (=5)\n  --StereoFusion.max_num_pixels arg (=10000)\n  --StereoFusion.max_traversal_depth arg (=100)\n  --StereoFusion.max_reproj_error arg (=2)\n  --StereoFusion.max_depth_error arg (=0.0099999997764825821)\n  --StereoFusion.max_normal_error arg (=10)\n  --StereoFusion.check_num_images arg (=50)\n  --StereoFusion.cache_size arg (=32)\n  --StereoFusion.use_cache arg (=0)\n\n"
+      }
+    },
+    "resolved_issues": [
+      "Missing curand_kernel.h: installed NVIDIA CUDA11.8 libcurand-dev10.3.0.86 in colmap-build.",
+      "Old FindCUDA forwarded C++14 only to the host compiler: explicitly set CUDA_NVCC_FLAGS=--std=c++14 to align host and device compilation.",
+      "No COLMAP algorithm/source changes were needed for route A; point visibility comes from the pinned author commit."
+    ],
+    "attempts": [
+      {
+        "name": "colmap-wait-curand",
+        "returncode": 0
+      },
+      {
+        "name": "colmap-build-second",
+        "returncode": 0
+      }
+    ],
+    "source": "/root/autodl-tmp/tools/colmap-point-visibility/src",
+    "success": true
+  },
+  "visibility_parse_check": {
+    "status": "passed",
+    "scene": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscake/dense/fused.ply",
+    "reader": "DoF-Gaussian/utils.colmap_utils.read_ply_mask",
+    "nonzero_pixel_ratios": {
+      "033.jpg": 0.15225806216348775,
+      "032.jpg": 0.16622347526137612,
+      "031.jpg": 0.15300561393144768,
+      "030.jpg": 0.15401441811169464,
+      "029.jpg": 0.14767247022100183,
+      "012.jpg": 0.1678214648420152,
+      "011.jpg": 0.15974113350206645,
+      "010.jpg": 0.16683037268971992,
+      "009.jpg": 0.15461584564905337,
+      "008.jpg": 0.12166678518097135,
+      "007.jpg": 0.12996044226933795,
+      "006.jpg": 0.11670898018050119,
+      "005.jpg": 0.1325096719393811,
+      "004.jpg": 0.13069913802332206,
+      "003.jpg": 0.10158238736778166,
+      "002.jpg": 0.11641829454529447,
+      "001.jpg": 0.10212781364029319,
+      "000.jpg": 0.131900690743043,
+      "013.jpg": 0.18892690897241846,
+      "014.jpg": 0.17198014481666618,
+      "015.jpg": 0.1761307501903392,
+      "016.jpg": 0.140038846644834,
+      "017.jpg": 0.14063871135619696,
+      "018.jpg": 0.16783761404397116,
+      "019.jpg": 0.1674945737379073,
+      "020.jpg": 0.15471326180278752,
+      "021.jpg": 0.15037694060662132,
+      "022.jpg": 0.1634020533970758,
+      "023.jpg": 0.16258235116231276,
+      "024.jpg": 0.15037928484561494,
+      "025.jpg": 0.1320452521476485,
+      "026.jpg": 0.1443478183860748,
+      "027.jpg": 0.1619994170659036,
+      "028.jpg": 0.13983020937440335
+    },
+    "mean_ratio": 0.14760238820036956
+  }
+}

@@ -1,0 +1,630 @@
+{
+  "created_unix": 1793941508.1396453,
+  "sources": {
+    "real": {
+      "source_id": "1qXSgGWUbgIfKdNK16AytEHvxO0lRZ0K5",
+      "destination": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur",
+      "status": "complete",
+      "files": 1006,
+      "bytes": 752360323,
+      "expected_files": 1006
+    },
+    "synthetic": {
+      "source_id": "1O7OkFJcI5i5kfxfdJpD1-Vpr2xyrR9y5",
+      "destination": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/synthetic_defocus_blur",
+      "status": "complete",
+      "files": 209,
+      "bytes": 77034548,
+      "expected_files": 209
+    },
+    "author-synthetic": {
+      "source_id": "1UT2y9M1xFXPGoBnTbZKBwl-xdurjgDX1",
+      "destination": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DOFGS-author/synthetic_defocus_blur",
+      "status": "failed",
+      "error": "No entries: consistency_graphs",
+      "files": 0,
+      "bytes": 0,
+      "expected_files": 0
+    },
+    "author-real-results": {
+      "source_id": "1x8xzcgWfXB3Vo6qV67wdmOPp7FHJmlIm",
+      "destination": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DOFGS-author/real_results",
+      "status": "complete",
+      "files": 124,
+      "bytes": 675940440,
+      "expected_files": 124
+    },
+    "author-synthetic-results": {
+      "source_id": "1KO_Xrs4b4s_3Mlggfn2UtVLuaVyMD_qE",
+      "destination": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DOFGS-author/synthetic_results",
+      "status": "complete",
+      "files": 60,
+      "bytes": 289803621,
+      "expected_files": 60
+    },
+    "blend": {
+      "source_id": "14zobxILD8ZaFeXbAGRL0-_88LECz6iqt",
+      "destination": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/blend_files",
+      "reported_sizes": [
+        519829123,
+        118754704,
+        20886656,
+        47506924
+      ],
+      "status": "complete",
+      "files": 4,
+      "bytes": 706977407,
+      "expected_files": 4
+    },
+    "DoF-NeRF": {
+      "source_id": "1qGHTmQMFGPP7G7NnP3vA8SsVocJnXJH3",
+      "destination": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DoF-NeRF",
+      "archive_exists": true,
+      "files": 693,
+      "bytes": 7527677035,
+      "extraction": {
+        "status": "complete",
+        "archive": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DoF-NeRF/DoF_RealWorld_Data.zip",
+        "archive_bytes": 3697982538
+      }
+    },
+    "Deblurring3DGS": {
+      "source_id": "1N24ipi52XXiPfqWWAxYeyaItNXrL7nSe",
+      "destination": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/Deblurring3DGS",
+      "archive_exists": true,
+      "files": 2951,
+      "bytes": 5721204941,
+      "extraction": {
+        "status": "complete",
+        "archive": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/Deblurring3DGS/deblur_dataset.zip",
+        "archive_bytes": 2812527812
+      }
+    },
+    "DoF-NeRF-optional-synthetic": {
+      "source_id": "17u99_4fsyESKFviDmxBR2aDL-8ci_IOa",
+      "status": "not_requested_optional"
+    }
+  },
+  "real_scenes": {
+    "bush": {
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocusbush",
+      "images": {
+        "count": 50,
+        "sizes": {
+          "2400x1600": 50
+        },
+        "decode_failures": []
+      },
+      "images_4": {
+        "count": 50,
+        "sizes": {
+          "600x400": 50
+        },
+        "decode_failures": []
+      },
+      "hold": 13,
+      "hold_files": [
+        "hold=13"
+      ],
+      "matches_baseline": true
+    },
+    "cake": {
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocuscake",
+      "images": {
+        "count": 34,
+        "sizes": {
+          "2400x1600": 34
+        },
+        "decode_failures": []
+      },
+      "images_4": {
+        "count": 34,
+        "sizes": {
+          "600x400": 34
+        },
+        "decode_failures": []
+      },
+      "hold": 9,
+      "hold_files": [
+        "hold=9"
+      ],
+      "matches_baseline": true
+    },
+    "caps": {
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocuscaps",
+      "images": {
+        "count": 34,
+        "sizes": {
+          "2400x1600": 34
+        },
+        "decode_failures": []
+      },
+      "images_4": {
+        "count": 34,
+        "sizes": {
+          "600x400": 34
+        },
+        "decode_failures": []
+      },
+      "hold": 5,
+      "hold_files": [
+        "hold=5"
+      ],
+      "matches_baseline": true
+    },
+    "cisco": {
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocuscisco",
+      "images": {
+        "count": 45,
+        "sizes": {
+          "2400x1600": 45
+        },
+        "decode_failures": []
+      },
+      "images_4": {
+        "count": 45,
+        "sizes": {
+          "600x400": 45
+        },
+        "decode_failures": []
+      },
+      "hold": 7,
+      "hold_files": [
+        "hold=7"
+      ],
+      "matches_baseline": true
+    },
+    "coral": {
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocuscoral",
+      "images": {
+        "count": 49,
+        "sizes": {
+          "2400x1600": 49
+        },
+        "decode_failures": []
+      },
+      "images_4": {
+        "count": 49,
+        "sizes": {
+          "600x400": 49
+        },
+        "decode_failures": []
+      },
+      "hold": 10,
+      "hold_files": [
+        "hold=10"
+      ],
+      "matches_baseline": true
+    },
+    "cupcake": {
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocuscupcake",
+      "images": {
+        "count": 44,
+        "sizes": {
+          "2400x1600": 44
+        },
+        "decode_failures": []
+      },
+      "images_4": {
+        "count": 44,
+        "sizes": {
+          "600x400": 44
+        },
+        "decode_failures": []
+      },
+      "hold": 6,
+      "hold_files": [
+        "hold=6"
+      ],
+      "matches_baseline": true
+    },
+    "cups": {
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocuscups",
+      "images": {
+        "count": 43,
+        "sizes": {
+          "2400x1600": 43
+        },
+        "decode_failures": []
+      },
+      "images_4": {
+        "count": 43,
+        "sizes": {
+          "600x400": 43
+        },
+        "decode_failures": []
+      },
+      "hold": 8,
+      "hold_files": [
+        "hold=8"
+      ],
+      "matches_baseline": true
+    },
+    "daisy": {
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocusdaisy",
+      "images": {
+        "count": 52,
+        "sizes": {
+          "2400x1600": 52
+        },
+        "decode_failures": []
+      },
+      "images_4": {
+        "count": 52,
+        "sizes": {
+          "600x400": 52
+        },
+        "decode_failures": []
+      },
+      "hold": 8,
+      "hold_files": [
+        "hold=8"
+      ],
+      "matches_baseline": true
+    },
+    "sausage": {
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocussausage",
+      "images": {
+        "count": 39,
+        "sizes": {
+          "2400x1600": 39
+        },
+        "decode_failures": []
+      },
+      "images_4": {
+        "count": 39,
+        "sizes": {
+          "600x400": 39
+        },
+        "decode_failures": []
+      },
+      "hold": 6,
+      "hold_files": [
+        "hold=6"
+      ],
+      "matches_baseline": true
+    },
+    "seal": {
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocusseal",
+      "images": {
+        "count": 39,
+        "sizes": {
+          "2400x1600": 39
+        },
+        "decode_failures": []
+      },
+      "images_4": {
+        "count": 39,
+        "sizes": {
+          "600x400": 39
+        },
+        "decode_failures": []
+      },
+      "hold": 6,
+      "hold_files": [
+        "hold=6"
+      ],
+      "matches_baseline": true
+    },
+    "tools": {
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocustools",
+      "images": {
+        "count": 41,
+        "sizes": {
+          "2400x1600": 41
+        },
+        "decode_failures": []
+      },
+      "images_4": {
+        "count": 41,
+        "sizes": {
+          "600x400": 41
+        },
+        "decode_failures": []
+      },
+      "hold": 7,
+      "hold_files": [
+        "hold=7"
+      ],
+      "matches_baseline": true
+    }
+  },
+  "sha256_comparisons": {
+    "bush": {
+      "candidate_paths": [],
+      "status": "not_available"
+    },
+    "cake": {
+      "status": "compared",
+      "directories": {
+        "images": {
+          "original_count": 34,
+          "alternate_count": 34,
+          "missing": [],
+          "extra": [],
+          "sha256_mismatches": [],
+          "identical": true
+        },
+        "images_4": {
+          "original_count": 34,
+          "alternate_count": 34,
+          "missing": [],
+          "extra": [],
+          "sha256_mismatches": [],
+          "identical": true
+        }
+      },
+      "hold_files": [
+        "hold=9"
+      ],
+      "hold_matches": true
+    },
+    "caps": {
+      "status": "compared",
+      "directories": {
+        "images": {
+          "original_count": 34,
+          "alternate_count": 34,
+          "missing": [],
+          "extra": [],
+          "sha256_mismatches": [],
+          "identical": true
+        },
+        "images_4": {
+          "original_count": 34,
+          "alternate_count": 34,
+          "missing": [],
+          "extra": [],
+          "sha256_mismatches": [],
+          "identical": true
+        }
+      },
+      "hold_files": [
+        "hold=5"
+      ],
+      "hold_matches": true
+    },
+    "cisco": {
+      "status": "compared",
+      "directories": {
+        "images": {
+          "original_count": 45,
+          "alternate_count": 45,
+          "missing": [],
+          "extra": [],
+          "sha256_mismatches": [],
+          "identical": true
+        },
+        "images_4": {
+          "original_count": 45,
+          "alternate_count": 45,
+          "missing": [],
+          "extra": [],
+          "sha256_mismatches": [],
+          "identical": true
+        }
+      },
+      "hold_files": [
+        "hold=7"
+      ],
+      "hold_matches": true
+    },
+    "coral": {
+      "status": "compared",
+      "directories": {
+        "images": {
+          "original_count": 49,
+          "alternate_count": 49,
+          "missing": [],
+          "extra": [],
+          "sha256_mismatches": [],
+          "identical": true
+        },
+        "images_4": {
+          "original_count": 49,
+          "alternate_count": 49,
+          "missing": [],
+          "extra": [],
+          "sha256_mismatches": [],
+          "identical": true
+        }
+      },
+      "hold_files": [
+        "hold=10"
+      ],
+      "hold_matches": true
+    },
+    "cupcake": {
+      "status": "compared",
+      "directories": {
+        "images": {
+          "original_count": 44,
+          "alternate_count": 44,
+          "missing": [],
+          "extra": [],
+          "sha256_mismatches": [],
+          "identical": true
+        },
+        "images_4": {
+          "original_count": 44,
+          "alternate_count": 44,
+          "missing": [],
+          "extra": [],
+          "sha256_mismatches": [],
+          "identical": true
+        }
+      },
+      "hold_files": [
+        "hold=6"
+      ],
+      "hold_matches": true
+    },
+    "cups": {
+      "status": "compared",
+      "directories": {
+        "images": {
+          "original_count": 43,
+          "alternate_count": 43,
+          "missing": [],
+          "extra": [],
+          "sha256_mismatches": [],
+          "identical": true
+        },
+        "images_4": {
+          "original_count": 43,
+          "alternate_count": 43,
+          "missing": [],
+          "extra": [],
+          "sha256_mismatches": [],
+          "identical": true
+        }
+      },
+      "hold_files": [
+        "hold=8"
+      ],
+      "hold_matches": true
+    },
+    "daisy": {
+      "status": "compared",
+      "directories": {
+        "images": {
+          "original_count": 52,
+          "alternate_count": 52,
+          "missing": [],
+          "extra": [],
+          "sha256_mismatches": [],
+          "identical": true
+        },
+        "images_4": {
+          "original_count": 52,
+          "alternate_count": 52,
+          "missing": [],
+          "extra": [],
+          "sha256_mismatches": [],
+          "identical": true
+        }
+      },
+      "hold_files": [
+        "hold=8"
+      ],
+      "hold_matches": true
+    },
+    "sausage": {
+      "status": "compared",
+      "directories": {
+        "images": {
+          "original_count": 39,
+          "alternate_count": 39,
+          "missing": [],
+          "extra": [],
+          "sha256_mismatches": [],
+          "identical": true
+        },
+        "images_4": {
+          "original_count": 39,
+          "alternate_count": 39,
+          "missing": [],
+          "extra": [],
+          "sha256_mismatches": [],
+          "identical": true
+        }
+      },
+      "hold_files": [
+        "hold=6"
+      ],
+      "hold_matches": true
+    },
+    "seal": {
+      "status": "compared",
+      "directories": {
+        "images": {
+          "original_count": 39,
+          "alternate_count": 39,
+          "missing": [],
+          "extra": [],
+          "sha256_mismatches": [],
+          "identical": true
+        },
+        "images_4": {
+          "original_count": 39,
+          "alternate_count": 39,
+          "missing": [],
+          "extra": [],
+          "sha256_mismatches": [],
+          "identical": true
+        }
+      },
+      "hold_files": [
+        "hold=6"
+      ],
+      "hold_matches": true
+    },
+    "tools": {
+      "status": "compared",
+      "directories": {
+        "images": {
+          "original_count": 41,
+          "alternate_count": 41,
+          "missing": [],
+          "extra": [],
+          "sha256_mismatches": [],
+          "identical": true
+        },
+        "images_4": {
+          "original_count": 41,
+          "alternate_count": 41,
+          "missing": [],
+          "extra": [],
+          "sha256_mismatches": [],
+          "identical": true
+        }
+      },
+      "hold_files": [
+        "hold=7"
+      ],
+      "hold_matches": true
+    }
+  },
+  "synthetic_scenes": {
+    "cozy2room": {
+      "hold": 8,
+      "hold_source": "DOFGS_implementation/config_files/scene_info.yaml",
+      "author_candidates": [],
+      "official_candidates": [
+        "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/synthetic_defocus_blur/defocuscozy2room"
+      ]
+    },
+    "factory": {
+      "hold": 8,
+      "hold_source": "DOFGS_implementation/config_files/scene_info.yaml",
+      "author_candidates": [],
+      "official_candidates": [
+        "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/synthetic_defocus_blur/defocusfactory"
+      ]
+    },
+    "pool": {
+      "hold": 8,
+      "hold_source": "DOFGS_implementation/config_files/scene_info.yaml",
+      "author_candidates": [],
+      "official_candidates": [
+        "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/synthetic_defocus_blur/defocuspool"
+      ]
+    },
+    "tanabata": {
+      "hold": 8,
+      "hold_source": "DOFGS_implementation/config_files/scene_info.yaml",
+      "author_candidates": [],
+      "official_candidates": [
+        "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/synthetic_defocus_blur/defocustanabata"
+      ]
+    },
+    "wine": {
+      "hold": 8,
+      "hold_source": "DOFGS_implementation/config_files/scene_info.yaml",
+      "author_candidates": [],
+      "official_candidates": [
+        "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/synthetic_defocus_blur/defocuswine"
+      ]
+    }
+  }
+}

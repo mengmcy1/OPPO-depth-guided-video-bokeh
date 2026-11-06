@@ -1,0 +1,2006 @@
+{
+  "raw": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DoF-NeRF/DoF_RealWorld_Data",
+  "requested_scenes": [
+    "amiya",
+    "camera",
+    "plant",
+    "kendo",
+    "desk",
+    "shelf",
+    "turtle"
+  ],
+  "actual_scenes": [
+    "amiya",
+    "book",
+    "camera",
+    "desk",
+    "kendo",
+    "plant",
+    "shelf",
+    "turtle"
+  ],
+  "scene_count_matches": false,
+  "extra_scenes": [
+    "book"
+  ],
+  "scenes": {
+    "amiya": {
+      "status": "prepared",
+      "triplets": 24,
+      "source_sizes": {
+        "3976x2652": 72
+      },
+      "naming": "same filename across modes, or ordered DSC triplets; shutter gaps require EXIF time validation",
+      "naming_exceptions": [],
+      "aperture_exif": {
+        "sharp": {
+          "16": 23,
+          "11": 1
+        },
+        "fg": {
+          "4": 24
+        },
+        "bg": {
+          "4": 24
+        }
+      },
+      "provided_geometry": [
+        "colmap_output.txt",
+        "poses_bounds.npy",
+        "sparse/0/cameras.bin",
+        "sparse/0/images.bin",
+        "sparse/0/points3D.bin"
+      ],
+      "provided_geometry_used": true,
+      "focus_distance": {
+        "sharp": {
+          "available": 0,
+          "unavailable": 24,
+          "distinct_values": {},
+          "consistent": null,
+          "interpretation": "unavailable"
+        },
+        "fg": {
+          "available": 0,
+          "unavailable": 24,
+          "distinct_values": {},
+          "consistent": null,
+          "interpretation": "unavailable"
+        },
+        "bg": {
+          "available": 0,
+          "unavailable": 24,
+          "distinct_values": {},
+          "consistent": null,
+          "interpretation": "unavailable"
+        }
+      },
+      "layouts": {
+        "mix": {
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/mix/amiya",
+          "views": 24,
+          "train": 21,
+          "test": [
+            "000.png",
+            "009.png",
+            "018.png"
+          ],
+          "selected_modes": {
+            "sharp": 3,
+            "fg": 11,
+            "bg": 10
+          },
+          "manifest": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/mix/amiya/manifest.json",
+          "sizes": {
+            "images": [
+              1988,
+              1326
+            ],
+            "images_4": [
+              497,
+              331
+            ]
+          }
+        },
+        "fg": {
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/fg/amiya",
+          "views": 24,
+          "train": 21,
+          "test": [
+            "000.png",
+            "009.png",
+            "018.png"
+          ],
+          "selected_modes": {
+            "sharp": 3,
+            "fg": 21
+          },
+          "manifest": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/fg/amiya/manifest.json",
+          "sizes": {
+            "images": [
+              1988,
+              1326
+            ],
+            "images_4": [
+              497,
+              331
+            ]
+          }
+        },
+        "bg": {
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/bg/amiya",
+          "views": 24,
+          "train": 21,
+          "test": [
+            "000.png",
+            "009.png",
+            "018.png"
+          ],
+          "selected_modes": {
+            "sharp": 3,
+            "bg": 21
+          },
+          "manifest": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/bg/amiya/manifest.json",
+          "sizes": {
+            "images": [
+              1988,
+              1326
+            ],
+            "images_4": [
+              497,
+              331
+            ]
+          }
+        }
+      },
+      "active_derived_layout_root": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided",
+      "active_geometry_protocol": "supplied poses/points, exact497x331 rectification; see round1 provided-poses records"
+    },
+    "camera": {
+      "status": "prepared",
+      "triplets": 24,
+      "source_sizes": {
+        "3976x2652": 72
+      },
+      "naming": "same filename across modes, or ordered DSC triplets; shutter gaps require EXIF time validation",
+      "naming_exceptions": [
+        {
+          "index": 9,
+          "files": {
+            "sharp": "DSC08722.JPG",
+            "fg": "DSC08719.JPG",
+            "bg": "DSC08721.JPG"
+          },
+          "verification": "ordered filenames, next-view boundary and EXIF capture times"
+        }
+      ],
+      "aperture_exif": {
+        "sharp": {
+          "16": 22,
+          "11": 2
+        },
+        "fg": {
+          "4": 23,
+          "9/2": 1
+        },
+        "bg": {
+          "4": 23,
+          "9/2": 1
+        }
+      },
+      "provided_geometry": [
+        "colmap_output.txt",
+        "poses_bounds.npy",
+        "sparse/0/cameras.bin",
+        "sparse/0/images.bin",
+        "sparse/0/points3D.bin"
+      ],
+      "provided_geometry_used": true,
+      "focus_distance": {
+        "sharp": {
+          "available": 0,
+          "unavailable": 24,
+          "distinct_values": {},
+          "consistent": null,
+          "interpretation": "unavailable"
+        },
+        "fg": {
+          "available": 0,
+          "unavailable": 24,
+          "distinct_values": {},
+          "consistent": null,
+          "interpretation": "unavailable"
+        },
+        "bg": {
+          "available": 0,
+          "unavailable": 24,
+          "distinct_values": {},
+          "consistent": null,
+          "interpretation": "unavailable"
+        }
+      },
+      "layouts": {
+        "mix": {
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/mix/camera",
+          "views": 24,
+          "train": 21,
+          "test": [
+            "000.png",
+            "009.png",
+            "018.png"
+          ],
+          "selected_modes": {
+            "sharp": 3,
+            "fg": 11,
+            "bg": 10
+          },
+          "manifest": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/mix/camera/manifest.json",
+          "sizes": {
+            "images": [
+              1988,
+              1326
+            ],
+            "images_4": [
+              497,
+              331
+            ]
+          }
+        },
+        "fg": {
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/fg/camera",
+          "views": 24,
+          "train": 21,
+          "test": [
+            "000.png",
+            "009.png",
+            "018.png"
+          ],
+          "selected_modes": {
+            "sharp": 3,
+            "fg": 21
+          },
+          "manifest": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/fg/camera/manifest.json",
+          "sizes": {
+            "images": [
+              1988,
+              1326
+            ],
+            "images_4": [
+              497,
+              331
+            ]
+          }
+        },
+        "bg": {
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/bg/camera",
+          "views": 24,
+          "train": 21,
+          "test": [
+            "000.png",
+            "009.png",
+            "018.png"
+          ],
+          "selected_modes": {
+            "sharp": 3,
+            "bg": 21
+          },
+          "manifest": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/bg/camera/manifest.json",
+          "sizes": {
+            "images": [
+              1988,
+              1326
+            ],
+            "images_4": [
+              497,
+              331
+            ]
+          }
+        }
+      },
+      "active_derived_layout_root": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided",
+      "active_geometry_protocol": "supplied poses/points, exact497x331 rectification; see round1 provided-poses records"
+    },
+    "plant": {
+      "status": "prepared",
+      "triplets": 24,
+      "source_sizes": {
+        "3976x2652": 72
+      },
+      "naming": "same filename across modes, or ordered DSC triplets; shutter gaps require EXIF time validation",
+      "naming_exceptions": [],
+      "aperture_exif": {
+        "sharp": {
+          "10": 1,
+          "11": 11,
+          "13": 1,
+          "16": 11
+        },
+        "fg": {
+          "4": 24
+        },
+        "bg": {
+          "4": 24
+        }
+      },
+      "provided_geometry": [
+        "colmap_output.txt",
+        "poses_bounds.npy",
+        "sparse/0/cameras.bin",
+        "sparse/0/images.bin",
+        "sparse/0/points3D.bin"
+      ],
+      "provided_geometry_used": true,
+      "focus_distance": {
+        "sharp": {
+          "available": 0,
+          "unavailable": 24,
+          "distinct_values": {},
+          "consistent": null,
+          "interpretation": "unavailable"
+        },
+        "fg": {
+          "available": 0,
+          "unavailable": 24,
+          "distinct_values": {},
+          "consistent": null,
+          "interpretation": "unavailable"
+        },
+        "bg": {
+          "available": 0,
+          "unavailable": 24,
+          "distinct_values": {},
+          "consistent": null,
+          "interpretation": "unavailable"
+        }
+      },
+      "layouts": {
+        "mix": {
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/mix/plant",
+          "views": 24,
+          "train": 21,
+          "test": [
+            "000.png",
+            "009.png",
+            "018.png"
+          ],
+          "selected_modes": {
+            "sharp": 3,
+            "fg": 11,
+            "bg": 10
+          },
+          "manifest": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/mix/plant/manifest.json",
+          "sizes": {
+            "images": [
+              1988,
+              1326
+            ],
+            "images_4": [
+              497,
+              331
+            ]
+          }
+        },
+        "fg": {
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/fg/plant",
+          "views": 24,
+          "train": 21,
+          "test": [
+            "000.png",
+            "009.png",
+            "018.png"
+          ],
+          "selected_modes": {
+            "sharp": 3,
+            "fg": 21
+          },
+          "manifest": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/fg/plant/manifest.json",
+          "sizes": {
+            "images": [
+              1988,
+              1326
+            ],
+            "images_4": [
+              497,
+              331
+            ]
+          }
+        },
+        "bg": {
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/bg/plant",
+          "views": 24,
+          "train": 21,
+          "test": [
+            "000.png",
+            "009.png",
+            "018.png"
+          ],
+          "selected_modes": {
+            "sharp": 3,
+            "bg": 21
+          },
+          "manifest": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/bg/plant/manifest.json",
+          "sizes": {
+            "images": [
+              1988,
+              1326
+            ],
+            "images_4": [
+              497,
+              331
+            ]
+          }
+        }
+      },
+      "active_derived_layout_root": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided",
+      "active_geometry_protocol": "supplied poses/points, exact497x331 rectification; see round1 provided-poses records"
+    },
+    "kendo": {
+      "status": "prepared",
+      "triplets": 20,
+      "source_sizes": {
+        "3976x2652": 60
+      },
+      "naming": "same filename across modes, or ordered DSC triplets; shutter gaps require EXIF time validation",
+      "naming_exceptions": [],
+      "aperture_exif": {
+        "sharp": {
+          "unavailable": 20
+        },
+        "fg": {
+          "unavailable": 20
+        },
+        "bg": {
+          "unavailable": 20
+        }
+      },
+      "provided_geometry": [
+        "colmap_output.txt",
+        "poses_bounds.npy",
+        "sparse/0/cameras.bin",
+        "sparse/0/images.bin",
+        "sparse/0/points3D.bin"
+      ],
+      "provided_geometry_used": true,
+      "focus_distance": {
+        "sharp": {
+          "available": 0,
+          "unavailable": 20,
+          "distinct_values": {},
+          "consistent": null,
+          "interpretation": "unavailable"
+        },
+        "fg": {
+          "available": 0,
+          "unavailable": 20,
+          "distinct_values": {},
+          "consistent": null,
+          "interpretation": "unavailable"
+        },
+        "bg": {
+          "available": 0,
+          "unavailable": 20,
+          "distinct_values": {},
+          "consistent": null,
+          "interpretation": "unavailable"
+        }
+      },
+      "layouts": {
+        "mix": {
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/mix/kendo",
+          "views": 20,
+          "train": 17,
+          "test": [
+            "000.png",
+            "009.png",
+            "018.png"
+          ],
+          "selected_modes": {
+            "sharp": 3,
+            "fg": 9,
+            "bg": 8
+          },
+          "manifest": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/mix/kendo/manifest.json",
+          "sizes": {
+            "images": [
+              1988,
+              1326
+            ],
+            "images_4": [
+              497,
+              331
+            ]
+          }
+        },
+        "fg": {
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/fg/kendo",
+          "views": 20,
+          "train": 17,
+          "test": [
+            "000.png",
+            "009.png",
+            "018.png"
+          ],
+          "selected_modes": {
+            "sharp": 3,
+            "fg": 17
+          },
+          "manifest": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/fg/kendo/manifest.json",
+          "sizes": {
+            "images": [
+              1988,
+              1326
+            ],
+            "images_4": [
+              497,
+              331
+            ]
+          }
+        },
+        "bg": {
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/bg/kendo",
+          "views": 20,
+          "train": 17,
+          "test": [
+            "000.png",
+            "009.png",
+            "018.png"
+          ],
+          "selected_modes": {
+            "sharp": 3,
+            "bg": 17
+          },
+          "manifest": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/bg/kendo/manifest.json",
+          "sizes": {
+            "images": [
+              1988,
+              1326
+            ],
+            "images_4": [
+              497,
+              331
+            ]
+          }
+        }
+      },
+      "active_derived_layout_root": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided",
+      "active_geometry_protocol": "supplied poses/points, exact497x331 rectification; see round1 provided-poses records"
+    },
+    "desk": {
+      "status": "prepared",
+      "triplets": 24,
+      "source_sizes": {
+        "3976x2652": 72
+      },
+      "naming": "same filename across modes, or ordered DSC triplets; shutter gaps require EXIF time validation",
+      "naming_exceptions": [],
+      "aperture_exif": {
+        "sharp": {
+          "11": 24
+        },
+        "fg": {
+          "14/5": 24
+        },
+        "bg": {
+          "14/5": 24
+        }
+      },
+      "provided_geometry": [
+        "colmap_output.txt",
+        "poses_bounds.npy",
+        "sparse/0/cameras.bin",
+        "sparse/0/images.bin",
+        "sparse/0/points3D.bin"
+      ],
+      "provided_geometry_used": true,
+      "focus_distance": {
+        "sharp": {
+          "available": 0,
+          "unavailable": 24,
+          "distinct_values": {},
+          "consistent": null,
+          "interpretation": "unavailable"
+        },
+        "fg": {
+          "available": 0,
+          "unavailable": 24,
+          "distinct_values": {},
+          "consistent": null,
+          "interpretation": "unavailable"
+        },
+        "bg": {
+          "available": 0,
+          "unavailable": 24,
+          "distinct_values": {},
+          "consistent": null,
+          "interpretation": "unavailable"
+        }
+      },
+      "layouts": {
+        "mix": {
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/mix/desk",
+          "views": 24,
+          "train": 21,
+          "test": [
+            "000.png",
+            "009.png",
+            "018.png"
+          ],
+          "selected_modes": {
+            "sharp": 3,
+            "fg": 11,
+            "bg": 10
+          },
+          "manifest": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/mix/desk/manifest.json",
+          "sizes": {
+            "images": [
+              1988,
+              1326
+            ],
+            "images_4": [
+              497,
+              331
+            ]
+          }
+        },
+        "fg": {
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/fg/desk",
+          "views": 24,
+          "train": 21,
+          "test": [
+            "000.png",
+            "009.png",
+            "018.png"
+          ],
+          "selected_modes": {
+            "sharp": 3,
+            "fg": 21
+          },
+          "manifest": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/fg/desk/manifest.json",
+          "sizes": {
+            "images": [
+              1988,
+              1326
+            ],
+            "images_4": [
+              497,
+              331
+            ]
+          }
+        },
+        "bg": {
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/bg/desk",
+          "views": 24,
+          "train": 21,
+          "test": [
+            "000.png",
+            "009.png",
+            "018.png"
+          ],
+          "selected_modes": {
+            "sharp": 3,
+            "bg": 21
+          },
+          "manifest": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/bg/desk/manifest.json",
+          "sizes": {
+            "images": [
+              1988,
+              1326
+            ],
+            "images_4": [
+              497,
+              331
+            ]
+          }
+        }
+      },
+      "active_derived_layout_root": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided",
+      "active_geometry_protocol": "supplied poses/points, exact497x331 rectification; see round1 provided-poses records"
+    },
+    "shelf": {
+      "status": "prepared",
+      "triplets": 24,
+      "source_sizes": {
+        "7952x5304": 72
+      },
+      "naming": "same filename across modes, or ordered DSC triplets; shutter gaps require EXIF time validation",
+      "naming_exceptions": [],
+      "aperture_exif": {
+        "sharp": {
+          "11": 24
+        },
+        "fg": {
+          "4": 24
+        },
+        "bg": {
+          "4": 24
+        }
+      },
+      "provided_geometry": [
+        "colmap_output.txt",
+        "poses_bounds.npy",
+        "sparse/0/cameras.bin",
+        "sparse/0/images.bin",
+        "sparse/0/points3D.bin"
+      ],
+      "provided_geometry_used": true,
+      "focus_distance": {
+        "sharp": {
+          "available": 0,
+          "unavailable": 24,
+          "distinct_values": {},
+          "consistent": null,
+          "interpretation": "unavailable"
+        },
+        "fg": {
+          "available": 0,
+          "unavailable": 24,
+          "distinct_values": {},
+          "consistent": null,
+          "interpretation": "unavailable"
+        },
+        "bg": {
+          "available": 0,
+          "unavailable": 24,
+          "distinct_values": {},
+          "consistent": null,
+          "interpretation": "unavailable"
+        }
+      },
+      "layouts": {
+        "mix": {
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/mix/shelf",
+          "views": 24,
+          "train": 21,
+          "test": [
+            "000.png",
+            "009.png",
+            "018.png"
+          ],
+          "selected_modes": {
+            "sharp": 3,
+            "fg": 11,
+            "bg": 10
+          },
+          "manifest": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/mix/shelf/manifest.json",
+          "sizes": {
+            "images": [
+              3976,
+              2652
+            ],
+            "images_4": [
+              497,
+              331
+            ]
+          }
+        },
+        "fg": {
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/fg/shelf",
+          "views": 24,
+          "train": 21,
+          "test": [
+            "000.png",
+            "009.png",
+            "018.png"
+          ],
+          "selected_modes": {
+            "sharp": 3,
+            "fg": 21
+          },
+          "manifest": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/fg/shelf/manifest.json",
+          "sizes": {
+            "images": [
+              3976,
+              2652
+            ],
+            "images_4": [
+              497,
+              331
+            ]
+          }
+        },
+        "bg": {
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/bg/shelf",
+          "views": 24,
+          "train": 21,
+          "test": [
+            "000.png",
+            "009.png",
+            "018.png"
+          ],
+          "selected_modes": {
+            "sharp": 3,
+            "bg": 21
+          },
+          "manifest": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes/bg/shelf/manifest.json",
+          "sizes": {
+            "images": [
+              3976,
+              2652
+            ],
+            "images_4": [
+              497,
+              331
+            ]
+          }
+        }
+      },
+      "active_derived_layout_root": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided",
+      "active_geometry_protocol": "supplied poses/points, exact497x331 rectification; see round1 provided-poses records"
+    },
+    "turtle": {
+      "status": "blocked",
+      "error": "Ambiguous triplet (filename/capture-time checks failed): {'sharp': PosixPath('/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DoF-NeRF/DoF_RealWorld_Data/turtle/images/f11/DSC08254.JPG'), 'fg': PosixPath('/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DoF-NeRF/DoF_RealWorld_Data/turtle/images/f4_obj/DSC08253.JPG'), 'bg': PosixPath('/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DoF-NeRF/DoF_RealWorld_Data/turtle/images/f4_bak/DSC08254.JPG')}",
+      "source_counts": {
+        "sharp": 24,
+        "fg": 24,
+        "bg": 24
+      },
+      "focus_distance": {
+        "sharp": {
+          "available": 0,
+          "unavailable": 24,
+          "distinct_values": {},
+          "consistent": null
+        },
+        "fg": {
+          "available": 0,
+          "unavailable": 24,
+          "distinct_values": {},
+          "consistent": null
+        },
+        "bg": {
+          "available": 0,
+          "unavailable": 24,
+          "distinct_values": {},
+          "consistent": null
+        }
+      },
+      "sharp_defocus_duplicates": [
+        {
+          "sharp": "images/f11/DSC08254.JPG",
+          "defocused": "images/f4_bak/DSC08254.JPG",
+          "mode": "bg"
+        },
+        {
+          "sharp": "images/f11/DSC08260.JPG",
+          "defocused": "images/f4_bak/DSC08260.JPG",
+          "mode": "bg"
+        },
+        {
+          "sharp": "images/f11/DSC08266.JPG",
+          "defocused": "images/f4_bak/DSC08266.JPG",
+          "mode": "bg"
+        },
+        {
+          "sharp": "images/f11/DSC08272.JPG",
+          "defocused": "images/f4_bak/DSC08272.JPG",
+          "mode": "bg"
+        },
+        {
+          "sharp": "images/f11/DSC08278.JPG",
+          "defocused": "images/f4_bak/DSC08278.JPG",
+          "mode": "bg"
+        },
+        {
+          "sharp": "images/f11/DSC08284.JPG",
+          "defocused": "images/f4_bak/DSC08284.JPG",
+          "mode": "bg"
+        },
+        {
+          "sharp": "images/f11/DSC08290.JPG",
+          "defocused": "images/f4_bak/DSC08290.JPG",
+          "mode": "bg"
+        },
+        {
+          "sharp": "images/f11/DSC08296.JPG",
+          "defocused": "images/f4_bak/DSC08296.JPG",
+          "mode": "bg"
+        },
+        {
+          "sharp": "images/f11/DSC08305.JPG",
+          "defocused": "images/f4_bak/DSC08305.JPG",
+          "mode": "bg"
+        },
+        {
+          "sharp": "images/f11/DSC08311.JPG",
+          "defocused": "images/f4_bak/DSC08311.JPG",
+          "mode": "bg"
+        },
+        {
+          "sharp": "images/f11/DSC08317.JPG",
+          "defocused": "images/f4_bak/DSC08317.JPG",
+          "mode": "bg"
+        },
+        {
+          "sharp": "images/f11/DSC08323.JPG",
+          "defocused": "images/f4_bak/DSC08323.JPG",
+          "mode": "bg"
+        }
+      ]
+    }
+  },
+  "active_geometry_revision_20261105_2035": {
+    "amiya": {
+      "status": "prepared",
+      "scene": "amiya",
+      "views": 24,
+      "points": 12534,
+      "provided_geometry_used": true,
+      "matching": [
+        {
+          "supplied_image": "DSC08620.JPG",
+          "output_image": "000.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "sharp",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08623.JPG",
+          "output_image": "001.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08632.JPG",
+          "output_image": "004.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08626.JPG",
+          "output_image": "002.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08629.JPG",
+          "output_image": "003.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08638.JPG",
+          "output_image": "006.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08635.JPG",
+          "output_image": "005.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08641.JPG",
+          "output_image": "007.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08644.JPG",
+          "output_image": "008.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08647.JPG",
+          "output_image": "009.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "sharp",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08653.JPG",
+          "output_image": "011.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08650.JPG",
+          "output_image": "010.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08656.JPG",
+          "output_image": "012.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08659.JPG",
+          "output_image": "013.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08662.JPG",
+          "output_image": "014.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08668.JPG",
+          "output_image": "016.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08665.JPG",
+          "output_image": "015.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08671.JPG",
+          "output_image": "017.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08674.JPG",
+          "output_image": "018.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "sharp",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08677.JPG",
+          "output_image": "019.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08680.JPG",
+          "output_image": "020.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08683.JPG",
+          "output_image": "021.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08688.JPG",
+          "output_image": "022.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08691.JPG",
+          "output_image": "023.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        }
+      ],
+      "triangulation_required": false,
+      "resolution": [
+        497,
+        331
+      ],
+      "camera_conversion": "SIMPLE_RADIAL -> standard OpenCV rectification -> PINHOLE; exact independent x/y scaling; radial coefficients preserved in records",
+      "poses_source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DoF-NeRF/DoF_RealWorld_Data/amiya/sparse/0",
+      "poses_bounds_source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DoF-NeRF/DoF_RealWorld_Data/amiya/poses_bounds.npy"
+    },
+    "camera": {
+      "status": "prepared",
+      "scene": "camera",
+      "views": 24,
+      "points": 13685,
+      "provided_geometry_used": true,
+      "matching": [
+        {
+          "supplied_image": "DSC08694.JPG",
+          "output_image": "000.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "sharp",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08697.JPG",
+          "output_image": "001.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08706.JPG",
+          "output_image": "004.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08700.JPG",
+          "output_image": "002.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08703.JPG",
+          "output_image": "003.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08712.JPG",
+          "output_image": "006.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08709.JPG",
+          "output_image": "005.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08715.JPG",
+          "output_image": "007.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08718.JPG",
+          "output_image": "008.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08722.JPG",
+          "output_image": "009.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "sharp",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08729.JPG",
+          "output_image": "011.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08725.JPG",
+          "output_image": "010.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08732.JPG",
+          "output_image": "012.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08735.JPG",
+          "output_image": "013.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08738.JPG",
+          "output_image": "014.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08741.JPG",
+          "output_image": "015.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08744.JPG",
+          "output_image": "016.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08747.JPG",
+          "output_image": "017.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08750.JPG",
+          "output_image": "018.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "sharp",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08756.JPG",
+          "output_image": "020.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08753.JPG",
+          "output_image": "019.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08759.JPG",
+          "output_image": "021.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08762.JPG",
+          "output_image": "022.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08765.JPG",
+          "output_image": "023.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        }
+      ],
+      "triangulation_required": false,
+      "resolution": [
+        497,
+        331
+      ],
+      "camera_conversion": "SIMPLE_RADIAL -> standard OpenCV rectification -> PINHOLE; exact independent x/y scaling; radial coefficients preserved in records",
+      "poses_source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DoF-NeRF/DoF_RealWorld_Data/camera/sparse/0",
+      "poses_bounds_source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DoF-NeRF/DoF_RealWorld_Data/camera/poses_bounds.npy"
+    },
+    "plant": {
+      "status": "prepared",
+      "scene": "plant",
+      "views": 24,
+      "points": 10218,
+      "provided_geometry_used": true,
+      "matching": [
+        {
+          "supplied_image": "DSC08768.JPG",
+          "output_image": "000.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "sharp",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08771.JPG",
+          "output_image": "001.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08774.JPG",
+          "output_image": "002.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08780.JPG",
+          "output_image": "004.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08786.JPG",
+          "output_image": "006.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08783.JPG",
+          "output_image": "005.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08777.JPG",
+          "output_image": "003.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08789.JPG",
+          "output_image": "007.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08792.JPG",
+          "output_image": "008.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08795.JPG",
+          "output_image": "009.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "sharp",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08798.JPG",
+          "output_image": "010.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08801.JPG",
+          "output_image": "011.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08804.JPG",
+          "output_image": "012.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08807.JPG",
+          "output_image": "013.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08813.JPG",
+          "output_image": "015.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08810.JPG",
+          "output_image": "014.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08816.JPG",
+          "output_image": "016.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08822.JPG",
+          "output_image": "018.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "sharp",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08819.JPG",
+          "output_image": "017.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08828.JPG",
+          "output_image": "020.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08825.JPG",
+          "output_image": "019.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08831.JPG",
+          "output_image": "021.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08837.JPG",
+          "output_image": "023.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08834.JPG",
+          "output_image": "022.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        }
+      ],
+      "triangulation_required": false,
+      "resolution": [
+        497,
+        331
+      ],
+      "camera_conversion": "SIMPLE_RADIAL -> standard OpenCV rectification -> PINHOLE; exact independent x/y scaling; radial coefficients preserved in records",
+      "poses_source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DoF-NeRF/DoF_RealWorld_Data/plant/sparse/0",
+      "poses_bounds_source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DoF-NeRF/DoF_RealWorld_Data/plant/poses_bounds.npy"
+    },
+    "kendo": {
+      "status": "prepared",
+      "scene": "kendo",
+      "views": 20,
+      "points": 17191,
+      "provided_geometry_used": true,
+      "matching": [
+        {
+          "supplied_image": "0.png",
+          "output_image": "000.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "sharp",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "1.png",
+          "output_image": "001.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "10.png",
+          "output_image": "002.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "11.png",
+          "output_image": "003.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "12.png",
+          "output_image": "004.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "13.png",
+          "output_image": "005.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "14.png",
+          "output_image": "006.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "15.png",
+          "output_image": "007.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "16.png",
+          "output_image": "008.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "17.png",
+          "output_image": "009.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "sharp",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "18.png",
+          "output_image": "010.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "19.png",
+          "output_image": "011.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "2.png",
+          "output_image": "012.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "3.png",
+          "output_image": "013.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "4.png",
+          "output_image": "014.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "5.png",
+          "output_image": "015.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "6.png",
+          "output_image": "016.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "7.png",
+          "output_image": "017.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "8.png",
+          "output_image": "018.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "sharp",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "9.png",
+          "output_image": "019.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        }
+      ],
+      "triangulation_required": false,
+      "resolution": [
+        497,
+        331
+      ],
+      "camera_conversion": "SIMPLE_RADIAL -> standard OpenCV rectification -> PINHOLE; exact independent x/y scaling; radial coefficients preserved in records",
+      "poses_source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DoF-NeRF/DoF_RealWorld_Data/kendo/sparse/0",
+      "poses_bounds_source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DoF-NeRF/DoF_RealWorld_Data/kendo/poses_bounds.npy"
+    },
+    "desk": {
+      "status": "prepared",
+      "scene": "desk",
+      "views": 24,
+      "points": 14715,
+      "provided_geometry_used": true,
+      "matching": [
+        {
+          "supplied_image": "DSC08146.JPG",
+          "output_image": "000.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "sharp",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08149.JPG",
+          "output_image": "001.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08158.JPG",
+          "output_image": "004.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08152.JPG",
+          "output_image": "002.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08164.JPG",
+          "output_image": "006.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08161.JPG",
+          "output_image": "005.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08155.JPG",
+          "output_image": "003.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08170.JPG",
+          "output_image": "008.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08167.JPG",
+          "output_image": "007.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08173.JPG",
+          "output_image": "009.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "sharp",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08179.JPG",
+          "output_image": "011.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08176.JPG",
+          "output_image": "010.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08182.JPG",
+          "output_image": "012.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08185.JPG",
+          "output_image": "013.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08188.JPG",
+          "output_image": "014.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08191.JPG",
+          "output_image": "015.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08194.JPG",
+          "output_image": "016.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08200.JPG",
+          "output_image": "018.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "sharp",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08197.JPG",
+          "output_image": "017.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08203.JPG",
+          "output_image": "019.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08206.JPG",
+          "output_image": "020.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08209.JPG",
+          "output_image": "021.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08212.JPG",
+          "output_image": "022.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08215.JPG",
+          "output_image": "023.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        }
+      ],
+      "triangulation_required": false,
+      "resolution": [
+        497,
+        331
+      ],
+      "camera_conversion": "SIMPLE_RADIAL -> standard OpenCV rectification -> PINHOLE; exact independent x/y scaling; radial coefficients preserved in records",
+      "poses_source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DoF-NeRF/DoF_RealWorld_Data/desk/sparse/0",
+      "poses_bounds_source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DoF-NeRF/DoF_RealWorld_Data/desk/poses_bounds.npy"
+    },
+    "shelf": {
+      "status": "prepared",
+      "scene": "shelf",
+      "views": 24,
+      "points": 11719,
+      "provided_geometry_used": true,
+      "matching": [
+        {
+          "supplied_image": "DSC08331.JPG",
+          "output_image": "000.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "sharp",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08334.JPG",
+          "output_image": "001.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08343.JPG",
+          "output_image": "004.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08337.JPG",
+          "output_image": "002.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08349.JPG",
+          "output_image": "006.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08346.JPG",
+          "output_image": "005.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08340.JPG",
+          "output_image": "003.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08352.JPG",
+          "output_image": "007.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08355.JPG",
+          "output_image": "008.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08358.JPG",
+          "output_image": "009.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "sharp",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08361.JPG",
+          "output_image": "010.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08367.JPG",
+          "output_image": "012.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08364.JPG",
+          "output_image": "011.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08370.JPG",
+          "output_image": "013.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08376.JPG",
+          "output_image": "015.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08373.JPG",
+          "output_image": "014.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08379.JPG",
+          "output_image": "016.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08382.JPG",
+          "output_image": "017.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08385.JPG",
+          "output_image": "018.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "sharp",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08388.JPG",
+          "output_image": "019.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08391.JPG",
+          "output_image": "020.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08394.JPG",
+          "output_image": "021.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08397.JPG",
+          "output_image": "022.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "bg",
+          "extrinsics_preserved": true
+        },
+        {
+          "supplied_image": "DSC08400.JPG",
+          "output_image": "023.png",
+          "source_mode": "sharp",
+          "training_selected_mode": "fg",
+          "extrinsics_preserved": true
+        }
+      ],
+      "triangulation_required": false,
+      "resolution": [
+        497,
+        331
+      ],
+      "camera_conversion": "SIMPLE_RADIAL -> standard OpenCV rectification -> PINHOLE; exact independent x/y scaling; radial coefficients preserved in records",
+      "poses_source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DoF-NeRF/DoF_RealWorld_Data/shelf/sparse/0",
+      "poses_bounds_source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DoF-NeRF/DoF_RealWorld_Data/shelf/poses_bounds.npy"
+    }
+  }
+}
