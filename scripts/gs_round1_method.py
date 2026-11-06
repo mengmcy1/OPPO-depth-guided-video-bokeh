@@ -126,6 +126,16 @@ class Sampler:
                 for stage in {'gaussian', 'depth_prior'}}
 
 
+def retain_depth_prior_batch_axis(module):
+    """Restore the singleton batch axis removed by the public depth model."""
+    original_loss = module.compute_depth_loss
+    def loss(depth_pred, depth_gt, mask_gt):
+        if depth_pred.ndim == 2 and depth_gt.ndim == 3 and depth_gt.shape[0] == 1:
+            depth_pred = depth_pred.unsqueeze(0)
+        return original_loss(depth_pred, depth_gt, mask_gt)
+    module.compute_depth_loss = loss
+
+
 def train(job):
     import torch
     source = data_view(Path(job['source']), Path(job['output'])/'input_scene', job['dataset'] == 'dofnerf-mix')
@@ -142,6 +152,7 @@ def train(job):
     module.Scene.__init__ = retain_scene
     sampler = Sampler(); prior_seconds = 0.; prior_peak = 0; pre_prior_peak = 0
     if job['method'] == 'dofgaussian':
+        retain_depth_prior_batch_axis(module.depth_priors)
         original_prior = module.depth_priors.train
         def timed_prior(*a, **kw):
             nonlocal prior_seconds, prior_peak, pre_prior_peak

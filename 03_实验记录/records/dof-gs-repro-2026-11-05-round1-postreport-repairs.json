@@ -1,0 +1,118 @@
+{
+  "recorded_at": "2026-11-06T02:31:51.389097+00:00",
+  "discovered_failed_jobs": [
+    {
+      "id": "dofgaussian-deblurnerf-cupcake",
+      "status": "failed",
+      "reason": "train exit=1",
+      "attempt": 2,
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/deblurnerf/cupcake/attempt-2",
+      "pid": 471426,
+      "phase": "train",
+      "repair_at": 1793932311.387143,
+      "fix": "Restore B=1 depth-prediction batch axis at original loss boundary; original equations, optimizer, image batches and iteration counts preserved"
+    },
+    {
+      "id": "dofgaussian-dofnerf-mix-amiya",
+      "status": "failed",
+      "reason": "train exit=1",
+      "attempt": 2,
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/amiya/attempt-2",
+      "pid": 473548,
+      "phase": "train",
+      "repair_at": 1793932311.3871524,
+      "fix": "Restore B=1 depth-prediction batch axis at original loss boundary; original equations, optimizer, image batches and iteration counts preserved"
+    },
+    {
+      "id": "dofgaussian-dofnerf-mix-camera",
+      "status": "failed",
+      "reason": "train exit=1",
+      "attempt": 2,
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/camera/attempt-2",
+      "pid": 488397,
+      "phase": "train",
+      "repair_at": 1793932311.3871567,
+      "fix": "Restore B=1 depth-prediction batch axis at original loss boundary; original equations, optimizer, image batches and iteration counts preserved"
+    },
+    {
+      "id": "bokehme-amiya",
+      "status": "failed",
+      "reason": "bokehme exit=1",
+      "attempt": 2,
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/bokehme/dofnerf-mix/amiya/attempt-2",
+      "pid": 473617,
+      "phase": "bokehme",
+      "repair_at": 1793932311.3871622,
+      "fix": "Use existing magicbokeh environment already used by project BokehMe adapter; no dependency installation or environment edits"
+    },
+    {
+      "id": "bokehme-camera",
+      "status": "failed",
+      "reason": "bokehme exit=1",
+      "attempt": 2,
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/bokehme/dofnerf-mix/camera/attempt-2",
+      "pid": 489116,
+      "phase": "bokehme",
+      "repair_at": 1793932311.3871644,
+      "fix": "Use existing magicbokeh environment already used by project BokehMe adapter; no dependency installation or environment edits"
+    }
+  ],
+  "checks": {
+    "depth_prior_loss_and_gradients": [
+      {
+        "batch": 1,
+        "loss_and_gradients_equal_to_original_with_batch_axis": true,
+        "original_singleton_failure_reproduced": true
+      },
+      {
+        "batch": 5,
+        "loss_and_gradients_equal_to_original_with_batch_axis": true
+      }
+    ],
+    "bokehme_real_training_view_forward": {
+      "status": "passed",
+      "python": "/root/miniconda3/envs/magicbokeh/bin/python",
+      "torch": "2.8.0+cu128",
+      "shape": [
+        331,
+        497,
+        3
+      ],
+      "input_shape": [
+        331,
+        497,
+        3
+      ],
+      "finite": true,
+      "range": [
+        6.583191520803666e-07,
+        0.9965306520462036
+      ],
+      "seconds": 0.8393196761608124,
+      "torch_peak_bytes": 118106112,
+      "counts": {
+        "arnet": 923664,
+        "iunet": 240076
+      },
+      "environment_modified": false,
+      "input_image": "001",
+      "training_view_only": true
+    }
+  },
+  "old_queue_coordinator_pid": 396266,
+  "preserved_running_jobs": [
+    {
+      "id": "cocogaussian-deblurnerf-caps",
+      "pid": 500361,
+      "status": "training"
+    }
+  ],
+  "gpu_parallel_limit_unchanged": 3,
+  "max_gpu_tasks": 4,
+  "memory_budget_mib": 40960,
+  "report_09_snapshot_preserved": true,
+  "queue_scope_unchanged": true,
+  "remaining_A_common_cupcake_repair_first": true,
+  "next_attempts": "attempt-3; previous outputs and native logs preserved",
+  "historical_startup_check_note": "Earlier startup record checked CLI availability only; it did not detect the incorrectly selected any2bokeh environment. The new check runs the actual BokehMe networks and CUDA renderer in the existing magicbokeh environment."
+}

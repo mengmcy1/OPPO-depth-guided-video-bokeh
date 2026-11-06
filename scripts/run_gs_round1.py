@@ -93,7 +93,7 @@ def environment(method):
                CUDA_CACHE_PATH=str(WORK/'.cache/cuda'), MPLCONFIGDIR=str(WORK/'.cache/matplotlib'),
                CUPY_CACHE_DIR=str(WORK/'.cache/cupy'), TRITON_CACHE_DIR=str(WORK/'.cache/triton'),
                XDG_CACHE_HOME=str(WORK/'.cache'))
-    prefix = Path('/root/miniconda3/envs/any2bokeh') if method == 'bokehme' else WORK/'envs'/method
+    prefix = Path('/root/miniconda3/envs/magicbokeh') if method == 'bokehme' else WORK/'envs'/method
     env['CONDA_PREFIX'] = str(prefix); env['PATH'] = str(prefix/'bin')+':'+env['PATH']
     env['CUDA_HOME'] = '/usr/local/cuda-12.8' if method in {'dofgaussian','bokehme'} else str(prefix)
     env['LD_LIBRARY_PATH'] = str(prefix/'lib')+':'+str(Path(env['CUDA_HOME'])/'lib64')+':'+env.get('LD_LIBRARY_PATH', '')
@@ -688,7 +688,7 @@ def main():
                 job['reserved_memory_mib']=reserve
                 if not exclusive:job['measurement_label']='parallel reference' if job['priority']==0 else 'parallel'
                 write(jobfile,job)
-                arguments = [Path('/root/miniconda3/envs/any2bokeh/bin/python'),ROOT/'scripts/gs_round1_bokehme.py','--job',jobfile] if phase=='bokehme' else [WORK/'envs'/job['method']/'bin/python', ROOT/'scripts/gs_round1_method.py', phase, '--job', jobfile]
+                arguments = [Path('/root/miniconda3/envs/magicbokeh/bin/python'),ROOT/'scripts/gs_round1_bokehme.py','--job',jobfile] if phase=='bokehme' else [WORK/'envs'/job['method']/'bin/python', ROOT/'scripts/gs_round1_method.py', phase, '--job', jobfile]
                 process = command(arguments,
                                   LOG/(job['id']+'-'+phase+'-'+str(job['attempt'])+'.log'), environment(job['method']))
                 active[job['id']] = (process, job, phase); job['status'] = 'training' if phase in {'train','bokehme'} else 'rendering'; job['pid'] = process.pid; job['phase']=phase

@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-06T01:00:16.620267+00:00",
-  "reason": "stage",
+  "generated_at": "2026-11-06T02:32:09.444354+00:00",
+  "reason": "postreport-repairs",
   "report_at": "2026-11-06T09:00:00+08:00",
   "priority_window": {
     "enabled": true,
@@ -50,6 +50,17 @@
     ],
     "completed_scene_count": 4,
     "per_scene": [
+      {
+        "method": "dofgaussian",
+        "dataset": "deblurnerf",
+        "scene": "cupcake",
+        "status": "queued",
+        "reason": "Requeued after verified batch-axis/environment repair",
+        "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/deblurnerf/cupcake/attempt-2",
+        "schedule_group": "A_common",
+        "schedule_phase": "full",
+        "in_shared_completed_subset": false
+      },
       {
         "method": "dofgs",
         "dataset": "deblurnerf",
@@ -410,17 +421,6 @@
         "in_shared_completed_subset": false
       },
       {
-        "method": "dofgaussian",
-        "dataset": "deblurnerf",
-        "scene": "cupcake",
-        "status": "failed",
-        "reason": "train exit=1",
-        "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/deblurnerf/cupcake/attempt-2",
-        "schedule_group": "A_common",
-        "schedule_phase": "full",
-        "in_shared_completed_subset": false
-      },
-      {
         "method": "mipsplatting",
         "dataset": "deblurnerf",
         "scene": "cupcake",
@@ -516,6 +516,16 @@
     "regional_R1": "unified metric maps; no official regional evaluation script is available"
   },
   "jobs": [
+    {
+      "method": "dofgaussian",
+      "dataset": "deblurnerf",
+      "scene": "cupcake",
+      "status": "queued",
+      "reason": "Requeued after verified batch-axis/environment repair",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/deblurnerf/cupcake/attempt-2",
+      "schedule_group": "A_common",
+      "schedule_phase": "full"
+    },
     {
       "method": "dofgs",
       "dataset": "deblurnerf",
@@ -681,9 +691,9 @@
       "method": "cocogaussian",
       "dataset": "deblurnerf",
       "scene": "caps",
-      "status": "queued",
+      "status": "training",
       "reason": "",
-      "output": "",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/cocogaussian/deblurnerf/caps/attempt-1",
       "schedule_group": "after_report",
       "schedule_phase": "full"
     },
@@ -921,16 +931,6 @@
       "schedule_phase": "full"
     },
     {
-      "method": "dofgaussian",
-      "dataset": "deblurnerf",
-      "scene": "cupcake",
-      "status": "failed",
-      "reason": "train exit=1",
-      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/deblurnerf/cupcake/attempt-2",
-      "schedule_group": "A_common",
-      "schedule_phase": "full"
-    },
-    {
       "method": "cocogaussian",
       "dataset": "deblurnerf",
       "scene": "cupcake",
@@ -981,8 +981,8 @@
       "method": "dofgaussian",
       "dataset": "deblurnerf",
       "scene": "cups",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": "",
       "schedule_group": "after_report",
       "schedule_phase": "full"
@@ -1197,8 +1197,8 @@
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
       "scene": "amiya",
-      "status": "failed",
-      "reason": "train exit=1",
+      "status": "queued",
+      "reason": "Requeued after verified batch-axis/environment repair",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/amiya/attempt-2",
       "schedule_group": "B_selected",
       "schedule_phase": "full"
@@ -1270,8 +1270,8 @@
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
       "scene": "camera",
-      "status": "failed",
-      "reason": "train exit=1",
+      "status": "queued",
+      "reason": "Requeued after verified batch-axis/environment repair",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/camera/attempt-2",
       "schedule_group": "B_selected",
       "schedule_phase": "full"
@@ -1577,8 +1577,8 @@
       "method": "bokehme",
       "dataset": "dofnerf-mix",
       "scene": "amiya",
-      "status": "failed",
-      "reason": "bokehme exit=1",
+      "status": "queued",
+      "reason": "Requeued after verified batch-axis/environment repair",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/bokehme/dofnerf-mix/amiya/attempt-2",
       "schedule_group": "B_selected",
       "schedule_phase": "full"
@@ -1587,8 +1587,8 @@
       "method": "bokehme",
       "dataset": "dofnerf-mix",
       "scene": "camera",
-      "status": "failed",
-      "reason": "bokehme exit=1",
+      "status": "queued",
+      "reason": "Requeued after verified batch-axis/environment repair",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/bokehme/dofnerf-mix/camera/attempt-2",
       "schedule_group": "B_selected",
       "schedule_phase": "full"
@@ -2701,6 +2701,13 @@
   },
   "deferred_due_to_colmap": [
     {
+      "id": "dofgaussian-deblurnerf-cupcake",
+      "status": "queued",
+      "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
+      "observed_at": 1793883096.8412776,
+      "resolved_at": 1793897474.7169588
+    },
+    {
       "id": "dofgaussian-deblurnerf-caps",
       "status": "evaluated",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
@@ -2722,17 +2729,11 @@
       "resolved_at": 1793897414.5604722
     },
     {
-      "id": "dofgaussian-deblurnerf-cupcake",
-      "status": "failed",
-      "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
-      "observed_at": 1793883096.8412776,
-      "resolved_at": 1793897474.7169588
-    },
-    {
       "id": "dofgaussian-deblurnerf-cups",
-      "status": "dependency_wait",
+      "status": "queued",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
-      "observed_at": 1793883096.8412788
+      "observed_at": 1793883096.8412788,
+      "resolved_at": 1793931536.0832148
     },
     {
       "id": "dofgaussian-deblurnerf-daisy",
@@ -2760,14 +2761,14 @@
     },
     {
       "id": "dofgaussian-dofnerf-mix-amiya",
-      "status": "failed",
+      "status": "queued",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
       "observed_at": 1793883096.8413298,
       "resolved_at": 1793897805.639917
     },
     {
       "id": "dofgaussian-dofnerf-mix-camera",
-      "status": "failed",
+      "status": "queued",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
       "observed_at": 1793883096.8414478,
       "resolved_at": 1793897865.8950233
@@ -2996,28 +2997,80 @@
     "deblurnerf/cups": {
       "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocuscups",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscups",
-      "status": "running",
+      "status": "complete",
       "started_at": 1793926808.528042,
-      "geometry_source": "new SIMPLE_RADIAL reconstruction"
+      "geometry_source": "new SIMPLE_RADIAL reconstruction",
+      "sparse": {
+        "registered_images": 43,
+        "total_images": 43,
+        "all_registered": true,
+        "seconds": {
+          "feature_extractor": 2.3675595335662365,
+          "exhaustive_matcher": 10.867607831954956,
+          "mapper": 975.1502412110567
+        },
+        "model": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscups/sparse/0"
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 6.164540193974972,
+          "patch_match_stereo": 3674.4156396873295,
+          "stereo_fusion": 55.57350133731961
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscups/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscups/dense/fused.ply.vis",
+        "fused_points": 9680503,
+        "expected_depth_maps": 43,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "finished_at": 1793931533.752911
     },
     "deblurnerf/daisy": {
       "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocusdaisy",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocusdaisy",
-      "status": "running",
+      "status": "complete",
       "started_at": 1793926808.5275006,
-      "geometry_source": "new SIMPLE_RADIAL reconstruction"
+      "geometry_source": "new SIMPLE_RADIAL reconstruction",
+      "sparse": {
+        "registered_images": 52,
+        "total_images": 52,
+        "all_registered": true,
+        "seconds": {
+          "feature_extractor": 13.409049719572067,
+          "exhaustive_matcher": 7.676699459552765,
+          "mapper": 1174.5790525190532
+        },
+        "model": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocusdaisy/sparse/0"
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 5.493735563009977,
+          "patch_match_stereo": 4224.392466291785,
+          "stereo_fusion": 85.91292132437229
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocusdaisy/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocusdaisy/dense/fused.ply.vis",
+        "fused_points": 21636549,
+        "expected_depth_maps": 52,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "finished_at": 1793932320.758999
     },
     "deblurnerf/sausage": {
-      "status": "queued",
       "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocussausage",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocussausage",
-      "requested_at": 1793883154.832203
+      "status": "running",
+      "started_at": 1793931533.7593381,
+      "geometry_source": "new SIMPLE_RADIAL reconstruction"
     },
     "deblurnerf/seal": {
-      "status": "queued",
       "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocusseal",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocusseal",
-      "requested_at": 1793883154.832643
+      "status": "running",
+      "started_at": 1793932320.7641428,
+      "geometry_source": "new SIMPLE_RADIAL reconstruction"
     },
     "deblurnerf/tools": {
       "status": "queued",
@@ -3127,22 +3180,28 @@
     }
   },
   "gpu_reservations": {
-    "499362": {
+    "500361": {
+      "reserve_mib": 6164,
+      "kind": "cocogaussian-deblurnerf-caps:train",
+      "exclusive": false,
+      "registered_at": 1793926826.8509939
+    },
+    "603623": {
+      "reserve_mib": 4096,
+      "kind": "colmap:patch_match_stereo",
+      "exclusive": false,
+      "registered_at": 1793932003.919108
+    },
+    "607449": {
       "reserve_mib": 4096,
       "kind": "colmap:feature_extractor",
       "exclusive": false,
-      "registered_at": 1793926809.0454726
-    },
-    "499849": {
-      "reserve_mib": 4096,
-      "kind": "colmap:exhaustive_matcher",
-      "exclusive": false,
-      "registered_at": 1793926811.5035667
+      "registered_at": 1793932321.1674867
     }
   },
   "throughput": {
     "completed_trainings": 19,
-    "elapsed_since_first_training_seconds": 47741.01258969307,
+    "elapsed_since_first_training_seconds": 53242.00905227661,
     "parallel_times_are_reference_only": true
   },
   "quality_gates": {
@@ -3164,12 +3223,22 @@
   },
   "pending": [
     {
+      "method": "dofgaussian",
+      "dataset": "deblurnerf",
+      "scene": "cupcake",
+      "status": "queued",
+      "reason": "Requeued after verified batch-axis/environment repair",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/deblurnerf/cupcake/attempt-2",
+      "schedule_group": "A_common",
+      "schedule_phase": "full"
+    },
+    {
       "method": "cocogaussian",
       "dataset": "deblurnerf",
       "scene": "caps",
-      "status": "queued",
+      "status": "training",
       "reason": "",
-      "output": "",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/cocogaussian/deblurnerf/caps/attempt-1",
       "schedule_group": "after_report",
       "schedule_phase": "full"
     },
@@ -3194,16 +3263,6 @@
       "schedule_phase": "full"
     },
     {
-      "method": "dofgaussian",
-      "dataset": "deblurnerf",
-      "scene": "cupcake",
-      "status": "failed",
-      "reason": "train exit=1",
-      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/deblurnerf/cupcake/attempt-2",
-      "schedule_group": "A_common",
-      "schedule_phase": "full"
-    },
-    {
       "method": "cocogaussian",
       "dataset": "deblurnerf",
       "scene": "cupcake",
@@ -3227,8 +3286,8 @@
       "method": "dofgaussian",
       "dataset": "deblurnerf",
       "scene": "cups",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": "",
       "schedule_group": "after_report",
       "schedule_phase": "full"
@@ -3417,8 +3476,8 @@
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
       "scene": "amiya",
-      "status": "failed",
-      "reason": "train exit=1",
+      "status": "queued",
+      "reason": "Requeued after verified batch-axis/environment repair",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/amiya/attempt-2",
       "schedule_group": "B_selected",
       "schedule_phase": "full"
@@ -3437,8 +3496,8 @@
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
       "scene": "camera",
-      "status": "failed",
-      "reason": "train exit=1",
+      "status": "queued",
+      "reason": "Requeued after verified batch-axis/environment repair",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/camera/attempt-2",
       "schedule_group": "B_selected",
       "schedule_phase": "full"
@@ -3617,8 +3676,8 @@
       "method": "bokehme",
       "dataset": "dofnerf-mix",
       "scene": "amiya",
-      "status": "failed",
-      "reason": "bokehme exit=1",
+      "status": "queued",
+      "reason": "Requeued after verified batch-axis/environment repair",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/bokehme/dofnerf-mix/amiya/attempt-2",
       "schedule_group": "B_selected",
       "schedule_phase": "full"
@@ -3627,8 +3686,8 @@
       "method": "bokehme",
       "dataset": "dofnerf-mix",
       "scene": "camera",
-      "status": "failed",
-      "reason": "bokehme exit=1",
+      "status": "queued",
+      "reason": "Requeued after verified batch-axis/environment repair",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/bokehme/dofnerf-mix/camera/attempt-2",
       "schedule_group": "B_selected",
       "schedule_phase": "full"
@@ -3682,9 +3741,9 @@
         "estimated_serial_training_seconds": 16461.435943823308
       },
       "dofgaussian": {
-        "remaining_training_jobs": 9,
+        "remaining_training_jobs": 12,
         "cake_seconds": 1514.6940248943865,
-        "estimated_serial_training_seconds": 13632.246224049479
+        "estimated_serial_training_seconds": 18176.32829873264
       },
       "cocogaussian": {
         "remaining_training_jobs": 15,
@@ -3697,7 +3756,7 @@
         "estimated_serial_training_seconds": 24147.14093214646
       }
     },
-    "estimated_remaining_training_lower_bound_seconds": 67375.99164844677,
+    "estimated_remaining_training_lower_bound_seconds": 68890.68567334116,
     "scope": "rough training estimate only; excludes pending data, COLMAP, render/evaluation and P3; scene sizes and concurrent slowdown vary; methods without a completed cake remain unknown"
   },
   "regions": {
