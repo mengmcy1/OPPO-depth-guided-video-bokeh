@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-06T02:32:09.444354+00:00",
-  "reason": "postreport-repairs",
+  "generated_at": "2026-11-06T02:32:21.451996+00:00",
+  "reason": "stage",
   "report_at": "2026-11-06T09:00:00+08:00",
   "priority_window": {
     "enabled": true,
@@ -1021,8 +1021,8 @@
       "method": "dofgaussian",
       "dataset": "deblurnerf",
       "scene": "daisy",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": "",
       "schedule_group": "after_report",
       "schedule_phase": "full"
@@ -1062,7 +1062,7 @@
       "dataset": "deblurnerf",
       "scene": "sausage",
       "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "reason": "Dense reconstruction is incomplete",
       "output": "",
       "schedule_group": "after_report",
       "schedule_phase": "full"
@@ -2737,9 +2737,10 @@
     },
     {
       "id": "dofgaussian-deblurnerf-daisy",
-      "status": "dependency_wait",
+      "status": "queued",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
-      "observed_at": 1793883096.8412797
+      "observed_at": 1793883096.8412797,
+      "resolved_at": 1793932341.4205995
     },
     {
       "id": "dofgaussian-deblurnerf-sausage",
@@ -3192,16 +3193,16 @@
       "exclusive": false,
       "registered_at": 1793932003.919108
     },
-    "607449": {
+    "607796": {
       "reserve_mib": 4096,
-      "kind": "colmap:feature_extractor",
+      "kind": "colmap:exhaustive_matcher",
       "exclusive": false,
-      "registered_at": 1793932321.1674867
+      "registered_at": 1793932335.290188
     }
   },
   "throughput": {
     "completed_trainings": 19,
-    "elapsed_since_first_training_seconds": 53242.00905227661,
+    "elapsed_since_first_training_seconds": 53276.954619407654,
     "parallel_times_are_reference_only": true
   },
   "quality_gates": {
@@ -3326,8 +3327,8 @@
       "method": "dofgaussian",
       "dataset": "deblurnerf",
       "scene": "daisy",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "status": "queued",
+      "reason": "",
       "output": "",
       "schedule_group": "after_report",
       "schedule_phase": "full"
@@ -3367,7 +3368,7 @@
       "dataset": "deblurnerf",
       "scene": "sausage",
       "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
+      "reason": "Dense reconstruction is incomplete",
       "output": "",
       "schedule_group": "after_report",
       "schedule_phase": "full"
