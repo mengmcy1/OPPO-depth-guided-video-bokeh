@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-06T16:29:40.641425+00:00",
-  "reason": "training-complete",
+  "generated_at": "2026-11-06T17:37:49.103512+00:00",
+  "reason": "complete",
   "report_at": "2026-11-06T09:00:00+08:00",
   "priority_window": {
     "enabled": true,
@@ -2586,54 +2586,69 @@
       "status": "evaluated",
       "colmap_seconds": 1946.671086590737,
       "geometry_source": "fresh official COLMAP pipeline",
-      "total_seconds": 1514.6940248943865,
-      "gaussian_seconds": 1449.2506840229034,
-      "depth_prior_seconds": 65.44334184750915,
-      "torch_gaussian_peak_bytes": 512859136,
+      "total_seconds": 1379.79322642833,
+      "gaussian_seconds": 1314.3680843114853,
+      "depth_prior_seconds": 65.42514308169484,
+      "torch_gaussian_peak_bytes": 503263744,
       "torch_depth_prior_peak_bytes": 11735149568,
       "nvidia_depth_prior_peak_mib": 14660.0,
       "nvidia_gaussian_peak_mib": 14660.0,
-      "gpu_utilization": 15.920454545454545,
-      "efficiency_valid": false,
-      "measurement_label": "parallel reference; exclusive measurement pendingP3",
+      "gpu_utilization": 17.64349910125824,
+      "efficiency_valid": true,
+      "measurement_label": "exclusive formal",
       "initial_cake_training_seconds": 1514.6940248943865,
-      "exclusive_supplement": {}
+      "exclusive_supplement": {
+        "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/deblurnerf/cake/efficiency-exclusive",
+        "status": "complete",
+        "started_at": 1793982593.4743063,
+        "finished_at": 1793983978.1488357
+      }
     },
     {
       "method": "cocogaussian",
       "status": "evaluated",
       "colmap_seconds": null,
       "geometry_source": "provided original sparse model; original reconstruction time unavailable",
-      "total_seconds": 9859.143456354737,
-      "gaussian_seconds": 9859.14345934242,
+      "total_seconds": 2222.2110530510545,
+      "gaussian_seconds": 2222.211055904627,
       "depth_prior_seconds": 0.0,
-      "torch_gaussian_peak_bytes": 3894422016,
+      "torch_gaussian_peak_bytes": 3775044608,
       "torch_depth_prior_peak_bytes": 0,
       "nvidia_depth_prior_peak_mib": 0,
-      "nvidia_gaussian_peak_mib": 5138.0,
-      "gpu_utilization": 96.93031004164739,
-      "efficiency_valid": false,
-      "measurement_label": "parallel reference; exclusive measurement pendingP3",
+      "nvidia_gaussian_peak_mib": 5012.0,
+      "gpu_utilization": 68.35423308537017,
+      "efficiency_valid": true,
+      "measurement_label": "exclusive formal",
       "initial_cake_training_seconds": 9859.143456354737,
-      "exclusive_supplement": {}
+      "exclusive_supplement": {
+        "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/cocogaussian/deblurnerf/cake/efficiency-exclusive",
+        "status": "complete",
+        "started_at": 1793983978.2517865,
+        "finished_at": 1793986203.694417
+      }
     },
     {
       "method": "mipsplatting",
       "status": "evaluated",
       "colmap_seconds": null,
       "geometry_source": "provided original sparse model; original reconstruction time unavailable",
-      "total_seconds": 2683.0156591273844,
-      "gaussian_seconds": 2683.015662640333,
+      "total_seconds": 339.7146432735026,
+      "gaussian_seconds": 339.714646063745,
       "depth_prior_seconds": 0.0,
-      "torch_gaussian_peak_bytes": 635127296,
+      "torch_gaussian_peak_bytes": 664591360,
       "torch_depth_prior_peak_bytes": 0,
       "nvidia_depth_prior_peak_mib": 0,
-      "nvidia_gaussian_peak_mib": 2890.0,
-      "gpu_utilization": 99.98647887323943,
-      "efficiency_valid": false,
-      "measurement_label": "parallel reference; exclusive measurement pendingP3",
+      "nvidia_gaussian_peak_mib": 2988.0,
+      "gpu_utilization": 38.81733021077283,
+      "efficiency_valid": true,
+      "measurement_label": "exclusive formal",
       "initial_cake_training_seconds": 2683.0156591273844,
-      "exclusive_supplement": {}
+      "exclusive_supplement": {
+        "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/mipsplatting/deblurnerf/cake/efficiency-exclusive",
+        "status": "complete",
+        "started_at": 1793986203.8023896,
+        "finished_at": 1793986548.4121175
+      }
     }
   ],
   "author_retrained": [
@@ -11174,7 +11189,632 @@
       "limits": "Boundary is a depth-gradient proxy. Flat untextured backgrounds can have small photometric difference despite optical defocus; in-focus/out-of-focus regions are photometric proxies, not semantic or measured optical labels."
     }
   },
-  "benchmark": [],
+  "benchmark": [
+    {
+      "method": "dofgaussian",
+      "scene": "cake",
+      "view": "000",
+      "status": "benchmarked",
+      "gaussians": 87310,
+      "gaussian_parameters": 5151290,
+      "model_bytes": 22005347,
+      "optimized_parameters": 5537961,
+      "results": [
+        {
+          "case": "all_in_focus",
+          "parameter": 0.0,
+          "max_radius_px": 0.0,
+          "milliseconds": 3.9261456578969955,
+          "fps": 254.7027255569629,
+          "torch_peak_bytes": 262497280,
+          "torch_incremental_peak_bytes": 96628224,
+          "nvidia_peak_mib": 712.0,
+          "repeats": 50
+        },
+        {
+          "case": "learned_dof",
+          "parameter": 8.4059339761734,
+          "max_radius_px": 4.233384182796449,
+          "milliseconds": 5.928869843482971,
+          "fps": 168.666208973908,
+          "torch_peak_bytes": 275508736,
+          "torch_incremental_peak_bytes": 97657344,
+          "nvidia_peak_mib": 756.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_0",
+          "parameter": 0.0,
+          "max_radius_px": 0.0,
+          "milliseconds": 4.039804711937904,
+          "fps": 247.5367180608831,
+          "torch_peak_bytes": 274625024,
+          "torch_incremental_peak_bytes": 97670656,
+          "nvidia_peak_mib": 734.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_2",
+          "parameter": 3.971259688800882,
+          "max_radius_px": 2.0,
+          "milliseconds": 4.431402087211609,
+          "fps": 225.662212617956,
+          "torch_peak_bytes": 275353600,
+          "torch_incremental_peak_bytes": 98399232,
+          "nvidia_peak_mib": 756.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_4",
+          "parameter": 7.942519377601764,
+          "max_radius_px": 4.0,
+          "milliseconds": 5.425520911812782,
+          "fps": 184.3140992826583,
+          "torch_peak_bytes": 273870848,
+          "torch_incremental_peak_bytes": 96916480,
+          "nvidia_peak_mib": 740.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_8",
+          "parameter": 15.885038755203528,
+          "max_radius_px": 8.0,
+          "milliseconds": 5.501145645976067,
+          "fps": 181.78031711112246,
+          "torch_peak_bytes": 274388480,
+          "torch_incremental_peak_bytes": 97434112,
+          "nvidia_peak_mib": 756.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_16",
+          "parameter": 31.770077510407056,
+          "max_radius_px": 16.0,
+          "milliseconds": 8.130055516958237,
+          "fps": 123.00039008517597,
+          "torch_peak_bytes": 274542080,
+          "torch_incremental_peak_bytes": 97587712,
+          "nvidia_peak_mib": 756.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_32",
+          "parameter": 63.54015502081411,
+          "max_radius_px": 32.0,
+          "milliseconds": 21.388099789619446,
+          "fps": 46.75497168221286,
+          "torch_peak_bytes": 275353600,
+          "torch_incremental_peak_bytes": 98399232,
+          "nvidia_peak_mib": 740.0,
+          "repeats": 50
+        }
+      ],
+      "e4_calibration": [
+        {
+          "target_radius_px": 0,
+          "parameter": 0.0,
+          "actual_max_radius_px": 0.0
+        },
+        {
+          "target_radius_px": 2,
+          "parameter": 3.971259688800882,
+          "actual_max_radius_px": 2.0
+        },
+        {
+          "target_radius_px": 4,
+          "parameter": 7.942519377601764,
+          "actual_max_radius_px": 4.0
+        },
+        {
+          "target_radius_px": 8,
+          "parameter": 15.885038755203528,
+          "actual_max_radius_px": 8.0
+        },
+        {
+          "target_radius_px": 16,
+          "parameter": 31.770077510407056,
+          "actual_max_radius_px": 16.0
+        },
+        {
+          "target_radius_px": 32,
+          "parameter": 63.54015502081411,
+          "actual_max_radius_px": 32.0
+        }
+      ],
+      "exclusive_gpu": true,
+      "timing": "synchronize before/after repeated renderer calls; model load, calibration, warmup and file writes excluded",
+      "zero_aperture": "pinhole rendering; scattering/additional CoCo renders bypassed",
+      "radius_definition": "DOF-GS exact CUDA circle formula; DoF-Gaussian scatter radius; CoCo max projected learned position offset over pinhole-visible Gaussians"
+    },
+    {
+      "method": "mipsplatting",
+      "scene": "cake",
+      "view": "000",
+      "status": "benchmarked",
+      "gaussians": 257241,
+      "gaussian_parameters": 15177219,
+      "model_bytes": 64826288,
+      "optimized_parameters": 15177219,
+      "results": [
+        {
+          "case": "all_in_focus",
+          "parameter": 0.0,
+          "max_radius_px": 0.0,
+          "milliseconds": 2.0205768197774887,
+          "fps": 494.9081817686707,
+          "torch_peak_bytes": 312189440,
+          "torch_incremental_peak_bytes": 139761664,
+          "nvidia_peak_mib": 786.0,
+          "repeats": 50
+        }
+      ],
+      "e4_calibration": [],
+      "exclusive_gpu": true,
+      "timing": "synchronize before/after repeated renderer calls; model load, calibration, warmup and file writes excluded",
+      "zero_aperture": "pinhole rendering; scattering/additional CoCo renders bypassed",
+      "radius_definition": "DOF-GS exact CUDA circle formula; DoF-Gaussian scatter radius; CoCo max projected learned position offset over pinhole-visible Gaussians"
+    },
+    {
+      "method": "dofgaussian",
+      "scene": "caps",
+      "view": "000",
+      "status": "benchmarked",
+      "gaussians": 64201,
+      "gaussian_parameters": 3787859,
+      "model_bytes": 16181815,
+      "optimized_parameters": 4174524,
+      "results": [
+        {
+          "case": "all_in_focus",
+          "parameter": 0.0,
+          "max_radius_px": 0.0,
+          "milliseconds": 3.8393324613571167,
+          "fps": 260.46194489927626,
+          "torch_peak_bytes": 248896000,
+          "torch_incremental_peak_bytes": 87547392,
+          "nvidia_peak_mib": 730.0,
+          "repeats": 50
+        },
+        {
+          "case": "learned_dof",
+          "parameter": 9.738988876342773,
+          "max_radius_px": 5.652085870775068,
+          "milliseconds": 4.570547044277191,
+          "fps": 218.79219058736217,
+          "torch_peak_bytes": 262166016,
+          "torch_incremental_peak_bytes": 90125312,
+          "nvidia_peak_mib": 722.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_0",
+          "parameter": 0.0,
+          "max_radius_px": 0.0,
+          "milliseconds": 3.672487810254097,
+          "fps": 272.2949814041209,
+          "torch_peak_bytes": 261206528,
+          "torch_incremental_peak_bytes": 87547392,
+          "nvidia_peak_mib": 716.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_2",
+          "parameter": 3.4461574360360068,
+          "max_radius_px": 2.0,
+          "milliseconds": 6.876231804490089,
+          "fps": 145.42848880501862,
+          "torch_peak_bytes": 261012480,
+          "torch_incremental_peak_bytes": 88971776,
+          "nvidia_peak_mib": 750.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_4",
+          "parameter": 6.8923148720720135,
+          "max_radius_px": 4.0,
+          "milliseconds": 5.394245535135269,
+          "fps": 185.38273674910192,
+          "torch_peak_bytes": 261819392,
+          "torch_incremental_peak_bytes": 89778688,
+          "nvidia_peak_mib": 750.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_8",
+          "parameter": 13.784629744144027,
+          "max_radius_px": 8.0,
+          "milliseconds": 5.137883424758911,
+          "fps": 194.63267601228685,
+          "torch_peak_bytes": 260761088,
+          "torch_incremental_peak_bytes": 88720384,
+          "nvidia_peak_mib": 724.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_16",
+          "parameter": 27.569259488288054,
+          "max_radius_px": 16.0,
+          "milliseconds": 8.115657195448875,
+          "fps": 123.2186101405051,
+          "torch_peak_bytes": 260395008,
+          "torch_incremental_peak_bytes": 88354304,
+          "nvidia_peak_mib": 742.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_32",
+          "parameter": 55.13851897657611,
+          "max_radius_px": 32.0,
+          "milliseconds": 21.1578718572855,
+          "fps": 47.26373270172066,
+          "torch_peak_bytes": 260395008,
+          "torch_incremental_peak_bytes": 88354304,
+          "nvidia_peak_mib": 742.0,
+          "repeats": 50
+        }
+      ],
+      "e4_calibration": [
+        {
+          "target_radius_px": 0,
+          "parameter": 0.0,
+          "actual_max_radius_px": 0.0
+        },
+        {
+          "target_radius_px": 2,
+          "parameter": 3.4461574360360068,
+          "actual_max_radius_px": 2.0
+        },
+        {
+          "target_radius_px": 4,
+          "parameter": 6.8923148720720135,
+          "actual_max_radius_px": 4.0
+        },
+        {
+          "target_radius_px": 8,
+          "parameter": 13.784629744144027,
+          "actual_max_radius_px": 8.0
+        },
+        {
+          "target_radius_px": 16,
+          "parameter": 27.569259488288054,
+          "actual_max_radius_px": 16.0
+        },
+        {
+          "target_radius_px": 32,
+          "parameter": 55.13851897657611,
+          "actual_max_radius_px": 32.0
+        }
+      ],
+      "exclusive_gpu": true,
+      "timing": "synchronize before/after repeated renderer calls; model load, calibration, warmup and file writes excluded",
+      "zero_aperture": "pinhole rendering; scattering/additional CoCo renders bypassed",
+      "radius_definition": "DOF-GS exact CUDA circle formula; DoF-Gaussian scatter radius; CoCo max projected learned position offset over pinhole-visible Gaussians"
+    },
+    {
+      "method": "cocogaussian",
+      "scene": "cake",
+      "view": "000",
+      "status": "benchmarked",
+      "gaussians": 429904,
+      "gaussian_parameters": 25364336,
+      "model_bytes": 106863098,
+      "optimized_parameters": 25423997,
+      "results": [
+        {
+          "case": "all_in_focus",
+          "parameter": 0.0,
+          "max_radius_px": 0.0,
+          "milliseconds": 3.3122579008340836,
+          "fps": 301.9088579268489,
+          "torch_peak_bytes": 426227712,
+          "torch_incremental_peak_bytes": 213627392,
+          "nvidia_peak_mib": 910.0,
+          "repeats": 50
+        },
+        {
+          "case": "learned_dof",
+          "parameter": 1.0,
+          "max_radius_px": 776.93310546875,
+          "milliseconds": 25.655324012041092,
+          "fps": 38.978264298305454,
+          "torch_peak_bytes": 1451292160,
+          "torch_incremental_peak_bytes": 1228209152,
+          "nvidia_peak_mib": 2572.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_0",
+          "parameter": 0.0,
+          "max_radius_px": 0.0,
+          "milliseconds": 3.562244176864624,
+          "fps": 280.721913027357,
+          "torch_peak_bytes": 465692160,
+          "torch_incremental_peak_bytes": 212549632,
+          "nvidia_peak_mib": 996.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_2",
+          "parameter": 0.004842673894017935,
+          "max_radius_px": 2.0000059604644775,
+          "milliseconds": 25.022809579968452,
+          "fps": 39.96353793942194,
+          "torch_peak_bytes": 1452186112,
+          "torch_incremental_peak_bytes": 1229214208,
+          "nvidia_peak_mib": 2576.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_4",
+          "parameter": 0.009690551552921534,
+          "max_radius_px": 3.9999945163726807,
+          "milliseconds": 25.7928329706192,
+          "fps": 38.770460039775664,
+          "torch_peak_bytes": 1480086016,
+          "torch_incremental_peak_bytes": 1227767808,
+          "nvidia_peak_mib": 2376.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_8",
+          "parameter": 0.019401411060243845,
+          "max_radius_px": 7.999993324279785,
+          "milliseconds": 26.103656440973282,
+          "fps": 38.30880942910214,
+          "torch_peak_bytes": 1481334272,
+          "torch_incremental_peak_bytes": 1228259840,
+          "nvidia_peak_mib": 2482.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_16",
+          "parameter": 0.03888278687372804,
+          "max_radius_px": 16.00005340576172,
+          "milliseconds": 26.145212948322296,
+          "fps": 38.24791949396491,
+          "torch_peak_bytes": 1480606208,
+          "torch_incremental_peak_bytes": 1227532288,
+          "nvidia_peak_mib": 2480.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_32",
+          "parameter": 0.07808757247403264,
+          "max_radius_px": 32.00000762939453,
+          "milliseconds": 26.05642832815647,
+          "fps": 38.378245375994375,
+          "torch_peak_bytes": 1480198656,
+          "torch_incremental_peak_bytes": 1227013120,
+          "nvidia_peak_mib": 2336.0,
+          "repeats": 50
+        }
+      ],
+      "e4_calibration": [
+        {
+          "target_radius_px": 0,
+          "position_offset_scale": 0.0,
+          "actual_max_radius_px": 0.0,
+          "scope": "self-written scaling of learned 3D position offsets; scale/rotation heads unchanged"
+        },
+        {
+          "target_radius_px": 2,
+          "position_offset_scale": 0.004842673894017935,
+          "actual_max_radius_px": 2.0000059604644775,
+          "scope": "self-written scaling of learned 3D position offsets; scale/rotation heads unchanged"
+        },
+        {
+          "target_radius_px": 4,
+          "position_offset_scale": 0.009690551552921534,
+          "actual_max_radius_px": 3.9999945163726807,
+          "scope": "self-written scaling of learned 3D position offsets; scale/rotation heads unchanged"
+        },
+        {
+          "target_radius_px": 8,
+          "position_offset_scale": 0.019401411060243845,
+          "actual_max_radius_px": 7.999993324279785,
+          "scope": "self-written scaling of learned 3D position offsets; scale/rotation heads unchanged"
+        },
+        {
+          "target_radius_px": 16,
+          "position_offset_scale": 0.03888278687372804,
+          "actual_max_radius_px": 16.00005340576172,
+          "scope": "self-written scaling of learned 3D position offsets; scale/rotation heads unchanged"
+        },
+        {
+          "target_radius_px": 32,
+          "position_offset_scale": 0.07808757247403264,
+          "actual_max_radius_px": 32.00000762939453,
+          "scope": "self-written scaling of learned 3D position offsets; scale/rotation heads unchanged"
+        }
+      ],
+      "exclusive_gpu": true,
+      "timing": "synchronize before/after repeated renderer calls; model load, calibration, warmup and file writes excluded",
+      "zero_aperture": "pinhole rendering; scattering/additional CoCo renders bypassed",
+      "radius_definition": "DOF-GS exact CUDA circle formula; DoF-Gaussian scatter radius; CoCo max projected learned position offset over pinhole-visible Gaussians"
+    },
+    {
+      "method": "mipsplatting",
+      "scene": "caps",
+      "view": "000",
+      "status": "benchmarked",
+      "gaussians": 356724,
+      "gaussian_parameters": 21046716,
+      "model_bytes": 89896004,
+      "optimized_parameters": 21046716,
+      "results": [
+        {
+          "case": "all_in_focus",
+          "parameter": 0.0,
+          "max_radius_px": 0.0,
+          "milliseconds": 3.6712519824504852,
+          "fps": 272.38664215375394,
+          "torch_peak_bytes": 384341504,
+          "torch_incremental_peak_bytes": 186295808,
+          "nvidia_peak_mib": 860.0,
+          "repeats": 50
+        }
+      ],
+      "e4_calibration": [],
+      "exclusive_gpu": true,
+      "timing": "synchronize before/after repeated renderer calls; model load, calibration, warmup and file writes excluded",
+      "zero_aperture": "pinhole rendering; scattering/additional CoCo renders bypassed",
+      "radius_definition": "DOF-GS exact CUDA circle formula; DoF-Gaussian scatter radius; CoCo max projected learned position offset over pinhole-visible Gaussians"
+    },
+    {
+      "status": "failed",
+      "method": "dofgs",
+      "scene": "cake",
+      "reason": "benchmark failed twice; see logs"
+    },
+    {
+      "status": "failed",
+      "method": "dofgs",
+      "scene": "caps",
+      "reason": "benchmark failed twice; see logs"
+    },
+    {
+      "method": "cocogaussian",
+      "scene": "caps",
+      "view": "000",
+      "status": "benchmarked",
+      "gaussians": 352968,
+      "gaussian_parameters": 20825112,
+      "model_bytes": 87782970,
+      "optimized_parameters": 20884770,
+      "results": [
+        {
+          "case": "all_in_focus",
+          "parameter": 0.0,
+          "max_radius_px": 0.0,
+          "milliseconds": 2.437002658843994,
+          "fps": 410.3401349895759,
+          "torch_peak_bytes": 394636288,
+          "torch_incremental_peak_bytes": 200338944,
+          "nvidia_peak_mib": 896.0,
+          "repeats": 50
+        },
+        {
+          "case": "learned_dof",
+          "parameter": 1.0,
+          "max_radius_px": 361.1173400878906,
+          "milliseconds": 21.181690394878387,
+          "fps": 47.21058524402728,
+          "torch_peak_bytes": 1378757632,
+          "torch_incremental_peak_bytes": 1175579136,
+          "nvidia_peak_mib": 2152.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_0",
+          "parameter": 0.0,
+          "max_radius_px": 0.0,
+          "milliseconds": 2.910255417227745,
+          "fps": 343.6124520481372,
+          "torch_peak_bytes": 427235840,
+          "torch_incremental_peak_bytes": 199995392,
+          "nvidia_peak_mib": 934.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_2",
+          "parameter": 0.006137537304311991,
+          "max_radius_px": 2.0005152225494385,
+          "milliseconds": 21.12966425716877,
+          "fps": 47.32682866272827,
+          "torch_peak_bytes": 1378307072,
+          "torch_incremental_peak_bytes": 1175128576,
+          "nvidia_peak_mib": 2162.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_4",
+          "parameter": 0.012265330646187067,
+          "max_radius_px": 3.9996001720428467,
+          "milliseconds": 21.62236452102661,
+          "fps": 46.248410946339966,
+          "torch_peak_bytes": 1402744320,
+          "torch_incremental_peak_bytes": 1175561216,
+          "nvidia_peak_mib": 2184.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_8",
+          "parameter": 0.02450293069705367,
+          "max_radius_px": 8.000059127807617,
+          "milliseconds": 21.310051903128624,
+          "fps": 46.92621137413492,
+          "torch_peak_bytes": 1402254336,
+          "torch_incremental_peak_bytes": 1175047168,
+          "nvidia_peak_mib": 2250.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_16",
+          "parameter": 0.04888668889179826,
+          "max_radius_px": 16.000112533569336,
+          "milliseconds": 20.656644329428673,
+          "fps": 48.410573569073904,
+          "torch_peak_bytes": 1403178496,
+          "torch_incremental_peak_bytes": 1175995392,
+          "nvidia_peak_mib": 2212.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_32",
+          "parameter": 0.09730795444920659,
+          "max_radius_px": 32.00022888183594,
+          "milliseconds": 20.859330371022224,
+          "fps": 47.94017747516956,
+          "torch_peak_bytes": 1402110464,
+          "torch_incremental_peak_bytes": 1174926848,
+          "nvidia_peak_mib": 2280.0,
+          "repeats": 50
+        }
+      ],
+      "e4_calibration": [
+        {
+          "target_radius_px": 0,
+          "position_offset_scale": 0.0,
+          "actual_max_radius_px": 0.0,
+          "scope": "self-written scaling of learned 3D position offsets; scale/rotation heads unchanged"
+        },
+        {
+          "target_radius_px": 2,
+          "position_offset_scale": 0.006137537304311991,
+          "actual_max_radius_px": 2.0005152225494385,
+          "scope": "self-written scaling of learned 3D position offsets; scale/rotation heads unchanged"
+        },
+        {
+          "target_radius_px": 4,
+          "position_offset_scale": 0.012265330646187067,
+          "actual_max_radius_px": 3.9996001720428467,
+          "scope": "self-written scaling of learned 3D position offsets; scale/rotation heads unchanged"
+        },
+        {
+          "target_radius_px": 8,
+          "position_offset_scale": 0.02450293069705367,
+          "actual_max_radius_px": 8.000059127807617,
+          "scope": "self-written scaling of learned 3D position offsets; scale/rotation heads unchanged"
+        },
+        {
+          "target_radius_px": 16,
+          "position_offset_scale": 0.04888668889179826,
+          "actual_max_radius_px": 16.000112533569336,
+          "scope": "self-written scaling of learned 3D position offsets; scale/rotation heads unchanged"
+        },
+        {
+          "target_radius_px": 32,
+          "position_offset_scale": 0.09730795444920659,
+          "actual_max_radius_px": 32.00022888183594,
+          "scope": "self-written scaling of learned 3D position offsets; scale/rotation heads unchanged"
+        }
+      ],
+      "exclusive_gpu": true,
+      "timing": "synchronize before/after repeated renderer calls; model load, calibration, warmup and file writes excluded",
+      "zero_aperture": "pinhole rendering; scattering/additional CoCo renders bypassed",
+      "radius_definition": "DOF-GS exact CUDA circle formula; DoF-Gaussian scatter radius; CoCo max projected learned position offset over pinhole-visible Gaussians"
+    }
+  ],
   "self_written": [
     "official-function training wrapper/measurement and auxiliary serialization",
     "R1 renderers",
