@@ -261,6 +261,19 @@ def colmap_phase(args):
         save(args.record, report)
 
 
+def retain_dofgaussian_camera_lookup(reader):
+    """Supply the unused camera-1 entry assumed by the official scale=1 reader."""
+    for name in ('read_intrinsics_binary', 'read_intrinsics_text'):
+        original = getattr(reader, name)
+        def read(*args, _read=original, **kwargs):
+            cameras = _read(*args, **kwargs)
+            if 1 not in cameras and cameras:
+                camera = next(iter(cameras.values()))
+                cameras[1] = camera._replace(id=1, params=camera.params.copy())
+            return cameras
+        setattr(reader, name, read)
+
+
 def split_worker(args):
     """Call an unmodified official reader on a writable temporary view."""
     sys.path.insert(0, str(args.workspace/METHODS[args.method]))
@@ -278,6 +291,8 @@ def split_worker(args):
             result['scene_config'] = str(config)
         else:
             reader = importlib.import_module('scene.dataset_readers')
+        if args.method == 'dofgaussian':
+            retain_dofgaussian_camera_lookup(reader)
         with tempfile.TemporaryDirectory(prefix='gs-split-', dir=os.environ['TMPDIR']) as tmp:
             view = Path(tmp)/('synthetic-view' if args.synthetic else 'scene')
             view.mkdir()

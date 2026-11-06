@@ -1,0 +1,225 @@
+{
+  "observed_at": "2026-11-06T05:23:23.104543+00:00",
+  "estimate_timezone": "Asia/Shanghai",
+  "scope": "Full round1:64 scene trainings with R0/R1 render/evaluation,10author evaluations,6BokehMe calibrations/evaluations,3supplemental exclusive cake training measurements,8native renderer/E4 benchmark jobs and plots",
+  "official_training_completed": 21,
+  "official_training_total": 64,
+  "remaining_by_method": {
+    "dofgs": {
+      "completed": 7,
+      "remaining": 9
+    },
+    "dofgaussian": {
+      "completed": 5,
+      "remaining": 11
+    },
+    "cocogaussian": {
+      "completed": 2,
+      "remaining": 14
+    },
+    "mipsplatting": {
+      "completed": 7,
+      "remaining": 9
+    },
+    "bokehme": {
+      "completed": 0,
+      "remaining": 6
+    }
+  },
+  "colmap_required_geometry_complete": true,
+  "worker_parallel_limit": 3,
+  "gpu_hard_max_tasks": 4,
+  "gpu_memory_budget_mib": 40960,
+  "estimated_hours_from_now": {
+    "quality_including_bokehme": [
+      16,
+      24
+    ],
+    "full_round_including_efficiency": [
+      20,
+      30
+    ]
+  },
+  "estimated_full_finish_Beijing": [
+    "2026-11-07T09:23:23.104543+08:00",
+    "2026-11-07T19:23:23.104543+08:00"
+  ],
+  "basis": [
+    "Three concurrent CoCoGaussian jobs currently achieve about4.5-4.8steps/s each; projected total per scene about1.9-2.4hours.",
+    "Completed DOF-GS and DoF-Gaussian parallel times vary by scene; use method/dataset timings rather than multiplying completed job count by one uniform duration.",
+    "Include all remaining active work, pending low-resolution DoF-NeRF scenes,6training-only BokehMe grid calibrations, and exclusive efficiency work.",
+    "Allow scheduling tails, render/evaluation and moderate scene variation; this is an estimate, not a deadline."
+  ],
+  "kendo_reader_repair": {
+    "cause": "Official reader assumes cam_intrinsics[1]; provided kendo correctly contains camera IDs2and3.",
+    "fix": "Add an unused camera1 copy at the reader boundary only. All image-to-camera associations, actual intrinsics, poses, distortion rectification and points remain unchanged. Official calls use scale=1. No input/model files rewritten.",
+    "split_checks": [
+      {
+        "method": "dofgaussian",
+        "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/mix/kendo",
+        "hold": 9,
+        "train_files": [
+          "001.png",
+          "002.png",
+          "003.png",
+          "004.png",
+          "005.png",
+          "006.png",
+          "007.png",
+          "008.png",
+          "010.png",
+          "011.png",
+          "012.png",
+          "013.png",
+          "014.png",
+          "015.png",
+          "016.png",
+          "017.png",
+          "019.png"
+        ],
+        "test_files": [
+          "000.png",
+          "009.png",
+          "018.png"
+        ],
+        "expected_test_files": [
+          "000.png",
+          "009.png",
+          "018.png"
+        ],
+        "train_count": 17,
+        "test_count": 3,
+        "matches": true,
+        "status": "checked",
+        "camera_image_sizes": [
+          [
+            497,
+            331,
+            497,
+            331
+          ]
+        ],
+        "resolution_4_sizes": [
+          [
+            124,
+            83
+          ]
+        ],
+        "dataset": "dofnerf-mix",
+        "scene": "kendo"
+      },
+      {
+        "method": "dofgaussian",
+        "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/fg/kendo",
+        "hold": 9,
+        "train_files": [
+          "001.png",
+          "002.png",
+          "003.png",
+          "004.png",
+          "005.png",
+          "006.png",
+          "007.png",
+          "008.png",
+          "010.png",
+          "011.png",
+          "012.png",
+          "013.png",
+          "014.png",
+          "015.png",
+          "016.png",
+          "017.png",
+          "019.png"
+        ],
+        "test_files": [
+          "000.png",
+          "009.png",
+          "018.png"
+        ],
+        "expected_test_files": [
+          "000.png",
+          "009.png",
+          "018.png"
+        ],
+        "train_count": 17,
+        "test_count": 3,
+        "matches": true,
+        "status": "checked",
+        "camera_image_sizes": [
+          [
+            497,
+            331,
+            497,
+            331
+          ]
+        ],
+        "resolution_4_sizes": [
+          [
+            124,
+            83
+          ]
+        ],
+        "dataset": "dofnerf-fg",
+        "scene": "kendo"
+      },
+      {
+        "method": "dofgaussian",
+        "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/bg/kendo",
+        "hold": 9,
+        "train_files": [
+          "001.png",
+          "002.png",
+          "003.png",
+          "004.png",
+          "005.png",
+          "006.png",
+          "007.png",
+          "008.png",
+          "010.png",
+          "011.png",
+          "012.png",
+          "013.png",
+          "014.png",
+          "015.png",
+          "016.png",
+          "017.png",
+          "019.png"
+        ],
+        "test_files": [
+          "000.png",
+          "009.png",
+          "018.png"
+        ],
+        "expected_test_files": [
+          "000.png",
+          "009.png",
+          "018.png"
+        ],
+        "train_count": 17,
+        "test_count": 3,
+        "matches": true,
+        "status": "checked",
+        "camera_image_sizes": [
+          [
+            497,
+            331,
+            497,
+            331
+          ]
+        ],
+        "resolution_4_sizes": [
+          [
+            124,
+            83
+          ]
+        ],
+        "dataset": "dofnerf-bg",
+        "scene": "kendo"
+      }
+    ],
+    "training_and_reload_use_same_adapter": true
+  },
+  "assumptions": [
+    "No additional dataset, numerical or environment failures; no change to scope, hardware or concurrency."
+  ]
+}

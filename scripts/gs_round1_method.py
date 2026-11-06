@@ -19,6 +19,7 @@ import threading
 import time
 import traceback
 from gs_round1_resources import gpu_slot
+from prepare_gs_repro import retain_dofgaussian_camera_lookup
 
 PROJECT = Path(__file__).resolve().parents[1]
 WORKSPACE = PROJECT.parent
@@ -152,6 +153,7 @@ def train(job):
     module.Scene.__init__ = retain_scene
     sampler = Sampler(); prior_seconds = 0.; prior_peak = 0; pre_prior_peak = 0
     if job['method'] == 'dofgaussian':
+        retain_dofgaussian_camera_lookup(importlib.import_module('scene.dataset_readers'))
         retain_depth_prior_batch_axis(module.depth_priors)
         original_prior = module.depth_priors.train
         def timed_prior(*a, **kw):
@@ -219,6 +221,8 @@ def train(job):
 
 def load_model(job):
     import torch
+    if job['method'] == 'dofgaussian':
+        retain_dofgaussian_camera_lookup(importlib.import_module('scene.dataset_readers'))
     model = Path(job.get('model', job['output']))
     metadata = model/'model-metadata.json'
     if metadata.exists():

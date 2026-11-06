@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-06T05:10:46.989517+00:00",
-  "reason": "prep-complete",
+  "generated_at": "2026-11-06T05:23:36.344584+00:00",
+  "reason": "full-estimate-and-kendo",
   "report_at": "2026-11-06T09:00:00+08:00",
   "priority_window": {
     "enabled": true,
@@ -1418,8 +1418,8 @@
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
       "scene": "kendo",
-      "status": "blocked",
-      "reason": "Official split reader not passed: KeyError: 1",
+      "status": "queued",
+      "reason": "",
       "output": "",
       "schedule_group": "after_report",
       "schedule_phase": "full"
@@ -2845,9 +2845,10 @@
     },
     {
       "id": "dofgaussian-dofnerf-mix-kendo",
-      "status": "blocked",
+      "status": "queued",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
-      "observed_at": 1793883096.8416767
+      "observed_at": 1793883096.8416767,
+      "resolved_at": 1793942576.7343643
     },
     {
       "id": "dofgaussian-dofnerf-mix-desk",
@@ -3709,7 +3710,7 @@
   },
   "throughput": {
     "completed_trainings": 21,
-    "elapsed_since_first_training_seconds": 62780.604388952255,
+    "elapsed_since_first_training_seconds": 63542.342631816864,
     "parallel_times_are_reference_only": true
   },
   "quality_gates": {
@@ -4054,8 +4055,8 @@
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
       "scene": "kendo",
-      "status": "blocked",
-      "reason": "Official split reader not passed: KeyError: 1",
+      "status": "queued",
+      "reason": "",
       "output": "",
       "schedule_group": "after_report",
       "schedule_phase": "full"
@@ -4229,9 +4230,9 @@
         "estimated_serial_training_seconds": 16461.435943823308
       },
       "dofgaussian": {
-        "remaining_training_jobs": 10,
+        "remaining_training_jobs": 11,
         "cake_seconds": 1514.6940248943865,
-        "estimated_serial_training_seconds": 15146.940248943865
+        "estimated_serial_training_seconds": 16661.634273838252
       },
       "cocogaussian": {
         "remaining_training_jobs": 14,
@@ -4244,7 +4245,7 @@
         "estimated_serial_training_seconds": 24147.14093214646
       }
     },
-    "estimated_remaining_training_lower_bound_seconds": 64594.508504626654,
+    "estimated_remaining_training_lower_bound_seconds": 65099.40651292478,
     "scope": "rough training estimate only; excludes pending data, COLMAP, render/evaluation and P3; scene sizes and concurrent slowdown vary; methods without a completed cake remain unknown"
   },
   "regions": {
