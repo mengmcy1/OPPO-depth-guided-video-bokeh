@@ -546,7 +546,8 @@ def main():
         if job['status'] not in {'queued','dependency_wait','blocked'}:continue
         reason = dependency(job, prep)
         if reason: job.update(status='blocked' if prep['final'] else 'dependency_wait', reason=reason)
-    active = {}; cpu = {}; last_summary = 0; report_written = waiting_report_written
+    active = {}; cpu = {}; last_summary = 0
+    report_written = waiting_report_written or (LOG/'scheduled-report.finished').exists()
     for job in state['jobs']:
         if job['status'] in {'training','rendering','evaluating'} and job.get('pid'):
             phase=job.get('phase','evaluate' if job['status']=='evaluating' else 'train' if job['status']=='training' else 'render')
@@ -602,6 +603,7 @@ def main():
             if process.poll() is None: continue
             job['status'] = 'evaluated' if process.returncode == 0 else 'failed'; job['finished_at'] = now
             cpu.pop(key)
+            state['result_commit_pending'] = True
             if job['dataset']=='deblurnerf' and job['scene']=='cake' and config['paper_reference'].get(job['method']+'_cake') and process.returncode == 0:
                 result = read(Path(job['output'])/'evaluation.json', {})['summary']['A']['unified']['psnr']
                 delta = result-config['paper_reference'][job['method']+'_cake']['psnr']
@@ -699,6 +701,11 @@ def main():
         due = datetime.fromisoformat(config['report_at']).timestamp()
         if now >= due and not report_written:
             summarize(state, config, 'stage', commit=True); report_written = True
+        elif state.get('result_commit_pending') and now-state.get('result_commit_attempt_at',0) >= 60:
+            result = summarize(state, config, 'evaluated-results', commit=True)
+            state['result_commit_attempt_at'] = time.time()
+            state['result_commit_pending'] = result.get('status') not in {'pushed', 'no_changes'}
+            write(state_path, state); last_summary = now
         elif now-last_summary > 300:
             summarize(state, config, 'running'); last_summary = now
         if mode=='full' and not active and not cpu and all(j['status'] in {'evaluated', 'failed', 'blocked'} for j in state['jobs']): break
