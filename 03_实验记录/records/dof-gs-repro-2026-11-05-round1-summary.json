@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-06T14:18:46.263866+00:00",
+  "generated_at": "2026-11-06T14:53:42.118943+00:00",
   "reason": "evaluated-results",
   "report_at": "2026-11-06T09:00:00+08:00",
   "priority_window": {
@@ -2044,9 +2044,27 @@
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
       "scene": "desk",
-      "status": "training",
+      "status": "evaluated",
+      "lpips": 0.7073734998703003,
+      "psnr": 4.3672720594149785,
+      "ssim": -0.18562360604604086,
+      "native_lpips": 1.0551674365997314,
+      "native_psnr": 4.3672720594149785,
+      "native_ssim": -0.18562360604604086,
+      "gaussians": 488,
+      "optimized_parameters": 415445,
+      "model_bytes": 126137,
       "reason": "",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/desk/attempt-1",
+      "r1_status": "blocked: own-parameter training-view reproduction check failed; R0 retained",
+      "unified_psnr": 4.364474800134401,
+      "unified_ssim": 0.0038856305181980133,
+      "lpips_vgg": 0.7073734998703003,
+      "lpips_official": 1.0551674365997314,
+      "official_psnr": 4.3672720594149785,
+      "official_ssim": -0.18562360604604086,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "official native",
       "schedule_group": "after_report",
       "schedule_phase": "full"
     },
@@ -2054,9 +2072,9 @@
       "method": "cocogaussian",
       "dataset": "dofnerf-mix",
       "scene": "desk",
-      "status": "queued",
+      "status": "training",
       "reason": "",
-      "output": "",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/cocogaussian/dofnerf-mix/desk/attempt-1",
       "schedule_group": "after_report",
       "schedule_phase": "full"
     },
@@ -2322,19 +2340,19 @@
     {
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
-      "completed_scenes": 4,
-      "scene_names": "amiya,camera,kendo,plant",
+      "completed_scenes": 5,
+      "scene_names": "amiya,camera,desk,kendo,plant",
       "comparison_allowed": false,
-      "psnr": 6.988229173268389,
-      "ssim": 0.30437732410306734,
-      "lpips": 0.5896941423416139,
-      "native_psnr": 6.988229173268389,
-      "native_ssim": 0.30437732410306734,
-      "native_lpips": 0.8880915741125743,
-      "unified_psnr": 6.985387758161338,
-      "unified_ssim": 0.02676204545423388,
-      "lpips_vgg": 0.5896941423416139,
-      "lpips_official": 0.8880915741125743
+      "psnr": 6.464037750497707,
+      "ssim": 0.2063771380732457,
+      "lpips": 0.6132300138473512,
+      "native_psnr": 6.464037750497707,
+      "native_ssim": 0.2063771380732457,
+      "native_lpips": 0.9215067466100058,
+      "unified_psnr": 6.461205166555951,
+      "unified_ssim": 0.022186762467026708,
+      "lpips_vgg": 0.6132300138473512,
+      "lpips_official": 0.9215067466100058
     },
     {
       "method": "cocogaussian",
@@ -7692,7 +7710,7 @@
     },
     {
       "id": "dofgaussian-dofnerf-mix-desk",
-      "status": "training",
+      "status": "evaluated",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
       "observed_at": 1793883096.8417885,
       "resolved_at": 1793937483.1868289
@@ -8535,16 +8553,16 @@
       "exclusive": false,
       "registered_at": 1793974193.4231002
     },
-    "253055": {
-      "reserve_mib": 16638,
-      "kind": "dofgaussian-dofnerf-mix-desk:train",
+    "285882": {
+      "reserve_mib": 6164,
+      "kind": "cocogaussian-dofnerf-mix-desk:train",
       "exclusive": false,
-      "registered_at": 1793974716.5526636
+      "registered_at": 1793976812.3393095
     }
   },
   "throughput": {
-    "completed_trainings": 55,
-    "elapsed_since_first_training_seconds": 95661.72502326965,
+    "completed_trainings": 56,
+    "elapsed_since_first_training_seconds": 97757.5798778534,
     "parallel_times_are_reference_only": true
   },
   "quality_gates": {
@@ -8586,22 +8604,12 @@
       "schedule_phase": "full"
     },
     {
-      "method": "dofgaussian",
+      "method": "cocogaussian",
       "dataset": "dofnerf-mix",
       "scene": "desk",
       "status": "training",
       "reason": "",
-      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/desk/attempt-1",
-      "schedule_group": "after_report",
-      "schedule_phase": "full"
-    },
-    {
-      "method": "cocogaussian",
-      "dataset": "dofnerf-mix",
-      "scene": "desk",
-      "status": "queued",
-      "reason": "",
-      "output": "",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/cocogaussian/dofnerf-mix/desk/attempt-1",
       "schedule_group": "after_report",
       "schedule_phase": "full"
     },
@@ -8684,9 +8692,9 @@
         "estimated_serial_training_seconds": 3658.0968764051795
       },
       "dofgaussian": {
-        "remaining_training_jobs": 2,
+        "remaining_training_jobs": 1,
         "cake_seconds": 1514.6940248943865,
-        "estimated_serial_training_seconds": 3029.388049788773
+        "estimated_serial_training_seconds": 1514.6940248943865
       },
       "cocogaussian": {
         "remaining_training_jobs": 3,
@@ -8699,7 +8707,7 @@
         "estimated_serial_training_seconds": 5366.031318254769
       }
     },
-    "estimated_remaining_training_lower_bound_seconds": 13876.982204504311,
+    "estimated_remaining_training_lower_bound_seconds": 13372.084196206182,
     "scope": "rough training estimate only; excludes pending data, COLMAP, render/evaluation and P3; scene sizes and concurrent slowdown vary; methods without a completed cake remain unknown"
   },
   "regions": {
