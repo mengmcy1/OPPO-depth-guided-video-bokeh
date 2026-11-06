@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-05T16:49:41.165796+00:00",
-  "reason": "continuous-run-cpu",
+  "generated_at": "2026-11-06T01:00:05.524721+00:00",
+  "reason": "stage",
   "report_at": "2026-11-06T09:00:00+08:00",
   "priority_window": {
     "enabled": true,
@@ -28,7 +28,7 @@
     "scope_unchanged": true,
     "wrap_up": "after08:30 preserve running jobs and allow render/evaluation; hold new training/COLMAP until09:00 report artifacts are saved"
   },
-  "schedule_phase": "priority",
+  "schedule_phase": "awaiting_report",
   "common_subset": {
     "methods": [
       "dofgs",
@@ -43,9 +43,12 @@
       "cupcake"
     ],
     "shared_completed_scenes": [
-      "cake"
+      "cake",
+      "caps",
+      "cisco",
+      "coral"
     ],
-    "completed_scene_count": 1,
+    "completed_scene_count": 4,
     "per_scene": [
       {
         "method": "dofgs",
@@ -71,7 +74,7 @@
         "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
         "primary_protocol": "official native",
         "schedule_group": "A_common",
-        "schedule_phase": "priority",
+        "schedule_phase": "awaiting_report",
         "in_shared_completed_subset": true
       },
       {
@@ -99,7 +102,7 @@
         "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
         "primary_protocol": "official native",
         "schedule_group": "A_common",
-        "schedule_phase": "priority",
+        "schedule_phase": "awaiting_report",
         "in_shared_completed_subset": true
       },
       {
@@ -127,7 +130,7 @@
         "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
         "primary_protocol": "official native",
         "schedule_group": "A_common",
-        "schedule_phase": "priority",
+        "schedule_phase": "awaiting_report",
         "in_shared_completed_subset": true
       },
       {
@@ -154,30 +157,64 @@
         "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
         "primary_protocol": "official native",
         "schedule_group": "A_common",
-        "schedule_phase": "priority",
-        "in_shared_completed_subset": false
+        "schedule_phase": "awaiting_report",
+        "in_shared_completed_subset": true
       },
       {
         "method": "dofgaussian",
         "dataset": "deblurnerf",
         "scene": "caps",
-        "status": "training",
+        "status": "evaluated",
+        "lpips": 0.1750271533216749,
+        "psnr": 24.475463658522646,
+        "ssim": 0.7450963939939227,
+        "native_lpips": 0.1411693756069456,
+        "native_psnr": 24.475463658522646,
+        "native_ssim": 0.7450963939939227,
+        "gaussians": 64201,
+        "optimized_parameters": 4174524,
+        "model_bytes": 16181815,
         "reason": "",
         "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/deblurnerf/caps/attempt-1",
+        "unified_psnr": 24.472156380673024,
+        "unified_ssim": 0.8598230481147766,
+        "lpips_vgg": 0.1750271533216749,
+        "lpips_official": 0.1411693756069456,
+        "official_psnr": 24.475463658522646,
+        "official_ssim": 0.7450963939939227,
+        "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+        "primary_protocol": "official native",
         "schedule_group": "A_common",
-        "schedule_phase": "priority",
-        "in_shared_completed_subset": false
+        "schedule_phase": "awaiting_report",
+        "in_shared_completed_subset": true
       },
       {
         "method": "mipsplatting",
         "dataset": "deblurnerf",
         "scene": "caps",
-        "status": "queued",
+        "status": "evaluated",
+        "ssim": 0.6542215858186994,
+        "psnr": 21.336728186922805,
+        "lpips": 0.4024187794753483,
+        "native_ssim": 0.6542215858186994,
+        "native_psnr": 21.336728186922805,
+        "native_lpips": 0.4040925204753876,
+        "gaussians": 356724,
+        "optimized_parameters": 21046716,
+        "model_bytes": 89896004,
         "reason": "",
-        "output": "",
+        "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/mipsplatting/deblurnerf/caps/attempt-1",
+        "unified_psnr": 21.394200363956568,
+        "unified_ssim": 0.6582786355699811,
+        "lpips_vgg": 0.4024187794753483,
+        "lpips_official": 0.4040925204753876,
+        "official_psnr": 21.336728186922805,
+        "official_ssim": 0.6542215858186994,
+        "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+        "primary_protocol": "official native",
         "schedule_group": "A_common",
-        "schedule_phase": "priority",
-        "in_shared_completed_subset": false
+        "schedule_phase": "awaiting_report",
+        "in_shared_completed_subset": true
       },
       {
         "method": "dofgs",
@@ -203,8 +240,8 @@
         "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
         "primary_protocol": "official native",
         "schedule_group": "A_common",
-        "schedule_phase": "priority",
-        "in_shared_completed_subset": false
+        "schedule_phase": "awaiting_report",
+        "in_shared_completed_subset": true
       },
       {
         "method": "dofgaussian",
@@ -231,19 +268,36 @@
         "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
         "primary_protocol": "official native",
         "schedule_group": "A_common",
-        "schedule_phase": "priority",
-        "in_shared_completed_subset": false
+        "schedule_phase": "awaiting_report",
+        "in_shared_completed_subset": true
       },
       {
         "method": "mipsplatting",
         "dataset": "deblurnerf",
         "scene": "cisco",
-        "status": "queued",
+        "status": "evaluated",
+        "lpips": 0.3139486185141972,
+        "psnr": 18.202494817030548,
+        "ssim": 0.7550809638840812,
+        "native_lpips": 0.3105038787637438,
+        "native_psnr": 18.202494817030548,
+        "native_ssim": 0.7550809638840812,
+        "gaussians": 394744,
+        "optimized_parameters": 23289896,
+        "model_bytes": 99477044,
         "reason": "",
-        "output": "",
+        "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/mipsplatting/deblurnerf/cisco/attempt-1",
+        "unified_psnr": 18.220699400351794,
+        "unified_ssim": 0.7522716777665275,
+        "lpips_vgg": 0.3139486185141972,
+        "lpips_official": 0.3105038787637438,
+        "official_psnr": 18.202494817030548,
+        "official_ssim": 0.7550809638840812,
+        "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+        "primary_protocol": "official native",
         "schedule_group": "A_common",
-        "schedule_phase": "priority",
-        "in_shared_completed_subset": false
+        "schedule_phase": "awaiting_report",
+        "in_shared_completed_subset": true
       },
       {
         "method": "dofgs",
@@ -269,30 +323,64 @@
         "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
         "primary_protocol": "official native",
         "schedule_group": "A_common",
-        "schedule_phase": "priority",
-        "in_shared_completed_subset": false
+        "schedule_phase": "awaiting_report",
+        "in_shared_completed_subset": true
       },
       {
         "method": "dofgaussian",
         "dataset": "deblurnerf",
         "scene": "coral",
-        "status": "dependency_wait",
-        "reason": "Dense reconstruction is incomplete",
-        "output": "",
+        "status": "evaluated",
+        "lpips": 0.15909303724765778,
+        "psnr": 19.5195225199218,
+        "ssim": 0.5887728214263916,
+        "native_lpips": 0.1353923037648201,
+        "native_psnr": 19.5195225199218,
+        "native_ssim": 0.5887728214263916,
+        "gaussians": 84526,
+        "optimized_parameters": 5373733,
+        "model_bytes": 21303843,
+        "reason": "",
+        "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/deblurnerf/coral/attempt-1",
+        "unified_psnr": 19.52369989825928,
+        "unified_ssim": 0.8462863326072693,
+        "lpips_vgg": 0.15909303724765778,
+        "lpips_official": 0.1353923037648201,
+        "official_psnr": 19.5195225199218,
+        "official_ssim": 0.5887728214263916,
+        "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+        "primary_protocol": "official native",
         "schedule_group": "A_common",
-        "schedule_phase": "priority",
-        "in_shared_completed_subset": false
+        "schedule_phase": "awaiting_report",
+        "in_shared_completed_subset": true
       },
       {
         "method": "mipsplatting",
         "dataset": "deblurnerf",
         "scene": "coral",
-        "status": "queued",
+        "status": "evaluated",
+        "ssim": 0.7501216292381286,
+        "lpips": 0.29920238852500913,
+        "psnr": 19.594525439795728,
+        "native_ssim": 0.7501216292381286,
+        "native_lpips": 0.3014400482177734,
+        "native_psnr": 19.594525439795728,
+        "gaussians": 358886,
+        "optimized_parameters": 21174274,
+        "model_bytes": 90440828,
         "reason": "",
-        "output": "",
+        "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/mipsplatting/deblurnerf/coral/attempt-1",
+        "unified_psnr": 19.657303077639824,
+        "unified_ssim": 0.7545681476593018,
+        "lpips_vgg": 0.29920238852500913,
+        "lpips_official": 0.3014400482177734,
+        "official_psnr": 19.594525439795728,
+        "official_ssim": 0.7501216292381286,
+        "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+        "primary_protocol": "official native",
         "schedule_group": "A_common",
-        "schedule_phase": "priority",
-        "in_shared_completed_subset": false
+        "schedule_phase": "awaiting_report",
+        "in_shared_completed_subset": true
       },
       {
         "method": "dofgs",
@@ -318,89 +406,99 @@
         "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
         "primary_protocol": "official native",
         "schedule_group": "A_common",
-        "schedule_phase": "priority",
+        "schedule_phase": "awaiting_report",
         "in_shared_completed_subset": false
       },
       {
         "method": "dofgaussian",
         "dataset": "deblurnerf",
         "scene": "cupcake",
-        "status": "dependency_wait",
-        "reason": "Dense reconstruction is incomplete",
-        "output": "",
+        "status": "failed",
+        "reason": "train exit=1",
+        "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/deblurnerf/cupcake/attempt-2",
         "schedule_group": "A_common",
-        "schedule_phase": "priority",
+        "schedule_phase": "awaiting_report",
         "in_shared_completed_subset": false
       },
       {
         "method": "mipsplatting",
         "dataset": "deblurnerf",
         "scene": "cupcake",
-        "status": "queued",
+        "status": "evaluated",
+        "ssim": 0.7596614956855774,
+        "psnr": 21.45717751352699,
+        "lpips": 0.22438469342887402,
+        "native_ssim": 0.7596614956855774,
+        "native_psnr": 21.45717751352699,
+        "native_lpips": 0.22669212892651558,
+        "gaussians": 250802,
+        "optimized_parameters": 14797318,
+        "model_bytes": 63203660,
         "reason": "",
-        "output": "",
+        "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/mipsplatting/deblurnerf/cupcake/attempt-1",
+        "unified_psnr": 21.534744141750213,
+        "unified_ssim": 0.7628663554787636,
+        "lpips_vgg": 0.22438469342887402,
+        "lpips_official": 0.22669212892651558,
+        "official_psnr": 21.45717751352699,
+        "official_ssim": 0.7596614956855774,
+        "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+        "primary_protocol": "official native",
         "schedule_group": "A_common",
-        "schedule_phase": "priority",
+        "schedule_phase": "awaiting_report",
         "in_shared_completed_subset": false
       }
     ],
     "averages": [
       {
         "method": "dofgs",
-        "completed_scenes": 1,
-        "scene_names": "cake",
+        "completed_scenes": 4,
+        "scene_names": "cake,caps,cisco,coral",
         "comparable": true,
-        "psnr": 26.728230787822973,
-        "ssim": 0.8020138293504715,
-        "official_psnr": 26.728230787822973,
-        "official_ssim": 0.8020138293504715,
-        "unified_psnr": 26.728560174825756,
-        "unified_ssim": 0.8955985009670258,
-        "lpips_vgg": 0.1453018356114626,
+        "psnr": 22.665658125749864,
+        "ssim": 0.7164086702678885,
+        "official_psnr": 22.665658125749864,
+        "official_ssim": 0.7164086702678885,
+        "unified_psnr": 22.67244604565019,
+        "unified_ssim": 0.8672443183405059,
+        "lpips_vgg": 0.14976086306518743,
         "lpips_official": null
       },
       {
         "method": "dofgaussian",
-        "completed_scenes": 1,
-        "scene_names": "cake",
+        "completed_scenes": 4,
+        "scene_names": "cake,caps,cisco,coral",
         "comparable": true,
-        "psnr": 26.280658335162,
-        "ssim": 0.7938385456800461,
-        "official_psnr": 26.280658335162,
-        "official_ssim": 0.7938385456800461,
-        "unified_psnr": 26.26632908894559,
-        "unified_ssim": 0.887551873922348,
-        "lpips_vgg": 0.16134056076407433,
-        "lpips_official": 0.11802030354738235
+        "psnr": 22.742363808102326,
+        "ssim": 0.7168787374028138,
+        "official_psnr": 22.742363808102326,
+        "official_ssim": 0.7168787374028138,
+        "unified_psnr": 22.739996724576336,
+        "unified_ssim": 0.8656014729823386,
+        "lpips_vgg": 0.16055956283318146,
+        "lpips_official": 0.11683999355882406
       },
       {
         "method": "mipsplatting",
-        "completed_scenes": 1,
-        "scene_names": "cake",
+        "completed_scenes": 4,
+        "scene_names": "cake,caps,cisco,coral",
         "comparable": true,
-        "psnr": 21.972151643602,
-        "ssim": 0.7429531216621399,
-        "official_psnr": 21.972151643602,
-        "official_ssim": 0.7429531216621399,
-        "unified_psnr": 22.043225981889996,
-        "unified_ssim": 0.7448190152645111,
-        "lpips_vgg": 0.3137410879135132,
-        "lpips_official": 0.31229905784130096
+        "psnr": 20.27647502183777,
+        "ssim": 0.7255943251507623,
+        "official_psnr": 20.27647502183777,
+        "official_ssim": 0.7255943251507623,
+        "unified_psnr": 20.328857205959544,
+        "unified_ssim": 0.7274843690650803,
+        "lpips_vgg": 0.33232771860701693,
+        "lpips_official": 0.33208387632455144
       }
     ],
     "missing_by_method": {
       "dofgs": [],
       "dofgaussian": [
-        "caps",
-        "coral",
         "cupcake"
       ],
-      "mipsplatting": [
-        "caps",
-        "cisco",
-        "coral",
-        "cupcake"
-      ]
+      "mipsplatting": []
     },
     "comparison_rule": "only average the identical completed scene intersection across all3methods; method-specific means on differing sets are descriptive only"
   },
@@ -442,7 +540,7 @@
       "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
       "primary_protocol": "official native",
       "schedule_group": "A_common",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "dofgaussian",
@@ -469,7 +567,7 @@
       "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
       "primary_protocol": "official native",
       "schedule_group": "A_common",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "cocogaussian",
@@ -497,7 +595,7 @@
       "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
       "primary_protocol": "official native",
       "schedule_group": "after_report",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "mipsplatting",
@@ -524,7 +622,7 @@
       "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
       "primary_protocol": "official native",
       "schedule_group": "A_common",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "dofgs",
@@ -550,17 +648,34 @@
       "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
       "primary_protocol": "official native",
       "schedule_group": "A_common",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "dofgaussian",
       "dataset": "deblurnerf",
       "scene": "caps",
-      "status": "training",
+      "status": "evaluated",
+      "lpips": 0.1750271533216749,
+      "psnr": 24.475463658522646,
+      "ssim": 0.7450963939939227,
+      "native_lpips": 0.1411693756069456,
+      "native_psnr": 24.475463658522646,
+      "native_ssim": 0.7450963939939227,
+      "gaussians": 64201,
+      "optimized_parameters": 4174524,
+      "model_bytes": 16181815,
       "reason": "",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/deblurnerf/caps/attempt-1",
+      "unified_psnr": 24.472156380673024,
+      "unified_ssim": 0.8598230481147766,
+      "lpips_vgg": 0.1750271533216749,
+      "lpips_official": 0.1411693756069456,
+      "official_psnr": 24.475463658522646,
+      "official_ssim": 0.7450963939939227,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "official native",
       "schedule_group": "A_common",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "cocogaussian",
@@ -570,7 +685,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -578,11 +693,28 @@
       "method": "mipsplatting",
       "dataset": "deblurnerf",
       "scene": "caps",
-      "status": "queued",
+      "status": "evaluated",
+      "ssim": 0.6542215858186994,
+      "psnr": 21.336728186922805,
+      "lpips": 0.4024187794753483,
+      "native_ssim": 0.6542215858186994,
+      "native_psnr": 21.336728186922805,
+      "native_lpips": 0.4040925204753876,
+      "gaussians": 356724,
+      "optimized_parameters": 21046716,
+      "model_bytes": 89896004,
       "reason": "",
-      "output": "",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/mipsplatting/deblurnerf/caps/attempt-1",
+      "unified_psnr": 21.394200363956568,
+      "unified_ssim": 0.6582786355699811,
+      "lpips_vgg": 0.4024187794753483,
+      "lpips_official": 0.4040925204753876,
+      "official_psnr": 21.336728186922805,
+      "official_ssim": 0.6542215858186994,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "official native",
       "schedule_group": "A_common",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "dofgs",
@@ -608,7 +740,7 @@
       "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
       "primary_protocol": "official native",
       "schedule_group": "A_common",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "dofgaussian",
@@ -635,7 +767,7 @@
       "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
       "primary_protocol": "official native",
       "schedule_group": "A_common",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "cocogaussian",
@@ -645,7 +777,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -653,11 +785,28 @@
       "method": "mipsplatting",
       "dataset": "deblurnerf",
       "scene": "cisco",
-      "status": "queued",
+      "status": "evaluated",
+      "lpips": 0.3139486185141972,
+      "psnr": 18.202494817030548,
+      "ssim": 0.7550809638840812,
+      "native_lpips": 0.3105038787637438,
+      "native_psnr": 18.202494817030548,
+      "native_ssim": 0.7550809638840812,
+      "gaussians": 394744,
+      "optimized_parameters": 23289896,
+      "model_bytes": 99477044,
       "reason": "",
-      "output": "",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/mipsplatting/deblurnerf/cisco/attempt-1",
+      "unified_psnr": 18.220699400351794,
+      "unified_ssim": 0.7522716777665275,
+      "lpips_vgg": 0.3139486185141972,
+      "lpips_official": 0.3105038787637438,
+      "official_psnr": 18.202494817030548,
+      "official_ssim": 0.7550809638840812,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "official native",
       "schedule_group": "A_common",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "dofgs",
@@ -683,17 +832,34 @@
       "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
       "primary_protocol": "official native",
       "schedule_group": "A_common",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "dofgaussian",
       "dataset": "deblurnerf",
       "scene": "coral",
-      "status": "dependency_wait",
-      "reason": "Dense reconstruction is incomplete",
-      "output": "",
+      "status": "evaluated",
+      "lpips": 0.15909303724765778,
+      "psnr": 19.5195225199218,
+      "ssim": 0.5887728214263916,
+      "native_lpips": 0.1353923037648201,
+      "native_psnr": 19.5195225199218,
+      "native_ssim": 0.5887728214263916,
+      "gaussians": 84526,
+      "optimized_parameters": 5373733,
+      "model_bytes": 21303843,
+      "reason": "",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/deblurnerf/coral/attempt-1",
+      "unified_psnr": 19.52369989825928,
+      "unified_ssim": 0.8462863326072693,
+      "lpips_vgg": 0.15909303724765778,
+      "lpips_official": 0.1353923037648201,
+      "official_psnr": 19.5195225199218,
+      "official_ssim": 0.5887728214263916,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "official native",
       "schedule_group": "A_common",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "cocogaussian",
@@ -703,7 +869,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -711,11 +877,28 @@
       "method": "mipsplatting",
       "dataset": "deblurnerf",
       "scene": "coral",
-      "status": "queued",
+      "status": "evaluated",
+      "ssim": 0.7501216292381286,
+      "lpips": 0.29920238852500913,
+      "psnr": 19.594525439795728,
+      "native_ssim": 0.7501216292381286,
+      "native_lpips": 0.3014400482177734,
+      "native_psnr": 19.594525439795728,
+      "gaussians": 358886,
+      "optimized_parameters": 21174274,
+      "model_bytes": 90440828,
       "reason": "",
-      "output": "",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/mipsplatting/deblurnerf/coral/attempt-1",
+      "unified_psnr": 19.657303077639824,
+      "unified_ssim": 0.7545681476593018,
+      "lpips_vgg": 0.29920238852500913,
+      "lpips_official": 0.3014400482177734,
+      "official_psnr": 19.594525439795728,
+      "official_ssim": 0.7501216292381286,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "official native",
       "schedule_group": "A_common",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "dofgs",
@@ -741,17 +924,17 @@
       "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
       "primary_protocol": "official native",
       "schedule_group": "A_common",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "dofgaussian",
       "dataset": "deblurnerf",
       "scene": "cupcake",
-      "status": "dependency_wait",
-      "reason": "Dense reconstruction is incomplete",
-      "output": "",
+      "status": "failed",
+      "reason": "train exit=1",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/deblurnerf/cupcake/attempt-2",
       "schedule_group": "A_common",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "cocogaussian",
@@ -761,7 +944,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -769,11 +952,28 @@
       "method": "mipsplatting",
       "dataset": "deblurnerf",
       "scene": "cupcake",
-      "status": "queued",
+      "status": "evaluated",
+      "ssim": 0.7596614956855774,
+      "psnr": 21.45717751352699,
+      "lpips": 0.22438469342887402,
+      "native_ssim": 0.7596614956855774,
+      "native_psnr": 21.45717751352699,
+      "native_lpips": 0.22669212892651558,
+      "gaussians": 250802,
+      "optimized_parameters": 14797318,
+      "model_bytes": 63203660,
       "reason": "",
-      "output": "",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/mipsplatting/deblurnerf/cupcake/attempt-1",
+      "unified_psnr": 21.534744141750213,
+      "unified_ssim": 0.7628663554787636,
+      "lpips_vgg": 0.22438469342887402,
+      "lpips_official": 0.22669212892651558,
+      "official_psnr": 21.45717751352699,
+      "official_ssim": 0.7596614956855774,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "official native",
       "schedule_group": "A_common",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "dofgs",
@@ -783,7 +983,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -795,7 +995,7 @@
       "reason": "Official split reader not passed: Environment or sparse model unavailable",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -807,7 +1007,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -819,7 +1019,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -831,7 +1031,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -843,7 +1043,7 @@
       "reason": "Official split reader not passed: Environment or sparse model unavailable",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -855,7 +1055,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -867,7 +1067,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -879,7 +1079,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -891,7 +1091,7 @@
       "reason": "Official split reader not passed: Environment or sparse model unavailable",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -903,7 +1103,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -915,7 +1115,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -927,7 +1127,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -939,7 +1139,7 @@
       "reason": "Official split reader not passed: Environment or sparse model unavailable",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -951,7 +1151,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -963,7 +1163,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -975,7 +1175,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -987,7 +1187,7 @@
       "reason": "Official split reader not passed: Environment or sparse model unavailable",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -999,7 +1199,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -1011,7 +1211,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -1019,21 +1219,37 @@
       "method": "dofgs",
       "dataset": "dofnerf-mix",
       "scene": "amiya",
-      "status": "training",
+      "status": "evaluated",
+      "ssim": 0.942376712958018,
+      "lpips": 0.10252699255943298,
+      "psnr": 30.579104131389,
+      "native_ssim": 0.942376712958018,
+      "native_psnr": 30.579104131389,
+      "gaussians": 146675,
+      "optimized_parameters": 8664975,
+      "model_bytes": 37011552,
       "reason": "",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgs/dofnerf-mix/amiya/attempt-1",
+      "unified_psnr": 30.349585035878505,
+      "unified_ssim": 0.951151450475057,
+      "lpips_vgg": 0.10252699255943298,
+      "lpips_official": null,
+      "official_psnr": 30.579104131389,
+      "official_ssim": 0.942376712958018,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "official native",
       "schedule_group": "B_selected",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
       "scene": "amiya",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
-      "output": "",
+      "status": "failed",
+      "reason": "train exit=1",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/amiya/attempt-2",
       "schedule_group": "B_selected",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "cocogaussian",
@@ -1043,7 +1259,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -1051,33 +1267,64 @@
       "method": "mipsplatting",
       "dataset": "dofnerf-mix",
       "scene": "amiya",
-      "status": "queued",
+      "status": "evaluated",
+      "lpips": 0.16650490959485373,
+      "ssim": 0.9132789770762125,
+      "psnr": 26.91989856859172,
+      "native_lpips": 0.15533330291509628,
+      "native_ssim": 0.9132789770762125,
+      "native_psnr": 26.91989856859172,
+      "gaussians": 144998,
+      "optimized_parameters": 8554882,
+      "model_bytes": 36541052,
       "reason": "",
-      "output": "",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/mipsplatting/dofnerf-mix/amiya/attempt-1",
+      "unified_psnr": 26.767504246625787,
+      "unified_ssim": 0.9089558720588684,
+      "lpips_vgg": 0.16650490959485373,
+      "lpips_official": 0.15533330291509628,
+      "official_psnr": 26.91989856859172,
+      "official_ssim": 0.9132789770762125,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "official native",
       "schedule_group": "B_selected",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "dofgs",
       "dataset": "dofnerf-mix",
       "scene": "camera",
-      "status": "queued",
+      "status": "evaluated",
+      "ssim": 0.9332847793896993,
+      "psnr": 30.225577084520676,
+      "lpips": 0.06758761654297511,
+      "native_ssim": 0.9332847793896993,
+      "native_psnr": 30.225577084520676,
+      "gaussians": 158338,
+      "optimized_parameters": 9353092,
+      "model_bytes": 39950628,
       "reason": "",
-      "output": "",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgs/dofnerf-mix/camera/attempt-1",
+      "unified_psnr": 30.090596765646087,
+      "unified_ssim": 0.946566641330719,
+      "lpips_vgg": 0.06758761654297511,
+      "lpips_official": null,
+      "official_psnr": 30.225577084520676,
+      "official_ssim": 0.9332847793896993,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "official native",
       "schedule_group": "B_selected",
-      "schedule_phase": "priority",
-      "schedule_note": "secondary scene waits for complete amiya pipeline and sufficient remaining time; otherwise resumes after report"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
       "scene": "camera",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
-      "output": "",
+      "status": "failed",
+      "reason": "train exit=1",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/camera/attempt-2",
       "schedule_group": "B_selected",
-      "schedule_phase": "priority",
-      "schedule_note": "secondary scene waits for complete amiya pipeline and sufficient remaining time; otherwise resumes after report"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "cocogaussian",
@@ -1087,7 +1334,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -1095,12 +1342,28 @@
       "method": "mipsplatting",
       "dataset": "dofnerf-mix",
       "scene": "camera",
-      "status": "queued",
+      "status": "evaluated",
+      "lpips": 0.1408782328168551,
+      "ssim": 0.8963413039843241,
+      "psnr": 26.712313024324374,
+      "native_lpips": 0.13480484982331595,
+      "native_ssim": 0.8963413039843241,
+      "native_psnr": 26.712313024324374,
+      "gaussians": 177115,
+      "optimized_parameters": 10449785,
+      "model_bytes": 44634536,
       "reason": "",
-      "output": "",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/mipsplatting/dofnerf-mix/camera/attempt-1",
+      "unified_psnr": 26.572914907413324,
+      "unified_ssim": 0.8939606149991354,
+      "lpips_vgg": 0.1408782328168551,
+      "lpips_official": 0.13480484982331595,
+      "official_psnr": 26.712313024324374,
+      "official_ssim": 0.8963413039843241,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "official native",
       "schedule_group": "B_selected",
-      "schedule_phase": "priority",
-      "schedule_note": "secondary scene waits for complete amiya pipeline and sufficient remaining time; otherwise resumes after report"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "dofgs",
@@ -1110,7 +1373,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -1122,7 +1385,7 @@
       "reason": "Official split reader not passed: Environment or sparse model unavailable",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -1134,7 +1397,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -1146,7 +1409,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -1158,7 +1421,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -1170,7 +1433,7 @@
       "reason": "Official split reader not passed: Environment or sparse model unavailable",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -1182,7 +1445,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -1194,7 +1457,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -1206,7 +1469,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -1218,7 +1481,7 @@
       "reason": "Official split reader not passed: Environment or sparse model unavailable",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -1230,7 +1493,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -1242,7 +1505,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -1254,7 +1517,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -1266,7 +1529,7 @@
       "reason": "Official split reader not passed: Environment or sparse model unavailable",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -1278,7 +1541,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -1290,7 +1553,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -1302,7 +1565,7 @@
       "reason": "",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgs/author-retrained/cake/attempt-1",
       "schedule_group": "author",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "dofgs",
@@ -1312,7 +1575,7 @@
       "reason": "",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgs/author-retrained/caps/attempt-1",
       "schedule_group": "author",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "dofgs",
@@ -1322,7 +1585,7 @@
       "reason": "",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgs/author-retrained/cisco/attempt-1",
       "schedule_group": "author",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "dofgs",
@@ -1332,7 +1595,7 @@
       "reason": "",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgs/author-retrained/coral/attempt-1",
       "schedule_group": "author",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "dofgs",
@@ -1342,7 +1605,7 @@
       "reason": "",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgs/author-retrained/cupcake/attempt-1",
       "schedule_group": "author",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "dofgs",
@@ -1352,7 +1615,7 @@
       "reason": "",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgs/author-retrained/cups/attempt-1",
       "schedule_group": "author",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "dofgs",
@@ -1362,7 +1625,7 @@
       "reason": "",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgs/author-retrained/daisy/attempt-1",
       "schedule_group": "author",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "dofgs",
@@ -1372,7 +1635,7 @@
       "reason": "",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgs/author-retrained/sausage/attempt-1",
       "schedule_group": "author",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "dofgs",
@@ -1382,7 +1645,7 @@
       "reason": "",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgs/author-retrained/seal/attempt-1",
       "schedule_group": "author",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "dofgs",
@@ -1392,28 +1655,27 @@
       "reason": "",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgs/author-retrained/tools/attempt-1",
       "schedule_group": "author",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "bokehme",
       "dataset": "dofnerf-mix",
       "scene": "amiya",
-      "status": "dependency_wait",
-      "reason": "Awaiting DOF-GS reconstructed training views",
-      "output": "",
+      "status": "failed",
+      "reason": "bokehme exit=1",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/bokehme/dofnerf-mix/amiya/attempt-2",
       "schedule_group": "B_selected",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "bokehme",
       "dataset": "dofnerf-mix",
       "scene": "camera",
-      "status": "dependency_wait",
-      "reason": "Awaiting DOF-GS reconstructed training views",
-      "output": "",
+      "status": "failed",
+      "reason": "bokehme exit=1",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/bokehme/dofnerf-mix/camera/attempt-2",
       "schedule_group": "B_selected",
-      "schedule_phase": "priority",
-      "schedule_note": "secondary scene waits for complete amiya pipeline and sufficient remaining time; otherwise resumes after report"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "bokehme",
@@ -1423,7 +1685,7 @@
       "reason": "Awaiting DOF-GS reconstructed training views",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -1435,7 +1697,7 @@
       "reason": "Awaiting DOF-GS reconstructed training views",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -1447,7 +1709,7 @@
       "reason": "Awaiting DOF-GS reconstructed training views",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -1459,7 +1721,7 @@
       "reason": "Awaiting DOF-GS reconstructed training views",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     }
@@ -1483,26 +1745,34 @@
     {
       "method": "dofgs",
       "dataset": "dofnerf-mix",
-      "completed_scenes": 0,
-      "scene_names": "",
-      "comparison_allowed": false
+      "completed_scenes": 2,
+      "scene_names": "amiya,camera",
+      "comparison_allowed": false,
+      "psnr": 30.402340607954837,
+      "ssim": 0.9378307461738586,
+      "lpips": 0.08505730455120405,
+      "native_psnr": 30.402340607954837,
+      "native_ssim": 0.9378307461738586,
+      "unified_psnr": 30.220090900762294,
+      "unified_ssim": 0.948859045902888,
+      "lpips_vgg": 0.08505730455120405
     },
     {
       "method": "dofgaussian",
       "dataset": "deblurnerf",
-      "completed_scenes": 2,
-      "scene_names": "cake,cisco",
+      "completed_scenes": 4,
+      "scene_names": "cake,caps,cisco,coral",
       "comparison_allowed": false,
-      "psnr": 23.487234526982427,
-      "ssim": 0.7668228670954704,
-      "lpips": 0.15405903038169655,
-      "native_psnr": 23.487234526982427,
-      "native_ssim": 0.7668228670954704,
-      "native_lpips": 0.09539914743176528,
-      "unified_psnr": 23.482065309686522,
-      "unified_ssim": 0.8781482556036541,
-      "lpips_vgg": 0.15405903038169655,
-      "lpips_official": 0.09539914743176528
+      "psnr": 22.742363808102326,
+      "ssim": 0.7168787374028138,
+      "lpips": 0.16055956283318146,
+      "native_psnr": 22.742363808102326,
+      "native_ssim": 0.7168787374028138,
+      "native_lpips": 0.11683999355882406,
+      "unified_psnr": 22.739996724576336,
+      "unified_ssim": 0.8656014729823386,
+      "lpips_vgg": 0.16055956283318146,
+      "lpips_official": 0.11683999355882406
     },
     {
       "method": "dofgaussian",
@@ -1538,26 +1808,36 @@
     {
       "method": "mipsplatting",
       "dataset": "deblurnerf",
-      "completed_scenes": 1,
-      "scene_names": "cake",
+      "completed_scenes": 5,
+      "scene_names": "cake,caps,cisco,coral,cupcake",
       "comparison_allowed": false,
-      "psnr": 21.972151643602,
-      "ssim": 0.7429531216621399,
-      "lpips": 0.3137410879135132,
-      "native_psnr": 21.972151643602,
-      "native_ssim": 0.7429531216621399,
-      "native_lpips": 0.31229905784130096,
-      "unified_psnr": 22.043225981889996,
-      "unified_ssim": 0.7448190152645111,
-      "lpips_vgg": 0.3137410879135132,
-      "lpips_official": 0.31229905784130096
+      "psnr": 20.51261552017561,
+      "ssim": 0.7324077592577253,
+      "lpips": 0.31073911357138834,
+      "native_psnr": 20.51261552017561,
+      "native_ssim": 0.7324077592577253,
+      "native_lpips": 0.31100552684494426,
+      "unified_psnr": 20.570034593117676,
+      "unified_ssim": 0.734560766347817,
+      "lpips_vgg": 0.31073911357138834,
+      "lpips_official": 0.31100552684494426
     },
     {
       "method": "mipsplatting",
       "dataset": "dofnerf-mix",
-      "completed_scenes": 0,
-      "scene_names": "",
-      "comparison_allowed": false
+      "completed_scenes": 2,
+      "scene_names": "amiya,camera",
+      "comparison_allowed": false,
+      "psnr": 26.816105796458046,
+      "ssim": 0.9048101405302683,
+      "lpips": 0.15369157120585442,
+      "native_psnr": 26.816105796458046,
+      "native_ssim": 0.9048101405302683,
+      "native_lpips": 0.14506907636920613,
+      "unified_psnr": 26.670209577019556,
+      "unified_ssim": 0.901458243529002,
+      "lpips_vgg": 0.15369157120585442,
+      "lpips_official": 0.14506907636920613
     }
   ],
   "cake_training_efficiency": [
@@ -1862,7 +2142,7 @@
         "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
         "primary_protocol": "official native",
         "schedule_group": "A_common",
-        "schedule_phase": "priority"
+        "schedule_phase": "awaiting_report"
       },
       "paper": null,
       "comparison_protocol": "native metric when available; unified RGB/VGG retained separately",
@@ -1896,7 +2176,7 @@
         "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
         "primary_protocol": "official native",
         "schedule_group": "A_common",
-        "schedule_phase": "priority"
+        "schedule_phase": "awaiting_report"
       },
       "paper": {
         "psnr": 26.83,
@@ -1940,7 +2220,7 @@
         "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
         "primary_protocol": "official native",
         "schedule_group": "after_report",
-        "schedule_phase": "priority"
+        "schedule_phase": "awaiting_report"
       },
       "paper": {
         "psnr": 26.65,
@@ -1984,7 +2264,7 @@
         "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
         "primary_protocol": "official native",
         "schedule_group": "A_common",
-        "schedule_phase": "priority"
+        "schedule_phase": "awaiting_report"
       },
       "paper": null,
       "comparison_protocol": "native metric when available; unified RGB/VGG retained separately",
@@ -2019,23 +2299,23 @@
     },
     {
       "method": "dofgaussian",
-      "completed_scenes": 2,
+      "completed_scenes": 4,
       "measured": {
         "method": "dofgaussian",
         "dataset": "deblurnerf",
-        "completed_scenes": 2,
-        "scene_names": "cake,cisco",
+        "completed_scenes": 4,
+        "scene_names": "cake,caps,cisco,coral",
         "comparison_allowed": false,
-        "psnr": 23.487234526982427,
-        "ssim": 0.7668228670954704,
-        "lpips": 0.15405903038169655,
-        "native_psnr": 23.487234526982427,
-        "native_ssim": 0.7668228670954704,
-        "native_lpips": 0.09539914743176528,
-        "unified_psnr": 23.482065309686522,
-        "unified_ssim": 0.8781482556036541,
-        "lpips_vgg": 0.15405903038169655,
-        "lpips_official": 0.09539914743176528
+        "psnr": 22.742363808102326,
+        "ssim": 0.7168787374028138,
+        "lpips": 0.16055956283318146,
+        "native_psnr": 22.742363808102326,
+        "native_ssim": 0.7168787374028138,
+        "native_lpips": 0.11683999355882406,
+        "unified_psnr": 22.739996724576336,
+        "unified_ssim": 0.8656014729823386,
+        "lpips_vgg": 0.16055956283318146,
+        "lpips_official": 0.11683999355882406
       },
       "paper": {
         "psnr": 23.97,
@@ -2075,23 +2355,23 @@
     },
     {
       "method": "mipsplatting",
-      "completed_scenes": 1,
+      "completed_scenes": 5,
       "measured": {
         "method": "mipsplatting",
         "dataset": "deblurnerf",
-        "completed_scenes": 1,
-        "scene_names": "cake",
+        "completed_scenes": 5,
+        "scene_names": "cake,caps,cisco,coral,cupcake",
         "comparison_allowed": false,
-        "psnr": 21.972151643602,
-        "ssim": 0.7429531216621399,
-        "lpips": 0.3137410879135132,
-        "native_psnr": 21.972151643602,
-        "native_ssim": 0.7429531216621399,
-        "native_lpips": 0.31229905784130096,
-        "unified_psnr": 22.043225981889996,
-        "unified_ssim": 0.7448190152645111,
-        "lpips_vgg": 0.3137410879135132,
-        "lpips_official": 0.31229905784130096
+        "psnr": 20.51261552017561,
+        "ssim": 0.7324077592577253,
+        "lpips": 0.31073911357138834,
+        "native_psnr": 20.51261552017561,
+        "native_ssim": 0.7324077592577253,
+        "native_lpips": 0.31100552684494426,
+        "unified_psnr": 20.570034593117676,
+        "unified_ssim": 0.734560766347817,
+        "lpips_vgg": 0.31073911357138834,
+        "lpips_official": 0.31100552684494426
       },
       "paper": {
         "psnr": 21.23,
@@ -2146,18 +2426,260 @@
       "reported_by": "DOF-GS authors; not Mip-Splatting original paper"
     }
   },
-  "R1": [],
-  "regional_R1": [],
+  "R1": [
+    {
+      "method": "dofgs",
+      "scene": "amiya",
+      "mode": "fg",
+      "views": 3,
+      "ssim": 0.9445621172587076,
+      "lpips": 0.07485270003477733,
+      "psnr": 30.62378767464483,
+      "unified_psnr": 30.623787497509124,
+      "unified_ssim": 0.9598220984141032,
+      "lpips_vgg": 0.07485270003477733,
+      "lpips_official": null,
+      "official_psnr": 30.62378767464483,
+      "official_ssim": 0.9445621172587076,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "official native"
+    },
+    {
+      "method": "dofgs",
+      "scene": "amiya",
+      "mode": "bg",
+      "views": 3,
+      "ssim": 0.9419515331586202,
+      "lpips": 0.07584824785590172,
+      "psnr": 30.48280953766638,
+      "unified_psnr": 30.482809624821993,
+      "unified_ssim": 0.9590275287628174,
+      "lpips_vgg": 0.07584824785590172,
+      "lpips_official": null,
+      "official_psnr": 30.48280953766638,
+      "official_ssim": 0.9419515331586202,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "official native"
+    },
+    {
+      "method": "dofgs",
+      "scene": "camera",
+      "mode": "fg",
+      "views": 3,
+      "ssim": 0.9260412653287252,
+      "psnr": 28.81862223340246,
+      "lpips": 0.04465581476688385,
+      "unified_psnr": 28.818622022156944,
+      "unified_ssim": 0.9527251919110616,
+      "lpips_vgg": 0.04465581476688385,
+      "lpips_official": null,
+      "official_psnr": 28.81862223340246,
+      "official_ssim": 0.9260412653287252,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "official native"
+    },
+    {
+      "method": "dofgs",
+      "scene": "camera",
+      "mode": "bg",
+      "views": 3,
+      "ssim": 0.9325694044431051,
+      "psnr": 29.340824073477823,
+      "lpips": 0.06761257102092107,
+      "unified_psnr": 29.3408243614978,
+      "unified_ssim": 0.9523794651031494,
+      "lpips_vgg": 0.06761257102092107,
+      "lpips_official": null,
+      "official_psnr": 29.340824073477823,
+      "official_ssim": 0.9325694044431051,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "official native"
+    }
+  ],
+  "regional_R1": [
+    {
+      "method": "dofgs",
+      "scene": "amiya",
+      "mode": "fg",
+      "region": "boundary",
+      "ssim": 0.9347306489944458,
+      "pixels": 33216.666666666664,
+      "fraction": 0.20191643314063637,
+      "lpips": 0.07228670393427213,
+      "psnr": 26.263666635892992
+    },
+    {
+      "method": "dofgs",
+      "scene": "amiya",
+      "mode": "fg",
+      "region": "in_focus",
+      "ssim": 0.9667118589083353,
+      "pixels": 125650.0,
+      "fraction": 0.7637972852219055,
+      "lpips": 0.07465474555889766,
+      "psnr": 34.46553210937421
+    },
+    {
+      "method": "dofgs",
+      "scene": "amiya",
+      "mode": "fg",
+      "region": "out_of_focus",
+      "ssim": 0.9303040703137716,
+      "pixels": 5640.333333333333,
+      "fraction": 0.03428628163745818,
+      "lpips": 0.08554867841303349,
+      "psnr": 25.009349757870112
+    },
+    {
+      "method": "dofgs",
+      "scene": "amiya",
+      "mode": "bg",
+      "region": "boundary",
+      "ssim": 0.9336291352907816,
+      "pixels": 33216.666666666664,
+      "fraction": 0.20191643314063637,
+      "lpips": 0.06994301453232765,
+      "psnr": 25.936275855621897
+    },
+    {
+      "method": "dofgs",
+      "scene": "amiya",
+      "mode": "bg",
+      "region": "in_focus",
+      "ssim": 0.968899150689443,
+      "pixels": 119502.33333333333,
+      "fraction": 0.7264270416051191,
+      "lpips": 0.0754427711168925,
+      "psnr": 35.32213501581522
+    },
+    {
+      "method": "dofgs",
+      "scene": "amiya",
+      "mode": "bg",
+      "region": "out_of_focus",
+      "ssim": 0.9309922655423483,
+      "pixels": 11788.0,
+      "fraction": 0.0716565252542445,
+      "lpips": 0.10353985925515492,
+      "psnr": 26.6845156126149
+    },
+    {
+      "method": "dofgs",
+      "scene": "camera",
+      "mode": "fg",
+      "region": "boundary",
+      "ssim": 0.934817890326182,
+      "psnr": 25.63025337468724,
+      "lpips": 0.04784515996774038,
+      "pixels": 32200.0,
+      "fraction": 0.19573635164461087
+    },
+    {
+      "method": "dofgs",
+      "scene": "camera",
+      "mode": "fg",
+      "region": "in_focus",
+      "ssim": 0.9580913782119751,
+      "psnr": 32.21508957716569,
+      "lpips": 0.04356587243576845,
+      "pixels": 115919.33333333333,
+      "fraction": 0.7046468134081426
+    },
+    {
+      "method": "dofgs",
+      "scene": "camera",
+      "mode": "fg",
+      "region": "out_of_focus",
+      "ssim": 0.9479711055755615,
+      "psnr": 25.41299494528184,
+      "lpips": 0.0402525644749403,
+      "pixels": 16387.666666666668,
+      "fraction": 0.09961683494724642
+    },
+    {
+      "method": "dofgs",
+      "scene": "camera",
+      "mode": "bg",
+      "region": "boundary",
+      "ssim": 0.9186462958653768,
+      "psnr": 24.322705713117518,
+      "lpips": 0.07148912673195203,
+      "pixels": 32200.0,
+      "fraction": 0.19573635164461087
+    },
+    {
+      "method": "dofgs",
+      "scene": "camera",
+      "mode": "bg",
+      "region": "in_focus",
+      "ssim": 0.9612594445546468,
+      "psnr": 34.3843654185587,
+      "lpips": 0.06693436577916145,
+      "pixels": 124310.0,
+      "fraction": 0.755651735184521
+    },
+    {
+      "method": "dofgs",
+      "scene": "camera",
+      "mode": "bg",
+      "region": "out_of_focus",
+      "ssim": 0.939536472161611,
+      "psnr": 25.060552197382133,
+      "lpips": 0.06416939198970795,
+      "pixels": 7997.0,
+      "fraction": 0.048611913170868104
+    }
+  ],
   "bokehme_calibration": [],
-  "R1_averages_completed_scenes_only": [],
+  "R1_averages_completed_scenes_only": [
+    {
+      "method": "dofgs",
+      "mode": "fg",
+      "completed_scenes": 2,
+      "scene_names": "amiya,camera",
+      "psnr": 29.721204954023648,
+      "ssim": 0.9353016912937164,
+      "lpips": 0.05975425740083059,
+      "official_psnr": 29.721204954023648,
+      "official_ssim": 0.9353016912937164,
+      "unified_psnr": 29.721204759833036,
+      "unified_ssim": 0.9562736451625824,
+      "lpips_vgg": 0.05975425740083059,
+      "lpips_official": null
+    },
+    {
+      "method": "dofgs",
+      "mode": "bg",
+      "completed_scenes": 2,
+      "scene_names": "amiya,camera",
+      "psnr": 29.9118168055721,
+      "ssim": 0.9372604688008627,
+      "lpips": 0.07173040943841139,
+      "official_psnr": 29.9118168055721,
+      "official_ssim": 0.9372604688008627,
+      "unified_psnr": 29.911816993159896,
+      "unified_ssim": 0.9557034969329834,
+      "lpips_vgg": 0.07173040943841139,
+      "lpips_official": null
+    }
+  ],
   "memory_profiles_mib": {
     "dofgs": 3513,
     "dofgaussian": 16638,
     "cocogaussian": 6164,
     "mipsplatting": 3692
   },
-  "parallel_limit": 4,
-  "parallel_throughput_decisions": [],
+  "parallel_limit": 3,
+  "parallel_throughput_decisions": [
+    {
+      "jobs": 6,
+      "cake_normalized_throughput_ratio": 0.8035938704320708,
+      "mean_gpu_utilization": 97.86491381273419,
+      "limit_before": 4,
+      "note": "scene complexity differs; cake-normalized heuristic, not a formal efficiency measurement",
+      "limit_after": 3
+    }
+  ],
   "ssim_audit": {
     "status": "verified_no_unified_implementation_error",
     "source": "https://raw.githubusercontent.com/graphdeco-inria/gaussian-splatting/main/utils/loss_utils.py",
@@ -2272,7 +2794,7 @@
   "deferred_due_to_colmap": [
     {
       "id": "dofgaussian-deblurnerf-caps",
-      "status": "training",
+      "status": "evaluated",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
       "observed_at": 1793883096.8412738,
       "resolved_at": 1793889108.8298101
@@ -2286,15 +2808,17 @@
     },
     {
       "id": "dofgaussian-deblurnerf-coral",
-      "status": "dependency_wait",
+      "status": "evaluated",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
-      "observed_at": 1793883096.8412766
+      "observed_at": 1793883096.8412766,
+      "resolved_at": 1793897414.5604722
     },
     {
       "id": "dofgaussian-deblurnerf-cupcake",
-      "status": "dependency_wait",
+      "status": "failed",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
-      "observed_at": 1793883096.8412776
+      "observed_at": 1793883096.8412776,
+      "resolved_at": 1793897474.7169588
     },
     {
       "id": "dofgaussian-deblurnerf-cups",
@@ -2328,15 +2852,17 @@
     },
     {
       "id": "dofgaussian-dofnerf-mix-amiya",
-      "status": "dependency_wait",
+      "status": "failed",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
-      "observed_at": 1793883096.8413298
+      "observed_at": 1793883096.8413298,
+      "resolved_at": 1793897805.639917
     },
     {
       "id": "dofgaussian-dofnerf-mix-camera",
-      "status": "dependency_wait",
+      "status": "failed",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
-      "observed_at": 1793883096.8414478
+      "observed_at": 1793883096.8414478,
+      "resolved_at": 1793897865.8950233
     },
     {
       "id": "dofgaussian-dofnerf-mix-plant",
@@ -2502,24 +3028,62 @@
     "deblurnerf/coral": {
       "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocuscoral",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscoral",
-      "status": "running",
+      "status": "complete",
       "started_at": 1793897376.039603,
       "geometry_source": "new SIMPLE_RADIAL reconstruction",
       "previous_started_at": 1793894344.7230337,
       "adopted_native_commands": [
         423143
-      ]
+      ],
+      "timing_note": "previous command continues unchanged; previous stage timings remain in native logs",
+      "sparse": {
+        "registered_images": 49,
+        "total_images": 49,
+        "all_registered": true,
+        "seconds": {},
+        "model": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscoral/sparse/0"
+      },
+      "dense": {
+        "seconds": {},
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscoral/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscoral/dense/fused.ply.vis",
+        "fused_points": 12323898,
+        "expected_depth_maps": 49,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "finished_at": 1793897412.0947745
     },
     "deblurnerf/cupcake": {
       "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/DeblurNeRF/real_defocus_blur/defocuscupcake",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscupcake",
-      "status": "running",
+      "status": "complete",
       "started_at": 1793897376.0419858,
       "geometry_source": "new SIMPLE_RADIAL reconstruction",
       "previous_started_at": 1793894344.7239056,
       "adopted_native_commands": [
         373799
-      ]
+      ],
+      "timing_note": "previous command continues unchanged; previous stage timings remain in native logs",
+      "sparse": {
+        "registered_images": 44,
+        "total_images": 44,
+        "all_registered": true,
+        "seconds": {},
+        "model": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscupcake/sparse/0"
+      },
+      "dense": {
+        "seconds": {
+          "stereo_fusion": 47.50963616743684
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscupcake/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/deblurnerf-dofgaussian/defocuscupcake/dense/fused.ply.vis",
+        "fused_points": 10706331,
+        "expected_depth_maps": 44,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "finished_at": 1793897468.6147258
     },
     "deblurnerf/cups": {
       "status": "queued",
@@ -2552,28 +3116,56 @@
       "requested_at": 1793883154.8330889
     },
     "dofnerf/dense/mix/amiya": {
-      "status": "queued",
       "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/amiya",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/mix/amiya",
-      "resolution": [
-        497,
-        331
-      ],
-      "geometry_source": "supplied matched poses, rectified images",
-      "priority": "after missing real9",
-      "requested_at": 1793883720.8129404
+      "status": "complete",
+      "started_at": 1793897412.0991797,
+      "geometry_source": "provided poses/points, matched by sharp-image names; rectified at497x331",
+      "sparse": {
+        "registered_images": 24,
+        "total_images": 24,
+        "fixed_supplied_poses": true
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 0.15996992588043213,
+          "patch_match_stereo": 383.4511725977063,
+          "stereo_fusion": 1.6127768494188786
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/mix/amiya/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/mix/amiya/dense/fused.ply.vis",
+        "fused_points": 233006,
+        "expected_depth_maps": 24,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "finished_at": 1793897797.5722663
     },
     "dofnerf/dense/mix/camera": {
-      "status": "queued",
       "source": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-scenes-provided/mix/camera",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/mix/camera",
-      "resolution": [
-        497,
-        331
-      ],
-      "geometry_source": "supplied matched poses, rectified images",
-      "priority": "after missing real9",
-      "requested_at": 1793883720.8136554
+      "status": "complete",
+      "started_at": 1793897468.6194541,
+      "geometry_source": "provided poses/points, matched by sharp-image names; rectified at497x331",
+      "sparse": {
+        "registered_images": 24,
+        "total_images": 24,
+        "fixed_supplied_poses": true
+      },
+      "dense": {
+        "seconds": {
+          "image_undistorter": 0.1605047583580017,
+          "patch_match_stereo": 386.30393347889185,
+          "stereo_fusion": 1.4996646493673325
+        },
+        "fused_ply": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/mix/camera/dense/fused.ply",
+        "visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/dofnerf-dofgaussian-provided/mix/camera/dense/fused.ply.vis",
+        "fused_points": 261170,
+        "expected_depth_maps": 24,
+        "missing_geometric_depth_maps": [],
+        "complete": true
+      },
+      "finished_at": 1793897856.8006732
     },
     "dofnerf/dense/mix/plant": {
       "status": "queued",
@@ -2624,28 +3216,10 @@
       "requested_at": 1793883720.8157575
     }
   },
-  "gpu_reservations": {
-    "373799": {
-      "reserve_mib": 4096,
-      "kind": "adopted COLMAP",
-      "registered_at": 1793897376.0513375
-    },
-    "399176": {
-      "reserve_mib": 3513,
-      "kind": "dofgs-dofnerf-mix-amiya:train",
-      "exclusive": false,
-      "registered_at": 1793895246.0546556
-    },
-    "406908": {
-      "reserve_mib": 16638,
-      "kind": "dofgaussian-deblurnerf-caps:train",
-      "exclusive": false,
-      "registered_at": 1793895857.7409978
-    }
-  },
+  "gpu_reservations": {},
   "throughput": {
-    "completed_trainings": 9,
-    "elapsed_since_first_training_seconds": 18309.857096672058,
+    "completed_trainings": 19,
+    "elapsed_since_first_training_seconds": 47741.01258969307,
     "parallel_times_are_reference_only": true
   },
   "quality_gates": {
@@ -2667,16 +3241,6 @@
   },
   "pending": [
     {
-      "method": "dofgaussian",
-      "dataset": "deblurnerf",
-      "scene": "caps",
-      "status": "training",
-      "reason": "",
-      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/deblurnerf/caps/attempt-1",
-      "schedule_group": "A_common",
-      "schedule_phase": "priority"
-    },
-    {
       "method": "cocogaussian",
       "dataset": "deblurnerf",
       "scene": "caps",
@@ -2684,19 +3248,9 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
-    },
-    {
-      "method": "mipsplatting",
-      "dataset": "deblurnerf",
-      "scene": "caps",
-      "status": "queued",
-      "reason": "",
-      "output": "",
-      "schedule_group": "A_common",
-      "schedule_phase": "priority"
     },
     {
       "method": "cocogaussian",
@@ -2706,29 +3260,9 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
-    },
-    {
-      "method": "mipsplatting",
-      "dataset": "deblurnerf",
-      "scene": "cisco",
-      "status": "queued",
-      "reason": "",
-      "output": "",
-      "schedule_group": "A_common",
-      "schedule_phase": "priority"
-    },
-    {
-      "method": "dofgaussian",
-      "dataset": "deblurnerf",
-      "scene": "coral",
-      "status": "dependency_wait",
-      "reason": "Dense reconstruction is incomplete",
-      "output": "",
-      "schedule_group": "A_common",
-      "schedule_phase": "priority"
     },
     {
       "method": "cocogaussian",
@@ -2738,29 +3272,19 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
-    },
-    {
-      "method": "mipsplatting",
-      "dataset": "deblurnerf",
-      "scene": "coral",
-      "status": "queued",
-      "reason": "",
-      "output": "",
-      "schedule_group": "A_common",
-      "schedule_phase": "priority"
     },
     {
       "method": "dofgaussian",
       "dataset": "deblurnerf",
       "scene": "cupcake",
-      "status": "dependency_wait",
-      "reason": "Dense reconstruction is incomplete",
-      "output": "",
+      "status": "failed",
+      "reason": "train exit=1",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/deblurnerf/cupcake/attempt-2",
       "schedule_group": "A_common",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "cocogaussian",
@@ -2770,19 +3294,9 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
-    },
-    {
-      "method": "mipsplatting",
-      "dataset": "deblurnerf",
-      "scene": "cupcake",
-      "status": "queued",
-      "reason": "",
-      "output": "",
-      "schedule_group": "A_common",
-      "schedule_phase": "priority"
     },
     {
       "method": "dofgs",
@@ -2792,7 +3306,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -2804,7 +3318,7 @@
       "reason": "Official split reader not passed: Environment or sparse model unavailable",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -2816,7 +3330,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -2828,7 +3342,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -2840,7 +3354,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -2852,7 +3366,7 @@
       "reason": "Official split reader not passed: Environment or sparse model unavailable",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -2864,7 +3378,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -2876,7 +3390,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -2888,7 +3402,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -2900,7 +3414,7 @@
       "reason": "Official split reader not passed: Environment or sparse model unavailable",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -2912,7 +3426,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -2924,7 +3438,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -2936,7 +3450,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -2948,7 +3462,7 @@
       "reason": "Official split reader not passed: Environment or sparse model unavailable",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -2960,7 +3474,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -2972,7 +3486,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -2984,7 +3498,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -2996,7 +3510,7 @@
       "reason": "Official split reader not passed: Environment or sparse model unavailable",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -3008,7 +3522,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -3020,29 +3534,19 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
-    },
-    {
-      "method": "dofgs",
-      "dataset": "dofnerf-mix",
-      "scene": "amiya",
-      "status": "training",
-      "reason": "",
-      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgs/dofnerf-mix/amiya/attempt-1",
-      "schedule_group": "B_selected",
-      "schedule_phase": "priority"
     },
     {
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
       "scene": "amiya",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
-      "output": "",
+      "status": "failed",
+      "reason": "train exit=1",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/amiya/attempt-2",
       "schedule_group": "B_selected",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "cocogaussian",
@@ -3052,41 +3556,19 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
-    },
-    {
-      "method": "mipsplatting",
-      "dataset": "dofnerf-mix",
-      "scene": "amiya",
-      "status": "queued",
-      "reason": "",
-      "output": "",
-      "schedule_group": "B_selected",
-      "schedule_phase": "priority"
-    },
-    {
-      "method": "dofgs",
-      "dataset": "dofnerf-mix",
-      "scene": "camera",
-      "status": "queued",
-      "reason": "",
-      "output": "",
-      "schedule_group": "B_selected",
-      "schedule_phase": "priority",
-      "schedule_note": "secondary scene waits for complete amiya pipeline and sufficient remaining time; otherwise resumes after report"
     },
     {
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
       "scene": "camera",
-      "status": "dependency_wait",
-      "reason": "Official split reader not passed: Environment or sparse model unavailable",
-      "output": "",
+      "status": "failed",
+      "reason": "train exit=1",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/camera/attempt-2",
       "schedule_group": "B_selected",
-      "schedule_phase": "priority",
-      "schedule_note": "secondary scene waits for complete amiya pipeline and sufficient remaining time; otherwise resumes after report"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "cocogaussian",
@@ -3096,20 +3578,9 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
-    },
-    {
-      "method": "mipsplatting",
-      "dataset": "dofnerf-mix",
-      "scene": "camera",
-      "status": "queued",
-      "reason": "",
-      "output": "",
-      "schedule_group": "B_selected",
-      "schedule_phase": "priority",
-      "schedule_note": "secondary scene waits for complete amiya pipeline and sufficient remaining time; otherwise resumes after report"
     },
     {
       "method": "dofgs",
@@ -3119,7 +3590,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -3131,7 +3602,7 @@
       "reason": "Official split reader not passed: Environment or sparse model unavailable",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -3143,7 +3614,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -3155,7 +3626,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -3167,7 +3638,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -3179,7 +3650,7 @@
       "reason": "Official split reader not passed: Environment or sparse model unavailable",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -3191,7 +3662,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -3203,7 +3674,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -3215,7 +3686,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -3227,7 +3698,7 @@
       "reason": "Official split reader not passed: Environment or sparse model unavailable",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -3239,7 +3710,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -3251,7 +3722,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -3263,7 +3734,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -3275,7 +3746,7 @@
       "reason": "Official split reader not passed: Environment or sparse model unavailable",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -3287,7 +3758,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -3299,7 +3770,7 @@
       "reason": "",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -3307,22 +3778,21 @@
       "method": "bokehme",
       "dataset": "dofnerf-mix",
       "scene": "amiya",
-      "status": "dependency_wait",
-      "reason": "Awaiting DOF-GS reconstructed training views",
-      "output": "",
+      "status": "failed",
+      "reason": "bokehme exit=1",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/bokehme/dofnerf-mix/amiya/attempt-2",
       "schedule_group": "B_selected",
-      "schedule_phase": "priority"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "bokehme",
       "dataset": "dofnerf-mix",
       "scene": "camera",
-      "status": "dependency_wait",
-      "reason": "Awaiting DOF-GS reconstructed training views",
-      "output": "",
+      "status": "failed",
+      "reason": "bokehme exit=1",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/bokehme/dofnerf-mix/camera/attempt-2",
       "schedule_group": "B_selected",
-      "schedule_phase": "priority",
-      "schedule_note": "secondary scene waits for complete amiya pipeline and sufficient remaining time; otherwise resumes after report"
+      "schedule_phase": "awaiting_report"
     },
     {
       "method": "bokehme",
@@ -3332,7 +3802,7 @@
       "reason": "Awaiting DOF-GS reconstructed training views",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -3344,7 +3814,7 @@
       "reason": "Awaiting DOF-GS reconstructed training views",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -3356,7 +3826,7 @@
       "reason": "Awaiting DOF-GS reconstructed training views",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     },
@@ -3368,7 +3838,7 @@
       "reason": "Awaiting DOF-GS reconstructed training views",
       "output": "",
       "schedule_group": "after_report",
-      "schedule_phase": "priority",
+      "schedule_phase": "awaiting_report",
       "deferred_until": "2026-11-06T09:00:00+08:00",
       "schedule_note": "retained in the complete queue; deferred by the23:45 priority window or08:30 wrap-up"
     }
@@ -3376,14 +3846,14 @@
   "eta": {
     "measured_cake_based": {
       "dofgs": {
-        "remaining_training_jobs": 11,
+        "remaining_training_jobs": 9,
         "cake_seconds": 1829.0484382025898,
-        "estimated_serial_training_seconds": 20119.532820228487
+        "estimated_serial_training_seconds": 16461.435943823308
       },
       "dofgaussian": {
-        "remaining_training_jobs": 14,
+        "remaining_training_jobs": 9,
         "cake_seconds": 1514.6940248943865,
-        "estimated_serial_training_seconds": 21205.71634852141
+        "estimated_serial_training_seconds": 13632.246224049479
       },
       "cocogaussian": {
         "remaining_training_jobs": 15,
@@ -3391,12 +3861,12 @@
         "estimated_serial_training_seconds": 147887.15184532106
       },
       "mipsplatting": {
-        "remaining_training_jobs": 15,
+        "remaining_training_jobs": 9,
         "cake_seconds": 2683.0156591273844,
-        "estimated_serial_training_seconds": 40245.23488691077
+        "estimated_serial_training_seconds": 24147.14093214646
       }
     },
-    "estimated_remaining_training_lower_bound_seconds": 57364.40897524543,
+    "estimated_remaining_training_lower_bound_seconds": 67375.99164844677,
     "scope": "rough training estimate only; excludes pending data, COLMAP, render/evaluation and P3; scene sizes and concurrent slowdown vary; methods without a completed cake remain unknown"
   },
   "regions": {
