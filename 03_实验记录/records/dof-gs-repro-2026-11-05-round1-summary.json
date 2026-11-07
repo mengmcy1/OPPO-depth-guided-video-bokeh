@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-07T11:41:22.769572+00:00",
+  "generated_at": "2026-11-07T11:42:43.037920+00:00",
   "reason": "evaluated-results",
   "report_at": "2026-11-06T09:00:00+08:00",
   "priority_window": {
@@ -1966,12 +1966,26 @@
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
       "scene": "kendo",
-      "status": "evaluating",
+      "status": "evaluated",
+      "psnr": 26.92325542416812,
+      "lpips": 0.09959746400515239,
+      "ssim": 0.8810996810595194,
+      "native_psnr": 26.92325542416812,
+      "native_lpips": 0.055578978111346565,
+      "native_ssim": 0.8810996810595194,
       "gaussians": 92531,
       "optimized_parameters": 5845974,
       "model_bytes": 23320975,
       "reason": "Requeued with training-only sparse point colors; zero-RGB training failed",
       "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/kendo/attempt-2",
+      "unified_psnr": 26.929648287924355,
+      "unified_ssim": 0.9308389822642008,
+      "lpips_vgg": 0.09959746400515239,
+      "lpips_official": 0.055578978111346565,
+      "official_psnr": 26.92325542416812,
+      "official_ssim": 0.8810996810595194,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "official native",
       "schedule_group": "after_report",
       "schedule_phase": "full"
     },
@@ -2425,19 +2439,19 @@
     {
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
-      "completed_scenes": 3,
-      "scene_names": "amiya,camera,plant",
+      "completed_scenes": 4,
+      "scene_names": "amiya,camera,kendo,plant",
       "comparison_allowed": false,
-      "psnr": 30.08100906701046,
-      "ssim": 0.9138036237822639,
-      "lpips": 0.09266187581751083,
-      "native_psnr": 30.08100906701046,
-      "native_ssim": 0.9138036237822639,
-      "native_lpips": 0.04817649473746618,
-      "unified_psnr": 30.020317349355096,
-      "unified_ssim": 0.9446156620979309,
-      "lpips_vgg": 0.09266187581751083,
-      "lpips_official": 0.04817649473746618
+      "psnr": 29.291570656299875,
+      "ssim": 0.9056276381015778,
+      "lpips": 0.09439577286442122,
+      "native_psnr": 29.291570656299875,
+      "native_ssim": 0.9056276381015778,
+      "native_lpips": 0.050027115580936275,
+      "unified_psnr": 29.24765008399741,
+      "unified_ssim": 0.9411714921394984,
+      "lpips_vgg": 0.09439577286442122,
+      "lpips_official": 0.050027115580936275
     },
     {
       "method": "cocogaussian",
@@ -3487,6 +3501,40 @@
       "primary_protocol": "official native"
     },
     {
+      "method": "dofgaussian",
+      "scene": "kendo",
+      "mode": "fg",
+      "views": 3,
+      "psnr": 27.173665099693938,
+      "lpips": 0.12165815631548564,
+      "ssim": 0.8833917578061422,
+      "unified_psnr": 27.173665161505713,
+      "unified_ssim": 0.9261419177055359,
+      "lpips_vgg": 0.12165815631548564,
+      "lpips_official": 0.11647728582223256,
+      "official_psnr": 27.173665099693938,
+      "official_ssim": 0.8833917578061422,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "official native"
+    },
+    {
+      "method": "dofgaussian",
+      "scene": "kendo",
+      "mode": "bg",
+      "views": 3,
+      "psnr": 26.42715301229823,
+      "lpips": 0.10498255242904027,
+      "ssim": 0.8801255424817404,
+      "unified_psnr": 26.42715332925305,
+      "unified_ssim": 0.9162047306696574,
+      "lpips_vgg": 0.10498255242904027,
+      "lpips_official": 0.10499854882558186,
+      "official_psnr": 26.42715301229823,
+      "official_ssim": 0.8801255424817404,
+      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
+      "primary_protocol": "official native"
+    },
+    {
       "method": "cocogaussian",
       "scene": "kendo",
       "mode": "fg",
@@ -4487,6 +4535,72 @@
       "lpips": 0.1571326951185862,
       "pixels": 18381.333333333332,
       "fraction": 0.11173587344814101
+    },
+    {
+      "method": "dofgaussian",
+      "scene": "kendo",
+      "mode": "fg",
+      "region": "boundary",
+      "pixels": 34543.0,
+      "psnr": 24.061535629751244,
+      "fraction": 0.2099789066726644,
+      "lpips": 0.13555615643660227,
+      "ssim": 0.8962355256080627
+    },
+    {
+      "method": "dofgaussian",
+      "scene": "kendo",
+      "mode": "fg",
+      "region": "in_focus",
+      "pixels": 108214.0,
+      "psnr": 30.15065456226081,
+      "fraction": 0.657807874436954,
+      "lpips": 0.12210391461849213,
+      "ssim": 0.9365483125050863
+    },
+    {
+      "method": "dofgaussian",
+      "scene": "kendo",
+      "mode": "fg",
+      "region": "out_of_focus",
+      "pixels": 21750.0,
+      "psnr": 24.603719346979904,
+      "fraction": 0.13221321889038154,
+      "lpips": 0.09854921698570251,
+      "ssim": 0.9082324504852295
+    },
+    {
+      "method": "dofgaussian",
+      "scene": "kendo",
+      "mode": "bg",
+      "region": "boundary",
+      "pixels": 34543.0,
+      "psnr": 23.26746016837468,
+      "fraction": 0.2099789066726644,
+      "lpips": 0.13820192217826843,
+      "ssim": 0.8754420081774393
+    },
+    {
+      "method": "dofgaussian",
+      "scene": "kendo",
+      "mode": "bg",
+      "region": "in_focus",
+      "pixels": 111582.66666666667,
+      "psnr": 30.107530698360232,
+      "fraction": 0.6782852198791947,
+      "lpips": 0.09093184520800908,
+      "ssim": 0.9368711908658346
+    },
+    {
+      "method": "dofgaussian",
+      "scene": "kendo",
+      "mode": "bg",
+      "region": "out_of_focus",
+      "pixels": 18381.333333333332,
+      "psnr": 22.92503462736012,
+      "fraction": 0.11173587344814101,
+      "lpips": 0.1277015507221222,
+      "ssim": 0.8495602607727051
     },
     {
       "method": "cocogaussian",
@@ -9993,32 +10107,32 @@
     {
       "method": "dofgaussian",
       "mode": "fg",
-      "completed_scenes": 3,
-      "scene_names": "amiya,camera,plant",
-      "psnr": 29.14453744693729,
-      "ssim": 0.9144318964746262,
-      "lpips": 0.09492043902476628,
-      "official_psnr": 29.14453744693729,
-      "official_ssim": 0.9144318964746262,
-      "unified_psnr": 29.144537545456995,
-      "unified_ssim": 0.9468837910228305,
-      "lpips_vgg": 0.09492043902476628,
-      "lpips_official": 0.08502839878201485
+      "completed_scenes": 4,
+      "scene_names": "amiya,camera,kendo,plant",
+      "psnr": 28.65181936012645,
+      "ssim": 0.9066718618075053,
+      "lpips": 0.10160486834744613,
+      "official_psnr": 28.65181936012645,
+      "official_ssim": 0.9066718618075053,
+      "unified_psnr": 28.651819449469173,
+      "unified_ssim": 0.9416983226935068,
+      "lpips_vgg": 0.10160486834744613,
+      "lpips_official": 0.09289062054206927
     },
     {
       "method": "dofgaussian",
       "mode": "bg",
-      "completed_scenes": 3,
-      "scene_names": "amiya,camera,plant",
-      "psnr": 30.050118168564108,
-      "ssim": 0.921352333492703,
-      "lpips": 0.0782134590877427,
-      "official_psnr": 30.050118168564108,
-      "official_ssim": 0.921352333492703,
-      "unified_psnr": 30.050118241095547,
-      "unified_ssim": 0.9513214959038628,
-      "lpips_vgg": 0.0782134590877427,
-      "lpips_official": 0.05141690580381287
+      "completed_scenes": 4,
+      "scene_names": "amiya,camera,kendo,plant",
+      "psnr": 29.14437687949764,
+      "ssim": 0.9110456357399623,
+      "lpips": 0.08490573242306709,
+      "official_psnr": 29.14437687949764,
+      "official_ssim": 0.9110456357399623,
+      "unified_psnr": 29.14437701313492,
+      "unified_ssim": 0.9425423045953114,
+      "lpips_vgg": 0.08490573242306709,
+      "lpips_official": 0.06481231655925512
     },
     {
       "method": "cocogaussian",
@@ -10337,7 +10451,7 @@
     },
     {
       "id": "dofgaussian-dofnerf-mix-kendo",
-      "status": "evaluating",
+      "status": "evaluated",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
       "observed_at": 1793883096.8416767,
       "resolved_at": 1793942576.7343643
@@ -11190,7 +11304,7 @@
   },
   "throughput": {
     "completed_trainings": 62,
-    "elapsed_since_first_training_seconds": 172618.24898910522,
+    "elapsed_since_first_training_seconds": 172698.49303364754,
     "parallel_times_are_reference_only": true
   },
   "quality_gates": {
@@ -11211,19 +11325,6 @@
     }
   },
   "pending": [
-    {
-      "method": "dofgaussian",
-      "dataset": "dofnerf-mix",
-      "scene": "kendo",
-      "status": "evaluating",
-      "gaussians": 92531,
-      "optimized_parameters": 5845974,
-      "model_bytes": 23320975,
-      "reason": "Requeued with training-only sparse point colors; zero-RGB training failed",
-      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/kendo/attempt-2",
-      "schedule_group": "after_report",
-      "schedule_phase": "full"
-    },
     {
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
@@ -12422,66 +12523,6 @@
     "status": "in_progress",
     "all_jobs_evaluated": false,
     "missing_required_R1": [
-      {
-        "method": "dofgaussian",
-        "scene": "kendo",
-        "modes": [
-          "fg",
-          "bg"
-        ],
-        "processing_status": "evaluating",
-        "training_check": {
-          "checks": [
-            {
-              "mode": "fg",
-              "training_image": "001",
-              "psnr": 27.701801300048828,
-              "parameter_source": "own learned training parameters"
-            },
-            {
-              "mode": "bg",
-              "training_image": "002",
-              "psnr": 28.21942901611328,
-              "parameter_source": "own learned training parameters"
-            }
-          ],
-          "parameters_from_training_only": {
-            "fg": {
-              "focus": 0.8452084064483643,
-              "K": 0.5089079737663269,
-              "effective_K": 5.089079737663269,
-              "gamma": 2,
-              "training_images": [
-                "001",
-                "003",
-                "005",
-                "007",
-                "010",
-                "012",
-                "014",
-                "016",
-                "019"
-              ]
-            },
-            "bg": {
-              "focus": 0.4101825952529907,
-              "K": 0.5020042657852173,
-              "effective_K": 5.020042657852173,
-              "gamma": 2,
-              "training_images": [
-                "002",
-                "004",
-                "006",
-                "008",
-                "011",
-                "013",
-                "015",
-                "017"
-              ]
-            }
-          }
-        }
-      },
       {
         "method": "dofgs",
         "scene": "desk",

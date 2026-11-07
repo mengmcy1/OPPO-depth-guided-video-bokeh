@@ -3,66 +3,6 @@
   "all_jobs_evaluated": false,
   "missing_required_R1": [
     {
-      "method": "dofgaussian",
-      "scene": "kendo",
-      "modes": [
-        "fg",
-        "bg"
-      ],
-      "processing_status": "evaluating",
-      "training_check": {
-        "checks": [
-          {
-            "mode": "fg",
-            "training_image": "001",
-            "psnr": 27.701801300048828,
-            "parameter_source": "own learned training parameters"
-          },
-          {
-            "mode": "bg",
-            "training_image": "002",
-            "psnr": 28.21942901611328,
-            "parameter_source": "own learned training parameters"
-          }
-        ],
-        "parameters_from_training_only": {
-          "fg": {
-            "focus": 0.8452084064483643,
-            "K": 0.5089079737663269,
-            "effective_K": 5.089079737663269,
-            "gamma": 2,
-            "training_images": [
-              "001",
-              "003",
-              "005",
-              "007",
-              "010",
-              "012",
-              "014",
-              "016",
-              "019"
-            ]
-          },
-          "bg": {
-            "focus": 0.4101825952529907,
-            "K": 0.5020042657852173,
-            "effective_K": 5.020042657852173,
-            "gamma": 2,
-            "training_images": [
-              "002",
-              "004",
-              "006",
-              "008",
-              "011",
-              "013",
-              "015",
-              "017"
-            ]
-          }
-        }
-      }
-    },
-    {
       "method": "dofgs",
       "scene": "desk",
       "modes": [
