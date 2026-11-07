@@ -42,6 +42,26 @@ def read(path, default=None):
     except (OSError, ValueError): return default
 
 
+def completion_validation(state,config):
+    missing_r1=[]
+    for job in state['jobs']:
+        if job['dataset']!='dofnerf-mix' or job['method']=='mipsplatting':continue
+        output=Path(job.get('output',job['base_output']))
+        protocols=read(output/'evaluation.json',{}).get('summary',{})
+        missing=[mode for mode in ['fg','bg'] if 'r1-'+mode not in protocols]
+        if missing:
+            missing_r1.append({'method':job['method'],'scene':job['scene'],'modes':missing,
+                               'processing_status':job['status'],
+                               'training_check':read(output/'rendered/r1-training-check.json',{})})
+    benchmarks=[{'method':method,'scene':scene,'status':read(LOG/('benchmark-'+method+'-'+scene+'.json'),{}).get('status','pending')}
+                for method in config['methods'] for scene in config['benchmark_scenes']]
+    processed=all(job['status']=='evaluated' for job in state['jobs'])
+    passed=processed and not missing_r1 and all(row['status']=='benchmarked' for row in benchmarks)
+    return {'status':'passed' if passed else 'completed_with_unresolved_checks' if processed else 'in_progress',
+            'all_jobs_evaluated':processed,'missing_required_R1':missing_r1,'benchmarks':benchmarks,
+            'note':'Queue completion records processing coverage. Missing R1 after the unchanged training-view check remains unresolved; do not report it as a successful reproduction.'}
+
+
 def reported_metrics(unified,native,config):
     if not unified:return {}
     result=dict(unified)
@@ -407,6 +427,8 @@ def _summarize(state, config, reason, commit=False):
         'Author checkpoints are retrained releases, not the original paper checkpoints. Paper comparison is marked incomplete until all10 scenes are evaluated.'
     ]
     summary['implementation_notes'].append('CoCoGaussian supplementary Table5 includes book and omits turtle; the user explicitly requested six validated scenes excluding both, so its published seven-scene DoF-NeRF mean is not directly compared.')
+    summary['completion_validation']=completion_validation(state,config)
+    write(RECORD/(PREFIX+'-completion-validation.json'),summary['completion_validation'])
     RECORD.mkdir(parents=True, exist_ok=True)
     write(RECORD/(PREFIX+'-summary.json'), summary)
     for name, table in [('A-and-R0', rows), ('averages', averages), ('A-common-subset',common['per_scene']),('A-common-averages',common['averages']),('training-efficiency', training), ('author-retrained', author), ('cake-paper',cake_table), ('R1',r1), ('R1-averages',r1_averages), ('regional-R1',regional)]:
@@ -424,6 +446,9 @@ def _summarize(state, config, reason, commit=False):
     paragraph = marker+f'：已完成 {done}/{len(rows)} 个方法×场景，运行中 {running} 个；按23:45调整优先完成三方法×五场景共同子集，再推进amiya、camera；最多4任务、40GiB，现有任务继续，08:30后收尾，09:00汇总落盘后恢复完整队列。\n阶段汇总见 [round1 summary](records/'+PREFIX+'-summary.json)；PSNR/SSIM以官方口径为主，统一口径和LPIPS VGG/官方值另列；共同平均仅使用三方法都有结果的相同场景集合，报告时间 '+config['report_at']+'。'
     paragraph+=' 当前调度模式：'+{'priority':'汇报前优先队列','wrap_up':'08:30收尾','awaiting_report':'等待阶段汇总落盘','full':'完整队列'}[schedule_mode(config)]+'。'
     if (RECORD/(PREFIX+'-stage-summary.json')).exists():paragraph+=' 截止时刻快照见 [stage summary](records/'+PREFIX+'-stage-summary.json)。'
+    validation=summary['completion_validation']
+    if validation['status']!='passed':
+        paragraph+=' 验收状态：'+validation['status']+'；'+str(len(validation['missing_required_R1']))+' 个方法×场景的必需R1尚未齐全或未通过训练视图核查，详见 completion-validation.json。'
     if marker in text:
         start = text.index(marker); end = text.find('\n\n', start); text = text[:start]+paragraph+text[end if end >= 0 else len(text):]
     else:
@@ -519,7 +544,7 @@ def main():
             job['allow_gpu_overlap']=True
         if job['method']=='dofgaussian' and job['scene']!='cake' and job['status']=='dependency_wait':
             job.setdefault('colmap_delay',{'reason':'awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00','observed_at':time.time()})
-        if job['dataset']=='dofnerf-mix' and job.get('kind')!='bokehme' and job['status'] in {'queued','dependency_wait','blocked'}:
+        if job['dataset']=='dofnerf-mix' and job.get('kind')!='bokehme' and not job.get('training_point_colors') and job['status'] in {'queued','dependency_wait','blocked'}:
             directory='dofnerf-dofgaussian-provided' if job['method']=='dofgaussian' else 'dofnerf-scenes-provided'
             target=ROOT/'data/processed'/directory/'mix'/job['scene']
             if (ROOT/'data/processed/dofnerf-scenes-provided/mix'/job['scene']/'rectification.json').exists():
@@ -717,7 +742,7 @@ def main():
     plot=command([WORK/'envs/dofgs/bin/python',ROOT/'scripts/plot_gs_round1.py'],LOG/'plot.log',environment('dofgs'))
     plot.wait()
     summarize(state,config,'complete',commit=True)
-    write(LOG/'round1.finished',{'finished_at':time.time()})
+    write(LOG/'round1.finished',{'finished_at':time.time(),'validation':completion_validation(state,config)})
 
 
 if __name__ == '__main__': main()

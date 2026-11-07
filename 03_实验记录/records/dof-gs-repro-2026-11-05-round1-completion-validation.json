@@ -1,0 +1,169 @@
+{
+  "status": "in_progress",
+  "all_jobs_evaluated": false,
+  "missing_required_R1": [
+    {
+      "method": "dofgaussian",
+      "scene": "amiya",
+      "modes": [
+        "fg",
+        "bg"
+      ],
+      "processing_status": "training",
+      "training_check": {}
+    },
+    {
+      "method": "dofgaussian",
+      "scene": "camera",
+      "modes": [
+        "fg",
+        "bg"
+      ],
+      "processing_status": "training",
+      "training_check": {}
+    },
+    {
+      "method": "dofgaussian",
+      "scene": "plant",
+      "modes": [
+        "fg",
+        "bg"
+      ],
+      "processing_status": "queued",
+      "training_check": {}
+    },
+    {
+      "method": "dofgaussian",
+      "scene": "kendo",
+      "modes": [
+        "fg",
+        "bg"
+      ],
+      "processing_status": "queued",
+      "training_check": {}
+    },
+    {
+      "method": "dofgs",
+      "scene": "desk",
+      "modes": [
+        "fg",
+        "bg"
+      ],
+      "processing_status": "evaluated",
+      "training_check": {
+        "checks": [
+          {
+            "mode": "fg",
+            "training_image": "001",
+            "psnr": 9.192225456237793,
+            "parameter_source": "own learned training parameters"
+          },
+          {
+            "mode": "bg",
+            "training_image": "002",
+            "psnr": 21.053298950195312,
+            "parameter_source": "own learned training parameters"
+          }
+        ],
+        "parameters_from_training_only": {
+          "fg": {
+            "F": 22.518352508544922,
+            "K": 1043.7327880859375,
+            "training_images": [
+              "001",
+              "003",
+              "005",
+              "007",
+              "010",
+              "012",
+              "014",
+              "016",
+              "019",
+              "021",
+              "023"
+            ]
+          },
+          "bg": {
+            "F": 29.07452392578125,
+            "K": 711.5900268554688,
+            "training_images": [
+              "002",
+              "004",
+              "006",
+              "008",
+              "011",
+              "013",
+              "015",
+              "017",
+              "020",
+              "022"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "method": "dofgaussian",
+      "scene": "desk",
+      "modes": [
+        "fg",
+        "bg"
+      ],
+      "processing_status": "queued",
+      "training_check": {}
+    },
+    {
+      "method": "dofgaussian",
+      "scene": "shelf",
+      "modes": [
+        "fg",
+        "bg"
+      ],
+      "processing_status": "queued",
+      "training_check": {}
+    }
+  ],
+  "benchmarks": [
+    {
+      "method": "dofgs",
+      "scene": "cake",
+      "status": "benchmarked"
+    },
+    {
+      "method": "dofgs",
+      "scene": "caps",
+      "status": "benchmarked"
+    },
+    {
+      "method": "dofgaussian",
+      "scene": "cake",
+      "status": "benchmarked"
+    },
+    {
+      "method": "dofgaussian",
+      "scene": "caps",
+      "status": "benchmarked"
+    },
+    {
+      "method": "cocogaussian",
+      "scene": "cake",
+      "status": "benchmarked"
+    },
+    {
+      "method": "cocogaussian",
+      "scene": "caps",
+      "status": "benchmarked"
+    },
+    {
+      "method": "mipsplatting",
+      "scene": "cake",
+      "status": "benchmarked"
+    },
+    {
+      "method": "mipsplatting",
+      "scene": "caps",
+      "status": "benchmarked"
+    }
+  ],
+  "note": "Queue completion records processing coverage. Missing R1 after the unchanged training-view check remains unresolved; do not report it as a successful reproduction."
+}

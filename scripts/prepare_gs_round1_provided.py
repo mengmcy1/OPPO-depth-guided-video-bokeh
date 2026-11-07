@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Match supplied DoF-NeRF geometry and rectify exact497x331 derived images."""
+import argparse
 import importlib.util
 import json
 import os
@@ -87,11 +88,60 @@ def prepare(name,model):
     return result
 
 
+def colorize_training_sparse(name, model):
+    """Extract missing sparse colors from mixed training views, keeping geometry."""
+    source=ROOT/'data/processed/dofnerf-dofgaussian-provided/mix'/name
+    target=ROOT/'data/processed/dofnerf-dofgaussian-traincolored/mix'/name
+    marker=target/'training-point-colors.json'
+    if marker.exists():return json.loads(marker.read_text())
+    cameras,images,points=model.read_model(str(source/'sparse/0'),ext='.bin')
+    assert all(np.all(p.rgb==0) for p in points.values()), 'Only handle the verified uncolored supplied model'
+    point_ids=list(points);indices={pid:n for n,pid in enumerate(point_ids)}
+    sums=np.zeros((len(points),3),np.float64);counts=np.zeros(len(points),np.int64)
+    ordered=sorted(images.values(),key=lambda image:image.name)
+    training=[image for n,image in enumerate(ordered) if n%9!=0]
+    for image in training:
+        rgb=cv2.cvtColor(cv2.imread(str(source/'images'/image.name)),cv2.COLOR_BGR2RGB)
+        xy=image.xys;valid=(image.point3D_ids>=0)&(xy[:,0]>=0)&(xy[:,0]<rgb.shape[1])&(xy[:,1]>=0)&(xy[:,1]<rgb.shape[0])
+        xy=xy[valid].astype(np.float32)
+        colors=cv2.remap(rgb,xy[:,0].reshape(1,-1),xy[:,1].reshape(1,-1),cv2.INTER_LINEAR).reshape(-1,3)
+        ids=np.array([indices[int(pid)] for pid in image.point3D_ids[valid]])
+        np.add.at(sums,ids,colors);np.add.at(counts,ids,1)
+    colors=np.rint(sums/np.maximum(counts[:,None],1)).clip(0,255).astype(np.uint8)
+    colored={pid:point._replace(rgb=colors[indices[pid]]) for pid,point in points.items()}
+    assert np.any(colors>0), 'No training colors extracted'
+    target.mkdir(parents=True,exist_ok=True)
+    for filename in ['images','images_4','poses_bounds.npy','manifest.json','rectification.json','rectification-maps','dense']:
+        item=source/filename
+        if item.exists() and not (target/filename).exists():(target/filename).symlink_to(item.resolve(),target_is_directory=item.is_dir())
+    (target/'hold=9').touch()
+    shutil.copytree(source/'sparse',target/'sparse',ignore=shutil.ignore_patterns('points3D.ply'))
+    model.write_points3D_binary(colored,str(target/'sparse/0/points3D.bin'))
+    _,_,check=model.read_model(str(target/'sparse/0'),ext='.bin')
+    assert all(np.array_equal(points[pid].xyz,check[pid].xyz) and np.array_equal(points[pid].image_ids,check[pid].image_ids) and np.array_equal(points[pid].point2D_idxs,check[pid].point2D_idxs) for pid in points)
+    assert all((source/'sparse/0'/filename).read_bytes()==(target/'sparse/0'/filename).read_bytes() for filename in ['cameras.bin','images.bin'])
+    result={'scene':name,'source':str(source),'target':str(target),'points':len(points),
+            'colored_from_training_observations':int(np.sum(counts>0)),'no_training_observation':int(np.sum(counts==0)),
+            'training_images':[image.name for image in training],'excluded_test_images':[image.name for n,image in enumerate(ordered) if n%9==0],
+            'geometry_and_tracks_preserved':True,'cameras_and_poses_byte_identical':True,'raw_data_modified':False,
+            'protocol':'Bilinear RGB from rectified mixed training images at supplied feature observations; equal observation mean; unseen points remain black; no sharp/test GT used',
+            'reason':'All supplied sparse RGB values are zero; native DoF-Gaussian renders and clamps them to black with no color learning'}
+    save(marker,result)
+    return result
+
+
 def main():
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--colorize-training-sparse',action='store_true')
+    args=parser.parse_args()
     assert shutil.disk_usage('/').free>=1024**3
     cv2.setNumThreads(4)
     filename=Path('/root/autodl-tmp/tools/colmap-point-visibility/src/scripts/python/read_write_model.py')
     spec=importlib.util.spec_from_file_location('official_colmap_rw',filename);model=importlib.util.module_from_spec(spec);spec.loader.exec_module(model)
+    if args.colorize_training_sparse:
+        results={name:colorize_training_sparse(name,model) for name in SCENES}
+        save(ROOT/'03_实验记录/records/dof-gs-repro-2026-11-05-round1-training-point-colors.json',results)
+        return
     report={}
     for name in SCENES:
         try:report[name]=prepare(name,model)

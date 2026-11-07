@@ -405,8 +405,9 @@ def benchmark(job):
         focal = float((gaussian.Fs.clamp(0.01, 1000)*10).mean())
         aperture = float((gaussian.Ks.clamp(0.01, 200)*100+100).mean())
         def draw(value):
-            return function(camera, gaussian, pipe, bg, focal_distance=torch.tensor([[focal]], device='cuda'),
-                            K_apert=torch.tensor([[value]], device='cuda'), **extra)
+            return function(camera, gaussian, pipe, bg,
+                            focal_distance=gaussian.get_xyz.new_tensor([[focal]]),
+                            K_apert=gaussian.get_xyz.new_tensor([[value]]), **extra)
         pinhole = draw(0)
         view_z = torch.cat([gaussian.get_xyz, torch.ones(len(gaussian.get_xyz), 1, device='cuda')], 1)@camera.world_view_transform
         visible = pinhole['visibility_filter'] & (view_z[:, 2] > 0.01)

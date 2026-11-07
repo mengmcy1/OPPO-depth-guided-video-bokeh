@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-11-06T17:37:49.103512+00:00",
-  "reason": "complete",
+  "generated_at": "2026-11-07T11:00:38.575697+00:00",
+  "reason": "zero-color-repair-requeued",
   "report_at": "2026-11-06T09:00:00+08:00",
   "priority_window": {
     "enabled": true,
@@ -1642,27 +1642,9 @@
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
       "scene": "amiya",
-      "status": "evaluated",
-      "psnr": 7.644673356837763,
-      "lpips": 0.5149377783139547,
-      "ssim": 0.4965699414412181,
-      "native_psnr": 7.644673356837763,
-      "native_lpips": 0.7878612279891968,
-      "native_ssim": 0.4965699414412181,
-      "gaussians": 925,
-      "optimized_parameters": 441228,
-      "model_bytes": 236261,
-      "reason": "Requeued after verified batch-axis/environment repair",
-      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/amiya/attempt-3",
-      "r1_status": "blocked: own-parameter training-view reproduction check failed; R0 retained",
-      "unified_psnr": 7.644603313392696,
-      "unified_ssim": 0.03969925890366236,
-      "lpips_vgg": 0.5149377783139547,
-      "lpips_official": 0.7878612279891968,
-      "official_psnr": 7.644673356837763,
-      "official_ssim": 0.4965699414412181,
-      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
-      "primary_protocol": "official native",
+      "status": "training",
+      "reason": "Requeued with training-only sparse point colors; zero-RGB training failed",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/amiya/attempt-4",
       "schedule_group": "B_selected",
       "schedule_phase": "full"
     },
@@ -1751,27 +1733,9 @@
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
       "scene": "camera",
-      "status": "evaluated",
-      "lpips": 0.5389857292175293,
-      "psnr": 7.133603801030609,
-      "ssim": 0.4115406076113383,
-      "native_lpips": 0.8269287347793579,
-      "native_psnr": 7.133603801030609,
-      "native_ssim": 0.4115406076113383,
-      "gaussians": 1226,
-      "optimized_parameters": 458987,
-      "model_bytes": 312114,
-      "reason": "Requeued after verified batch-axis/environment repair",
-      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/camera/attempt-3",
-      "r1_status": "blocked: own-parameter training-view reproduction check failed; R0 retained",
-      "unified_psnr": 7.1284908586151765,
-      "unified_ssim": 0.03273122012615204,
-      "lpips_vgg": 0.5389857292175293,
-      "lpips_official": 0.8269287347793579,
-      "official_psnr": 7.133603801030609,
-      "official_ssim": 0.4115406076113383,
-      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
-      "primary_protocol": "official native",
+      "status": "training",
+      "reason": "Requeued with training-only sparse point colors; zero-RGB training failed",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/camera/attempt-4",
       "schedule_group": "B_selected",
       "schedule_phase": "full"
     },
@@ -1860,27 +1824,9 @@
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
       "scene": "plant",
-      "status": "evaluated",
-      "ssim": 0.061837014431754746,
-      "psnr": 6.000362797525216,
-      "lpips": 0.6195650299390157,
-      "native_ssim": 0.061837014431754746,
-      "native_psnr": 6.000362797525216,
-      "native_lpips": 0.9411906798680624,
-      "gaussians": 1387,
-      "optimized_parameters": 468486,
-      "model_bytes": 352686,
-      "reason": "",
-      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/plant/attempt-1",
-      "r1_status": "blocked: own-parameter training-view reproduction check failed; R0 retained",
-      "unified_psnr": 5.999243090360906,
-      "unified_ssim": 0.017180688058336575,
-      "lpips_vgg": 0.6195650299390157,
-      "lpips_official": 0.9411906798680624,
-      "official_psnr": 6.000362797525216,
-      "official_ssim": 0.061837014431754746,
-      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
-      "primary_protocol": "official native",
+      "status": "queued",
+      "reason": "Requeued with training-only sparse point colors; zero-RGB training failed",
+      "output": "",
       "schedule_group": "after_report",
       "schedule_phase": "full"
     },
@@ -1969,27 +1915,9 @@
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
       "scene": "kendo",
-      "status": "evaluated",
-      "psnr": 7.174276737679972,
-      "lpips": 0.6852880318959554,
-      "ssim": 0.24756173292795816,
-      "native_psnr": 7.174276737679972,
-      "native_lpips": 0.99638565381368,
-      "native_ssim": 0.24756173292795816,
-      "gaussians": 935,
-      "optimized_parameters": 441810,
-      "model_bytes": 238781,
-      "reason": "",
-      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/kendo/attempt-1",
-      "r1_status": "blocked: own-parameter training-view reproduction check failed; R0 retained",
-      "unified_psnr": 7.169213770276573,
-      "unified_ssim": 0.01743701472878456,
-      "lpips_vgg": 0.6852880318959554,
-      "lpips_official": 0.99638565381368,
-      "official_psnr": 7.174276737679972,
-      "official_ssim": 0.24756173292795816,
-      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
-      "primary_protocol": "official native",
+      "status": "queued",
+      "reason": "Requeued with training-only sparse point colors; zero-RGB training failed",
+      "output": "",
       "schedule_group": "after_report",
       "schedule_phase": "full"
     },
@@ -2079,27 +2007,9 @@
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
       "scene": "desk",
-      "status": "evaluated",
-      "lpips": 0.7073734998703003,
-      "psnr": 4.3672720594149785,
-      "ssim": -0.18562360604604086,
-      "native_lpips": 1.0551674365997314,
-      "native_psnr": 4.3672720594149785,
-      "native_ssim": -0.18562360604604086,
-      "gaussians": 488,
-      "optimized_parameters": 415445,
-      "model_bytes": 126137,
-      "reason": "",
-      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/desk/attempt-1",
-      "r1_status": "blocked: own-parameter training-view reproduction check failed; R0 retained",
-      "unified_psnr": 4.364474800134401,
-      "unified_ssim": 0.0038856305181980133,
-      "lpips_vgg": 0.7073734998703003,
-      "lpips_official": 1.0551674365997314,
-      "official_psnr": 4.3672720594149785,
-      "official_ssim": -0.18562360604604086,
-      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
-      "primary_protocol": "official native",
+      "status": "queued",
+      "reason": "Requeued with training-only sparse point colors; zero-RGB training failed",
+      "output": "",
       "schedule_group": "after_report",
       "schedule_phase": "full"
     },
@@ -2188,27 +2098,9 @@
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
       "scene": "shelf",
-      "status": "evaluated",
-      "lpips": 0.6798058350880941,
-      "ssim": -0.012085708091035485,
-      "psnr": 6.11141168214609,
-      "native_lpips": 0.9835573633511862,
-      "native_ssim": -0.012085708091035485,
-      "native_psnr": 6.11141168214609,
-      "gaussians": 1012,
-      "optimized_parameters": 446361,
-      "model_bytes": 258186,
-      "reason": "",
-      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/shelf/attempt-1",
-      "r1_status": "blocked: own-parameter training-view reproduction check failed; R0 retained",
-      "unified_psnr": 6.1017100267558675,
-      "unified_ssim": 0.016936662296454113,
-      "lpips_vgg": 0.6798058350880941,
-      "lpips_official": 0.9835573633511862,
-      "official_psnr": 6.11141168214609,
-      "official_ssim": -0.012085708091035485,
-      "lpips_note": "unified VGG v0.1 onRGB0..1; official DoF/CoCo Alex onRGB-1..1; Mip VGG; DOF-GS official LPIPS unavailable",
-      "primary_protocol": "official native",
+      "status": "queued",
+      "reason": "Requeued with training-only sparse point colors; zero-RGB training failed",
+      "output": "",
       "schedule_group": "after_report",
       "schedule_phase": "full"
     },
@@ -2449,7 +2341,7 @@
       "dataset": "dofnerf-mix",
       "completed_scenes": 6,
       "scene_names": "amiya,camera,desk,kendo,plant,shelf",
-      "comparison_allowed": true,
+      "comparison_allowed": false,
       "psnr": 28.030239754545466,
       "ssim": 0.8732694354322222,
       "lpips": 0.1307483139551348,
@@ -2479,19 +2371,9 @@
     {
       "method": "dofgaussian",
       "dataset": "dofnerf-mix",
-      "completed_scenes": 6,
-      "scene_names": "amiya,camera,desk,kendo,plant,shelf",
-      "comparison_allowed": true,
-      "psnr": 6.4052667391057705,
-      "ssim": 0.1699666637125322,
-      "lpips": 0.6243259840541416,
-      "native_psnr": 6.4052667391057705,
-      "native_ssim": 0.1699666637125322,
-      "native_lpips": 0.9318485160668691,
-      "unified_psnr": 6.401289309922603,
-      "unified_ssim": 0.021311745771931276,
-      "lpips_vgg": 0.6243259840541416,
-      "lpips_official": 0.9318485160668691
+      "completed_scenes": 0,
+      "scene_names": "",
+      "comparison_allowed": false
     },
     {
       "method": "cocogaussian",
@@ -2515,7 +2397,7 @@
       "dataset": "dofnerf-mix",
       "completed_scenes": 6,
       "scene_names": "amiya,camera,desk,kendo,plant,shelf",
-      "comparison_allowed": true,
+      "comparison_allowed": false,
       "psnr": 29.29246715292216,
       "ssim": 0.9092420968744491,
       "lpips": 0.07964919321238995,
@@ -2549,7 +2431,7 @@
       "dataset": "dofnerf-mix",
       "completed_scenes": 6,
       "scene_names": "amiya,camera,desk,kendo,plant,shelf",
-      "comparison_allowed": true,
+      "comparison_allowed": false,
       "psnr": 27.121397921179554,
       "ssim": 0.9027814931339687,
       "lpips": 0.14676172410448393,
@@ -10040,42 +9922,42 @@
     },
     {
       "id": "dofgaussian-dofnerf-mix-amiya",
-      "status": "evaluated",
+      "status": "training",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
       "observed_at": 1793883096.8413298,
       "resolved_at": 1793897805.639917
     },
     {
       "id": "dofgaussian-dofnerf-mix-camera",
-      "status": "evaluated",
+      "status": "training",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
       "observed_at": 1793883096.8414478,
       "resolved_at": 1793897865.8950233
     },
     {
       "id": "dofgaussian-dofnerf-mix-plant",
-      "status": "evaluated",
+      "status": "queued",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
       "observed_at": 1793883096.8415637,
       "resolved_at": 1793936860.5970635
     },
     {
       "id": "dofgaussian-dofnerf-mix-kendo",
-      "status": "evaluated",
+      "status": "queued",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
       "observed_at": 1793883096.8416767,
       "resolved_at": 1793942576.7343643
     },
     {
       "id": "dofgaussian-dofnerf-mix-desk",
-      "status": "evaluated",
+      "status": "queued",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
       "observed_at": 1793883096.8417885,
       "resolved_at": 1793937483.1868289
     },
     {
       "id": "dofgaussian-dofnerf-mix-shelf",
-      "status": "evaluated",
+      "status": "queued",
       "reason": "awaiting missing COLMAP reconstruction, continuation requested2026-11-05 20:35+08:00",
       "observed_at": 1793883096.8419003,
       "resolved_at": 1793937824.5253103
@@ -10898,10 +10780,23 @@
       "error": "Sparse stage blocked or modified COLMAP unavailable"
     }
   },
-  "gpu_reservations": {},
+  "gpu_reservations": {
+    "429813": {
+      "reserve_mib": 16638,
+      "kind": "dofgaussian-dofnerf-mix-amiya:train",
+      "exclusive": false,
+      "registered_at": 1794049215.9985547
+    },
+    "429817": {
+      "reserve_mib": 16638,
+      "kind": "dofgaussian-dofnerf-mix-camera:train",
+      "exclusive": false,
+      "registered_at": 1794049216.0277064
+    }
+  },
   "throughput": {
-    "completed_trainings": 64,
-    "elapsed_since_first_training_seconds": 103497.68743491173,
+    "completed_trainings": 58,
+    "elapsed_since_first_training_seconds": 170171.95711660385,
     "parallel_times_are_reference_only": true
   },
   "quality_gates": {
@@ -10921,7 +10816,68 @@
       "diagnosis": "Check canonical/native GT, resolution, hold and renderer before expanding if outside threshold"
     }
   },
-  "pending": [],
+  "pending": [
+    {
+      "method": "dofgaussian",
+      "dataset": "dofnerf-mix",
+      "scene": "amiya",
+      "status": "training",
+      "reason": "Requeued with training-only sparse point colors; zero-RGB training failed",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/amiya/attempt-4",
+      "schedule_group": "B_selected",
+      "schedule_phase": "full"
+    },
+    {
+      "method": "dofgaussian",
+      "dataset": "dofnerf-mix",
+      "scene": "camera",
+      "status": "training",
+      "reason": "Requeued with training-only sparse point colors; zero-RGB training failed",
+      "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/dof-gs-repro-2026-11-05/dofgaussian/dofnerf-mix/camera/attempt-4",
+      "schedule_group": "B_selected",
+      "schedule_phase": "full"
+    },
+    {
+      "method": "dofgaussian",
+      "dataset": "dofnerf-mix",
+      "scene": "plant",
+      "status": "queued",
+      "reason": "Requeued with training-only sparse point colors; zero-RGB training failed",
+      "output": "",
+      "schedule_group": "after_report",
+      "schedule_phase": "full"
+    },
+    {
+      "method": "dofgaussian",
+      "dataset": "dofnerf-mix",
+      "scene": "kendo",
+      "status": "queued",
+      "reason": "Requeued with training-only sparse point colors; zero-RGB training failed",
+      "output": "",
+      "schedule_group": "after_report",
+      "schedule_phase": "full"
+    },
+    {
+      "method": "dofgaussian",
+      "dataset": "dofnerf-mix",
+      "scene": "desk",
+      "status": "queued",
+      "reason": "Requeued with training-only sparse point colors; zero-RGB training failed",
+      "output": "",
+      "schedule_group": "after_report",
+      "schedule_phase": "full"
+    },
+    {
+      "method": "dofgaussian",
+      "dataset": "dofnerf-mix",
+      "scene": "shelf",
+      "status": "queued",
+      "reason": "Requeued with training-only sparse point colors; zero-RGB training failed",
+      "output": "",
+      "schedule_group": "after_report",
+      "schedule_phase": "full"
+    }
+  ],
   "eta": {
     "measured_cake_based": {
       "dofgs": {
@@ -10930,9 +10886,9 @@
         "estimated_serial_training_seconds": 0.0
       },
       "dofgaussian": {
-        "remaining_training_jobs": 0,
+        "remaining_training_jobs": 6,
         "cake_seconds": 1514.6940248943865,
-        "estimated_serial_training_seconds": 0.0
+        "estimated_serial_training_seconds": 9088.16414936632
       },
       "cocogaussian": {
         "remaining_training_jobs": 0,
@@ -10945,7 +10901,7 @@
         "estimated_serial_training_seconds": 0.0
       }
     },
-    "estimated_remaining_training_lower_bound_seconds": 0.0,
+    "estimated_remaining_training_lower_bound_seconds": 3029.388049788773,
     "scope": "rough training estimate only; excludes pending data, COLMAP, render/evaluation and P3; scene sizes and concurrent slowdown vary; methods without a completed cake remain unknown"
   },
   "regions": {
@@ -11661,16 +11617,276 @@
       "radius_definition": "DOF-GS exact CUDA circle formula; DoF-Gaussian scatter radius; CoCo max projected learned position offset over pinhole-visible Gaussians"
     },
     {
-      "status": "failed",
       "method": "dofgs",
       "scene": "cake",
-      "reason": "benchmark failed twice; see logs"
+      "view": "000",
+      "status": "benchmarked",
+      "gaussians": 285560,
+      "gaussian_parameters": 16848040,
+      "model_bytes": 72011724,
+      "optimized_parameters": 16859496,
+      "results": [
+        {
+          "case": "all_in_focus",
+          "parameter": 0.0,
+          "max_radius_px": 0.0,
+          "milliseconds": 3.6880119889974594,
+          "fps": 271.14879316643373,
+          "torch_peak_bytes": 396716032,
+          "torch_incremental_peak_bytes": 216417280,
+          "nvidia_peak_mib": 914.0,
+          "repeats": 50
+        },
+        {
+          "case": "learned_dof",
+          "parameter": 286.32342529296875,
+          "max_radius_px": 389.117075459988,
+          "milliseconds": 4.52441930770874,
+          "fps": 221.02283895221478,
+          "torch_peak_bytes": 411840512,
+          "torch_incremental_peak_bytes": 220197888,
+          "nvidia_peak_mib": 848.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_0",
+          "parameter": 0.0,
+          "max_radius_px": 0.0,
+          "milliseconds": 4.9503957480192184,
+          "fps": 202.00405197910206,
+          "torch_peak_bytes": 407971328,
+          "torch_incremental_peak_bytes": 216292864,
+          "nvidia_peak_mib": 846.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_2",
+          "parameter": 1.471656955452271,
+          "max_radius_px": 1.9999999999999998,
+          "milliseconds": 4.752016291022301,
+          "fps": 210.4369890080638,
+          "torch_peak_bytes": 406953472,
+          "torch_incremental_peak_bytes": 215310848,
+          "nvidia_peak_mib": 846.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_4",
+          "parameter": 2.943313910904542,
+          "max_radius_px": 3.9999999999999996,
+          "milliseconds": 4.090643525123596,
+          "fps": 244.46031384995484,
+          "torch_peak_bytes": 407606784,
+          "torch_incremental_peak_bytes": 215964160,
+          "nvidia_peak_mib": 846.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_8",
+          "parameter": 5.886627821809084,
+          "max_radius_px": 7.999999999999999,
+          "milliseconds": 4.2277975380420685,
+          "fps": 236.52977490097814,
+          "torch_peak_bytes": 407607808,
+          "torch_incremental_peak_bytes": 215965184,
+          "nvidia_peak_mib": 846.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_16",
+          "parameter": 11.773255643618167,
+          "max_radius_px": 15.999999999999998,
+          "milliseconds": 4.656787216663361,
+          "fps": 214.74032492223492,
+          "torch_peak_bytes": 406959104,
+          "torch_incremental_peak_bytes": 215863296,
+          "nvidia_peak_mib": 846.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_32",
+          "parameter": 23.546511287236335,
+          "max_radius_px": 31.999999999999996,
+          "milliseconds": 4.290089160203934,
+          "fps": 233.09538861715964,
+          "torch_peak_bytes": 409914368,
+          "torch_incremental_peak_bytes": 217327104,
+          "nvidia_peak_mib": 846.0,
+          "repeats": 50
+        }
+      ],
+      "e4_calibration": [
+        {
+          "target_radius_px": 0,
+          "parameter": 0.0,
+          "actual_max_radius_px": 0.0
+        },
+        {
+          "target_radius_px": 2,
+          "parameter": 1.471656955452271,
+          "actual_max_radius_px": 1.9999999999999998
+        },
+        {
+          "target_radius_px": 4,
+          "parameter": 2.943313910904542,
+          "actual_max_radius_px": 3.9999999999999996
+        },
+        {
+          "target_radius_px": 8,
+          "parameter": 5.886627821809084,
+          "actual_max_radius_px": 7.999999999999999
+        },
+        {
+          "target_radius_px": 16,
+          "parameter": 11.773255643618167,
+          "actual_max_radius_px": 15.999999999999998
+        },
+        {
+          "target_radius_px": 32,
+          "parameter": 23.546511287236335,
+          "actual_max_radius_px": 31.999999999999996
+        }
+      ],
+      "exclusive_gpu": true,
+      "timing": "synchronize before/after repeated renderer calls; model load, calibration, warmup and file writes excluded",
+      "zero_aperture": "pinhole rendering; scattering/additional CoCo renders bypassed",
+      "radius_definition": "DOF-GS exact CUDA circle formula; DoF-Gaussian scatter radius; CoCo max projected learned position offset over pinhole-visible Gaussians"
     },
     {
-      "status": "failed",
       "method": "dofgs",
       "scene": "caps",
-      "reason": "benchmark failed twice; see logs"
+      "view": "000",
+      "status": "benchmarked",
+      "gaussians": 180302,
+      "gaussian_parameters": 10637818,
+      "model_bytes": 45486324,
+      "optimized_parameters": 10649172,
+      "results": [
+        {
+          "case": "all_in_focus",
+          "parameter": 0.0,
+          "max_radius_px": 0.0,
+          "milliseconds": 3.642813265323639,
+          "fps": 274.5131103806818,
+          "torch_peak_bytes": 324120064,
+          "torch_incremental_peak_bytes": 170110976,
+          "nvidia_peak_mib": 764.0,
+          "repeats": 50
+        },
+        {
+          "case": "learned_dof",
+          "parameter": 332.2104797363281,
+          "max_radius_px": 785.7837642360464,
+          "milliseconds": 4.003409668803215,
+          "fps": 249.7870771988572,
+          "torch_peak_bytes": 336076800,
+          "torch_incremental_peak_bytes": 173480448,
+          "nvidia_peak_mib": 786.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_0",
+          "parameter": 0.0,
+          "max_radius_px": 0.0,
+          "milliseconds": 4.676283076405525,
+          "fps": 213.8450525045333,
+          "torch_peak_bytes": 334586880,
+          "torch_incremental_peak_bytes": 171070976,
+          "nvidia_peak_mib": 780.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_2",
+          "parameter": 0.8455519058969342,
+          "max_radius_px": 2.0,
+          "milliseconds": 5.0858257710933685,
+          "fps": 196.6249032131151,
+          "torch_peak_bytes": 335134720,
+          "torch_incremental_peak_bytes": 172538368,
+          "nvidia_peak_mib": 784.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_4",
+          "parameter": 1.6911038117938684,
+          "max_radius_px": 4.0,
+          "milliseconds": 4.459737613797188,
+          "fps": 224.2284382171449,
+          "torch_peak_bytes": 334586880,
+          "torch_incremental_peak_bytes": 171070976,
+          "nvidia_peak_mib": 780.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_8",
+          "parameter": 3.3822076235877367,
+          "max_radius_px": 8.0,
+          "milliseconds": 3.7910516560077667,
+          "fps": 263.77904885977404,
+          "torch_peak_bytes": 335134720,
+          "torch_incremental_peak_bytes": 172538368,
+          "nvidia_peak_mib": 784.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_16",
+          "parameter": 6.7644152471754735,
+          "max_radius_px": 16.0,
+          "milliseconds": 4.471537247300148,
+          "fps": 223.63673714309013,
+          "torch_peak_bytes": 334586880,
+          "torch_incremental_peak_bytes": 171070976,
+          "nvidia_peak_mib": 780.0,
+          "repeats": 50
+        },
+        {
+          "case": "e4_32",
+          "parameter": 13.528830494350947,
+          "max_radius_px": 32.0,
+          "milliseconds": 4.753746315836906,
+          "fps": 210.36040494389488,
+          "torch_peak_bytes": 335134720,
+          "torch_incremental_peak_bytes": 172538368,
+          "nvidia_peak_mib": 784.0,
+          "repeats": 50
+        }
+      ],
+      "e4_calibration": [
+        {
+          "target_radius_px": 0,
+          "parameter": 0.0,
+          "actual_max_radius_px": 0.0
+        },
+        {
+          "target_radius_px": 2,
+          "parameter": 0.8455519058969342,
+          "actual_max_radius_px": 2.0
+        },
+        {
+          "target_radius_px": 4,
+          "parameter": 1.6911038117938684,
+          "actual_max_radius_px": 4.0
+        },
+        {
+          "target_radius_px": 8,
+          "parameter": 3.3822076235877367,
+          "actual_max_radius_px": 8.0
+        },
+        {
+          "target_radius_px": 16,
+          "parameter": 6.7644152471754735,
+          "actual_max_radius_px": 16.0
+        },
+        {
+          "target_radius_px": 32,
+          "parameter": 13.528830494350947,
+          "actual_max_radius_px": 32.0
+        }
+      ],
+      "exclusive_gpu": true,
+      "timing": "synchronize before/after repeated renderer calls; model load, calibration, warmup and file writes excluded",
+      "zero_aperture": "pinhole rendering; scattering/additional CoCo renders bypassed",
+      "radius_definition": "DOF-GS exact CUDA circle formula; DoF-Gaussian scatter radius; CoCo max projected learned position offset over pinhole-visible Gaussians"
     },
     {
       "method": "cocogaussian",
@@ -11834,5 +12050,174 @@
     "Native SSIM on[-1,1] and native Alex LPIPS can differ from unified3DGS SSIM and VGG LPIPS; both are preserved. DOF-GS native metric has no LPIPS.",
     "Author checkpoints are retrained releases, not the original paper checkpoints. Paper comparison is marked incomplete until all10 scenes are evaluated.",
     "CoCoGaussian supplementary Table5 includes book and omits turtle; the user explicitly requested six validated scenes excluding both, so its published seven-scene DoF-NeRF mean is not directly compared."
-  ]
+  ],
+  "completion_validation": {
+    "status": "in_progress",
+    "all_jobs_evaluated": false,
+    "missing_required_R1": [
+      {
+        "method": "dofgaussian",
+        "scene": "amiya",
+        "modes": [
+          "fg",
+          "bg"
+        ],
+        "processing_status": "training",
+        "training_check": {}
+      },
+      {
+        "method": "dofgaussian",
+        "scene": "camera",
+        "modes": [
+          "fg",
+          "bg"
+        ],
+        "processing_status": "training",
+        "training_check": {}
+      },
+      {
+        "method": "dofgaussian",
+        "scene": "plant",
+        "modes": [
+          "fg",
+          "bg"
+        ],
+        "processing_status": "queued",
+        "training_check": {}
+      },
+      {
+        "method": "dofgaussian",
+        "scene": "kendo",
+        "modes": [
+          "fg",
+          "bg"
+        ],
+        "processing_status": "queued",
+        "training_check": {}
+      },
+      {
+        "method": "dofgs",
+        "scene": "desk",
+        "modes": [
+          "fg",
+          "bg"
+        ],
+        "processing_status": "evaluated",
+        "training_check": {
+          "checks": [
+            {
+              "mode": "fg",
+              "training_image": "001",
+              "psnr": 9.192225456237793,
+              "parameter_source": "own learned training parameters"
+            },
+            {
+              "mode": "bg",
+              "training_image": "002",
+              "psnr": 21.053298950195312,
+              "parameter_source": "own learned training parameters"
+            }
+          ],
+          "parameters_from_training_only": {
+            "fg": {
+              "F": 22.518352508544922,
+              "K": 1043.7327880859375,
+              "training_images": [
+                "001",
+                "003",
+                "005",
+                "007",
+                "010",
+                "012",
+                "014",
+                "016",
+                "019",
+                "021",
+                "023"
+              ]
+            },
+            "bg": {
+              "F": 29.07452392578125,
+              "K": 711.5900268554688,
+              "training_images": [
+                "002",
+                "004",
+                "006",
+                "008",
+                "011",
+                "013",
+                "015",
+                "017",
+                "020",
+                "022"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "method": "dofgaussian",
+        "scene": "desk",
+        "modes": [
+          "fg",
+          "bg"
+        ],
+        "processing_status": "queued",
+        "training_check": {}
+      },
+      {
+        "method": "dofgaussian",
+        "scene": "shelf",
+        "modes": [
+          "fg",
+          "bg"
+        ],
+        "processing_status": "queued",
+        "training_check": {}
+      }
+    ],
+    "benchmarks": [
+      {
+        "method": "dofgs",
+        "scene": "cake",
+        "status": "benchmarked"
+      },
+      {
+        "method": "dofgs",
+        "scene": "caps",
+        "status": "benchmarked"
+      },
+      {
+        "method": "dofgaussian",
+        "scene": "cake",
+        "status": "benchmarked"
+      },
+      {
+        "method": "dofgaussian",
+        "scene": "caps",
+        "status": "benchmarked"
+      },
+      {
+        "method": "cocogaussian",
+        "scene": "cake",
+        "status": "benchmarked"
+      },
+      {
+        "method": "cocogaussian",
+        "scene": "caps",
+        "status": "benchmarked"
+      },
+      {
+        "method": "mipsplatting",
+        "scene": "cake",
+        "status": "benchmarked"
+      },
+      {
+        "method": "mipsplatting",
+        "scene": "caps",
+        "status": "benchmarked"
+      }
+    ],
+    "note": "Queue completion records processing coverage. Missing R1 after the unchanged training-view check remains unresolved; do not report it as a successful reproduction."
+  }
 }
