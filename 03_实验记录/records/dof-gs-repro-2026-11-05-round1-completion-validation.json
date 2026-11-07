@@ -4,23 +4,67 @@
   "missing_required_R1": [
     {
       "method": "dofgaussian",
-      "scene": "amiya",
-      "modes": [
-        "fg",
-        "bg"
-      ],
-      "processing_status": "training",
-      "training_check": {}
-    },
-    {
-      "method": "dofgaussian",
       "scene": "camera",
       "modes": [
         "fg",
         "bg"
       ],
-      "processing_status": "training",
-      "training_check": {}
+      "processing_status": "evaluating",
+      "training_check": {
+        "checks": [
+          {
+            "mode": "fg",
+            "training_image": "001",
+            "psnr": 32.49797821044922,
+            "parameter_source": "own learned training parameters"
+          },
+          {
+            "mode": "bg",
+            "training_image": "002",
+            "psnr": 34.0067024230957,
+            "parameter_source": "own learned training parameters"
+          }
+        ],
+        "parameters_from_training_only": {
+          "fg": {
+            "focus": 0.787837028503418,
+            "K": 0.36843201518058777,
+            "effective_K": 3.6843201518058777,
+            "gamma": 2,
+            "training_images": [
+              "001",
+              "003",
+              "005",
+              "007",
+              "010",
+              "012",
+              "014",
+              "016",
+              "019",
+              "021",
+              "023"
+            ]
+          },
+          "bg": {
+            "focus": 0.1691901683807373,
+            "K": 0.36551913619041443,
+            "effective_K": 3.6551913619041443,
+            "gamma": 2,
+            "training_images": [
+              "002",
+              "004",
+              "006",
+              "008",
+              "011",
+              "013",
+              "015",
+              "017",
+              "020",
+              "022"
+            ]
+          }
+        }
+      }
     },
     {
       "method": "dofgaussian",
@@ -29,7 +73,7 @@
         "fg",
         "bg"
       ],
-      "processing_status": "queued",
+      "processing_status": "training",
       "training_check": {}
     },
     {
@@ -39,7 +83,7 @@
         "fg",
         "bg"
       ],
-      "processing_status": "queued",
+      "processing_status": "training",
       "training_check": {}
     },
     {
