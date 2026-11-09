@@ -1,0 +1,489 @@
+{
+  "status": "static_mesh_approximation_only",
+  "not_per_frame_gt": true,
+  "coordinate_check": "PLY Y reflection validated visually in box views 0,16,33 and ball view0; not a full dataset registration proof",
+  "threshold_conclusion": "not universally below 1-2%; box is below 1%; temporal and view coverage remain limited",
+  "scenes": [
+    {
+      "scene": "ball",
+      "parameters": {
+        "effect_scene": "warehouse_balls",
+        "focal_length_mm": 35.0,
+        "sensor_size_mm": 36.0,
+        "focus_distance_m": 4.697,
+        "fstop": 0.5,
+        "aperture_radius_m": 0.035,
+        "blades": 0,
+        "ratio": 1.0
+      },
+      "resolution": [
+        256,
+        256
+      ],
+      "samples": 16,
+      "mesh_vertices": 293693,
+      "mesh_faces": 511990,
+      "views": [
+        {
+          "view": 0,
+          "image_disocclusion_fraction_any_sample": 0.0162200927734375,
+          "aperture_ray_disocclusion_fraction": 0.0014848709106445312,
+          "known_aperture_ray_fraction": 0.995697021484375,
+          "aperture_mesh_hit_fraction": 1.0,
+          "unknown_aperture_ray_fraction": 0.004302978515625
+        },
+        {
+          "view": 16,
+          "image_disocclusion_fraction_any_sample": 0.022064208984375,
+          "aperture_ray_disocclusion_fraction": 0.003063201904296875,
+          "known_aperture_ray_fraction": 0.9970378875732422,
+          "aperture_mesh_hit_fraction": 0.9999990463256836,
+          "unknown_aperture_ray_fraction": 0.0029621124267578125
+        },
+        {
+          "view": 33,
+          "image_disocclusion_fraction_any_sample": 0.009735107421875,
+          "aperture_ray_disocclusion_fraction": 0.0022373199462890625,
+          "known_aperture_ray_fraction": 0.9976644515991211,
+          "aperture_mesh_hit_fraction": 1.0,
+          "unknown_aperture_ray_fraction": 0.0023355484008789062
+        }
+      ],
+      "mean_image_disocclusion_fraction": 0.0160064697265625,
+      "geometry_source": "provided PLY triangle mesh; Blender camera axes converted to OpenCV",
+      "mesh_axis_transform": [
+        1,
+        -1,
+        1
+      ],
+      "temporal_correspondence": "mesh time not specified; NOT validated per-frame GT",
+      "elapsed_seconds": 9.341086264699697,
+      "occlusion_tolerance": {
+        "absolute_m": 0.0001,
+        "relative_to_hit_range": 0.0001,
+        "combination": "maximum"
+      }
+    },
+    {
+      "scene": "basketball_1",
+      "parameters": {
+        "effect_scene": "basketball_court",
+        "focal_length_mm": 50.0,
+        "sensor_size_mm": 36.0,
+        "focus_distance_m": 4.548,
+        "fstop": 0.5,
+        "aperture_radius_m": 0.05,
+        "blades": 0,
+        "ratio": 1.0
+      },
+      "resolution": [
+        256,
+        256
+      ],
+      "samples": 16,
+      "mesh_vertices": 73442,
+      "mesh_faces": 88262,
+      "views": [
+        {
+          "view": 0,
+          "image_disocclusion_fraction_any_sample": 0.064483642578125,
+          "aperture_ray_disocclusion_fraction": 0.0059680938720703125,
+          "known_aperture_ray_fraction": 0.9925737380981445,
+          "aperture_mesh_hit_fraction": 1.0,
+          "unknown_aperture_ray_fraction": 0.007426261901855469
+        },
+        {
+          "view": 16,
+          "image_disocclusion_fraction_any_sample": 0.0497894287109375,
+          "aperture_ray_disocclusion_fraction": 0.004353523254394531,
+          "known_aperture_ray_fraction": 0.9943695068359375,
+          "aperture_mesh_hit_fraction": 1.0,
+          "unknown_aperture_ray_fraction": 0.0056304931640625
+        },
+        {
+          "view": 33,
+          "image_disocclusion_fraction_any_sample": 0.0033416748046875,
+          "aperture_ray_disocclusion_fraction": 0.00022220611572265625,
+          "known_aperture_ray_fraction": 0.9950704574584961,
+          "aperture_mesh_hit_fraction": 1.0,
+          "unknown_aperture_ray_fraction": 0.004929542541503906
+        }
+      ],
+      "mean_image_disocclusion_fraction": 0.039204915364583336,
+      "geometry_source": "provided PLY triangle mesh; Blender camera axes converted to OpenCV",
+      "mesh_axis_transform": [
+        1,
+        -1,
+        1
+      ],
+      "temporal_correspondence": "mesh time not specified; NOT validated per-frame GT",
+      "elapsed_seconds": 5.44556337594986,
+      "occlusion_tolerance": {
+        "absolute_m": 0.0001,
+        "relative_to_hit_range": 0.0001,
+        "combination": "maximum"
+      }
+    },
+    {
+      "scene": "basketball_2",
+      "parameters": {
+        "effect_scene": "basketball_court_bouncing",
+        "focal_length_mm": 35.0,
+        "sensor_size_mm": 36.0,
+        "focus_distance_m": 5.526,
+        "fstop": 0.5,
+        "aperture_radius_m": 0.035,
+        "blades": 0,
+        "ratio": 1.0
+      },
+      "resolution": [
+        256,
+        256
+      ],
+      "samples": 16,
+      "mesh_vertices": 73442,
+      "mesh_faces": 88262,
+      "views": [
+        {
+          "view": 0,
+          "image_disocclusion_fraction_any_sample": 0.035400390625,
+          "aperture_ray_disocclusion_fraction": 0.0036773681640625,
+          "known_aperture_ray_fraction": 0.9943532943725586,
+          "aperture_mesh_hit_fraction": 1.0,
+          "unknown_aperture_ray_fraction": 0.005646705627441406
+        },
+        {
+          "view": 16,
+          "image_disocclusion_fraction_any_sample": 0.029022216796875,
+          "aperture_ray_disocclusion_fraction": 0.003086090087890625,
+          "known_aperture_ray_fraction": 0.9968767166137695,
+          "aperture_mesh_hit_fraction": 1.0,
+          "unknown_aperture_ray_fraction": 0.0031232833862304688
+        },
+        {
+          "view": 33,
+          "image_disocclusion_fraction_any_sample": 0.0200653076171875,
+          "aperture_ray_disocclusion_fraction": 0.0022449493408203125,
+          "known_aperture_ray_fraction": 0.9986286163330078,
+          "aperture_mesh_hit_fraction": 1.0,
+          "unknown_aperture_ray_fraction": 0.0013713836669921875
+        }
+      ],
+      "mean_image_disocclusion_fraction": 0.028162638346354168,
+      "geometry_source": "provided PLY triangle mesh; Blender camera axes converted to OpenCV",
+      "mesh_axis_transform": [
+        1,
+        -1,
+        1
+      ],
+      "temporal_correspondence": "mesh time not specified; NOT validated per-frame GT",
+      "elapsed_seconds": 5.667799416929483,
+      "occlusion_tolerance": {
+        "absolute_m": 0.0001,
+        "relative_to_hit_range": 0.0001,
+        "combination": "maximum"
+      }
+    },
+    {
+      "scene": "box",
+      "parameters": {
+        "effect_scene": "bathroom_box",
+        "focal_length_mm": 20.0,
+        "sensor_size_mm": 36.0,
+        "focus_distance_m": 0.7,
+        "fstop": 0.5,
+        "aperture_radius_m": 0.02,
+        "blades": 0,
+        "ratio": 1.0
+      },
+      "resolution": [
+        256,
+        256
+      ],
+      "samples": 16,
+      "mesh_vertices": 22789,
+      "mesh_faces": 39356,
+      "views": [
+        {
+          "view": 0,
+          "image_disocclusion_fraction_any_sample": 0.0068511962890625,
+          "aperture_ray_disocclusion_fraction": 0.00142669677734375,
+          "known_aperture_ray_fraction": 0.9850692749023438,
+          "aperture_mesh_hit_fraction": 1.0,
+          "unknown_aperture_ray_fraction": 0.01493072509765625
+        },
+        {
+          "view": 16,
+          "image_disocclusion_fraction_any_sample": 0.002838134765625,
+          "aperture_ray_disocclusion_fraction": 0.000431060791015625,
+          "known_aperture_ray_fraction": 0.991581916809082,
+          "aperture_mesh_hit_fraction": 1.0,
+          "unknown_aperture_ray_fraction": 0.008418083190917969
+        },
+        {
+          "view": 33,
+          "image_disocclusion_fraction_any_sample": 0.0107879638671875,
+          "aperture_ray_disocclusion_fraction": 0.0011806488037109375,
+          "known_aperture_ray_fraction": 0.994715690612793,
+          "aperture_mesh_hit_fraction": 1.0,
+          "unknown_aperture_ray_fraction": 0.005284309387207031
+        }
+      ],
+      "mean_image_disocclusion_fraction": 0.006825764973958333,
+      "geometry_source": "provided PLY triangle mesh; Blender camera axes converted to OpenCV",
+      "mesh_axis_transform": [
+        1,
+        -1,
+        1
+      ],
+      "temporal_correspondence": "mesh time not specified; NOT validated per-frame GT",
+      "elapsed_seconds": 3.990209963172674,
+      "occlusion_tolerance": {
+        "absolute_m": 0.0001,
+        "relative_to_hit_range": 0.0001,
+        "combination": "maximum"
+      }
+    },
+    {
+      "scene": "cat",
+      "parameters": {
+        "effect_scene": "livingroom_cat",
+        "focal_length_mm": 35.0,
+        "sensor_size_mm": 36.0,
+        "focus_distance_m": 2.21,
+        "fstop": 0.5,
+        "aperture_radius_m": 0.035,
+        "blades": 0,
+        "ratio": 1.0
+      },
+      "resolution": [
+        256,
+        256
+      ],
+      "samples": 16,
+      "mesh_vertices": 829865,
+      "mesh_faces": 1633408,
+      "views": [
+        {
+          "view": 0,
+          "image_disocclusion_fraction_any_sample": 0.0279998779296875,
+          "aperture_ray_disocclusion_fraction": 0.0036516189575195312,
+          "known_aperture_ray_fraction": 0.9537620544433594,
+          "aperture_mesh_hit_fraction": 1.0,
+          "unknown_aperture_ray_fraction": 0.046237945556640625
+        },
+        {
+          "view": 16,
+          "image_disocclusion_fraction_any_sample": 0.0368194580078125,
+          "aperture_ray_disocclusion_fraction": 0.004741668701171875,
+          "known_aperture_ray_fraction": 0.9894504547119141,
+          "aperture_mesh_hit_fraction": 1.0,
+          "unknown_aperture_ray_fraction": 0.010549545288085938
+        },
+        {
+          "view": 33,
+          "image_disocclusion_fraction_any_sample": 0.00927734375,
+          "aperture_ray_disocclusion_fraction": 0.0010023117065429688,
+          "known_aperture_ray_fraction": 0.9930133819580078,
+          "aperture_mesh_hit_fraction": 1.0,
+          "unknown_aperture_ray_fraction": 0.0069866180419921875
+        }
+      ],
+      "mean_image_disocclusion_fraction": 0.024698893229166668,
+      "geometry_source": "provided PLY triangle mesh; Blender camera axes converted to OpenCV",
+      "mesh_axis_transform": [
+        1,
+        -1,
+        1
+      ],
+      "temporal_correspondence": "mesh time not specified; NOT validated per-frame GT",
+      "elapsed_seconds": 17.033499717712402,
+      "occlusion_tolerance": {
+        "absolute_m": 0.0001,
+        "relative_to_hit_range": 0.0001,
+        "combination": "maximum"
+      }
+    },
+    {
+      "scene": "cube",
+      "parameters": {
+        "effect_scene": "warehouse_cubes",
+        "focal_length_mm": 35.0,
+        "sensor_size_mm": 36.0,
+        "focus_distance_m": 7.462,
+        "fstop": 0.5,
+        "aperture_radius_m": 0.035,
+        "blades": 0,
+        "ratio": 1.0
+      },
+      "resolution": [
+        256,
+        256
+      ],
+      "samples": 16,
+      "mesh_vertices": 292055,
+      "mesh_faces": 509158,
+      "views": [
+        {
+          "view": 0,
+          "image_disocclusion_fraction_any_sample": 0.01806640625,
+          "aperture_ray_disocclusion_fraction": 0.0021772384643554688,
+          "known_aperture_ray_fraction": 0.9960041046142578,
+          "aperture_mesh_hit_fraction": 1.0,
+          "unknown_aperture_ray_fraction": 0.0039958953857421875
+        },
+        {
+          "view": 16,
+          "image_disocclusion_fraction_any_sample": 0.0138702392578125,
+          "aperture_ray_disocclusion_fraction": 0.00179290771484375,
+          "known_aperture_ray_fraction": 0.9973926544189453,
+          "aperture_mesh_hit_fraction": 1.0,
+          "unknown_aperture_ray_fraction": 0.0026073455810546875
+        },
+        {
+          "view": 33,
+          "image_disocclusion_fraction_any_sample": 0.0206451416015625,
+          "aperture_ray_disocclusion_fraction": 0.0035314559936523438,
+          "known_aperture_ray_fraction": 0.9975452423095703,
+          "aperture_mesh_hit_fraction": 0.9999990463256836,
+          "unknown_aperture_ray_fraction": 0.0024547576904296875
+        }
+      ],
+      "mean_image_disocclusion_fraction": 0.017527262369791668,
+      "geometry_source": "provided PLY triangle mesh; Blender camera axes converted to OpenCV",
+      "mesh_axis_transform": [
+        1,
+        -1,
+        1
+      ],
+      "temporal_correspondence": "mesh time not specified; NOT validated per-frame GT",
+      "elapsed_seconds": 9.292703200131655,
+      "occlusion_tolerance": {
+        "absolute_m": 0.0001,
+        "relative_to_hit_range": 0.0001,
+        "combination": "maximum"
+      }
+    },
+    {
+      "scene": "lego",
+      "parameters": {
+        "effect_scene": "livingroom_lego",
+        "focal_length_mm": 35.0,
+        "sensor_size_mm": 36.0,
+        "focus_distance_m": 2.35,
+        "fstop": 0.5,
+        "aperture_radius_m": 0.035,
+        "blades": 0,
+        "ratio": 1.0
+      },
+      "resolution": [
+        256,
+        256
+      ],
+      "samples": 16,
+      "mesh_vertices": 2347513,
+      "mesh_faces": 3668094,
+      "views": [
+        {
+          "view": 0,
+          "image_disocclusion_fraction_any_sample": 0.0294952392578125,
+          "aperture_ray_disocclusion_fraction": 0.003993988037109375,
+          "known_aperture_ray_fraction": 0.9940586090087891,
+          "aperture_mesh_hit_fraction": 1.0,
+          "unknown_aperture_ray_fraction": 0.0059413909912109375
+        },
+        {
+          "view": 16,
+          "image_disocclusion_fraction_any_sample": 0.031341552734375,
+          "aperture_ray_disocclusion_fraction": 0.0038204193115234375,
+          "known_aperture_ray_fraction": 0.9954204559326172,
+          "aperture_mesh_hit_fraction": 1.0,
+          "unknown_aperture_ray_fraction": 0.0045795440673828125
+        },
+        {
+          "view": 33,
+          "image_disocclusion_fraction_any_sample": 0.00634765625,
+          "aperture_ray_disocclusion_fraction": 0.0008087158203125,
+          "known_aperture_ray_fraction": 0.9961833953857422,
+          "aperture_mesh_hit_fraction": 1.0,
+          "unknown_aperture_ray_fraction": 0.0038166046142578125
+        }
+      ],
+      "mean_image_disocclusion_fraction": 0.022394816080729168,
+      "geometry_source": "provided PLY triangle mesh; Blender camera axes converted to OpenCV",
+      "mesh_axis_transform": [
+        1,
+        -1,
+        1
+      ],
+      "temporal_correspondence": "mesh time not specified; NOT validated per-frame GT",
+      "elapsed_seconds": 39.22238979488611,
+      "occlusion_tolerance": {
+        "absolute_m": 0.0001,
+        "relative_to_hit_range": 0.0001,
+        "combination": "maximum"
+      }
+    },
+    {
+      "scene": "plant",
+      "parameters": {
+        "effect_scene": "bathroom_plant",
+        "focal_length_mm": 20.0,
+        "sensor_size_mm": 36.0,
+        "focus_distance_m": 0.5,
+        "fstop": 0.5,
+        "aperture_radius_m": 0.02,
+        "blades": 0,
+        "ratio": 1.0
+      },
+      "resolution": [
+        256,
+        256
+      ],
+      "samples": 16,
+      "mesh_vertices": 51002,
+      "mesh_faces": 84820,
+      "views": [
+        {
+          "view": 0,
+          "image_disocclusion_fraction_any_sample": 0.0705108642578125,
+          "aperture_ray_disocclusion_fraction": 0.016564369201660156,
+          "known_aperture_ray_fraction": 0.9866199493408203,
+          "aperture_mesh_hit_fraction": 1.0,
+          "unknown_aperture_ray_fraction": 0.013380050659179688
+        },
+        {
+          "view": 16,
+          "image_disocclusion_fraction_any_sample": 0.0321807861328125,
+          "aperture_ray_disocclusion_fraction": 0.0049571990966796875,
+          "known_aperture_ray_fraction": 0.9909257888793945,
+          "aperture_mesh_hit_fraction": 1.0,
+          "unknown_aperture_ray_fraction": 0.009074211120605469
+        },
+        {
+          "view": 33,
+          "image_disocclusion_fraction_any_sample": 0.04193115234375,
+          "aperture_ray_disocclusion_fraction": 0.006809234619140625,
+          "known_aperture_ray_fraction": 0.9936771392822266,
+          "aperture_mesh_hit_fraction": 1.0,
+          "unknown_aperture_ray_fraction": 0.0063228607177734375
+        }
+      ],
+      "mean_image_disocclusion_fraction": 0.048207600911458336,
+      "geometry_source": "provided PLY triangle mesh; Blender camera axes converted to OpenCV",
+      "mesh_axis_transform": [
+        1,
+        -1,
+        1
+      ],
+      "temporal_correspondence": "mesh time not specified; NOT validated per-frame GT",
+      "elapsed_seconds": 5.025017160922289,
+      "occlusion_tolerance": {
+        "absolute_m": 0.0001,
+        "relative_to_hit_range": 0.0001,
+        "combination": "maximum"
+      }
+    }
+  ],
+  "out_of_frame_and_missing_mesh_hits": "reported as unknown, excluded from occlusion; image fractions use full image area"
+}

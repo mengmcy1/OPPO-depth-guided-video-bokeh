@@ -1,0 +1,188 @@
+{
+  "synthetic": {
+    "finite_nonzero_gradients": {
+      "means": true,
+      "scales": true,
+      "opacity": true,
+      "rotation": true,
+      "colors": true,
+      "focus": true,
+      "radius": true,
+      "focus_field": true
+    },
+    "focus_plane_invariance_max_error": 1.4901161193847656e-08,
+    "scalar_constant_field_rgb_mae": 0.00012745114509016275,
+    "provenance_alpha_max_error": 5.960464477539063e-08,
+    "source_filter_passed": true,
+    "world_unit_rescale_max_error": 2.384185791015625e-07
+  },
+  "static_camvfx": [
+    {
+      "K": 1,
+      "elapsed_seconds": 0.005379032343626022,
+      "peak_allocated_mib": 228.01220703125,
+      "full": {
+        "pixels": 262144,
+        "fraction": 1.0,
+        "psnr": 26.820247650146484,
+        "ssim": 0.8784876465797424,
+        "lpips": null,
+        "lpips_status": "not_requested"
+      },
+      "covered": {
+        "pixels": 260686,
+        "fraction": 0.9944381713867188,
+        "psnr": 26.84629249572754,
+        "ssim": 0.8789333701133728,
+        "lpips": null,
+        "lpips_status": "not_requested"
+      },
+      "mean_alpha": 0.9849735498428345,
+      "pinhole_initialization_reference": {
+        "pixels": 262144,
+        "fraction": 1.0,
+        "psnr": 26.849058151245117,
+        "ssim": 0.8653018474578857,
+        "lpips": null,
+        "lpips_status": "not_requested"
+      }
+    },
+    {
+      "K": 4,
+      "elapsed_seconds": 0.01011260598897934,
+      "peak_allocated_mib": 318.87890625,
+      "full": {
+        "pixels": 262144,
+        "fraction": 1.0,
+        "psnr": 28.9727783203125,
+        "ssim": 0.9256670475006104,
+        "lpips": null,
+        "lpips_status": "not_requested"
+      },
+      "covered": {
+        "pixels": 260000,
+        "fraction": 0.9918212890625,
+        "psnr": 29.069934844970703,
+        "ssim": 0.928321897983551,
+        "lpips": null,
+        "lpips_status": "not_requested"
+      },
+      "mean_alpha": 0.9974688291549683
+    },
+    {
+      "K": 16,
+      "elapsed_seconds": 0.02764766290783882,
+      "peak_allocated_mib": 426.5849609375,
+      "full": {
+        "pixels": 262144,
+        "fraction": 1.0,
+        "psnr": 29.804134368896484,
+        "ssim": 0.9506890773773193,
+        "lpips": null,
+        "lpips_status": "not_requested"
+      },
+      "covered": {
+        "pixels": 259413,
+        "fraction": 0.9895820617675781,
+        "psnr": 29.885969161987305,
+        "ssim": 0.9531532526016235,
+        "lpips": null,
+        "lpips_status": "not_requested"
+      },
+      "mean_alpha": 0.9975448846817017
+    },
+    {
+      "K": 64,
+      "elapsed_seconds": 0.10159368067979813,
+      "peak_allocated_mib": 1042.0166015625,
+      "full": {
+        "pixels": 262144,
+        "fraction": 1.0,
+        "psnr": 29.824983596801758,
+        "ssim": 0.9520331025123596,
+        "lpips": null,
+        "lpips_status": "not_requested"
+      },
+      "covered": {
+        "pixels": 260123,
+        "fraction": 0.9922904968261719,
+        "psnr": 29.897756576538086,
+        "ssim": 0.9538658857345581,
+        "lpips": null,
+        "lpips_status": "not_requested"
+      },
+      "mean_alpha": 0.997765302658081
+    }
+  ],
+  "scale": {
+    "world_units": "dataset meters",
+    "focus_distance_m": 0.7,
+    "aperture_radius_m": 0.02,
+    "geometry": "provided mesh vertices with explicit Y reflection; no learned scale"
+  },
+  "status": "minimal_gpu_correctness_checks_passed",
+  "gpu": "NVIDIA GeForce RTX 4090 D",
+  "gsplat_version": "1.5.0",
+  "gsplat_revision": "a148287c4f30012023dd71f6e2f788606bdadc00",
+  "renderer_module": "src/aperture_renderer.py",
+  "P4_module": "src/aperture_renderer.py",
+  "P5_module": "src/aperture_metrics.py",
+  "derived_outputs": "outputs/route3-prep-2026-11-09/renderer-validation-01/",
+  "initialization": "Supplied Y-reflected triangle mesh first-hit depths; RGB from views 0/16/33, frame1; fixed per-pixel Gaussian initialization with no optimization.",
+  "static_probe_source_labels": "View IDs at one scene frame, not temporal evidence. MoVieS preparation uses actual input-frame IDs.",
+  "limits": [
+    "Single static initialization; mesh timestamp unspecified. Not a dynamic reconstruction or full-dataset evaluation.",
+    "Residual RGB discrepancy includes initial Gaussian prefiltering and multiview color/coverage errors; pinhole initialization PSNR is 26.849 dB.",
+    "LPIPS not requested for this minimal check."
+  ],
+  "timing_scope": "CUDA synchronized, excludes geometry loading, metric calculation and file I/O; after synthetic warmup; includes per-source contributions and returned sample depths/rays. Peak allocated includes loaded geometry tensors.",
+  "interface_checks": {
+    "identical": {
+      "pixels": 256,
+      "fraction": 1.0,
+      "psnr": 120.0,
+      "ssim": 1.0,
+      "lpips": null,
+      "lpips_status": "not_requested"
+    },
+    "empty": {
+      "pixels": 0,
+      "fraction": 0.0,
+      "psnr": null,
+      "ssim": null,
+      "lpips": null,
+      "lpips_status": "not_requested"
+    },
+    "zero_flow": {
+      "valid_pixels": 256,
+      "valid_fraction": 1.0,
+      "warp_l1": 0.0,
+      "reference_corrected_warp_l1": 0.0
+    },
+    "balanced_aperture_mean": [
+      0.0,
+      0.0
+    ],
+    "max_aperture_radius": 0.029047375544905663,
+    "GPU_renderer_tested": false,
+    "two_plane_disocclusion_geometry": {
+      "mask_matches_independent_ray_construction": true,
+      "image_fraction": 0.125,
+      "expected_image_fraction": 0.125,
+      "known_ray_fraction": 1.0
+    }
+  },
+  "O_definition": {
+    "O_other_or_hole": "other_frame_weight + hole_fraction = 1 - current_frame_support",
+    "observed_support": "total alpha from all included frames",
+    "pending_protocol_issue": "Plan names other-or-hole fraction O but says low O triggers repair; choose one convention before training."
+  },
+  "rgb_io_checks": {
+    "8_bit_box_inputs_and_GT_identical_to_validated_run": true,
+    "16_bit_ball_preserved": true,
+    "new_full_renderer_run_required": false,
+    "GPU_reference_normalization_max_difference": 5.960464477539063e-08,
+    "GPU_reference_bit_identical": false
+  },
+  "metric_input_precision": "box is RGB8; existing measured scores use the original loader. Generic reader preserves RGB16; box CPU RGB arrays are identical and GPU normalization differs at most by the measured float32 roundoff."
+}
