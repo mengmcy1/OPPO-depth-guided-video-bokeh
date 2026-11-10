@@ -1,0 +1,490 @@
+{
+  "schema_version": 1,
+  "frozen": true,
+  "frozen_at_utc": "2026-11-10T12:03:01.493199+00:00",
+  "base_code_revision": "51854dfbce5c53ce2ef55bd31951437503a0767a",
+  "method_outputs_existed_at_freeze": false,
+  "scope": {
+    "primary_scene": "B2-high",
+    "control_scene": "B2-low",
+    "resolution": [
+      512,
+      512
+    ],
+    "representative_frames": [
+      1,
+      30,
+      60
+    ],
+    "representative_reason": "fixed before method outputs: first, middle and last actual input show distinct sphere and handheld-camera occlusion states",
+    "input_frames": [
+      1,
+      6,
+      11,
+      16,
+      21,
+      26,
+      30,
+      35,
+      40,
+      45,
+      50,
+      55,
+      60
+    ],
+    "focuses": {
+      "B2-high": [
+        1.4,
+        5.0
+      ],
+      "B2-low": [
+        5.3,
+        8.4
+      ]
+    },
+    "primary_fstops": [
+      1.4,
+      2.0
+    ],
+    "pressure_fstops": [
+      0.5
+    ],
+    "auxiliary_fstops": [
+      2.8
+    ],
+    "auxiliary_formal_rendered": false,
+    "no_cross_focus_pooling_for_decisions": true,
+    "planned_main_groups_per_focus": 6,
+    "planned_group_count": 36,
+    "limitation": "one controlled high-CoC main scene plus one related low-CoC control;3 frames;6 main groups/focus, not independent scene samples or a generalization test"
+  },
+  "primary_fstops": [
+    1.4,
+    2.0
+  ],
+  "pressure_fstops": [
+    0.5
+  ],
+  "min_pixels": 1000,
+  "min_groups": 6,
+  "psnr_gain_dB": 0.5,
+  "lpips_change_max": -0.01,
+  "same_direction_fraction": 0.75,
+  "guardrail_max_psnr_drop_dB": 0.2,
+  "secondary_lpips_worsening_max": 0.002,
+  "decision": {
+    "primary_method": "O6-GT-rec",
+    "mechanism_comparator": "O5",
+    "method_value_comparators": [
+      "O3",
+      "DrBokeh_GT"
+    ],
+    "improvement_gate": "pooled PSNR gain>=0.5dB OR pooled patch LPIPS change<=-0.01; PSNR must not drop>0.2dB and LPIPS must not increase>0.002",
+    "same_direction": "for each comparator separately, combo PSNR gain>0 AND patch LPIPS change<0; require ceil(.75*eligible_count),5 of6",
+    "stable_gate": "each focus independently; no cross-focus average or vote",
+    "mechanism": "O6-GT-rec vs O5 improvement+direction gates",
+    "method_value": "O6-GT-rec vs BOTH O3 and Oracle-input DrBokeh improvement+direction gates",
+    "overall": "mechanism and method-value gates plus full-image and in-focus PSNR guardrails, separately per focus; one focus passing is conditional effectiveness",
+    "all_minus_rec": "O6-GT-all minus O6-GT-rec diagnostic quality difference, never recoverable-content fraction"
+  },
+  "eligibility": {
+    "rule": "only main-fstop groups with pairmax CoC median>=3px and clean recoverable ROI>=1000; high needs all6 planned main groups/focus",
+    "CoC": "median max(abs(CoC_blocking),abs(CoC_hidden)) on mesh-derived true aperture-hidden rays; individual hidden/blocking/current distributions also reported",
+    "low_CoC_threshold_px": 3.0,
+    "control": "low-CoC combinations separately reported descriptively, excluded from primary pass/fail and high-scene minimum-count gate",
+    "subclasses": "motion-required/parallax-sufficient/unrecoverable always reported, even when individually below1000; primary minimum applies to recoverable total",
+    "pre_method_geometry": {
+      "B2-low": {
+        "5.3": [
+          {
+            "frame": 1,
+            "fstop": 1.4,
+            "recoverable_pixels": 987,
+            "CoC_pairmax_median_px": 0.8750294148921967,
+            "low_CoC": true,
+            "eligible": false
+          },
+          {
+            "frame": 1,
+            "fstop": 2.0,
+            "recoverable_pixels": 727,
+            "CoC_pairmax_median_px": 0.6127465963363647,
+            "low_CoC": true,
+            "eligible": false
+          },
+          {
+            "frame": 30,
+            "fstop": 1.4,
+            "recoverable_pixels": 1231,
+            "CoC_pairmax_median_px": 0.8865060210227966,
+            "low_CoC": true,
+            "eligible": false
+          },
+          {
+            "frame": 30,
+            "fstop": 2.0,
+            "recoverable_pixels": 694,
+            "CoC_pairmax_median_px": 0.6184775531291962,
+            "low_CoC": true,
+            "eligible": false
+          },
+          {
+            "frame": 60,
+            "fstop": 1.4,
+            "recoverable_pixels": 993,
+            "CoC_pairmax_median_px": 0.8770940899848938,
+            "low_CoC": true,
+            "eligible": false
+          },
+          {
+            "frame": 60,
+            "fstop": 2.0,
+            "recoverable_pixels": 738,
+            "CoC_pairmax_median_px": 0.6137332320213318,
+            "low_CoC": true,
+            "eligible": false
+          }
+        ],
+        "8.4": [
+          {
+            "frame": 1,
+            "fstop": 1.4,
+            "recoverable_pixels": 925,
+            "CoC_pairmax_median_px": 0.8854306936264038,
+            "low_CoC": true,
+            "eligible": false
+          },
+          {
+            "frame": 1,
+            "fstop": 2.0,
+            "recoverable_pixels": 641,
+            "CoC_pairmax_median_px": 0.6199147701263428,
+            "low_CoC": true,
+            "eligible": false
+          },
+          {
+            "frame": 30,
+            "fstop": 1.4,
+            "recoverable_pixels": 1283,
+            "CoC_pairmax_median_px": 0.8538775444030762,
+            "low_CoC": true,
+            "eligible": false
+          },
+          {
+            "frame": 30,
+            "fstop": 2.0,
+            "recoverable_pixels": 1005,
+            "CoC_pairmax_median_px": 0.6015358567237854,
+            "low_CoC": true,
+            "eligible": false
+          },
+          {
+            "frame": 60,
+            "fstop": 1.4,
+            "recoverable_pixels": 896,
+            "CoC_pairmax_median_px": 0.8741410374641418,
+            "low_CoC": true,
+            "eligible": false
+          },
+          {
+            "frame": 60,
+            "fstop": 2.0,
+            "recoverable_pixels": 639,
+            "CoC_pairmax_median_px": 0.611689031124115,
+            "low_CoC": true,
+            "eligible": false
+          }
+        ]
+      },
+      "B2-high": {
+        "1.4": [
+          {
+            "frame": 1,
+            "fstop": 1.4,
+            "recoverable_pixels": 15560,
+            "CoC_pairmax_median_px": 6.449683904647827,
+            "low_CoC": false,
+            "eligible": true
+          },
+          {
+            "frame": 1,
+            "fstop": 2.0,
+            "recoverable_pixels": 10972,
+            "CoC_pairmax_median_px": 4.514832019805908,
+            "low_CoC": false,
+            "eligible": true
+          },
+          {
+            "frame": 30,
+            "fstop": 1.4,
+            "recoverable_pixels": 17814,
+            "CoC_pairmax_median_px": 6.4625935554504395,
+            "low_CoC": false,
+            "eligible": true
+          },
+          {
+            "frame": 30,
+            "fstop": 2.0,
+            "recoverable_pixels": 12348,
+            "CoC_pairmax_median_px": 4.52382755279541,
+            "low_CoC": false,
+            "eligible": true
+          },
+          {
+            "frame": 60,
+            "fstop": 1.4,
+            "recoverable_pixels": 15560,
+            "CoC_pairmax_median_px": 6.451234340667725,
+            "low_CoC": false,
+            "eligible": true
+          },
+          {
+            "frame": 60,
+            "fstop": 2.0,
+            "recoverable_pixels": 10851,
+            "CoC_pairmax_median_px": 4.515699148178101,
+            "low_CoC": false,
+            "eligible": true
+          }
+        ],
+        "5.0": [
+          {
+            "frame": 1,
+            "fstop": 1.4,
+            "recoverable_pixels": 11548,
+            "CoC_pairmax_median_px": 6.127555847167969,
+            "low_CoC": false,
+            "eligible": true
+          },
+          {
+            "frame": 1,
+            "fstop": 2.0,
+            "recoverable_pixels": 8986,
+            "CoC_pairmax_median_px": 4.2870659828186035,
+            "low_CoC": false,
+            "eligible": true
+          },
+          {
+            "frame": 30,
+            "fstop": 1.4,
+            "recoverable_pixels": 13061,
+            "CoC_pairmax_median_px": 6.097740650177002,
+            "low_CoC": false,
+            "eligible": true
+          },
+          {
+            "frame": 30,
+            "fstop": 2.0,
+            "recoverable_pixels": 9789,
+            "CoC_pairmax_median_px": 4.268075466156006,
+            "low_CoC": false,
+            "eligible": true
+          },
+          {
+            "frame": 60,
+            "fstop": 1.4,
+            "recoverable_pixels": 11193,
+            "CoC_pairmax_median_px": 6.213453769683838,
+            "low_CoC": false,
+            "eligible": true
+          },
+          {
+            "frame": 60,
+            "fstop": 2.0,
+            "recoverable_pixels": 9063,
+            "CoC_pairmax_median_px": 4.316028594970703,
+            "low_CoC": false,
+            "eligible": true
+          }
+        ]
+      }
+    }
+  },
+  "regions": {
+    "primary": "mask_recoverable_total, actual visibility in other12 input frames, with any residual ray pixel excluded",
+    "motion": "mask_motion_required; no parallax-only sufficiency, includes joint-only mixed separately retained",
+    "parallax": "mask_parallax_sufficient; precedence if both factors suffice",
+    "unrecoverable": "mask_unrecoverable",
+    "residual": "residual_pixels: count separately; excluded from primary/subregion scoring",
+    "full_image": "all512x512 pixels, including sky and residuals; true full-image guardrail",
+    "in_focus": "finite center surface & abs(fx*a*(1/z-1/F))<=1pixel, includes residuals as guardrail",
+    "visibility_tolerance_m": 0.0001,
+    "alpha": "4x4 deterministic subpixel foreground coverage; not a learned segmentation"
+  },
+  "statistics": {
+    "PSNR": "pool float64 RGB SSE/(3*validpixels) across eligible main frames/apertures within EACH scene and focus, then -10log10; report each aperture separately too",
+    "patch_size": 64,
+    "LPIPS_net": "alex",
+    "LPIPS_version": "0.1",
+    "LPIPS_spatial": false,
+    "patch": "fixed64px nonoverlapping grid, whole unmasked RGB patch; region score weighted by region pixel support; pool across items by regional pixel count",
+    "patch_limitation": "receptive field includes pixels outside narrow region; no mask-outside zeroing",
+    "RGB": "all methods common display sRGBfloat[0,1], inputs from clipped scene-linear pinholes; GT unclipped EXR only converted/clipped for quality; raw linear retained for noise",
+    "bootstrap_or_independent_sample_claim": false
+  },
+  "optics": {
+    "K": 16,
+    "disk": "deterministic antithetic equal-area golden-angle, same analytic samples as geometric GT",
+    "scale": "meters, same GT camera/lens for all3D groups",
+    "focal_length_mm": 50,
+    "focus": "axial camera depth",
+    "threeD_color": "standard sRGB inverse, integrate linear RGB then standard sRGB output",
+    "pixel_initialization": {
+      "subdivisions": 5,
+      "sigma_pixels": 0.7,
+      "opacity": 0.999,
+      "eps2d": 0.0015,
+      "no_color_or_geometry_optimization": true,
+      "evidence": "independent synthetic checker K1 PSNR82.66dB and off-grid plane minimumalpha.9915 before any B2 method output"
+    },
+    "C_fill": {
+      "function": "one fixed LaMa fill per scene/frame; project lens-ray point at local deep-static background axial depth back to center",
+      "fill_mask": "GTforeground_alpha>.1,5x5ones dilation2iterations (official DrBokeh BG convention)",
+      "uses_GT_foreground_segmentation": true,
+      "uses_true_hidden_depth": true,
+      "geometry_oracle_setting": true,
+      "composition": "merge visible+hidden Gaussians, depth sort per subcamera, sumTalphaC, then remaining T*Cfill, averageK; never precover hidden with LaMa",
+      "background_depth_convention": "local deep-static center depth after all semanticFG removed; zero=no finite surface ->10km approximation",
+      "border_sampling": "shared border extension, report projected-outside fraction",
+      "notes": "local plane and Gaussian discretization, not a perfect optical Oracle"
+    },
+    "sky": {
+      "method_depth_m": 10000.0,
+      "keep_original_zero_and_known_mask": true,
+      "not_a_GT_recoverable_surface": true
+    },
+    "BokehMe": {
+      "physical_control": "fx*a*(1/z-1/F)/10",
+      "gamma": 2.2,
+      "defocus_scale": 10.0,
+      "recalibrated": false
+    },
+    "DrBokeh": {
+      "label": "Oracle-input Dr.Bokeh",
+      "GT_depth": true,
+      "GT_alpha": true,
+      "lens": 71,
+      "normal_inference": false,
+      "GT_hidden_RGB": false
+    },
+    "HDR": "common LDR inputs for all methods, no extra HDR energy for3D; record clipped pixel fractions"
+  },
+  "noise": {
+    "record": "route3-c1-b2-2026-11-10-noise.json",
+    "accepted_worst_mean_or_boundary_weighted_patch_LPIPS": 0.00040216923043456744,
+    "official_threshold_rationale": "retain0.01; observed accepted patch-noise is below0.002 budget and far below0.01; choose before method results",
+    "formal_samples": [
+      {
+        "scene": "B2-high",
+        "fstop": 0.5,
+        "focus_m": 1.4,
+        "samples": 2048,
+        "formal_role": "pressure",
+        "source": "current independent-pair checks"
+      },
+      {
+        "scene": "B2-high",
+        "fstop": 0.5,
+        "focus_m": 5.0,
+        "samples": 1024,
+        "formal_role": "pressure",
+        "source": "current independent-pair checks"
+      },
+      {
+        "scene": "B2-high",
+        "fstop": 1.4,
+        "focus_m": 1.4,
+        "samples": 2048,
+        "formal_role": "primary",
+        "source": "current independent-pair checks"
+      },
+      {
+        "scene": "B2-high",
+        "fstop": 1.4,
+        "focus_m": 5.0,
+        "samples": 1024,
+        "formal_role": "primary",
+        "source": "current independent-pair checks"
+      },
+      {
+        "scene": "B2-high",
+        "fstop": 2.0,
+        "focus_m": 1.4,
+        "samples": 1024,
+        "formal_role": "primary",
+        "source": "current independent-pair checks"
+      },
+      {
+        "scene": "B2-high",
+        "fstop": 2.0,
+        "focus_m": 5.0,
+        "samples": 1024,
+        "formal_role": "primary",
+        "source": "current independent-pair checks"
+      },
+      {
+        "scene": "B2-low",
+        "fstop": 0.5,
+        "focus_m": 5.3,
+        "samples": 2048,
+        "formal_role": "pressure",
+        "source": "B1 validated sample configuration reused"
+      },
+      {
+        "scene": "B2-low",
+        "fstop": 0.5,
+        "focus_m": 8.4,
+        "samples": 2048,
+        "formal_role": "pressure",
+        "source": "B1 validated sample configuration reused"
+      },
+      {
+        "scene": "B2-low",
+        "fstop": 1.4,
+        "focus_m": 5.3,
+        "samples": 512,
+        "formal_role": "primary",
+        "source": "B1 validated sample configuration reused"
+      },
+      {
+        "scene": "B2-low",
+        "fstop": 1.4,
+        "focus_m": 8.4,
+        "samples": 512,
+        "formal_role": "primary",
+        "source": "B1 validated sample configuration reused"
+      },
+      {
+        "scene": "B2-low",
+        "fstop": 2.0,
+        "focus_m": 5.3,
+        "samples": 512,
+        "formal_role": "primary",
+        "source": "current independent-pair checks"
+      },
+      {
+        "scene": "B2-low",
+        "fstop": 2.0,
+        "focus_m": 8.4,
+        "samples": 512,
+        "formal_role": "primary",
+        "source": "current independent-pair checks"
+      }
+    ]
+  },
+  "prerequisites": {
+    "noise_passed": true,
+    "full_geometry_and_surface_ID_validated": true,
+    "reference76_visible_area_checks_passed": true,
+    "ray_residual_fractions": {
+      "B2-high": 7.843898940700124e-05,
+      "B2-low": 6.411232479303741e-05
+    },
+    "reference_check_record": "route3-c1-b2-2026-11-10-reference-checks.json"
+  },
+  "interpretations": [
+    "O6-GT-rec is the GT Oracle for recoverable surfaces, not an actual method upper bound",
+    "O6-minus-O3 and O6-minus-DrBokeh jointly change representation/rendering/hidden information; not single-factor causation",
+    "do not promote positive results from one focus to overall success or cross-scene generalization"
+  ]
+}
