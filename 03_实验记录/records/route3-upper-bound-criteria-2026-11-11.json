@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "stage": "U0/U1/U2 training-before upper bound and fairness",
+  "frozen": true,
+  "frozen_at_utc": "2026-11-10T17:24:34.633952+00:00",
+  "authorization": "user explicit U0/U1/U2 protocol and start approval; supersedes earlier no scene optimization scope",
+  "any_U0_U1_U2_metrics_computed_at_freeze": false,
+  "baseline_commit": "7dea2e9",
+  "output": "outputs/route3-upper-bound-2026-11-11-01",
+  "scope": {
+    "primary_scene": "B2-high",
+    "frames": [
+      1,
+      30,
+      60
+    ],
+    "input_frames": [
+      1,
+      6,
+      11,
+      16,
+      21,
+      26,
+      30,
+      35,
+      40,
+      45,
+      50,
+      55,
+      60
+    ],
+    "focuses_m": [
+      1.4,
+      5.0
+    ],
+    "fstops": [
+      1.4,
+      2.0
+    ],
+    "groups_per_focus": 6,
+    "optional_not_scheduled": [
+      "B2-low",
+      "U1b",
+      "larger DA3 weights"
+    ]
+  },
+  "inherited_L2_criteria": "03_实验记录/records/route3-dual-layer-criteria-L2-2026-11-11.json",
+  "statistics": {
+    "PSNR": "poolfloat64SSE/(3validpixels), then -10log10; independently per scene/focus, each aperture also reported",
+    "patch_size": 64,
+    "LPIPS_net": "alex",
+    "LPIPS_version": "0.1",
+    "LPIPS_package": "0.1.4",
+    "LPIPS_spatial": false,
+    "patch_pool": "whole unmasked fixed64px grid weighted by regional pixel support",
+    "RGB": "standard displayRGBfloat[0,1];raw linearEXR retained;3D integrates true linearRGB",
+    "full_image": "all pixels including sky and peeled-reference residuals",
+    "in_focus": "finite current-visible GTdepth,absCoC<=1px;residuals retained"
+  },
+  "band": {
+    "multiplier": 1.5,
+    "relative_inverse_depth_jump": 0.03,
+    "minimum_radius_px": 1.0,
+    "definition": "3x3 relative inverse-depth jump, union of max-local-CoC1.5x footprints; exclusively target current visible depth",
+    "GT_hidden_used_for_construction": false,
+    "primary_evaluation": "band excluding previously flagged peeled-reference residual pixels;band itself is never GT-filtered",
+    "report": "independent disocclusionGT recall/precision/FP/FN, unknownGT support and CoC distribution; no tuning toGT recall"
+  },
+  "quality": {
+    "PSNR_gain_dB": 0.5,
+    "LPIPS_relative_drop": 0.1,
+    "LPIPS_drop_must_exceed_noise_multiple": 3,
+    "OR_rule": "PSNRgain>=0.5 OR relativeLPIPSdrop>=10% AND absoluteLPIPSdrop>3noise",
+    "secondary": "bandPSNR drop<=0.2dB and LPIPSworsening<=3noise",
+    "direction": "PSNRgain>0 AND LPIPSchange<-3noise;absLPIPSchange<=3noise is tie,not direction improvement or significant deterioration",
+    "guardrails": "per-focus pooled full-image and in-focus PSNR versusO3 each drop<=0.2dB; individual cases also reported"
+  },
+  "noise": {
+    "per_lens_band": {
+      "N1.4-F1.4": 6.890230572564765e-05,
+      "N1.4-F5": 0.00015369987618877754,
+      "N2-F1.4": 0.00010956290865626447,
+      "N2-F5": 0.00013720452299674835
+    },
+    "source": "L1 preregistered band-weighted independent Cycles pairs at frames1/30;maximum corresponding lens pair used forframe60",
+    "is_confidence_interval": false
+  },
+  "sample_validity": {
+    "minimum_pixels_per_group": 1000,
+    "required_groups_per_focus": 6,
+    "same_direction_required": 5,
+    "focuses_never_pooled_for_decision": true
+  },
+  "regions": [
+    "full_image",
+    "in_focus",
+    "out_of_focus",
+    "band",
+    "recoverable",
+    "motion_required",
+    "parallax_sufficient"
+  ],
+  "LPIPS_full_image_tie": {
+    "rule": "absolute difference <=3 times maximum independent-pair whole-image patch LPIPS at same lens and formal B2 SPP, frames1/30; frame60 uses maximum; existing B2 noise record only",
+    "source": "route3-c1-b2-2026-11-10-noise.json",
+    "not_confidence_interval": true
+  },
+  "U0": {
+    "representation": "actual Blender pinhole light field, no Gaussian appearance approximation",
+    "K": 64,
+    "sample_pattern": "src.aperture_renderer.aperture_disk(64), fixed antithetic equal-area disk",
+    "integration": "unclipped scene-linear mean, then existing displayRGB clipping for metrics",
+    "spp_initial": 1024,
+    "noise_check": "pilot independent seed; noise compared with existing formal B2 independent noise; if too high use2048 for all evaluation subviews at that lens before full rendering",
+    "geometry_check": "same normalized pixel rays and focal plane; compare Blender projection matrix with exported OpenCV K/E; max projected testpoint difference0.05px; inspect same-subcamera Blender and GT GS overlay",
+    "reported": [
+      "all region PSNR and fixed patch LPIPS",
+      "differences versus O3 and unoptimized L2",
+      "fixed64 integration error and GT noise"
+    ],
+    "numeric_pass_fail": "report only, as requested; no invented retrospective numerical threshold; interpret residuals against O3/L2 and noise"
+  },
+  "U1": {
+    "visible": "same observed-sky V-G initialization as correctedL2",
+    "hidden": "fixed O6-GT-rec; source parents restricted by current-visible-depth method band; no scoring masks in training",
+    "training_views_per_frame": 64,
+    "heldout_views_per_frame": 16,
+    "center_view": true,
+    "training_pattern": "independent randomized disk, seed2026111101; evaluation fixed64 positions excluded",
+    "maximum_disk_radius_m": 0.01785714285714286,
+    "one_representation_per_frame_for_all_lenses": true,
+    "loss": "0.8 L1 +0.2(1-SSIM), full unmasked training images in standard displayRGB; no DOF supervision; no LPIPS loss",
+    "optimization_budget": "up to8000 steps/frame; all5 attribute types optimized; no densification; heldout every500; training-only final checkpoint, heldout never selects checkpoint",
+    "small_position_bound": "per Gaussian world displacement norm <=min(0.02m,0.01*initial axial depth); observed sky same relative bound",
+    "overfit_stop": "after1000 steps, training-view PSNR exceeds heldout by>3dB for3 consecutive monitors; nonfinite loss or persistent training loss failure also stops and reports",
+    "formal_method_value": "same inherited L2 quality+secondary+>=5/6 significant directions+full/focus >=-0.2dB versus O3; mechanism versus its same-optimized-visible no-hidden control also reported",
+    "worth_training": "at least onefocus passes formal_method_value AND pooled full-image PSNR gain overO3>=0.5dB AND full-image LPIPS not worse beyond3noise",
+    "comparators": [
+      "O3 GT-depth",
+      "corrected unoptimized L2",
+      "optimized visible-only control"
+    ]
+  },
+  "U2": {
+    "weights": "existing local DA3-BASE Apache-2.0",
+    "inference": "one joint13-input-frame inference, no target DOF or GT geometry input",
+    "alignment": "one Umeyama Sim3 fitted to13 GT and predicted camera centers; rigid orientation consistency reported; same one global scale for every depth; no per-frame or per-region correction",
+    "variants": {
+      "E1": "globally scaled DA3 depths +GT poses",
+      "E2": "same scaled DA3 depths +Sim3-aligned DA3 poses"
+    },
+    "methods": [
+      "O3 same DA3 depth/physicalCoC calibration",
+      "ours observed-skyVG + sameL3 retrieval + predicted-depth band + input-onlyLaMa fill",
+      "O5 visible-only",
+      "descriptive O3 outside+ours inside (not method)"
+    ],
+    "GT_geometry_ours_reference": "existing corrected L3, not U1 optimized Oracle; same input RGB and retrieval rule",
+    "GT_allowed": "single global coordinate alignment and evaluator only; no GT hidden geometry/labels/masks in prediction",
+    "degradation": "Delta_ours=ours(E)-ours(GT geometry);Delta_O3=O3(E)-O3(GT depth); report in GT-defined band/recoverable/full",
+    "formal_pass": "at least onefocus pooled band Delta_ours-Delta_O3>=0.3dB AND>=5/6 case PSNR degradation advantages>0 AND same full/focus direct-comparison O3(E) guardrails>=-0.2dB; LPIPS degradation and direct method comparison reported",
+    "geometry_stop": "joint inference nonfinite/fails, invalidSim3, or no stable depth bands with>=1000 pixels; report before expanding scope"
+  },
+  "limits": [
+    "one controlledmain scene,3 representativeframes,6 lensconditions per focus; correlated repeatedpixels are not independent scene samples",
+    "U1 is per-scene optimized proxy, not proof of attainable feedforward performance",
+    "O5/O6 are not perfect optical Oracles",
+    "U2 relative robustness is empirical evidence or counterevidence only within this scene"
+  ],
+  "old_results_or_criteria_modified": false,
+  "deadline": "2026-11-18 approximately; report incomplete items and causes rather than expand scope"
+}
