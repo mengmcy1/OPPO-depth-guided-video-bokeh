@@ -1,0 +1,405 @@
+{
+  "status": "C3 official sample and B2-high single/all sources; C4 same-forward known-motion diagnosis complete",
+  "scope": {
+    "official_samples": 1,
+    "B2_scenes": 1,
+    "input_frames_each": 13,
+    "query_times_each": 3,
+    "B2_original_query_frames": [
+      1,
+      30,
+      60
+    ],
+    "official_query_slots": [
+      1,
+      7,
+      13
+    ],
+    "C4_source_query_pairs": 39,
+    "C4_categories": [
+      "dynamic sphere",
+      "static objects"
+    ],
+    "independent_scenes_not_groups": true
+  },
+  "evidence_records": {
+    "official": "03_\u5b9e\u9a8c\u8bb0\u5f55/records/route3-c1-b2only-2026-11-10-movies-official.json",
+    "B2": "03_\u5b9e\u9a8c\u8bb0\u5f55/records/route3-c1-b2only-2026-11-10-movies-B2-high.json",
+    "normalization": "03_\u5b9e\u9a8c\u8bb0\u5f55/records/route3-c1-b2only-2026-11-10-movies-input-normalization.json",
+    "motion": "03_\u5b9e\u9a8c\u8bb0\u5f55/records/route3-c1-b2only-2026-11-10-movies-motion-GT.json",
+    "dynamic_render_error": "03_\u5b9e\u9a8c\u8bb0\u5f55/records/route3-c1-b2only-2026-11-10-movies-render-error.json"
+  },
+  "C3": {
+    "official": {
+      "input_shape": [
+        13,
+        3,
+        294,
+        518
+      ],
+      "frame_number_semantics": "one-based author NPZ slots, original DAVIS frame numbers unknown",
+      "model_load_seconds": 24.247162353247404,
+      "three_query_forward_seconds": 1.8139020204544067,
+      "forward_peak_allocated_mib": 9025.75390625,
+      "renders": [
+        {
+          "query_frame": 1,
+          "query_time": 0.0,
+          "all_source_gaussians": 1905008,
+          "current_source_gaussians": 151535,
+          "all_source_alpha_mean": 0.9120316505432129,
+          "current_source_alpha_mean": 0.2176864594221115,
+          "all_source_RGB_PSNR_diagnostic": 30.57857322692871,
+          "current_source_premultiplied_RGB_PSNR_diagnostic": 9.906943321228027,
+          "current_source_alpha_ge_05_fraction": 0.16863656044006348,
+          "all_source_alpha_ge_095_fraction": 0.38423553109169006
+        },
+        {
+          "query_frame": 7,
+          "query_time": 0.5,
+          "all_source_gaussians": 1906240,
+          "current_source_gaussians": 152260,
+          "all_source_alpha_mean": 0.9104575514793396,
+          "current_source_alpha_mean": 0.4703215956687927,
+          "all_source_RGB_PSNR_diagnostic": 31.793994903564453,
+          "current_source_premultiplied_RGB_PSNR_diagnostic": 13.608192443847656,
+          "current_source_alpha_ge_05_fraction": 0.40928611159324646,
+          "all_source_alpha_ge_095_fraction": 0.40900376439094543
+        },
+        {
+          "query_frame": 13,
+          "query_time": 1.0,
+          "all_source_gaussians": 1912611,
+          "current_source_gaussians": 148708,
+          "all_source_alpha_mean": 0.9074049592018127,
+          "current_source_alpha_mean": 0.20507051050662994,
+          "all_source_RGB_PSNR_diagnostic": 28.352886199951172,
+          "current_source_premultiplied_RGB_PSNR_diagnostic": 9.202178001403809,
+          "current_source_alpha_ge_05_fraction": 0.21225014328956604,
+          "all_source_alpha_ge_095_fraction": 0.36482545733451843
+        }
+      ]
+    },
+    "B2": {
+      "input_shape": [
+        13,
+        3,
+        518,
+        518
+      ],
+      "frame_number_semantics": "B2 original frame IDs",
+      "model_load_seconds": 24.171488359570503,
+      "three_query_forward_seconds": 2.2569505609571934,
+      "forward_peak_allocated_mib": 11307.70361328125,
+      "renders": [
+        {
+          "query_frame": 1,
+          "query_time": 0.0,
+          "all_source_gaussians": 3264463,
+          "current_source_gaussians": 261853,
+          "all_source_alpha_mean": 0.9536559581756592,
+          "current_source_alpha_mean": 0.36069321632385254,
+          "all_source_RGB_PSNR_diagnostic": 30.794715881347656,
+          "current_source_premultiplied_RGB_PSNR_diagnostic": 10.460588455200195,
+          "current_source_alpha_ge_05_fraction": 0.3127115070819855,
+          "all_source_alpha_ge_095_fraction": 0.6053875088691711
+        },
+        {
+          "query_frame": 30,
+          "query_time": 0.49152541160583496,
+          "all_source_gaussians": 3287983,
+          "current_source_gaussians": 267423,
+          "all_source_alpha_mean": 0.9534190893173218,
+          "current_source_alpha_mean": 0.3653799593448639,
+          "all_source_RGB_PSNR_diagnostic": 31.13134002685547,
+          "current_source_premultiplied_RGB_PSNR_diagnostic": 10.96631145477295,
+          "current_source_alpha_ge_05_fraction": 0.18752703070640564,
+          "all_source_alpha_ge_095_fraction": 0.5908192992210388
+        },
+        {
+          "query_frame": 60,
+          "query_time": 1.0,
+          "all_source_gaussians": 3264060,
+          "current_source_gaussians": 261141,
+          "all_source_alpha_mean": 0.954187273979187,
+          "current_source_alpha_mean": 0.1909341663122177,
+          "all_source_RGB_PSNR_diagnostic": 29.775142669677734,
+          "current_source_premultiplied_RGB_PSNR_diagnostic": 8.683740615844727,
+          "current_source_alpha_ge_05_fraction": 0.15676569938659668,
+          "all_source_alpha_ge_095_fraction": 0.6136834621429443
+        }
+      ]
+    }
+  },
+  "C4": {
+    "range_definition": "minimum and maximum of per-source/query group p50 or p90; not a pooled quantile, not independent repeated experiments",
+    "groups": {
+      "dynamic_same_frame": {
+        "groups": 3,
+        "source_visible_point_observations": 42058,
+        "GT_displacement_group_median_range_m": [
+          0.0,
+          0.0
+        ],
+        "endpoint_error_group_median_range_m": [
+          0.0002308671356590506,
+          0.0002308671356590506
+        ],
+        "endpoint_error_group_p90_range_m": [
+          0.0005162346193491926,
+          0.0009234685306234449
+        ],
+        "query_visible_point_observations": 42058,
+        "query_visible_points_per_group_range": [
+          12242,
+          17473
+        ],
+        "supported_2D_point_observations": 42058,
+        "query_visible_endpoint_error_group_median_range_m": [
+          0.0002308671356590506,
+          0.0002308671356590506
+        ],
+        "query_visible_2D_correspondence_error_group_median_range_pixels": [
+          0.10309305337369469,
+          0.10715505621072907
+        ],
+        "query_visible_2D_correspondence_error_group_p90_range_pixels": [
+          0.2269558753924361,
+          0.24156203270928195
+        ]
+      },
+      "dynamic_cross_frame": {
+        "groups": 36,
+        "source_visible_point_observations": 556625,
+        "GT_displacement_group_median_range_m": [
+          0.09983661777948413,
+          1.0886110257010153
+        ],
+        "endpoint_error_group_median_range_m": [
+          0.03775632681479929,
+          0.3047275754645818
+        ],
+        "endpoint_error_group_p90_range_m": [
+          0.05337214769771066,
+          0.4760827017501979
+        ],
+        "query_visible_point_observations": 244024,
+        "query_visible_points_per_group_range": [
+          77,
+          17396
+        ],
+        "supported_2D_point_observations": 244024,
+        "query_visible_endpoint_error_group_median_range_m": [
+          0.037416121546698766,
+          0.5122010478101425
+        ],
+        "query_visible_2D_correspondence_error_group_median_range_pixels": [
+          10.820540448958742,
+          179.13048193615916
+        ],
+        "query_visible_2D_correspondence_error_group_p90_range_pixels": [
+          15.989114226810525,
+          266.20148457953115
+        ]
+      },
+      "static_same_frame": {
+        "groups": 3,
+        "source_visible_point_observations": 686002,
+        "GT_displacement_group_median_range_m": [
+          0.0,
+          0.0
+        ],
+        "endpoint_error_group_median_range_m": [
+          0.0002308671356590506,
+          0.0004617342713181012
+        ],
+        "endpoint_error_group_p90_range_m": [
+          0.0005162346193545436,
+          0.0006926014215290668
+        ]
+      },
+      "static_cross_frame": {
+        "groups": 36,
+        "source_visible_point_observations": 8177249,
+        "GT_displacement_group_median_range_m": [
+          0.0,
+          0.0
+        ],
+        "endpoint_error_group_median_range_m": [
+          0.0004617342713181012,
+          0.0009518895740035274
+        ],
+        "endpoint_error_group_p90_range_m": [
+          0.000832403313906381,
+          0.0018469371311009097
+        ]
+      }
+    },
+    "source_sampling": "exact GT mesh first-hit rays at nominal518input pixel centers; no nearest512surface assignment",
+    "target_correspondence_support": "exact Embree query visibility on the same rigid local surface point, inside native512camera, tolerance1e-4m",
+    "source_displacement_support": "only source-visible finite surfaces; query-hidden surfaces still use known nonzero rigid GT displacement, never zero-filled for invisibility",
+    "visibility_observation_unit": "point observations repeat acrosssource/query combinations; not unique physical points or independent statistical samples",
+    "source_depth_not_validated": true,
+    "known_dynamic_render_error": {
+      "record": "03_\u5b9e\u9a8c\u8bb0\u5f55/records/route3-c1-b2only-2026-11-10-movies-render-error.json",
+      "rows": [
+        {
+          "query_frame": 1,
+          "source_mode": "all",
+          "pixels": 12343,
+          "RGB_sse": 19.95381852669554,
+          "RGB_psnr_dB": 32.685159655744826,
+          "alpha_mean": 0.9939442276954651,
+          "alpha_p10_p50_p90": [
+            0.9872074842453002,
+            0.996677815914154,
+            0.9991471409797669
+          ],
+          "full_image_RGB_psnr_crosscheck_dB": 30.794715162916173,
+          "prediction_cache": "outputs/route3-b2only-2026-11-10-01/movies-diagnostics/B2-high-inference/query-f001-all.npz"
+        },
+        {
+          "query_frame": 1,
+          "source_mode": "current",
+          "pixels": 12343,
+          "RGB_sse": 56.25888387790174,
+          "RGB_psnr_dB": 28.183508717815116,
+          "alpha_mean": 0.9563860893249512,
+          "alpha_p10_p50_p90": [
+            0.9303729772567749,
+            0.9708026051521301,
+            0.9891442179679871
+          ],
+          "full_image_RGB_psnr_crosscheck_dB": 10.460588394624313,
+          "prediction_cache": "outputs/route3-b2only-2026-11-10-01/movies-diagnostics/B2-high-inference/query-f001-current.npz"
+        },
+        {
+          "query_frame": 30,
+          "source_mode": "all",
+          "pixels": 17473,
+          "RGB_sse": 80.8700696997224,
+          "RGB_psnr_dB": 28.117009142136737,
+          "alpha_mean": 0.9948331117630005,
+          "alpha_p10_p50_p90": [
+            0.9910313606262207,
+            0.9970501065254211,
+            0.9992270350456238
+          ],
+          "full_image_RGB_psnr_crosscheck_dB": 31.13133982394023,
+          "prediction_cache": "outputs/route3-b2only-2026-11-10-01/movies-diagnostics/B2-high-inference/query-f030-all.npz"
+        },
+        {
+          "query_frame": 30,
+          "source_mode": "current",
+          "pixels": 17473,
+          "RGB_sse": 356.16993608972814,
+          "RGB_psnr_dB": 21.67831473273573,
+          "alpha_mean": 0.9240925908088684,
+          "alpha_p10_p50_p90": [
+            0.899217402935028,
+            0.967238187789917,
+            0.9842408180236817
+          ],
+          "full_image_RGB_psnr_crosscheck_dB": 10.966312384642006,
+          "prediction_cache": "outputs/route3-b2only-2026-11-10-01/movies-diagnostics/B2-high-inference/query-f030-current.npz"
+        },
+        {
+          "query_frame": 60,
+          "source_mode": "all",
+          "pixels": 12242,
+          "RGB_sse": 66.40088756137983,
+          "RGB_psnr_dB": 27.427997453878046,
+          "alpha_mean": 0.9840397834777832,
+          "alpha_p10_p50_p90": [
+            0.9714514076709747,
+            0.997407853603363,
+            0.9991428554058075
+          ],
+          "full_image_RGB_psnr_crosscheck_dB": 29.775141425941115,
+          "prediction_cache": "outputs/route3-b2only-2026-11-10-01/movies-diagnostics/B2-high-inference/query-f060-all.npz"
+        },
+        {
+          "query_frame": 60,
+          "source_mode": "current",
+          "pixels": 12242,
+          "RGB_sse": 64.65604777557762,
+          "RGB_psnr_dB": 27.54364475875726,
+          "alpha_mean": 0.9309914708137512,
+          "alpha_p10_p50_p90": [
+            0.9241542220115662,
+            0.970009058713913,
+            0.9850209057331085
+          ],
+          "full_image_RGB_psnr_crosscheck_dB": 8.68374113865096,
+          "prediction_cache": "outputs/route3-b2only-2026-11-10-01/movies-diagnostics/B2-high-inference/query-f060-current.npz"
+        }
+      ],
+      "GT_mask": "Exact first-hit mesh at nominal518pixel centers; declared dynamic-object IDs, source/query camera at that frame; hard center-ray mask, not antialiased alpha",
+      "target": "same bicubic512-to518 clipped-linear/standard-sRGB B2 input used for C3 quality diagnostics",
+      "limitations": [
+        "Bicubic RGB resampling can mix foreground/background at the hard518GT boundary",
+        "Model poses/intrinsics use BF16 conditioning while GTmask uses nominal full-precision geometry",
+        "RGB error includes coverage, source depth, geometry, appearance and motion; not an isolated motion-head score"
+      ],
+      "current_source_dynamic_PSNR_range_dB": [
+        21.67831473273573,
+        28.183508717815116
+      ],
+      "current_source_dynamic_alpha_mean_range": [
+        0.9240925908088684,
+        0.9563860893249512
+      ],
+      "all_source_dynamic_PSNR_range_dB": [
+        27.427997453878046,
+        32.685159655744826
+      ],
+      "C3_full_image_PSNR_crosscheck_max_difference_dB": 1.243736619471747e-06
+    }
+  },
+  "GT_normalization": {
+    "record": "03_\u5b9e\u9a8c\u8bb0\u5f55/records/route3-c1-b2only-2026-11-10-movies-input-normalization.json",
+    "world_to_model_scale": 0.2643735073600535,
+    "model_to_world_scale_m": 3.7825272660096303,
+    "formula": "canonical first camera; input finite-surface meanXYZ norm; scaling=1/(mean_norm+1e-6)*camera_norm_unit1, matching official dataset path",
+    "supplied_geometry": "GTposes and GTscene scale for B2 diagnostic conditioning; GT depth is not fed to the model as a feature",
+    "transforms": "camera translations normalized before model; offsets transformed back using the same scalar and first-camera rotation",
+    "posthoc_depth_only_fit": false,
+    "stored_pose_inverse_check": {
+      "scope": "storedFP32 normalized poses before intentional modelBF16 conditioning",
+      "inverse_camera_translation_max_error_m": 2.9836450671227865e-09,
+      "inverse_camera_rotation_max_abs_error": 2.9455878625128662e-08
+    }
+  },
+  "observations": [
+    "Both author real-video sample and B2 hand-held sequence show lower current-source alpha than all-source alpha",
+    "Native current-source RGB is premultiplied, so its low PSNR cannot be interpreted without alpha",
+    "Dynamic same-frame GT displacement iszero and predicted residual is submillimeter at group medians",
+    "Cross-frame dynamic motion is nonzero but its GT endpoint/correspondence errors remain substantial, even when adding predicted motion to known GT source points",
+    "Static-point displacement errors are much smaller than dynamic cross-frame errors",
+    "B2 current-source full-image PSNR is about9-11dB, while the independent visible dynamic-ball ROI is21.68-28.18dB with alpha0.924-0.956; low full-image quality does not imply uniformly low quality/coverage on the moving subject"
+  ],
+  "can_exclude": [
+    "Low single-source coverage occurring only in fixed-camera CamVFX",
+    "A universally zero motion prediction in this B2 diagnostic",
+    "Previously audited source permutation or same-Gaussian K1 interface mismatch as a complete explanation of low single-source quality"
+  ],
+  "cannot_exclude": [
+    "Network/domain dependence beyond these twoexamples",
+    "Source-depth and Gaussian-geometry prediction error; GT-source-point correspondence deliberately removes source-depth error",
+    "Effects of BF16 pose/intrinsic/time conditioning",
+    "Representation motion that need not equal physical rigid-surface tracking in every pixel",
+    "The dynamic ROI and full image are different supports; their score difference is not a single-factor causal attribution"
+  ],
+  "runtime_boundary": {
+    "C3_forward": "backbone only, synchronizedGPU, excludes model loading and renderer/I/O",
+    "C4": "CPU computation from existing same-forward motion cache; no secondmodel forward",
+    "inference_interpreter": "/root/autodl-tmp/envs/route3/bin/python",
+    "C4_interpreter": "/root/autodl-tmp/envs/dofgs/bin/python"
+  },
+  "model_training": false,
+  "M2_design": false,
+  "new_C4_model_forward": false,
+  "normal_DrBokeh_inference": false,
+  "GPU_released": true,
+  "conclusion_boundary": "diagnostic observations only; no architecture-wide proof, hidden-surface recovery claim, or change to the frozen Oracle decisions"
+}

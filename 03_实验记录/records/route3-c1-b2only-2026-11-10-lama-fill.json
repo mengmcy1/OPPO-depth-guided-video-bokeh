@@ -1,0 +1,331 @@
+{
+  "mode": "fill",
+  "criteria": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/03_实验记录/records/route3-c1-blender-criteria-2026-11-10.json",
+  "manifest": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/manifests/fill.json",
+  "rows": [
+    {
+      "id": "B2-low-f001",
+      "scene": "B2-low",
+      "frame_id": 1,
+      "input_npz": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/common-inputs/B2-low/f001.npz",
+      "mode": "fill",
+      "GT_foreground_alpha": true,
+      "fill_mask_uses_GT_segmentation": true,
+      "fill_uses_true_hidden_depth": true,
+      "geometry_oracle_setting": true,
+      "shared_input": "same sRGB[0,1] and its true-linear inverse transfer for all methods",
+      "input_RGB_range": [
+        0.10586141794919968,
+        0.9999999403953552
+      ],
+      "input_metadata": {
+        "id": "B2-low-f001",
+        "dataset": "Blender",
+        "scene": "B2-low",
+        "frame_id": 1,
+        "input_npz": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/common-inputs/B2-low/f001.npz",
+        "uses_gt_depth": true,
+        "uses_gt_foreground_alpha": true,
+        "fill_mask_uses_gt_foreground_segmentation": true,
+        "fill_uses_true_hidden_depth": true,
+        "geometry_oracle_setting": true,
+        "unknown_sky_depth_m": 10000.0,
+        "unknown_sky_depth_pixels": 46187,
+        "fill_mask_rule": "alpha>.1, all-ones5x5 dilation2iterations; matches official Dr.Bokeh process_bg default",
+        "shared_input_policy": "clip raw scene-linearRGB to[0,1], standard sRGB;3D uses same inverse-derived linearRGB"
+      },
+      "center_depth_protocol": {
+        "surface_validity_source": "center_surface_valid",
+        "known_surface_pixels": 215957,
+        "unknown_sky_pixels": 46187,
+        "known_surface_fraction": 0.8238105773925781,
+        "shared_far_field_depth_m": 10000.0,
+        "unknown_sky_policy": "1/z uses10000m, never zero defocus; not a GT surface or recoverable target region"
+      },
+      "fill_mask_pixels": 34351,
+      "raw_LaMa_range": [
+        0.012835852801799774,
+        0.9999999403953552
+      ],
+      "outside_mask_max_error": 0.0,
+      "lookup_file": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/methods-2d/fill/B2-low-f001/fill-image.npz",
+      "role": "C_fill lookup only: multiply remaining ray transmittance after joint visible+hidden depth-sorted alpha composition",
+      "seconds": 1.2810689397156239,
+      "peak_allocated_mib": 396.6611328125
+    },
+    {
+      "id": "B2-low-f030",
+      "scene": "B2-low",
+      "frame_id": 30,
+      "input_npz": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/common-inputs/B2-low/f030.npz",
+      "mode": "fill",
+      "GT_foreground_alpha": true,
+      "fill_mask_uses_GT_segmentation": true,
+      "fill_uses_true_hidden_depth": true,
+      "geometry_oracle_setting": true,
+      "shared_input": "same sRGB[0,1] and its true-linear inverse transfer for all methods",
+      "input_RGB_range": [
+        0.08724545687437057,
+        0.9999999403953552
+      ],
+      "input_metadata": {
+        "id": "B2-low-f030",
+        "dataset": "Blender",
+        "scene": "B2-low",
+        "frame_id": 30,
+        "input_npz": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/common-inputs/B2-low/f030.npz",
+        "uses_gt_depth": true,
+        "uses_gt_foreground_alpha": true,
+        "fill_mask_uses_gt_foreground_segmentation": true,
+        "fill_uses_true_hidden_depth": true,
+        "geometry_oracle_setting": true,
+        "unknown_sky_depth_m": 10000.0,
+        "unknown_sky_depth_pixels": 47288,
+        "fill_mask_rule": "alpha>.1, all-ones5x5 dilation2iterations; matches official Dr.Bokeh process_bg default",
+        "shared_input_policy": "clip raw scene-linearRGB to[0,1], standard sRGB;3D uses same inverse-derived linearRGB"
+      },
+      "center_depth_protocol": {
+        "surface_validity_source": "center_surface_valid",
+        "known_surface_pixels": 214856,
+        "unknown_sky_pixels": 47288,
+        "known_surface_fraction": 0.819610595703125,
+        "shared_far_field_depth_m": 10000.0,
+        "unknown_sky_policy": "1/z uses10000m, never zero defocus; not a GT surface or recoverable target region"
+      },
+      "fill_mask_pixels": 35000,
+      "raw_LaMa_range": [
+        0.014664901420474052,
+        0.9999999403953552
+      ],
+      "outside_mask_max_error": 0.0,
+      "lookup_file": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/methods-2d/fill/B2-low-f030/fill-image.npz",
+      "role": "C_fill lookup only: multiply remaining ray transmittance after joint visible+hidden depth-sorted alpha composition",
+      "seconds": 0.4730069451034069,
+      "peak_allocated_mib": 396.6611328125
+    },
+    {
+      "id": "B2-low-f060",
+      "scene": "B2-low",
+      "frame_id": 60,
+      "input_npz": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/common-inputs/B2-low/f060.npz",
+      "mode": "fill",
+      "GT_foreground_alpha": true,
+      "fill_mask_uses_GT_segmentation": true,
+      "fill_uses_true_hidden_depth": true,
+      "geometry_oracle_setting": true,
+      "shared_input": "same sRGB[0,1] and its true-linear inverse transfer for all methods",
+      "input_RGB_range": [
+        0.07235730439424515,
+        0.9999999403953552
+      ],
+      "input_metadata": {
+        "id": "B2-low-f060",
+        "dataset": "Blender",
+        "scene": "B2-low",
+        "frame_id": 60,
+        "input_npz": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/common-inputs/B2-low/f060.npz",
+        "uses_gt_depth": true,
+        "uses_gt_foreground_alpha": true,
+        "fill_mask_uses_gt_foreground_segmentation": true,
+        "fill_uses_true_hidden_depth": true,
+        "geometry_oracle_setting": true,
+        "unknown_sky_depth_m": 10000.0,
+        "unknown_sky_depth_pixels": 46187,
+        "fill_mask_rule": "alpha>.1, all-ones5x5 dilation2iterations; matches official Dr.Bokeh process_bg default",
+        "shared_input_policy": "clip raw scene-linearRGB to[0,1], standard sRGB;3D uses same inverse-derived linearRGB"
+      },
+      "center_depth_protocol": {
+        "surface_validity_source": "center_surface_valid",
+        "known_surface_pixels": 215957,
+        "unknown_sky_pixels": 46187,
+        "known_surface_fraction": 0.8238105773925781,
+        "shared_far_field_depth_m": 10000.0,
+        "unknown_sky_policy": "1/z uses10000m, never zero defocus; not a GT surface or recoverable target region"
+      },
+      "fill_mask_pixels": 33947,
+      "raw_LaMa_range": [
+        0.015558021143078804,
+        0.9999999403953552
+      ],
+      "outside_mask_max_error": 0.0,
+      "lookup_file": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/methods-2d/fill/B2-low-f060/fill-image.npz",
+      "role": "C_fill lookup only: multiply remaining ray transmittance after joint visible+hidden depth-sorted alpha composition",
+      "seconds": 0.4620479680597782,
+      "peak_allocated_mib": 396.6611328125
+    },
+    {
+      "id": "B2-high-f001",
+      "scene": "B2-high",
+      "frame_id": 1,
+      "input_npz": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/common-inputs/B2-high/f001.npz",
+      "mode": "fill",
+      "GT_foreground_alpha": true,
+      "fill_mask_uses_GT_segmentation": true,
+      "fill_uses_true_hidden_depth": true,
+      "geometry_oracle_setting": true,
+      "shared_input": "same sRGB[0,1] and its true-linear inverse transfer for all methods",
+      "input_RGB_range": [
+        0.07712946087121964,
+        0.9999999403953552
+      ],
+      "input_metadata": {
+        "id": "B2-high-f001",
+        "dataset": "Blender",
+        "scene": "B2-high",
+        "frame_id": 1,
+        "input_npz": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/common-inputs/B2-high/f001.npz",
+        "uses_gt_depth": true,
+        "uses_gt_foreground_alpha": true,
+        "fill_mask_uses_gt_foreground_segmentation": true,
+        "fill_uses_true_hidden_depth": true,
+        "geometry_oracle_setting": true,
+        "unknown_sky_depth_m": 10000.0,
+        "unknown_sky_depth_pixels": 25388,
+        "fill_mask_rule": "alpha>.1, all-ones5x5 dilation2iterations; matches official Dr.Bokeh process_bg default",
+        "shared_input_policy": "clip raw scene-linearRGB to[0,1], standard sRGB;3D uses same inverse-derived linearRGB"
+      },
+      "center_depth_protocol": {
+        "surface_validity_source": "center_surface_valid",
+        "known_surface_pixels": 236756,
+        "unknown_sky_pixels": 25388,
+        "known_surface_fraction": 0.9031524658203125,
+        "shared_far_field_depth_m": 10000.0,
+        "unknown_sky_policy": "1/z uses10000m, never zero defocus; not a GT surface or recoverable target region"
+      },
+      "fill_mask_pixels": 82840,
+      "raw_LaMa_range": [
+        0.0278759878128767,
+        0.9999999403953552
+      ],
+      "outside_mask_max_error": 0.0,
+      "lookup_file": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/methods-2d/fill/B2-high-f001/fill-image.npz",
+      "role": "C_fill lookup only: multiply remaining ray transmittance after joint visible+hidden depth-sorted alpha composition",
+      "seconds": 0.496288999915123,
+      "peak_allocated_mib": 396.6611328125
+    },
+    {
+      "id": "B2-high-f030",
+      "scene": "B2-high",
+      "frame_id": 30,
+      "input_npz": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/common-inputs/B2-high/f030.npz",
+      "mode": "fill",
+      "GT_foreground_alpha": true,
+      "fill_mask_uses_GT_segmentation": true,
+      "fill_uses_true_hidden_depth": true,
+      "geometry_oracle_setting": true,
+      "shared_input": "same sRGB[0,1] and its true-linear inverse transfer for all methods",
+      "input_RGB_range": [
+        0.07194728404283524,
+        0.9999999403953552
+      ],
+      "input_metadata": {
+        "id": "B2-high-f030",
+        "dataset": "Blender",
+        "scene": "B2-high",
+        "frame_id": 30,
+        "input_npz": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/common-inputs/B2-high/f030.npz",
+        "uses_gt_depth": true,
+        "uses_gt_foreground_alpha": true,
+        "fill_mask_uses_gt_foreground_segmentation": true,
+        "fill_uses_true_hidden_depth": true,
+        "geometry_oracle_setting": true,
+        "unknown_sky_depth_m": 10000.0,
+        "unknown_sky_depth_pixels": 24698,
+        "fill_mask_rule": "alpha>.1, all-ones5x5 dilation2iterations; matches official Dr.Bokeh process_bg default",
+        "shared_input_policy": "clip raw scene-linearRGB to[0,1], standard sRGB;3D uses same inverse-derived linearRGB"
+      },
+      "center_depth_protocol": {
+        "surface_validity_source": "center_surface_valid",
+        "known_surface_pixels": 237446,
+        "unknown_sky_pixels": 24698,
+        "known_surface_fraction": 0.9057846069335938,
+        "shared_far_field_depth_m": 10000.0,
+        "unknown_sky_policy": "1/z uses10000m, never zero defocus; not a GT surface or recoverable target region"
+      },
+      "fill_mask_pixels": 88015,
+      "raw_LaMa_range": [
+        0.0191204771399498,
+        0.9999999403953552
+      ],
+      "outside_mask_max_error": 0.0,
+      "lookup_file": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/methods-2d/fill/B2-high-f030/fill-image.npz",
+      "role": "C_fill lookup only: multiply remaining ray transmittance after joint visible+hidden depth-sorted alpha composition",
+      "seconds": 0.4937853068113327,
+      "peak_allocated_mib": 396.6611328125
+    },
+    {
+      "id": "B2-high-f060",
+      "scene": "B2-high",
+      "frame_id": 60,
+      "input_npz": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/common-inputs/B2-high/f060.npz",
+      "mode": "fill",
+      "GT_foreground_alpha": true,
+      "fill_mask_uses_GT_segmentation": true,
+      "fill_uses_true_hidden_depth": true,
+      "geometry_oracle_setting": true,
+      "shared_input": "same sRGB[0,1] and its true-linear inverse transfer for all methods",
+      "input_RGB_range": [
+        0.07110128551721573,
+        0.9999999403953552
+      ],
+      "input_metadata": {
+        "id": "B2-high-f060",
+        "dataset": "Blender",
+        "scene": "B2-high",
+        "frame_id": 60,
+        "input_npz": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/common-inputs/B2-high/f060.npz",
+        "uses_gt_depth": true,
+        "uses_gt_foreground_alpha": true,
+        "fill_mask_uses_gt_foreground_segmentation": true,
+        "fill_uses_true_hidden_depth": true,
+        "geometry_oracle_setting": true,
+        "unknown_sky_depth_m": 10000.0,
+        "unknown_sky_depth_pixels": 25314,
+        "fill_mask_rule": "alpha>.1, all-ones5x5 dilation2iterations; matches official Dr.Bokeh process_bg default",
+        "shared_input_policy": "clip raw scene-linearRGB to[0,1], standard sRGB;3D uses same inverse-derived linearRGB"
+      },
+      "center_depth_protocol": {
+        "surface_validity_source": "center_surface_valid",
+        "known_surface_pixels": 236830,
+        "unknown_sky_pixels": 25314,
+        "known_surface_fraction": 0.9034347534179688,
+        "shared_far_field_depth_m": 10000.0,
+        "unknown_sky_policy": "1/z uses10000m, never zero defocus; not a GT surface or recoverable target region"
+      },
+      "fill_mask_pixels": 83494,
+      "raw_LaMa_range": [
+        0.014143422245979309,
+        0.9999999403953552
+      ],
+      "outside_mask_max_error": 0.0,
+      "lookup_file": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/methods-2d/fill/B2-high-f060/fill-image.npz",
+      "role": "C_fill lookup only: multiply remaining ray transmittance after joint visible+hidden depth-sorted alpha composition",
+      "seconds": 0.49376800656318665,
+      "peak_allocated_mib": 396.6611328125
+    }
+  ],
+  "completed": true,
+  "repository": "/root/autodl-tmp/DrBokeh",
+  "interpreter": "/root/miniconda3/envs/magicbokeh/bin/python",
+  "torch": "2.8.0+cu128",
+  "caches": {
+    "TMPDIR": "/root/autodl-tmp/route3-cache/tmp",
+    "TMP": "/root/autodl-tmp/route3-cache/tmp",
+    "TEMP": "/root/autodl-tmp/route3-cache/tmp",
+    "HF_HOME": "/root/autodl-tmp/route3-cache/hf",
+    "TORCH_HOME": "/root/autodl-tmp/route3-cache/torch",
+    "XDG_CACHE_HOME": "/root/autodl-tmp/route3-cache/xdg",
+    "MPLCONFIGDIR": "/root/autodl-tmp/route3-cache/matplotlib",
+    "TORCH_EXTENSIONS_DIR": "/root/autodl-tmp/route3-cache/torch_extensions",
+    "CUPY_CACHE_DIR": "/root/autodl-tmp/route3-cache/cupy",
+    "CUDA_CACHE_PATH": "/root/autodl-tmp/route3-cache/cuda",
+    "PIP_CACHE_DIR": "/root/autodl-tmp/route3-cache/pip"
+  },
+  "model_training": false,
+  "normal_inference_DrBokeh": false,
+  "CamVFX_experiment": false,
+  "extra_HDR_given_to_3D": false,
+  "model_parameter_counts": null,
+  "color_policy": "sRGB[0,1] shared input; 3D true-linear integration; official2D gamma2.2; quality evaluation elsewhere clips displayRGB[0,1]",
+  "timing_boundary": "Per-item model calls, diagnostic statistics and NPZ/PNG output writes; excludes model setup/loading and inputNPZ reads"
+}

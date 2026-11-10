@@ -1,0 +1,112 @@
+{
+  "phase": "C4 known-dynamic-object rendering error",
+  "source_cache": "outputs/route3-b2only-2026-11-10-01/movies-diagnostics/B2-high-inference",
+  "input_path": "outputs/route3-b2only-2026-11-10-01/movies-diagnostics/B2-high-input/posed-input.npz",
+  "rows": [
+    {
+      "query_frame": 1,
+      "source_mode": "all",
+      "pixels": 12343,
+      "RGB_sse": 19.95381852669554,
+      "RGB_psnr_dB": 32.685159655744826,
+      "alpha_mean": 0.9939442276954651,
+      "alpha_p10_p50_p90": [
+        0.9872074842453002,
+        0.996677815914154,
+        0.9991471409797669
+      ],
+      "full_image_RGB_psnr_crosscheck_dB": 30.794715162916173,
+      "prediction_cache": "outputs/route3-b2only-2026-11-10-01/movies-diagnostics/B2-high-inference/query-f001-all.npz"
+    },
+    {
+      "query_frame": 1,
+      "source_mode": "current",
+      "pixels": 12343,
+      "RGB_sse": 56.25888387790174,
+      "RGB_psnr_dB": 28.183508717815116,
+      "alpha_mean": 0.9563860893249512,
+      "alpha_p10_p50_p90": [
+        0.9303729772567749,
+        0.9708026051521301,
+        0.9891442179679871
+      ],
+      "full_image_RGB_psnr_crosscheck_dB": 10.460588394624313,
+      "prediction_cache": "outputs/route3-b2only-2026-11-10-01/movies-diagnostics/B2-high-inference/query-f001-current.npz"
+    },
+    {
+      "query_frame": 30,
+      "source_mode": "all",
+      "pixels": 17473,
+      "RGB_sse": 80.8700696997224,
+      "RGB_psnr_dB": 28.117009142136737,
+      "alpha_mean": 0.9948331117630005,
+      "alpha_p10_p50_p90": [
+        0.9910313606262207,
+        0.9970501065254211,
+        0.9992270350456238
+      ],
+      "full_image_RGB_psnr_crosscheck_dB": 31.13133982394023,
+      "prediction_cache": "outputs/route3-b2only-2026-11-10-01/movies-diagnostics/B2-high-inference/query-f030-all.npz"
+    },
+    {
+      "query_frame": 30,
+      "source_mode": "current",
+      "pixels": 17473,
+      "RGB_sse": 356.16993608972814,
+      "RGB_psnr_dB": 21.67831473273573,
+      "alpha_mean": 0.9240925908088684,
+      "alpha_p10_p50_p90": [
+        0.899217402935028,
+        0.967238187789917,
+        0.9842408180236817
+      ],
+      "full_image_RGB_psnr_crosscheck_dB": 10.966312384642006,
+      "prediction_cache": "outputs/route3-b2only-2026-11-10-01/movies-diagnostics/B2-high-inference/query-f030-current.npz"
+    },
+    {
+      "query_frame": 60,
+      "source_mode": "all",
+      "pixels": 12242,
+      "RGB_sse": 66.40088756137983,
+      "RGB_psnr_dB": 27.427997453878046,
+      "alpha_mean": 0.9840397834777832,
+      "alpha_p10_p50_p90": [
+        0.9714514076709747,
+        0.997407853603363,
+        0.9991428554058075
+      ],
+      "full_image_RGB_psnr_crosscheck_dB": 29.775141425941115,
+      "prediction_cache": "outputs/route3-b2only-2026-11-10-01/movies-diagnostics/B2-high-inference/query-f060-all.npz"
+    },
+    {
+      "query_frame": 60,
+      "source_mode": "current",
+      "pixels": 12242,
+      "RGB_sse": 64.65604777557762,
+      "RGB_psnr_dB": 27.54364475875726,
+      "alpha_mean": 0.9309914708137512,
+      "alpha_p10_p50_p90": [
+        0.9241542220115662,
+        0.970009058713913,
+        0.9850209057331085
+      ],
+      "full_image_RGB_psnr_crosscheck_dB": 8.68374113865096,
+      "prediction_cache": "outputs/route3-b2only-2026-11-10-01/movies-diagnostics/B2-high-inference/query-f060-current.npz"
+    }
+  ],
+  "GT_mask": "Exact first-hit mesh at nominal518pixel centers; declared dynamic-object IDs, source/query camera at that frame; hard center-ray mask, not antialiased alpha",
+  "dynamic_object_ids": [
+    7
+  ],
+  "color_domain": "saved native premultiplied display RGB[0,1], no unpremultiply; alpha reported separately",
+  "target": "same bicubic512-to518 clipped-linear/standard-sRGB B2 input used for C3 quality diagnostics",
+  "limits": [
+    "Bicubic RGB resampling can mix foreground/background at the hard518GT boundary",
+    "Model poses/intrinsics use BF16 conditioning while GTmask uses nominal full-precision geometry",
+    "RGB error includes coverage, source depth, geometry, appearance and motion; not an isolated motion-head score"
+  ],
+  "new_model_forward": false,
+  "new_model_render": false,
+  "model_training": false,
+  "M2_design": false
+}

@@ -1,0 +1,63 @@
+{
+  "dataset": "B2-high",
+  "input_frame_ids": [
+    1,
+    6,
+    11,
+    16,
+    21,
+    26,
+    30,
+    35,
+    40,
+    45,
+    50,
+    55,
+    60
+  ],
+  "resolution": [
+    518,
+    518
+  ],
+  "finite_GT_points": 3080758,
+  "canonical_transform": [
+    [
+      0.9993486212948919,
+      -0.03608758779849549,
+      2.492846180799811e-09,
+      0.01082627381094578
+    ],
+    [
+      0.0003005237287112996,
+      0.008322127148769514,
+      -0.9999653405937708,
+      1.012468065358575
+    ],
+    [
+      0.03608633680529806,
+      0.9993140070621598,
+      0.00832755099396855,
+      1.4929890714055791
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "mean_canonical_XYZ_norm_m": 3.78252626600963,
+  "world_to_model_scale": 0.2643735073600535,
+  "model_to_world_scale_m": 3.7825272660096303,
+  "normalization_source": "MoVieS src/data/base_dataset.py:_camera_normalize; dynamicreplica_dataset.py:134-145 norm_xyz with camera_norm_unit=1",
+  "depth_mask": "all finite first-hit center surfaces in13frames; no sky; no dataset-specific depth quantile filtering",
+  "input_geometry_permission": "GT poses and GT scale used to normalize diagnostic input; GT depths are not fed as image/depth features",
+  "GT_RGB_policy": "same clipped scene-linear -> standard-sRGB input as B2 methods",
+  "posthoc_depth_only_scale_fit": false,
+  "inference_run": false,
+  "stored_pose_inverse_check": {
+    "scope": "storedFP32 normalized poses before intentional modelBF16 conditioning",
+    "inverse_camera_translation_max_error_m": 2.9836450671227865e-09,
+    "inverse_camera_rotation_max_abs_error": 2.9455878625128662e-08
+  }
+}

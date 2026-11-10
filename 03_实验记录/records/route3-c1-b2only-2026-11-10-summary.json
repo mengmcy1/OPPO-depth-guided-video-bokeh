@@ -1,0 +1,2373 @@
+{
+  "schema_version": 1,
+  "request_date": "2026-11-10",
+  "recorded_at_utc": "2026-11-10T12:29:05.896851+00:00",
+  "phase": "route3 C1 Blender B2-only under plan4.11",
+  "status": "completed_and_paused_for_user_route_decision",
+  "problem": "在已知几何、对应时刻参考外观与统一光圈合成条件下，隐藏层能否稳定优于O5、BokehMe及Oracle-input Dr.Bokeh；并补MoVieS来源/运动诊断",
+  "scope": {
+    "scenes": [
+      "B2-low",
+      "B2-high"
+    ],
+    "input_frames": [
+      1,
+      6,
+      11,
+      16,
+      21,
+      26,
+      30,
+      35,
+      40,
+      45,
+      50,
+      55,
+      60
+    ],
+    "representative_frames": [
+      1,
+      30,
+      60
+    ],
+    "resolution": [
+      512,
+      512
+    ],
+    "primary_fstops": [
+      1.4,
+      2.0
+    ],
+    "pressure_fstop": 0.5,
+    "auxiliary_fstop": 2.8,
+    "auxiliary_formal_methods": false,
+    "training": false,
+    "CamVFX_new_experiments": false,
+    "M2_design": false,
+    "full60_DOF_render": false,
+    "surface_baking": false
+  },
+  "preregistration": {
+    "file": "03_实验记录/records/route3-c1-blender-criteria-2026-11-10.json",
+    "commit": "00a875e",
+    "frozen_at_utc": "2026-11-10T12:03:01.493199+00:00",
+    "method_outputs_existed_at_freeze": false,
+    "criteria_unchanged_after_scores": true,
+    "per_focus_min_groups": 6,
+    "min_pixels_per_group": 1000,
+    "same_direction_required": "5 of6 independently per focus",
+    "PSNR_quality_gain_dB": 0.5,
+    "patch_LPIPS_quality_change": -0.01,
+    "quality_rule": "PSNR OR LPIPS, plus frozen secondary-metric guard, dual-sign stability and full/in-focus PSNR guards"
+  },
+  "inventory": {
+    "pinhole_frames": 120,
+    "center_geometry_NPZ": 120,
+    "deep_static_background_geometry_NPZ": 120,
+    "representative_DOF": 36,
+    "DOF_reused_same_configuration": 22,
+    "reference_RGB": 76,
+    "reference_geometry_NPZ": 76,
+    "aperture_GT_configurations": 36,
+    "method_predictions": 180,
+    "threeD_predictions": 108,
+    "twoD_predictions": 72,
+    "LaMa_fill_frames": 6,
+    "visualizations": {
+      "final_montages": 12,
+      "final_GT_locator_images": 12,
+      "original_montages_preserved": 12
+    }
+  },
+  "software": {
+    "blender": "4.5.3 LTS",
+    "blender_build": "67807e1800cc",
+    "blender_path": "/root/autodl-tmp/tools/blender-4.5.3-linux-x64/blender",
+    "route3_python": "3.10.22",
+    "route3_torch": "2.7.1+cu128",
+    "gsplat": "1.5.0",
+    "LPIPS_package": "0.1.4",
+    "LPIPS_network": "alex",
+    "LPIPS_metric_version": "0.1",
+    "LPIPS_spatial": false,
+    "numpy": "1.26.4",
+    "official_code_revisions": {
+      "MoVieS": "77262fac6724a12c0b133a4fee10e62772db6d0f",
+      "BokehMe": "8b3ed556dc146207c9bb39fccd078a113f8d1bd8",
+      "DrBokeh": "24d96e4fb76a698494e86835c84a7c45ae2ebc10"
+    }
+  },
+  "paths": {
+    "new_output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01",
+    "source_scenes": "outputs/route3-a2b-2026-11-10-01/blender-b2",
+    "criteria": "03_实验记录/records/route3-c1-blender-criteria-2026-11-10.json",
+    "complete_scores": "03_实验记录/records/route3-c1-b2-2026-11-10-evaluation.json",
+    "complete_scores_CSV": "03_实验记录/records/route3-c1-b2-2026-11-10-evaluation.csv",
+    "per_aperture_report": "03_实验记录/records/route3-c1-b2-2026-11-10-report-tables.json",
+    "movies_summary": "03_实验记录/records/route3-c1-b2only-2026-11-10-movies-summary.json",
+    "visualization_registry": "03_实验记录/records/route3-c1-b2-2026-11-10-visualizations.json"
+  },
+  "sampling": {
+    "passed": true,
+    "formal_spp": [
+      {
+        "scene": "B2-high",
+        "fstop": 0.5,
+        "focus_m": 1.4,
+        "samples": 2048,
+        "formal_role": "pressure",
+        "source": "current independent-pair checks"
+      },
+      {
+        "scene": "B2-high",
+        "fstop": 0.5,
+        "focus_m": 5.0,
+        "samples": 1024,
+        "formal_role": "pressure",
+        "source": "current independent-pair checks"
+      },
+      {
+        "scene": "B2-high",
+        "fstop": 1.4,
+        "focus_m": 1.4,
+        "samples": 2048,
+        "formal_role": "primary",
+        "source": "current independent-pair checks"
+      },
+      {
+        "scene": "B2-high",
+        "fstop": 1.4,
+        "focus_m": 5.0,
+        "samples": 1024,
+        "formal_role": "primary",
+        "source": "current independent-pair checks"
+      },
+      {
+        "scene": "B2-high",
+        "fstop": 2.0,
+        "focus_m": 1.4,
+        "samples": 1024,
+        "formal_role": "primary",
+        "source": "current independent-pair checks"
+      },
+      {
+        "scene": "B2-high",
+        "fstop": 2.0,
+        "focus_m": 5.0,
+        "samples": 1024,
+        "formal_role": "primary",
+        "source": "current independent-pair checks"
+      },
+      {
+        "scene": "B2-low",
+        "fstop": 0.5,
+        "focus_m": 5.3,
+        "samples": 2048,
+        "formal_role": "pressure",
+        "source": "B1 validated sample configuration reused"
+      },
+      {
+        "scene": "B2-low",
+        "fstop": 0.5,
+        "focus_m": 8.4,
+        "samples": 2048,
+        "formal_role": "pressure",
+        "source": "B1 validated sample configuration reused"
+      },
+      {
+        "scene": "B2-low",
+        "fstop": 1.4,
+        "focus_m": 5.3,
+        "samples": 512,
+        "formal_role": "primary",
+        "source": "B1 validated sample configuration reused"
+      },
+      {
+        "scene": "B2-low",
+        "fstop": 1.4,
+        "focus_m": 8.4,
+        "samples": 512,
+        "formal_role": "primary",
+        "source": "B1 validated sample configuration reused"
+      },
+      {
+        "scene": "B2-low",
+        "fstop": 2.0,
+        "focus_m": 5.3,
+        "samples": 512,
+        "formal_role": "primary",
+        "source": "current independent-pair checks"
+      },
+      {
+        "scene": "B2-low",
+        "fstop": 2.0,
+        "focus_m": 8.4,
+        "samples": 512,
+        "formal_role": "primary",
+        "source": "current independent-pair checks"
+      }
+    ],
+    "independent_seeds": [
+      20261110,
+      20261111
+    ],
+    "accepted_worst_mean_or_boundary_weighted_patch_LPIPS": 0.00040216923043456744,
+    "LPIPS_threshold_supported": true,
+    "raw_EXR_linear_unclipped_for_noise": true,
+    "auxiliary_f28_tested_at_spp1024_both_focuses": true
+  },
+  "geometry": {
+    "main_region_summary": {
+      "B2-high": {
+        "main_combinations": 12,
+        "counts": {
+          "recoverable_total": {
+            "sum_pixel_observations": 146745,
+            "min_pixels_per_combination": 8986,
+            "max_pixels_per_combination": 17814,
+            "image_fraction_range": [
+              0.03427886962890625,
+              0.06795501708984375
+            ]
+          },
+          "motion_required": {
+            "sum_pixel_observations": 4174,
+            "min_pixels_per_combination": 42,
+            "max_pixels_per_combination": 894,
+            "image_fraction_range": [
+              0.00016021728515625,
+              0.00341033935546875
+            ]
+          },
+          "parallax_sufficient": {
+            "sum_pixel_observations": 142571,
+            "min_pixels_per_combination": 8516,
+            "max_pixels_per_combination": 17750,
+            "image_fraction_range": [
+              0.0324859619140625,
+              0.06771087646484375
+            ]
+          },
+          "unrecoverable": {
+            "sum_pixel_observations": 14234,
+            "min_pixels_per_combination": 211,
+            "max_pixels_per_combination": 2649,
+            "image_fraction_range": [
+              0.000804901123046875,
+              0.010105133056640625
+            ]
+          },
+          "disocclusion": {
+            "sum_pixel_observations": 160979,
+            "min_pixels_per_combination": 10094,
+            "max_pixels_per_combination": 18105,
+            "image_fraction_range": [
+              0.03850555419921875,
+              0.06906509399414062
+            ]
+          },
+          "residual_excluded": {
+            "sum_pixel_observations": 18,
+            "min_pixels_per_combination": 0,
+            "max_pixels_per_combination": 5,
+            "image_fraction_range": [
+              0.0,
+              1.9073486328125e-05
+            ]
+          }
+        },
+        "CoC_pairmax_median_px_range": [
+          4.268075466156006,
+          6.4625935554504395
+        ],
+        "actual_recoverable_hidden_ray_fraction_range": [
+          0.8751035852213206,
+          0.9428159745370868
+        ],
+        "counts_are_independent_scenes": false,
+        "pixel_class_assignment": "actual recovery, then parallax-sufficient priority; remaining recovered pixels motion-required; mixed flags retained in GT"
+      },
+      "B2-low": {
+        "main_combinations": 12,
+        "counts": {
+          "recoverable_total": {
+            "sum_pixel_observations": 10759,
+            "min_pixels_per_combination": 639,
+            "max_pixels_per_combination": 1283,
+            "image_fraction_range": [
+              0.002437591552734375,
+              0.004894256591796875
+            ]
+          },
+          "motion_required": {
+            "sum_pixel_observations": 593,
+            "min_pixels_per_combination": 0,
+            "max_pixels_per_combination": 112,
+            "image_fraction_range": [
+              0.0,
+              0.00042724609375
+            ]
+          },
+          "parallax_sufficient": {
+            "sum_pixel_observations": 10166,
+            "min_pixels_per_combination": 568,
+            "max_pixels_per_combination": 1283,
+            "image_fraction_range": [
+              0.002166748046875,
+              0.004894256591796875
+            ]
+          },
+          "unrecoverable": {
+            "sum_pixel_observations": 1564,
+            "min_pixels_per_combination": 0,
+            "max_pixels_per_combination": 262,
+            "image_fraction_range": [
+              0.0,
+              0.00099945068359375
+            ]
+          },
+          "disocclusion": {
+            "sum_pixel_observations": 12323,
+            "min_pixels_per_combination": 694,
+            "max_pixels_per_combination": 1283,
+            "image_fraction_range": [
+              0.00264739990234375,
+              0.004894256591796875
+            ]
+          },
+          "residual_excluded": {
+            "sum_pixel_observations": 1,
+            "min_pixels_per_combination": 0,
+            "max_pixels_per_combination": 1,
+            "image_fraction_range": [
+              0.0,
+              3.814697265625e-06
+            ]
+          }
+        },
+        "CoC_pairmax_median_px_range": [
+          0.6015358567237854,
+          0.8865060210227966
+        ],
+        "actual_recoverable_hidden_ray_fraction_range": [
+          0.7828679008471917,
+          1.0
+        ],
+        "counts_are_independent_scenes": false,
+        "pixel_class_assignment": "actual recovery, then parallax-sufficient priority; remaining recovered pixels motion-required; mixed flags retained in GT"
+      }
+    },
+    "GT_resolution": [
+      512,
+      512
+    ],
+    "K": 16,
+    "GT_scale": "meters, GT poses/intrinsics; axial focus depth",
+    "stable_surfaces": "object plus triangle plus local point/barycentric tracking",
+    "foreground_alpha": "4x4 exact first-hit subpixel coverage for declared foreground objects",
+    "reference_check_passed": true,
+    "reference_check_domain": "same object/triangle/depth and7x7 eroded interior; does not claim unchanged boundary antialiasing",
+    "peeling": {
+      "B2-low": {
+        "total_hidden_rays": 124781,
+        "total_residual_rays": 8,
+        "residual_fraction": 6.411232479303741e-05,
+        "maximum_configuration_residual_fraction": 0.00023892959541255176
+      },
+      "B2-high": {
+        "total_hidden_rays": 1606344,
+        "total_residual_rays": 126,
+        "residual_fraction": 7.843898940700124e-05,
+        "maximum_configuration_residual_fraction": 0.00015589212265112543
+      }
+    },
+    "residual_handling": "drop any residual-ray pixel from primary/subregion masks; retain in full-image and in-focus guardrails",
+    "CPU_cost_probe_seconds": {
+      "compute": 12.97004560008645,
+      "compressed_write": 11.7
+    },
+    "CPU_cost_stop_triggered": false
+  },
+  "composition": {
+    "K": 16,
+    "profile": {
+      "subdivisions": 5,
+      "sigma_pixels": 0.7,
+      "opacity": 0.999,
+      "eps2d": 0.0015,
+      "no_color_or_geometry_optimization": true,
+      "evidence": "independent synthetic checker K1 PSNR82.66dB and off-grid plane minimumalpha.9915 before any B2 method output"
+    },
+    "layers": "joint visible+hidden per-ray depth ordering and alpha blend, remaining T times same Cfill, average in linearRGB",
+    "C_fill": {
+      "function": "one fixed LaMa fill per scene/frame; project lens-ray point at local deep-static background axial depth back to center",
+      "fill_mask": "GTforeground_alpha>.1,5x5ones dilation2iterations (official DrBokeh BG convention)",
+      "uses_GT_foreground_segmentation": true,
+      "uses_true_hidden_depth": true,
+      "geometry_oracle_setting": true,
+      "composition": "merge visible+hidden Gaussians, depth sort per subcamera, sumTalphaC, then remaining T*Cfill, averageK; never precover hidden with LaMa",
+      "background_depth_convention": "local deep-static center depth after all semanticFG removed; zero=no finite surface ->10km approximation",
+      "border_sampling": "shared border extension, report projected-outside fraction",
+      "notes": "local plane and Gaussian discretization, not a perfect optical Oracle"
+    },
+    "same_GT_pose_scale_sampling_fill": true,
+    "RGB": "common sRGB[0,1] LDR inputs for2D and3D; true inverse transfer before3D integration; raw HDR EXRs retained; no added HDR advantage",
+    "BokehMe_calibration": {
+      "physical_control": "fx*a*(1/z-1/F)/10",
+      "gamma": 2.2,
+      "defocus_scale": 10.0,
+      "recalibrated": false
+    },
+    "DrBokeh_GT_interface_exercised": true,
+    "DrBokeh_normal_depth_and_foreground_estimation_calls": 0,
+    "O6_rec_name": "可恢复表面的 GT Oracle",
+    "O6_is_perfect_optical_oracle": false
+  },
+  "statistics": {
+    "PSNR": "pool float64 RGB SSE/(3*validpixels) across eligible main frames/apertures within EACH scene and focus, then -10log10; report each aperture separately too",
+    "patch_size": 64,
+    "LPIPS_net": "alex",
+    "LPIPS_version": "0.1",
+    "LPIPS_spatial": false,
+    "patch": "fixed64px nonoverlapping grid, whole unmasked RGB patch; region score weighted by region pixel support; pool across items by regional pixel count",
+    "patch_limitation": "receptive field includes pixels outside narrow region; no mask-outside zeroing",
+    "RGB": "all methods common display sRGBfloat[0,1], inputs from clipped scene-linear pinholes; GT unclipped EXR only converted/clipped for quality; raw linear retained for noise",
+    "bootstrap_or_independent_sample_claim": false
+  },
+  "decisions": {
+    "B2-high": {
+      "1.4": {
+        "status": "evaluated_under_frozen_criteria",
+        "mechanism_passed": true,
+        "method_value_passed": false,
+        "all_guardrails_passed": false,
+        "passed": false,
+        "comparisons": {
+          "O5": {
+            "psnr_gain_dB": 1.9008904404917786,
+            "patch_lpips_change": -0.0010422292286643318,
+            "quality_gate_OR": true,
+            "secondary_metric_gate": true,
+            "psnr_worsened": false,
+            "patch_lpips_worsened": false,
+            "same_direction_count": 6,
+            "eligible_count": 6,
+            "required_same_direction_count": 5,
+            "same_direction_fraction": 1.0,
+            "stable_gate": true,
+            "guardrails": {
+              "full_image": {
+                "psnr_gain_dB": 0.5360832960710837,
+                "patch_lpips_change": -0.0004846760225518665
+              },
+              "in_focus": {
+                "psnr_gain_dB": 0.19762721541019346,
+                "patch_lpips_change": -0.0009770666894836615
+              }
+            },
+            "guardrails_passed": true,
+            "improvement_and_stability_passed": true,
+            "passed": true
+          },
+          "O3": {
+            "psnr_gain_dB": 1.6992261371834836,
+            "patch_lpips_change": 0.0009323080866000828,
+            "quality_gate_OR": true,
+            "secondary_metric_gate": true,
+            "psnr_worsened": false,
+            "patch_lpips_worsened": true,
+            "same_direction_count": 1,
+            "eligible_count": 6,
+            "required_same_direction_count": 5,
+            "same_direction_fraction": 0.16666666666666666,
+            "stable_gate": false,
+            "guardrails": {
+              "full_image": {
+                "psnr_gain_dB": -0.5273050457299178,
+                "patch_lpips_change": 0.0022579611089099667
+              },
+              "in_focus": {
+                "psnr_gain_dB": 0.29715229882836525,
+                "patch_lpips_change": 0.0006655863739681348
+              }
+            },
+            "guardrails_passed": false,
+            "improvement_and_stability_passed": false,
+            "passed": false
+          },
+          "DrBokeh_GT": {
+            "psnr_gain_dB": 5.471598331437953,
+            "patch_lpips_change": -0.006046597526116829,
+            "quality_gate_OR": true,
+            "secondary_metric_gate": true,
+            "psnr_worsened": false,
+            "patch_lpips_worsened": false,
+            "same_direction_count": 6,
+            "eligible_count": 6,
+            "required_same_direction_count": 5,
+            "same_direction_fraction": 1.0,
+            "stable_gate": true,
+            "guardrails": {
+              "full_image": {
+                "psnr_gain_dB": 2.2053701931776075,
+                "patch_lpips_change": -0.0029543091732951625
+              },
+              "in_focus": {
+                "psnr_gain_dB": 3.2294141164706076,
+                "patch_lpips_change": -0.00918968377245612
+              }
+            },
+            "guardrails_passed": true,
+            "improvement_and_stability_passed": true,
+            "passed": true
+          }
+        },
+        "all_minus_rec_diagnostic": {
+          "recoverable_total": {
+            "psnr_gain_dB": 0.020356188935906516,
+            "patch_lpips_change": -3.0377837571260446e-05
+          },
+          "motion_required": {
+            "psnr_gain_dB": 0.030091874584051936,
+            "patch_lpips_change": 3.503372214696751e-06
+          },
+          "parallax_sufficient": {
+            "psnr_gain_dB": 0.02031450507924859,
+            "patch_lpips_change": -3.099216149754849e-05
+          },
+          "unrecoverable": {
+            "psnr_gain_dB": 0.8397682099687387,
+            "patch_lpips_change": -0.00045217943633916145
+          },
+          "disocclusion": {
+            "psnr_gain_dB": 0.1299439839594143,
+            "patch_lpips_change": -5.35370396779946e-05
+          },
+          "full_image": {
+            "psnr_gain_dB": 0.02199839317481178,
+            "patch_lpips_change": -2.6644830162088524e-05
+          },
+          "in_focus": {
+            "psnr_gain_dB": 0.027928023418120063,
+            "patch_lpips_change": -9.725701826755837e-05
+          }
+        }
+      },
+      "5.0": {
+        "status": "evaluated_under_frozen_criteria",
+        "mechanism_passed": true,
+        "method_value_passed": false,
+        "all_guardrails_passed": false,
+        "passed": false,
+        "comparisons": {
+          "O5": {
+            "psnr_gain_dB": 6.200136986022507,
+            "patch_lpips_change": -0.0025469219853681054,
+            "quality_gate_OR": true,
+            "secondary_metric_gate": true,
+            "psnr_worsened": false,
+            "patch_lpips_worsened": false,
+            "same_direction_count": 6,
+            "eligible_count": 6,
+            "required_same_direction_count": 5,
+            "same_direction_fraction": 1.0,
+            "stable_gate": true,
+            "guardrails": {
+              "full_image": {
+                "psnr_gain_dB": 2.1293945566239074,
+                "patch_lpips_change": -0.00108183213839889
+              },
+              "in_focus": {
+                "psnr_gain_dB": -0.00014521780084209013,
+                "patch_lpips_change": -0.0005576769838580814
+              }
+            },
+            "guardrails_passed": true,
+            "improvement_and_stability_passed": true,
+            "passed": true
+          },
+          "O3": {
+            "psnr_gain_dB": 3.8794466698959056,
+            "patch_lpips_change": 0.002330889781988586,
+            "quality_gate_OR": true,
+            "secondary_metric_gate": false,
+            "psnr_worsened": false,
+            "patch_lpips_worsened": true,
+            "same_direction_count": 1,
+            "eligible_count": 6,
+            "required_same_direction_count": 5,
+            "same_direction_fraction": 0.16666666666666666,
+            "stable_gate": false,
+            "guardrails": {
+              "full_image": {
+                "psnr_gain_dB": -0.5103827200768336,
+                "patch_lpips_change": 0.0027347209282406006
+              },
+              "in_focus": {
+                "psnr_gain_dB": 0.05728565011950337,
+                "patch_lpips_change": 0.00013177255346176735
+              }
+            },
+            "guardrails_passed": false,
+            "improvement_and_stability_passed": false,
+            "passed": false
+          },
+          "DrBokeh_GT": {
+            "psnr_gain_dB": 6.510567957333002,
+            "patch_lpips_change": -0.011694741374769354,
+            "quality_gate_OR": true,
+            "secondary_metric_gate": true,
+            "psnr_worsened": false,
+            "patch_lpips_worsened": false,
+            "same_direction_count": 6,
+            "eligible_count": 6,
+            "required_same_direction_count": 5,
+            "same_direction_fraction": 1.0,
+            "stable_gate": true,
+            "guardrails": {
+              "full_image": {
+                "psnr_gain_dB": 5.952195795859723,
+                "patch_lpips_change": -0.004747903099273569
+              },
+              "in_focus": {
+                "psnr_gain_dB": 11.163457841529535,
+                "patch_lpips_change": -0.0051444522089511
+              }
+            },
+            "guardrails_passed": true,
+            "improvement_and_stability_passed": true,
+            "passed": true
+          }
+        },
+        "all_minus_rec_diagnostic": {
+          "recoverable_total": {
+            "psnr_gain_dB": 0.0049401059795570745,
+            "patch_lpips_change": -0.00036179784231390663
+          },
+          "motion_required": {
+            "psnr_gain_dB": 3.9631056210964744e-05,
+            "patch_lpips_change": -2.9757667993870335e-05
+          },
+          "parallax_sufficient": {
+            "psnr_gain_dB": 0.005041240311783213,
+            "patch_lpips_change": -0.0003764750357247663
+          },
+          "unrecoverable": {
+            "psnr_gain_dB": 1.854306972695987,
+            "patch_lpips_change": -0.0011801678316780834
+          },
+          "disocclusion": {
+            "psnr_gain_dB": 0.7804929957018913,
+            "patch_lpips_change": -0.0004671778510749545
+          },
+          "full_image": {
+            "psnr_gain_dB": 0.27373409125122095,
+            "patch_lpips_change": -0.0001478522654470753
+          },
+          "in_focus": {
+            "psnr_gain_dB": -0.0028443341767498964,
+            "patch_lpips_change": -7.951480946794985e-05
+          }
+        }
+      }
+    },
+    "B2-low": {
+      "5.3": {
+        "status": "low_CoC_control_descriptive_only",
+        "passed": null,
+        "comparisons": {},
+        "eligible_count": 0,
+        "required_count": 6,
+        "all_minus_rec_diagnostic": {
+          "recoverable_total": {
+            "psnr_gain_dB": 0.02885699675135811,
+            "patch_lpips_change": 1.810329382652973e-06
+          },
+          "motion_required": {
+            "psnr_gain_dB": -0.0012254973874945563,
+            "patch_lpips_change": 5.768877495678946e-06
+          },
+          "parallax_sufficient": {
+            "psnr_gain_dB": 0.03135795436538302,
+            "patch_lpips_change": 1.5925703508951148e-06
+          },
+          "unrecoverable": {
+            "psnr_gain_dB": -0.00836536507195973,
+            "patch_lpips_change": 6.440269976073013e-05
+          },
+          "disocclusion": {
+            "psnr_gain_dB": 0.02587780814255325,
+            "patch_lpips_change": 9.686595425669993e-06
+          },
+          "full_image": {
+            "psnr_gain_dB": -0.004318410505966597,
+            "patch_lpips_change": 7.607829767645839e-06
+          },
+          "in_focus": {
+            "psnr_gain_dB": -0.00585675395173979,
+            "patch_lpips_change": 9.444876569525027e-06
+          }
+        }
+      },
+      "8.4": {
+        "status": "low_CoC_control_descriptive_only",
+        "passed": null,
+        "comparisons": {},
+        "eligible_count": 0,
+        "required_count": 6,
+        "all_minus_rec_diagnostic": {
+          "recoverable_total": {
+            "psnr_gain_dB": 0.001084340029500197,
+            "patch_lpips_change": -3.1751865031844333e-06
+          },
+          "motion_required": {
+            "psnr_gain_dB": -0.015150631078981291,
+            "patch_lpips_change": -1.5477720720949353e-05
+          },
+          "parallax_sufficient": {
+            "psnr_gain_dB": 0.0018131311745932521,
+            "patch_lpips_change": -2.416578699764309e-06
+          },
+          "unrecoverable": {
+            "psnr_gain_dB": -0.638982778676251,
+            "patch_lpips_change": 8.596949571887738e-08
+          },
+          "disocclusion": {
+            "psnr_gain_dB": -0.06888717324496696,
+            "patch_lpips_change": -2.757779643130587e-06
+          },
+          "full_image": {
+            "psnr_gain_dB": 0.011579376351846804,
+            "patch_lpips_change": -6.634448581621655e-07
+          },
+          "in_focus": {
+            "psnr_gain_dB": 0.02788611228382365,
+            "patch_lpips_change": -9.986702399797202e-07
+          }
+        }
+      }
+    }
+  },
+  "interpretation": "no_focus_passes_frozen_criteria",
+  "runtime": {
+    "Cycles_by_scene": {
+      "B2-high": {
+        "Cycles_GPU": {
+          "noise_new_images": 40,
+          "noise_seconds": 93.57257383689284,
+          "pinhole_new_images": 60,
+          "pinhole_seconds": 137.24154206737876,
+          "representative_DOF_new_images": 6,
+          "representative_DOF_new_seconds": 15.427243039011955,
+          "representative_DOF_reused_images": 12,
+          "hidden_reference_new_images": 42,
+          "hidden_reference_seconds": 96.33567292243242,
+          "total_new_images": 148,
+          "total_new_render_seconds": 342.577031865716,
+          "boundary": "sum render+EXR-write calls only; excludes process startup, PNG conversion, copying reused images and CPU analysis"
+        },
+        "Cycles_CPU": {
+          "new_images": 0,
+          "render_seconds": 0.0
+        },
+        "CPU_geometry_measured": {
+          "center_with_IO_seconds": 212.25065394118428,
+          "aperture_compute_seconds": 199.15692887455225,
+          "aperture_compression_write_seconds": 199.15553897991776,
+          "sum_measured_stage_seconds": 610.5631217956543,
+          "limitation": "sum of recorded job-stage wall times, not CPU-core seconds or overall elapsed; scenes/jobs ran concurrently; reference-geometry generation and validation not timed here"
+        }
+      },
+      "B2-low": {
+        "Cycles_GPU": {
+          "noise_new_images": 8,
+          "noise_seconds": 11.457541815936565,
+          "pinhole_new_images": 60,
+          "pinhole_seconds": 122.50352357327938,
+          "representative_DOF_new_images": 8,
+          "representative_DOF_new_seconds": 17.32078766450286,
+          "representative_DOF_reused_images": 10,
+          "hidden_reference_new_images": 34,
+          "hidden_reference_seconds": 68.7057448476553,
+          "total_new_images": 110,
+          "total_new_render_seconds": 219.9875979013741,
+          "boundary": "sum render+EXR-write calls only; excludes process startup, PNG conversion, copying reused images and CPU analysis"
+        },
+        "Cycles_CPU": {
+          "new_images": 0,
+          "render_seconds": 0.0
+        },
+        "CPU_geometry_measured": {
+          "center_with_IO_seconds": 166.3223447613418,
+          "aperture_compute_seconds": 140.38275131210685,
+          "aperture_compression_write_seconds": 184.26532532647252,
+          "sum_measured_stage_seconds": 490.9704213999212,
+          "limitation": "sum of recorded job-stage wall times, not CPU-core seconds or overall elapsed; scenes/jobs ran concurrently; reference-geometry generation and validation not timed here"
+        }
+      }
+    },
+    "scoring": {
+      "successful_command_wall_seconds": 67.28539800643921,
+      "start_from_log_birth_utc": "2026-11-10T12:15:46.991671+00:00",
+      "end_from_log_mtime_utc": "2026-11-10T12:16:54.277069+00:00",
+      "measurement": "filesystem birth-to-last-write of successful eval log, includes imports/local LPIPS load,CPU metrics and12montages; not isolated network-core time",
+      "CPU_threads": 8,
+      "GPU_used": false,
+      "failed_schema_only_first_attempt_not_included": true
+    },
+    "threeD_render": {
+      "outputs": 108,
+      "sum_seconds": 15.451076716184616,
+      "peak_allocated_MiB": 2815.9765625,
+      "boundary": "synchronized GPU lens rendering and conversion, excluding cloud preparation and CPU output writes"
+    },
+    "LaMa": {
+      "outputs": 6,
+      "sum_seconds": 3.6999661661684513,
+      "peak_allocated_MiB": 396.6611328125,
+      "boundary": "Per-item model calls, diagnostic statistics and NPZ/PNG output writes; excludes model setup/loading and inputNPZ reads",
+      "interpreter": "/root/miniconda3/envs/magicbokeh/bin/python",
+      "torch": "2.8.0+cu128"
+    },
+    "O3": {
+      "outputs": 36,
+      "sum_seconds": 20.850692812353373,
+      "peak_allocated_MiB": 177.2548828125,
+      "boundary": "Per-item model calls, diagnostic statistics and NPZ/PNG output writes; excludes model setup/loading and inputNPZ reads",
+      "interpreter": "/root/autodl-tmp/envs/dofgaussian/bin/python",
+      "torch": "2.1.2+cu121"
+    },
+    "Oracle-input Dr.Bokeh": {
+      "outputs": 36,
+      "sum_seconds": 87.61204415559769,
+      "peak_allocated_MiB": 1774.63232421875,
+      "boundary": "Per-item model calls, diagnostic statistics and NPZ/PNG output writes; excludes model setup/loading and inputNPZ reads",
+      "interpreter": "/root/miniconda3/envs/magicbokeh/bin/python",
+      "torch": "2.8.0+cu128"
+    },
+    "MoVieS-official": {
+      "three_query_forward_seconds": 1.8139020204544067,
+      "model_load_seconds": 24.247162353247404,
+      "peak_allocated_MiB": 9025.75390625
+    },
+    "MoVieS-B2-high": {
+      "three_query_forward_seconds": 2.2569505609571934,
+      "model_load_seconds": 24.171488359570503,
+      "peak_allocated_MiB": 11307.70361328125
+    }
+  },
+  "MoVieS": {
+    "C3_completed": true,
+    "C4_completed": true,
+    "C3_records": [
+      "route3-c1-b2only-2026-11-10-movies-official.json",
+      "route3-c1-b2only-2026-11-10-movies-B2-high.json"
+    ],
+    "C4_record": "route3-c1-b2only-2026-11-10-movies-motion-GT.json",
+    "C4_new_inference": false,
+    "motion": {
+      "dynamic_same_frame": {
+        "source_query_groups": 3,
+        "units": "range of groupwise point-error medians; not globally pooled points",
+        "metric_displacement_endpoint_error_m_p50_p90_group_median_range": [
+          0.0002308671356590506,
+          0.0002308671356590506
+        ],
+        "GT_displacement_norm_m_p50_p90_group_median_range": [
+          0.0,
+          0.0
+        ],
+        "query_visible_endpoint_error_m_p50_p90_group_median_range": [
+          0.0002308671356590506,
+          0.0002308671356590506
+        ],
+        "motion_on_GT_source_point_reprojection_error_pixels_p50_p90_group_median_range": [
+          0.10309305337369469,
+          0.10715505621072907
+        ]
+      },
+      "dynamic_cross_frame": {
+        "source_query_groups": 36,
+        "units": "range of groupwise point-error medians; not globally pooled points",
+        "metric_displacement_endpoint_error_m_p50_p90_group_median_range": [
+          0.03775632681479929,
+          0.3047275754645818
+        ],
+        "GT_displacement_norm_m_p50_p90_group_median_range": [
+          0.09983661777948413,
+          1.0886110257010153
+        ],
+        "query_visible_endpoint_error_m_p50_p90_group_median_range": [
+          0.037416121546698766,
+          0.5122010478101425
+        ],
+        "motion_on_GT_source_point_reprojection_error_pixels_p50_p90_group_median_range": [
+          10.820540448958742,
+          179.13048193615916
+        ]
+      },
+      "static_same_frame": {
+        "source_query_groups": 3,
+        "units": "range of groupwise point-error medians; not globally pooled points",
+        "metric_displacement_endpoint_error_m_p50_p90_group_median_range": [
+          0.0002308671356590506,
+          0.0004617342713181012
+        ],
+        "GT_displacement_norm_m_p50_p90_group_median_range": [
+          0.0,
+          0.0
+        ]
+      },
+      "static_cross_frame": {
+        "source_query_groups": 36,
+        "units": "range of groupwise point-error medians; not globally pooled points",
+        "metric_displacement_endpoint_error_m_p50_p90_group_median_range": [
+          0.0004617342713181012,
+          0.0009518895740035274
+        ],
+        "GT_displacement_norm_m_p50_p90_group_median_range": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "observations": [
+      "官方示例和B2手持视频均观察到当前来源低alpha/低premultiplied RGB诊断PSNR，全来源明显改善",
+      "结合前轮C0/C1，能排除本项目来源编号错配和同组渲染器不一致；现象不能只归因于Cam固定机位",
+      "B2已知动态位移与对应有明显误差，静态与同帧位移误差小；不能由该探针单独认证源深度或推广为模型架构定理",
+      "B2当前来源全图约9–11dB，但动态球区域21.68–28.18dB、alpha0.924–0.956；全图低分不代表运动主体区域也统一低到9dB，RGB误差并非单独运动头分数"
+    ],
+    "input_scale": "GT input geometry canonicalization and official meanXYZ normalization, model_to_world3.782527m; no posthoc depth-only fit",
+    "dynamic_object_render_error_record": "route3-c1-b2only-2026-11-10-movies-render-error.json",
+    "dynamic_object_render_error": [
+      {
+        "query_frame": 1,
+        "source_mode": "all",
+        "pixels": 12343,
+        "RGB_sse": 19.95381852669554,
+        "RGB_psnr_dB": 32.685159655744826,
+        "alpha_mean": 0.9939442276954651,
+        "alpha_p10_p50_p90": [
+          0.9872074842453002,
+          0.996677815914154,
+          0.9991471409797669
+        ],
+        "full_image_RGB_psnr_crosscheck_dB": 30.794715162916173,
+        "prediction_cache": "outputs/route3-b2only-2026-11-10-01/movies-diagnostics/B2-high-inference/query-f001-all.npz"
+      },
+      {
+        "query_frame": 1,
+        "source_mode": "current",
+        "pixels": 12343,
+        "RGB_sse": 56.25888387790174,
+        "RGB_psnr_dB": 28.183508717815116,
+        "alpha_mean": 0.9563860893249512,
+        "alpha_p10_p50_p90": [
+          0.9303729772567749,
+          0.9708026051521301,
+          0.9891442179679871
+        ],
+        "full_image_RGB_psnr_crosscheck_dB": 10.460588394624313,
+        "prediction_cache": "outputs/route3-b2only-2026-11-10-01/movies-diagnostics/B2-high-inference/query-f001-current.npz"
+      },
+      {
+        "query_frame": 30,
+        "source_mode": "all",
+        "pixels": 17473,
+        "RGB_sse": 80.8700696997224,
+        "RGB_psnr_dB": 28.117009142136737,
+        "alpha_mean": 0.9948331117630005,
+        "alpha_p10_p50_p90": [
+          0.9910313606262207,
+          0.9970501065254211,
+          0.9992270350456238
+        ],
+        "full_image_RGB_psnr_crosscheck_dB": 31.13133982394023,
+        "prediction_cache": "outputs/route3-b2only-2026-11-10-01/movies-diagnostics/B2-high-inference/query-f030-all.npz"
+      },
+      {
+        "query_frame": 30,
+        "source_mode": "current",
+        "pixels": 17473,
+        "RGB_sse": 356.16993608972814,
+        "RGB_psnr_dB": 21.67831473273573,
+        "alpha_mean": 0.9240925908088684,
+        "alpha_p10_p50_p90": [
+          0.899217402935028,
+          0.967238187789917,
+          0.9842408180236817
+        ],
+        "full_image_RGB_psnr_crosscheck_dB": 10.966312384642006,
+        "prediction_cache": "outputs/route3-b2only-2026-11-10-01/movies-diagnostics/B2-high-inference/query-f030-current.npz"
+      },
+      {
+        "query_frame": 60,
+        "source_mode": "all",
+        "pixels": 12242,
+        "RGB_sse": 66.40088756137983,
+        "RGB_psnr_dB": 27.427997453878046,
+        "alpha_mean": 0.9840397834777832,
+        "alpha_p10_p50_p90": [
+          0.9714514076709747,
+          0.997407853603363,
+          0.9991428554058075
+        ],
+        "full_image_RGB_psnr_crosscheck_dB": 29.775141425941115,
+        "prediction_cache": "outputs/route3-b2only-2026-11-10-01/movies-diagnostics/B2-high-inference/query-f060-all.npz"
+      },
+      {
+        "query_frame": 60,
+        "source_mode": "current",
+        "pixels": 12242,
+        "RGB_sse": 64.65604777557762,
+        "RGB_psnr_dB": 27.54364475875726,
+        "alpha_mean": 0.9309914708137512,
+        "alpha_p10_p50_p90": [
+          0.9241542220115662,
+          0.970009058713913,
+          0.9850209057331085
+        ],
+        "full_image_RGB_psnr_crosscheck_dB": 8.68374113865096,
+        "prediction_cache": "outputs/route3-b2only-2026-11-10-01/movies-diagnostics/B2-high-inference/query-f060-current.npz"
+      }
+    ]
+  },
+  "conclusions": {
+    "observed_mechanism": "high两档焦点均通过O6-GT-rec相对O5的机制及6/6同向；正信号主要由相机视差可恢复表面提供",
+    "method_value": "high两档焦点对BokehMe的LPIPS同向及全图0.2dB护栏未通过，完整判据均不通过；对Oracle-input Dr.Bokeh通过",
+    "route_judgment": "本轮证据不足以支持直接转入隐藏层/混合渲染训练；保留隐藏层边际机制观察，等待用户决定是否另行定位合成差距或调整主贡献",
+    "limits": [
+      "一个受控主场景及其低CoC对照，每焦点6个主组合，不是跨场景泛化证据",
+      "有限K16、高斯离散、局部深背景面、参考视角外观及LDR限制；O5/O6并非完美光学Oracle",
+      "64patch LPIPS感受野包含窄区域外像素，按冻结口径完整保留",
+      "O6−O3/Dr不是单因素归因，O6-GT-rec不是收益上限，all−rec不是可恢复占比"
+    ]
+  },
+  "stop_conditions": {
+    "triggered": [],
+    "DrBokeh_GT_interface_passed": true,
+    "sampling_converged": true,
+    "representative_high_primary_valid_groups_by_focus": {
+      "1.4": 6,
+      "5.0": 6
+    },
+    "hidden_reference_visible_interior_consistency_passed": true,
+    "residual_below_precheck": true
+  },
+  "unfinished_or_excluded": [
+    {
+      "item": "f/2.8正式景深与方法评价",
+      "reason": "仅辅助采样噪声已完成；未扩大正式范围"
+    },
+    {
+      "item": "全量60帧景深、表面烘焙、Dr.Bokeh+GT隐藏层、训练",
+      "reason": "用户明确不在范围"
+    }
+  ],
+  "assets": {
+    "source": "original procedural primitives/node materials/rigid animation; no third-party assets or textures",
+    "license": "CC0-1.0 generated scene asset dedication as recorded in B1; Blender GPL software separate",
+    "public_release_performed": false
+  },
+  "validation": {
+    "physics_minimum_check": {
+      "depth_sort_hidden_in_front_max_error": 0.0,
+      "depth_sort_visible_in_front_max_error": 0.0,
+      "fill_transmission_gradient": true,
+      "focus_plane_fill_alignment_max_error": 0.0,
+      "background_projection_sign_max_error": 5.960464477539063e-08,
+      "legacy_constant_background_max_error": 0.0,
+      "synthetic_pinhole_checker_PSNR": 82.65727233886719,
+      "synthetic_off_grid_plane_minimum_alpha": 0.9914682507514954,
+      "fixed_pixel_initialization": {
+        "subdivisions": 5,
+        "sigma_pixels": 0.7,
+        "eps2d": 0.0015,
+        "opacity": 0.999
+      },
+      "interpretation": "LaMa is only residual transmitted color; no B2 method outputs evaluated",
+      "passed": true
+    },
+    "threeD_arrays": {
+      "predictions": 108,
+      "finite_arrays_and_shapes_passed": true,
+      "unit_range_RGB_passed": true,
+      "maximum_layer_plus_fill_sum_residual": 4.76837158203125e-07,
+      "O5_hidden_contribution_zero": true,
+      "GT_aperture_sample_order_check_passed": true,
+      "shared_fill_mask_and_frame_camera_checks_passed": true
+    },
+    "score_aggregation_read_only_review": {
+      "aggregate_tables_recomputed_from_CSV": 140,
+      "correct_pooled_SSE": true,
+      "correct_pixel_weighted_LPIPS": true,
+      "full_masks_have_all262144pixels": true,
+      "in_focus_counts_match_known_finite_CoC_rule": true,
+      "in_focus_residual_pixels_retained_sum": 1,
+      "OR_quality_gate": true,
+      "ceil75percent5of6": true,
+      "no_cross_focus_decision_pooling": true,
+      "no_masks_methods_or_thresholds_changed": true
+    },
+    "new_python_files_compile": true,
+    "small_records_parse_without_NaN_or_Infinity": true,
+    "frozen_criteria_equal_to_git_00a875e": true,
+    "old_results_modified": false,
+    "unrelated_PPT_not_staged": true,
+    "visualization_only_GT_supported_crops": true,
+    "visualization_revision_changed_scores_or_criteria": false
+  },
+  "resources_after": {
+    "/": {
+      "total_bytes": 32212254720,
+      "available_bytes": 2634342400,
+      "available_GiB": 2.4534225463867188
+    },
+    "/root/autodl-tmp": {
+      "total_bytes": 898721906688,
+      "available_bytes": 336299089920,
+      "available_GiB": 313.2029342651367
+    },
+    "GPU_end": "RTX4090D GPU0 0MiB/49140MiB, no compute processes; driver580.105.08; checked after C3 release",
+    "cache_policy": "Blender TMPDIR/TMP/TEMP/XDG/OptiX and model caches redirected to data disk route3-cache; no global proxy/pip/conda configuration changes or new environments"
+  },
+  "evidence_records": [
+    "route3-c1-b2-2026-11-10-3d-prepare.json",
+    "route3-c1-b2-2026-11-10-3d-render.json",
+    "route3-c1-b2-2026-11-10-evaluation.json",
+    "route3-c1-b2-2026-11-10-geometry.json",
+    "route3-c1-b2-2026-11-10-noise.json",
+    "route3-c1-b2-2026-11-10-partial.json",
+    "route3-c1-b2-2026-11-10-reference-checks.json",
+    "route3-c1-b2-2026-11-10-render-inventory.json",
+    "route3-c1-b2-2026-11-10-report-tables.json",
+    "route3-c1-b2-2026-11-10-visualizations.json",
+    "route3-c1-b2only-2026-11-10-bokehme.json",
+    "route3-c1-b2only-2026-11-10-drbokeh.json",
+    "route3-c1-b2only-2026-11-10-lama-fill.json",
+    "route3-c1-b2only-2026-11-10-movies-B2-high.json",
+    "route3-c1-b2only-2026-11-10-movies-input-normalization.json",
+    "route3-c1-b2only-2026-11-10-movies-motion-GT.json",
+    "route3-c1-b2only-2026-11-10-movies-official.json",
+    "route3-c1-b2only-2026-11-10-movies-render-error.json",
+    "route3-c1-b2only-2026-11-10-movies-summary.json",
+    "route3-c1-b2only-2026-11-10-shared-inputs.json"
+  ],
+  "visualizations": [
+    {
+      "scene": "B2-high",
+      "focus_distance_m": 1.4,
+      "fstop": 1.4,
+      "path": "outputs/route3-b2only-2026-11-10-01/evaluation/visualizations-v2-GT-support/B2-high-N1.4-F1.4-patches.png",
+      "GT_locator_path": "outputs/route3-b2only-2026-11-10-01/evaluation/visualizations-v2-GT-support/B2-high-N1.4-F1.4-GT-locator.png",
+      "cases": [
+        {
+          "id": "B2-high-f001-N1.4-F1.4",
+          "frame": 1,
+          "crop_yx": [
+            212,
+            178
+          ],
+          "component_pixels": 5844,
+          "component_centroid_yx": [
+            243.76967830253253,
+            209.88347022587268
+          ],
+          "GT_support_pixel_yx": [
+            244,
+            210
+          ],
+          "crop_GT_pixels": 626,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        },
+        {
+          "id": "B2-high-f030-N1.4-F1.4",
+          "frame": 30,
+          "crop_yx": [
+            149,
+            183
+          ],
+          "component_pixels": 8207,
+          "component_centroid_yx": [
+            233.08833922261485,
+            244.2848787620324
+          ],
+          "GT_support_pixel_yx": [
+            181,
+            215
+          ],
+          "crop_GT_pixels": 672,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        },
+        {
+          "id": "B2-high-f060-N1.4-F1.4",
+          "frame": 60,
+          "crop_yx": [
+            205,
+            176
+          ],
+          "component_pixels": 5884,
+          "component_centroid_yx": [
+            245.54180829367778,
+            261.11267845003397
+          ],
+          "GT_support_pixel_yx": [
+            237,
+            208
+          ],
+          "crop_GT_pixels": 628,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        }
+      ]
+    },
+    {
+      "scene": "B2-high",
+      "focus_distance_m": 1.4,
+      "fstop": 2.0,
+      "path": "outputs/route3-b2only-2026-11-10-01/evaluation/visualizations-v2-GT-support/B2-high-N2-F1.4-patches.png",
+      "GT_locator_path": "outputs/route3-b2only-2026-11-10-01/evaluation/visualizations-v2-GT-support/B2-high-N2-F1.4-GT-locator.png",
+      "cases": [
+        {
+          "id": "B2-high-f001-N2-F1.4",
+          "frame": 1,
+          "crop_yx": [
+            212,
+            178
+          ],
+          "component_pixels": 4166,
+          "component_centroid_yx": [
+            243.0736917906865,
+            209.0981757081133
+          ],
+          "GT_support_pixel_yx": [
+            244,
+            210
+          ],
+          "crop_GT_pixels": 438,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        },
+        {
+          "id": "B2-high-f030-N2-F1.4",
+          "frame": 30,
+          "crop_yx": [
+            144,
+            248
+          ],
+          "component_pixels": 5675,
+          "component_centroid_yx": [
+            232.61444933920706,
+            252.2681938325991
+          ],
+          "GT_support_pixel_yx": [
+            176,
+            280
+          ],
+          "crop_GT_pixels": 404,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        },
+        {
+          "id": "B2-high-f060-N2-F1.4",
+          "frame": 60,
+          "crop_yx": [
+            203,
+            175
+          ],
+          "component_pixels": 4096,
+          "component_centroid_yx": [
+            247.212646484375,
+            261.851318359375
+          ],
+          "GT_support_pixel_yx": [
+            235,
+            207
+          ],
+          "crop_GT_pixels": 438,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        }
+      ]
+    },
+    {
+      "scene": "B2-high",
+      "focus_distance_m": 1.4,
+      "fstop": 0.5,
+      "path": "outputs/route3-b2only-2026-11-10-01/evaluation/visualizations-v2-GT-support/B2-high-N0.5-F1.4-patches.png",
+      "GT_locator_path": "outputs/route3-b2only-2026-11-10-01/evaluation/visualizations-v2-GT-support/B2-high-N0.5-F1.4-GT-locator.png",
+      "cases": [
+        {
+          "id": "B2-high-f001-N0.5-F1.4",
+          "frame": 1,
+          "crop_yx": [
+            190,
+            196
+          ],
+          "component_pixels": 17446,
+          "component_centroid_yx": [
+            223.4441132637854,
+            233.4307004470939
+          ],
+          "GT_support_pixel_yx": [
+            222,
+            228
+          ],
+          "crop_GT_pixels": 1590,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        },
+        {
+          "id": "B2-high-f030-N0.5-F1.4",
+          "frame": 30,
+          "crop_yx": [
+            165,
+            181
+          ],
+          "component_pixels": 21874,
+          "component_centroid_yx": [
+            207.81388863490903,
+            250.08548962238274
+          ],
+          "GT_support_pixel_yx": [
+            197,
+            213
+          ],
+          "crop_GT_pixels": 969,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        },
+        {
+          "id": "B2-high-f060-N0.5-F1.4",
+          "frame": 60,
+          "crop_yx": [
+            175,
+            191
+          ],
+          "component_pixels": 21435,
+          "component_centroid_yx": [
+            214.9715418707721,
+            256.4231863774201
+          ],
+          "GT_support_pixel_yx": [
+            207,
+            223
+          ],
+          "crop_GT_pixels": 1586,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        }
+      ]
+    },
+    {
+      "scene": "B2-high",
+      "focus_distance_m": 5.0,
+      "fstop": 1.4,
+      "path": "outputs/route3-b2only-2026-11-10-01/evaluation/visualizations-v2-GT-support/B2-high-N1.4-F5-patches.png",
+      "GT_locator_path": "outputs/route3-b2only-2026-11-10-01/evaluation/visualizations-v2-GT-support/B2-high-N1.4-F5-GT-locator.png",
+      "cases": [
+        {
+          "id": "B2-high-f001-N1.4-F5",
+          "frame": 1,
+          "crop_yx": [
+            222,
+            172
+          ],
+          "component_pixels": 3714,
+          "component_centroid_yx": [
+            253.37883683360258,
+            197.4569197630587
+          ],
+          "GT_support_pixel_yx": [
+            254,
+            204
+          ],
+          "crop_GT_pixels": 251,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        },
+        {
+          "id": "B2-high-f030-N1.4-F5",
+          "frame": 30,
+          "crop_yx": [
+            141,
+            212
+          ],
+          "component_pixels": 5091,
+          "component_centroid_yx": [
+            223.31958357886467,
+            245.49263406010607
+          ],
+          "GT_support_pixel_yx": [
+            173,
+            244
+          ],
+          "crop_GT_pixels": 439,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        },
+        {
+          "id": "B2-high-f060-N1.4-F5",
+          "frame": 60,
+          "crop_yx": [
+            206,
+            171
+          ],
+          "component_pixels": 3732,
+          "component_centroid_yx": [
+            254.9922293676313,
+            282.7591103965702
+          ],
+          "GT_support_pixel_yx": [
+            238,
+            203
+          ],
+          "crop_GT_pixels": 245,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        }
+      ]
+    },
+    {
+      "scene": "B2-high",
+      "focus_distance_m": 5.0,
+      "fstop": 2.0,
+      "path": "outputs/route3-b2only-2026-11-10-01/evaluation/visualizations-v2-GT-support/B2-high-N2-F5-patches.png",
+      "GT_locator_path": "outputs/route3-b2only-2026-11-10-01/evaluation/visualizations-v2-GT-support/B2-high-N2-F5-GT-locator.png",
+      "cases": [
+        {
+          "id": "B2-high-f001-N2-F5",
+          "frame": 1,
+          "crop_yx": [
+            224,
+            172
+          ],
+          "component_pixels": 3165,
+          "component_centroid_yx": [
+            255.60789889415483,
+            204.40094786729858
+          ],
+          "GT_support_pixel_yx": [
+            256,
+            204
+          ],
+          "crop_GT_pixels": 241,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        },
+        {
+          "id": "B2-high-f030-N2-F5",
+          "frame": 30,
+          "crop_yx": [
+            150,
+            181
+          ],
+          "component_pixels": 3746,
+          "component_centroid_yx": [
+            228.03443673251468,
+            236.70768820074747
+          ],
+          "GT_support_pixel_yx": [
+            182,
+            213
+          ],
+          "crop_GT_pixels": 379,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        },
+        {
+          "id": "B2-high-f060-N2-F5",
+          "frame": 60,
+          "crop_yx": [
+            211,
+            170
+          ],
+          "component_pixels": 3119,
+          "component_centroid_yx": [
+            259.4854119910228,
+            274.60019236934914
+          ],
+          "GT_support_pixel_yx": [
+            243,
+            202
+          ],
+          "crop_GT_pixels": 240,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        }
+      ]
+    },
+    {
+      "scene": "B2-high",
+      "focus_distance_m": 5.0,
+      "fstop": 0.5,
+      "path": "outputs/route3-b2only-2026-11-10-01/evaluation/visualizations-v2-GT-support/B2-high-N0.5-F5-patches.png",
+      "GT_locator_path": "outputs/route3-b2only-2026-11-10-01/evaluation/visualizations-v2-GT-support/B2-high-N0.5-F5-GT-locator.png",
+      "cases": [
+        {
+          "id": "B2-high-f001-N0.5-F5",
+          "frame": 1,
+          "crop_yx": [
+            187,
+            183
+          ],
+          "component_pixels": 8682,
+          "component_centroid_yx": [
+            218.9375719880212,
+            226.5836212854181
+          ],
+          "GT_support_pixel_yx": [
+            219,
+            215
+          ],
+          "crop_GT_pixels": 262,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        },
+        {
+          "id": "B2-high-f030-N0.5-F5",
+          "frame": 30,
+          "crop_yx": [
+            163,
+            185
+          ],
+          "component_pixels": 12802,
+          "component_centroid_yx": [
+            220.47078581471646,
+            242.7046555225746
+          ],
+          "GT_support_pixel_yx": [
+            195,
+            217
+          ],
+          "crop_GT_pixels": 1112,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        },
+        {
+          "id": "B2-high-f060-N0.5-F5",
+          "frame": 60,
+          "crop_yx": [
+            182,
+            176
+          ],
+          "component_pixels": 9157,
+          "component_centroid_yx": [
+            221.90837610571148,
+            255.21360707655344
+          ],
+          "GT_support_pixel_yx": [
+            214,
+            208
+          ],
+          "crop_GT_pixels": 257,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        }
+      ]
+    },
+    {
+      "scene": "B2-low",
+      "focus_distance_m": 5.3,
+      "fstop": 1.4,
+      "path": "outputs/route3-b2only-2026-11-10-01/evaluation/visualizations-v2-GT-support/B2-low-N1.4-F5.3-patches.png",
+      "GT_locator_path": "outputs/route3-b2only-2026-11-10-01/evaluation/visualizations-v2-GT-support/B2-low-N1.4-F5.3-GT-locator.png",
+      "cases": [
+        {
+          "id": "B2-low-f001-N1.4-F5.3",
+          "frame": 1,
+          "crop_yx": [
+            275,
+            272
+          ],
+          "component_pixels": 107,
+          "component_centroid_yx": [
+            307.0,
+            304.0
+          ],
+          "GT_support_pixel_yx": [
+            307,
+            304
+          ],
+          "crop_GT_pixels": 99,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        },
+        {
+          "id": "B2-low-f030-N1.4-F5.3",
+          "frame": 30,
+          "crop_yx": [
+            295,
+            214
+          ],
+          "component_pixels": 156,
+          "component_centroid_yx": [
+            327.0,
+            246.5
+          ],
+          "GT_support_pixel_yx": [
+            327,
+            246
+          ],
+          "crop_GT_pixels": 96,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        },
+        {
+          "id": "B2-low-f060-N1.4-F5.3",
+          "frame": 60,
+          "crop_yx": [
+            295,
+            229
+          ],
+          "component_pixels": 102,
+          "component_centroid_yx": [
+            327.0,
+            261.5
+          ],
+          "GT_support_pixel_yx": [
+            327,
+            261
+          ],
+          "crop_GT_pixels": 97,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        }
+      ]
+    },
+    {
+      "scene": "B2-low",
+      "focus_distance_m": 5.3,
+      "fstop": 2.0,
+      "path": "outputs/route3-b2only-2026-11-10-01/evaluation/visualizations-v2-GT-support/B2-low-N2-F5.3-patches.png",
+      "GT_locator_path": "outputs/route3-b2only-2026-11-10-01/evaluation/visualizations-v2-GT-support/B2-low-N2-F5.3-GT-locator.png",
+      "cases": [
+        {
+          "id": "B2-low-f001-N2-F5.3",
+          "frame": 1,
+          "crop_yx": [
+            275,
+            289
+          ],
+          "component_pixels": 72,
+          "component_centroid_yx": [
+            307.0,
+            321.5
+          ],
+          "GT_support_pixel_yx": [
+            307,
+            321
+          ],
+          "crop_GT_pixels": 87,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        },
+        {
+          "id": "B2-low-f030-N2-F5.3",
+          "frame": 30,
+          "crop_yx": [
+            146,
+            135
+          ],
+          "component_pixels": 53,
+          "component_centroid_yx": [
+            178.0,
+            167.0
+          ],
+          "GT_support_pixel_yx": [
+            178,
+            167
+          ],
+          "crop_GT_pixels": 84,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        },
+        {
+          "id": "B2-low-f060-N2-F5.3",
+          "frame": 60,
+          "crop_yx": [
+            295,
+            244
+          ],
+          "component_pixels": 72,
+          "component_centroid_yx": [
+            327.0,
+            276.5
+          ],
+          "GT_support_pixel_yx": [
+            327,
+            276
+          ],
+          "crop_GT_pixels": 76,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        }
+      ]
+    },
+    {
+      "scene": "B2-low",
+      "focus_distance_m": 5.3,
+      "fstop": 0.5,
+      "path": "outputs/route3-b2only-2026-11-10-01/evaluation/visualizations-v2-GT-support/B2-low-N0.5-F5.3-patches.png",
+      "GT_locator_path": "outputs/route3-b2only-2026-11-10-01/evaluation/visualizations-v2-GT-support/B2-low-N0.5-F5.3-GT-locator.png",
+      "cases": [
+        {
+          "id": "B2-low-f001-N0.5-F5.3",
+          "frame": 1,
+          "crop_yx": [
+            180,
+            146
+          ],
+          "component_pixels": 1261,
+          "component_centroid_yx": [
+            211.86122125297382,
+            197.16336241078508
+          ],
+          "GT_support_pixel_yx": [
+            212,
+            178
+          ],
+          "crop_GT_pixels": 240,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        },
+        {
+          "id": "B2-low-f030-N0.5-F5.3",
+          "frame": 30,
+          "crop_yx": [
+            200,
+            222
+          ],
+          "component_pixels": 2749,
+          "component_centroid_yx": [
+            222.31793379410695,
+            253.67115314659875
+          ],
+          "GT_support_pixel_yx": [
+            232,
+            254
+          ],
+          "crop_GT_pixels": 150,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        },
+        {
+          "id": "B2-low-f060-N0.5-F5.3",
+          "frame": 60,
+          "crop_yx": [
+            191,
+            319
+          ],
+          "component_pixels": 1097,
+          "component_centroid_yx": [
+            222.718322698268,
+            321.84320875113946
+          ],
+          "GT_support_pixel_yx": [
+            223,
+            351
+          ],
+          "crop_GT_pixels": 196,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        }
+      ]
+    },
+    {
+      "scene": "B2-low",
+      "focus_distance_m": 8.4,
+      "fstop": 1.4,
+      "path": "outputs/route3-b2only-2026-11-10-01/evaluation/visualizations-v2-GT-support/B2-low-N1.4-F8.4-patches.png",
+      "GT_locator_path": "outputs/route3-b2only-2026-11-10-01/evaluation/visualizations-v2-GT-support/B2-low-N1.4-F8.4-GT-locator.png",
+      "cases": [
+        {
+          "id": "B2-low-f001-N1.4-F8.4",
+          "frame": 1,
+          "crop_yx": [
+            276,
+            238
+          ],
+          "component_pixels": 109,
+          "component_centroid_yx": [
+            308.0,
+            270.0
+          ],
+          "GT_support_pixel_yx": [
+            308,
+            270
+          ],
+          "crop_GT_pixels": 128,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        },
+        {
+          "id": "B2-low-f030-N1.4-F8.4",
+          "frame": 30,
+          "crop_yx": [
+            294,
+            224
+          ],
+          "component_pixels": 304,
+          "component_centroid_yx": [
+            338.5230263157895,
+            255.52302631578948
+          ],
+          "GT_support_pixel_yx": [
+            326,
+            256
+          ],
+          "crop_GT_pixels": 139,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        },
+        {
+          "id": "B2-low-f060-N1.4-F8.4",
+          "frame": 60,
+          "crop_yx": [
+            276,
+            208
+          ],
+          "component_pixels": 110,
+          "component_centroid_yx": [
+            308.0,
+            240.5
+          ],
+          "GT_support_pixel_yx": [
+            308,
+            240
+          ],
+          "crop_GT_pixels": 128,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        }
+      ]
+    },
+    {
+      "scene": "B2-low",
+      "focus_distance_m": 8.4,
+      "fstop": 2.0,
+      "path": "outputs/route3-b2only-2026-11-10-01/evaluation/visualizations-v2-GT-support/B2-low-N2-F8.4-patches.png",
+      "GT_locator_path": "outputs/route3-b2only-2026-11-10-01/evaluation/visualizations-v2-GT-support/B2-low-N2-F8.4-GT-locator.png",
+      "cases": [
+        {
+          "id": "B2-low-f001-N2-F8.4",
+          "frame": 1,
+          "crop_yx": [
+            276,
+            222
+          ],
+          "component_pixels": 77,
+          "component_centroid_yx": [
+            308.0,
+            254.0
+          ],
+          "GT_support_pixel_yx": [
+            308,
+            254
+          ],
+          "crop_GT_pixels": 90,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        },
+        {
+          "id": "B2-low-f030-N2-F8.4",
+          "frame": 30,
+          "crop_yx": [
+            294,
+            224
+          ],
+          "component_pixels": 266,
+          "component_centroid_yx": [
+            332.8233082706767,
+            256.45864661654133
+          ],
+          "GT_support_pixel_yx": [
+            326,
+            256
+          ],
+          "crop_GT_pixels": 135,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        },
+        {
+          "id": "B2-low-f060-N2-F8.4",
+          "frame": 60,
+          "crop_yx": [
+            276,
+            225
+          ],
+          "component_pixels": 77,
+          "component_centroid_yx": [
+            308.0,
+            257.0
+          ],
+          "GT_support_pixel_yx": [
+            308,
+            257
+          ],
+          "crop_GT_pixels": 92,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        }
+      ]
+    },
+    {
+      "scene": "B2-low",
+      "focus_distance_m": 8.4,
+      "fstop": 0.5,
+      "path": "outputs/route3-b2only-2026-11-10-01/evaluation/visualizations-v2-GT-support/B2-low-N0.5-F8.4-patches.png",
+      "GT_locator_path": "outputs/route3-b2only-2026-11-10-01/evaluation/visualizations-v2-GT-support/B2-low-N0.5-F8.4-GT-locator.png",
+      "cases": [
+        {
+          "id": "B2-low-f001-N0.5-F8.4",
+          "frame": 1,
+          "crop_yx": [
+            179,
+            144
+          ],
+          "component_pixels": 1277,
+          "component_centroid_yx": [
+            210.99451840250586,
+            190.17619420516837
+          ],
+          "GT_support_pixel_yx": [
+            211,
+            176
+          ],
+          "crop_GT_pixels": 246,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        },
+        {
+          "id": "B2-low-f030-N0.5-F8.4",
+          "frame": 30,
+          "crop_yx": [
+            203,
+            219
+          ],
+          "component_pixels": 3090,
+          "component_centroid_yx": [
+            248.6695792880259,
+            249.7621359223301
+          ],
+          "GT_support_pixel_yx": [
+            235,
+            251
+          ],
+          "crop_GT_pixels": 100,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        },
+        {
+          "id": "B2-low-f060-N0.5-F8.4",
+          "frame": 60,
+          "crop_yx": [
+            165,
+            105
+          ],
+          "component_pixels": 965,
+          "component_centroid_yx": [
+            197.2963730569948,
+            145.4062176165803
+          ],
+          "GT_support_pixel_yx": [
+            197,
+            137
+          ],
+          "crop_GT_pixels": 230,
+          "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+        }
+      ]
+    }
+  ],
+  "next_step": "暂停并等待用户路线决定；不自动调参、恢复CamVFX/M2或训练",
+  "visualizations_original": [
+    {
+      "scene": "B2-high",
+      "focus_distance_m": 1.4,
+      "fstop": 1.4,
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/evaluation/visualizations/B2-high-N1.4-F1.4-patches.png",
+      "cases": [
+        {
+          "id": "B2-high-f001-N1.4-F1.4",
+          "frame": 1,
+          "crop_yx": [
+            212,
+            178
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        },
+        {
+          "id": "B2-high-f030-N1.4-F1.4",
+          "frame": 30,
+          "crop_yx": [
+            201,
+            212
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        },
+        {
+          "id": "B2-high-f060-N1.4-F1.4",
+          "frame": 60,
+          "crop_yx": [
+            214,
+            229
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        }
+      ]
+    },
+    {
+      "scene": "B2-high",
+      "focus_distance_m": 1.4,
+      "fstop": 2.0,
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/evaluation/visualizations/B2-high-N2-F1.4-patches.png",
+      "cases": [
+        {
+          "id": "B2-high-f001-N2-F1.4",
+          "frame": 1,
+          "crop_yx": [
+            211,
+            177
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        },
+        {
+          "id": "B2-high-f030-N2-F1.4",
+          "frame": 30,
+          "crop_yx": [
+            201,
+            220
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        },
+        {
+          "id": "B2-high-f060-N2-F1.4",
+          "frame": 60,
+          "crop_yx": [
+            215,
+            230
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        }
+      ]
+    },
+    {
+      "scene": "B2-high",
+      "focus_distance_m": 1.4,
+      "fstop": 0.5,
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/evaluation/visualizations/B2-high-N0.5-F1.4-patches.png",
+      "cases": [
+        {
+          "id": "B2-high-f001-N0.5-F1.4",
+          "frame": 1,
+          "crop_yx": [
+            191,
+            201
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        },
+        {
+          "id": "B2-high-f030-N0.5-F1.4",
+          "frame": 30,
+          "crop_yx": [
+            176,
+            218
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        },
+        {
+          "id": "B2-high-f060-N0.5-F1.4",
+          "frame": 60,
+          "crop_yx": [
+            183,
+            224
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        }
+      ]
+    },
+    {
+      "scene": "B2-high",
+      "focus_distance_m": 5.0,
+      "fstop": 1.4,
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/evaluation/visualizations/B2-high-N1.4-F5-patches.png",
+      "cases": [
+        {
+          "id": "B2-high-f001-N1.4-F5",
+          "frame": 1,
+          "crop_yx": [
+            221,
+            165
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        },
+        {
+          "id": "B2-high-f030-N1.4-F5",
+          "frame": 30,
+          "crop_yx": [
+            191,
+            213
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        },
+        {
+          "id": "B2-high-f060-N1.4-F5",
+          "frame": 60,
+          "crop_yx": [
+            223,
+            251
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        }
+      ]
+    },
+    {
+      "scene": "B2-high",
+      "focus_distance_m": 5.0,
+      "fstop": 2.0,
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/evaluation/visualizations/B2-high-N2-F5-patches.png",
+      "cases": [
+        {
+          "id": "B2-high-f001-N2-F5",
+          "frame": 1,
+          "crop_yx": [
+            224,
+            172
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        },
+        {
+          "id": "B2-high-f030-N2-F5",
+          "frame": 30,
+          "crop_yx": [
+            196,
+            205
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        },
+        {
+          "id": "B2-high-f060-N2-F5",
+          "frame": 60,
+          "crop_yx": [
+            227,
+            243
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        }
+      ]
+    },
+    {
+      "scene": "B2-high",
+      "focus_distance_m": 5.0,
+      "fstop": 0.5,
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/evaluation/visualizations/B2-high-N0.5-F5-patches.png",
+      "cases": [
+        {
+          "id": "B2-high-f001-N0.5-F5",
+          "frame": 1,
+          "crop_yx": [
+            187,
+            195
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        },
+        {
+          "id": "B2-high-f030-N0.5-F5",
+          "frame": 30,
+          "crop_yx": [
+            188,
+            211
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        },
+        {
+          "id": "B2-high-f060-N0.5-F5",
+          "frame": 60,
+          "crop_yx": [
+            190,
+            223
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        }
+      ]
+    },
+    {
+      "scene": "B2-low",
+      "focus_distance_m": 5.3,
+      "fstop": 1.4,
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/evaluation/visualizations/B2-low-N1.4-F5.3-patches.png",
+      "cases": [
+        {
+          "id": "B2-low-f001-N1.4-F5.3",
+          "frame": 1,
+          "crop_yx": [
+            275,
+            272
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        },
+        {
+          "id": "B2-low-f030-N1.4-F5.3",
+          "frame": 30,
+          "crop_yx": [
+            295,
+            214
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        },
+        {
+          "id": "B2-low-f060-N1.4-F5.3",
+          "frame": 60,
+          "crop_yx": [
+            295,
+            230
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        }
+      ]
+    },
+    {
+      "scene": "B2-low",
+      "focus_distance_m": 5.3,
+      "fstop": 2.0,
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/evaluation/visualizations/B2-low-N2-F5.3-patches.png",
+      "cases": [
+        {
+          "id": "B2-low-f001-N2-F5.3",
+          "frame": 1,
+          "crop_yx": [
+            275,
+            290
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        },
+        {
+          "id": "B2-low-f030-N2-F5.3",
+          "frame": 30,
+          "crop_yx": [
+            146,
+            135
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        },
+        {
+          "id": "B2-low-f060-N2-F5.3",
+          "frame": 60,
+          "crop_yx": [
+            295,
+            244
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        }
+      ]
+    },
+    {
+      "scene": "B2-low",
+      "focus_distance_m": 5.3,
+      "fstop": 0.5,
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/evaluation/visualizations/B2-low-N0.5-F5.3-patches.png",
+      "cases": [
+        {
+          "id": "B2-low-f001-N0.5-F5.3",
+          "frame": 1,
+          "crop_yx": [
+            180,
+            165
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        },
+        {
+          "id": "B2-low-f030-N0.5-F5.3",
+          "frame": 30,
+          "crop_yx": [
+            190,
+            222
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        },
+        {
+          "id": "B2-low-f060-N0.5-F5.3",
+          "frame": 60,
+          "crop_yx": [
+            191,
+            290
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        }
+      ]
+    },
+    {
+      "scene": "B2-low",
+      "focus_distance_m": 8.4,
+      "fstop": 1.4,
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/evaluation/visualizations/B2-low-N1.4-F8.4-patches.png",
+      "cases": [
+        {
+          "id": "B2-low-f001-N1.4-F8.4",
+          "frame": 1,
+          "crop_yx": [
+            276,
+            238
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        },
+        {
+          "id": "B2-low-f030-N1.4-F8.4",
+          "frame": 30,
+          "crop_yx": [
+            307,
+            224
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        },
+        {
+          "id": "B2-low-f060-N1.4-F8.4",
+          "frame": 60,
+          "crop_yx": [
+            276,
+            208
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        }
+      ]
+    },
+    {
+      "scene": "B2-low",
+      "focus_distance_m": 8.4,
+      "fstop": 2.0,
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/evaluation/visualizations/B2-low-N2-F8.4-patches.png",
+      "cases": [
+        {
+          "id": "B2-low-f001-N2-F8.4",
+          "frame": 1,
+          "crop_yx": [
+            276,
+            222
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        },
+        {
+          "id": "B2-low-f030-N2-F8.4",
+          "frame": 30,
+          "crop_yx": [
+            301,
+            224
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        },
+        {
+          "id": "B2-low-f060-N2-F8.4",
+          "frame": 60,
+          "crop_yx": [
+            276,
+            225
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        }
+      ]
+    },
+    {
+      "scene": "B2-low",
+      "focus_distance_m": 8.4,
+      "fstop": 0.5,
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/evaluation/visualizations/B2-low-N0.5-F8.4-patches.png",
+      "cases": [
+        {
+          "id": "B2-low-f001-N0.5-F8.4",
+          "frame": 1,
+          "crop_yx": [
+            179,
+            158
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        },
+        {
+          "id": "B2-low-f030-N0.5-F8.4",
+          "frame": 30,
+          "crop_yx": [
+            217,
+            218
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        },
+        {
+          "id": "B2-low-f060-N0.5-F8.4",
+          "frame": 60,
+          "crop_yx": [
+            165,
+            113
+          ],
+          "selection": "64px crop at largest GT-recoverable component center; no method score used"
+        }
+      ]
+    }
+  ]
+}

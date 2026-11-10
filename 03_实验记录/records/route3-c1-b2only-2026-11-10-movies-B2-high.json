@@ -1,0 +1,101 @@
+{
+  "dataset": "B2-high",
+  "input_path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/movies-diagnostics/B2-high-input/posed-input.npz",
+  "input_shape": [
+    13,
+    3,
+    518,
+    518
+  ],
+  "input_frame_ids": [
+    1,
+    6,
+    11,
+    16,
+    21,
+    26,
+    30,
+    35,
+    40,
+    45,
+    50,
+    55,
+    60
+  ],
+  "query_frame_ids": [
+    1,
+    30,
+    60
+  ],
+  "input_times": [
+    0.0,
+    0.08474576473236084,
+    0.16949152946472168,
+    0.2542372941970825,
+    0.33898305892944336,
+    0.4237288236618042,
+    0.49152541160583496,
+    0.5762711763381958,
+    0.6610169410705566,
+    0.7457627058029175,
+    0.8305084705352783,
+    0.9152542352676392,
+    1.0
+  ],
+  "query_times": [
+    0.0,
+    0.49152541160583496,
+    1.0
+  ],
+  "strict_checkpoint": "<All keys matched successfully>",
+  "official_commit": "77262fac6724a12c0b133a4fee10e62772db6d0f",
+  "model_load_seconds": 24.171488359570503,
+  "three_query_forward_seconds": 2.2569505609571934,
+  "forward_peak_allocated_mib": 11307.70361328125,
+  "renders": [
+    {
+      "query_frame": 1,
+      "query_time": 0.0,
+      "all_source_gaussians": 3264463,
+      "current_source_gaussians": 261853,
+      "all_source_alpha_mean": 0.9536559581756592,
+      "current_source_alpha_mean": 0.36069321632385254,
+      "all_source_RGB_PSNR_diagnostic": 30.794715881347656,
+      "current_source_premultiplied_RGB_PSNR_diagnostic": 10.460588455200195,
+      "current_source_alpha_ge_05_fraction": 0.3127115070819855,
+      "all_source_alpha_ge_095_fraction": 0.6053875088691711
+    },
+    {
+      "query_frame": 30,
+      "query_time": 0.49152541160583496,
+      "all_source_gaussians": 3287983,
+      "current_source_gaussians": 267423,
+      "all_source_alpha_mean": 0.9534190893173218,
+      "current_source_alpha_mean": 0.3653799593448639,
+      "all_source_RGB_PSNR_diagnostic": 31.13134002685547,
+      "current_source_premultiplied_RGB_PSNR_diagnostic": 10.96631145477295,
+      "current_source_alpha_ge_05_fraction": 0.18752703070640564,
+      "all_source_alpha_ge_095_fraction": 0.5908192992210388
+    },
+    {
+      "query_frame": 60,
+      "query_time": 1.0,
+      "all_source_gaussians": 3264060,
+      "current_source_gaussians": 261141,
+      "all_source_alpha_mean": 0.954187273979187,
+      "current_source_alpha_mean": 0.1909341663122177,
+      "all_source_RGB_PSNR_diagnostic": 29.775142669677734,
+      "current_source_premultiplied_RGB_PSNR_diagnostic": 8.683740615844727,
+      "current_source_alpha_ge_05_fraction": 0.15676569938659668,
+      "all_source_alpha_ge_095_fraction": 0.6136834621429443
+    }
+  ],
+  "camera_input": "GT poses canonicalized and scaled by actual dataset norm_xyz formula",
+  "current_source_note": "current-source ablation retains cross-frame attention; not a single-frame reconstruction baseline",
+  "color_domain": "official numeric display-RGB alpha composition; RGB and alpha reported separately",
+  "model_training": false,
+  "M2_design": false,
+  "existing_results_modified": false,
+  "C4_status": "separate CPU motion mode after this same forward; no second model inference",
+  "frame_number_semantics": "B2 original one-based frame IDs"
+}

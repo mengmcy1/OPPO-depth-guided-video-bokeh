@@ -55,7 +55,7 @@ def aperture_disk(count: int, radius, *, device, dtype) -> Tensor:
     return xy * radius
 
 
-def _rasterize_with_intrinsic_gradients(scene, features, K, view, width, height, mode):
+def _rasterize_with_intrinsic_gradients(scene, features, K, view, width, height, mode, eps2d=.3):
     """Use gsplat's torch projection and CUDA rasterizer for trainable Ks.
 
     The public gsplat 1.5 projection omits K gradients. This equivalent path
@@ -66,7 +66,7 @@ def _rasterize_with_intrinsic_gradients(scene, features, K, view, width, height,
     covariance, _ = _quat_scale_to_covar_preci(scene.quats, scene.scales, compute_preci=False)
     radii, means2d, depths, conics, compensation = _fully_fused_projection(
         scene.means, covariance, view[None], K[None], width, height,
-        near_plane=1e-4, far_plane=1e4, calc_compensations=mode == "antialiased")
+        near_plane=1e-4, far_plane=1e4, eps2d=eps2d, calc_compensations=mode == "antialiased")
     opacities = scene.opacities.reshape(1, -1)
     if compensation is not None:
         opacities = opacities * compensation
@@ -86,7 +86,8 @@ def render_aperture(scene: GaussianScene, intrinsics: Tensor, world_to_camera: T
                     samples: int, current_frame: int = 0,
                     source_frames: Optional[Sequence[int]] = None,
                     background: Optional[Tensor] = None, return_samples: bool = False,
-                    rasterize_mode: str = "classic") -> dict:
+                    rasterize_mode: str = "classic",
+                    sample_backgrounds: Optional[Tensor] = None, eps2d: float = .3) -> dict:
     """Render scalar focus by off-axis projection or a per-pixel focus field.
 
     A focus field traces each output pixel through its own focal depth. It is
@@ -106,6 +107,10 @@ def render_aperture(scene: GaussianScene, intrinsics: Tensor, world_to_camera: T
     if focus.ndim and focus.shape != (height, width):
         raise ValueError("Focus field must have shape (height,width)")
     aperture = aperture_disk(samples, aperture_radius, device=device, dtype=dtype)
+    if sample_backgrounds is not None:
+        if sample_backgrounds.shape != (samples, height, width, 3):
+            raise ValueError("Per-ray backgrounds must have shape (K,height,width,3)")
+        sample_backgrounds = sample_backgrounds.to(device=device, dtype=dtype)
     source_ids, inverse = torch.unique(scene.source_frames, sorted=True, return_inverse=True)
     provenance = F.one_hot(inverse, num_classes=max(len(source_ids), 1)).to(dtype)[:, :len(source_ids)]
     features = torch.cat((scene.colors, provenance), -1)
@@ -119,7 +124,7 @@ def render_aperture(scene: GaussianScene, intrinsics: Tensor, world_to_camera: T
     sum_hits = torch.zeros(height, width, len(source_ids), device=device, dtype=dtype)
     sum_depth_mass = torch.zeros_like(sum_alpha)
     sample_depths, sample_alphas, sample_views, sample_Ks, sample_pixels = [], [], [], [], []
-    for xy in aperture:
+    for sample_index, xy in enumerate(aperture):
         shift = torch.cat((-xy, torch.zeros(1, device=device, dtype=dtype)))
         view = torch.cat((torch.cat((world_to_camera[:3, :3],
                                     (world_to_camera[:3, 3] + shift)[:, None]), 1), world_to_camera[3:]), 0)
@@ -141,14 +146,14 @@ def render_aperture(scene: GaussianScene, intrinsics: Tensor, world_to_camera: T
         if len(scene.means):
             if render_K.requires_grad:
                 rendered, alpha, _ = _rasterize_with_intrinsic_gradients(
-                    scene, features, render_K, view, rw, rh, rasterize_mode)
+                    scene, features, render_K, view, rw, rh, rasterize_mode, eps2d)
             else:
                 rendered, alpha, _ = rasterization(
                     means=scene.means, quats=scene.quats, scales=scene.scales,
                     opacities=scene.opacities.reshape(-1), colors=features,
                     viewmats=view[None], Ks=render_K[None], width=rw, height=rh,
                     near_plane=1e-4, far_plane=1e4, packed=False,
-                    render_mode="RGB+ED", rasterize_mode=rasterize_mode,
+                    render_mode="RGB+ED", rasterize_mode=rasterize_mode, eps2d=eps2d,
                 )
             if grid is not None:
                 # Resample alpha*depth, then divide, so empty pixels do not bias depth.
@@ -166,7 +171,8 @@ def render_aperture(scene: GaussianScene, intrinsics: Tensor, world_to_camera: T
         else:
             alpha, depth = torch.zeros_like(sum_alpha), torch.zeros_like(sum_alpha)
             image, hits = torch.zeros_like(sum_image), torch.zeros_like(sum_hits)
-        sum_image = sum_image + image + (1 - alpha[..., None]) * bg
+        fill = bg if sample_backgrounds is None else sample_backgrounds[sample_index]
+        sum_image = sum_image + image + (1 - alpha[..., None]) * fill
         sum_alpha = sum_alpha + alpha
         sum_hits = sum_hits + hits
         sum_depth_mass = sum_depth_mass + depth * alpha
