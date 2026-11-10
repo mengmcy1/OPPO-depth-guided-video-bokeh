@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "stage": "L1",
+  "frozen": true,
+  "frozen_at_utc": "2026-11-10T15:31:51.549967+00:00",
+  "base_revision": "9dd554c",
+  "L1_outputs_existed_at_freeze": false,
+  "scope": {
+    "primary_scene": "B2-high",
+    "control_scene": "B2-low",
+    "frames": [
+      1,
+      30,
+      60
+    ],
+    "main_fstops": [
+      1.4,
+      2.0
+    ],
+    "focuses": {
+      "B2-high": [
+        1.4,
+        5.0
+      ],
+      "B2-low": [
+        5.3,
+        8.4
+      ]
+    },
+    "two_clouds": [
+      "O5",
+      "O6-GT-rec"
+    ],
+    "temporal_frames": [
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34
+    ],
+    "temporal_focus_m": 5.0,
+    "temporal_fstop": 1.4,
+    "temporal_cloud": "O5; isolates integral error without acquiring extra hidden references",
+    "temporal_reason": "eight consecutive central-trajectory frames around fixed representative30, moving occluder plus handheld camera; no selection by scores"
+  },
+  "modes": {
+    "analytic1": "full uniform-disk second-moment Gaussian covarianceR^2/4 plus determinant-area opacity compensation",
+    "analytic4": "four disjoint aperture-quadrant area centroids and within-quadrant covariance; no repeated fullCoC; diagnostic-only because Gaussian replacements and residual Cfill integration are not exact",
+    "fixed16": "original deterministic antithetic golden-angle16",
+    "fixed64": "original deterministic antithetic golden-angle64, primary comparator, not GT",
+    "random16": "independently seeded uniform disk per frame, diagnostic-only"
+  },
+  "visible_form": "V-G",
+  "profile": {
+    "subdivisions": 5,
+    "sigma_pixels": 0.7,
+    "opacity": 0.999,
+    "eps2d": 0.0015,
+    "rasterize_mode": "antialiased"
+  },
+  "regions": {
+    "full_image": "all512x512 pixels including sky",
+    "in_focus": "known visible GT depth and absCoC<=1",
+    "out_of_focus": "known visible GT depth and absCoC>=2",
+    "band": "visible depth discontinuity3% relative inverse-depth, union1.5x max localCoC footprint; no hiddenGT selection",
+    "recoverable": "existing independent aperture GT actual13input recoverable total, residuals excluded"
+  },
+  "metrics": {
+    "PSNR": "float64 pooled SSE/(3pixels) within scene/focus/mode/cloud, report absolute Cycles PSNR and each aperture",
+    "patch_size": 64,
+    "LPIPS_net": "alex",
+    "LPIPS_version": "0.1",
+    "LPIPS_package": "0.1.4",
+    "LPIPS_spatial": false,
+    "LPIPS_pool": "fixed whole unmasked64patches, weighted by region pixels",
+    "RGB": "same standard display sRGBfloat[0,1];3D integrates true linearRGB"
+  },
+  "noise": {
+    "source_record": "route3-c1-b2-2026-11-10-noise.json",
+    "region_weighted_independent_seed_noise": {
+      "N1.4-F1.4": {
+        "full_image": 6.908945653094634e-05,
+        "band": 6.890230572564765e-05,
+        "in_focus": 9.853478659670994e-05,
+        "out_of_focus": 5.832696187135096e-05
+      },
+      "N1.4-F5": {
+        "full_image": 0.00014558771248118774,
+        "band": 0.00015369987618877754,
+        "in_focus": 6.612762582917379e-05,
+        "out_of_focus": 0.0002862870821354361
+      },
+      "N2-F1.4": {
+        "full_image": 0.0001181604210387377,
+        "band": 0.00010956290865626447,
+        "in_focus": 0.00018165550918908903,
+        "out_of_focus": 9.805268431369015e-05
+      },
+      "N2-F5": {
+        "full_image": 0.00012311054846492198,
+        "band": 0.00013720452299674835,
+        "in_focus": 7.762445506070856e-05,
+        "out_of_focus": 0.00020902920370512133
+      }
+    },
+    "probe_frames": [
+      1,
+      30
+    ],
+    "unseen_frame60_rule": "use maximum of corresponding lens probe pair; not a confidence interval",
+    "tie": "abs LPIPS change <=3 times corresponding independent-pair regional noise; tie is not directional improvement",
+    "recoverable_region_noise": "use band noise as contextual narrow-band proxy; report this limitation",
+    "control": "B2-low descriptive only, noise calibration not certified for formal low decisions"
+  },
+  "noninferiority": {
+    "reference": "Cycles DOF EXR, neverK64 itself",
+    "PSNR_drop_max_dB": 0.2,
+    "LPIPS_worsening_max": "3 times regional paired noise",
+    "regions": [
+      "out_of_focus",
+      "band"
+    ],
+    "require_each_focus_and_both_clouds": true,
+    "absolute_quality": "report actual Cycles PSNR/LPIPS of every mode including fixed64; no extra score threshold inferred fromK64"
+  },
+  "efficiency": {
+    "require_median_time_ratio_to_fixed64_max": 0.8,
+    "timing": "GPU synchronized rendering only, identical Gaussian cloud, cameras/resolution, no cloudbuild or diskIO; JIT warmup excluded",
+    "timed_repetitions": 3
+  },
+  "temporal": {
+    "metric": "RMSE of predicted RGB frame-difference minus CyclesRGB frame-difference, unaligned",
+    "relative_noninferiority_max": 1.05,
+    "comparison": [
+      "fixed16",
+      "fixed64"
+    ],
+    "not_a_flicker_claim": true
+  },
+  "artifact_stop": {
+    "primary_cases": "B2-high f1.4/2, at least two distinct frame/focus configurations",
+    "band_PSNR_drop_to_fixed64_dB": 3.0,
+    "linear_RGB_error_p90_min": 0.1,
+    "visual_confirmation_required": true,
+    "scope": "systematic partial-occlusion leakage/halo/sorting, after mathematical/unit/raster correctness checks; if triggered report before temporal/L2 expansion"
+  },
+  "implementation": {
+    "analytic_raster": "Triton inference-only gsplat-compatible depth sorted alpha;alpha threshold1e-6 to avoid dense-CoC components being discarded by native1/255 cutoff",
+    "original_sampled_renderer_unchanged": true
+  },
+  "no_training": true,
+  "old_B2_criteria_unchanged": true,
+  "decision": "if unacceptable systematic artifacts occur, stop and report before L2/L3; simple failure of0.2dB noninferiority alone is not the stop condition"
+}
