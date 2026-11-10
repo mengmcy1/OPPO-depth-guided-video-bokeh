@@ -1,0 +1,2093 @@
+{
+  "phase": "B2 partial stopped with A-line background-depth failure",
+  "status": "paused_before_independent_noise_and_formal_inputs",
+  "stop_reason": "Parent reported CamVFX cat reliable-background depth support73/95/0 pixels across views; user stop condition: do not expand",
+  "software": {
+    "blender": "4.5.3 LTS",
+    "binary": "/root/autodl-tmp/tools/blender-4.5.3-linux-x64/blender",
+    "GPU": "RTX4090D GPU0, OptiX",
+    "CPU_threads": 12
+  },
+  "scene_design": {
+    "low": "Unmodified B1 scene saved to new B2-low directory; original preserved",
+    "high": "camera near y=-1.5m; static occluders y=-.1/0m; moving sphere y=.2m; background y=3.4m; focus1.4/5.0m; altered framing, rigid sphere/camera motion, thin stems",
+    "assets": "original procedural primitives; checker retained with fine nonperiodic noise, procedural mineral/woodlike color and bumps; no third-party assets",
+    "assets_license": "CC0-1.0 generated assets"
+  },
+  "completed": [
+    "low/high.blend and stable local topology/60 rigid object and camera matrices",
+    "4 high low-sample256\u00b2 previews",
+    "64\u00b2K16 geometric aperture/center/other12-input visibility preflight at frames1/30/60, N1.4/2.8, both focuses",
+    "48 high main-seed512\u00b2 renders:2frames x3fstops x2focuses x4SPP128/256/512/1024"
+  ],
+  "not_completed": {
+    "independent_seed_noise": "not started after stop",
+    "sampling_configuration": "not frozen; same-seed curves alone do not certify1024",
+    "pinhole60": "not started",
+    "full_resolution_auxiliary_and_visibility_GT": "not started",
+    "representative_formal_DOF": "not started",
+    "hidden_layer_reference": "not started",
+    "criteria_file": "not created; method evaluation has not begun",
+    "O3_O5_O6_DrBokeh": "not evaluated",
+    "formal_representative_frame_list": "not frozen"
+  },
+  "preflight": {
+    "rows": [
+      {
+        "frame": 1,
+        "resolution": [
+          64,
+          64
+        ],
+        "samples": 16,
+        "fstop": 1.4,
+        "focus_m": 1.4,
+        "image_disocclusion_pixels": 254,
+        "image_disocclusion_fraction": 0.06201171875,
+        "dynamic_disocclusion_pixels": 24,
+        "static_disocclusion_pixels": 233,
+        "recoverable_pixels": 221,
+        "known_ray_fraction": 0.899810791015625,
+        "hidden_rays": 852,
+        "recoverable_rays": 685,
+        "recoverable_ray_fraction_among_hidden": 0.8039906103286385,
+        "coc_hidden_p10_p50_p90": [
+          0.7512385368347168,
+          0.8068016171455383,
+          0.8096189796924591
+        ],
+        "coc_blocking_p10_p50_p90": [
+          0.03566806428134441,
+          0.1082906685769558,
+          0.11888370960950852
+        ],
+        "coc_pairmax_p10_p50_p90": [
+          0.7512385368347168,
+          0.8068016171455383,
+          0.8096189796924591
+        ],
+        "low_coc_pairmax_median_below3": true,
+        "elapsed_seconds": 0.36041219159960747,
+        "visibility_tolerance_m": 0.0001,
+        "includes_hidden_foreground_rays": 25,
+        "coc_hidden_p10_p50_p90_at512": [
+          6.009908294677734,
+          6.454412937164307,
+          6.476951837539673
+        ],
+        "coc_blocking_p10_p50_p90_at512": [
+          0.2853445142507553,
+          0.8663253486156464,
+          0.9510696768760681
+        ],
+        "coc_pairmax_p10_p50_p90_at512": [
+          6.009908294677734,
+          6.454412937164307,
+          6.476951837539673
+        ],
+        "low_coc_pairmax_median_below3_at512": false
+      },
+      {
+        "frame": 1,
+        "resolution": [
+          64,
+          64
+        ],
+        "samples": 16,
+        "fstop": 1.4,
+        "focus_m": 5.0,
+        "image_disocclusion_pixels": 234,
+        "image_disocclusion_fraction": 0.05712890625,
+        "dynamic_disocclusion_pixels": 11,
+        "static_disocclusion_pixels": 223,
+        "recoverable_pixels": 216,
+        "known_ray_fraction": 0.90411376953125,
+        "hidden_rays": 882,
+        "recoverable_rays": 846,
+        "recoverable_ray_fraction_among_hidden": 0.9591836734693877,
+        "coc_hidden_p10_p50_p90": [
+          0.006394097721204162,
+          0.009736963082104921,
+          0.013345368951559067
+        ],
+        "coc_blocking_p10_p50_p90": [
+          0.7032203495502471,
+          0.7676736414432526,
+          0.8450999319553375
+        ],
+        "coc_pairmax_p10_p50_p90": [
+          0.7032203495502471,
+          0.7676736414432526,
+          0.8450999319553375
+        ],
+        "low_coc_pairmax_median_below3": true,
+        "elapsed_seconds": 0.12480149045586586,
+        "visibility_tolerance_m": 0.0001,
+        "includes_hidden_foreground_rays": 10,
+        "coc_hidden_p10_p50_p90_at512": [
+          0.051152781769633296,
+          0.07789570465683937,
+          0.10676295161247254
+        ],
+        "coc_blocking_p10_p50_p90_at512": [
+          5.625762796401977,
+          6.1413891315460205,
+          6.7607994556427
+        ],
+        "coc_pairmax_p10_p50_p90_at512": [
+          5.625762796401977,
+          6.1413891315460205,
+          6.7607994556427
+        ],
+        "low_coc_pairmax_median_below3_at512": false
+      },
+      {
+        "frame": 1,
+        "resolution": [
+          64,
+          64
+        ],
+        "samples": 16,
+        "fstop": 2.8,
+        "focus_m": 1.4,
+        "image_disocclusion_pixels": 108,
+        "image_disocclusion_fraction": 0.0263671875,
+        "dynamic_disocclusion_pixels": 18,
+        "static_disocclusion_pixels": 90,
+        "recoverable_pixels": 84,
+        "known_ray_fraction": 0.90411376953125,
+        "hidden_rays": 311,
+        "recoverable_rays": 265,
+        "recoverable_ray_fraction_among_hidden": 0.8520900321543409,
+        "coc_hidden_p10_p50_p90": [
+          0.40141698718070984,
+          0.40400639176368713,
+          0.40483957529067993
+        ],
+        "coc_blocking_p10_p50_p90": [
+          0.052806831896305084,
+          0.05687257647514343,
+          0.08409127593040466
+        ],
+        "coc_pairmax_p10_p50_p90": [
+          0.40141698718070984,
+          0.40400639176368713,
+          0.40483957529067993
+        ],
+        "low_coc_pairmax_median_below3": true,
+        "elapsed_seconds": 0.11832467466592789,
+        "visibility_tolerance_m": 0.0001,
+        "includes_hidden_foreground_rays": 13,
+        "coc_hidden_p10_p50_p90_at512": [
+          3.2113358974456787,
+          3.232051134109497,
+          3.2387166023254395
+        ],
+        "coc_blocking_p10_p50_p90_at512": [
+          0.4224546551704407,
+          0.45498061180114746,
+          0.6727302074432373
+        ],
+        "coc_pairmax_p10_p50_p90_at512": [
+          3.2113358974456787,
+          3.232051134109497,
+          3.2387166023254395
+        ],
+        "low_coc_pairmax_median_below3_at512": false
+      },
+      {
+        "frame": 1,
+        "resolution": [
+          64,
+          64
+        ],
+        "samples": 16,
+        "fstop": 2.8,
+        "focus_m": 5.0,
+        "image_disocclusion_pixels": 85,
+        "image_disocclusion_fraction": 0.020751953125,
+        "dynamic_disocclusion_pixels": 7,
+        "static_disocclusion_pixels": 78,
+        "recoverable_pixels": 85,
+        "known_ray_fraction": 0.9051055908203125,
+        "hidden_rays": 342,
+        "recoverable_rays": 342,
+        "recoverable_ray_fraction_among_hidden": 1.0,
+        "coc_hidden_p10_p50_p90": [
+          0.003878587856888771,
+          0.0048018519300967455,
+          0.006064283195883036
+        ],
+        "coc_blocking_p10_p50_p90": [
+          0.3510781317949295,
+          0.38201794028282166,
+          0.42207828164100647
+        ],
+        "coc_pairmax_p10_p50_p90": [
+          0.3510781317949295,
+          0.38201794028282166,
+          0.42207828164100647
+        ],
+        "low_coc_pairmax_median_below3": true,
+        "elapsed_seconds": 0.11995284259319305,
+        "visibility_tolerance_m": 0.0001,
+        "includes_hidden_foreground_rays": 0,
+        "coc_hidden_p10_p50_p90_at512": [
+          0.03102870285511017,
+          0.038414815440773964,
+          0.048514265567064285
+        ],
+        "coc_blocking_p10_p50_p90_at512": [
+          2.808625054359436,
+          3.0561435222625732,
+          3.3766262531280518
+        ],
+        "coc_pairmax_p10_p50_p90_at512": [
+          2.808625054359436,
+          3.0561435222625732,
+          3.3766262531280518
+        ],
+        "low_coc_pairmax_median_below3_at512": false
+      },
+      {
+        "frame": 30,
+        "resolution": [
+          64,
+          64
+        ],
+        "samples": 16,
+        "fstop": 1.4,
+        "focus_m": 1.4,
+        "image_disocclusion_pixels": 257,
+        "image_disocclusion_fraction": 0.062744140625,
+        "dynamic_disocclusion_pixels": 42,
+        "static_disocclusion_pixels": 217,
+        "recoverable_pixels": 223,
+        "known_ray_fraction": 0.9028167724609375,
+        "hidden_rays": 1123,
+        "recoverable_rays": 1049,
+        "recoverable_ray_fraction_among_hidden": 0.9341050756901158,
+        "coc_hidden_p10_p50_p90": [
+          0.7286959767341614,
+          0.8078323602676392,
+          0.8079865217208863
+        ],
+        "coc_blocking_p10_p50_p90": [
+          0.024945471063256265,
+          0.053796786814928055,
+          0.1772903621196747
+        ],
+        "coc_pairmax_p10_p50_p90": [
+          0.7286959767341614,
+          0.8078323602676392,
+          0.8079865217208863
+        ],
+        "low_coc_pairmax_median_below3": true,
+        "elapsed_seconds": 0.12961231172084808,
+        "visibility_tolerance_m": 0.0001,
+        "includes_hidden_foreground_rays": 4,
+        "coc_hidden_p10_p50_p90_at512": [
+          5.829567813873291,
+          6.462658882141113,
+          6.46389217376709
+        ],
+        "coc_blocking_p10_p50_p90_at512": [
+          0.19956376850605012,
+          0.43037429451942444,
+          1.4183228969573975
+        ],
+        "coc_pairmax_p10_p50_p90_at512": [
+          5.829567813873291,
+          6.462658882141113,
+          6.46389217376709
+        ],
+        "low_coc_pairmax_median_below3_at512": false
+      },
+      {
+        "frame": 30,
+        "resolution": [
+          64,
+          64
+        ],
+        "samples": 16,
+        "fstop": 1.4,
+        "focus_m": 5.0,
+        "image_disocclusion_pixels": 225,
+        "image_disocclusion_fraction": 0.054931640625,
+        "dynamic_disocclusion_pixels": 29,
+        "static_disocclusion_pixels": 196,
+        "recoverable_pixels": 189,
+        "known_ray_fraction": 0.9038543701171875,
+        "hidden_rays": 1079,
+        "recoverable_rays": 1009,
+        "recoverable_ray_fraction_among_hidden": 0.9351251158480074,
+        "coc_hidden_p10_p50_p90": [
+          0.008331097662448883,
+          0.008498534560203552,
+          0.008639054372906685
+        ],
+        "coc_blocking_p10_p50_p90": [
+          0.6939894556999207,
+          0.6959036588668823,
+          0.8249052166938782
+        ],
+        "coc_pairmax_p10_p50_p90": [
+          0.6939894556999207,
+          0.6959036588668823,
+          0.8249052166938782
+        ],
+        "low_coc_pairmax_median_below3": true,
+        "elapsed_seconds": 0.1291937567293644,
+        "visibility_tolerance_m": 0.0001,
+        "includes_hidden_foreground_rays": 4,
+        "coc_hidden_p10_p50_p90_at512": [
+          0.06664878129959106,
+          0.06798827648162842,
+          0.06911243498325348
+        ],
+        "coc_blocking_p10_p50_p90_at512": [
+          5.551915645599365,
+          5.567229270935059,
+          6.599241733551025
+        ],
+        "coc_pairmax_p10_p50_p90_at512": [
+          5.551915645599365,
+          5.567229270935059,
+          6.599241733551025
+        ],
+        "low_coc_pairmax_median_below3_at512": false
+      },
+      {
+        "frame": 30,
+        "resolution": [
+          64,
+          64
+        ],
+        "samples": 16,
+        "fstop": 2.8,
+        "focus_m": 1.4,
+        "image_disocclusion_pixels": 174,
+        "image_disocclusion_fraction": 0.04248046875,
+        "dynamic_disocclusion_pixels": 24,
+        "static_disocclusion_pixels": 151,
+        "recoverable_pixels": 173,
+        "known_ray_fraction": 0.9053497314453125,
+        "hidden_rays": 688,
+        "recoverable_rays": 683,
+        "recoverable_ray_fraction_among_hidden": 0.9927325581395349,
+        "coc_hidden_p10_p50_p90": [
+          0.3533505886793137,
+          0.40390853583812714,
+          0.40398340821266177
+        ],
+        "coc_blocking_p10_p50_p90": [
+          0.012398485280573367,
+          0.012869684025645256,
+          0.06116749718785286
+        ],
+        "coc_pairmax_p10_p50_p90": [
+          0.3533505886793137,
+          0.40390853583812714,
+          0.40398340821266177
+        ],
+        "low_coc_pairmax_median_below3": true,
+        "elapsed_seconds": 0.12574207410216331,
+        "visibility_tolerance_m": 0.0001,
+        "includes_hidden_foreground_rays": 1,
+        "coc_hidden_p10_p50_p90_at512": [
+          2.8268047094345095,
+          3.231268286705017,
+          3.231867265701294
+        ],
+        "coc_blocking_p10_p50_p90_at512": [
+          0.09918788224458694,
+          0.10295747220516205,
+          0.4893399775028229
+        ],
+        "coc_pairmax_p10_p50_p90_at512": [
+          2.8268047094345095,
+          3.231268286705017,
+          3.231867265701294
+        ],
+        "low_coc_pairmax_median_below3_at512": false
+      },
+      {
+        "frame": 30,
+        "resolution": [
+          64,
+          64
+        ],
+        "samples": 16,
+        "fstop": 2.8,
+        "focus_m": 5.0,
+        "image_disocclusion_pixels": 174,
+        "image_disocclusion_fraction": 0.04248046875,
+        "dynamic_disocclusion_pixels": 10,
+        "static_disocclusion_pixels": 164,
+        "recoverable_pixels": 174,
+        "known_ray_fraction": 0.904144287109375,
+        "hidden_rays": 741,
+        "recoverable_rays": 741,
+        "recoverable_ray_fraction_among_hidden": 1.0,
+        "coc_hidden_p10_p50_p90": [
+          0.004160002339631319,
+          0.004244205541908741,
+          0.029444541782140732
+        ],
+        "coc_blocking_p10_p50_p90": [
+          0.3474009335041046,
+          0.3479701578617096,
+          0.41247063875198364
+        ],
+        "coc_pairmax_p10_p50_p90": [
+          0.3474009335041046,
+          0.3479701578617096,
+          0.41247063875198364
+        ],
+        "low_coc_pairmax_median_below3": true,
+        "elapsed_seconds": 0.12691695988178253,
+        "visibility_tolerance_m": 0.0001,
+        "includes_hidden_foreground_rays": 4,
+        "coc_hidden_p10_p50_p90_at512": [
+          0.03328001871705055,
+          0.03395364433526993,
+          0.23555633425712585
+        ],
+        "coc_blocking_p10_p50_p90_at512": [
+          2.779207468032837,
+          2.7837612628936768,
+          3.299765110015869
+        ],
+        "coc_pairmax_p10_p50_p90_at512": [
+          2.779207468032837,
+          2.7837612628936768,
+          3.299765110015869
+        ],
+        "low_coc_pairmax_median_below3_at512": true
+      },
+      {
+        "frame": 60,
+        "resolution": [
+          64,
+          64
+        ],
+        "samples": 16,
+        "fstop": 1.4,
+        "focus_m": 1.4,
+        "image_disocclusion_pixels": 174,
+        "image_disocclusion_fraction": 0.04248046875,
+        "dynamic_disocclusion_pixels": 22,
+        "static_disocclusion_pixels": 154,
+        "recoverable_pixels": 172,
+        "known_ray_fraction": 0.901275634765625,
+        "hidden_rays": 488,
+        "recoverable_rays": 478,
+        "recoverable_ray_fraction_among_hidden": 0.9795081967213115,
+        "coc_hidden_p10_p50_p90": [
+          0.8035041511058807,
+          0.8062070608139038,
+          0.8077541887760162
+        ],
+        "coc_blocking_p10_p50_p90": [
+          0.035767887532711026,
+          0.10862250998616219,
+          0.15747679769992828
+        ],
+        "coc_pairmax_p10_p50_p90": [
+          0.8035041511058807,
+          0.8062070608139038,
+          0.8077541887760162
+        ],
+        "low_coc_pairmax_median_below3": true,
+        "elapsed_seconds": 0.1248275525867939,
+        "visibility_tolerance_m": 0.0001,
+        "includes_hidden_foreground_rays": 0,
+        "coc_hidden_p10_p50_p90_at512": [
+          6.4280332088470455,
+          6.4496564865112305,
+          6.46203351020813
+        ],
+        "coc_blocking_p10_p50_p90_at512": [
+          0.2861431002616882,
+          0.8689800798892975,
+          1.2598143815994263
+        ],
+        "coc_pairmax_p10_p50_p90_at512": [
+          6.4280332088470455,
+          6.4496564865112305,
+          6.46203351020813
+        ],
+        "low_coc_pairmax_median_below3_at512": false
+      },
+      {
+        "frame": 60,
+        "resolution": [
+          64,
+          64
+        ],
+        "samples": 16,
+        "fstop": 1.4,
+        "focus_m": 5.0,
+        "image_disocclusion_pixels": 291,
+        "image_disocclusion_fraction": 0.071044921875,
+        "dynamic_disocclusion_pixels": 15,
+        "static_disocclusion_pixels": 276,
+        "recoverable_pixels": 238,
+        "known_ray_fraction": 0.9045867919921875,
+        "hidden_rays": 1370,
+        "recoverable_rays": 1144,
+        "recoverable_ray_fraction_among_hidden": 0.8350364963503649,
+        "coc_hidden_p10_p50_p90": [
+          0.006536129396408796,
+          0.00942025426775217,
+          0.05336110666394234
+        ],
+        "coc_blocking_p10_p50_p90": [
+          0.7047224402427673,
+          0.7841751873493195,
+          0.8460357844829559
+        ],
+        "coc_pairmax_p10_p50_p90": [
+          0.7047224402427673,
+          0.7841751873493195,
+          0.8460357844829559
+        ],
+        "low_coc_pairmax_median_below3": true,
+        "elapsed_seconds": 0.13405859470367432,
+        "visibility_tolerance_m": 0.0001,
+        "includes_hidden_foreground_rays": 18,
+        "coc_hidden_p10_p50_p90_at512": [
+          0.05228903517127037,
+          0.07536203414201736,
+          0.4268888533115387
+        ],
+        "coc_blocking_p10_p50_p90_at512": [
+          5.6377795219421385,
+          6.273401498794556,
+          6.768286275863647
+        ],
+        "coc_pairmax_p10_p50_p90_at512": [
+          5.6377795219421385,
+          6.273401498794556,
+          6.768286275863647
+        ],
+        "low_coc_pairmax_median_below3_at512": false
+      },
+      {
+        "frame": 60,
+        "resolution": [
+          64,
+          64
+        ],
+        "samples": 16,
+        "fstop": 2.8,
+        "focus_m": 1.4,
+        "image_disocclusion_pixels": 54,
+        "image_disocclusion_fraction": 0.01318359375,
+        "dynamic_disocclusion_pixels": 17,
+        "static_disocclusion_pixels": 37,
+        "recoverable_pixels": 52,
+        "known_ray_fraction": 0.9054412841796875,
+        "hidden_rays": 184,
+        "recoverable_rays": 179,
+        "recoverable_ray_fraction_among_hidden": 0.9728260869565217,
+        "coc_hidden_p10_p50_p90": [
+          0.4017658054828644,
+          0.40312308073043823,
+          0.40387219190597534
+        ],
+        "coc_blocking_p10_p50_p90": [
+          0.0525160726159811,
+          0.05574290454387665,
+          0.09373671710491184
+        ],
+        "coc_pairmax_p10_p50_p90": [
+          0.4017658054828644,
+          0.40312308073043823,
+          0.40387219190597534
+        ],
+        "low_coc_pairmax_median_below3": true,
+        "elapsed_seconds": 0.12073332816362381,
+        "visibility_tolerance_m": 0.0001,
+        "includes_hidden_foreground_rays": 0,
+        "coc_hidden_p10_p50_p90_at512": [
+          3.214126443862915,
+          3.224984645843506,
+          3.2309775352478027
+        ],
+        "coc_blocking_p10_p50_p90_at512": [
+          0.4201285809278488,
+          0.4459432363510132,
+          0.7498937368392947
+        ],
+        "coc_pairmax_p10_p50_p90_at512": [
+          3.214126443862915,
+          3.224984645843506,
+          3.2309775352478027
+        ],
+        "low_coc_pairmax_median_below3_at512": false
+      },
+      {
+        "frame": 60,
+        "resolution": [
+          64,
+          64
+        ],
+        "samples": 16,
+        "fstop": 2.8,
+        "focus_m": 5.0,
+        "image_disocclusion_pixels": 173,
+        "image_disocclusion_fraction": 0.042236328125,
+        "dynamic_disocclusion_pixels": 9,
+        "static_disocclusion_pixels": 164,
+        "recoverable_pixels": 138,
+        "known_ray_fraction": 0.9060516357421875,
+        "hidden_rays": 707,
+        "recoverable_rays": 564,
+        "recoverable_ray_fraction_among_hidden": 0.7977369165487977,
+        "coc_hidden_p10_p50_p90": [
+          0.003422484640032053,
+          0.004684534855186939,
+          0.035588089376688004
+        ],
+        "coc_blocking_p10_p50_p90": [
+          0.35202441215515134,
+          0.38689082860946655,
+          0.4206678032875061
+        ],
+        "coc_pairmax_p10_p50_p90": [
+          0.35202441215515134,
+          0.38689082860946655,
+          0.4206678032875061
+        ],
+        "low_coc_pairmax_median_below3": true,
+        "elapsed_seconds": 0.12634938582777977,
+        "visibility_tolerance_m": 0.0001,
+        "includes_hidden_foreground_rays": 0,
+        "coc_hidden_p10_p50_p90_at512": [
+          0.027379877120256423,
+          0.037476278841495514,
+          0.28470471501350403
+        ],
+        "coc_blocking_p10_p50_p90_at512": [
+          2.8161952972412108,
+          3.0951266288757324,
+          3.3653424263000487
+        ],
+        "coc_pairmax_p10_p50_p90_at512": [
+          2.8161952972412108,
+          3.0951266288757324,
+          3.3653424263000487
+        ],
+        "low_coc_pairmax_median_below3_at512": false
+      }
+    ],
+    "CoC_reporting": "native64px and scaled512px CoC both recorded; no method results used",
+    "real_visibility": "Embree first-hit surface; test center invisibility by recasting same surface point; cross-frame recoverability tested by stable object-local point, not object ID alone",
+    "visibility_tolerance_m": 0.0001,
+    "input_frames": [
+      1,
+      6,
+      11,
+      16,
+      21,
+      26,
+      30,
+      35,
+      40,
+      45,
+      50,
+      55,
+      60
+    ],
+    "candidate_representative_frames": [
+      1,
+      30,
+      60
+    ],
+    "selection_reason": "left,center,right sphere/camera trajectory positions; selected from input list and geometry, not method scores",
+    "cross_input_visible_definition": "surface appears in another one of12 input frames",
+    "hidden_foreground_support": {
+      "rays": 79,
+      "fraction_of_hidden": 0.009011064218090567,
+      "limitation": "Some hidden first-hit surfaces are foreground; resumed B2 needs selectively hidden reference layers/support.512\u00b2 confirmation not performed"
+    }
+  },
+  "sampling": {
+    "rows": [
+      {
+        "key": "f001-N0.5-F1.4-s128-512-GPU-seed20261110",
+        "frame": 1,
+        "fstop": 0.5,
+        "focus_m": 1.4,
+        "samples": 128,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.1323354467749596,
+        "exr_bytes": 2840073,
+        "linear_rgb_rmse": 0.008998336476904546,
+        "boundary_linear_rgb_rmse": 0.03534894174521035,
+        "boundary_pixels": 8445,
+        "highlight_pixels": 0,
+        "highlight_integrated_luminance_relative_error": null,
+        "highlight_luminance_centroid_displacement_px": null,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f001-N0.5-F1.4-s256-512-GPU-seed20261110",
+        "frame": 1,
+        "fstop": 0.5,
+        "focus_m": 1.4,
+        "samples": 256,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.35647327080369,
+        "exr_bytes": 2838342,
+        "linear_rgb_rmse": 0.006062442270100133,
+        "boundary_linear_rgb_rmse": 0.022596024165722248,
+        "boundary_pixels": 8445,
+        "highlight_pixels": 0,
+        "highlight_integrated_luminance_relative_error": null,
+        "highlight_luminance_centroid_displacement_px": null,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f001-N0.5-F1.4-s512-512-GPU-seed20261110",
+        "frame": 1,
+        "fstop": 0.5,
+        "focus_m": 1.4,
+        "samples": 512,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.523946825414896,
+        "exr_bytes": 2836154,
+        "linear_rgb_rmse": 0.004599010311122373,
+        "boundary_linear_rgb_rmse": 0.01721056367555052,
+        "boundary_pixels": 8445,
+        "highlight_pixels": 0,
+        "highlight_integrated_luminance_relative_error": null,
+        "highlight_luminance_centroid_displacement_px": null,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f001-N0.5-F1.4-s1024-512-GPU-seed20261110",
+        "frame": 1,
+        "fstop": 0.5,
+        "focus_m": 1.4,
+        "samples": 1024,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 2.290874805301428,
+        "exr_bytes": 2834103,
+        "linear_rgb_rmse": 0.0,
+        "boundary_linear_rgb_rmse": 0.0,
+        "boundary_pixels": 8445,
+        "highlight_pixels": 0,
+        "highlight_integrated_luminance_relative_error": null,
+        "highlight_luminance_centroid_displacement_px": null,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f001-N0.5-F5-s128-512-GPU-seed20261110",
+        "frame": 1,
+        "fstop": 0.5,
+        "focus_m": 5.0,
+        "samples": 128,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 0.9961062781512737,
+        "exr_bytes": 2823038,
+        "linear_rgb_rmse": 0.0061136239200681244,
+        "boundary_linear_rgb_rmse": 0.021675549629004556,
+        "boundary_pixels": 7900,
+        "highlight_pixels": 1237,
+        "highlight_integrated_luminance_relative_error": 0.0029920723471108376,
+        "highlight_luminance_centroid_displacement_px": 0.1275424669447634,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f001-N0.5-F5-s256-512-GPU-seed20261110",
+        "frame": 1,
+        "fstop": 0.5,
+        "focus_m": 5.0,
+        "samples": 256,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.2161646150052547,
+        "exr_bytes": 2822953,
+        "linear_rgb_rmse": 0.004328578970520544,
+        "boundary_linear_rgb_rmse": 0.015146279051194957,
+        "boundary_pixels": 7900,
+        "highlight_pixels": 1237,
+        "highlight_integrated_luminance_relative_error": 0.0007987193385181161,
+        "highlight_luminance_centroid_displacement_px": 0.0747866199146482,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f001-N0.5-F5-s512-512-GPU-seed20261110",
+        "frame": 1,
+        "fstop": 0.5,
+        "focus_m": 5.0,
+        "samples": 512,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.550671275705099,
+        "exr_bytes": 2822710,
+        "linear_rgb_rmse": 0.003341512501025231,
+        "boundary_linear_rgb_rmse": 0.01220862378497607,
+        "boundary_pixels": 7900,
+        "highlight_pixels": 1237,
+        "highlight_integrated_luminance_relative_error": 0.00042417613040493854,
+        "highlight_luminance_centroid_displacement_px": 0.05715806664086697,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f001-N0.5-F5-s1024-512-GPU-seed20261110",
+        "frame": 1,
+        "fstop": 0.5,
+        "focus_m": 5.0,
+        "samples": 1024,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 2.2770810946822166,
+        "exr_bytes": 2822501,
+        "linear_rgb_rmse": 0.0,
+        "boundary_linear_rgb_rmse": 0.0,
+        "boundary_pixels": 7900,
+        "highlight_pixels": 1237,
+        "highlight_integrated_luminance_relative_error": 0.0,
+        "highlight_luminance_centroid_displacement_px": 0.0,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": true
+      },
+      {
+        "key": "f001-N1.4-F1.4-s128-512-GPU-seed20261110",
+        "frame": 1,
+        "fstop": 1.4,
+        "focus_m": 1.4,
+        "samples": 128,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.0378715507686138,
+        "exr_bytes": 2785707,
+        "linear_rgb_rmse": 0.007122451629430552,
+        "boundary_linear_rgb_rmse": 0.023205703224526947,
+        "boundary_pixels": 13698,
+        "highlight_pixels": 1532,
+        "highlight_integrated_luminance_relative_error": 4.018109310094628e-05,
+        "highlight_luminance_centroid_displacement_px": 0.10185555913699837,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f001-N1.4-F1.4-s256-512-GPU-seed20261110",
+        "frame": 1,
+        "fstop": 1.4,
+        "focus_m": 1.4,
+        "samples": 256,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.21133416518569,
+        "exr_bytes": 2784232,
+        "linear_rgb_rmse": 0.005029657114484082,
+        "boundary_linear_rgb_rmse": 0.016086990636977966,
+        "boundary_pixels": 13698,
+        "highlight_pixels": 1532,
+        "highlight_integrated_luminance_relative_error": 8.074105560634402e-05,
+        "highlight_luminance_centroid_displacement_px": 0.019627758764460775,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f001-N1.4-F1.4-s512-512-GPU-seed20261110",
+        "frame": 1,
+        "fstop": 1.4,
+        "focus_m": 1.4,
+        "samples": 512,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.534715447574854,
+        "exr_bytes": 2781020,
+        "linear_rgb_rmse": 0.00382952568806342,
+        "boundary_linear_rgb_rmse": 0.0122933844321217,
+        "boundary_pixels": 13698,
+        "highlight_pixels": 1532,
+        "highlight_integrated_luminance_relative_error": 0.0018123018647330862,
+        "highlight_luminance_centroid_displacement_px": 0.12800941250061337,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f001-N1.4-F1.4-s1024-512-GPU-seed20261110",
+        "frame": 1,
+        "fstop": 1.4,
+        "focus_m": 1.4,
+        "samples": 1024,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 2.3921499364078045,
+        "exr_bytes": 2778742,
+        "linear_rgb_rmse": 0.0,
+        "boundary_linear_rgb_rmse": 0.0,
+        "boundary_pixels": 13698,
+        "highlight_pixels": 1532,
+        "highlight_integrated_luminance_relative_error": 0.0,
+        "highlight_luminance_centroid_displacement_px": 0.0,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": true
+      },
+      {
+        "key": "f001-N1.4-F5-s128-512-GPU-seed20261110",
+        "frame": 1,
+        "fstop": 1.4,
+        "focus_m": 5.0,
+        "samples": 128,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 0.9875456690788269,
+        "exr_bytes": 2777332,
+        "linear_rgb_rmse": 0.005428789041751797,
+        "boundary_linear_rgb_rmse": 0.01785527987298845,
+        "boundary_pixels": 9663,
+        "highlight_pixels": 1026,
+        "highlight_integrated_luminance_relative_error": 9.654822406382205e-05,
+        "highlight_luminance_centroid_displacement_px": 0.02079284506816113,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f001-N1.4-F5-s256-512-GPU-seed20261110",
+        "frame": 1,
+        "fstop": 1.4,
+        "focus_m": 5.0,
+        "samples": 256,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.1534234508872032,
+        "exr_bytes": 2776374,
+        "linear_rgb_rmse": 0.003929799431874896,
+        "boundary_linear_rgb_rmse": 0.013317936438886492,
+        "boundary_pixels": 9663,
+        "highlight_pixels": 1026,
+        "highlight_integrated_luminance_relative_error": 0.0001600617567985859,
+        "highlight_luminance_centroid_displacement_px": 0.03142906598211308,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f001-N1.4-F5-s512-512-GPU-seed20261110",
+        "frame": 1,
+        "fstop": 1.4,
+        "focus_m": 5.0,
+        "samples": 512,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.5569125674664974,
+        "exr_bytes": 2775861,
+        "linear_rgb_rmse": 0.0029173171222367446,
+        "boundary_linear_rgb_rmse": 0.009993617825695663,
+        "boundary_pixels": 9663,
+        "highlight_pixels": 1026,
+        "highlight_integrated_luminance_relative_error": 0.0009075700310845038,
+        "highlight_luminance_centroid_displacement_px": 0.06663638325749806,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": true
+      },
+      {
+        "key": "f001-N1.4-F5-s1024-512-GPU-seed20261110",
+        "frame": 1,
+        "fstop": 1.4,
+        "focus_m": 5.0,
+        "samples": 1024,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 2.2299792990088463,
+        "exr_bytes": 2774406,
+        "linear_rgb_rmse": 0.0,
+        "boundary_linear_rgb_rmse": 0.0,
+        "boundary_pixels": 9663,
+        "highlight_pixels": 1026,
+        "highlight_integrated_luminance_relative_error": 0.0,
+        "highlight_luminance_centroid_displacement_px": 0.0,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": true
+      },
+      {
+        "key": "f001-N2.8-F1.4-s128-512-GPU-seed20261110",
+        "frame": 1,
+        "fstop": 2.8,
+        "focus_m": 1.4,
+        "samples": 128,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 0.9719010107219219,
+        "exr_bytes": 2771698,
+        "linear_rgb_rmse": 0.006716703105348484,
+        "boundary_linear_rgb_rmse": 0.02149623003228206,
+        "boundary_pixels": 14929,
+        "highlight_pixels": 1275,
+        "highlight_integrated_luminance_relative_error": 0.0025622345015454836,
+        "highlight_luminance_centroid_displacement_px": 0.3073363411327132,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f001-N2.8-F1.4-s256-512-GPU-seed20261110",
+        "frame": 1,
+        "fstop": 2.8,
+        "focus_m": 1.4,
+        "samples": 256,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.148089475929737,
+        "exr_bytes": 2769561,
+        "linear_rgb_rmse": 0.00463866185361752,
+        "boundary_linear_rgb_rmse": 0.01448924138315766,
+        "boundary_pixels": 14929,
+        "highlight_pixels": 1275,
+        "highlight_integrated_luminance_relative_error": 0.0013661238379900579,
+        "highlight_luminance_centroid_displacement_px": 0.03806505090959757,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f001-N2.8-F1.4-s512-512-GPU-seed20261110",
+        "frame": 1,
+        "fstop": 2.8,
+        "focus_m": 1.4,
+        "samples": 512,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.5902187414467335,
+        "exr_bytes": 2767240,
+        "linear_rgb_rmse": 0.0034684204830323197,
+        "boundary_linear_rgb_rmse": 0.010822252405516401,
+        "boundary_pixels": 14929,
+        "highlight_pixels": 1275,
+        "highlight_integrated_luminance_relative_error": 0.0008504157439054584,
+        "highlight_luminance_centroid_displacement_px": 0.18174807561822082,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f001-N2.8-F1.4-s1024-512-GPU-seed20261110",
+        "frame": 1,
+        "fstop": 2.8,
+        "focus_m": 1.4,
+        "samples": 1024,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 2.2891009375452995,
+        "exr_bytes": 2764730,
+        "linear_rgb_rmse": 0.0,
+        "boundary_linear_rgb_rmse": 0.0,
+        "boundary_pixels": 14929,
+        "highlight_pixels": 1275,
+        "highlight_integrated_luminance_relative_error": 0.0,
+        "highlight_luminance_centroid_displacement_px": 0.0,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": true
+      },
+      {
+        "key": "f001-N2.8-F5-s128-512-GPU-seed20261110",
+        "frame": 1,
+        "fstop": 2.8,
+        "focus_m": 5.0,
+        "samples": 128,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.009116269648075,
+        "exr_bytes": 2765984,
+        "linear_rgb_rmse": 0.005168485135806636,
+        "boundary_linear_rgb_rmse": 0.01609357774439461,
+        "boundary_pixels": 11013,
+        "highlight_pixels": 1022,
+        "highlight_integrated_luminance_relative_error": 0.0011207899266614816,
+        "highlight_luminance_centroid_displacement_px": 0.13458249044467982,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f001-N2.8-F5-s256-512-GPU-seed20261110",
+        "frame": 1,
+        "fstop": 2.8,
+        "focus_m": 5.0,
+        "samples": 256,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.1718176938593388,
+        "exr_bytes": 2764945,
+        "linear_rgb_rmse": 0.003602968351014879,
+        "boundary_linear_rgb_rmse": 0.011055301160672923,
+        "boundary_pixels": 11013,
+        "highlight_pixels": 1022,
+        "highlight_integrated_luminance_relative_error": 0.0017369037538156468,
+        "highlight_luminance_centroid_displacement_px": 0.07288510988893787,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f001-N2.8-F5-s512-512-GPU-seed20261110",
+        "frame": 1,
+        "fstop": 2.8,
+        "focus_m": 5.0,
+        "samples": 512,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.6625334210693836,
+        "exr_bytes": 2764618,
+        "linear_rgb_rmse": 0.0027743349416979356,
+        "boundary_linear_rgb_rmse": 0.009172685115994296,
+        "boundary_pixels": 11013,
+        "highlight_pixels": 1022,
+        "highlight_integrated_luminance_relative_error": 0.0008789632041985587,
+        "highlight_luminance_centroid_displacement_px": 0.04525650265260674,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": true
+      },
+      {
+        "key": "f001-N2.8-F5-s1024-512-GPU-seed20261110",
+        "frame": 1,
+        "fstop": 2.8,
+        "focus_m": 5.0,
+        "samples": 1024,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 2.2869179472327232,
+        "exr_bytes": 2763001,
+        "linear_rgb_rmse": 0.0,
+        "boundary_linear_rgb_rmse": 0.0,
+        "boundary_pixels": 11013,
+        "highlight_pixels": 1022,
+        "highlight_integrated_luminance_relative_error": 0.0,
+        "highlight_luminance_centroid_displacement_px": 0.0,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": true
+      },
+      {
+        "key": "f030-N0.5-F1.4-s128-512-GPU-seed20261110",
+        "frame": 30,
+        "fstop": 0.5,
+        "focus_m": 1.4,
+        "samples": 128,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.01688601821661,
+        "exr_bytes": 2849233,
+        "linear_rgb_rmse": 0.007992380507921181,
+        "boundary_linear_rgb_rmse": 0.029231644930094867,
+        "boundary_pixels": 8688,
+        "highlight_pixels": 0,
+        "highlight_integrated_luminance_relative_error": null,
+        "highlight_luminance_centroid_displacement_px": null,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f030-N0.5-F1.4-s256-512-GPU-seed20261110",
+        "frame": 30,
+        "fstop": 0.5,
+        "focus_m": 1.4,
+        "samples": 256,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.2013821229338646,
+        "exr_bytes": 2847280,
+        "linear_rgb_rmse": 0.00552191151196881,
+        "boundary_linear_rgb_rmse": 0.019028637194998064,
+        "boundary_pixels": 8688,
+        "highlight_pixels": 0,
+        "highlight_integrated_luminance_relative_error": null,
+        "highlight_luminance_centroid_displacement_px": null,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f030-N0.5-F1.4-s512-512-GPU-seed20261110",
+        "frame": 30,
+        "fstop": 0.5,
+        "focus_m": 1.4,
+        "samples": 512,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.520862776786089,
+        "exr_bytes": 2845128,
+        "linear_rgb_rmse": 0.0042394447867139,
+        "boundary_linear_rgb_rmse": 0.014852711268180531,
+        "boundary_pixels": 8688,
+        "highlight_pixels": 0,
+        "highlight_integrated_luminance_relative_error": null,
+        "highlight_luminance_centroid_displacement_px": null,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f030-N0.5-F1.4-s1024-512-GPU-seed20261110",
+        "frame": 30,
+        "fstop": 0.5,
+        "focus_m": 1.4,
+        "samples": 1024,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 2.3767416663467884,
+        "exr_bytes": 2843092,
+        "linear_rgb_rmse": 0.0,
+        "boundary_linear_rgb_rmse": 0.0,
+        "boundary_pixels": 8688,
+        "highlight_pixels": 0,
+        "highlight_integrated_luminance_relative_error": null,
+        "highlight_luminance_centroid_displacement_px": null,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f030-N0.5-F5-s128-512-GPU-seed20261110",
+        "frame": 30,
+        "fstop": 0.5,
+        "focus_m": 5.0,
+        "samples": 128,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.0140717811882496,
+        "exr_bytes": 2830704,
+        "linear_rgb_rmse": 0.0062171637998314514,
+        "boundary_linear_rgb_rmse": 0.018771188789634727,
+        "boundary_pixels": 9685,
+        "highlight_pixels": 1005,
+        "highlight_integrated_luminance_relative_error": 0.0005052085826200875,
+        "highlight_luminance_centroid_displacement_px": 0.1417517616817912,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f030-N0.5-F5-s256-512-GPU-seed20261110",
+        "frame": 30,
+        "fstop": 0.5,
+        "focus_m": 5.0,
+        "samples": 256,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.1691260673105717,
+        "exr_bytes": 2829666,
+        "linear_rgb_rmse": 0.004415023884538957,
+        "boundary_linear_rgb_rmse": 0.012946675079032006,
+        "boundary_pixels": 9685,
+        "highlight_pixels": 1005,
+        "highlight_integrated_luminance_relative_error": 0.0005724435887469472,
+        "highlight_luminance_centroid_displacement_px": 0.0892279182958996,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f030-N0.5-F5-s512-512-GPU-seed20261110",
+        "frame": 30,
+        "fstop": 0.5,
+        "focus_m": 5.0,
+        "samples": 512,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.5442441888153553,
+        "exr_bytes": 2830431,
+        "linear_rgb_rmse": 0.0032815734569166108,
+        "boundary_linear_rgb_rmse": 0.009158119203875818,
+        "boundary_pixels": 9685,
+        "highlight_pixels": 1005,
+        "highlight_integrated_luminance_relative_error": 9.339439004959712e-05,
+        "highlight_luminance_centroid_displacement_px": 0.029281001843153142,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": true
+      },
+      {
+        "key": "f030-N0.5-F5-s1024-512-GPU-seed20261110",
+        "frame": 30,
+        "fstop": 0.5,
+        "focus_m": 5.0,
+        "samples": 1024,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 2.2605445720255375,
+        "exr_bytes": 2830194,
+        "linear_rgb_rmse": 0.0,
+        "boundary_linear_rgb_rmse": 0.0,
+        "boundary_pixels": 9685,
+        "highlight_pixels": 1005,
+        "highlight_integrated_luminance_relative_error": 0.0,
+        "highlight_luminance_centroid_displacement_px": 0.0,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": true
+      },
+      {
+        "key": "f030-N1.4-F1.4-s128-512-GPU-seed20261110",
+        "frame": 30,
+        "fstop": 1.4,
+        "focus_m": 1.4,
+        "samples": 128,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.0027811415493488,
+        "exr_bytes": 2795026,
+        "linear_rgb_rmse": 0.006675328272413682,
+        "boundary_linear_rgb_rmse": 0.021588769963301828,
+        "boundary_pixels": 13062,
+        "highlight_pixels": 1254,
+        "highlight_integrated_luminance_relative_error": 0.0035190353781666176,
+        "highlight_luminance_centroid_displacement_px": 0.10305832518954122,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f030-N1.4-F1.4-s256-512-GPU-seed20261110",
+        "frame": 30,
+        "fstop": 1.4,
+        "focus_m": 1.4,
+        "samples": 256,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.1710294634103775,
+        "exr_bytes": 2793180,
+        "linear_rgb_rmse": 0.004729142748747255,
+        "boundary_linear_rgb_rmse": 0.014995730137023976,
+        "boundary_pixels": 13062,
+        "highlight_pixels": 1254,
+        "highlight_integrated_luminance_relative_error": 0.001487233458506105,
+        "highlight_luminance_centroid_displacement_px": 0.07614831327957967,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f030-N1.4-F1.4-s512-512-GPU-seed20261110",
+        "frame": 30,
+        "fstop": 1.4,
+        "focus_m": 1.4,
+        "samples": 512,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.6489032097160816,
+        "exr_bytes": 2791749,
+        "linear_rgb_rmse": 0.003661844094595912,
+        "boundary_linear_rgb_rmse": 0.011768997524688324,
+        "boundary_pixels": 13062,
+        "highlight_pixels": 1254,
+        "highlight_integrated_luminance_relative_error": 0.0020077009917687087,
+        "highlight_luminance_centroid_displacement_px": 0.06101148489717252,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f030-N1.4-F1.4-s1024-512-GPU-seed20261110",
+        "frame": 30,
+        "fstop": 1.4,
+        "focus_m": 1.4,
+        "samples": 1024,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 2.279673971235752,
+        "exr_bytes": 2788830,
+        "linear_rgb_rmse": 0.0,
+        "boundary_linear_rgb_rmse": 0.0,
+        "boundary_pixels": 13062,
+        "highlight_pixels": 1254,
+        "highlight_integrated_luminance_relative_error": 0.0,
+        "highlight_luminance_centroid_displacement_px": 0.0,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": true
+      },
+      {
+        "key": "f030-N1.4-F5-s128-512-GPU-seed20261110",
+        "frame": 30,
+        "fstop": 1.4,
+        "focus_m": 5.0,
+        "samples": 128,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 0.9920446239411831,
+        "exr_bytes": 2786224,
+        "linear_rgb_rmse": 0.005540736861110187,
+        "boundary_linear_rgb_rmse": 0.016327348374733285,
+        "boundary_pixels": 12098,
+        "highlight_pixels": 918,
+        "highlight_integrated_luminance_relative_error": 0.00027640360916767257,
+        "highlight_luminance_centroid_displacement_px": 0.017401265841545714,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f030-N1.4-F5-s256-512-GPU-seed20261110",
+        "frame": 30,
+        "fstop": 1.4,
+        "focus_m": 5.0,
+        "samples": 256,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.1606502421200275,
+        "exr_bytes": 2785292,
+        "linear_rgb_rmse": 0.004007464736156768,
+        "boundary_linear_rgb_rmse": 0.011958387770520426,
+        "boundary_pixels": 12098,
+        "highlight_pixels": 918,
+        "highlight_integrated_luminance_relative_error": 0.0009630722965862067,
+        "highlight_luminance_centroid_displacement_px": 0.04523768711684205,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f030-N1.4-F5-s512-512-GPU-seed20261110",
+        "frame": 30,
+        "fstop": 1.4,
+        "focus_m": 5.0,
+        "samples": 512,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.6993105337023735,
+        "exr_bytes": 2785522,
+        "linear_rgb_rmse": 0.0029868675608817024,
+        "boundary_linear_rgb_rmse": 0.008860003507231047,
+        "boundary_pixels": 12098,
+        "highlight_pixels": 918,
+        "highlight_integrated_luminance_relative_error": 0.0002487149408263586,
+        "highlight_luminance_centroid_displacement_px": 0.08293145670737044,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": true
+      },
+      {
+        "key": "f030-N1.4-F5-s1024-512-GPU-seed20261110",
+        "frame": 30,
+        "fstop": 1.4,
+        "focus_m": 5.0,
+        "samples": 1024,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 2.2715661749243736,
+        "exr_bytes": 2784925,
+        "linear_rgb_rmse": 0.0,
+        "boundary_linear_rgb_rmse": 0.0,
+        "boundary_pixels": 12098,
+        "highlight_pixels": 918,
+        "highlight_integrated_luminance_relative_error": 0.0,
+        "highlight_luminance_centroid_displacement_px": 0.0,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": true
+      },
+      {
+        "key": "f030-N2.8-F1.4-s128-512-GPU-seed20261110",
+        "frame": 30,
+        "fstop": 2.8,
+        "focus_m": 1.4,
+        "samples": 128,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 0.9914811104536057,
+        "exr_bytes": 2780826,
+        "linear_rgb_rmse": 0.005906921793358017,
+        "boundary_linear_rgb_rmse": 0.017421870893096672,
+        "boundary_pixels": 14767,
+        "highlight_pixels": 997,
+        "highlight_integrated_luminance_relative_error": 0.004374941867987908,
+        "highlight_luminance_centroid_displacement_px": 0.05145810928034086,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f030-N2.8-F1.4-s256-512-GPU-seed20261110",
+        "frame": 30,
+        "fstop": 2.8,
+        "focus_m": 1.4,
+        "samples": 256,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.2655310481786728,
+        "exr_bytes": 2779322,
+        "linear_rgb_rmse": 0.00431340037501229,
+        "boundary_linear_rgb_rmse": 0.012876619166557662,
+        "boundary_pixels": 14767,
+        "highlight_pixels": 997,
+        "highlight_integrated_luminance_relative_error": 0.001689258097685587,
+        "highlight_luminance_centroid_displacement_px": 0.08091603214048665,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f030-N2.8-F1.4-s512-512-GPU-seed20261110",
+        "frame": 30,
+        "fstop": 2.8,
+        "focus_m": 1.4,
+        "samples": 512,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.5588226318359375,
+        "exr_bytes": 2776807,
+        "linear_rgb_rmse": 0.003264006662508292,
+        "boundary_linear_rgb_rmse": 0.009795400637268348,
+        "boundary_pixels": 14767,
+        "highlight_pixels": 997,
+        "highlight_integrated_luminance_relative_error": 0.0005973257776007232,
+        "highlight_luminance_centroid_displacement_px": 0.13447911861336098,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": true
+      },
+      {
+        "key": "f030-N2.8-F1.4-s1024-512-GPU-seed20261110",
+        "frame": 30,
+        "fstop": 2.8,
+        "focus_m": 1.4,
+        "samples": 1024,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 2.444418542087078,
+        "exr_bytes": 2773374,
+        "linear_rgb_rmse": 0.0,
+        "boundary_linear_rgb_rmse": 0.0,
+        "boundary_pixels": 14767,
+        "highlight_pixels": 997,
+        "highlight_integrated_luminance_relative_error": 0.0,
+        "highlight_luminance_centroid_displacement_px": 0.0,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": true
+      },
+      {
+        "key": "f030-N2.8-F5-s128-512-GPU-seed20261110",
+        "frame": 30,
+        "fstop": 2.8,
+        "focus_m": 5.0,
+        "samples": 128,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 0.9905234277248383,
+        "exr_bytes": 2775459,
+        "linear_rgb_rmse": 0.005066047808638149,
+        "boundary_linear_rgb_rmse": 0.01357371149143724,
+        "boundary_pixels": 14539,
+        "highlight_pixels": 905,
+        "highlight_integrated_luminance_relative_error": 0.0015552256374216512,
+        "highlight_luminance_centroid_displacement_px": 0.01883171287562402,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": false
+      },
+      {
+        "key": "f030-N2.8-F5-s256-512-GPU-seed20261110",
+        "frame": 30,
+        "fstop": 2.8,
+        "focus_m": 5.0,
+        "samples": 256,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.171167854219675,
+        "exr_bytes": 2775720,
+        "linear_rgb_rmse": 0.0036016401005440992,
+        "boundary_linear_rgb_rmse": 0.009774063525512584,
+        "boundary_pixels": 14539,
+        "highlight_pixels": 905,
+        "highlight_integrated_luminance_relative_error": 0.0011278412680041081,
+        "highlight_luminance_centroid_displacement_px": 0.20100863252246806,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": true
+      },
+      {
+        "key": "f030-N2.8-F5-s512-512-GPU-seed20261110",
+        "frame": 30,
+        "fstop": 2.8,
+        "focus_m": 5.0,
+        "samples": 512,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 1.5359653905034065,
+        "exr_bytes": 2774422,
+        "linear_rgb_rmse": 0.0026280900643927186,
+        "boundary_linear_rgb_rmse": 0.00696527697815882,
+        "boundary_pixels": 14539,
+        "highlight_pixels": 905,
+        "highlight_integrated_luminance_relative_error": 0.00029296386812356585,
+        "highlight_luminance_centroid_displacement_px": 0.059979337164908726,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": true
+      },
+      {
+        "key": "f030-N2.8-F5-s1024-512-GPU-seed20261110",
+        "frame": 30,
+        "fstop": 2.8,
+        "focus_m": 5.0,
+        "samples": 1024,
+        "seed": 20261110,
+        "hidden": false,
+        "pinhole": false,
+        "resolution": [
+          512,
+          512
+        ],
+        "device": "GPU",
+        "elapsed_seconds": 2.2438317351043224,
+        "exr_bytes": 2774379,
+        "linear_rgb_rmse": 0.0,
+        "boundary_linear_rgb_rmse": 0.0,
+        "boundary_pixels": 14539,
+        "highlight_pixels": 905,
+        "highlight_integrated_luminance_relative_error": 0.0,
+        "highlight_luminance_centroid_displacement_px": 0.0,
+        "reference_samples": 1024,
+        "same_seed_reference_check_passed": true
+      }
+    ],
+    "terminal_checks": [
+      {
+        "frame": 1,
+        "fstop": 0.5,
+        "focus_m": 1.4,
+        "reference_samples": 1024,
+        "independent_seed_rendered": false,
+        "terminal_convergence_certified": false,
+        "candidate_same_seed_samples": []
+      },
+      {
+        "frame": 1,
+        "fstop": 0.5,
+        "focus_m": 5.0,
+        "reference_samples": 1024,
+        "independent_seed_rendered": false,
+        "terminal_convergence_certified": false,
+        "candidate_same_seed_samples": []
+      },
+      {
+        "frame": 1,
+        "fstop": 1.4,
+        "focus_m": 1.4,
+        "reference_samples": 1024,
+        "independent_seed_rendered": false,
+        "terminal_convergence_certified": false,
+        "candidate_same_seed_samples": []
+      },
+      {
+        "frame": 1,
+        "fstop": 1.4,
+        "focus_m": 5.0,
+        "reference_samples": 1024,
+        "independent_seed_rendered": false,
+        "terminal_convergence_certified": false,
+        "candidate_same_seed_samples": [
+          512
+        ]
+      },
+      {
+        "frame": 1,
+        "fstop": 2.8,
+        "focus_m": 1.4,
+        "reference_samples": 1024,
+        "independent_seed_rendered": false,
+        "terminal_convergence_certified": false,
+        "candidate_same_seed_samples": []
+      },
+      {
+        "frame": 1,
+        "fstop": 2.8,
+        "focus_m": 5.0,
+        "reference_samples": 1024,
+        "independent_seed_rendered": false,
+        "terminal_convergence_certified": false,
+        "candidate_same_seed_samples": [
+          512
+        ]
+      },
+      {
+        "frame": 30,
+        "fstop": 0.5,
+        "focus_m": 1.4,
+        "reference_samples": 1024,
+        "independent_seed_rendered": false,
+        "terminal_convergence_certified": false,
+        "candidate_same_seed_samples": []
+      },
+      {
+        "frame": 30,
+        "fstop": 0.5,
+        "focus_m": 5.0,
+        "reference_samples": 1024,
+        "independent_seed_rendered": false,
+        "terminal_convergence_certified": false,
+        "candidate_same_seed_samples": [
+          512
+        ]
+      },
+      {
+        "frame": 30,
+        "fstop": 1.4,
+        "focus_m": 1.4,
+        "reference_samples": 1024,
+        "independent_seed_rendered": false,
+        "terminal_convergence_certified": false,
+        "candidate_same_seed_samples": []
+      },
+      {
+        "frame": 30,
+        "fstop": 1.4,
+        "focus_m": 5.0,
+        "reference_samples": 1024,
+        "independent_seed_rendered": false,
+        "terminal_convergence_certified": false,
+        "candidate_same_seed_samples": [
+          512
+        ]
+      },
+      {
+        "frame": 30,
+        "fstop": 2.8,
+        "focus_m": 1.4,
+        "reference_samples": 1024,
+        "independent_seed_rendered": false,
+        "terminal_convergence_certified": false,
+        "candidate_same_seed_samples": [
+          512
+        ]
+      },
+      {
+        "frame": 30,
+        "fstop": 2.8,
+        "focus_m": 5.0,
+        "reference_samples": 1024,
+        "independent_seed_rendered": false,
+        "terminal_convergence_certified": false,
+        "candidate_same_seed_samples": [
+          256,
+          512
+        ]
+      }
+    ],
+    "timing_by_spp": {
+      "128": {
+        "renders": 12,
+        "mean_seconds": 1.0118886940181255,
+        "min_seconds": 0.9719010107219219,
+        "max_seconds": 1.1323354467749596
+      },
+      "256": {
+        "renders": 12,
+        "mean_seconds": 1.1996824558203418,
+        "min_seconds": 1.148089475929737,
+        "max_seconds": 1.35647327080369
+      },
+      "512": {
+        "renders": 12,
+        "mean_seconds": 1.577258917503059,
+        "min_seconds": 1.520862776786089,
+        "max_seconds": 1.6993105337023735
+      },
+      "1024": {
+        "renders": 12,
+        "mean_seconds": 2.303573390158514,
+        "min_seconds": 2.2299792990088463,
+        "max_seconds": 2.444418542087078
+      }
+    },
+    "independent_noise_estimate": null,
+    "main_seed": 20261110,
+    "denoising": false,
+    "motion_blur": false,
+    "adaptive_sampling": false,
+    "thresholds": {
+      "full_linear_rmse": 0.005,
+      "boundary_linear_rmse": 0.01,
+      "highlight_luminance_relative": 0.02,
+      "highlight_centroid_px": 0.25
+    },
+    "status": "same-seed partial curve only; no formal convergence or method judgment"
+  },
+  "outputs": {
+    "root": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-a2b-2026-11-10-01/blender-b2",
+    "preview": "outputs/route3-a2b-2026-11-10-01/blender-b2/B2-high/preview",
+    "curve": "outputs/route3-a2b-2026-11-10-01/blender-b2/B2-high/convergence/sampling-partial.png",
+    "geometry": "outputs/route3-a2b-2026-11-10-01/blender-b2/B2-high/scene-geometry.npz"
+  },
+  "GPU_released": true,
+  "method_evaluation_started": false,
+  "criteria_frozen": false,
+  "model_training": false,
+  "formal60frame_DOF": false,
+  "report_correction": "Initial informal message checked only final rows and incorrectly claimed0 hidden-foreground rays; full12configuration audit found79. Corrected before final reporting; no method evaluation occurred."
+}

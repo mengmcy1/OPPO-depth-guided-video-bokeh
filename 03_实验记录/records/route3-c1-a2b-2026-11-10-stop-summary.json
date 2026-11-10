@@ -1,0 +1,463 @@
+{
+  "schema_version": 1,
+  "phase": "A2b / B2-small / MoVieS C diagnosis",
+  "status": "stopped_on_user_background_depth_condition",
+  "recorded_at_utc": "2026-11-10T10:36:20.094442+00:00",
+  "client_time": "2026-11-10T02:36:20.094442-08:00",
+  "priority": "latest user prompt overrides unchanged plan appendix3: C0 first; no CamVFX O6-13 or Oracle-input DrBokeh; target report about2026-11-17, earlier stop conditions apply",
+  "base_git_revision": "8647c742f75890b7132c9accdf225c1b08feed9e",
+  "C0_first": {
+    "completed_before_A_B": true,
+    "source_numbering_error_found": false,
+    "observations": [
+      {
+        "scene": "box",
+        "gaussians": 3364203,
+        "source_id_mismatches": 0,
+        "saved_flat_index_mismatches": null,
+        "official_marker_frame_row_column_max_error": 0.0,
+        "official_xyz_export_max_error_m": 0.0,
+        "activated_query_color_export_max_error": 5.960464477539063e-08,
+        "activated_query_opacity_export_max_error": 5.960464477539063e-08
+      },
+      {
+        "scene": "plant",
+        "gaussians": 3234037,
+        "source_id_mismatches": 0,
+        "saved_flat_index_mismatches": 0,
+        "official_marker_frame_row_column_max_error": 0.0,
+        "official_xyz_export_max_error_m": 0.0,
+        "activated_query_color_export_max_error": 5.960464477539063e-08,
+        "activated_query_opacity_export_max_error": 5.960464477539063e-08
+      },
+      {
+        "scene": "cat",
+        "gaussians": 3470649,
+        "source_id_mismatches": 0,
+        "saved_flat_index_mismatches": 0,
+        "official_marker_frame_row_column_max_error": 0.0,
+        "official_xyz_export_max_error_m": 0.0,
+        "activated_query_color_export_max_error": 5.960464477539063e-08,
+        "activated_query_opacity_export_max_error": 5.960464477539063e-08
+      }
+    ],
+    "conclusion": "No numbering error found; no indexing-driven A1 M1-cur/M2 rerun required",
+    "RGB_shortcut": "learned convolution, not literal identity RGB; real-image similarity plus exact marker/attribute row audit used"
+  },
+  "stop": {
+    "user_condition": "CamVFX background depth cannot be obtained reliably, leaving too few O6-supported pixels",
+    "evidence": {
+      "plant": {
+        "dynamic_components": 51,
+        "static_certain_components": 23,
+        "ambiguous_components": 275,
+        "supported_hidden_pixels": 722,
+        "views": [
+          {
+            "view": 0,
+            "dynamic_center_pixels": 21153,
+            "supported_hidden_pixels": 0,
+            "background_known_on_dynamic_fraction": 0.0,
+            "failed_background_pixels": 252681
+          },
+          {
+            "view": 16,
+            "dynamic_center_pixels": 5293,
+            "supported_hidden_pixels": 78,
+            "background_known_on_dynamic_fraction": 0.0147364443604761,
+            "failed_background_pixels": 258712
+          },
+          {
+            "view": 33,
+            "dynamic_center_pixels": 7772,
+            "supported_hidden_pixels": 644,
+            "background_known_on_dynamic_fraction": 0.0939269171384457,
+            "failed_background_pixels": 176119
+          }
+        ]
+      },
+      "cat": {
+        "dynamic_components": 16,
+        "static_certain_components": 100,
+        "ambiguous_components": 454,
+        "supported_hidden_pixels": 168,
+        "views": [
+          {
+            "view": 0,
+            "dynamic_center_pixels": 459,
+            "supported_hidden_pixels": 73,
+            "background_known_on_dynamic_fraction": 0.23311546840958605,
+            "failed_background_pixels": 9847
+          },
+          {
+            "view": 16,
+            "dynamic_center_pixels": 1505,
+            "supported_hidden_pixels": 95,
+            "background_known_on_dynamic_fraction": 0.06312292358803986,
+            "failed_background_pixels": 37906
+          },
+          {
+            "view": 33,
+            "dynamic_center_pixels": 7673,
+            "supported_hidden_pixels": 0,
+            "background_known_on_dynamic_fraction": 0.0,
+            "failed_background_pixels": 119031
+          }
+        ]
+      }
+    },
+    "interpretation": "Ray intersections exist, but the conservative component/motion-proxy association cannot certify the next static surface; this is a limitation of this automatic procedure, not proof that no background depth can ever be recovered from the dataset",
+    "diagnostic_quantity_rules": "Executor predeclared1000 supported hidden pixels/scene and80% background-depth availability on classified dynamic center as feasibility diagnostics, not user-frozen B2 success criteria; cat33 has zero supported depth regardless of these numerical choices",
+    "action": "A/B/C notified immediately; no new configurations launched, existing B main-seed batch finished safely; all outputs retained; no threshold relaxation or new segmentation method"
+  },
+  "A": {
+    "completed": [
+      "frame1 mesh-derived disocclusion and near-motion/static-static split, overlap with original proxy",
+      "all-hit ray traversal: skip classified dynamic components; accept first remaining hit only if statically certain; ambiguous surfaces invalidate depth",
+      "reuse and rescore A1 O1/O2/O4 and identical O3 output; preserve all A1 images and results",
+      "CoC distributions, region fractions, whole-image scores and visualizations saved"
+    ],
+    "not_completed": {
+      "O5": "not rendered after background-depth stop",
+      "O6-50": "not rendered; reliable hidden-layer support inadequate",
+      "O6_minus_O5": "not measured",
+      "O6_minus_O3": "not measured"
+    },
+    "first_level_criterion": "not reached; neither success nor weak-signal classification is justified without O6",
+    "regions": {
+      "plant": {
+        "mesh_near_motion": {
+          "pixels": 30376,
+          "image_fraction": 0.038625081380208336,
+          "methods": {
+            "O1": {
+              "PSNR": 20.139088268727463,
+              "patch_LPIPS": 0.14015162279297894
+            },
+            "O2": {
+              "PSNR": 20.199382331450096,
+              "patch_LPIPS": 0.12537651824339838
+            },
+            "O3_reused_A1": {
+              "PSNR": 27.967483809234178,
+              "patch_LPIPS": 0.027921812292198835
+            },
+            "O4": {
+              "PSNR": 19.24602785819371,
+              "patch_LPIPS": 0.1641865798148572
+            }
+          },
+          "O1_minus_O4": {
+            "PSNR_dB": 0.893060410533753,
+            "patch_LPIPS": -0.024034957021878273
+          }
+        },
+        "mesh_static_static": {
+          "pixels": 7652,
+          "image_fraction": 0.009730021158854166,
+          "methods": {
+            "O1": {
+              "PSNR": 22.164010458047873,
+              "patch_LPIPS": 0.10103949627101955
+            },
+            "O2": {
+              "PSNR": 22.267928507162434,
+              "patch_LPIPS": 0.0946786215458741
+            },
+            "O3_reused_A1": {
+              "PSNR": 26.683520756421526,
+              "patch_LPIPS": 0.0385354432696428
+            },
+            "O4": {
+              "PSNR": 22.163298112083996,
+              "patch_LPIPS": 0.10573138374400992
+            }
+          },
+          "O1_minus_O4": {
+            "PSNR_dB": 0.0007123459638762597,
+            "patch_LPIPS": -0.004691887472990375
+          }
+        },
+        "original_M_C1_proxy": {
+          "pixels": 71797,
+          "image_fraction": 0.0912946065266927,
+          "methods": {
+            "O1": {
+              "PSNR": 22.29710789792266,
+              "patch_LPIPS": 0.10329458366418645
+            },
+            "O2": {
+              "PSNR": 22.333308476127492,
+              "patch_LPIPS": 0.0940553035657586
+            },
+            "O3_reused_A1": {
+              "PSNR": 32.15039834046294,
+              "patch_LPIPS": 0.020923443265179593
+            },
+            "O4": {
+              "PSNR": 21.97681317950003,
+              "patch_LPIPS": 0.11966958668874013
+            }
+          },
+          "O1_minus_O4": {
+            "PSNR_dB": 0.32029471842263035,
+            "patch_LPIPS": -0.016375003024553678
+          }
+        }
+      },
+      "cat": {
+        "mesh_near_motion": {
+          "pixels": 8952,
+          "image_fraction": 0.011383056640625,
+          "methods": {
+            "O1": {
+              "PSNR": 26.355724355262147,
+              "patch_LPIPS": 0.09380384210590356
+            },
+            "O2": {
+              "PSNR": 26.595376028431357,
+              "patch_LPIPS": 0.09933334076444188
+            },
+            "O3_reused_A1": {
+              "PSNR": 34.16168642559234,
+              "patch_LPIPS": 0.023404200737268045
+            },
+            "O4": {
+              "PSNR": 26.585250466998165,
+              "patch_LPIPS": 0.09280646213565864
+            }
+          },
+          "O1_minus_O4": {
+            "PSNR_dB": -0.22952611173601767,
+            "patch_LPIPS": 0.0009973799702449188
+          }
+        },
+        "mesh_static_static": {
+          "pixels": 10843,
+          "image_fraction": 0.013787587483723959,
+          "methods": {
+            "O1": {
+              "PSNR": 31.962059378648206,
+              "patch_LPIPS": 0.051773314361978344
+            },
+            "O2": {
+              "PSNR": 32.2639578794826,
+              "patch_LPIPS": 0.047610136753420226
+            },
+            "O3_reused_A1": {
+              "PSNR": 36.44303523164569,
+              "patch_LPIPS": 0.015305195648160375
+            },
+            "O4": {
+              "PSNR": 31.948747427311122,
+              "patch_LPIPS": 0.05246850557175737
+            }
+          },
+          "O1_minus_O4": {
+            "PSNR_dB": 0.013311951337083627,
+            "patch_LPIPS": -0.0006951912097790253
+          }
+        },
+        "original_M_C1_proxy": {
+          "pixels": 53226,
+          "image_fraction": 0.06768035888671875,
+          "methods": {
+            "O1": {
+              "PSNR": 25.26948610611681,
+              "patch_LPIPS": 0.15422106802204777
+            },
+            "O2": {
+              "PSNR": 25.39572179852246,
+              "patch_LPIPS": 0.13449795264772263
+            },
+            "O3_reused_A1": {
+              "PSNR": 34.20606306883309,
+              "patch_LPIPS": 0.04823457453497484
+            },
+            "O4": {
+              "PSNR": 25.245039828746258,
+              "patch_LPIPS": 0.1583175189048311
+            }
+          },
+          "O1_minus_O4": {
+            "PSNR_dB": 0.024446277370550717,
+            "patch_LPIPS": -0.00409645088278332
+          }
+        }
+      }
+    },
+    "depth_record": "route3-c1-a2b-2026-11-10-background-depth.json",
+    "scores_record": "route3-c1-a2b-2026-11-10-existing-oracles.json",
+    "limitations": [
+      "one matched frame, three views per development scene",
+      "component identification and motion masks are proxies, not GT object labels",
+      "O1-O4 is a representation diagnostic, not the missing appearance-preserving O6 comparison"
+    ]
+  },
+  "B": {
+    "status": "partial before B2 independent-noise check and full inputs",
+    "completed": [
+      "low/high.blend and stable local topology/60 rigid object and camera matrices",
+      "4 high low-sample256\u00b2 previews",
+      "64\u00b2K16 geometric aperture/center/other12-input visibility preflight at frames1/30/60, N1.4/2.8, both focuses",
+      "48 high main-seed512\u00b2 renders:2frames x3fstops x2focuses x4SPP128/256/512/1024"
+    ],
+    "not_completed": {
+      "independent_seed_noise": "not started after stop",
+      "sampling_configuration": "not frozen; same-seed curves alone do not certify1024",
+      "pinhole60": "not started",
+      "full_resolution_auxiliary_and_visibility_GT": "not started",
+      "representative_formal_DOF": "not started",
+      "hidden_layer_reference": "not started",
+      "criteria_file": "not created; method evaluation has not begun",
+      "O3_O5_O6_DrBokeh": "not evaluated",
+      "formal_representative_frame_list": "not frozen"
+    },
+    "observed_high_CoC_median_at512": {
+      "f1.4": [
+        5.57,
+        6.46
+      ],
+      "f2.8": [
+        2.78,
+        3.23
+      ]
+    },
+    "preflight_disocclusion_fraction_range": [
+      0.0132,
+      0.071
+    ],
+    "sampling_main_seed_images": 48,
+    "independent_seed_noise_completed": false,
+    "terminal_convergence_claimed": false,
+    "candidate_representative_frames": [
+      1,
+      30,
+      60
+    ],
+    "candidate_frames_frozen": false,
+    "geometry_eligibility_convention": "proposed before methods: median max(abs(CoC_blocking),abs(CoC_hidden)) at512; <3px separately reported; separate blocking/hidden/current distributions retained",
+    "hidden_foreground_rays": 79,
+    "total_hidden_preflight_rays": 8767,
+    "hidden_reference_caveat": "all-foreground camera-invisible reference alone misses intermediate foreground surfaces; selective dynamic/static references and support accounting needed if resumed",
+    "criteria_file": null,
+    "criteria_status": "not created or frozen: independent-seed noise and required representative GT steps not completed",
+    "method_results_low": null,
+    "method_results_high": null,
+    "full60frame_DOF": false,
+    "record": "route3-c1-b2-2026-11-10-partial.json",
+    "scope": "two procedural scenes,3 candidate representative frames; no cross-scene generalization claim"
+  },
+  "C": {
+    "completed": [
+      "source-order audit C0",
+      "same-Gaussian/same-numeric-domain official-versus-project K1 RGB andalpha",
+      "base/query opacity and pruning per13 sources",
+      "single/all source alpha on existing plant/cat caches",
+      "official sample downloaded directly; DrBokeh GT-input interface inspected read-only"
+    ],
+    "observed": [
+      {
+        "scene": "plant",
+        "same_domain_RGB": {
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "rmse": 0.0
+        },
+        "same_alpha": {
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "rmse": 0.0
+        },
+        "current_source_alpha_mean": 0.1375952959060669,
+        "all_source_alpha_mean": 0.9482066035270691,
+        "current_base_opacity_mean": 0.06671465188264847,
+        "current_query_opacity_mean": 0.06671252101659775,
+        "alpha95_pixel_fraction": 0.008370477706193924
+      },
+      {
+        "scene": "cat",
+        "same_domain_RGB": {
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "rmse": 0.0
+        },
+        "same_alpha": {
+          "max_abs": 0.0,
+          "mean_abs": 0.0,
+          "rmse": 0.0
+        },
+        "current_source_alpha_mean": 0.061736587435007095,
+        "all_source_alpha_mean": 0.889314591884613,
+        "current_base_opacity_mean": 0.03772693872451782,
+        "current_query_opacity_mean": 0.037717629224061966,
+        "alpha95_pixel_fraction": 0.0
+      }
+    ],
+    "can_exclude": "source indexing error in audited exports; rasterizer disagreement under matched Gaussians/camera/numeric color/clip settings",
+    "cannot_exclude": "input/domain conditioning, geometry quality, network motion prediction, and whether low single-source coverage generalizes to official or moving-camera inputs",
+    "unpremultiplication": "diagnostic RGB/alpha uses different alpha>=.05 support; not a repaired baseline or comparable quality improvement",
+    "not_completed": {
+      "C3_official_forward": "stopped before model inference",
+      "C3_B2_forward": "B2 inputs not produced before stop",
+      "C4_motion_GT": "B2 full GT/inference not produced"
+    },
+    "DrBokeh": "existing adapter accepts GT depth/disparity and alpha_override; MiDaS/LDF can be bypassed; no normal inference or Oracle-input run performed",
+    "optional_DrBokeh_GT_hidden_layer": "not supported by current adapter signature; not implemented this round",
+    "M2_design_resumed": false
+  },
+  "conclusion": {
+    "Q1": "unanswered: missing O5/O6 and B2 strong2.5D comparison",
+    "Q2": "high-CoC scene/preflight is feasible, benefit stability unmeasured",
+    "Q3": "numbering and matched-rasterizer interface errors not observed; low single-source alpha is a concrete factor, architecture-wide claim still needs official and B2 tests",
+    "route_decision": "insufficient evidence to decide hidden-layer/hybrid-rendering mainline; wait for user choice after this stop report"
+  },
+  "constraints": {
+    "A1_results_modified": false,
+    "raw_data_modified": false,
+    "model_training": false,
+    "test_set_method_evaluation": false,
+    "CamVFX_O6_13": false,
+    "CamVFX_Oracle_input_DrBokeh": false,
+    "new_motion_segmentation": false,
+    "GPU_processes_terminated": false,
+    "caches": "data disk route3-cache; no global cache/proxy/conda/pip changes",
+    "GPU": "exclusive handoff C0 -> C1/C2 -> B2 Cycles; no overlap of GPU jobs"
+  },
+  "artifacts": {
+    "root": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-a2b-2026-11-10-01",
+    "records_prefix": "03_\u5b9e\u9a8c\u8bb0\u5f55/records/route3-c1-a2b-2026-11-10-",
+    "B_record": "route3-c1-b2-2026-11-10-partial.json",
+    "A_mesh_preview": "outputs/route3-a2b-2026-11-10-01/mesh-background/plant/0/mesh-regions.png",
+    "B_outputs": {
+      "root": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-a2b-2026-11-10-01/blender-b2",
+      "preview": "outputs/route3-a2b-2026-11-10-01/blender-b2/B2-high/preview",
+      "curve": "outputs/route3-a2b-2026-11-10-01/blender-b2/B2-high/convergence/sampling-partial.png",
+      "geometry": "outputs/route3-a2b-2026-11-10-01/blender-b2/B2-high/scene-geometry.npz"
+    }
+  },
+  "next_step": "Wait for user decision: improve/certify CamVFX background part identification, or explicitly authorize continuing the Blender-only sequence despite the A-line stop. Do not automatically resume or widen scope.",
+  "verification": {
+    "compiled_scripts": 7,
+    "parsed_JSON_records": 8,
+    "parsed_CSV_records": 2,
+    "targeted_size_and_secret_check": "passed; every new file<1MiB",
+    "raw_CamVFX_PNG_count": 40000,
+    "raw_files_and_directories_read_only": true,
+    "criteria_file_absent": true,
+    "GPU0_used_MiB": 0,
+    "old_A1_code_and_outputs_modified": false
+  },
+  "disk_at_stop": {
+    "data": {
+      "size_bytes": 898721906688,
+      "used_bytes": 554808578048,
+      "available_bytes": 343913328640
+    },
+    "system": {
+      "size_bytes": 32212254720,
+      "used_bytes": 29545848832,
+      "available_bytes": 2666405888
+    }
+  }
+}

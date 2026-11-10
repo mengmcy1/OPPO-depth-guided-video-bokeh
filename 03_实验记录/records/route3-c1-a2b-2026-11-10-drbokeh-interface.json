@@ -1,0 +1,20 @@
+{
+  "status": "source-interface supports GT depth and alpha",
+  "repository": "/root/autodl-tmp/DrBokeh",
+  "author_commit": "24d96e4fb76a698494e86835c84a7c45ae2ebc10",
+  "interpreter": "/root/miniconda3/envs/magicbokeh/bin/python",
+  "evidence": [
+    "src/baselines/drbokeh.py:OfficialDrBokeh.predict alpha_override branch bypasses LDF",
+    "OfficialDrBokeh.predict supplies disparity directly to model.inference without MiDaS",
+    "app/Render/Inference.py DrBokeh.inference accepts RGB/disp/alpha",
+    "official RGBAD2layers retains LaMa RGB+depth filling"
+  ],
+  "physical_mapping": "d=1/z;df=1/F;K=fx*a;dn=(d-min(d))/span;fn=(df-min(d))/span;kn=K*span; signedCoC=kn*(dn-fn)",
+  "constant_disparity": "existing helper stops at span=0; no silent normalization fallback",
+  "alpha": "GTforeground pixel coverage HxWx1 in[0,1]; no LDF call",
+  "mandatory_stop_condition_triggered": false,
+  "optional_GT_hidden_layer": "not exposed in existing adapter; optional group not run",
+  "new_entry": "scripts/route3_oracle_inpaint.py; drbokeh mode requires frozen criteria JSON with frozen:true and Blender dataset",
+  "new_GPU_run": false,
+  "existing_results_modified": false
+}

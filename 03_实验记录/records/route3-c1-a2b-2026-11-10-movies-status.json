@@ -1,0 +1,96 @@
+{
+  "phase": "C1-C4 MoVieS diagnostics",
+  "status": "stopped_on_parent_reported_CamVFX_background_depth_failure",
+  "C0": "completed by parent; source numbering correct; final record route3-c1-a2b-2026-11-10-c0-source-order-final.json",
+  "C1": {
+    "status": "completed existing development caches",
+    "scope": "same exported Gaussians, camera, color values; native vs project K1",
+    "record": "route3-c1-a2b-2026-11-10-movies-render-opacity.json"
+  },
+  "C2": {
+    "status": "completed existing development caches",
+    "scope": "base/query activation quantiles, per-source pruning, all13 single-source alpha coverage",
+    "record": "route3-c1-a2b-2026-11-10-movies-render-opacity.json"
+  },
+  "C3": {
+    "status": "not completed",
+    "official_input_download": {
+      "repository": "chenguolin/MoVieS",
+      "revision": "8bf304861dd2bc0ddd6729bf85810137bc11f22b",
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/raw/MoVieS-official-DAVIS/8bf304861dd2bc0ddd6729bf85810137bc11f22b/motocross-bumps.npz",
+      "bytes": 23759344,
+      "sha256": "dbc806e37af1056cf8eb566433034e58551846fe1b81634835cbc9a5570305e6",
+      "source_metadata": {
+        "type": "file",
+        "oid": "c2a66c064baa21f31518f94d4a87386b2cf65388",
+        "size": 23759344,
+        "lfs": {
+          "oid": "dbc806e37af1056cf8eb566433034e58551846fe1b81634835cbc9a5570305e6",
+          "size": 23759344,
+          "pointerSize": 133
+        },
+        "xetHash": "011ccc5c587d5ce6d66ba4ce6e35073e5e19ef78926c6f00f21a25c1872c45b4",
+        "path": "DAVIS/motocross-bumps.npz"
+      },
+      "direct": true,
+      "source": "official README named DAVIS/motocross-bumps.npz; preprocessed poses by authors"
+    },
+    "official_model_forward": false,
+    "B2_model_forward": false,
+    "reason": "User stop condition encountered in parallel A line; do not expand experiments"
+  },
+  "C4": {
+    "status": "not completed",
+    "reason": "B2 inputs and motion GT not available before stop; no model inference or motion metric"
+  },
+  "DrBokeh_interface": {
+    "status": "read-only support confirmed; no CUDA inference this round",
+    "record": "route3-c1-a2b-2026-11-10-drbokeh-interface.json"
+  },
+  "LaMa_entry": {
+    "status": "unvalidated draft only, not run",
+    "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-a2b-2026-11-10-01/movies-diagnostics/drafts/route3_oracle_inpaint.py",
+    "scope": "syntax compilation only; omitted from src/scripts pending authorized runtime validation"
+  },
+  "observations": [
+    {
+      "scene": "plant",
+      "same_numeric_RGB_max_error": 0.0,
+      "same_numeric_alpha_max_error": 0.0,
+      "current_source_alpha_mean": 0.1375952959060669,
+      "all_source_alpha_mean": 0.9482066035270691,
+      "current_source_raw_premultiplied_PSNR_diagnostic": 6.851813793182373,
+      "current_source_straight_color_PSNR_on_alpha_ge_005_diagnostic": 30.663650512695312,
+      "caution": "Straight-color statistic uses a different support and is a diagnostic visualization, not a repaired method or directly comparable quality score",
+      "current_source_base_opacity_mean": 0.06671465188264847,
+      "current_source_query_opacity_mean": 0.06671252101659775
+    },
+    {
+      "scene": "cat",
+      "same_numeric_RGB_max_error": 0.0,
+      "same_numeric_alpha_max_error": 0.0,
+      "current_source_alpha_mean": 0.061736587435007095,
+      "all_source_alpha_mean": 0.889314591884613,
+      "current_source_raw_premultiplied_PSNR_diagnostic": 9.087942123413086,
+      "current_source_straight_color_PSNR_on_alpha_ge_005_diagnostic": 23.62114715576172,
+      "caution": "Straight-color statistic uses a different support and is a diagnostic visualization, not a repaired method or directly comparable quality score",
+      "current_source_base_opacity_mean": 0.03772693872451782,
+      "current_source_query_opacity_mean": 0.037717629224061966
+    }
+  ],
+  "can_exclude": [
+    "A source-index permutation in audited caches, by parent C0",
+    "Same-Gaussian K1 rasterizer disagreement for matched camera/color/alpha values in plant/cat"
+  ],
+  "cannot_exclude": [
+    "Actual linear-light vs display-RGB averaging changes output intentionally",
+    "Dataset/model domain dependence without official and B2 tests",
+    "Geometry and motion prediction errors",
+    "Architecture-wide claim from only fixed-pose CamVFX caches"
+  ],
+  "interpretation": "Low current-source alpha is directly observed and strongly affects premultiplied RGB; other-source contribution is not hidden-content contribution",
+  "M2_design_continued": false,
+  "model_training": false,
+  "existing_results_modified": false,
+  "GPU_jobs_running": false
+}

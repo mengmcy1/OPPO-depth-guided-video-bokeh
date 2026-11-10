@@ -1,0 +1,1670 @@
+{
+  "phase": "C1 same-Gaussian renderer / C2 opacity",
+  "official_commit": "77262fac6724a12c0b133a4fee10e62772db6d0f",
+  "A1_outputs_modified": false,
+  "model_training": false,
+  "model_forward": false,
+  "results": [
+    {
+      "name": "plant",
+      "cache": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-c1-2026-11-10-01/movies-plant-01",
+      "gaussians": 3234037,
+      "comparison_resolution": [
+        518,
+        518
+      ],
+      "same_numeric_color_domain": "display-RGB numbers passed unchanged to both rasterizers for interface isolation",
+      "same_numeric_RGB_error": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "rmse": 0.0
+      },
+      "same_numeric_alpha_error": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "rmse": 0.0
+      },
+      "native_default_clip_vs_project_RGB_error": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "rmse": 0.0
+      },
+      "native_default_clip_vs_project_alpha_error": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "rmse": 0.0
+      },
+      "intentional_linear_conversion_vs_native_display_RGB_error": {
+        "max_abs": 0.1966644525527954,
+        "mean_abs": 0.014293883927166462,
+        "rmse": 0.021114084869623184
+      },
+      "native_all_source_alpha": {
+        "count": 268324,
+        "mean": 0.9482066035270691,
+        "quantiles": [
+          0.1658838987350464,
+          0.7666142386198044,
+          0.8587307393550873,
+          0.9688448905944824,
+          0.9961560189723968,
+          0.999886155128479,
+          0.9998999834060669
+        ]
+      },
+      "native_all_source_alpha_coverage": {
+        "0.05": 1.0,
+        "0.1": 1.0,
+        "0.5": 0.9995527863502502,
+        "0.95": 0.7002504467964172
+      },
+      "native_all_source_RGB_vs_target_PSNR_diagnostic": 24.003705978393555,
+      "camera_intrinsics_pixels": [
+        [
+          287.328125,
+          0.0,
+          259.0
+        ],
+        [
+          0.0,
+          287.328125,
+          259.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "native_clip": [
+        0.001,
+        100
+      ],
+      "matched_clip": [
+        0.0001,
+        10000.0
+      ],
+      "single_sources": [
+        {
+          "source_frame_id": 1,
+          "gaussians": 264999,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.1375952959060669,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.02166913747787477,
+              0.10096704959869385,
+              0.24494760632514964,
+              0.9368113309144983,
+              0.9993553161621094
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.8346812129020691,
+            "0.1": 0.5063170194625854,
+            "0.5": 0.04148343205451965,
+            "0.95": 0.008370477706193924
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 6.851813793182373,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 30.663650512695312,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        },
+        {
+          "source_frame_id": 5,
+          "gaussians": 256984,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.19869841635227203,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.051771414279937755,
+              0.18524867296218872,
+              0.3677047193050385,
+              0.755876502990723,
+              0.9838629364967346
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.9020624756813049,
+            "0.1": 0.7898138165473938,
+            "0.5": 0.05061791092157364,
+            "0.95": 0.0008049969910643995
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 7.763969421386719,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 26.484403610229492,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        },
+        {
+          "source_frame_id": 9,
+          "gaussians": 248551,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.22028042376041412,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.03523636460304261,
+              0.21657240390777588,
+              0.3603100717067719,
+              0.7112439596652989,
+              0.9924942851066589
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.8842593431472778,
+            "0.1": 0.8309692740440369,
+            "0.5": 0.040402647107839584,
+            "0.95": 0.0017739747418090701
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 8.008654594421387,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 22.481857299804688,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        },
+        {
+          "source_frame_id": 13,
+          "gaussians": 244599,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.27096906304359436,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.010154032707214367,
+              0.27255019545555115,
+              0.45828559994697576,
+              0.7901080167293548,
+              0.99700528383255
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.8741409778594971,
+            "0.1": 0.848518967628479,
+            "0.5": 0.06003190204501152,
+            "0.95": 0.0007863627979531884
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 8.654385566711426,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 22.00435447692871,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        },
+        {
+          "source_frame_id": 17,
+          "gaussians": 244407,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.29193899035453796,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.011909914016723649,
+              0.29706889390945435,
+              0.47670786380767827,
+              0.8345179593563086,
+              0.9889689087867737
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.8808380961418152,
+            "0.1": 0.8576571941375732,
+            "0.5": 0.08238174766302109,
+            "0.95": 0.0023479077499359846
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 8.847042083740234,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 21.630733489990234,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        },
+        {
+          "source_frame_id": 21,
+          "gaussians": 246355,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.2999346852302551,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.026962548494339,
+              0.30284279584884644,
+              0.49624201059341444,
+              0.9011594730615617,
+              0.9982548356056213
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.8885564208030701,
+            "0.1": 0.8620511293411255,
+            "0.5": 0.09752016514539719,
+            "0.95": 0.003961628768593073
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 8.965035438537598,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 20.941444396972656,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        },
+        {
+          "source_frame_id": 26,
+          "gaussians": 246139,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.29789412021636963,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.03717157840728762,
+              0.2976829707622528,
+              0.5041593194007874,
+              0.8598667746782354,
+              0.9889482259750366
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.8941242694854736,
+            "0.1": 0.86957186460495,
+            "0.5": 0.10307314991950989,
+            "0.95": 0.004721903707832098
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 9.246858596801758,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 20.918628692626953,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        },
+        {
+          "source_frame_id": 30,
+          "gaussians": 250787,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.2246244251728058,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.05097827911376954,
+              0.21502047777175903,
+              0.39825773835182204,
+              0.7944674521684649,
+              0.9946789741516113
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.9009406566619873,
+            "0.1": 0.8375956416130066,
+            "0.5": 0.06376619637012482,
+            "0.95": 0.0023441810626536608
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 8.237329483032227,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 20.730093002319336,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        },
+        {
+          "source_frame_id": 34,
+          "gaussians": 249322,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.2533678412437439,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.04510124921798706,
+              0.24813109636306763,
+              0.45135459899902364,
+              0.8440499949455275,
+              0.9997993111610413
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.8960175514221191,
+            "0.1": 0.8364589214324951,
+            "0.5": 0.08317556977272034,
+            "0.95": 0.004077160730957985
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 8.59846019744873,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 21.457347869873047,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        },
+        {
+          "source_frame_id": 38,
+          "gaussians": 247271,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.22783519327640533,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.033803737163543714,
+              0.22326970100402832,
+              0.4025739192962647,
+              0.7823817497491837,
+              0.9982025623321533
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.8797163367271423,
+            "0.1": 0.8180371522903442,
+            "0.5": 0.06600229442119598,
+            "0.95": 0.002016219310462475
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 8.172405242919922,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 20.924602508544922,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        },
+        {
+          "source_frame_id": 42,
+          "gaussians": 247749,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.19466963410377502,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.027036857604980473,
+              0.17486220598220825,
+              0.3426385283470154,
+              0.7720467418432242,
+              0.9866764545440674
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.8767497539520264,
+            "0.1": 0.7815067172050476,
+            "0.5": 0.04639167711138725,
+            "0.95": 0.000491942570079118
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 7.65535306930542,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 20.540735244750977,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        },
+        {
+          "source_frame_id": 46,
+          "gaussians": 243898,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.12770532071590424,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.006785702705383307,
+              0.10210800170898438,
+              0.22394352555274963,
+              0.6648646098375334,
+              0.9996070265769958
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.8027907013893127,
+            "0.1": 0.5136886835098267,
+            "0.5": 0.023452989757061005,
+            "0.95": 0.0010062461951747537
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 6.9403510093688965,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 21.82443618774414,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        },
+        {
+          "source_frame_id": 50,
+          "gaussians": 242976,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.0836658850312233,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.0,
+              0.06770706176757812,
+              0.14569757580757142,
+              0.5880286753177661,
+              0.9978838562965393
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.6640107035636902,
+            "0.1": 0.24708934128284454,
+            "0.5": 0.013271269388496876,
+            "0.95": 0.0006372892530634999
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 6.497842788696289,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 21.995695114135742,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        }
+      ],
+      "opacity_per_source": [
+        {
+          "source_frame_id": 1,
+          "base": {
+            "count": 268324,
+            "mean": 0.06671465188264847,
+            "quantiles": [
+              8.404254913330078e-06,
+              0.0007553994655609131,
+              0.01363682746887207,
+              0.05561760067939758,
+              0.10932484269142151,
+              0.35756751894950867,
+              0.8289388418197632
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.06671252101659775,
+            "quantiles": [
+              8.404254913330078e-06,
+              0.0007553994655609131,
+              0.01363682746887207,
+              0.05561760067939758,
+              0.10932484269142151,
+              0.35715521186593535,
+              0.8289388418197632
+            ]
+          },
+          "base_pruning_fraction": 0.012391735799610615,
+          "query_pruning_fraction": 0.012391735799610615
+        },
+        {
+          "source_frame_id": 5,
+          "base": {
+            "count": 268324,
+            "mean": 0.1115243136882782,
+            "quantiles": [
+              4.985928535461426e-05,
+              0.002844899892807007,
+              0.031380414962768555,
+              0.10466021299362183,
+              0.19559407234191895,
+              0.3923368453979492,
+              0.7520126104354858
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.10890334844589233,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.022629201412200928,
+              0.1032954752445221,
+              0.1919327974319458,
+              0.3923368453979492,
+              0.7520126104354858
+            ]
+          },
+          "base_pruning_fraction": 0.0022025611251592636,
+          "query_pruning_fraction": 0.04226233810186386
+        },
+        {
+          "source_frame_id": 9,
+          "base": {
+            "count": 268324,
+            "mean": 0.13463108241558075,
+            "quantiles": [
+              6.815791130065918e-05,
+              0.002844899892807007,
+              0.04084572196006775,
+              0.12689334154129028,
+              0.21667379140853882,
+              0.44167301058769226,
+              0.7401743531227112
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.12659497559070587,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.01566365361213684,
+              0.11981949210166931,
+              0.208823561668396,
+              0.43206340074539185,
+              0.7401743531227112
+            ]
+          },
+          "base_pruning_fraction": 0.0022025611251592636,
+          "query_pruning_fraction": 0.07369076460599899
+        },
+        {
+          "source_frame_id": 13,
+          "base": {
+            "count": 268324,
+            "mean": 0.17617471516132355,
+            "quantiles": [
+              2.014636993408203e-05,
+              0.001810222864151001,
+              0.055005282163619995,
+              0.16398024559020996,
+              0.29746994376182556,
+              0.5467381477355957,
+              0.810478925704956
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.1629084199666977,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.005911082029342651,
+              0.1561048924922943,
+              0.28776782751083374,
+              0.5234203338623047,
+              0.810478925704956
+            ]
+          },
+          "base_pruning_fraction": 0.006659858860075474,
+          "query_pruning_fraction": 0.08841922134160995
+        },
+        {
+          "source_frame_id": 17,
+          "base": {
+            "count": 268324,
+            "mean": 0.19116918742656708,
+            "quantiles": [
+              1.8924474716186523e-05,
+              0.0023967325687408447,
+              0.06828853487968445,
+              0.17895588278770447,
+              0.31742626428604126,
+              0.6076631546020508,
+              0.9099069833755493
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.17631570994853973,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.0064882636070251465,
+              0.17217186093330383,
+              0.29746994376182556,
+              0.5888891220092773,
+              0.9099069833755493
+            ]
+          },
+          "base_pruning_fraction": 0.005441183224320412,
+          "query_pruning_fraction": 0.08913477510213852
+        },
+        {
+          "source_frame_id": 21,
+          "base": {
+            "count": 268324,
+            "mean": 0.1961813122034073,
+            "quantiles": [
+              2.586841583251953e-05,
+              0.002889573574066162,
+              0.06394842267036438,
+              0.18184363842010498,
+              0.332852303981781,
+              0.6791787147521973,
+              0.9763104915618896
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.18281790614128113,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.011687248945236206,
+              0.1755380630493164,
+              0.314050555229187,
+              0.6688802242279053,
+              0.9763104915618896
+            ]
+          },
+          "base_pruning_fraction": 0.004285863135010004,
+          "query_pruning_fraction": 0.08187489956617355
+        },
+        {
+          "source_frame_id": 26,
+          "base": {
+            "count": 268324,
+            "mean": 0.19040614366531372,
+            "quantiles": [
+              1.1473894119262695e-05,
+              0.0009110569953918457,
+              0.059210240840911865,
+              0.1761041283607483,
+              0.3293917179107666,
+              0.6150878667831421,
+              0.9124361276626587
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.18068833649158478,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.01363682746887207,
+              0.1716158092021942,
+              0.32082128524780273,
+              0.6076631546020508,
+              0.9124361276626587
+            ]
+          },
+          "base_pruning_fraction": 0.010606580413877964,
+          "query_pruning_fraction": 0.08267989754676819
+        },
+        {
+          "source_frame_id": 30,
+          "base": {
+            "count": 268324,
+            "mean": 0.13833479583263397,
+            "quantiles": [
+              2.586841583251953e-05,
+              0.001098722219467163,
+              0.03904828429222107,
+              0.12474516034126282,
+              0.24871662259101868,
+              0.5467381477355957,
+              0.8615381717681885
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.13144735991954803,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.02211660146713257,
+              0.12189465761184692,
+              0.23161423206329346,
+              0.5273165106773376,
+              0.8615381717681885
+            ]
+          },
+          "base_pruning_fraction": 0.00876552239060402,
+          "query_pruning_fraction": 0.06535755097866058
+        },
+        {
+          "source_frame_id": 34,
+          "base": {
+            "count": 268324,
+            "mean": 0.15663649141788483,
+            "quantiles": [
+              1.0132789611816406e-05,
+              0.0011695027351379395,
+              0.036220043897628784,
+              0.14366760849952698,
+              0.28140562772750854,
+              0.6076631546020508,
+              0.9343951940536499
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.15135256946086884,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.017712295055389404,
+              0.14128142595291138,
+              0.27202457189559937,
+              0.6076631546020508,
+              0.9343951940536499
+            ]
+          },
+          "base_pruning_fraction": 0.008847512304782867,
+          "query_pruning_fraction": 0.07081737369298935
+        },
+        {
+          "source_frame_id": 38,
+          "base": {
+            "count": 268324,
+            "mean": 0.13767805695533752,
+            "quantiles": [
+              9.506940841674805e-06,
+              0.0006667077541351318,
+              0.025178849697113037,
+              0.1281973421573639,
+              0.2393493354320526,
+              0.5078118443489075,
+              0.9324532747268677
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.13453514873981476,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.01495710015296936,
+              0.12656909227371216,
+              0.23581159114837646,
+              0.5078118443489075,
+              0.9324532747268677
+            ]
+          },
+          "base_pruning_fraction": 0.01569744013249874,
+          "query_pruning_fraction": 0.07846111059188843
+        },
+        {
+          "source_frame_id": 42,
+          "base": {
+            "count": 268324,
+            "mean": 0.11680000275373459,
+            "quantiles": [
+              2.562999725341797e-06,
+              0.0008558928966522217,
+              0.024609923362731934,
+              0.10132235288619995,
+              0.2018132209777832,
+              0.4765796661376953,
+              0.8333245515823364
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.11382360011339188,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.011508136987686157,
+              0.0991208553314209,
+              0.1980641782283783,
+              0.4746311902999878,
+              0.8333245515823364
+            ]
+          },
+          "base_pruning_fraction": 0.011959422379732132,
+          "query_pruning_fraction": 0.07667968422174454
+        },
+        {
+          "source_frame_id": 46,
+          "base": {
+            "count": 268324,
+            "mean": 0.0772637128829956,
+            "quantiles": [
+              5.781650543212891e-06,
+              0.0010004937648773193,
+              0.015189051628112793,
+              0.06008663773536682,
+              0.12984344363212585,
+              0.4339814782142639,
+              0.8558511734008789
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.07526447623968124,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.00413396954536438,
+              0.05942821502685547,
+              0.12787029147148132,
+              0.4339814782142639,
+              0.8558511734008789
+            ]
+          },
+          "base_pruning_fraction": 0.009678597562015057,
+          "query_pruning_fraction": 0.09103173762559891
+        },
+        {
+          "source_frame_id": 50,
+          "base": {
+            "count": 268324,
+            "mean": 0.051010776311159134,
+            "quantiles": [
+              8.344650268554688e-07,
+              0.0005884170532226562,
+              0.0084456205368042,
+              0.03963884711265564,
+              0.08570927381515503,
+              0.35042136907577515,
+              0.8577681183815002
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.04941485822200775,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.0021827220916748047,
+              0.03904828429222107,
+              0.08389037847518921,
+              0.34687310457229614,
+              0.8577681183815002
+            ]
+          },
+          "base_pruning_fraction": 0.01624528504908085,
+          "query_pruning_fraction": 0.0944678857922554
+        }
+      ],
+      "elapsed_seconds": 2.2031639106571674,
+      "peak_allocated_mib": 1290.751953125,
+      "observation": "same-valued Gaussian rendering agrees; single-source premultiplied RGB must be interpreted together with its alpha"
+    },
+    {
+      "name": "cat",
+      "cache": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-c1-2026-11-10-01/movies-cat-01",
+      "gaussians": 3470649,
+      "comparison_resolution": [
+        518,
+        518
+      ],
+      "same_numeric_color_domain": "display-RGB numbers passed unchanged to both rasterizers for interface isolation",
+      "same_numeric_RGB_error": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "rmse": 0.0
+      },
+      "same_numeric_alpha_error": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "rmse": 0.0
+      },
+      "native_default_clip_vs_project_RGB_error": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "rmse": 0.0
+      },
+      "native_default_clip_vs_project_alpha_error": {
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "rmse": 0.0
+      },
+      "intentional_linear_conversion_vs_native_display_RGB_error": {
+        "max_abs": 0.18457761406898499,
+        "mean_abs": 0.02324095368385315,
+        "rmse": 0.03419649973511696
+      },
+      "native_all_source_alpha": {
+        "count": 268324,
+        "mean": 0.889314591884613,
+        "quantiles": [
+          0.5420454740524292,
+          0.6568862223625183,
+          0.7224394023418427,
+          0.9369016587734222,
+          0.9849013984203339,
+          0.9963830173015595,
+          0.9998998641967773
+        ]
+      },
+      "native_all_source_alpha_coverage": {
+        "0.05": 1.0,
+        "0.1": 1.0,
+        "0.5": 1.0,
+        "0.95": 0.4327194094657898
+      },
+      "native_all_source_RGB_vs_target_PSNR_diagnostic": 34.34086990356445,
+      "camera_intrinsics_pixels": [
+        [
+          503.8359375,
+          0.0,
+          259.0
+        ],
+        [
+          0.0,
+          503.8359375,
+          259.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "native_clip": [
+        0.001,
+        100
+      ],
+      "matched_clip": [
+        0.0001,
+        10000.0
+      ],
+      "single_sources": [
+        {
+          "source_frame_id": 1,
+          "gaussians": 268324,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.061736587435007095,
+            "quantiles": [
+              0.0,
+              0.0042645931243896484,
+              0.011588793992996217,
+              0.05788728594779968,
+              0.10302744507789614,
+              0.24936848223209465,
+              0.8937128186225891
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.5670011043548584,
+            "0.1": 0.10633786022663116,
+            "0.5": 0.005292109679430723,
+            "0.95": 0.0
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 9.087942123413086,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 23.62114715576172,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        },
+        {
+          "source_frame_id": 5,
+          "gaussians": 268104,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.15862073004245758,
+            "quantiles": [
+              0.0,
+              0.067393718957901,
+              0.08344031572341919,
+              0.1518995463848114,
+              0.23889868855476382,
+              0.413260329365731,
+              0.8450933694839478
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.9993739128112793,
+            "0.1": 0.7733747363090515,
+            "0.5": 0.004718176554888487,
+            "0.95": 0.0
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 10.055295944213867,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 24.936006546020508,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        },
+        {
+          "source_frame_id": 9,
+          "gaussians": 267701,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.19109900295734406,
+            "quantiles": [
+              0.0,
+              0.07496858894824981,
+              0.09475987553596496,
+              0.19112113118171692,
+              0.28759142756462097,
+              0.4217369413375862,
+              0.8259333372116089
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.9981515407562256,
+            "0.1": 0.8625468015670776,
+            "0.5": 0.004233687650412321,
+            "0.95": 0.0
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 10.407108306884766,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 24.133684158325195,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        },
+        {
+          "source_frame_id": 13,
+          "gaussians": 267582,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.24484357237815857,
+            "quantiles": [
+              0.0,
+              0.09029795706272126,
+              0.1147822916507721,
+              0.24522429704666138,
+              0.3780928730964661,
+              0.4871539223194126,
+              0.7423397302627563
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.9977154731750488,
+            "0.1": 0.9650758504867554,
+            "0.5": 0.007427587639540434,
+            "0.95": 0.0
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 10.973796844482422,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 25.042301177978516,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        },
+        {
+          "source_frame_id": 17,
+          "gaussians": 267405,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.32508692145347595,
+            "quantiles": [
+              0.0,
+              0.11290461957454681,
+              0.14589728116989137,
+              0.33911067247390747,
+              0.4967135846614838,
+              0.6237043750286111,
+              0.8088498711585999
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.996932864189148,
+            "0.1": 0.9959638714790344,
+            "0.5": 0.09448279440402985,
+            "0.95": 0.0
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 11.825050354003906,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 25.83270263671875,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        },
+        {
+          "source_frame_id": 21,
+          "gaussians": 267281,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.31599321961402893,
+            "quantiles": [
+              0.0,
+              0.10407275617122651,
+              0.131948059797287,
+              0.3329179286956787,
+              0.49704671502113346,
+              0.616160417199135,
+              0.8114794492721558
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.996597409248352,
+            "0.1": 0.9939625263214111,
+            "0.5": 0.09542568027973175,
+            "0.95": 0.0
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 11.665787696838379,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 25.602867126464844,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        },
+        {
+          "source_frame_id": 26,
+          "gaussians": 267200,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.3042449951171875,
+            "quantiles": [
+              0.0,
+              0.09608432710170746,
+              0.12130776047706604,
+              0.3194027245044708,
+              0.48326853513717655,
+              0.5964749693870545,
+              0.7992042899131775
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.9963924288749695,
+            "0.1": 0.9848951697349548,
+            "0.5": 0.07154037803411484,
+            "0.95": 0.0
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 11.531261444091797,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 25.675453186035156,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        },
+        {
+          "source_frame_id": 30,
+          "gaussians": 266853,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.18703579902648926,
+            "quantiles": [
+              0.0,
+              0.06286806643009185,
+              0.08153873682022095,
+              0.18173280358314514,
+              0.3077028512954712,
+              0.40644857466220874,
+              0.7107576131820679
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.9943501353263855,
+            "0.1": 0.7749810218811035,
+            "0.5": 0.0005180304287932813,
+            "0.95": 0.0
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 10.245299339294434,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 26.783409118652344,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        },
+        {
+          "source_frame_id": 34,
+          "gaussians": 266323,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.22720514237880707,
+            "quantiles": [
+              0.0,
+              0.06628814458847046,
+              0.09956682920455932,
+              0.221795916557312,
+              0.3677215158939362,
+              0.4985981446504594,
+              0.6951623558998108
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.9916518926620483,
+            "0.1": 0.896297037601471,
+            "0.5": 0.009708412922918797,
+            "0.95": 0.0
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 10.725730895996094,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 25.777875900268555,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        },
+        {
+          "source_frame_id": 38,
+          "gaussians": 266000,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.13388757407665253,
+            "quantiles": [
+              0.0,
+              0.018404433131217958,
+              0.07580479383468627,
+              0.11595803499221802,
+              0.2252086937427521,
+              0.3409568995237361,
+              0.5165144205093384
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.9756861329078674,
+            "0.1": 0.6592403650283813,
+            "0.5": 4.099521538591944e-05,
+            "0.95": 0.0
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 9.852226257324219,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 24.9929256439209,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        },
+        {
+          "source_frame_id": 42,
+          "gaussians": 265775,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.08380267024040222,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.03591387271881105,
+              0.07770290970802307,
+              0.13672691583633423,
+              0.22367856919765614,
+              0.48334062099456787
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.8259828090667725,
+            "0.1": 0.25146839022636414,
+            "0.5": 0.0,
+            "0.95": 0.0
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 9.348875045776367,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 24.391691207885742,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        },
+        {
+          "source_frame_id": 46,
+          "gaussians": 266034,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.04074466973543167,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.009914934635162354,
+              0.03966835141181946,
+              0.07128847837448124,
+              0.12997778773307828,
+              0.37611931562423706
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.322170227766037,
+            "0.1": 0.03142469748854637,
+            "0.5": 0.0,
+            "0.95": 0.0
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 8.825437545776367,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 27.839691162109375,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        },
+        {
+          "source_frame_id": 50,
+          "gaussians": 266067,
+          "alpha": {
+            "count": 268324,
+            "mean": 0.03461037203669548,
+            "quantiles": [
+              0.0,
+              0.0,
+              0.0,
+              0.018252551555633545,
+              0.07501408457756045,
+              0.1582859909534458,
+              0.48737722635269165
+            ]
+          },
+          "alpha_coverage": {
+            "0.05": 0.3736266791820526,
+            "0.1": 0.06069527938961983,
+            "0.5": 0.0,
+            "0.95": 0.0
+          },
+          "raw_premultiplied_PSNR_vs_target_diagnostic": 8.850478172302246,
+          "straight_color_PSNR_on_alpha_ge_005_diagnostic": 26.524133682250977,
+          "straight_color_scope": "RGB/alpha visualization only on alpha>=.05; not a new baseline or model change"
+        }
+      ],
+      "opacity_per_source": [
+        {
+          "source_frame_id": 1,
+          "base": {
+            "count": 268324,
+            "mean": 0.03772693872451782,
+            "quantiles": [
+              0.002631664276123047,
+              0.004399418830871582,
+              0.010818451642990112,
+              0.03308597207069397,
+              0.06052938103675842,
+              0.15027806162834167,
+              0.7879312038421631
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.037717629224061966,
+            "quantiles": [
+              0.002631664276123047,
+              0.004399418830871582,
+              0.010818451642990112,
+              0.03308597207069397,
+              0.06052938103675842,
+              0.15002882480621338,
+              0.7879312038421631
+            ]
+          },
+          "base_pruning_fraction": 0.0,
+          "query_pruning_fraction": 0.0
+        },
+        {
+          "source_frame_id": 5,
+          "base": {
+            "count": 268324,
+            "mean": 0.09443778544664383,
+            "quantiles": [
+              0.019568681716918945,
+              0.038466185331344604,
+              0.04867658019065857,
+              0.08819004893302917,
+              0.13892841339111328,
+              0.332852303981781,
+              0.7217432260513306
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.0939478650689125,
+            "quantiles": [
+              7.966160774230957e-05,
+              0.037892431020736694,
+              0.04867658019065857,
+              0.08819004893302917,
+              0.13869494199752808,
+              0.32082128524780273,
+              0.7217432260513306
+            ]
+          },
+          "base_pruning_fraction": 0.0,
+          "query_pruning_fraction": 0.000819904322270304
+        },
+        {
+          "source_frame_id": 9,
+          "base": {
+            "count": 268324,
+            "mean": 0.11408614367246628,
+            "quantiles": [
+              0.020964235067367554,
+              0.04304283857345581,
+              0.05561760067939758,
+              0.10932484269142151,
+              0.169956237077713,
+              0.3415825068950653,
+              0.8031737804412842
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.1125752180814743,
+            "quantiles": [
+              5.960464477539063e-08,
+              0.04177388548851013,
+              0.05541279911994934,
+              0.10913479328155518,
+              0.16913124918937683,
+              0.3170375025272684,
+              0.7401743531227112
+            ]
+          },
+          "base_pruning_fraction": 0.0,
+          "query_pruning_fraction": 0.0023218197748064995
+        },
+        {
+          "source_frame_id": 13,
+          "base": {
+            "count": 268324,
+            "mean": 0.14582222700119019,
+            "quantiles": [
+              0.025178849697113037,
+              0.05184546113014221,
+              0.06681233644485474,
+              0.13963085412979126,
+              0.22815650701522827,
+              0.36840569972991943,
+              0.8175745010375977
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.14410263299942017,
+            "quantiles": [
+              0.0,
+              0.04995852708816528,
+              0.06656917929649353,
+              0.13904529809951782,
+              0.2267836332321167,
+              0.3486451506614685,
+              0.760650634765625
+            ]
+          },
+          "base_pruning_fraction": 0.0,
+          "query_pruning_fraction": 0.0027653134893625975
+        },
+        {
+          "source_frame_id": 17,
+          "base": {
+            "count": 268324,
+            "mean": 0.19606374204158783,
+            "quantiles": [
+              0.0393424928188324,
+              0.06489011645317078,
+              0.08181270956993103,
+              0.1919327974319458,
+              0.3106943964958191,
+              0.4339814782142639,
+              0.8902941942214966
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.19375261664390564,
+            "quantiles": [
+              0.0,
+              0.0627892017364502,
+              0.08122774958610535,
+              0.19072401523590088,
+              0.3090237081050873,
+              0.41869691014289856,
+              0.7879312038421631
+            ]
+          },
+          "base_pruning_fraction": 0.0,
+          "query_pruning_fraction": 0.003424963913857937
+        },
+        {
+          "source_frame_id": 21,
+          "base": {
+            "count": 268324,
+            "mean": 0.1875758320093155,
+            "quantiles": [
+              0.038466185331344604,
+              0.059646934270858765,
+              0.07423135638237,
+              0.18359363079071045,
+              0.3073580265045166,
+              0.4148988425731659,
+              0.8840392827987671
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.18511439859867096,
+            "quantiles": [
+              0.0,
+              0.05791810154914856,
+              0.07369625568389893,
+              0.18242552876472473,
+              0.30569732189178467,
+              0.4054487347602844,
+              0.7634837627410889
+            ]
+          },
+          "base_pruning_fraction": 0.0,
+          "query_pruning_fraction": 0.003887091763317585
+        },
+        {
+          "source_frame_id": 26,
+          "base": {
+            "count": 268324,
+            "mean": 0.18289080262184143,
+            "quantiles": [
+              0.036220043897628784,
+              0.05623635649681091,
+              0.06954175233840942,
+              0.1795305609703064,
+              0.2991051971912384,
+              0.4073334038257599,
+              0.8670357465744019
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.1807488203048706,
+            "quantiles": [
+              0.0,
+              0.05460059642791748,
+              0.06903791427612305,
+              0.17838266491889954,
+              0.29746994376182556,
+              0.39981162548065186,
+              0.760650634765625
+            ]
+          },
+          "base_pruning_fraction": 0.0,
+          "query_pruning_fraction": 0.004188965540379286
+        },
+        {
+          "source_frame_id": 30,
+          "base": {
+            "count": 268324,
+            "mean": 0.11253828555345535,
+            "quantiles": [
+              0.017986208200454712,
+              0.03817826509475708,
+              0.04760265350341797,
+              0.103024423122406,
+              0.18184363842010498,
+              0.29098087549209595,
+              0.961533784866333
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.10905170440673828,
+            "quantiles": [
+              0.0,
+              0.03461882472038269,
+              0.04742586612701416,
+              0.10221505165100098,
+              0.18010666966438293,
+              0.2635993957519531,
+              0.6791787147521973
+            ]
+          },
+          "base_pruning_fraction": 0.0,
+          "query_pruning_fraction": 0.005482178181409836
+        },
+        {
+          "source_frame_id": 34,
+          "base": {
+            "count": 268324,
+            "mean": 0.13943488895893097,
+            "quantiles": [
+              0.006192982196807861,
+              0.04569202661514282,
+              0.05707138776779175,
+              0.12678515911102295,
+              0.22541660070419312,
+              0.3812195658683777,
+              0.9591542482376099
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.13373036682605743,
+            "quantiles": [
+              0.0,
+              0.036769479513168335,
+              0.05665242671966553,
+              0.1253863275051117,
+              0.22000709176063538,
+              0.3293917179107666,
+              0.779992938041687
+            ]
+          },
+          "base_pruning_fraction": 0.0,
+          "query_pruning_fraction": 0.007457402069121599
+        },
+        {
+          "source_frame_id": 38,
+          "base": {
+            "count": 268324,
+            "mean": 0.08438163250684738,
+            "quantiles": [
+              0.001367032527923584,
+              0.025178849697113037,
+              0.04468086361885071,
+              0.06705629825592041,
+              0.13660839200019836,
+              0.30074557662010193,
+              0.9539661407470703
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.0775141566991806,
+            "quantiles": [
+              0.0,
+              0.012241274118423462,
+              0.04401865601539612,
+              0.06632688641548157,
+              0.12896329164505005,
+              0.21601152420043945,
+              0.685949444770813
+            ]
+          },
+          "base_pruning_fraction": 0.0,
+          "query_pruning_fraction": 0.008661170490086079
+        },
+        {
+          "source_frame_id": 42,
+          "base": {
+            "count": 268324,
+            "mean": 0.0576915368437767,
+            "quantiles": [
+              0.0002378225326538086,
+              0.0097084641456604,
+              0.02387082576751709,
+              0.046033889055252075,
+              0.08787643909454346,
+              0.2845759987831116,
+              0.9099069833755493
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.049274418503046036,
+            "quantiles": [
+              0.0,
+              0.003649979829788208,
+              0.021615326404571533,
+              0.044348567724227905,
+              0.08035746216773987,
+              0.1429482400417328,
+              0.5195212960243225
+            ]
+          },
+          "base_pruning_fraction": 5.962940485915169e-05,
+          "query_pruning_fraction": 0.009499709121882915
+        },
+        {
+          "source_frame_id": 46,
+          "base": {
+            "count": 268324,
+            "mean": 0.031733907759189606,
+            "quantiles": [
+              0.0006667077541351318,
+              0.004468381404876709,
+              0.008985430002212524,
+              0.022977381944656372,
+              0.04401865601539612,
+              0.26894140243530273,
+              0.8902941942214966
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.024764666333794594,
+            "quantiles": [
+              0.0,
+              0.0025909841060638428,
+              0.008711397647857666,
+              0.022629201412200928,
+              0.041152894496917725,
+              0.07892587780952454,
+              0.32423537969589233
+            ]
+          },
+          "base_pruning_fraction": 2.6087864171131514e-05,
+          "query_pruning_fraction": 0.008534458465874195
+        },
+        {
+          "source_frame_id": 50,
+          "base": {
+            "count": 268324,
+            "mean": 0.028220029547810555,
+            "quantiles": [
+              9.313225746154785e-05,
+              0.0017546117305755615,
+              0.0028009414672851562,
+              0.01495710015296936,
+              0.045015543699264526,
+              0.2766905426979065,
+              0.9416541457176208
+            ]
+          },
+          "query": {
+            "count": 268324,
+            "mean": 0.021475598216056824,
+            "quantiles": [
+              0.0,
+              0.0013250112533569336,
+              0.0027576088905334473,
+              0.013848602771759033,
+              0.04304283857345581,
+              0.09073549509048462,
+              0.4668456017971039
+            ]
+          },
+          "base_pruning_fraction": 0.00014161983563099056,
+          "query_pruning_fraction": 0.008411472663283348
+        }
+      ],
+      "elapsed_seconds": 1.0141964592039585,
+      "peak_allocated_mib": 1395.26318359375,
+      "observation": "same-valued Gaussian rendering agrees; single-source premultiplied RGB must be interpreted together with its alpha"
+    }
+  ],
+  "limitations": [
+    "CamVFX is fixed-pose; official real-video and B2 tests are separate",
+    "unpremultiplying is a diagnostic visualization and cannot reconstruct absent geometry",
+    "s_other is source contribution, never hidden-content contribution"
+  ]
+}
