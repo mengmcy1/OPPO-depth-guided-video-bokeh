@@ -1,0 +1,294 @@
+{
+  "completed": true,
+  "model": "DA3-BASE",
+  "weights_license": "Apache-2.0",
+  "input_frames": [
+    1,
+    6,
+    11,
+    16,
+    21,
+    26,
+    30,
+    35,
+    40,
+    45,
+    50,
+    55,
+    60
+  ],
+  "input_paths": [
+    "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f001.png",
+    "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f006.png",
+    "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f011.png",
+    "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f016.png",
+    "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f021.png",
+    "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f026.png",
+    "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f030.png",
+    "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f035.png",
+    "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f040.png",
+    "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f045.png",
+    "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f050.png",
+    "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f055.png",
+    "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f060.png"
+  ],
+  "original_linear_sources": [
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f001-pinhole-s1024-seed20261110-hidenone.exr",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f006-pinhole-s1024-seed20261110-hidenone.exr",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f011-pinhole-s1024-seed20261110-hidenone.exr",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f016-pinhole-s1024-seed20261110-hidenone.exr",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f021-pinhole-s1024-seed20261110-hidenone.exr",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f026-pinhole-s1024-seed20261110-hidenone.exr",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f030-pinhole-s1024-seed20261110-hidenone.exr",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f035-pinhole-s1024-seed20261110-hidenone.exr",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f040-pinhole-s1024-seed20261110-hidenone.exr",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f045-pinhole-s1024-seed20261110-hidenone.exr",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f050-pinhole-s1024-seed20261110-hidenone.exr",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f055-pinhole-s1024-seed20261110-hidenone.exr",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f060-pinhole-s1024-seed20261110-hidenone.exr"
+  ],
+  "input_transfer": "same clipped linear EXR -> standard displayRGB as baselines, rounded8bit only at DA3 image input",
+  "process_res": 518,
+  "output_shape": [
+    13,
+    518,
+    518
+  ],
+  "inference_seconds": 2.073958668857813,
+  "peak_allocated_MiB": 3345.93017578125,
+  "GT_conditioned_inference": false,
+  "global_sim3": {
+    "scale": 3.236534892909495,
+    "rotation": [
+      [
+        0.9999071713506456,
+        0.0047478689345569845,
+        0.012771312467040165
+      ],
+      [
+        -0.013040801606627357,
+        0.06189100378058031,
+        0.9979977160016393
+      ],
+      [
+        0.003947933004382453,
+        -0.9980716213737428,
+        0.06194717453912171
+      ]
+    ],
+    "translation": [
+      -0.007565648335994881,
+      -1.5027305493076692,
+      0.9987265288183136
+    ],
+    "singular_values": [
+      0.0005274689570368887,
+      4.833540374031226e-05,
+      1.9416567144825144e-05
+    ],
+    "camera_center_rmse_m": 0.003154808207266549,
+    "camera_center_max_error_m": 0.004725143489611455,
+    "rotation_error_deg": [
+      3.2413407807864285,
+      3.2800986133756496,
+      3.2393672943066254,
+      3.1459974744078725,
+      3.1234234390914675,
+      3.119669152672972,
+      3.1421733824068623,
+      3.142468503232094,
+      3.1657753044407264,
+      3.169555961014074,
+      3.316758340779904,
+      3.2103119979321613,
+      3.233783928297135
+    ]
+  },
+  "depth_alignment": "same one global camera-derived scale, bilinear resize only; no depth fitting",
+  "intrinsics": "known fixed input lens50mm/sensor36mm/512px shared by all methods; DA3 predicted intrinsics retained for diagnosis",
+  "geometry_rows": [
+    {
+      "frame": 1,
+      "focus_m": 1.4,
+      "fstop": 1.4,
+      "band_pixels": 76132,
+      "depth_p01_p50_p99": [
+        0.9268494862318039,
+        4.012030363082886,
+        4.290072765350342
+      ],
+      "CoC_p50_p99": [
+        5.905210494995117,
+        6.110341877937317
+      ]
+    },
+    {
+      "frame": 1,
+      "focus_m": 1.4,
+      "fstop": 2.0,
+      "band_pixels": 59340,
+      "depth_p01_p50_p99": [
+        0.9268494862318039,
+        4.012030363082886,
+        4.290072765350342
+      ],
+      "CoC_p50_p99": [
+        4.133647441864014,
+        4.277239246368408
+      ]
+    },
+    {
+      "frame": 1,
+      "focus_m": 5.0,
+      "fstop": 1.4,
+      "band_pixels": 96847,
+      "depth_p01_p50_p99": [
+        0.9268494862318039,
+        4.012030363082886,
+        4.290072765350342
+      ],
+      "CoC_p50_p99": [
+        0.6254013180732727,
+        11.160936737060547
+      ]
+    },
+    {
+      "frame": 1,
+      "focus_m": 5.0,
+      "fstop": 2.0,
+      "band_pixels": 73782,
+      "depth_p01_p50_p99": [
+        0.9268494862318039,
+        4.012030363082886,
+        4.290072765350342
+      ],
+      "CoC_p50_p99": [
+        0.4377809166908264,
+        7.812655634880066
+      ]
+    },
+    {
+      "frame": 30,
+      "focus_m": 1.4,
+      "fstop": 1.4,
+      "band_pixels": 79178,
+      "depth_p01_p50_p99": [
+        0.887003653049469,
+        3.8955633640289307,
+        4.2308054494857785
+      ],
+      "CoC_p50_p99": [
+        5.811286687850952,
+        6.0689383172988896
+      ]
+    },
+    {
+      "frame": 30,
+      "focus_m": 1.4,
+      "fstop": 2.0,
+      "band_pixels": 61475,
+      "depth_p01_p50_p99": [
+        0.887003653049469,
+        3.8955633640289307,
+        4.2308054494857785
+      ],
+      "CoC_p50_p99": [
+        4.067900657653809,
+        4.248256883621216
+      ]
+    },
+    {
+      "frame": 30,
+      "focus_m": 5.0,
+      "fstop": 1.4,
+      "band_pixels": 103185,
+      "depth_p01_p50_p99": [
+        0.887003653049469,
+        3.8955633640289307,
+        4.2308054494857785
+      ],
+      "CoC_p50_p99": [
+        0.7200287878513336,
+        11.776394004821778
+      ]
+    },
+    {
+      "frame": 30,
+      "focus_m": 5.0,
+      "fstop": 2.0,
+      "band_pixels": 78079,
+      "depth_p01_p50_p99": [
+        0.887003653049469,
+        3.8955633640289307,
+        4.2308054494857785
+      ],
+      "CoC_p50_p99": [
+        0.5040201544761658,
+        8.243475761413574
+      ]
+    },
+    {
+      "frame": 60,
+      "focus_m": 1.4,
+      "fstop": 1.4,
+      "band_pixels": 74335,
+      "depth_p01_p50_p99": [
+        0.9465455484390258,
+        4.014080286026001,
+        4.235830779075623
+      ],
+      "CoC_p50_p99": [
+        5.906827211380005,
+        6.072438168525696
+      ]
+    },
+    {
+      "frame": 60,
+      "focus_m": 1.4,
+      "fstop": 2.0,
+      "band_pixels": 57561,
+      "depth_p01_p50_p99": [
+        0.9465455484390258,
+        4.014080286026001,
+        4.235830779075623
+      ],
+      "CoC_p50_p99": [
+        4.13477897644043,
+        4.250706534385682
+      ]
+    },
+    {
+      "frame": 60,
+      "focus_m": 5.0,
+      "fstop": 1.4,
+      "band_pixels": 93847,
+      "depth_p01_p50_p99": [
+        0.9465455484390258,
+        4.014080286026001,
+        4.235830779075623
+      ],
+      "CoC_p50_p99": [
+        0.6237848997116089,
+        10.875850229263309
+      ]
+    },
+    {
+      "frame": 60,
+      "focus_m": 5.0,
+      "fstop": 2.0,
+      "band_pixels": 70823,
+      "depth_p01_p50_p99": [
+        0.9465455484390258,
+        4.014080286026001,
+        4.235830779075623
+      ],
+      "CoC_p50_p99": [
+        0.436649426817894,
+        7.613095283508303
+      ]
+    }
+  ],
+  "band_construction_valid": true,
+  "raw_prediction": "outputs/route3-upper-bound-2026-11-11-01/U2-da3/raw-prediction.npz",
+  "output": "outputs/route3-upper-bound-2026-11-11-01/U2-da3"
+}
