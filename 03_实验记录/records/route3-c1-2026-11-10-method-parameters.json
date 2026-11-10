@@ -1,0 +1,39 @@
+{
+  "status": "A1 development implementation parameters; A3 success criteria await A2 confirmation",
+  "input_frame_ids": [
+    1,
+    5,
+    9,
+    13,
+    17,
+    21,
+    26,
+    30,
+    34,
+    38,
+    42,
+    46,
+    50
+  ],
+  "query_times_for_motion_classification": [
+    0,
+    0.5102040816326531,
+    1
+  ],
+  "motion_rule": "same Gaussian max pairwise motion-head displacement across three query times",
+  "motion_threshold_normalized": 0.005,
+  "neighbor_window_input_steps": 2,
+  "neighbor_window_alternative_input_steps": 1,
+  "visibility_relative_depth_margin": 0.1,
+  "visibility_absolute_margin_m": 0.01,
+  "current_source_always_protected": true,
+  "unknown_depth_or_outside_image": "retain and count",
+  "static_filter_switch": true,
+  "visibility_filter_switch": true,
+  "selected_on": "plant/cat view0 frame1 development minimum checks; no test method evaluation",
+  "tuning_observation": "relative margin .02 deleted large static geometry in cat; .10 reduces full-image damage; window2 preserved more plant content than window1",
+  "conclusion": "M2b is executable, but this development slice does not establish an improvement over M1",
+  "gaussian_color_domain": "true linear RGB for 3D integration; results converted to display sRGB [0,1]",
+  "aperture_samples": 16,
+  "false_deletion": "no per-frame dynamic GT; mesh-consistent stable-background proxy and synthetic known-surface check separately reported"
+}

@@ -1,0 +1,301 @@
+{
+  "status": "analytic physical mapping frozen; CUDA soft-disk impulse check passed",
+  "development_scenes": [
+    "plant",
+    "cat"
+  ],
+  "test_scenes_used": false,
+  "frame": 1,
+  "mapping": {
+    "formula": "signed_radius_px=fx*aperture_radius_m*(1/depth_m-1/focus_m)",
+    "pipeline_input": "signed_radius_px/10",
+    "slope": 1.0,
+    "offset_px": 0.0,
+    "gamma": 2.2,
+    "defocus_scale": 10.0,
+    "sign": "near foreground positive; far background negative; focus axial camera depth",
+    "aperture": "radius=focal_length_m/(2*fstop)",
+    "rgb": "sRGB input/output float[0,1]; official gamma2.2 internal convention",
+    "invalid_depth_rule": "control=0 (focus fallback), invalid count reported; full-image scoring retains those pixels",
+    "normalization": "none; no per-scene disparity normalization or GT fitting",
+    "shared_ideal_depth": "Independent triangle-mesh first intersection in regions-dev background.npz mesh_depth; shared O2/O3 and focus masks; Gaussian expected depth is not ideal depth."
+  },
+  "analytic_point_plane_checks": {
+    "depth_m": [
+      1.0,
+      2.0,
+      4.0
+    ],
+    "focus_m": 2.0,
+    "fx": 400.0,
+    "aperture_radius_m": 0.03,
+    "signed_radius_px": [
+      6.0,
+      0.0,
+      -3.0
+    ],
+    "pipeline_control": [
+      0.6000000238418579,
+      0.0,
+      -0.30000001192092896
+    ],
+    "radius_second_moment_px2": [
+      18.0,
+      0.0,
+      4.5
+    ],
+    "soft_disk_half_max_radius_px": 4.0,
+    "diameter_px": 8.0,
+    "zero_focus_radius": 0.0,
+    "checks_passed": true,
+    "scope": "Analytic point/plane projection and source soft-disk formula; runtime CUDA impulse check separate."
+  },
+  "development_physical_ranges": [
+    {
+      "scene": "plant",
+      "view": 0,
+      "geometry": "independent static mesh, time1 correspondence checked separately",
+      "valid_pixels": 262144,
+      "signed_radius_px_range": [
+        -7.559719562530518,
+        11.345778465270996
+      ],
+      "signed_radius_px_quantiles": [
+        -7.559719562530518,
+        -7.558851718902588,
+        -5.872723579406738,
+        10.327794075012207,
+        11.345778465270996
+      ],
+      "pipeline_control_range": [
+        -0.7559719562530518,
+        1.1345778465270997
+      ],
+      "lens": {
+        "effect_scene": "bathroom_plant",
+        "focal_length_mm": 20.0,
+        "sensor_size_mm": 36.0,
+        "focus_distance_m": 0.5,
+        "fstop": 0.5,
+        "aperture_radius_m": 0.02,
+        "blades": 0,
+        "ratio": 1.0
+      }
+    },
+    {
+      "scene": "plant",
+      "view": 16,
+      "geometry": "independent static mesh, time1 correspondence checked separately",
+      "valid_pixels": 262144,
+      "signed_radius_px_range": [
+        -9.387748718261719,
+        4.024481773376465
+      ],
+      "signed_radius_px_quantiles": [
+        -9.387748718261719,
+        -9.188520107269287,
+        -6.522798299789429,
+        3.7834744453430176,
+        4.024481773376465
+      ],
+      "pipeline_control_range": [
+        -0.9387748718261719,
+        0.4024481773376465
+      ],
+      "lens": {
+        "effect_scene": "bathroom_plant",
+        "focal_length_mm": 20.0,
+        "sensor_size_mm": 36.0,
+        "focus_distance_m": 0.5,
+        "fstop": 0.5,
+        "aperture_radius_m": 0.02,
+        "blades": 0,
+        "ratio": 1.0
+      }
+    },
+    {
+      "scene": "plant",
+      "view": 33,
+      "geometry": "independent static mesh, time1 correspondence checked separately",
+      "valid_pixels": 262144,
+      "signed_radius_px_range": [
+        -9.065788269042969,
+        4.8716607093811035
+      ],
+      "signed_radius_px_quantiles": [
+        -9.065788269042969,
+        -8.820641899108887,
+        -5.4856812953948975,
+        0.9850111603736877,
+        4.8716607093811035
+      ],
+      "pipeline_control_range": [
+        -0.9065788269042969,
+        0.4871660709381104
+      ],
+      "lens": {
+        "effect_scene": "bathroom_plant",
+        "focal_length_mm": 20.0,
+        "sensor_size_mm": 36.0,
+        "focus_distance_m": 0.5,
+        "fstop": 0.5,
+        "aperture_radius_m": 0.02,
+        "blades": 0,
+        "ratio": 1.0
+      }
+    },
+    {
+      "scene": "cat",
+      "view": 0,
+      "geometry": "independent static mesh, time1 correspondence checked separately",
+      "valid_pixels": 262144,
+      "signed_radius_px_range": [
+        -5.0507097244262695,
+        69.72142791748047
+      ],
+      "signed_radius_px_quantiles": [
+        -5.0507097244262695,
+        -5.050470352172852,
+        -4.5501556396484375,
+        68.22318267822266,
+        69.72142791748047
+      ],
+      "pipeline_control_range": [
+        -0.505070972442627,
+        6.9721427917480465
+      ],
+      "lens": {
+        "effect_scene": "livingroom_cat",
+        "focal_length_mm": 35.0,
+        "sensor_size_mm": 36.0,
+        "focus_distance_m": 2.21,
+        "fstop": 0.5,
+        "aperture_radius_m": 0.035,
+        "blades": 0,
+        "ratio": 1.0
+      }
+    },
+    {
+      "scene": "cat",
+      "view": 16,
+      "geometry": "independent static mesh, time1 correspondence checked separately",
+      "valid_pixels": 262144,
+      "signed_radius_px_range": [
+        -5.453952789306641,
+        11.718375205993652
+      ],
+      "signed_radius_px_quantiles": [
+        -5.453952789306641,
+        -5.254579062461853,
+        -1.4419796466827393,
+        11.4586181640625,
+        11.718375205993652
+      ],
+      "pipeline_control_range": [
+        -0.5453952789306641,
+        1.1718375205993652
+      ],
+      "lens": {
+        "effect_scene": "livingroom_cat",
+        "focal_length_mm": 35.0,
+        "sensor_size_mm": 36.0,
+        "focus_distance_m": 2.21,
+        "fstop": 0.5,
+        "aperture_radius_m": 0.035,
+        "blades": 0,
+        "ratio": 1.0
+      }
+    },
+    {
+      "scene": "cat",
+      "view": 33,
+      "geometry": "independent static mesh, time1 correspondence checked separately",
+      "valid_pixels": 262144,
+      "signed_radius_px_range": [
+        -5.467754364013672,
+        6.031052589416504
+      ],
+      "signed_radius_px_quantiles": [
+        -5.467754364013672,
+        -5.30788037776947,
+        -0.25467196106910706,
+        5.904380240440369,
+        6.031052589416504
+      ],
+      "pipeline_control_range": [
+        -0.5467754364013672,
+        0.6031052589416503
+      ],
+      "lens": {
+        "effect_scene": "livingroom_cat",
+        "focal_length_mm": 35.0,
+        "sensor_size_mm": 36.0,
+        "focus_distance_m": 2.21,
+        "fstop": 0.5,
+        "aperture_radius_m": 0.035,
+        "blades": 0,
+        "ratio": 1.0
+      }
+    }
+  ],
+  "kernel_limit": "Official soft-tanh disk and neural refinement differ from thin-lens disk integration; matching radius does not make kernels identical.",
+  "parameter_selection": "Unit mapping from code and camera geometry only; no method or dataset DOF scores used for fitting.",
+  "source": {
+    "repository": "/root/autodl-tmp/BokehMe",
+    "commit": "8b3ed556dc146207c9bb39fccd078a113f8d1bd8",
+    "code_radius": "classical_renderer/scatter.py: fltRadius=fabsf(fltDefocus)",
+    "code_scale": "demo.py pipeline: classical_renderer(image**gamma,defocus*args.defocus_scale)"
+  },
+  "cuda_impulse_check": {
+    "checks_passed": true,
+    "rows": [
+      {
+        "signed_radius_px": 0.0,
+        "half_max_radius_px": 0.0,
+        "peak": 0.9972273707389832,
+        "energy": 1.0000001192092896
+      },
+      {
+        "signed_radius_px": 4.0,
+        "half_max_radius_px": 4.0,
+        "peak": 0.020192446187138557,
+        "energy": 1.0
+      },
+      {
+        "signed_radius_px": -4.0,
+        "half_max_radius_px": 4.0,
+        "peak": 0.020192446187138557,
+        "energy": 1.0,
+        "sign_flip_kernel_max_abs_error": 0.0
+      },
+      {
+        "signed_radius_px": 8.0,
+        "half_max_radius_px": 8.0,
+        "peak": 0.0049889651127159595,
+        "energy": 0.9999990463256836
+      },
+      {
+        "signed_radius_px": -8.0,
+        "half_max_radius_px": 8.0,
+        "peak": 0.0049889651127159595,
+        "energy": 0.9999990463256836,
+        "sign_flip_kernel_max_abs_error": 0.0
+      }
+    ],
+    "interpretation": "Homogeneous-plane impulse confirms pixel radius, not diameter; sign changes ordering convention, not homogeneous-plane kernel. Tanh tail and neural refinement remain different kernels."
+  },
+  "runtime_artifacts": "outputs/route3-c1-2026-11-10-01/bokehme-oracle-02",
+  "runtime_environment": "/root/autodl-tmp/envs/dofgaussian, existing environment reused;torch2.1.2+cu121",
+  "cache_policy": "TMP/TEMP/TMPDIR,HF_HOME/HF_HUB_CACHE,TORCH_HOME,XDG_CACHE_HOME,PIP_CACHE_DIR,CUPY_CACHE_DIR,CUDA_CACHE_PATH,TORCH_EXTENSIONS_DIR,MPLCONFIGDIR forced under /root/autodl-tmp/route3-cache",
+  "lpips_backbone": "Existing /root/autodl-tmp/.cache/torch/hub/checkpoints/alexnet-owt-7be5be79.pth linked read-only into route3-cache/torch; no weight download",
+  "execution_note": "First render attempt produced valid plant0 images, then runtime JSON write failed under old environment ASCII locale; explicit UTF-8 fixed. Partial bokehme-oracle-01 retained; final full six-view outputs in02.",
+  "gpu_check": "nvidia-smi before each run;CUDA_VISIBLE_DEVICES=0; coordinated exclusive window, no other processes terminated",
+  "runtime_environment_versions": {
+    "python": "3.9",
+    "torch": "2.1.2+cu121",
+    "torchvision": "0.16.2+cu121",
+    "cupy_cuda12x": "11.6.0",
+    "numpy": "1.26.4",
+    "pillow": "11.3.0"
+  }
+}

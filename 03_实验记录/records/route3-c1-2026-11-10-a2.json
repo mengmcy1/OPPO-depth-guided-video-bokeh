@@ -1,0 +1,982 @@
+{
+  "schema_version": 1,
+  "request_label_date": "2026-11-10",
+  "recorded_at_utc": "2026-11-10T07:34:05.280970+00:00",
+  "client_time": "2026-11-09T23:34:05.280970-08:00",
+  "phase": "C1 A1 + Blender B1 completed to A2 manual stop; no A3/B2",
+  "status": "awaiting_user_review_at_A2",
+  "problem": "Assess independently defined recoverable-region proxies, source ghosts, appearance-matched geometric Oracle and feasibility of surface-visibility GT before a held-out C1 test",
+  "inputs": {
+    "development_scenes": [
+      "plant",
+      "cat"
+    ],
+    "test_scenes_mask_statistics_only": [
+      "ball",
+      "basketball_1",
+      "basketball_2",
+      "box",
+      "cube",
+      "lego"
+    ],
+    "input_frame_ids": [
+      1,
+      5,
+      9,
+      13,
+      17,
+      21,
+      26,
+      30,
+      34,
+      38,
+      42,
+      46,
+      50
+    ],
+    "views": [
+      0,
+      16,
+      33
+    ],
+    "query_times_for_motion": [
+      0,
+      0.5102040816326531,
+      1
+    ],
+    "image_resolution": 512,
+    "movies_input_resolution": 518
+  },
+  "completed": {
+    "source_decomposition": "s_cur,s_other,s_hole,O_coverage=1-s_hole; legacy aliases preserved",
+    "regions": "2 scenes x3 views x13 times plus all6 test scene mask-only counts",
+    "ghosts": "cached box0 only; plant0/cat0 new same-forward3-query caches; pinhole/DOF source ablations; no box quality scores",
+    "oracle": "all50 posed views at independently identified frame1, fixed geometry/opacity/scale, linear colors only; O1-O4 at three views each development scene",
+    "calibration": "physical signed radius /10, official gamma2.2; analytic and CUDA impulse checks; no test/DOF fitting",
+    "method_development": "M0/M1-cur/M1/M2a/M2b; two neighbor windows, two visibility margins; current-source protection and unknown-depth retention",
+    "blender": "procedural60-frame scene; sparse previews, sample convergence, timing/cost and rigid-surface GT prototype"
+  },
+  "limits": {
+    "test_method_evaluation": false,
+    "model_training": false,
+    "full_blender_render": false,
+    "M2c": false,
+    "M1_long": false,
+    "M3": false,
+    "source_ablation": "M1-cur retains cross-frame-attended current-source Gaussians and is not a single-frame baseline",
+    "masks": "proxies, not GT; persistent median foreground/shadows/reflections and conservative CoC footprints remain confounds",
+    "box_labels": "one-query cache cannot establish Gaussian motion range; static/dynamic images use independent source-pixel motion-mask labels for diagnosis only",
+    "oracle": "known dynamic geometry only at frame1; formally effective Oracle scenes under candidate>=3times =0; one-frame descriptive G is not a hidden-content upper bound",
+    "false_deletion": "no per-frame dynamic GT; stable-background/mesh-consistency deletion proxy and synthetic checks only"
+  },
+  "region_summary": {
+    "development": {
+      "plant": {
+        "M_C1_proxy": {
+          "total_pixels": 1076863,
+          "distinct_effective_times": 13,
+          "fraction_over_all_evaluated_pixels": 0.10533093183468549,
+          "meets_candidate_minimum": true
+        },
+        "dynamic_unrecoverable": {
+          "total_pixels": 592,
+          "distinct_effective_times": 13,
+          "fraction_over_all_evaluated_pixels": 5.7905148237179485e-05,
+          "meets_candidate_minimum": false
+        },
+        "static_static": {
+          "total_pixels": 149159,
+          "distinct_effective_times": 13,
+          "fraction_over_all_evaluated_pixels": 0.014589652037009215,
+          "meets_candidate_minimum": true
+        }
+      },
+      "cat": {
+        "M_C1_proxy": {
+          "total_pixels": 512964,
+          "distinct_effective_times": 13,
+          "fraction_over_all_evaluated_pixels": 0.05017441969651442,
+          "meets_candidate_minimum": true
+        },
+        "dynamic_unrecoverable": {
+          "total_pixels": 738,
+          "distinct_effective_times": 8,
+          "fraction_over_all_evaluated_pixels": 7.218580979567308e-05,
+          "meets_candidate_minimum": false
+        },
+        "static_static": {
+          "total_pixels": 168887,
+          "distinct_effective_times": 13,
+          "fraction_over_all_evaluated_pixels": 0.01651930197691306,
+          "meets_candidate_minimum": true
+        }
+      }
+    },
+    "test_masks_only": {
+      "ball": {
+        "M_C1_proxy": {
+          "total_pixels": 215550,
+          "distinct_effective_times": 13,
+          "fraction_over_all_evaluated_pixels": 0.021083538348858174,
+          "meets_candidate_minimum": true
+        },
+        "dynamic_unrecoverable": {
+          "total_pixels": 0,
+          "distinct_effective_times": 0,
+          "fraction_over_all_evaluated_pixels": 0.0,
+          "meets_candidate_minimum": false
+        },
+        "static_static": {
+          "total_pixels": 151565,
+          "distinct_effective_times": 13,
+          "fraction_over_all_evaluated_pixels": 0.014824989514473157,
+          "meets_candidate_minimum": true
+        }
+      },
+      "basketball_1": {
+        "M_C1_proxy": {
+          "total_pixels": 251442,
+          "distinct_effective_times": 13,
+          "fraction_over_all_evaluated_pixels": 0.024594233586237982,
+          "meets_candidate_minimum": true
+        },
+        "dynamic_unrecoverable": {
+          "total_pixels": 8,
+          "distinct_effective_times": 4,
+          "fraction_over_all_evaluated_pixels": 7.825020032051282e-07,
+          "meets_candidate_minimum": false
+        },
+        "static_static": {
+          "total_pixels": 385607,
+          "distinct_effective_times": 13,
+          "fraction_over_all_evaluated_pixels": 0.037717281243739985,
+          "meets_candidate_minimum": true
+        }
+      },
+      "basketball_2": {
+        "M_C1_proxy": {
+          "total_pixels": 109749,
+          "distinct_effective_times": 13,
+          "fraction_over_all_evaluated_pixels": 0.010734851543719951,
+          "meets_candidate_minimum": true
+        },
+        "dynamic_unrecoverable": {
+          "total_pixels": 5,
+          "distinct_effective_times": 3,
+          "fraction_over_all_evaluated_pixels": 4.890637520032051e-07,
+          "meets_candidate_minimum": false
+        },
+        "static_static": {
+          "total_pixels": 283430,
+          "distinct_effective_times": 13,
+          "fraction_over_all_evaluated_pixels": 0.027723067846053686,
+          "meets_candidate_minimum": true
+        }
+      },
+      "box": {
+        "M_C1_proxy": {
+          "total_pixels": 452002,
+          "distinct_effective_times": 13,
+          "fraction_over_all_evaluated_pixels": 0.04421155880659054,
+          "meets_candidate_minimum": true
+        },
+        "dynamic_unrecoverable": {
+          "total_pixels": 1360,
+          "distinct_effective_times": 13,
+          "fraction_over_all_evaluated_pixels": 0.00013302534054487178,
+          "meets_candidate_minimum": true
+        },
+        "static_static": {
+          "total_pixels": 48594,
+          "distinct_effective_times": 13,
+          "fraction_over_all_evaluated_pixels": 0.00475311279296875,
+          "meets_candidate_minimum": true
+        }
+      },
+      "cube": {
+        "M_C1_proxy": {
+          "total_pixels": 182635,
+          "distinct_effective_times": 13,
+          "fraction_over_all_evaluated_pixels": 0.017864031669421073,
+          "meets_candidate_minimum": true
+        },
+        "dynamic_unrecoverable": {
+          "total_pixels": 73,
+          "distinct_effective_times": 13,
+          "fraction_over_all_evaluated_pixels": 7.140330779246795e-06,
+          "meets_candidate_minimum": false
+        },
+        "static_static": {
+          "total_pixels": 185795,
+          "distinct_effective_times": 13,
+          "fraction_over_all_evaluated_pixels": 0.0181731199606871,
+          "meets_candidate_minimum": true
+        }
+      },
+      "lego": {
+        "M_C1_proxy": {
+          "total_pixels": 82341,
+          "distinct_effective_times": 13,
+          "fraction_over_all_evaluated_pixels": 0.008053999680739183,
+          "meets_candidate_minimum": true
+        },
+        "dynamic_unrecoverable": {
+          "total_pixels": 43,
+          "distinct_effective_times": 11,
+          "fraction_over_all_evaluated_pixels": 4.205948267227564e-06,
+          "meets_candidate_minimum": false
+        },
+        "static_static": {
+          "total_pixels": 208445,
+          "distinct_effective_times": 13,
+          "fraction_over_all_evaluated_pixels": 0.02038857875726162,
+          "meets_candidate_minimum": true
+        }
+      }
+    }
+  },
+  "background_diagnostics": {
+    "plant": [
+      {
+        "view": 0,
+        "valid_fraction": 0.9820060729980469,
+        "ever_changed_fraction": 0.4960594177246094,
+        "motion_region_quality": {
+          "valid_fraction": 0.8387011814282489,
+          "agreement_frames_p10_p50": [
+            3.0,
+            29.0
+          ],
+          "interpretation": "median can retain persistent foreground; agreement is photometric consistency, not clean-background GT"
+        },
+        "first_frame_mesh_disocclusion_overlap": {
+          "pixels": 10749,
+          "ratio": 0.24436765407961444,
+          "interpretation": "mesh first-time optical visibility proxy overlap, not dynamic-GT precision; conservative disk can greatly overestimate true aperture-hidden region"
+        },
+        "max_coc_radius_px": 11.345777156634393
+      },
+      {
+        "view": 16,
+        "valid_fraction": 0.9956169128417969,
+        "ever_changed_fraction": 0.1386871337890625,
+        "motion_region_quality": {
+          "valid_fraction": 0.8749841027597609,
+          "agreement_frames_p10_p50": [
+            7.0,
+            35.0
+          ],
+          "interpretation": "median can retain persistent foreground; agreement is photometric consistency, not clean-background GT"
+        },
+        "first_frame_mesh_disocclusion_overlap": {
+          "pixels": 4223,
+          "ratio": 0.25331413832403576,
+          "interpretation": "mesh first-time optical visibility proxy overlap, not dynamic-GT precision; conservative disk can greatly overestimate true aperture-hidden region"
+        },
+        "max_coc_radius_px": 9.387749381559482
+      },
+      {
+        "view": 33,
+        "valid_fraction": 0.9872055053710938,
+        "ever_changed_fraction": 0.17175674438476562,
+        "motion_region_quality": {
+          "valid_fraction": 0.6326279863481229,
+          "agreement_frames_p10_p50": [
+            2.0,
+            16.0
+          ],
+          "interpretation": "median can retain persistent foreground; agreement is photometric consistency, not clean-background GT"
+        },
+        "first_frame_mesh_disocclusion_overlap": {
+          "pixels": 3261,
+          "ratio": 0.29275518448693777,
+          "interpretation": "mesh first-time optical visibility proxy overlap, not dynamic-GT precision; conservative disk can greatly overestimate true aperture-hidden region"
+        },
+        "max_coc_radius_px": 9.065788149852109
+      }
+    ],
+    "cat": [
+      {
+        "view": 0,
+        "valid_fraction": 0.9988327026367188,
+        "ever_changed_fraction": 0.013431549072265625,
+        "motion_region_quality": {
+          "valid_fraction": 0.6432,
+          "agreement_frames_p10_p50": [
+            3.0,
+            25.0
+          ],
+          "interpretation": "median can retain persistent foreground; agreement is photometric consistency, not clean-background GT"
+        },
+        "first_frame_mesh_disocclusion_overlap": {
+          "pixels": 2270,
+          "ratio": 0.14647051232417085,
+          "interpretation": "mesh first-time optical visibility proxy overlap, not dynamic-GT precision; conservative disk can greatly overestimate true aperture-hidden region"
+        },
+        "max_coc_radius_px": 69.72143522181604
+      },
+      {
+        "view": 16,
+        "valid_fraction": 0.9994888305664062,
+        "ever_changed_fraction": 0.06474685668945312,
+        "motion_region_quality": {
+          "valid_fraction": 0.9757037037037037,
+          "agreement_frames_p10_p50": [
+            22.0,
+            31.0
+          ],
+          "interpretation": "median can retain persistent foreground; agreement is photometric consistency, not clean-background GT"
+        },
+        "first_frame_mesh_disocclusion_overlap": {
+          "pixels": 682,
+          "ratio": 0.10023515579071135,
+          "interpretation": "mesh first-time optical visibility proxy overlap, not dynamic-GT precision; conservative disk can greatly overestimate true aperture-hidden region"
+        },
+        "max_coc_radius_px": 11.718373926470678
+      },
+      {
+        "view": 33,
+        "valid_fraction": 0.9999923706054688,
+        "ever_changed_fraction": 0.18907546997070312,
+        "motion_region_quality": {
+          "valid_fraction": 1.0,
+          "agreement_frames_p10_p50": [
+            32.0,
+            38.0
+          ],
+          "interpretation": "median can retain persistent foreground; agreement is photometric consistency, not clean-background GT"
+        },
+        "first_frame_mesh_disocclusion_overlap": {
+          "pixels": 1875,
+          "ratio": 0.060632518432285606,
+          "interpretation": "mesh first-time optical visibility proxy overlap, not dynamic-GT precision; conservative disk can greatly overestimate true aperture-hidden region"
+        },
+        "max_coc_radius_px": 6.031053554084865
+      }
+    ]
+  },
+  "mesh_time": {
+    "primary": "four neighboring non-target views at each candidate time; compare mesh-reprojected RGB to target across50frames; all6 minima frame1",
+    "secondary": "fixed optimized O1 center rendering against all50 frames also gives6 minima frame1; secondary is not independent selection",
+    "record": "route3-c1-2026-11-10-mesh-time.json"
+  },
+  "oracle_coverage_and_color_optimization": {
+    "plant": {
+      "scene": "plant",
+      "mesh_frame_id": 1,
+      "gaussians": 6676577,
+      "K": 16,
+      "coverage": [
+        {
+          "view": 0,
+          "region_pixels": 43987,
+          "mean_s_hole": 0.0011734014842659235,
+          "effective_aperture_sample_fraction_alpha_ge_095": 0.9980491399765015,
+          "geometry_coverage_fraction": 0.992997944355011
+        },
+        {
+          "view": 16,
+          "region_pixels": 16671,
+          "mean_s_hole": 0.00012951013923157007,
+          "effective_aperture_sample_fraction_alpha_ge_095": 0.9999962449073792,
+          "geometry_coverage_fraction": 1.0
+        },
+        {
+          "view": 33,
+          "region_pixels": 11139,
+          "mean_s_hole": 0.00012976992002222687,
+          "effective_aperture_sample_fraction_alpha_ge_095": 1.0,
+          "geometry_coverage_fraction": 1.0
+        }
+      ],
+      "coverage_gate": {
+        "maximum_mean_hole": 0.02,
+        "minimum_effective_sample_fraction": 0.95
+      },
+      "color_fitting": [
+        {
+          "iteration": 1,
+          "all_50_views_mean_linear_mse_before_step": 0.002903602812439203
+        },
+        {
+          "iteration": 2,
+          "all_50_views_mean_linear_mse_before_step": 0.001974607746815309
+        },
+        {
+          "iteration": 3,
+          "all_50_views_mean_linear_mse_before_step": 0.0019337978411931545
+        },
+        {
+          "iteration": 4,
+          "all_50_views_mean_linear_mse_before_step": 0.0019165565341245383
+        },
+        {
+          "iteration": 5,
+          "all_50_views_mean_linear_mse_before_step": 0.001904998910613358
+        },
+        {
+          "iteration": 6,
+          "all_50_views_mean_linear_mse_before_step": 0.001895940814865753
+        },
+        {
+          "iteration": 7,
+          "all_50_views_mean_linear_mse_before_step": 0.001888342935126275
+        },
+        {
+          "iteration": 8,
+          "all_50_views_mean_linear_mse_before_step": 0.001881724476115778
+        }
+      ],
+      "color_optimization_seconds": 13.136683456599712,
+      "peak_allocated_mib": 1336.88525390625,
+      "color_solver": "full-50-view projected Jacobi, A^T1 preconditioner; step1; fixed nonnegative alpha weights",
+      "reused_optimized_colors": "outputs/route3-c1-2026-11-10-01/oracle-plant-01/optimized-colors-linear.npy",
+      "fixed": [
+        "means",
+        "quats",
+        "scales",
+        "opacities",
+        "poses",
+        "lens"
+      ],
+      "optimized": [
+        "linear RGB colors"
+      ],
+      "model_training": false,
+      "O4_hole_background_linear_rgb": [
+        0,
+        0,
+        0
+      ],
+      "RGB_evaluation": "display sRGB float32 [0,1]; 3D integration linear RGB",
+      "scale": "dataset metric mesh coordinates, same lens as all 3D groups; no depth shift"
+    },
+    "cat": {
+      "scene": "cat",
+      "mesh_frame_id": 1,
+      "gaussians": 6104405,
+      "K": 16,
+      "coverage": [
+        {
+          "view": 0,
+          "region_pixels": 15498,
+          "mean_s_hole": 0.00018666406685952097,
+          "effective_aperture_sample_fraction_alpha_ge_095": 0.9999920129776001,
+          "geometry_coverage_fraction": 1.0
+        },
+        {
+          "view": 16,
+          "region_pixels": 6804,
+          "mean_s_hole": 0.00012443024024832994,
+          "effective_aperture_sample_fraction_alpha_ge_095": 0.9999999403953552,
+          "geometry_coverage_fraction": 0.9999999403953552
+        },
+        {
+          "view": 33,
+          "region_pixels": 30924,
+          "mean_s_hole": 0.00014341570204123855,
+          "effective_aperture_sample_fraction_alpha_ge_095": 1.0,
+          "geometry_coverage_fraction": 1.0
+        }
+      ],
+      "coverage_gate": {
+        "maximum_mean_hole": 0.02,
+        "minimum_effective_sample_fraction": 0.95
+      },
+      "color_fitting": [
+        {
+          "iteration": 1,
+          "all_50_views_mean_linear_mse_before_step": 0.008591750597115606
+        },
+        {
+          "iteration": 2,
+          "all_50_views_mean_linear_mse_before_step": 0.006273244470357895
+        },
+        {
+          "iteration": 3,
+          "all_50_views_mean_linear_mse_before_step": 0.006169248877558858
+        },
+        {
+          "iteration": 4,
+          "all_50_views_mean_linear_mse_before_step": 0.006112510054372251
+        },
+        {
+          "iteration": 5,
+          "all_50_views_mean_linear_mse_before_step": 0.00607110426062718
+        },
+        {
+          "iteration": 6,
+          "all_50_views_mean_linear_mse_before_step": 0.00603787898318842
+        },
+        {
+          "iteration": 7,
+          "all_50_views_mean_linear_mse_before_step": 0.006009986449498683
+        },
+        {
+          "iteration": 8,
+          "all_50_views_mean_linear_mse_before_step": 0.005985926729626953
+        }
+      ],
+      "color_optimization_seconds": 11.35713966563344,
+      "peak_allocated_mib": 1189.580078125,
+      "color_solver": "full-50-view projected Jacobi, A^T1 preconditioner; step1; fixed nonnegative alpha weights",
+      "reused_optimized_colors": "outputs/route3-c1-2026-11-10-01/oracle-cat-01/optimized-colors-linear.npy",
+      "fixed": [
+        "means",
+        "quats",
+        "scales",
+        "opacities",
+        "poses",
+        "lens"
+      ],
+      "optimized": [
+        "linear RGB colors"
+      ],
+      "model_training": false,
+      "O4_hole_background_linear_rgb": [
+        0,
+        0,
+        0
+      ],
+      "RGB_evaluation": "display sRGB float32 [0,1]; 3D integration linear RGB",
+      "scale": "dataset metric mesh coordinates, same lens as all 3D groups; no depth shift"
+    }
+  },
+  "oracle_summary": {
+    "plant": {
+      "M_C1_proxy": {
+        "O1": {
+          "sse": 1269.1611302397464,
+          "pixels": 71797,
+          "valid_views": 3,
+          "frame_ids": [
+            1
+          ],
+          "patch_weight_sum": 71797.0,
+          "patch_lpips_sum": 7416.241223337594,
+          "patch_ssim_sum": 60217.72253078222,
+          "valid_times": 1,
+          "psnr": 22.29710789792266,
+          "patch_lpips": 0.10329458366418645,
+          "patch_ssim": 0.8387219874198396,
+          "candidate_minimum_1000pixels_3times_passed": false
+        },
+        "O2": {
+          "sse": 1258.6260175094185,
+          "pixels": 71797,
+          "valid_views": 3,
+          "frame_ids": [
+            1
+          ],
+          "patch_weight_sum": 71797.0,
+          "patch_lpips_sum": 6752.8886301107705,
+          "patch_ssim_sum": 61116.41608518362,
+          "valid_times": 1,
+          "psnr": 22.333308476127492,
+          "patch_lpips": 0.0940553035657586,
+          "patch_ssim": 0.851239133740736,
+          "candidate_minimum_1000pixels_3times_passed": false
+        },
+        "O3": {
+          "sse": 131.27672041225173,
+          "pixels": 71797,
+          "valid_views": 3,
+          "frame_ids": [
+            1
+          ],
+          "patch_weight_sum": 71797.0,
+          "patch_lpips_sum": 1502.2404561100993,
+          "patch_ssim_sum": 69409.65874123572,
+          "valid_times": 1,
+          "psnr": 32.15039834046294,
+          "patch_lpips": 0.020923443265179593,
+          "patch_ssim": 0.9667487324155009,
+          "candidate_minimum_1000pixels_3times_passed": false
+        },
+        "O4": {
+          "sse": 1366.3005231482693,
+          "pixels": 71797,
+          "valid_views": 3,
+          "frame_ids": [
+            1
+          ],
+          "patch_weight_sum": 71797.0,
+          "patch_lpips_sum": 8591.917315491475,
+          "patch_ssim_sum": 58958.94225680828,
+          "valid_times": 1,
+          "psnr": 21.97681317950003,
+          "patch_lpips": 0.11966958668874013,
+          "patch_ssim": 0.8211894961740502,
+          "candidate_minimum_1000pixels_3times_passed": false
+        }
+      },
+      "differences": {
+        "O1_minus_O2_dB": -0.03620057820483069,
+        "O1_minus_O4_dB": 0.32029471842263035,
+        "O2_minus_O3_dB": -9.81708986433545
+      }
+    },
+    "cat": {
+      "M_C1_proxy": {
+        "O1": {
+          "sse": 474.5658399289207,
+          "pixels": 53226,
+          "valid_views": 3,
+          "frame_ids": [
+            1
+          ],
+          "patch_weight_sum": 53226.0,
+          "patch_lpips_sum": 8208.570566541515,
+          "patch_ssim_sum": 45251.79494577646,
+          "valid_times": 1,
+          "psnr": 25.26948610611681,
+          "patch_lpips": 0.15422106802204777,
+          "patch_ssim": 0.8501821468037513,
+          "candidate_minimum_1000pixels_3times_passed": false
+        },
+        "O2": {
+          "sse": 460.9702570136035,
+          "pixels": 53226,
+          "valid_views": 3,
+          "frame_ids": [
+            1
+          ],
+          "patch_weight_sum": 53226.0,
+          "patch_lpips_sum": 7158.788027627685,
+          "patch_ssim_sum": 45491.21932578087,
+          "valid_times": 1,
+          "psnr": 25.39572179852246,
+          "patch_lpips": 0.13449795264772263,
+          "patch_ssim": 0.8546804066768284,
+          "candidate_minimum_1000pixels_3times_passed": false
+        },
+        "O3": {
+          "sse": 60.62318891144842,
+          "pixels": 53226,
+          "valid_views": 3,
+          "frame_ids": [
+            1
+          ],
+          "patch_weight_sum": 53226.0,
+          "patch_lpips_sum": 2567.3334641985707,
+          "patch_ssim_sum": 50502.17295026779,
+          "valid_times": 1,
+          "psnr": 34.20606306883309,
+          "patch_lpips": 0.04823457453497484,
+          "patch_ssim": 0.9488252536404725,
+          "candidate_minimum_1000pixels_3times_passed": false
+        },
+        "O4": {
+          "sse": 477.2446861561231,
+          "pixels": 53226,
+          "valid_views": 3,
+          "frame_ids": [
+            1
+          ],
+          "patch_weight_sum": 53226.0,
+          "patch_lpips_sum": 8426.608261228539,
+          "patch_ssim_sum": 45108.57325452566,
+          "valid_times": 1,
+          "psnr": 25.245039828746258,
+          "patch_lpips": 0.1583175189048311,
+          "patch_ssim": 0.8474913248135434,
+          "candidate_minimum_1000pixels_3times_passed": false
+        }
+      },
+      "differences": {
+        "O1_minus_O2_dB": -0.12623569240565047,
+        "O1_minus_O4_dB": 0.024446277370550717,
+        "O2_minus_O3_dB": -8.81034127031063
+      }
+    }
+  },
+  "G_descriptive_dB": -0.08121813530524058,
+  "G_suitable_for_freezing": false,
+  "G_interpretation": "one matched time and a large O2-O3 appearance cost; this slice neither establishes a useful ideal-geometric gain nor disproves the route; no threshold derived by treating negative G as an upper bound",
+  "ghost_findings": {
+    "box": "closed box with M1-cur; all-source M1 adds open/multiple flaps; original time/query/unit interface agrees with official code; model time-conditioning errors not excluded",
+    "development": {
+      "plant": {
+        "dynamic_gaussian_fraction": 0.017988353967666626,
+        "static_background_linear_MAE_in_Mt": 0.07246334850788116,
+        "dynamic_projection_IoU": 0.36566415429115295
+      },
+      "cat": {
+        "dynamic_gaussian_fraction": 0.007958165369927883,
+        "static_background_linear_MAE_in_Mt": 0.0813484713435173,
+        "dynamic_projection_IoU": 0.05449109897017479
+      }
+    }
+  },
+  "method_observations": {
+    "final_parameters_record": "route3-c1-2026-11-10-method-parameters.json",
+    "focus_guardrails": {
+      "plant": {
+        "M1_minus_M0": -12.17945749955329,
+        "M2b_minus_M1": -1.0594689060542564
+      },
+      "cat": {
+        "M1_minus_M0": -1.9355281754348006,
+        "M2b_minus_M1": 0.007224832351457877
+      }
+    },
+    "final_M2b_vs_M1_C1_proxy_dB": {
+      "plant": -0.24195289611816406,
+      "cat": -0.02288055419921875
+    },
+    "conclusion": "same-forward source filtering executes; this two-scene one-time development check does not improve the main C1 region, and plant fails the proposed in-focus guardrail"
+  },
+  "suggested_criteria_for_user_review": {
+    "frozen": false,
+    "main_gain_candidate_dB": 0.3,
+    "main_gain_candidate_status": "illustrative proposal only; current G cannot justify freezing it; alternatively retain min(.5,.3*reliable_positive_G) after a valid Oracle",
+    "patch_LPIPS": "must decrease on the same scenes/patch protocol",
+    "independent_group_same_direction_fraction": 0.8,
+    "independent_test_groups": 5,
+    "basketball_pair": "count as one group",
+    "minimum_scene_region_pixels": 1000,
+    "minimum_distinct_times": 3,
+    "minimum_quantity_scope": "candidate; insufficient dynamic-unrecoverable regions remain separately reported",
+    "guardrail_maximum_drop_dB": 0.2,
+    "temporal_guardrail": "no worsening once an authorized multi-time method evaluation is performed"
+  },
+  "blender": {
+    "record": "route3-c1-2026-11-10-blender-b1.json",
+    "version": "4.5.3 LTS",
+    "binary": "/root/autodl-tmp/tools/blender-4.5.3-linux-x64/blender",
+    "assets": "original procedural primitives/materials/rigid animation, CC0; no third-party assets",
+    "candidate_samples": {
+      "f1.4": 512,
+      "f0.5": 2048
+    },
+    "B2_configuration_frozen": false,
+    "unmeasured_apertures": [
+      2.8,
+      5.6
+    ],
+    "RGB_total_cost_estimate_minutes_with_margin": [
+      21.8,
+      33.7
+    ],
+    "GT_CPU_naive_extrapolation_hours": 7.13,
+    "formal_sequence_rendered": false
+  },
+  "runtime": {
+    "movies": {
+      "plant": {
+        "scene": "plant",
+        "view": 0,
+        "input_frame_ids": [
+          1,
+          5,
+          9,
+          13,
+          17,
+          21,
+          26,
+          30,
+          34,
+          38,
+          42,
+          46,
+          50
+        ],
+        "input_size": [
+          518,
+          518
+        ],
+        "query_times": [
+          0.0,
+          0.510204017162323,
+          1.0
+        ],
+        "strict_loading": "<All keys matched successfully>",
+        "model_load_seconds": 25.638837687671185,
+        "forward_seconds": 2.7141599133610725,
+        "peak_allocated_mib": 11304.7451171875,
+        "scale_to_meters": 1.2522574663162231,
+        "alignment_pixels": 67710,
+        "static_background_relative_error_p50": 0.019013306125998497,
+        "static_background_relative_error_p90": 0.04734541103243828,
+        "input_rgb": "cv2 unchanged uint8/uint16 -> float32 display RGB -> bicubic518; no PIL 16-bit conversion",
+        "time_convention": "dataset times normalized to [0,1]; query0/25/49 normalized; offsets added to source-camera-unprojected canonical positions",
+        "moving_geometry_accuracy_validated": false,
+        "training": false
+      },
+      "cat": {
+        "scene": "cat",
+        "view": 0,
+        "input_frame_ids": [
+          1,
+          5,
+          9,
+          13,
+          17,
+          21,
+          26,
+          30,
+          34,
+          38,
+          42,
+          46,
+          50
+        ],
+        "input_size": [
+          518,
+          518
+        ],
+        "query_times": [
+          0.0,
+          0.510204017162323,
+          1.0
+        ],
+        "strict_loading": "<All keys matched successfully>",
+        "model_load_seconds": 24.769941296428442,
+        "forward_seconds": 2.7084762193262577,
+        "peak_allocated_mib": 11304.7451171875,
+        "scale_to_meters": 3.840031385421753,
+        "alignment_pixels": 132710,
+        "static_background_relative_error_p50": 0.011345217004418373,
+        "static_background_relative_error_p90": 0.031159401498734956,
+        "input_rgb": "cv2 unchanged uint8/uint16 -> float32 display RGB -> bicubic518; no PIL 16-bit conversion",
+        "time_convention": "dataset times normalized to [0,1]; query0/25/49 normalized; offsets added to source-camera-unprojected canonical positions",
+        "moving_geometry_accuracy_validated": false,
+        "training": false
+      }
+    },
+    "environment": "/root/autodl-tmp/envs/route3",
+    "python": "3.10.22",
+    "torch": "2.7.1+cu128",
+    "gsplat": "1.5.0",
+    "movies_commit": "77262fac6724a12c0b133a4fee10e62772db6d0f",
+    "bokehme_environment": "/root/autodl-tmp/envs/dofgaussian",
+    "bokehme_torch": "2.1.2+cu121",
+    "CPU_mesh_environment": "/root/autodl-tmp/envs/dofgs",
+    "GPU": "RTX4090D GPU0,49140MiB; driver580.105.08",
+    "direct_blender_download": {
+      "url": "https://download.blender.org/release/Blender4.5/blender-4.5.3-linux-x64.tar.xz",
+      "sha256": "975c58fcb244273838534bba771e64ad87739216b0f9b39a888531a49a72d845",
+      "bytes": 377397328,
+      "elapsed_seconds": 151.52794060483575,
+      "network": "direct; ProxyHandler({})",
+      "version": "4.5.3 LTS"
+    },
+    "caches": {
+      "TMPDIR": "/root/autodl-tmp/route3-cache/tmp",
+      "HF_HOME": "/root/autodl-tmp/route3-cache/hf",
+      "TORCH_HOME": "/root/autodl-tmp/route3-cache/torch",
+      "XDG_CACHE_HOME": "/root/autodl-tmp/route3-cache/xdg",
+      "TORCH_EXTENSIONS_DIR": "/root/autodl-tmp/route3-cache/torch_extensions",
+      "global_configs_changed": false
+    },
+    "input_precision": "MoVieS bf16 under autocast; stored query timestamps are nominal float32 normalized times; query0 exact"
+  },
+  "checks": {
+    "region": {
+      "transient_occluder_recoverable": true,
+      "persistent_occluder_unrecoverable": true,
+      "invalid_background_unknown": true,
+      "rho50_monotonic": true,
+      "passed": true
+    },
+    "fusion": {
+      "constant_nonzero_offset_classified_static": true,
+      "multiquery_motion_detected": true,
+      "far_dynamic_removed": true,
+      "current_source_protected": true,
+      "unknown_depth_retained": true,
+      "passed": true
+    },
+    "source_statistics": {
+      "source_statistics_checks": [
+        {
+          "sources": null,
+          "current": 0,
+          "sum_max_error": 5.960464477539063e-08,
+          "coverage_roundoff": 2.9802322387695312e-08
+        },
+        {
+          "sources": [
+            0
+          ],
+          "current": 0,
+          "sum_max_error": 5.960464477539063e-08,
+          "coverage_roundoff": 2.9802322387695312e-08
+        },
+        {
+          "sources": [
+            4
+          ],
+          "current": 0,
+          "sum_max_error": 5.960464477539063e-08,
+          "coverage_roundoff": 2.9802322387695312e-08
+        },
+        {
+          "sources": [],
+          "current": 0,
+          "sum_max_error": 0.0,
+          "coverage_roundoff": 0.0
+        },
+        {
+          "sources": null,
+          "current": 49,
+          "sum_max_error": 5.960464477539063e-08,
+          "coverage_roundoff": 2.9802322387695312e-08
+        }
+      ],
+      "passed": true,
+      "device": "NVIDIA GeForce RTX 4090 D",
+      "training": false
+    }
+  },
+  "implementation_issues_and_recovery": [
+    "Plant O4 attempted before final CPU visibility file landed; saved fitted colors reused in a new output, no fitting repeated for that dependency error",
+    "O4 corrected to exclude both occluded surfaces and center-FOV-exterior surfaces; old outputs01/02 retained and excluded from final results",
+    "Sequential-view Adam color oscillations diagnosed; final all50view projected Jacobi yields monotonic recorded color objective; residual appearance mismatch still reported",
+    "Bokeh old environment used ASCII file IO; fixed explicit UTF8 and retained partial01, final complete02",
+    "Visibility margin .02 deleted excessive cat static background; .1 follow-up reduced global loss but did not establish C1 improvement"
+  ],
+  "cleanup": {
+    "status": "closed by user; item7 and second tier deferred",
+    "commit": "a204044",
+    "record": "disk-cleanup-2026-11-10.json",
+    "files_deleted": "only individually authorized items1-6",
+    "cache_deletion": false
+  },
+  "disk_now": {
+    "data": {
+      "size_bytes": 898721906688,
+      "used_bytes": 554552578048,
+      "available_bytes": 344169328640
+    },
+    "system": {
+      "size_bytes": 32212254720,
+      "used_bytes": 29520117760,
+      "available_bytes": 2692136960
+    }
+  },
+  "evidence": {
+    "records_prefix": "03_\u5b9e\u9a8c\u8bb0\u5f55/records/route3-c1-2026-11-10-",
+    "derived_outputs": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-c1-2026-11-10-01",
+    "source_panel": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-c1-2026-11-10-01/source-diagnostics-panel.png",
+    "mesh_curve": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-c1-2026-11-10-01/mesh-time-01/mesh-time-curves.png",
+    "blender_curve": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-c1-2026-11-10-01/blender-b1/sampling-convergence.png"
+  },
+  "stop": {
+    "reason": "A2 hard manual review stop",
+    "A3_entered": false,
+    "B2_entered": false
+  },
+  "next_step": "Wait for user review of proxy validity, one-time Oracle/appearance limitations, in-focus loss, method settings and Blender sampling/GT cost. Do not launch test M2 evaluation or full Blender rendering without that review.",
+  "verification": {
+    "python_files_compiled": 13,
+    "JSON_records_parsed": 9,
+    "CSV_parsed": true,
+    "raw_PNG_count": 40000,
+    "raw_files_and_directories_read_only": true,
+    "task_files_each_under_1MiB": true,
+    "peer_review": "no blocking error in executed source/mask/index/time/scale/test-isolation paths; final window2 and visibility0.1 defaults synchronized",
+    "source_statistic_tolerance": "max sum residual5.96e-8, coverage roundoff2.98e-8",
+    "test_method_results": false
+  }
+}

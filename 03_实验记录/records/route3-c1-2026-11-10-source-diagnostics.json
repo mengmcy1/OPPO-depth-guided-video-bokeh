@@ -1,0 +1,1941 @@
+{
+  "box": {
+    "initial": {
+      "scene": "box",
+      "view": 0,
+      "query_frame_id": 1,
+      "split": "test_diagnostic_only",
+      "dynamic_label": "diagnostic source-pixel motion-mask labels; one-query box cache cannot determine temporal Gaussian motion range",
+      "dynamic_fraction": 0.08108488470315933,
+      "K": 16,
+      "scale_to_meters": 1.2574611902236938,
+      "source_indexing": "zero-based global frame index",
+      "quality_metrics_on_test": false,
+      "source_contribution_interpretation": "alpha mass in disagreement regions, not causal attribution of error",
+      "fusion_switches": {},
+      "renders": [
+        {
+          "method": "M1-cur",
+          "mode": "pinhole",
+          "gaussians": 267946,
+          "sources": [
+            {
+              "source_frame_id": 1,
+              "alpha_mass_in_current_motion": 14604.208984375,
+              "alpha_mass_in_ghost_disagreement_proxy": 12519.482421875
+            }
+          ]
+        },
+        {
+          "method": "M1-cur",
+          "mode": "dof",
+          "gaussians": 267946,
+          "sources": [
+            {
+              "source_frame_id": 1,
+              "alpha_mass_in_current_motion": 14591.6455078125,
+              "alpha_mass_in_ghost_disagreement_proxy": 12546.8388671875
+            }
+          ]
+        },
+        {
+          "method": "M1",
+          "mode": "pinhole",
+          "gaussians": 3364203,
+          "sources": [
+            {
+              "source_frame_id": 1,
+              "alpha_mass_in_current_motion": 814.3345947265625,
+              "alpha_mass_in_ghost_disagreement_proxy": 40.192413330078125
+            },
+            {
+              "source_frame_id": 5,
+              "alpha_mass_in_current_motion": 1035.34521484375,
+              "alpha_mass_in_ghost_disagreement_proxy": 71.47843933105469
+            },
+            {
+              "source_frame_id": 9,
+              "alpha_mass_in_current_motion": 2406.54541015625,
+              "alpha_mass_in_ghost_disagreement_proxy": 227.2303009033203
+            },
+            {
+              "source_frame_id": 13,
+              "alpha_mass_in_current_motion": 3156.627197265625,
+              "alpha_mass_in_ghost_disagreement_proxy": 274.2235107421875
+            },
+            {
+              "source_frame_id": 17,
+              "alpha_mass_in_current_motion": 5208.67431640625,
+              "alpha_mass_in_ghost_disagreement_proxy": 586.8408203125
+            },
+            {
+              "source_frame_id": 21,
+              "alpha_mass_in_current_motion": 4124.24609375,
+              "alpha_mass_in_ghost_disagreement_proxy": 625.1795043945312
+            },
+            {
+              "source_frame_id": 26,
+              "alpha_mass_in_current_motion": 700.3423461914062,
+              "alpha_mass_in_ghost_disagreement_proxy": 95.93081665039062
+            },
+            {
+              "source_frame_id": 30,
+              "alpha_mass_in_current_motion": 985.6649780273438,
+              "alpha_mass_in_ghost_disagreement_proxy": 31.26522445678711
+            },
+            {
+              "source_frame_id": 34,
+              "alpha_mass_in_current_motion": 2569.692138671875,
+              "alpha_mass_in_ghost_disagreement_proxy": 1093.8992919921875
+            },
+            {
+              "source_frame_id": 38,
+              "alpha_mass_in_current_motion": 2072.395751953125,
+              "alpha_mass_in_ghost_disagreement_proxy": 1090.1436767578125
+            },
+            {
+              "source_frame_id": 42,
+              "alpha_mass_in_current_motion": 1022.1627197265625,
+              "alpha_mass_in_ghost_disagreement_proxy": 984.7260131835938
+            },
+            {
+              "source_frame_id": 46,
+              "alpha_mass_in_current_motion": 546.0642700195312,
+              "alpha_mass_in_ghost_disagreement_proxy": 656.3314208984375
+            },
+            {
+              "source_frame_id": 50,
+              "alpha_mass_in_current_motion": 426.96539306640625,
+              "alpha_mass_in_ghost_disagreement_proxy": 372.68353271484375
+            }
+          ]
+        },
+        {
+          "method": "M1",
+          "mode": "dof",
+          "gaussians": 3364203,
+          "sources": [
+            {
+              "source_frame_id": 1,
+              "alpha_mass_in_current_motion": 799.0258178710938,
+              "alpha_mass_in_ghost_disagreement_proxy": 129.16436767578125
+            },
+            {
+              "source_frame_id": 5,
+              "alpha_mass_in_current_motion": 1031.76806640625,
+              "alpha_mass_in_ghost_disagreement_proxy": 219.92539978027344
+            },
+            {
+              "source_frame_id": 9,
+              "alpha_mass_in_current_motion": 2401.073486328125,
+              "alpha_mass_in_ghost_disagreement_proxy": 447.7273254394531
+            },
+            {
+              "source_frame_id": 13,
+              "alpha_mass_in_current_motion": 3138.212158203125,
+              "alpha_mass_in_ghost_disagreement_proxy": 608.9992065429688
+            },
+            {
+              "source_frame_id": 17,
+              "alpha_mass_in_current_motion": 5229.6806640625,
+              "alpha_mass_in_ghost_disagreement_proxy": 1192.195068359375
+            },
+            {
+              "source_frame_id": 21,
+              "alpha_mass_in_current_motion": 4139.6474609375,
+              "alpha_mass_in_ghost_disagreement_proxy": 1065.5079345703125
+            },
+            {
+              "source_frame_id": 26,
+              "alpha_mass_in_current_motion": 702.347900390625,
+              "alpha_mass_in_ghost_disagreement_proxy": 251.5632781982422
+            },
+            {
+              "source_frame_id": 30,
+              "alpha_mass_in_current_motion": 975.484130859375,
+              "alpha_mass_in_ghost_disagreement_proxy": 117.37347412109375
+            },
+            {
+              "source_frame_id": 34,
+              "alpha_mass_in_current_motion": 2569.390380859375,
+              "alpha_mass_in_ghost_disagreement_proxy": 1044.703857421875
+            },
+            {
+              "source_frame_id": 38,
+              "alpha_mass_in_current_motion": 2078.3935546875,
+              "alpha_mass_in_ghost_disagreement_proxy": 1133.96142578125
+            },
+            {
+              "source_frame_id": 42,
+              "alpha_mass_in_current_motion": 1022.3045043945312,
+              "alpha_mass_in_ghost_disagreement_proxy": 1053.3330078125
+            },
+            {
+              "source_frame_id": 46,
+              "alpha_mass_in_current_motion": 547.2674560546875,
+              "alpha_mass_in_ghost_disagreement_proxy": 705.2557983398438
+            },
+            {
+              "source_frame_id": 50,
+              "alpha_mass_in_current_motion": 425.51214599609375,
+              "alpha_mass_in_ghost_disagreement_proxy": 406.07110595703125
+            }
+          ]
+        },
+        {
+          "method": "static-sources",
+          "mode": "pinhole",
+          "gaussians": 3091417
+        },
+        {
+          "method": "static-sources",
+          "mode": "dof",
+          "gaussians": 3091417
+        },
+        {
+          "method": "dynamic-sources",
+          "mode": "pinhole",
+          "gaussians": 272786
+        },
+        {
+          "method": "dynamic-sources",
+          "mode": "dof",
+          "gaussians": 272786
+        }
+      ],
+      "render_seconds": 4.346802622079849,
+      "peak_allocated_mib": 1678.751953125,
+      "time_convention_audit": {
+        "official_commit": "77262fac6724a12c0b133a4fee10e62772db6d0f",
+        "official_files": [
+          "src/data/*_dataset.py (times normalized0..1)",
+          "src/models/networks/vggsplat.py:300-350",
+          "src/models/splatrecon.py:110-129",
+          "src/models/gs_render/gs_renderer.py:80-88"
+        ],
+        "query_axis": "B,F_out,F_in,3+conf,H,W; query0 chosen, xyz channels only",
+        "application": "offset is identity-activated and ADDED to source unprojected xyz; same canonical world frame",
+        "scale": "one scalar multiplies means, scales, offsets and depth; lens dimensions in meters",
+        "conclusion": "matches official API indexing and normalization; this does not rule out network time-conditioning errors"
+      },
+      "diagnostic_thresholds": {
+        "ghost_proxy_max_channel_linear_rgb_error": 0.05,
+        "dynamic_projection_minimum_alpha": 0.1,
+        "multiquery_motion_range_normalized": 0.005,
+        "visibility_relative_margin": 0.02,
+        "visibility_absolute_margin_m": 0.01,
+        "native_opacity_minimum": 0.001
+      }
+    }
+  },
+  "plant": {
+    "initial": {
+      "scene": "plant",
+      "view": 0,
+      "query_frame_id": 1,
+      "split": "development",
+      "dynamic_label": "same-Gaussian pairwise displacement across queries0,25/49,1; threshold .005 normalized units",
+      "dynamic_fraction": 0.017988353967666626,
+      "K": 16,
+      "scale_to_meters": 1.2522574663162231,
+      "source_indexing": "zero-based global frame index",
+      "quality_metrics_on_test": false,
+      "source_contribution_interpretation": "alpha mass in disagreement regions, not causal attribution of error",
+      "fusion_switches": {
+        "M2a-window1": {
+          "total": 3234037,
+          "dynamic": 58175,
+          "outside_or_unknown": 27927,
+          "removed_by_static_dynamic": 29054,
+          "removed_by_visibility": 0,
+          "static_removed_by_visibility": 0,
+          "current_source_removed_by_visibility": 0,
+          "false_deletion_GT_available": false,
+          "deleted_outside_reference_motion_proxy": 0
+        },
+        "M2b-window1": {
+          "total": 3234037,
+          "dynamic": 58175,
+          "outside_or_unknown": 27927,
+          "removed_by_static_dynamic": 29054,
+          "removed_by_visibility": 41313,
+          "static_removed_by_visibility": 40375,
+          "current_source_removed_by_visibility": 0,
+          "false_deletion_GT_available": false,
+          "deleted_outside_reference_motion_proxy": 32429
+        },
+        "M2a-window2": {
+          "total": 3234037,
+          "dynamic": 58175,
+          "outside_or_unknown": 27927,
+          "removed_by_static_dynamic": 25036,
+          "removed_by_visibility": 0,
+          "static_removed_by_visibility": 0,
+          "current_source_removed_by_visibility": 0,
+          "false_deletion_GT_available": false,
+          "deleted_outside_reference_motion_proxy": 0
+        },
+        "M2b-window2": {
+          "total": 3234037,
+          "dynamic": 58175,
+          "outside_or_unknown": 27927,
+          "removed_by_static_dynamic": 25036,
+          "removed_by_visibility": 41837,
+          "static_removed_by_visibility": 40375,
+          "current_source_removed_by_visibility": 0,
+          "false_deletion_GT_available": false,
+          "deleted_outside_reference_motion_proxy": 32606
+        }
+      },
+      "renders": [
+        {
+          "method": "M1-cur",
+          "mode": "pinhole",
+          "gaussians": 264999,
+          "sources": [
+            {
+              "source_frame_id": 1,
+              "alpha_mass_in_current_motion": 7251.3408203125,
+              "alpha_mass_in_ghost_disagreement_proxy": 12290.7666015625
+            }
+          ],
+          "ghost_disagreement_proxy_pixels": 96368,
+          "full_PSNR_development_only": 9.110644340515137,
+          "M_C1_proxy_PSNR_development_only": 8.557340621948242
+        },
+        {
+          "method": "M1-cur",
+          "mode": "dof",
+          "gaussians": 264999,
+          "sources": [
+            {
+              "source_frame_id": 1,
+              "alpha_mass_in_current_motion": 7143.40625,
+              "alpha_mass_in_ghost_disagreement_proxy": 12118.130859375
+            }
+          ],
+          "ghost_disagreement_proxy_pixels": 96259,
+          "full_PSNR_development_only": 8.990072250366211,
+          "M_C1_proxy_PSNR_development_only": 8.503149032592773
+        },
+        {
+          "method": "M1",
+          "mode": "pinhole",
+          "gaussians": 3234037,
+          "sources": [
+            {
+              "source_frame_id": 1,
+              "alpha_mass_in_current_motion": 5136.875,
+              "alpha_mass_in_ghost_disagreement_proxy": 487.43939208984375
+            },
+            {
+              "source_frame_id": 5,
+              "alpha_mass_in_current_motion": 1613.4407958984375,
+              "alpha_mass_in_ghost_disagreement_proxy": 541.80419921875
+            },
+            {
+              "source_frame_id": 9,
+              "alpha_mass_in_current_motion": 791.8486328125,
+              "alpha_mass_in_ghost_disagreement_proxy": 543.8741455078125
+            },
+            {
+              "source_frame_id": 13,
+              "alpha_mass_in_current_motion": 1049.275146484375,
+              "alpha_mass_in_ghost_disagreement_proxy": 814.6073608398438
+            },
+            {
+              "source_frame_id": 17,
+              "alpha_mass_in_current_motion": 2375.6650390625,
+              "alpha_mass_in_ghost_disagreement_proxy": 1026.7069091796875
+            },
+            {
+              "source_frame_id": 21,
+              "alpha_mass_in_current_motion": 1735.5810546875,
+              "alpha_mass_in_ghost_disagreement_proxy": 939.5341186523438
+            },
+            {
+              "source_frame_id": 26,
+              "alpha_mass_in_current_motion": 1714.306884765625,
+              "alpha_mass_in_ghost_disagreement_proxy": 520.7664184570312
+            },
+            {
+              "source_frame_id": 30,
+              "alpha_mass_in_current_motion": 4117.3310546875,
+              "alpha_mass_in_ghost_disagreement_proxy": 682.0089721679688
+            },
+            {
+              "source_frame_id": 34,
+              "alpha_mass_in_current_motion": 2939.75146484375,
+              "alpha_mass_in_ghost_disagreement_proxy": 837.3095092773438
+            },
+            {
+              "source_frame_id": 38,
+              "alpha_mass_in_current_motion": 2002.21875,
+              "alpha_mass_in_ghost_disagreement_proxy": 650.270751953125
+            },
+            {
+              "source_frame_id": 42,
+              "alpha_mass_in_current_motion": 1534.98388671875,
+              "alpha_mass_in_ghost_disagreement_proxy": 349.59576416015625
+            },
+            {
+              "source_frame_id": 46,
+              "alpha_mass_in_current_motion": 489.41082763671875,
+              "alpha_mass_in_ghost_disagreement_proxy": 228.27203369140625
+            },
+            {
+              "source_frame_id": 50,
+              "alpha_mass_in_current_motion": 427.7205810546875,
+              "alpha_mass_in_ghost_disagreement_proxy": 242.77542114257812
+            }
+          ],
+          "ghost_disagreement_proxy_pixels": 8248,
+          "full_PSNR_development_only": 23.219833374023438,
+          "M_C1_proxy_PSNR_development_only": 17.732351303100586
+        },
+        {
+          "method": "M1",
+          "mode": "dof",
+          "gaussians": 3234037,
+          "sources": [
+            {
+              "source_frame_id": 1,
+              "alpha_mass_in_current_motion": 5100.263671875,
+              "alpha_mass_in_ghost_disagreement_proxy": 668.18603515625
+            },
+            {
+              "source_frame_id": 5,
+              "alpha_mass_in_current_motion": 1583.7222900390625,
+              "alpha_mass_in_ghost_disagreement_proxy": 1290.72412109375
+            },
+            {
+              "source_frame_id": 9,
+              "alpha_mass_in_current_motion": 789.62451171875,
+              "alpha_mass_in_ghost_disagreement_proxy": 1324.560791015625
+            },
+            {
+              "source_frame_id": 13,
+              "alpha_mass_in_current_motion": 1047.74658203125,
+              "alpha_mass_in_ghost_disagreement_proxy": 1695.6397705078125
+            },
+            {
+              "source_frame_id": 17,
+              "alpha_mass_in_current_motion": 2356.583740234375,
+              "alpha_mass_in_ghost_disagreement_proxy": 2123.166748046875
+            },
+            {
+              "source_frame_id": 21,
+              "alpha_mass_in_current_motion": 1760.98876953125,
+              "alpha_mass_in_ghost_disagreement_proxy": 1908.212890625
+            },
+            {
+              "source_frame_id": 26,
+              "alpha_mass_in_current_motion": 1726.91357421875,
+              "alpha_mass_in_ghost_disagreement_proxy": 1025.853759765625
+            },
+            {
+              "source_frame_id": 30,
+              "alpha_mass_in_current_motion": 4125.0478515625,
+              "alpha_mass_in_ghost_disagreement_proxy": 1396.2088623046875
+            },
+            {
+              "source_frame_id": 34,
+              "alpha_mass_in_current_motion": 2904.9619140625,
+              "alpha_mass_in_ghost_disagreement_proxy": 1873.088134765625
+            },
+            {
+              "source_frame_id": 38,
+              "alpha_mass_in_current_motion": 1966.9287109375,
+              "alpha_mass_in_ghost_disagreement_proxy": 1586.659423828125
+            },
+            {
+              "source_frame_id": 42,
+              "alpha_mass_in_current_motion": 1537.5565185546875,
+              "alpha_mass_in_ghost_disagreement_proxy": 873.408203125
+            },
+            {
+              "source_frame_id": 46,
+              "alpha_mass_in_current_motion": 481.1515808105469,
+              "alpha_mass_in_ghost_disagreement_proxy": 587.9755859375
+            },
+            {
+              "source_frame_id": 50,
+              "alpha_mass_in_current_motion": 459.08282470703125,
+              "alpha_mass_in_ghost_disagreement_proxy": 797.6146850585938
+            }
+          ],
+          "ghost_disagreement_proxy_pixels": 18439,
+          "full_PSNR_development_only": 24.377471923828125,
+          "M_C1_proxy_PSNR_development_only": 19.409929275512695
+        },
+        {
+          "method": "static-sources",
+          "mode": "pinhole",
+          "gaussians": 3175862,
+          "static_source_vs_background_linear_MAE_in_Mt": 0.07246334850788116,
+          "full_PSNR_development_only": 19.70922088623047,
+          "M_C1_proxy_PSNR_development_only": 14.499269485473633
+        },
+        {
+          "method": "static-sources",
+          "mode": "dof",
+          "gaussians": 3175862,
+          "full_PSNR_development_only": 20.649028778076172,
+          "M_C1_proxy_PSNR_development_only": 15.780296325683594
+        },
+        {
+          "method": "dynamic-sources",
+          "mode": "pinhole",
+          "gaussians": 58175,
+          "dynamic_projection_IoU_with_Mt": 0.36566415429115295,
+          "full_PSNR_development_only": 5.8904290199279785,
+          "M_C1_proxy_PSNR_development_only": 6.735621452331543
+        },
+        {
+          "method": "dynamic-sources",
+          "mode": "dof",
+          "gaussians": 58175,
+          "full_PSNR_development_only": 5.805647850036621,
+          "M_C1_proxy_PSNR_development_only": 6.651573181152344
+        },
+        {
+          "method": "M2a-window1",
+          "mode": "pinhole",
+          "gaussians": 3204983,
+          "full_PSNR_development_only": 22.910463333129883,
+          "M_C1_proxy_PSNR_development_only": 17.330501556396484
+        },
+        {
+          "method": "M2a-window1",
+          "mode": "dof",
+          "gaussians": 3204983,
+          "full_PSNR_development_only": 24.07697868347168,
+          "M_C1_proxy_PSNR_development_only": 18.947921752929688
+        },
+        {
+          "method": "M2b-window1",
+          "mode": "pinhole",
+          "gaussians": 3163670,
+          "full_PSNR_development_only": 22.03046989440918,
+          "M_C1_proxy_PSNR_development_only": 16.361770629882812
+        },
+        {
+          "method": "M2b-window1",
+          "mode": "dof",
+          "gaussians": 3163670,
+          "full_PSNR_development_only": 23.587860107421875,
+          "M_C1_proxy_PSNR_development_only": 18.449195861816406
+        },
+        {
+          "method": "M2a-window2",
+          "mode": "pinhole",
+          "gaussians": 3209001,
+          "full_PSNR_development_only": 23.042072296142578,
+          "M_C1_proxy_PSNR_development_only": 17.49417495727539
+        },
+        {
+          "method": "M2a-window2",
+          "mode": "dof",
+          "gaussians": 3209001,
+          "full_PSNR_development_only": 24.239084243774414,
+          "M_C1_proxy_PSNR_development_only": 19.173782348632812
+        },
+        {
+          "method": "M2b-window2",
+          "mode": "pinhole",
+          "gaussians": 3167164,
+          "full_PSNR_development_only": 22.148273468017578,
+          "M_C1_proxy_PSNR_development_only": 16.492300033569336
+        },
+        {
+          "method": "M2b-window2",
+          "mode": "dof",
+          "gaussians": 3167164,
+          "full_PSNR_development_only": 23.748226165771484,
+          "M_C1_proxy_PSNR_development_only": 18.64986228942871
+        }
+      ],
+      "render_seconds": 9.114911500364542,
+      "peak_allocated_mib": 2522.2490234375,
+      "time_convention_audit": {
+        "official_commit": "77262fac6724a12c0b133a4fee10e62772db6d0f",
+        "official_files": [
+          "src/data/*_dataset.py (times normalized0..1)",
+          "src/models/networks/vggsplat.py:300-350",
+          "src/models/splatrecon.py:110-129",
+          "src/models/gs_render/gs_renderer.py:80-88"
+        ],
+        "query_axis": "B,F_out,F_in,3+conf,H,W; query0 chosen, xyz channels only",
+        "application": "offset is identity-activated and ADDED to source unprojected xyz; same canonical world frame",
+        "scale": "one scalar multiplies means, scales, offsets and depth; lens dimensions in meters",
+        "conclusion": "matches official API indexing and normalization; this does not rule out network time-conditioning errors"
+      },
+      "diagnostic_thresholds": {
+        "ghost_proxy_max_channel_linear_rgb_error": 0.05,
+        "dynamic_projection_minimum_alpha": 0.1,
+        "multiquery_motion_range_normalized": 0.005,
+        "visibility_relative_margin": 0.02,
+        "visibility_absolute_margin_m": 0.01,
+        "native_opacity_minimum": 0.001
+      }
+    },
+    "visibility_followup": {
+      "scene": "plant",
+      "view": 0,
+      "query_frame_id": 1,
+      "split": "development",
+      "dynamic_label": "same-Gaussian pairwise displacement across queries0,25/49,1; threshold .005 normalized units",
+      "dynamic_fraction": 0.017988353967666626,
+      "K": 16,
+      "scale_to_meters": 1.2522574663162231,
+      "source_indexing": "zero-based global frame index",
+      "quality_metrics_on_test": false,
+      "source_contribution_interpretation": "alpha mass in disagreement regions, not causal attribution of error",
+      "fusion_switches": {
+        "M2a-window1": {
+          "total": 3234037,
+          "dynamic": 58175,
+          "outside_or_unknown": 27927,
+          "removed_by_static_dynamic": 29054,
+          "removed_by_visibility": 0,
+          "static_removed_by_visibility": 0,
+          "current_source_removed_by_visibility": 0,
+          "false_deletion_GT_available": false,
+          "deleted_outside_reference_motion_proxy": 0
+        },
+        "M2b-window1": {
+          "total": 3234037,
+          "dynamic": 58175,
+          "outside_or_unknown": 27927,
+          "removed_by_static_dynamic": 29054,
+          "removed_by_visibility": 5300,
+          "static_removed_by_visibility": 4578,
+          "current_source_removed_by_visibility": 0,
+          "false_deletion_GT_available": false,
+          "deleted_outside_reference_motion_proxy": 2947,
+          "mesh_consistent_stable_background_candidates": 187622,
+          "deleted_mesh_consistent_static_proxy": 10,
+          "false_deletion_proxy_tolerance": "independent stable background and mesh first-hit depth within1%+1mm; not dynamic GT"
+        },
+        "M2a-window2": {
+          "total": 3234037,
+          "dynamic": 58175,
+          "outside_or_unknown": 27927,
+          "removed_by_static_dynamic": 25036,
+          "removed_by_visibility": 0,
+          "static_removed_by_visibility": 0,
+          "current_source_removed_by_visibility": 0,
+          "false_deletion_GT_available": false,
+          "deleted_outside_reference_motion_proxy": 0
+        },
+        "M2b-window2": {
+          "total": 3234037,
+          "dynamic": 58175,
+          "outside_or_unknown": 27927,
+          "removed_by_static_dynamic": 25036,
+          "removed_by_visibility": 5760,
+          "static_removed_by_visibility": 4578,
+          "current_source_removed_by_visibility": 0,
+          "false_deletion_GT_available": false,
+          "deleted_outside_reference_motion_proxy": 3100,
+          "mesh_consistent_stable_background_candidates": 187622,
+          "deleted_mesh_consistent_static_proxy": 10,
+          "false_deletion_proxy_tolerance": "independent stable background and mesh first-hit depth within1%+1mm; not dynamic GT"
+        }
+      },
+      "renders": [
+        {
+          "method": "M2b-window1",
+          "mode": "pinhole",
+          "gaussians": 3199683,
+          "M_C1_proxy_source_fractions": {
+            "s_cur": 0.11393620818853378,
+            "s_other": 0.8385383486747742,
+            "s_hole": 0.047525499016046524
+          },
+          "dynamic_unrecoverable_source_fractions": {
+            "s_cur": 0.1700882613658905,
+            "s_other": 0.8127899765968323,
+            "s_hole": 0.017121775075793266
+          },
+          "static_static_source_fractions": {
+            "s_cur": 0.029104789718985558,
+            "s_other": 0.8839017152786255,
+            "s_hole": 0.08699353039264679
+          },
+          "full_PSNR_development_only": 22.93349838256836,
+          "M_C1_proxy_PSNR_development_only": 17.321855545043945
+        },
+        {
+          "method": "M2b-window1",
+          "mode": "dof",
+          "gaussians": 3199683,
+          "M_C1_proxy_source_fractions": {
+            "s_cur": 0.11350584030151367,
+            "s_other": 0.8357667922973633,
+            "s_hole": 0.050727274268865585
+          },
+          "dynamic_unrecoverable_source_fractions": {
+            "s_cur": 0.16378898918628693,
+            "s_other": 0.8178904056549072,
+            "s_hole": 0.018320653587579727
+          },
+          "static_static_source_fractions": {
+            "s_cur": 0.02652943879365921,
+            "s_other": 0.8081209659576416,
+            "s_hole": 0.16534966230392456
+          },
+          "full_PSNR_development_only": 24.105091094970703,
+          "M_C1_proxy_PSNR_development_only": 18.944297790527344
+        },
+        {
+          "method": "M2b-window2",
+          "mode": "pinhole",
+          "gaussians": 3203241,
+          "M_C1_proxy_source_fractions": {
+            "s_cur": 0.11237379908561707,
+            "s_other": 0.8415359258651733,
+            "s_hole": 0.046090301126241684
+          },
+          "dynamic_unrecoverable_source_fractions": {
+            "s_cur": 0.1700882613658905,
+            "s_other": 0.8127899765968323,
+            "s_hole": 0.017121775075793266
+          },
+          "static_static_source_fractions": {
+            "s_cur": 0.029103439301252365,
+            "s_other": 0.8839033842086792,
+            "s_hole": 0.08699307590723038
+          },
+          "full_PSNR_development_only": 23.078353881835938,
+          "M_C1_proxy_PSNR_development_only": 17.48409652709961
+        },
+        {
+          "method": "M2b-window2",
+          "mode": "dof",
+          "gaussians": 3203241,
+          "M_C1_proxy_source_fractions": {
+            "s_cur": 0.11194023489952087,
+            "s_other": 0.8389269113540649,
+            "s_hole": 0.04913290962576866
+          },
+          "dynamic_unrecoverable_source_fractions": {
+            "s_cur": 0.16378898918628693,
+            "s_other": 0.8178908824920654,
+            "s_hole": 0.01832016371190548
+          },
+          "static_static_source_fractions": {
+            "s_cur": 0.026528920978307724,
+            "s_other": 0.8081217408180237,
+            "s_hole": 0.1653493344783783
+          },
+          "full_PSNR_development_only": 24.28591537475586,
+          "M_C1_proxy_PSNR_development_only": 19.16797637939453
+        }
+      ],
+      "visibility_relative_margin": 0.1,
+      "render_seconds": 3.3644049055874348,
+      "peak_allocated_mib": 2109.24365234375,
+      "time_convention_audit": {
+        "official_commit": "77262fac6724a12c0b133a4fee10e62772db6d0f",
+        "official_files": [
+          "src/data/*_dataset.py (times normalized0..1)",
+          "src/models/networks/vggsplat.py:300-350",
+          "src/models/splatrecon.py:110-129",
+          "src/models/gs_render/gs_renderer.py:80-88"
+        ],
+        "query_axis": "B,F_out,F_in,3+conf,H,W; query0 chosen, xyz channels only",
+        "application": "offset is identity-activated and ADDED to source unprojected xyz; same canonical world frame",
+        "scale": "one scalar multiplies means, scales, offsets and depth; lens dimensions in meters",
+        "conclusion": "matches official API indexing and normalization; this does not rule out network time-conditioning errors"
+      },
+      "diagnostic_thresholds": {
+        "ghost_proxy_max_channel_linear_rgb_error": 0.05,
+        "dynamic_projection_minimum_alpha": 0.1,
+        "multiquery_motion_range_normalized": 0.005,
+        "visibility_relative_margin": 0.1,
+        "visibility_absolute_margin_m": 0.01,
+        "native_opacity_minimum": 0.001,
+        "mesh_consistent_static_proxy_relative_tolerance": 0.01,
+        "mesh_consistent_static_proxy_absolute_tolerance_m": 0.001
+      }
+    },
+    "dof_source_distributions_view0_frame1": {
+      "M1-cur": {
+        "M_C1_proxy": {
+          "s_cur": {
+            "mean": 0.1669478565454483,
+            "p10_p50_p90": [
+              0.0018612178741022947,
+              0.07224651426076889,
+              0.5438615202903752
+            ]
+          },
+          "s_other": {
+            "mean": 0.0,
+            "p10_p50_p90": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "s_hole": {
+            "mean": 0.8330521583557129,
+            "p10_p50_p90": [
+              0.4561385154724122,
+              0.9277534484863281,
+              0.9981387734413147
+            ]
+          }
+        },
+        "dynamic_unrecoverable": {
+          "s_cur": {
+            "mean": 0.24691738188266754,
+            "p10_p50_p90": [
+              0.023795446380972862,
+              0.11576517298817635,
+              0.6076636195182801
+            ]
+          },
+          "s_other": {
+            "mean": 0.0,
+            "p10_p50_p90": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "s_hole": {
+            "mean": 0.7530825734138489,
+            "p10_p50_p90": [
+              0.39233638048172,
+              0.8842348158359528,
+              0.9762045502662658
+            ]
+          }
+        },
+        "static_static": {
+          "s_cur": {
+            "mean": 0.10745909810066223,
+            "p10_p50_p90": [
+              0.06423924267292022,
+              0.09390881657600403,
+              0.16384122967720036
+            ]
+          },
+          "s_other": {
+            "mean": 0.0,
+            "p10_p50_p90": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "s_hole": {
+            "mean": 0.8925409317016602,
+            "p10_p50_p90": [
+              0.8361588001251221,
+              0.9060912132263184,
+              0.9357607126235962
+            ]
+          }
+        }
+      },
+      "M1": {
+        "M_C1_proxy": {
+          "s_cur": {
+            "mean": 0.10530674457550049,
+            "p10_p50_p90": [
+              0.0001070441387128085,
+              0.02108558639883995,
+              0.414360970258713
+            ]
+          },
+          "s_other": {
+            "mean": 0.8543086051940918,
+            "p10_p50_p90": [
+              0.5438418984413147,
+              0.9382932186126709,
+              0.9836281538009644
+            ]
+          },
+          "s_hole": {
+            "mean": 0.04038459435105324,
+            "p10_p50_p90": [
+              0.0032560229301452637,
+              0.0269240140914917,
+              0.09049148559570314
+            ]
+          }
+        },
+        "dynamic_unrecoverable": {
+          "s_cur": {
+            "mean": 0.1637762188911438,
+            "p10_p50_p90": [
+              0.0014872159343212845,
+              0.00650051306001842,
+              0.5918741226196289
+            ]
+          },
+          "s_other": {
+            "mean": 0.8185689449310303,
+            "p10_p50_p90": [
+              0.40516696870326996,
+              0.9467785656452179,
+              0.9870082020759583
+            ]
+          },
+          "s_hole": {
+            "mean": 0.017654836177825928,
+            "p10_p50_p90": [
+              0.0027076125144958494,
+              0.00907096266746521,
+              0.041720378398895266
+            ]
+          }
+        },
+        "static_static": {
+          "s_cur": {
+            "mean": 0.025273853912949562,
+            "p10_p50_p90": [
+              0.010228396952152252,
+              0.02334829978644848,
+              0.03878264054656029
+            ]
+          },
+          "s_other": {
+            "mean": 0.8297315835952759,
+            "p10_p50_p90": [
+              0.6850841879844666,
+              0.8593997955322266,
+              0.9343015909194946
+            ]
+          },
+          "s_hole": {
+            "mean": 0.14499452710151672,
+            "p10_p50_p90": [
+              0.049991393089294435,
+              0.10924845933914185,
+              0.28613220453262334
+            ]
+          }
+        }
+      },
+      "M2a-window2": {
+        "M_C1_proxy": {
+          "s_cur": {
+            "mean": 0.11174004524946213,
+            "p10_p50_p90": [
+              0.00011294621508568525,
+              0.02280733548104763,
+              0.44623107910156257
+            ]
+          },
+          "s_other": {
+            "mean": 0.8400266766548157,
+            "p10_p50_p90": [
+              0.47563080191612245,
+              0.9353886842727661,
+              0.9818985104560852
+            ]
+          },
+          "s_hole": {
+            "mean": 0.04823325201869011,
+            "p10_p50_p90": [
+              0.0042485237121582045,
+              0.02821248769760132,
+              0.10582970380783087
+            ]
+          }
+        },
+        "dynamic_unrecoverable": {
+          "s_cur": {
+            "mean": 0.16378866136074066,
+            "p10_p50_p90": [
+              0.0014878706308081749,
+              0.006525385659188032,
+              0.5918741226196289
+            ]
+          },
+          "s_other": {
+            "mean": 0.817893922328949,
+            "p10_p50_p90": [
+              0.40516696870326996,
+              0.9466556906700134,
+              0.9867516994476319
+            ]
+          },
+          "s_hole": {
+            "mean": 0.018317431211471558,
+            "p10_p50_p90": [
+              0.002958899736404419,
+              0.011081576347351074,
+              0.04180055260658265
+            ]
+          }
+        },
+        "static_static": {
+          "s_cur": {
+            "mean": 0.025275805965065956,
+            "p10_p50_p90": [
+              0.010228396952152252,
+              0.02334829978644848,
+              0.03878264054656029
+            ]
+          },
+          "s_other": {
+            "mean": 0.8297238349914551,
+            "p10_p50_p90": [
+              0.6850841879844666,
+              0.8593997955322266,
+              0.9343015909194946
+            ]
+          },
+          "s_hole": {
+            "mean": 0.1450003683567047,
+            "p10_p50_p90": [
+              0.049991393089294435,
+              0.10924845933914185,
+              0.28613220453262334
+            ]
+          }
+        }
+      },
+      "M2b-window2": {
+        "M_C1_proxy": {
+          "s_cur": {
+            "mean": 0.11194023489952087,
+            "p10_p50_p90": [
+              0.00011294621508568525,
+              0.022901996970176697,
+              0.44623107910156257
+            ]
+          },
+          "s_other": {
+            "mean": 0.8389268517494202,
+            "p10_p50_p90": [
+              0.4736369252204895,
+              0.9352599382400513,
+              0.9818482398986816
+            ]
+          },
+          "s_hole": {
+            "mean": 0.04913290962576866,
+            "p10_p50_p90": [
+              0.004269218444824219,
+              0.028247296810150146,
+              0.10737245082855226
+            ]
+          }
+        },
+        "dynamic_unrecoverable": {
+          "s_cur": {
+            "mean": 0.16378897428512573,
+            "p10_p50_p90": [
+              0.0014878706308081749,
+              0.006528359372168779,
+              0.5918741226196289
+            ]
+          },
+          "s_other": {
+            "mean": 0.8178908824920654,
+            "p10_p50_p90": [
+              0.40516696870326996,
+              0.9466479420661926,
+              0.986742353439331
+            ]
+          },
+          "s_hole": {
+            "mean": 0.01832016371190548,
+            "p10_p50_p90": [
+              0.002958899736404419,
+              0.011081576347351074,
+              0.04180055260658265
+            ]
+          }
+        },
+        "static_static": {
+          "s_cur": {
+            "mean": 0.026528920978307724,
+            "p10_p50_p90": [
+              0.010228396952152252,
+              0.023484738543629646,
+              0.04276385456323624
+            ]
+          },
+          "s_other": {
+            "mean": 0.8081217408180237,
+            "p10_p50_p90": [
+              0.6264146566390991,
+              0.8445148468017578,
+              0.9343015909194946
+            ]
+          },
+          "s_hole": {
+            "mean": 0.1653493344783783,
+            "p10_p50_p90": [
+              0.049991393089294435,
+              0.12185657024383545,
+              0.339533269405365
+            ]
+          }
+        }
+      }
+    }
+  },
+  "cat": {
+    "initial": {
+      "scene": "cat",
+      "view": 0,
+      "query_frame_id": 1,
+      "split": "development",
+      "dynamic_label": "same-Gaussian pairwise displacement across queries0,25/49,1; threshold .005 normalized units",
+      "dynamic_fraction": 0.007958165369927883,
+      "K": 16,
+      "scale_to_meters": 3.840031385421753,
+      "source_indexing": "zero-based global frame index",
+      "quality_metrics_on_test": false,
+      "source_contribution_interpretation": "alpha mass in disagreement regions, not causal attribution of error",
+      "fusion_switches": {
+        "M2a-window1": {
+          "total": 3470649,
+          "dynamic": 27620,
+          "outside_or_unknown": 30565,
+          "removed_by_static_dynamic": 26155,
+          "removed_by_visibility": 0,
+          "static_removed_by_visibility": 0,
+          "current_source_removed_by_visibility": 0,
+          "false_deletion_GT_available": false,
+          "deleted_outside_reference_motion_proxy": 0
+        },
+        "M2b-window1": {
+          "total": 3470649,
+          "dynamic": 27620,
+          "outside_or_unknown": 30565,
+          "removed_by_static_dynamic": 26155,
+          "removed_by_visibility": 1140989,
+          "static_removed_by_visibility": 1140841,
+          "current_source_removed_by_visibility": 0,
+          "false_deletion_GT_available": false,
+          "deleted_outside_reference_motion_proxy": 1139805
+        },
+        "M2a-window2": {
+          "total": 3470649,
+          "dynamic": 27620,
+          "outside_or_unknown": 30565,
+          "removed_by_static_dynamic": 25805,
+          "removed_by_visibility": 0,
+          "static_removed_by_visibility": 0,
+          "current_source_removed_by_visibility": 0,
+          "false_deletion_GT_available": false,
+          "deleted_outside_reference_motion_proxy": 0
+        },
+        "M2b-window2": {
+          "total": 3470649,
+          "dynamic": 27620,
+          "outside_or_unknown": 30565,
+          "removed_by_static_dynamic": 25805,
+          "removed_by_visibility": 1141087,
+          "static_removed_by_visibility": 1140841,
+          "current_source_removed_by_visibility": 0,
+          "false_deletion_GT_available": false,
+          "deleted_outside_reference_motion_proxy": 1139885
+        }
+      },
+      "renders": [
+        {
+          "method": "M1-cur",
+          "mode": "pinhole",
+          "gaussians": 268324,
+          "sources": [
+            {
+              "source_frame_id": 1,
+              "alpha_mass_in_current_motion": 323.75970458984375,
+              "alpha_mass_in_ghost_disagreement_proxy": 235.9940185546875
+            }
+          ],
+          "ghost_disagreement_proxy_pixels": 1787,
+          "full_PSNR_development_only": 10.880056381225586,
+          "M_C1_proxy_PSNR_development_only": 13.796639442443848
+        },
+        {
+          "method": "M1-cur",
+          "mode": "dof",
+          "gaussians": 268324,
+          "sources": [
+            {
+              "source_frame_id": 1,
+              "alpha_mass_in_current_motion": 316.88677978515625,
+              "alpha_mass_in_ghost_disagreement_proxy": 291.83917236328125
+            }
+          ],
+          "ghost_disagreement_proxy_pixels": 1853,
+          "full_PSNR_development_only": 10.7749605178833,
+          "M_C1_proxy_PSNR_development_only": 13.713922500610352
+        },
+        {
+          "method": "M1",
+          "mode": "pinhole",
+          "gaussians": 3470649,
+          "sources": [
+            {
+              "source_frame_id": 1,
+              "alpha_mass_in_current_motion": 235.95167541503906,
+              "alpha_mass_in_ghost_disagreement_proxy": 22.093976974487305
+            },
+            {
+              "source_frame_id": 5,
+              "alpha_mass_in_current_motion": 78.40792083740234,
+              "alpha_mass_in_ghost_disagreement_proxy": 23.347003936767578
+            },
+            {
+              "source_frame_id": 9,
+              "alpha_mass_in_current_motion": 50.3466682434082,
+              "alpha_mass_in_ghost_disagreement_proxy": 11.212517738342285
+            },
+            {
+              "source_frame_id": 13,
+              "alpha_mass_in_current_motion": 53.96868896484375,
+              "alpha_mass_in_ghost_disagreement_proxy": 11.534798622131348
+            },
+            {
+              "source_frame_id": 17,
+              "alpha_mass_in_current_motion": 30.01926040649414,
+              "alpha_mass_in_ghost_disagreement_proxy": 5.776119709014893
+            },
+            {
+              "source_frame_id": 21,
+              "alpha_mass_in_current_motion": 34.95445251464844,
+              "alpha_mass_in_ghost_disagreement_proxy": 8.628942489624023
+            },
+            {
+              "source_frame_id": 26,
+              "alpha_mass_in_current_motion": 22.44089126586914,
+              "alpha_mass_in_ghost_disagreement_proxy": 7.487329959869385
+            },
+            {
+              "source_frame_id": 30,
+              "alpha_mass_in_current_motion": 8.569087982177734,
+              "alpha_mass_in_ghost_disagreement_proxy": 4.062852382659912
+            },
+            {
+              "source_frame_id": 34,
+              "alpha_mass_in_current_motion": 12.48652172088623,
+              "alpha_mass_in_ghost_disagreement_proxy": 1.6702004671096802
+            },
+            {
+              "source_frame_id": 38,
+              "alpha_mass_in_current_motion": 8.088733673095703,
+              "alpha_mass_in_ghost_disagreement_proxy": 1.2401676177978516
+            },
+            {
+              "source_frame_id": 42,
+              "alpha_mass_in_current_motion": 5.421723365783691,
+              "alpha_mass_in_ghost_disagreement_proxy": 0.8640419840812683
+            },
+            {
+              "source_frame_id": 46,
+              "alpha_mass_in_current_motion": 4.527606964111328,
+              "alpha_mass_in_ghost_disagreement_proxy": 0.6546811461448669
+            },
+            {
+              "source_frame_id": 50,
+              "alpha_mass_in_current_motion": 4.26413106918335,
+              "alpha_mass_in_ghost_disagreement_proxy": 0.5684712529182434
+            }
+          ],
+          "ghost_disagreement_proxy_pixels": 110,
+          "full_PSNR_development_only": 32.039791107177734,
+          "M_C1_proxy_PSNR_development_only": 33.03173065185547
+        },
+        {
+          "method": "M1",
+          "mode": "dof",
+          "gaussians": 3470649,
+          "sources": [
+            {
+              "source_frame_id": 1,
+              "alpha_mass_in_current_motion": 221.50485229492188,
+              "alpha_mass_in_ghost_disagreement_proxy": 81.56266784667969
+            },
+            {
+              "source_frame_id": 5,
+              "alpha_mass_in_current_motion": 80.85377502441406,
+              "alpha_mass_in_ghost_disagreement_proxy": 41.83796691894531
+            },
+            {
+              "source_frame_id": 9,
+              "alpha_mass_in_current_motion": 50.027427673339844,
+              "alpha_mass_in_ghost_disagreement_proxy": 27.155460357666016
+            },
+            {
+              "source_frame_id": 13,
+              "alpha_mass_in_current_motion": 57.460975646972656,
+              "alpha_mass_in_ghost_disagreement_proxy": 28.354854583740234
+            },
+            {
+              "source_frame_id": 17,
+              "alpha_mass_in_current_motion": 32.748870849609375,
+              "alpha_mass_in_ghost_disagreement_proxy": 14.803840637207031
+            },
+            {
+              "source_frame_id": 21,
+              "alpha_mass_in_current_motion": 36.51124954223633,
+              "alpha_mass_in_ghost_disagreement_proxy": 19.088653564453125
+            },
+            {
+              "source_frame_id": 26,
+              "alpha_mass_in_current_motion": 23.46515655517578,
+              "alpha_mass_in_ghost_disagreement_proxy": 13.699260711669922
+            },
+            {
+              "source_frame_id": 30,
+              "alpha_mass_in_current_motion": 9.804917335510254,
+              "alpha_mass_in_ghost_disagreement_proxy": 8.456298828125
+            },
+            {
+              "source_frame_id": 34,
+              "alpha_mass_in_current_motion": 12.443729400634766,
+              "alpha_mass_in_ghost_disagreement_proxy": 2.570028781890869
+            },
+            {
+              "source_frame_id": 38,
+              "alpha_mass_in_current_motion": 8.326635360717773,
+              "alpha_mass_in_ghost_disagreement_proxy": 1.9343516826629639
+            },
+            {
+              "source_frame_id": 42,
+              "alpha_mass_in_current_motion": 5.734444618225098,
+              "alpha_mass_in_ghost_disagreement_proxy": 1.3785556554794312
+            },
+            {
+              "source_frame_id": 46,
+              "alpha_mass_in_current_motion": 4.739445686340332,
+              "alpha_mass_in_ghost_disagreement_proxy": 0.9602651596069336
+            },
+            {
+              "source_frame_id": 50,
+              "alpha_mass_in_current_motion": 4.522933483123779,
+              "alpha_mass_in_ghost_disagreement_proxy": 0.8012183904647827
+            }
+          ],
+          "ghost_disagreement_proxy_pixels": 270,
+          "full_PSNR_development_only": 32.0669059753418,
+          "M_C1_proxy_PSNR_development_only": 31.878429412841797
+        },
+        {
+          "method": "static-sources",
+          "mode": "pinhole",
+          "gaussians": 3443029,
+          "static_source_vs_background_linear_MAE_in_Mt": 0.0813484713435173,
+          "full_PSNR_development_only": 30.143796920776367,
+          "M_C1_proxy_PSNR_development_only": 33.00896453857422
+        },
+        {
+          "method": "static-sources",
+          "mode": "dof",
+          "gaussians": 3443029,
+          "full_PSNR_development_only": 30.272829055786133,
+          "M_C1_proxy_PSNR_development_only": 31.85550880432129
+        },
+        {
+          "method": "dynamic-sources",
+          "mode": "pinhole",
+          "gaussians": 27620,
+          "dynamic_projection_IoU_with_Mt": 0.05449109897017479,
+          "full_PSNR_development_only": 8.4288330078125,
+          "M_C1_proxy_PSNR_development_only": 12.139626502990723
+        },
+        {
+          "method": "dynamic-sources",
+          "mode": "dof",
+          "gaussians": 27620,
+          "full_PSNR_development_only": 8.332112312316895,
+          "M_C1_proxy_PSNR_development_only": 12.089290618896484
+        },
+        {
+          "method": "M2a-window1",
+          "mode": "pinhole",
+          "gaussians": 3444494,
+          "full_PSNR_development_only": 32.03940963745117,
+          "M_C1_proxy_PSNR_development_only": 33.00896453857422
+        },
+        {
+          "method": "M2a-window1",
+          "mode": "dof",
+          "gaussians": 3444494,
+          "full_PSNR_development_only": 32.067142486572266,
+          "M_C1_proxy_PSNR_development_only": 31.85550880432129
+        },
+        {
+          "method": "M2b-window1",
+          "mode": "pinhole",
+          "gaussians": 2303505,
+          "full_PSNR_development_only": 17.542022705078125,
+          "M_C1_proxy_PSNR_development_only": 28.785381317138672
+        },
+        {
+          "method": "M2b-window1",
+          "mode": "dof",
+          "gaussians": 2303505,
+          "full_PSNR_development_only": 18.102466583251953,
+          "M_C1_proxy_PSNR_development_only": 28.58013916015625
+        },
+        {
+          "method": "M2a-window2",
+          "mode": "pinhole",
+          "gaussians": 3444844,
+          "full_PSNR_development_only": 32.04051208496094,
+          "M_C1_proxy_PSNR_development_only": 33.00896453857422
+        },
+        {
+          "method": "M2a-window2",
+          "mode": "dof",
+          "gaussians": 3444844,
+          "full_PSNR_development_only": 32.0670166015625,
+          "M_C1_proxy_PSNR_development_only": 31.85550880432129
+        },
+        {
+          "method": "M2b-window2",
+          "mode": "pinhole",
+          "gaussians": 2303757,
+          "full_PSNR_development_only": 17.542024612426758,
+          "M_C1_proxy_PSNR_development_only": 28.785381317138672
+        },
+        {
+          "method": "M2b-window2",
+          "mode": "dof",
+          "gaussians": 2303757,
+          "full_PSNR_development_only": 18.102468490600586,
+          "M_C1_proxy_PSNR_development_only": 28.58013916015625
+        }
+      ],
+      "render_seconds": 9.221896518021822,
+      "peak_allocated_mib": 2566.59912109375,
+      "time_convention_audit": {
+        "official_commit": "77262fac6724a12c0b133a4fee10e62772db6d0f",
+        "official_files": [
+          "src/data/*_dataset.py (times normalized0..1)",
+          "src/models/networks/vggsplat.py:300-350",
+          "src/models/splatrecon.py:110-129",
+          "src/models/gs_render/gs_renderer.py:80-88"
+        ],
+        "query_axis": "B,F_out,F_in,3+conf,H,W; query0 chosen, xyz channels only",
+        "application": "offset is identity-activated and ADDED to source unprojected xyz; same canonical world frame",
+        "scale": "one scalar multiplies means, scales, offsets and depth; lens dimensions in meters",
+        "conclusion": "matches official API indexing and normalization; this does not rule out network time-conditioning errors"
+      },
+      "diagnostic_thresholds": {
+        "ghost_proxy_max_channel_linear_rgb_error": 0.05,
+        "dynamic_projection_minimum_alpha": 0.1,
+        "multiquery_motion_range_normalized": 0.005,
+        "visibility_relative_margin": 0.02,
+        "visibility_absolute_margin_m": 0.01,
+        "native_opacity_minimum": 0.001
+      }
+    },
+    "visibility_followup": {
+      "scene": "cat",
+      "view": 0,
+      "query_frame_id": 1,
+      "split": "development",
+      "dynamic_label": "same-Gaussian pairwise displacement across queries0,25/49,1; threshold .005 normalized units",
+      "dynamic_fraction": 0.007958165369927883,
+      "K": 16,
+      "scale_to_meters": 3.840031385421753,
+      "source_indexing": "zero-based global frame index",
+      "quality_metrics_on_test": false,
+      "source_contribution_interpretation": "alpha mass in disagreement regions, not causal attribution of error",
+      "fusion_switches": {
+        "M2a-window1": {
+          "total": 3470649,
+          "dynamic": 27620,
+          "outside_or_unknown": 30565,
+          "removed_by_static_dynamic": 26155,
+          "removed_by_visibility": 0,
+          "static_removed_by_visibility": 0,
+          "current_source_removed_by_visibility": 0,
+          "false_deletion_GT_available": false,
+          "deleted_outside_reference_motion_proxy": 0
+        },
+        "M2b-window1": {
+          "total": 3470649,
+          "dynamic": 27620,
+          "outside_or_unknown": 30565,
+          "removed_by_static_dynamic": 26155,
+          "removed_by_visibility": 293543,
+          "static_removed_by_visibility": 293493,
+          "current_source_removed_by_visibility": 0,
+          "false_deletion_GT_available": false,
+          "deleted_outside_reference_motion_proxy": 293530,
+          "mesh_consistent_stable_background_candidates": 658866,
+          "deleted_mesh_consistent_static_proxy": 0,
+          "false_deletion_proxy_tolerance": "independent stable background and mesh first-hit depth within1%+1mm; not dynamic GT"
+        },
+        "M2a-window2": {
+          "total": 3470649,
+          "dynamic": 27620,
+          "outside_or_unknown": 30565,
+          "removed_by_static_dynamic": 25805,
+          "removed_by_visibility": 0,
+          "static_removed_by_visibility": 0,
+          "current_source_removed_by_visibility": 0,
+          "false_deletion_GT_available": false,
+          "deleted_outside_reference_motion_proxy": 0
+        },
+        "M2b-window2": {
+          "total": 3470649,
+          "dynamic": 27620,
+          "outside_or_unknown": 30565,
+          "removed_by_static_dynamic": 25805,
+          "removed_by_visibility": 293547,
+          "static_removed_by_visibility": 293493,
+          "current_source_removed_by_visibility": 0,
+          "false_deletion_GT_available": false,
+          "deleted_outside_reference_motion_proxy": 293532,
+          "mesh_consistent_stable_background_candidates": 658870,
+          "deleted_mesh_consistent_static_proxy": 0,
+          "false_deletion_proxy_tolerance": "independent stable background and mesh first-hit depth within1%+1mm; not dynamic GT"
+        }
+      },
+      "renders": [
+        {
+          "method": "M2b-window1",
+          "mode": "pinhole",
+          "gaussians": 3150951,
+          "M_C1_proxy_source_fractions": {
+            "s_cur": 0.018363580107688904,
+            "s_other": 0.8212597370147705,
+            "s_hole": 0.16037674248218536
+          },
+          "dynamic_unrecoverable_source_fractions": {
+            "s_cur": 0.012788243591785431,
+            "s_other": 0.76188725233078,
+            "s_hole": 0.22532443702220917
+          },
+          "static_static_source_fractions": {
+            "s_cur": 0.020186927169561386,
+            "s_other": 0.7976035475730896,
+            "s_hole": 0.18220946192741394
+          },
+          "full_PSNR_development_only": 31.912050247192383,
+          "M_C1_proxy_PSNR_development_only": 33.00896453857422
+        },
+        {
+          "method": "M2b-window1",
+          "mode": "dof",
+          "gaussians": 3150951,
+          "M_C1_proxy_source_fractions": {
+            "s_cur": 0.018411608412861824,
+            "s_other": 0.8194354176521301,
+            "s_hole": 0.16215302050113678
+          },
+          "dynamic_unrecoverable_source_fractions": {
+            "s_cur": 0.012421545572578907,
+            "s_other": 0.7660637497901917,
+            "s_hole": 0.2215147167444229
+          },
+          "static_static_source_fractions": {
+            "s_cur": 0.01947019249200821,
+            "s_other": 0.783039391040802,
+            "s_hole": 0.19749045372009277
+          },
+          "full_PSNR_development_only": 31.986053466796875,
+          "M_C1_proxy_PSNR_development_only": 31.855548858642578
+        },
+        {
+          "method": "M2b-window2",
+          "mode": "pinhole",
+          "gaussians": 3151297,
+          "M_C1_proxy_source_fractions": {
+            "s_cur": 0.018363580107688904,
+            "s_other": 0.8212597370147705,
+            "s_hole": 0.16037674248218536
+          },
+          "dynamic_unrecoverable_source_fractions": {
+            "s_cur": 0.012788243591785431,
+            "s_other": 0.76188725233078,
+            "s_hole": 0.22532443702220917
+          },
+          "static_static_source_fractions": {
+            "s_cur": 0.020186927169561386,
+            "s_other": 0.7976035475730896,
+            "s_hole": 0.18220946192741394
+          },
+          "full_PSNR_development_only": 31.91320037841797,
+          "M_C1_proxy_PSNR_development_only": 33.00896453857422
+        },
+        {
+          "method": "M2b-window2",
+          "mode": "dof",
+          "gaussians": 3151297,
+          "M_C1_proxy_source_fractions": {
+            "s_cur": 0.018411608412861824,
+            "s_other": 0.8194354176521301,
+            "s_hole": 0.16215302050113678
+          },
+          "dynamic_unrecoverable_source_fractions": {
+            "s_cur": 0.012421545572578907,
+            "s_other": 0.7660637497901917,
+            "s_hole": 0.2215147167444229
+          },
+          "static_static_source_fractions": {
+            "s_cur": 0.01947019249200821,
+            "s_other": 0.783039391040802,
+            "s_hole": 0.19749045372009277
+          },
+          "full_PSNR_development_only": 31.98594093322754,
+          "M_C1_proxy_PSNR_development_only": 31.855548858642578
+        }
+      ],
+      "visibility_relative_margin": 0.1,
+      "render_seconds": 3.494165677577257,
+      "peak_allocated_mib": 2118.79150390625,
+      "time_convention_audit": {
+        "official_commit": "77262fac6724a12c0b133a4fee10e62772db6d0f",
+        "official_files": [
+          "src/data/*_dataset.py (times normalized0..1)",
+          "src/models/networks/vggsplat.py:300-350",
+          "src/models/splatrecon.py:110-129",
+          "src/models/gs_render/gs_renderer.py:80-88"
+        ],
+        "query_axis": "B,F_out,F_in,3+conf,H,W; query0 chosen, xyz channels only",
+        "application": "offset is identity-activated and ADDED to source unprojected xyz; same canonical world frame",
+        "scale": "one scalar multiplies means, scales, offsets and depth; lens dimensions in meters",
+        "conclusion": "matches official API indexing and normalization; this does not rule out network time-conditioning errors"
+      },
+      "diagnostic_thresholds": {
+        "ghost_proxy_max_channel_linear_rgb_error": 0.05,
+        "dynamic_projection_minimum_alpha": 0.1,
+        "multiquery_motion_range_normalized": 0.005,
+        "visibility_relative_margin": 0.1,
+        "visibility_absolute_margin_m": 0.01,
+        "native_opacity_minimum": 0.001,
+        "mesh_consistent_static_proxy_relative_tolerance": 0.01,
+        "mesh_consistent_static_proxy_absolute_tolerance_m": 0.001
+      }
+    },
+    "dof_source_distributions_view0_frame1": {
+      "M1-cur": {
+        "M_C1_proxy": {
+          "s_cur": {
+            "mean": 0.07784554362297058,
+            "p10_p50_p90": [
+              0.04673764109611511,
+              0.06286728382110596,
+              0.1407279074192047
+            ]
+          },
+          "s_other": {
+            "mean": 0.0,
+            "p10_p50_p90": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "s_hole": {
+            "mean": 0.9221544861793518,
+            "p10_p50_p90": [
+              0.8592720925807953,
+              0.937132716178894,
+              0.9532624006271362
+            ]
+          }
+        },
+        "dynamic_unrecoverable": {
+          "s_cur": {
+            "mean": 0.05300946533679962,
+            "p10_p50_p90": [
+              0.05203623734414577,
+              0.052857961505651474,
+              0.054199856147170065
+            ]
+          },
+          "s_other": {
+            "mean": 0.0,
+            "p10_p50_p90": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "s_hole": {
+            "mean": 0.9469905495643616,
+            "p10_p50_p90": [
+              0.9458001554012299,
+              0.9471420645713806,
+              0.9479637563228607
+            ]
+          }
+        },
+        "static_static": {
+          "s_cur": {
+            "mean": 0.09345036000013351,
+            "p10_p50_p90": [
+              0.06001364476978779,
+              0.0902041420340538,
+              0.13591323792934418
+            ]
+          },
+          "s_other": {
+            "mean": 0.0,
+            "p10_p50_p90": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "s_hole": {
+            "mean": 0.9065496325492859,
+            "p10_p50_p90": [
+              0.8640867531299591,
+              0.9097958505153656,
+              0.9399863183498383
+            ]
+          }
+        }
+      },
+      "M1": {
+        "M_C1_proxy": {
+          "s_cur": {
+            "mean": 0.018408892676234245,
+            "p10_p50_p90": [
+              0.003207259578630328,
+              0.01859218068420887,
+              0.03133811913430692
+            ]
+          },
+          "s_other": {
+            "mean": 0.8222391605377197,
+            "p10_p50_p90": [
+              0.6612000346183777,
+              0.7779070734977722,
+              0.9809900879859924
+            ]
+          },
+          "s_hole": {
+            "mean": 0.15935193002223969,
+            "p10_p50_p90": [
+              0.010704857110977174,
+              0.20197150111198425,
+              0.3182689070701599
+            ]
+          }
+        },
+        "dynamic_unrecoverable": {
+          "s_cur": {
+            "mean": 0.012421545572578907,
+            "p10_p50_p90": [
+              0.011536446865648031,
+              0.012536735273897648,
+              0.013169149961322546
+            ]
+          },
+          "s_other": {
+            "mean": 0.7660637497901917,
+            "p10_p50_p90": [
+              0.7534868478775024,
+              0.7646504640579224,
+              0.7796681880950928
+            ]
+          },
+          "s_hole": {
+            "mean": 0.2215147167444229,
+            "p10_p50_p90": [
+              0.20860932469367982,
+              0.22279614210128784,
+              0.23341434001922606
+            ]
+          }
+        },
+        "static_static": {
+          "s_cur": {
+            "mean": 0.019064053893089294,
+            "p10_p50_p90": [
+              0.011471590492874384,
+              0.018248118460178375,
+              0.029097605869174006
+            ]
+          },
+          "s_other": {
+            "mean": 0.7884626388549805,
+            "p10_p50_p90": [
+              0.6775547087192536,
+              0.7985406816005707,
+              0.8933905243873597
+            ]
+          },
+          "s_hole": {
+            "mean": 0.19247326254844666,
+            "p10_p50_p90": [
+              0.09072129726409912,
+              0.1805516481399536,
+              0.30096753835678114
+            ]
+          }
+        }
+      },
+      "M2a-window2": {
+        "M_C1_proxy": {
+          "s_cur": {
+            "mean": 0.01841154508292675,
+            "p10_p50_p90": [
+              0.00321124205365777,
+              0.01859218068420887,
+              0.03133811913430692
+            ]
+          },
+          "s_other": {
+            "mean": 0.8194363117218018,
+            "p10_p50_p90": [
+              0.6612000346183777,
+              0.7779070734977722,
+              0.9779253959655761
+            ]
+          },
+          "s_hole": {
+            "mean": 0.16215214133262634,
+            "p10_p50_p90": [
+              0.014676779508590698,
+              0.20197150111198425,
+              0.3182689070701599
+            ]
+          }
+        },
+        "dynamic_unrecoverable": {
+          "s_cur": {
+            "mean": 0.012421545572578907,
+            "p10_p50_p90": [
+              0.011536446865648031,
+              0.012536735273897648,
+              0.013169149961322546
+            ]
+          },
+          "s_other": {
+            "mean": 0.7660637497901917,
+            "p10_p50_p90": [
+              0.7534868478775024,
+              0.7646504640579224,
+              0.7796681880950928
+            ]
+          },
+          "s_hole": {
+            "mean": 0.2215147167444229,
+            "p10_p50_p90": [
+              0.20860932469367982,
+              0.22279614210128784,
+              0.23341434001922606
+            ]
+          }
+        },
+        "static_static": {
+          "s_cur": {
+            "mean": 0.019064053893089294,
+            "p10_p50_p90": [
+              0.011471590492874384,
+              0.018248118460178375,
+              0.029097605869174006
+            ]
+          },
+          "s_other": {
+            "mean": 0.7884626388549805,
+            "p10_p50_p90": [
+              0.6775547087192536,
+              0.7985406816005707,
+              0.8933905243873597
+            ]
+          },
+          "s_hole": {
+            "mean": 0.19247326254844666,
+            "p10_p50_p90": [
+              0.09072129726409912,
+              0.1805516481399536,
+              0.30096753835678114
+            ]
+          }
+        }
+      },
+      "M2b-window2": {
+        "M_C1_proxy": {
+          "s_cur": {
+            "mean": 0.018411606550216675,
+            "p10_p50_p90": [
+              0.00321124205365777,
+              0.01859218068420887,
+              0.03133811913430692
+            ]
+          },
+          "s_other": {
+            "mean": 0.8194353580474854,
+            "p10_p50_p90": [
+              0.6612000346183777,
+              0.7779070734977722,
+              0.9779253959655761
+            ]
+          },
+          "s_hole": {
+            "mean": 0.16215300559997559,
+            "p10_p50_p90": [
+              0.014676779508590698,
+              0.20197150111198425,
+              0.3182689070701599
+            ]
+          }
+        },
+        "dynamic_unrecoverable": {
+          "s_cur": {
+            "mean": 0.012421545572578907,
+            "p10_p50_p90": [
+              0.011536446865648031,
+              0.012536735273897648,
+              0.013169149961322546
+            ]
+          },
+          "s_other": {
+            "mean": 0.7660637497901917,
+            "p10_p50_p90": [
+              0.7534868478775024,
+              0.7646504640579224,
+              0.7796681880950928
+            ]
+          },
+          "s_hole": {
+            "mean": 0.2215147167444229,
+            "p10_p50_p90": [
+              0.20860932469367982,
+              0.22279614210128784,
+              0.23341434001922606
+            ]
+          }
+        },
+        "static_static": {
+          "s_cur": {
+            "mean": 0.01947019249200821,
+            "p10_p50_p90": [
+              0.011471590492874384,
+              0.018273367546498775,
+              0.03081530705094338
+            ]
+          },
+          "s_other": {
+            "mean": 0.783039391040802,
+            "p10_p50_p90": [
+              0.662183141708374,
+              0.7959587872028351,
+              0.8933905243873597
+            ]
+          },
+          "s_hole": {
+            "mean": 0.19749045372009277,
+            "p10_p50_p90": [
+              0.09087169766426087,
+              0.18410912156105042,
+              0.3128820538520813
+            ]
+          }
+        }
+      }
+    }
+  }
+}

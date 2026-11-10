@@ -1,0 +1,64 @@
+{
+  "development_scenes": [
+    "plant",
+    "cat"
+  ],
+  "test_scenes": [
+    "ball",
+    "basketball_1",
+    "basketball_2",
+    "box",
+    "cube",
+    "lego"
+  ],
+  "views": [
+    0,
+    16,
+    33
+  ],
+  "input_frame_ids": [
+    1,
+    5,
+    9,
+    13,
+    17,
+    21,
+    26,
+    30,
+    34,
+    38,
+    42,
+    46,
+    50
+  ],
+  "resolution": 512,
+  "linear_rgb_motion_max_channel_threshold": 0.03,
+  "linear_rgb_background_agreement_threshold": 0.03,
+  "background_min_agreement_frames": 10,
+  "morphology_open_close_kernel": 3,
+  "minimum_motion_component_pixels": 16,
+  "recoverable_ratio_threshold": 0.8,
+  "minimum_footprint_background_confidence": 0.8,
+  "minimum_scene_pixels_candidate": 1000,
+  "minimum_scene_times_candidate": 3,
+  "aperture_samples": 16,
+  "mesh_axis_transform": [
+    1,
+    -1,
+    1
+  ],
+  "mesh_visibility_absolute_tolerance_m": 0.0001,
+  "mesh_visibility_relative_tolerance": 0.0001,
+  "time_correspondence_min_dynamic_pixels": 1000,
+  "time_correspondence_nonlocal_margin_fraction": 0.05,
+  "time_correspondence_nonlocal_exclusion_frames": 2,
+  "status": "development starting parameters; not frozen A3 criteria",
+  "test_policy": "masks and pixel counts only; box cached ghost diagnosis only; no method evaluation",
+  "method_development_final": {
+    "neighbor_window_input_steps": 2,
+    "motion_range_threshold_normalized": 0.005,
+    "visibility_relative_depth_margin": 0.1,
+    "visibility_absolute_margin_m": 0.01,
+    "initial_failed_visibility_relative_margin": 0.02
+  }
+}

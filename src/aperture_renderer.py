@@ -181,6 +181,9 @@ def render_aperture(scene: GaussianScene, intrinsics: Tensor, world_to_camera: T
     other = hits[..., source_ids != current_frame].sum(-1)
     output = {"rgb_linear": sum_image / samples, "alpha": alpha,
               "source_ids": source_ids, "t_ref_weights": hits,
+              "s_cur": current, "s_other": other, "s_hole": 1 - alpha,
+              "O_coverage": alpha,
+              "O_other_or_hole": other + (1 - alpha),  # legacy only
               "current_frame_weight": current, "other_frame_weight": other,
               "hole_fraction": 1 - alpha,
               "depth": sum_depth_mass / sum_alpha.clamp_min(1e-8),
@@ -193,12 +196,15 @@ def render_aperture(scene: GaussianScene, intrinsics: Tensor, world_to_camera: T
 
 
 def observability_statistics(rendered: dict) -> dict:
-    """Expose both conventions because the plan calls other-or-hole 'O'.
+    """Alpha-composited source fractions and coverage, not correctness.
 
-    O_other_or_hole grows with missing current-frame support. It must not be
-    interpreted as a reliability score whose low values trigger repair.
+    O_other_or_hole and the old support names are compatibility aliases only.
+    O_coverage includes incorrectly placed opaque geometry as well.
     """
-    return {"O_other_or_hole": rendered["other_frame_weight"] + rendered["hole_fraction"],
+    return {"s_cur": rendered["current_frame_weight"],
+            "s_other": rendered["other_frame_weight"],
+            "s_hole": rendered["hole_fraction"], "O_coverage": rendered["alpha"],
+            "O_other_or_hole": rendered["other_frame_weight"] + rendered["hole_fraction"],
             "current_frame_support": rendered["current_frame_weight"],
             "observed_support": rendered["alpha"], "hole_fraction": rendered["hole_fraction"]}
 
