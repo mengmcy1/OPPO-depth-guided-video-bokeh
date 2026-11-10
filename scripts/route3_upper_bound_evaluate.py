@@ -154,7 +154,7 @@ def evaluate(a):
     if a.record.exists():raise FileExistsError(a.record)
     a.record.write_text(json.dumps(report,indent=2)+'\n')
     with a.record.with_suffix('.csv').open('w',newline='') as f:
-        writer=csv.DictWriter(f,fieldnames=list(flat[0]));writer.writeheader();writer.writerows(flat)
+        writer=csv.DictWriter(f,fieldnames=list(flat[0]),lineterminator='\n');writer.writeheader();writer.writerows(flat)
 
 
 def main():
