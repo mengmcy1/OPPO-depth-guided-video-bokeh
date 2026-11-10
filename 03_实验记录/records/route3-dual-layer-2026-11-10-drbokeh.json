@@ -1,0 +1,1142 @@
+{
+  "stage": "L0 prerequisite Oracle-input Dr.Bokeh",
+  "rule": {
+    "in_focus": "known visible GT surfaces, abs(physical CoC radius)<=1px",
+    "focus_identity_PSNR_vs_O3_allowed_drop_dB": 0.5,
+    "judgement": "pool RGB SSE independently per scene/focus over f1.4/f2 and frames1/30/60; every primary high focus must pass",
+    "no_native_kernel_or_CoC_retuning": true
+  },
+  "rows": [
+    {
+      "id": "B2-low-f001-N1.4-F5.3",
+      "scene": "B2-low",
+      "frame": 1,
+      "focus_m": 5.3,
+      "fstop": 1.4,
+      "unknown_sky_pixels": 46187,
+      "sky_depth_m": 10000.0,
+      "focus_pixels": 206944,
+      "O3_to_input": {
+        "pixels": 206944,
+        "sse": 74.27552356552293,
+        "psnr": 39.22128372173843,
+        "excluded_nonfinite_pixels": 0
+      },
+      "native_to_input": {
+        "pixels": 206944,
+        "sse": 378.662546003957,
+        "psnr": 32.14721743363426,
+        "excluded_nonfinite_pixels": 0
+      },
+      "repaired_to_input": {
+        "pixels": 206944,
+        "sse": 375.42495070986365,
+        "psnr": 32.18450961568361,
+        "excluded_nonfinite_pixels": 0
+      },
+      "mapping": {
+        "min": 0.0001,
+        "max": 0.2812463392514387,
+        "span": 0.2811463392514387,
+        "focus": 0.18867924528301888,
+        "focus_prime": 0.6707512030393754,
+        "K_manifest": 12.6984126984127,
+        "K_Dr": 3.5701122444627145,
+        "signed_CoC_error_float64": 4.440892098500626e-16,
+        "signed_CoC_error_float32": 1.5850393170202537e-07,
+        "nominal_input_radius_max": 2.3946570829589704
+      },
+      "replay_max_error": 1.7881393432617188e-07,
+      "seconds": 0.38036366179585457,
+      "peak_allocated_MiB": 52.03955078125
+    },
+    {
+      "id": "B2-low-f001-N1.4-F8.4",
+      "scene": "B2-low",
+      "frame": 1,
+      "focus_m": 8.4,
+      "fstop": 1.4,
+      "unknown_sky_pixels": 46187,
+      "sky_depth_m": 10000.0,
+      "focus_pixels": 167309,
+      "O3_to_input": {
+        "pixels": 167309,
+        "sse": 6.09838799905748,
+        "psnr": 49.15425506055759,
+        "excluded_nonfinite_pixels": 0
+      },
+      "native_to_input": {
+        "pixels": 167309,
+        "sse": 125.58677986701704,
+        "psnr": 36.01696633209241,
+        "excluded_nonfinite_pixels": 0
+      },
+      "repaired_to_input": {
+        "pixels": 167309,
+        "sse": 122.40223401481184,
+        "psnr": 36.12851213802135,
+        "excluded_nonfinite_pixels": 0
+      },
+      "mapping": {
+        "min": 0.0001,
+        "max": 0.2812463392514387,
+        "span": 0.2811463392514387,
+        "focus": 0.11904761904761904,
+        "focus_prime": 0.42308080327249126,
+        "K_manifest": 12.6984126984127,
+        "K_Dr": 3.5701122444627145,
+        "signed_CoC_error_float64": 6.661338147750939e-16,
+        "signed_CoC_error_float32": 1.8489615438710416e-07,
+        "nominal_input_radius_max": 2.059666288302472
+      },
+      "replay_max_error": 1.7881393432617188e-07,
+      "seconds": 0.2859862260520458,
+      "peak_allocated_MiB": 52.03955078125
+    },
+    {
+      "id": "B2-low-f001-N2-F5.3",
+      "scene": "B2-low",
+      "frame": 1,
+      "focus_m": 5.3,
+      "fstop": 2.0,
+      "unknown_sky_pixels": 46187,
+      "sky_depth_m": 10000.0,
+      "focus_pixels": 215957,
+      "O3_to_input": {
+        "pixels": 215957,
+        "sse": 8.973135075508587,
+        "psnr": 48.58544335116253,
+        "excluded_nonfinite_pixels": 0
+      },
+      "native_to_input": {
+        "pixels": 215957,
+        "sse": 279.985622956327,
+        "psnr": 33.643528092605756,
+        "excluded_nonfinite_pixels": 0
+      },
+      "repaired_to_input": {
+        "pixels": 215957,
+        "sse": 276.56115459565905,
+        "psnr": 33.69697360848402,
+        "excluded_nonfinite_pixels": 0
+      },
+      "mapping": {
+        "min": 0.0001,
+        "max": 0.2812463392514387,
+        "span": 0.2811463392514387,
+        "focus": 0.18867924528301888,
+        "focus_prime": 0.6707512030393754,
+        "K_manifest": 8.88888888888889,
+        "K_Dr": 2.4990785711239,
+        "signed_CoC_error_float64": 3.3306690738754696e-16,
+        "signed_CoC_error_float32": 1.2655804171313179e-07,
+        "nominal_input_radius_max": 1.6762599580712791
+      },
+      "replay_max_error": 0.0,
+      "seconds": 0.29498478025197983,
+      "peak_allocated_MiB": 52.03955078125
+    },
+    {
+      "id": "B2-low-f001-N2-F8.4",
+      "scene": "B2-low",
+      "frame": 1,
+      "focus_m": 8.4,
+      "fstop": 2.0,
+      "unknown_sky_pixels": 46187,
+      "sky_depth_m": 10000.0,
+      "focus_pixels": 188309,
+      "O3_to_input": {
+        "pixels": 188309,
+        "sse": 1.4672181450888457,
+        "psnr": 55.85497642530159,
+        "excluded_nonfinite_pixels": 0
+      },
+      "native_to_input": {
+        "pixels": 188309,
+        "sse": 122.26628818777883,
+        "psnr": 36.64685603900708,
+        "excluded_nonfinite_pixels": 0
+      },
+      "repaired_to_input": {
+        "pixels": 188309,
+        "sse": 121.56701316386417,
+        "psnr": 36.671765853631264,
+        "excluded_nonfinite_pixels": 0
+      },
+      "mapping": {
+        "min": 0.0001,
+        "max": 0.2812463392514387,
+        "span": 0.2811463392514387,
+        "focus": 0.11904761904761904,
+        "focus_prime": 0.42308080327249126,
+        "K_manifest": 8.88888888888889,
+        "K_Dr": 2.4990785711239,
+        "signed_CoC_error_float64": 6.661338147750939e-16,
+        "signed_CoC_error_float32": 1.2838102225742887e-07,
+        "nominal_input_radius_max": 1.4417664018117304
+      },
+      "replay_max_error": 0.0,
+      "seconds": 0.2990518882870674,
+      "peak_allocated_MiB": 52.03955078125
+    },
+    {
+      "id": "B2-low-f030-N1.4-F5.3",
+      "scene": "B2-low",
+      "frame": 30,
+      "focus_m": 5.3,
+      "fstop": 1.4,
+      "unknown_sky_pixels": 47288,
+      "sky_depth_m": 10000.0,
+      "focus_pixels": 207088,
+      "O3_to_input": {
+        "pixels": 207088,
+        "sse": 76.3274951342355,
+        "psnr": 39.10595178325541,
+        "excluded_nonfinite_pixels": 0
+      },
+      "native_to_input": {
+        "pixels": 207088,
+        "sse": 351.60306002109644,
+        "psnr": 32.472235424416695,
+        "excluded_nonfinite_pixels": 0
+      },
+      "repaired_to_input": {
+        "pixels": 207088,
+        "sse": 348.9270131265221,
+        "psnr": 32.505415957198316,
+        "excluded_nonfinite_pixels": 0
+      },
+      "mapping": {
+        "min": 0.0001,
+        "max": 0.2775282035625713,
+        "span": 0.2774282035625713,
+        "focus": 0.18867924528301888,
+        "focus_prime": 0.6797407143952711,
+        "K_manifest": 12.6984126984127,
+        "K_Dr": 3.5228978230167787,
+        "signed_CoC_error_float64": 4.440892098500626e-16,
+        "signed_CoC_error_float32": 1.7710485955557687e-07,
+        "nominal_input_radius_max": 2.3946570829589704
+      },
+      "replay_max_error": 0.0,
+      "seconds": 0.2929731048643589,
+      "peak_allocated_MiB": 52.03955078125
+    },
+    {
+      "id": "B2-low-f030-N1.4-F8.4",
+      "scene": "B2-low",
+      "frame": 30,
+      "focus_m": 8.4,
+      "fstop": 1.4,
+      "unknown_sky_pixels": 47288,
+      "sky_depth_m": 10000.0,
+      "focus_pixels": 169800,
+      "O3_to_input": {
+        "pixels": 169800,
+        "sse": 5.3681530833710935,
+        "psnr": 49.77234048534585,
+        "excluded_nonfinite_pixels": 0
+      },
+      "native_to_input": {
+        "pixels": 169800,
+        "sse": 92.31011164679632,
+        "psnr": 37.418096643917266,
+        "excluded_nonfinite_pixels": 0
+      },
+      "repaired_to_input": {
+        "pixels": 169800,
+        "sse": 91.68736394314266,
+        "psnr": 37.447494538987115,
+        "excluded_nonfinite_pixels": 0
+      },
+      "mapping": {
+        "min": 0.0001,
+        "max": 0.2775282035625713,
+        "span": 0.2774282035625713,
+        "focus": 0.11904761904761904,
+        "focus_prime": 0.42875099762808194,
+        "K_manifest": 12.6984126984127,
+        "K_Dr": 3.5228978230167787,
+        "signed_CoC_error_float64": 4.440892098500626e-16,
+        "signed_CoC_error_float32": 1.8091393316765902e-07,
+        "nominal_input_radius_max": 2.0124518668565368
+      },
+      "replay_max_error": 0.0,
+      "seconds": 0.27999766916036606,
+      "peak_allocated_MiB": 52.03955078125
+    },
+    {
+      "id": "B2-low-f030-N2-F5.3",
+      "scene": "B2-low",
+      "frame": 30,
+      "focus_m": 5.3,
+      "fstop": 2.0,
+      "unknown_sky_pixels": 47288,
+      "sky_depth_m": 10000.0,
+      "focus_pixels": 214856,
+      "O3_to_input": {
+        "pixels": 214856,
+        "sse": 9.41767923270574,
+        "psnr": 48.353248466418506,
+        "excluded_nonfinite_pixels": 0
+      },
+      "native_to_input": {
+        "pixels": 214856,
+        "sse": 255.14251905991824,
+        "psnr": 34.02485901811904,
+        "excluded_nonfinite_pixels": 0
+      },
+      "repaired_to_input": {
+        "pixels": 214856,
+        "sse": 252.27930743605197,
+        "psnr": 34.073871107918414,
+        "excluded_nonfinite_pixels": 0
+      },
+      "mapping": {
+        "min": 0.0001,
+        "max": 0.2775282035625713,
+        "span": 0.2774282035625713,
+        "focus": 0.18867924528301888,
+        "focus_prime": 0.6797407143952711,
+        "K_manifest": 8.88888888888889,
+        "K_Dr": 2.4660284761117452,
+        "signed_CoC_error_float64": 4.440892098500626e-16,
+        "signed_CoC_error_float32": 1.0975660502676732e-07,
+        "nominal_input_radius_max": 1.6762599580712791
+      },
+      "replay_max_error": 0.0,
+      "seconds": 0.296458687633276,
+      "peak_allocated_MiB": 52.03955078125
+    },
+    {
+      "id": "B2-low-f030-N2-F8.4",
+      "scene": "B2-low",
+      "frame": 30,
+      "focus_m": 8.4,
+      "fstop": 2.0,
+      "unknown_sky_pixels": 47288,
+      "sky_depth_m": 10000.0,
+      "focus_pixels": 188744,
+      "O3_to_input": {
+        "pixels": 188744,
+        "sse": 1.2352578000843215,
+        "psnr": 56.612368044741295,
+        "excluded_nonfinite_pixels": 0
+      },
+      "native_to_input": {
+        "pixels": 188744,
+        "sse": 90.90877549588284,
+        "psnr": 37.94388601379169,
+        "excluded_nonfinite_pixels": 0
+      },
+      "repaired_to_input": {
+        "pixels": 188744,
+        "sse": 90.32244029834776,
+        "psnr": 37.9719874673055,
+        "excluded_nonfinite_pixels": 0
+      },
+      "mapping": {
+        "min": 0.0001,
+        "max": 0.2775282035625713,
+        "span": 0.2774282035625713,
+        "focus": 0.11904761904761904,
+        "focus_prime": 0.42875099762808194,
+        "K_manifest": 8.88888888888889,
+        "K_Dr": 2.4660284761117452,
+        "signed_CoC_error_float64": 4.440892098500626e-16,
+        "signed_CoC_error_float32": 1.170356447310894e-07,
+        "nominal_input_radius_max": 1.4087163067995756
+      },
+      "replay_max_error": 0.0,
+      "seconds": 0.293936338275671,
+      "peak_allocated_MiB": 52.03955078125
+    },
+    {
+      "id": "B2-low-f060-N1.4-F5.3",
+      "scene": "B2-low",
+      "frame": 60,
+      "focus_m": 5.3,
+      "fstop": 1.4,
+      "unknown_sky_pixels": 46187,
+      "sky_depth_m": 10000.0,
+      "focus_pixels": 206944,
+      "O3_to_input": {
+        "pixels": 206944,
+        "sse": 73.98806422512374,
+        "psnr": 39.238124291105294,
+        "excluded_nonfinite_pixels": 0
+      },
+      "native_to_input": {
+        "pixels": 206944,
+        "sse": 354.46474656814695,
+        "psnr": 32.434010452496764,
+        "excluded_nonfinite_pixels": 0
+      },
+      "repaired_to_input": {
+        "pixels": 206944,
+        "sse": 351.3390556388867,
+        "psnr": 32.47247664360691,
+        "excluded_nonfinite_pixels": 0
+      },
+      "mapping": {
+        "min": 0.0001,
+        "max": 0.2812463392514387,
+        "span": 0.2811463392514387,
+        "focus": 0.18867924528301888,
+        "focus_prime": 0.6707512030393754,
+        "K_manifest": 12.6984126984127,
+        "K_Dr": 3.5701122444627145,
+        "signed_CoC_error_float64": 4.440892098500626e-16,
+        "signed_CoC_error_float32": 1.575941642184553e-07,
+        "nominal_input_radius_max": 2.3946570829589704
+      },
+      "replay_max_error": 1.7881393432617188e-07,
+      "seconds": 0.27859633415937424,
+      "peak_allocated_MiB": 52.03955078125
+    },
+    {
+      "id": "B2-low-f060-N1.4-F8.4",
+      "scene": "B2-low",
+      "frame": 60,
+      "focus_m": 8.4,
+      "fstop": 1.4,
+      "unknown_sky_pixels": 46187,
+      "sky_depth_m": 10000.0,
+      "focus_pixels": 169877,
+      "O3_to_input": {
+        "pixels": 169877,
+        "sse": 6.153194404955589,
+        "psnr": 49.18155201066199,
+        "excluded_nonfinite_pixels": 0
+      },
+      "native_to_input": {
+        "pixels": 169877,
+        "sse": 89.53715258992636,
+        "psnr": 37.55252558457962,
+        "excluded_nonfinite_pixels": 0
+      },
+      "repaired_to_input": {
+        "pixels": 169877,
+        "sse": 88.75032506913142,
+        "psnr": 37.590858850999275,
+        "excluded_nonfinite_pixels": 0
+      },
+      "mapping": {
+        "min": 0.0001,
+        "max": 0.2812463392514387,
+        "span": 0.2811463392514387,
+        "focus": 0.11904761904761904,
+        "focus_prime": 0.42308080327249126,
+        "K_manifest": 12.6984126984127,
+        "K_Dr": 3.5701122444627145,
+        "signed_CoC_error_float64": 6.661338147750939e-16,
+        "signed_CoC_error_float32": 1.8489615438710416e-07,
+        "nominal_input_radius_max": 2.059666288302472
+      },
+      "replay_max_error": 1.7881393432617188e-07,
+      "seconds": 0.29042235016822815,
+      "peak_allocated_MiB": 52.03955078125
+    },
+    {
+      "id": "B2-low-f060-N2-F5.3",
+      "scene": "B2-low",
+      "frame": 60,
+      "focus_m": 5.3,
+      "fstop": 2.0,
+      "unknown_sky_pixels": 46187,
+      "sky_depth_m": 10000.0,
+      "focus_pixels": 215957,
+      "O3_to_input": {
+        "pixels": 215957,
+        "sse": 8.886313110713129,
+        "psnr": 48.627669288795445,
+        "excluded_nonfinite_pixels": 0
+      },
+      "native_to_input": {
+        "pixels": 215957,
+        "sse": 254.53075269349497,
+        "psnr": 34.05748278698419,
+        "excluded_nonfinite_pixels": 0
+      },
+      "repaired_to_input": {
+        "pixels": 215957,
+        "sse": 251.23816623238892,
+        "psnr": 34.11402925629594,
+        "excluded_nonfinite_pixels": 0
+      },
+      "mapping": {
+        "min": 0.0001,
+        "max": 0.2812463392514387,
+        "span": 0.2811463392514387,
+        "focus": 0.18867924528301888,
+        "focus_prime": 0.6707512030393754,
+        "K_manifest": 8.88888888888889,
+        "K_Dr": 2.4990785711239,
+        "signed_CoC_error_float64": 3.3306690738754696e-16,
+        "signed_CoC_error_float32": 1.2655804171313179e-07,
+        "nominal_input_radius_max": 1.6762599580712791
+      },
+      "replay_max_error": 0.0,
+      "seconds": 0.2719189263880253,
+      "peak_allocated_MiB": 52.03955078125
+    },
+    {
+      "id": "B2-low-f060-N2-F8.4",
+      "scene": "B2-low",
+      "frame": 60,
+      "focus_m": 8.4,
+      "fstop": 2.0,
+      "unknown_sky_pixels": 46187,
+      "sky_depth_m": 10000.0,
+      "focus_pixels": 188309,
+      "O3_to_input": {
+        "pixels": 188309,
+        "sse": 1.3885563912911543,
+        "psnr": 56.09428810035874,
+        "excluded_nonfinite_pixels": 0
+      },
+      "native_to_input": {
+        "pixels": 188309,
+        "sse": 87.74217494542644,
+        "psnr": 38.08783936353457,
+        "excluded_nonfinite_pixels": 0
+      },
+      "repaired_to_input": {
+        "pixels": 188309,
+        "sse": 87.05880393575386,
+        "psnr": 38.12179635536416,
+        "excluded_nonfinite_pixels": 0
+      },
+      "mapping": {
+        "min": 0.0001,
+        "max": 0.2812463392514387,
+        "span": 0.2811463392514387,
+        "focus": 0.11904761904761904,
+        "focus_prime": 0.42308080327249126,
+        "K_manifest": 8.88888888888889,
+        "K_Dr": 2.4990785711239,
+        "signed_CoC_error_float64": 6.661338147750939e-16,
+        "signed_CoC_error_float32": 1.2838102225742887e-07,
+        "nominal_input_radius_max": 1.4417664018117304
+      },
+      "replay_max_error": 0.0,
+      "seconds": 0.2971157506108284,
+      "peak_allocated_MiB": 52.03955078125
+    },
+    {
+      "id": "B2-high-f001-N1.4-F1.4",
+      "scene": "B2-high",
+      "frame": 1,
+      "focus_m": 1.4,
+      "fstop": 1.4,
+      "unknown_sky_pixels": 25388,
+      "sky_depth_m": 10000.0,
+      "focus_pixels": 62690,
+      "O3_to_input": {
+        "pixels": 62690,
+        "sse": 6.164161620139145,
+        "psnr": 44.84445507456041,
+        "excluded_nonfinite_pixels": 0
+      },
+      "native_to_input": {
+        "pixels": 62690,
+        "sse": 17.065890729609567,
+        "psnr": 40.421905639768454,
+        "excluded_nonfinite_pixels": 0
+      },
+      "repaired_to_input": {
+        "pixels": 62690,
+        "sse": 19.04723226446805,
+        "psnr": 39.94487646887996,
+        "excluded_nonfinite_pixels": 0
+      },
+      "mapping": {
+        "min": 0.0001,
+        "max": 0.7491199728521738,
+        "span": 0.7490199728521738,
+        "focus": 0.7142857142857143,
+        "focus_prime": 0.9534935518023437,
+        "K_manifest": 12.6984126984127,
+        "K_Dr": 9.51136473463078,
+        "signed_CoC_error_float64": 1.7763568394002505e-15,
+        "signed_CoC_error_float32": 6.782187629283953e-07,
+        "nominal_input_radius_max": 9.069024943310659
+      },
+      "replay_max_error": 2.980232238769531e-07,
+      "seconds": 0.28941741585731506,
+      "peak_allocated_MiB": 52.03955078125
+    },
+    {
+      "id": "B2-high-f001-N1.4-F5",
+      "scene": "B2-high",
+      "frame": 1,
+      "focus_m": 5.0,
+      "fstop": 1.4,
+      "unknown_sky_pixels": 25388,
+      "sky_depth_m": 10000.0,
+      "focus_pixels": 149015,
+      "O3_to_input": {
+        "pixels": 149015,
+        "sse": 145.75318008379486,
+        "psnr": 34.86733202759031,
+        "excluded_nonfinite_pixels": 0
+      },
+      "native_to_input": {
+        "pixels": 149015,
+        "sse": 152.1568607124467,
+        "psnr": 34.680597024938166,
+        "excluded_nonfinite_pixels": 0
+      },
+      "repaired_to_input": {
+        "pixels": 149015,
+        "sse": 154.3484251510369,
+        "psnr": 34.61849039208229,
+        "excluded_nonfinite_pixels": 0
+      },
+      "mapping": {
+        "min": 0.0001,
+        "max": 0.7491199728521738,
+        "span": 0.7490199728521738,
+        "focus": 0.2,
+        "focus_prime": 0.2668820688970495,
+        "K_manifest": 12.6984126984127,
+        "K_Dr": 9.51136473463078,
+        "signed_CoC_error_float64": 2.6645352591003757e-15,
+        "signed_CoC_error_float32": 7.309667688915056e-07,
+        "nominal_input_radius_max": 6.972952036218081
+      },
+      "replay_max_error": 2.980232238769531e-07,
+      "seconds": 0.28470735624432564,
+      "peak_allocated_MiB": 52.03955078125
+    },
+    {
+      "id": "B2-high-f001-N2-F1.4",
+      "scene": "B2-high",
+      "frame": 1,
+      "focus_m": 1.4,
+      "fstop": 2.0,
+      "unknown_sky_pixels": 25388,
+      "sky_depth_m": 10000.0,
+      "focus_pixels": 65091,
+      "O3_to_input": {
+        "pixels": 65091,
+        "sse": 3.927409597433485,
+        "psnr": 46.96536001349337,
+        "excluded_nonfinite_pixels": 0
+      },
+      "native_to_input": {
+        "pixels": 65091,
+        "sse": 12.35530781113743,
+        "psnr": 41.98788628856211,
+        "excluded_nonfinite_pixels": 0
+      },
+      "repaired_to_input": {
+        "pixels": 65091,
+        "sse": 14.841260251418205,
+        "psnr": 41.19171417630774,
+        "excluded_nonfinite_pixels": 0
+      },
+      "mapping": {
+        "min": 0.0001,
+        "max": 0.7491199728521738,
+        "span": 0.7490199728521738,
+        "focus": 0.7142857142857143,
+        "focus_prime": 0.9534935518023437,
+        "K_manifest": 8.88888888888889,
+        "K_Dr": 6.657955314241545,
+        "signed_CoC_error_float64": 1.7763568394002505e-15,
+        "signed_CoC_error_float32": 7.384339886229441e-07,
+        "nominal_input_radius_max": 6.348317460317461
+      },
+      "replay_max_error": 0.0,
+      "seconds": 0.2762884423136711,
+      "peak_allocated_MiB": 52.03955078125
+    },
+    {
+      "id": "B2-high-f001-N2-F5",
+      "scene": "B2-high",
+      "frame": 1,
+      "focus_m": 5.0,
+      "fstop": 2.0,
+      "unknown_sky_pixels": 25388,
+      "sky_depth_m": 10000.0,
+      "focus_pixels": 159335,
+      "O3_to_input": {
+        "pixels": 159335,
+        "sse": 99.39195786973188,
+        "psnr": 36.8208119379395,
+        "excluded_nonfinite_pixels": 0
+      },
+      "native_to_input": {
+        "pixels": 159335,
+        "sse": 140.03227812166242,
+        "psnr": 35.33204285208236,
+        "excluded_nonfinite_pixels": 0
+      },
+      "repaired_to_input": {
+        "pixels": 159335,
+        "sse": 142.2172944047745,
+        "psnr": 35.264800272161736,
+        "excluded_nonfinite_pixels": 0
+      },
+      "mapping": {
+        "min": 0.0001,
+        "max": 0.7491199728521738,
+        "span": 0.7490199728521738,
+        "focus": 0.2,
+        "focus_prime": 0.2668820688970495,
+        "K_manifest": 8.88888888888889,
+        "K_Dr": 6.657955314241545,
+        "signed_CoC_error_float64": 1.7763568394002505e-15,
+        "signed_CoC_error_float32": 4.925188390458857e-07,
+        "nominal_input_radius_max": 4.881066425352657
+      },
+      "replay_max_error": 0.0,
+      "seconds": 0.29238681867718697,
+      "peak_allocated_MiB": 52.03955078125
+    },
+    {
+      "id": "B2-high-f030-N1.4-F1.4",
+      "scene": "B2-high",
+      "frame": 30,
+      "focus_m": 1.4,
+      "fstop": 1.4,
+      "unknown_sky_pixels": 24698,
+      "sky_depth_m": 10000.0,
+      "focus_pixels": 58893,
+      "O3_to_input": {
+        "pixels": 58893,
+        "sse": 7.60525215209111,
+        "psnr": 43.66071314835503,
+        "excluded_nonfinite_pixels": 0
+      },
+      "native_to_input": {
+        "pixels": 58893,
+        "sse": 21.59642342292633,
+        "psnr": 39.12803098764619,
+        "excluded_nonfinite_pixels": 0
+      },
+      "repaired_to_input": {
+        "pixels": 58893,
+        "sse": 16.64569597903549,
+        "psnr": 40.25882974182974,
+        "excluded_nonfinite_pixels": 0
+      },
+      "mapping": {
+        "min": 0.0001,
+        "max": 0.7306217455699251,
+        "span": 0.7305217455699251,
+        "focus": 0.7142857142857143,
+        "focus_prime": 0.9776378576226146,
+        "K_manifest": 12.6984126984127,
+        "K_Dr": 9.276466610411749,
+        "signed_CoC_error_float64": 2.6645352591003757e-15,
+        "signed_CoC_error_float32": 7.631984191291963e-07,
+        "nominal_input_radius_max": 9.069024943310659
+      },
+      "replay_max_error": 0.0,
+      "seconds": 0.304621659219265,
+      "peak_allocated_MiB": 52.03955078125
+    },
+    {
+      "id": "B2-high-f030-N1.4-F5",
+      "scene": "B2-high",
+      "frame": 30,
+      "focus_m": 5.0,
+      "fstop": 1.4,
+      "unknown_sky_pixels": 24698,
+      "sky_depth_m": 10000.0,
+      "focus_pixels": 144629,
+      "O3_to_input": {
+        "pixels": 144629,
+        "sse": 142.62225719077892,
+        "psnr": 34.83189332649494,
+        "excluded_nonfinite_pixels": 0
+      },
+      "native_to_input": {
+        "pixels": 144629,
+        "sse": 152.90770120851295,
+        "psnr": 34.52947278876054,
+        "excluded_nonfinite_pixels": 0
+      },
+      "repaired_to_input": {
+        "pixels": 144629,
+        "sse": 155.66551046968468,
+        "psnr": 34.451842379551344,
+        "excluded_nonfinite_pixels": 0
+      },
+      "mapping": {
+        "min": 0.0001,
+        "max": 0.7306217455699251,
+        "span": 0.7305217455699251,
+        "focus": 0.2,
+        "focus_prime": 0.2736400404399265,
+        "K_manifest": 12.6984126984127,
+        "K_Dr": 9.276466610411749,
+        "signed_CoC_error_float64": 1.7763568394002505e-15,
+        "signed_CoC_error_float32": 6.393951412775323e-07,
+        "nominal_input_radius_max": 6.73805391199905
+      },
+      "replay_max_error": 0.0,
+      "seconds": 0.2814885303378105,
+      "peak_allocated_MiB": 52.03955078125
+    },
+    {
+      "id": "B2-high-f030-N2-F1.4",
+      "scene": "B2-high",
+      "frame": 30,
+      "focus_m": 1.4,
+      "fstop": 2.0,
+      "unknown_sky_pixels": 24698,
+      "sky_depth_m": 10000.0,
+      "focus_pixels": 68474,
+      "O3_to_input": {
+        "pixels": 68474,
+        "sse": 4.270315286597007,
+        "psnr": 46.821870121111715,
+        "excluded_nonfinite_pixels": 0
+      },
+      "native_to_input": {
+        "pixels": 68474,
+        "sse": 14.349342126827654,
+        "psnr": 41.55814962758086,
+        "excluded_nonfinite_pixels": 0
+      },
+      "repaired_to_input": {
+        "pixels": 68474,
+        "sse": 14.298075600354245,
+        "psnr": 41.573693641728234,
+        "excluded_nonfinite_pixels": 0
+      },
+      "mapping": {
+        "min": 0.0001,
+        "max": 0.7306217455699251,
+        "span": 0.7305217455699251,
+        "focus": 0.7142857142857143,
+        "focus_prime": 0.9776378576226146,
+        "K_manifest": 8.88888888888889,
+        "K_Dr": 6.493526627288223,
+        "signed_CoC_error_float64": 1.7763568394002505e-15,
+        "signed_CoC_error_float32": 5.912632214943869e-07,
+        "nominal_input_radius_max": 6.348317460317461
+      },
+      "replay_max_error": 0.0,
+      "seconds": 0.27987585216760635,
+      "peak_allocated_MiB": 52.03955078125
+    },
+    {
+      "id": "B2-high-f030-N2-F5",
+      "scene": "B2-high",
+      "frame": 30,
+      "focus_m": 5.0,
+      "fstop": 2.0,
+      "unknown_sky_pixels": 24698,
+      "sky_depth_m": 10000.0,
+      "focus_pixels": 154997,
+      "O3_to_input": {
+        "pixels": 154997,
+        "sse": 95.34629204167854,
+        "psnr": 36.881407388423014,
+        "excluded_nonfinite_pixels": 0
+      },
+      "native_to_input": {
+        "pixels": 154997,
+        "sse": 141.11832229594532,
+        "psnr": 35.17861142458574,
+        "excluded_nonfinite_pixels": 0
+      },
+      "repaired_to_input": {
+        "pixels": 154997,
+        "sse": 144.6794722819496,
+        "psnr": 35.070376311046346,
+        "excluded_nonfinite_pixels": 0
+      },
+      "mapping": {
+        "min": 0.0001,
+        "max": 0.7306217455699251,
+        "span": 0.7305217455699251,
+        "focus": 0.2,
+        "focus_prime": 0.2736400404399265,
+        "K_manifest": 8.88888888888889,
+        "K_Dr": 6.493526627288223,
+        "signed_CoC_error_float64": 8.881784197001252e-16,
+        "signed_CoC_error_float32": 5.25622640523693e-07,
+        "nominal_input_radius_max": 4.716637738399335
+      },
+      "replay_max_error": 0.0,
+      "seconds": 0.2924024611711502,
+      "peak_allocated_MiB": 52.03955078125
+    },
+    {
+      "id": "B2-high-f060-N1.4-F1.4",
+      "scene": "B2-high",
+      "frame": 60,
+      "focus_m": 1.4,
+      "fstop": 1.4,
+      "unknown_sky_pixels": 25314,
+      "sky_depth_m": 10000.0,
+      "focus_pixels": 62779,
+      "O3_to_input": {
+        "pixels": 62779,
+        "sse": 5.399847133911093,
+        "psnr": 45.42554182899852,
+        "excluded_nonfinite_pixels": 0
+      },
+      "native_to_input": {
+        "pixels": 62779,
+        "sse": 11.296100832323082,
+        "psnr": 42.22007087942778,
+        "excluded_nonfinite_pixels": 0
+      },
+      "repaired_to_input": {
+        "pixels": 62779,
+        "sse": 15.537680574465494,
+        "psnr": 40.83549459383378,
+        "excluded_nonfinite_pixels": 0
+      },
+      "mapping": {
+        "min": 0.0001,
+        "max": 0.7369622785770279,
+        "span": 0.7368622785770279,
+        "focus": 0.7142857142857143,
+        "focus_prime": 0.9692255052937371,
+        "K_manifest": 12.6984126984127,
+        "K_Dr": 9.356981315263846,
+        "signed_CoC_error_float64": 2.6645352591003757e-15,
+        "signed_CoC_error_float32": 8.214548943286104e-07,
+        "nominal_input_radius_max": 9.069024943310659
+      },
+      "replay_max_error": 0.0,
+      "seconds": 0.2896326147019863,
+      "peak_allocated_MiB": 52.03955078125
+    },
+    {
+      "id": "B2-high-f060-N1.4-F5",
+      "scene": "B2-high",
+      "frame": 60,
+      "focus_m": 5.0,
+      "fstop": 1.4,
+      "unknown_sky_pixels": 25314,
+      "sky_depth_m": 10000.0,
+      "focus_pixels": 148555,
+      "O3_to_input": {
+        "pixels": 148555,
+        "sse": 136.6092953864993,
+        "psnr": 35.13528277095983,
+        "excluded_nonfinite_pixels": 0
+      },
+      "native_to_input": {
+        "pixels": 148555,
+        "sse": 111.2109609617243,
+        "psnr": 36.028609349449006,
+        "excluded_nonfinite_pixels": 0
+      },
+      "repaired_to_input": {
+        "pixels": 148555,
+        "sse": 112.18852160591419,
+        "psnr": 35.99060103372661,
+        "excluded_nonfinite_pixels": 0
+      },
+      "mapping": {
+        "min": 0.0001,
+        "max": 0.7369622785770279,
+        "span": 0.7368622785770279,
+        "focus": 0.2,
+        "focus_prime": 0.2712854298716873,
+        "K_manifest": 12.6984126984127,
+        "K_Dr": 9.356981315263846,
+        "signed_CoC_error_float64": 2.6645352591003757e-15,
+        "signed_CoC_error_float32": 9.57983863791867e-07,
+        "nominal_input_radius_max": 6.818568616851148
+      },
+      "replay_max_error": 0.0,
+      "seconds": 0.26635968312621117,
+      "peak_allocated_MiB": 52.03955078125
+    },
+    {
+      "id": "B2-high-f060-N2-F1.4",
+      "scene": "B2-high",
+      "frame": 60,
+      "focus_m": 1.4,
+      "fstop": 2.0,
+      "unknown_sky_pixels": 25314,
+      "sky_depth_m": 10000.0,
+      "focus_pixels": 65536,
+      "O3_to_input": {
+        "pixels": 65536,
+        "sse": 3.779000786003438,
+        "psnr": 47.16224203096387,
+        "excluded_nonfinite_pixels": 0
+      },
+      "native_to_input": {
+        "pixels": 65536,
+        "sse": 9.90048205969744,
+        "psnr": 42.97944844203424,
+        "excluded_nonfinite_pixels": 0
+      },
+      "repaired_to_input": {
+        "pixels": 65536,
+        "sse": 12.831327958738777,
+        "psnr": 41.85329579996666,
+        "excluded_nonfinite_pixels": 0
+      },
+      "mapping": {
+        "min": 0.0001,
+        "max": 0.7369622785770279,
+        "span": 0.7368622785770279,
+        "focus": 0.7142857142857143,
+        "focus_prime": 0.9692255052937371,
+        "K_manifest": 8.88888888888889,
+        "K_Dr": 6.549886920684693,
+        "signed_CoC_error_float64": 1.7763568394002505e-15,
+        "signed_CoC_error_float32": 5.424791886809999e-07,
+        "nominal_input_radius_max": 6.348317460317461
+      },
+      "replay_max_error": 0.0,
+      "seconds": 0.2702166177332401,
+      "peak_allocated_MiB": 52.03955078125
+    },
+    {
+      "id": "B2-high-f060-N2-F5",
+      "scene": "B2-high",
+      "frame": 60,
+      "focus_m": 5.0,
+      "fstop": 2.0,
+      "unknown_sky_pixels": 25314,
+      "sky_depth_m": 10000.0,
+      "focus_pixels": 158879,
+      "O3_to_input": {
+        "pixels": 158879,
+        "sse": 94.27617221028414,
+        "psnr": 37.03785811349193,
+        "excluded_nonfinite_pixels": 0
+      },
+      "native_to_input": {
+        "pixels": 158879,
+        "sse": 94.46127500100926,
+        "psnr": 37.02933949171773,
+        "excluded_nonfinite_pixels": 0
+      },
+      "repaired_to_input": {
+        "pixels": 158879,
+        "sse": 95.6134769349827,
+        "psnr": 36.976686410111924,
+        "excluded_nonfinite_pixels": 0
+      },
+      "mapping": {
+        "min": 0.0001,
+        "max": 0.7369622785770279,
+        "span": 0.7368622785770279,
+        "focus": 0.2,
+        "focus_prime": 0.2712854298716873,
+        "K_manifest": 8.88888888888889,
+        "K_Dr": 6.549886920684693,
+        "signed_CoC_error_float64": 1.7763568394002505e-15,
+        "signed_CoC_error_float32": 8.777299278506234e-07,
+        "nominal_input_radius_max": 4.772998031795803
+      },
+      "replay_max_error": 0.0,
+      "seconds": 0.29959331452846527,
+      "peak_allocated_MiB": 52.03955078125
+    }
+  ],
+  "pooled": {
+    "B2-high": {
+      "1.4": {
+        "O3_to_input": {
+          "pixels": 383463,
+          "sse": 31.145986576175275,
+          "psnr": 45.67442628259289
+        },
+        "native_to_input": {
+          "pixels": 383463,
+          "sse": 86.5635469825215,
+          "psnr": 41.23509676792121
+        },
+        "repaired_to_input": {
+          "pixels": 383463,
+          "sse": 93.20127262848028,
+          "psnr": 40.91422877819226
+        },
+        "repaired_minus_O3_dB": -4.7601975044006295,
+        "passed": false
+      },
+      "5.0": {
+        "O3_to_input": {
+          "pixels": 915410,
+          "sse": 713.9991547827676,
+          "psnr": 35.85039209431018
+        },
+        "native_to_input": {
+          "pixels": 915410,
+          "sse": 791.8873983013009,
+          "psnr": 35.40073475222736
+        },
+        "repaired_to_input": {
+          "pixels": 915410,
+          "sse": 804.7127008483426,
+          "psnr": 35.33096051211354
+        },
+        "repaired_minus_O3_dB": -0.5194315821966384,
+        "passed": false
+      }
+    },
+    "B2-low": {
+      "5.3": {
+        "O3_to_input": {
+          "pixels": 1267746,
+          "sse": 251.86821034380964,
+          "psnr": 41.78980147363799
+        },
+        "native_to_input": {
+          "pixels": 1267746,
+          "sse": 1874.3892473029407,
+          "psnr": 33.07293719448319
+        },
+        "repaired_to_input": {
+          "pixels": 1267746,
+          "sse": 1855.7696477393724,
+          "psnr": 33.11629436363116
+        },
+        "repaired_minus_O3_dB": -8.673507110006831,
+        "passed": false
+      },
+      "8.4": {
+        "O3_to_input": {
+          "pixels": 1072348,
+          "sse": 21.710767823848485,
+          "psnr": 51.70781817852915
+        },
+        "native_to_input": {
+          "pixels": 1072348,
+          "sse": 608.3512827328278,
+          "psnr": 37.23302572737345
+        },
+        "repaired_to_input": {
+          "pixels": 1072348,
+          "sse": 601.7881804250518,
+          "psnr": 37.28013347238482
+        },
+        "repaired_minus_O3_dB": -14.427684706144333,
+        "passed": false
+      }
+    }
+  },
+  "included_in_L1_L2_L3": false,
+  "inspected": {
+    "resolution": [
+      512,
+      512
+    ],
+    "input": "same standard sRGBfloat[0,1]",
+    "native_gamma": 2.2,
+    "offset": 0,
+    "radius": "fx*aperture*(1/depth-1/focus), algebraic mapping checked; radius not diameter",
+    "sky": "raw0 preserved; method-only10000m sky; no treating sky as zero CoC",
+    "kernel": "official radius abs(relative_disparity)*strength+1 and soft tail retained",
+    "repair": "restore visible GT disparity on foreground alpha>.1 and background outside common fill mask; no GT hidden geometry/RGB"
+  },
+  "training": false,
+  "old_B2_modified": false,
+  "next_step": "continue L0; DrBokeh excluded if precheck failed"
+}

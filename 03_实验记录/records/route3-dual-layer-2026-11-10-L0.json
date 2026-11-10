@@ -1,0 +1,60 @@
+{
+  "stage": "L0 synthesis before L1",
+  "zero_aperture_focus_selection": {
+    "B2-high": {
+      "1.4": {
+        "VG_AA_zero_vs_input_in_focus_PSNR": 53.05969467842794,
+        "O3_finite_vs_input_in_focus_PSNR": 45.67442628259289,
+        "passed": true
+      },
+      "5.0": {
+        "VG_AA_zero_vs_input_in_focus_PSNR": 79.8642410766789,
+        "O3_finite_vs_input_in_focus_PSNR": 35.85039209431018,
+        "passed": true
+      }
+    },
+    "B2-low": {
+      "5.3": {
+        "VG_AA_zero_vs_input_in_focus_PSNR": 58.15670737288614,
+        "O3_finite_vs_input_in_focus_PSNR": 41.78980147363799,
+        "passed": true
+      },
+      "8.4": {
+        "VG_AA_zero_vs_input_in_focus_PSNR": 57.47865962117486,
+        "O3_finite_vs_input_in_focus_PSNR": 51.70781817852915,
+        "passed": true
+      }
+    }
+  },
+  "selected_visible_form": "V-G",
+  "selected_profile": {
+    "subdivisions": 5,
+    "sigma_pixels": 0.7,
+    "opacity": 0.999,
+    "eps2d": 0.0015,
+    "rasterize_mode": "antialiased"
+  },
+  "selection_rule": "VG zero-aperture focus PSNR >= O3 finite-aperture-to-input PSNR minus0.2dB, checked separately for all four scene/focus conditions; single-pixel and VP finite-aperture diagnostics lose coverage and are not upgraded",
+  "original_K_scan_pooled_full_PSNR": {
+    "B2-high": {
+      "16": 38.44711087218647,
+      "64": 39.11242656645146,
+      "128": 39.19356899585612
+    },
+    "B2-low": {
+      "16": 43.025917203580086,
+      "64": 43.204111797060705,
+      "128": 43.23284143418374
+    }
+  },
+  "observed": [
+    "zero aperture RGB reconstruction is52.92/54.85dB forlow/high, AA raiseslow to59.09dB; color-domain roundtrip and camera reprojection are not sufficient to explain the finite-aperture deficit",
+    "low native fixed16/64/128 full pooled43.026/43.204/43.233dB; increasingK does not remove most loss",
+    "AA improves zero-aperture but barely changes finite-aperture quality; cannot claim all loss repaired",
+    "single-pixel GS and very sharp soft-z VP introduce additional coverage failures under fractional shifts; no claim of a fundamental inability of pixel warps"
+  ],
+  "VP_interface_scope": "same-subaperture visible pixel warp plus actual hidden-GS rendering passed depth/alpha/unit-energy test on a halfplane; finite-aperture VP coverage loss remains, so VP is not upgraded",
+  "DrBokeh_included": false,
+  "old_records_unchanged": true,
+  "V_P_actual_same_subaperture_hidden_GS_interface_record": "route3-dual-layer-2026-11-10-raster-check.json"
+}

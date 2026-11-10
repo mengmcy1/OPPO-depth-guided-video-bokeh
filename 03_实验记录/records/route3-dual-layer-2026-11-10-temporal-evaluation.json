@@ -1,0 +1,96 @@
+{
+  "completed": true,
+  "frames": [
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34
+  ],
+  "results": {
+    "analytic1": {
+      "temporal_difference_error_RMSE": 0.011959607184285742,
+      "per_transition_RMSE": [
+        0.012825842892828945,
+        0.013310719411912456,
+        0.010893583159600987,
+        0.008203034054605873,
+        0.010326906322027315,
+        0.012849200711770883,
+        0.014207077671754807
+      ],
+      "Cycles_full_image_PSNR": 33.94639497182452,
+      "median_render_seconds": 0.047005971893668175,
+      "ratio_to_fixed64": 1.2374740660011423,
+      "ratio_to_fixed16": 1.1861365110230138,
+      "temporal_NI_passed": false
+    },
+    "analytic4": {
+      "temporal_difference_error_RMSE": 0.010663408259084604,
+      "per_transition_RMSE": [
+        0.011433887036638097,
+        0.011600712071959285,
+        0.009533618476785855,
+        0.005859499712213638,
+        0.00945694579763141,
+        0.012260210500300907,
+        0.012871574615676298
+      ],
+      "Cycles_full_image_PSNR": 36.64180428261566,
+      "median_render_seconds": 0.1314442679286003,
+      "ratio_to_fixed64": 1.1033548989082174,
+      "ratio_to_fixed16": 1.0575813798185367,
+      "temporal_NI_passed": false
+    },
+    "fixed16": {
+      "temporal_difference_error_RMSE": 0.010082825267701163,
+      "per_transition_RMSE": [
+        0.010641725166486102,
+        0.01068997776220252,
+        0.009153786036991449,
+        0.005102921238605304,
+        0.009385761363382955,
+        0.011885613419281708,
+        0.012038674838873794
+      ],
+      "Cycles_full_image_PSNR": 39.03355215355545,
+      "median_render_seconds": 0.1025722287595272
+    },
+    "fixed64": {
+      "temporal_difference_error_RMSE": 0.009664531575140665,
+      "per_transition_RMSE": [
+        0.010099675444973047,
+        0.010195649572684849,
+        0.00877855558677671,
+        0.004803066802202725,
+        0.008890928799755726,
+        0.011527679211657746,
+        0.011653282277525668
+      ],
+      "Cycles_full_image_PSNR": 39.32412968599635,
+      "median_render_seconds": 0.40713206864893436
+    },
+    "random16": {
+      "temporal_difference_error_RMSE": 0.015257200252641677,
+      "per_transition_RMSE": [
+        0.015221266882686156,
+        0.017749354001835808,
+        0.013269706944585923,
+        0.013799389609036431,
+        0.013498862011636968,
+        0.016881708792822605,
+        0.01578065082612147
+      ],
+      "Cycles_full_image_PSNR": 37.292887843792684,
+      "median_render_seconds": 0.10277551412582397
+    }
+  },
+  "cloud": "O5",
+  "motion_aligned": false,
+  "flicker_claim": false,
+  "definition": "unaligned displayRGB frame-difference minus independent Cycles frame-difference; includes geometry,appearance,motion and integration errors",
+  "criteria": "03_\u5b9e\u9a8c\u8bb0\u5f55/records/route3-dual-layer-criteria-L1-2026-11-10.json"
+}

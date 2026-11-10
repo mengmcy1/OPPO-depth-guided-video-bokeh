@@ -1,0 +1,87 @@
+{
+  "mode": "shared input-only Cfill setup",
+  "items": [
+    {
+      "id": "B2-high-f001",
+      "scene": "B2-high",
+      "frame": 1,
+      "input_npz": "outputs/route3-dual-layer-2026-11-10-01/shared-inputs/B2-high-f001.npz",
+      "fill_mask_pixels": 196647,
+      "background_extension_radius_px": 55,
+      "uses_GT_segmentation": false,
+      "uses_true_hidden_depth": false,
+      "background_rule": "max of current visible finite depth in fixed2*maxCoC+4 neighborhood;sky stays10km; proxy not true hidden depth",
+      "fillmask_rule": "union of visible-depth/CoC bands over predetermined focal/aperture choices, then5x5 dilation2; no object labels"
+    },
+    {
+      "id": "B2-high-f030",
+      "scene": "B2-high",
+      "frame": 30,
+      "input_npz": "outputs/route3-dual-layer-2026-11-10-01/shared-inputs/B2-high-f030.npz",
+      "fill_mask_pixels": 195411,
+      "background_extension_radius_px": 55,
+      "uses_GT_segmentation": false,
+      "uses_true_hidden_depth": false,
+      "background_rule": "max of current visible finite depth in fixed2*maxCoC+4 neighborhood;sky stays10km; proxy not true hidden depth",
+      "fillmask_rule": "union of visible-depth/CoC bands over predetermined focal/aperture choices, then5x5 dilation2; no object labels"
+    },
+    {
+      "id": "B2-high-f060",
+      "scene": "B2-high",
+      "frame": 60,
+      "input_npz": "outputs/route3-dual-layer-2026-11-10-01/shared-inputs/B2-high-f060.npz",
+      "fill_mask_pixels": 195752,
+      "background_extension_radius_px": 55,
+      "uses_GT_segmentation": false,
+      "uses_true_hidden_depth": false,
+      "background_rule": "max of current visible finite depth in fixed2*maxCoC+4 neighborhood;sky stays10km; proxy not true hidden depth",
+      "fillmask_rule": "union of visible-depth/CoC bands over predetermined focal/aperture choices, then5x5 dilation2; no object labels"
+    },
+    {
+      "id": "B2-low-f001",
+      "scene": "B2-low",
+      "frame": 1,
+      "input_npz": "outputs/route3-dual-layer-2026-11-10-01/shared-inputs/B2-low-f001.npz",
+      "fill_mask_pixels": 70202,
+      "background_extension_radius_px": 18,
+      "uses_GT_segmentation": false,
+      "uses_true_hidden_depth": false,
+      "background_rule": "max of current visible finite depth in fixed2*maxCoC+4 neighborhood;sky stays10km; proxy not true hidden depth",
+      "fillmask_rule": "union of visible-depth/CoC bands over predetermined focal/aperture choices, then5x5 dilation2; no object labels"
+    },
+    {
+      "id": "B2-low-f030",
+      "scene": "B2-low",
+      "frame": 30,
+      "input_npz": "outputs/route3-dual-layer-2026-11-10-01/shared-inputs/B2-low-f030.npz",
+      "fill_mask_pixels": 69645,
+      "background_extension_radius_px": 18,
+      "uses_GT_segmentation": false,
+      "uses_true_hidden_depth": false,
+      "background_rule": "max of current visible finite depth in fixed2*maxCoC+4 neighborhood;sky stays10km; proxy not true hidden depth",
+      "fillmask_rule": "union of visible-depth/CoC bands over predetermined focal/aperture choices, then5x5 dilation2; no object labels"
+    },
+    {
+      "id": "B2-low-f060",
+      "scene": "B2-low",
+      "frame": 60,
+      "input_npz": "outputs/route3-dual-layer-2026-11-10-01/shared-inputs/B2-low-f060.npz",
+      "fill_mask_pixels": 69887,
+      "background_extension_radius_px": 18,
+      "uses_GT_segmentation": false,
+      "uses_true_hidden_depth": false,
+      "background_rule": "max of current visible finite depth in fixed2*maxCoC+4 neighborhood;sky stays10km; proxy not true hidden depth",
+      "fillmask_rule": "union of visible-depth/CoC bands over predetermined focal/aperture choices, then5x5 dilation2; no object labels"
+    }
+  ],
+  "L3_allowed_input_fields": [
+    "RGB",
+    "visible depth",
+    "K",
+    "camera_c2w"
+  ],
+  "target_hidden_GT_used": false,
+  "GT_alpha_used": false,
+  "difference_from_B2": "B2 used GT semantic foreground mask and true deep background; replace both with visible-depth-only proxies for L2/L3 to avoid L3 leakage",
+  "ablation": "L2 includes O5 and full-hidden with this same fill before applying the band; no single-factor claim against old B2 fill"
+}

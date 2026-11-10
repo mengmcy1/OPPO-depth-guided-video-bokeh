@@ -1,0 +1,1132 @@
+{
+  "schema_version": 1,
+  "project_date": "2026-11-11",
+  "recorded_at_server_utc": "2026-11-10T16:37:25.007745+00:00",
+  "phase": "route3 dual-layer L0-L3",
+  "status": "completed_with_failed_frozen_success_criteria;pause_for_user_decision",
+  "scope": {
+    "scenes": [
+      "B2-high",
+      "B2-low"
+    ],
+    "input_frames": [
+      1,
+      6,
+      11,
+      16,
+      21,
+      26,
+      30,
+      35,
+      40,
+      45,
+      50,
+      55,
+      60
+    ],
+    "representative_frames": [
+      1,
+      30,
+      60
+    ],
+    "main_fstops": [
+      1.4,
+      2.0
+    ],
+    "pressure_fstop": 0.5,
+    "continuous_frames": [
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34
+    ],
+    "no_training": true,
+    "no_MoVieS_or_M2": true,
+    "no_CamVFX_new_experiments": true,
+    "no_full60_DOF": true
+  },
+  "preregistrations": {
+    "L1": {
+      "file": "route3-dual-layer-criteria-L1-2026-11-10.json",
+      "commit": "cf4e349"
+    },
+    "L2_L3": {
+      "file": "route3-dual-layer-criteria-L2-2026-11-11.json",
+      "commit": "1fb15a6"
+    },
+    "thresholds_unchanged_after_metrics": true
+  },
+  "paths": {
+    "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-dual-layer-2026-11-10-01",
+    "L0": "route3-dual-layer-2026-11-10-L0.json",
+    "L1": "route3-dual-layer-2026-11-10-L1.json",
+    "L2": "route3-dual-layer-2026-11-11-L2-observed-sky-evaluation.json",
+    "L3": "route3-dual-layer-2026-11-11-L3-evaluation.json",
+    "full_aperture_tables": "route3-dual-layer-2026-11-11-report-tables.json"
+  },
+  "L0": {
+    "chosen_visible_form": "V-G",
+    "profile": {
+      "subdivisions": 5,
+      "sigma_pixels": 0.7,
+      "opacity": 0.999,
+      "eps2d": 0.0015,
+      "rasterize_mode": "antialiased"
+    },
+    "zero_focus_selection": {
+      "B2-high": {
+        "1.4": {
+          "VG_AA_zero_vs_input_in_focus_PSNR": 53.05969467842794,
+          "O3_finite_vs_input_in_focus_PSNR": 45.67442628259289,
+          "passed": true
+        },
+        "5.0": {
+          "VG_AA_zero_vs_input_in_focus_PSNR": 79.8642410766789,
+          "O3_finite_vs_input_in_focus_PSNR": 35.85039209431018,
+          "passed": true
+        }
+      },
+      "B2-low": {
+        "5.3": {
+          "VG_AA_zero_vs_input_in_focus_PSNR": 58.15670737288614,
+          "O3_finite_vs_input_in_focus_PSNR": 41.78980147363799,
+          "passed": true
+        },
+        "8.4": {
+          "VG_AA_zero_vs_input_in_focus_PSNR": 57.47865962117486,
+          "O3_finite_vs_input_in_focus_PSNR": 51.70781817852915,
+          "passed": true
+        }
+      }
+    },
+    "observations": [
+      "zero aperture RGB reconstruction is52.92/54.85dB forlow/high, AA raiseslow to59.09dB; color-domain roundtrip and camera reprojection are not sufficient to explain the finite-aperture deficit",
+      "low native fixed16/64/128 full pooled43.026/43.204/43.233dB; increasingK does not remove most loss",
+      "AA improves zero-aperture but barely changes finite-aperture quality; cannot claim all loss repaired",
+      "single-pixel GS and very sharp soft-z VP introduce additional coverage failures under fractional shifts; no claim of a fundamental inability of pixel warps"
+    ],
+    "remaining_finite_aperture_loss_not_uniquely_identified": true,
+    "VP": "legacy soft-z warp and optional depth-slope repair tested;actual hiddenGS interface passes,finite-aperture quality insufficient;not promoted or used to retune frozenVG",
+    "VP_repair_record": "route3-dual-layer-2026-11-11-L0-VP-depth-slope.json",
+    "error_budget": "route3-dual-layer-2026-11-10-L0-error-budget.json"
+  },
+  "DrBokeh": {
+    "included": false,
+    "record": "route3-dual-layer-2026-11-10-drbokeh.json",
+    "minimal_repair": "restore provided visibleGTdisparities after nativepreprocessing;mapping,color,resolution and sky checked",
+    "focus_PSNR_to_input_minus_O3": {
+      "high_focus1.4": -4.7601975044006295,
+      "high_focus5": -0.5194315821966384
+    },
+    "cause_not_fully_isolated": true
+  },
+  "L1": {
+    "representative_predictions": 360,
+    "representative_visualizations": 72,
+    "temporal_predictions": 40,
+    "new_Cycles_temporal_images": 7,
+    "temporal_cloud": "O5 only aspreregistered",
+    "decisions": {
+      "B2-high": {
+        "1.4": {
+          "O5": {
+            "analytic1": {
+              "regions": {
+                "out_of_focus": {
+                  "PSNR_gain_to_fixed64_dB": -6.174079432876571,
+                  "LPIPS_change_to_fixed64": 0.018562223955161473,
+                  "noise": 7.818982309252055e-05,
+                  "PSNR_NI": false,
+                  "LPIPS_NI": false,
+                  "LPIPS_tie": false
+                },
+                "band": {
+                  "PSNR_gain_to_fixed64_dB": -2.8659021549108488,
+                  "LPIPS_change_to_fixed64": 0.01340001502487859,
+                  "noise": 8.634572313500011e-05,
+                  "PSNR_NI": false,
+                  "LPIPS_NI": false,
+                  "LPIPS_tie": false
+                }
+              },
+              "quality_noninferiority_passed": false,
+              "median_paired_time_ratio": 0.13824901104909543,
+              "efficiency_passed": true,
+              "temporal_O5_only_passed": false,
+              "diagnostic_only": false,
+              "passed": false
+            },
+            "analytic4": {
+              "regions": {
+                "out_of_focus": {
+                  "PSNR_gain_to_fixed64_dB": -2.3869396841479116,
+                  "LPIPS_change_to_fixed64": 0.004970070723206526,
+                  "noise": 7.818982309252055e-05,
+                  "PSNR_NI": false,
+                  "LPIPS_NI": false,
+                  "LPIPS_tie": false
+                },
+                "band": {
+                  "PSNR_gain_to_fixed64_dB": -0.6931512658013261,
+                  "LPIPS_change_to_fixed64": 0.004804125929715097,
+                  "noise": 8.634572313500011e-05,
+                  "PSNR_NI": false,
+                  "LPIPS_NI": false,
+                  "LPIPS_tie": false
+                }
+              },
+              "quality_noninferiority_passed": false,
+              "median_paired_time_ratio": 0.37209416161277786,
+              "efficiency_passed": true,
+              "temporal_O5_only_passed": false,
+              "diagnostic_only": true,
+              "passed": false
+            }
+          },
+          "O6-GT-rec": {
+            "analytic1": {
+              "regions": {
+                "out_of_focus": {
+                  "PSNR_gain_to_fixed64_dB": -6.835837473778266,
+                  "LPIPS_change_to_fixed64": 0.01821917998769607,
+                  "noise": 7.818982309252055e-05,
+                  "PSNR_NI": false,
+                  "LPIPS_NI": false,
+                  "LPIPS_tie": false
+                },
+                "band": {
+                  "PSNR_gain_to_fixed64_dB": -3.702690776469712,
+                  "LPIPS_change_to_fixed64": 0.011911098898151949,
+                  "noise": 8.634572313500011e-05,
+                  "PSNR_NI": false,
+                  "LPIPS_NI": false,
+                  "LPIPS_tie": false
+                }
+              },
+              "quality_noninferiority_passed": false,
+              "median_paired_time_ratio": 0.13720738181430114,
+              "efficiency_passed": true,
+              "temporal_O5_only_passed": null,
+              "diagnostic_only": false,
+              "passed": false
+            },
+            "analytic4": {
+              "regions": {
+                "out_of_focus": {
+                  "PSNR_gain_to_fixed64_dB": -2.933545915582471,
+                  "LPIPS_change_to_fixed64": 0.004980003751433757,
+                  "noise": 7.818982309252055e-05,
+                  "PSNR_NI": false,
+                  "LPIPS_NI": false,
+                  "LPIPS_tie": false
+                },
+                "band": {
+                  "PSNR_gain_to_fixed64_dB": -1.332624959570964,
+                  "LPIPS_change_to_fixed64": 0.004865319181581097,
+                  "noise": 8.634572313500011e-05,
+                  "PSNR_NI": false,
+                  "LPIPS_NI": false,
+                  "LPIPS_tie": false
+                }
+              },
+              "quality_noninferiority_passed": false,
+              "median_paired_time_ratio": 0.36871929764394096,
+              "efficiency_passed": true,
+              "temporal_O5_only_passed": null,
+              "diagnostic_only": true,
+              "passed": false
+            }
+          }
+        },
+        "5.0": {
+          "O5": {
+            "analytic1": {
+              "regions": {
+                "out_of_focus": {
+                  "PSNR_gain_to_fixed64_dB": -4.7358797942492,
+                  "LPIPS_change_to_fixed64": 0.02514012832980178,
+                  "noise": 0.00024765814292027874,
+                  "PSNR_NI": false,
+                  "LPIPS_NI": false,
+                  "LPIPS_tie": false
+                },
+                "band": {
+                  "PSNR_gain_to_fixed64_dB": -5.39741981907715,
+                  "LPIPS_change_to_fixed64": 0.018865821644636002,
+                  "noise": 0.0001466170323359303,
+                  "PSNR_NI": false,
+                  "LPIPS_NI": false,
+                  "LPIPS_tie": false
+                }
+              },
+              "quality_noninferiority_passed": false,
+              "median_paired_time_ratio": 0.10262979791386283,
+              "efficiency_passed": true,
+              "temporal_O5_only_passed": false,
+              "diagnostic_only": false,
+              "passed": false
+            },
+            "analytic4": {
+              "regions": {
+                "out_of_focus": {
+                  "PSNR_gain_to_fixed64_dB": -2.568386153875288,
+                  "LPIPS_change_to_fixed64": 0.015136502135503278,
+                  "noise": 0.00024765814292027874,
+                  "PSNR_NI": false,
+                  "LPIPS_NI": false,
+                  "LPIPS_tie": false
+                },
+                "band": {
+                  "PSNR_gain_to_fixed64_dB": -2.236969089975652,
+                  "LPIPS_change_to_fixed64": 0.01009474753954358,
+                  "noise": 0.0001466170323359303,
+                  "PSNR_NI": false,
+                  "LPIPS_NI": false,
+                  "LPIPS_tie": false
+                }
+              },
+              "quality_noninferiority_passed": false,
+              "median_paired_time_ratio": 0.30476052882394583,
+              "efficiency_passed": true,
+              "temporal_O5_only_passed": false,
+              "diagnostic_only": true,
+              "passed": false
+            }
+          },
+          "O6-GT-rec": {
+            "analytic1": {
+              "regions": {
+                "out_of_focus": {
+                  "PSNR_gain_to_fixed64_dB": -7.906377874693018,
+                  "LPIPS_change_to_fixed64": 0.024282112939668324,
+                  "noise": 0.00024765814292027874,
+                  "PSNR_NI": false,
+                  "LPIPS_NI": false,
+                  "LPIPS_tie": false
+                },
+                "band": {
+                  "PSNR_gain_to_fixed64_dB": -8.138941955131937,
+                  "LPIPS_change_to_fixed64": 0.018935962207104865,
+                  "noise": 0.0001466170323359303,
+                  "PSNR_NI": false,
+                  "LPIPS_NI": false,
+                  "LPIPS_tie": false
+                }
+              },
+              "quality_noninferiority_passed": false,
+              "median_paired_time_ratio": 0.0990526273273847,
+              "efficiency_passed": true,
+              "temporal_O5_only_passed": null,
+              "diagnostic_only": false,
+              "passed": false
+            },
+            "analytic4": {
+              "regions": {
+                "out_of_focus": {
+                  "PSNR_gain_to_fixed64_dB": -4.816661145509094,
+                  "LPIPS_change_to_fixed64": 0.011745302823717945,
+                  "noise": 0.00024765814292027874,
+                  "PSNR_NI": false,
+                  "LPIPS_NI": false,
+                  "LPIPS_tie": false
+                },
+                "band": {
+                  "PSNR_gain_to_fixed64_dB": -4.1731173003990705,
+                  "LPIPS_change_to_fixed64": 0.008511129722198887,
+                  "noise": 0.0001466170323359303,
+                  "PSNR_NI": false,
+                  "LPIPS_NI": false,
+                  "LPIPS_tie": false
+                }
+              },
+              "quality_noninferiority_passed": false,
+              "median_paired_time_ratio": 0.29606546552989915,
+              "efficiency_passed": true,
+              "temporal_O5_only_passed": null,
+              "diagnostic_only": true,
+              "passed": false
+            }
+          }
+        }
+      },
+      "B2-low": {
+        "5.3": {
+          "O5": {
+            "status": "low_CoC_descriptive_control",
+            "passed": null
+          },
+          "O6-GT-rec": {
+            "status": "low_CoC_descriptive_control",
+            "passed": null
+          }
+        },
+        "8.4": {
+          "O5": {
+            "status": "low_CoC_descriptive_control",
+            "passed": null
+          },
+          "O6-GT-rec": {
+            "status": "low_CoC_descriptive_control",
+            "passed": null
+          }
+        }
+      }
+    },
+    "temporal": {
+      "completed": true,
+      "frames": [
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34
+      ],
+      "results": {
+        "analytic1": {
+          "temporal_difference_error_RMSE": 0.011959607184285742,
+          "per_transition_RMSE": [
+            0.012825842892828945,
+            0.013310719411912456,
+            0.010893583159600987,
+            0.008203034054605873,
+            0.010326906322027315,
+            0.012849200711770883,
+            0.014207077671754807
+          ],
+          "Cycles_full_image_PSNR": 33.94639497182452,
+          "median_render_seconds": 0.047005971893668175,
+          "ratio_to_fixed64": 1.2374740660011423,
+          "ratio_to_fixed16": 1.1861365110230138,
+          "temporal_NI_passed": false
+        },
+        "analytic4": {
+          "temporal_difference_error_RMSE": 0.010663408259084604,
+          "per_transition_RMSE": [
+            0.011433887036638097,
+            0.011600712071959285,
+            0.009533618476785855,
+            0.005859499712213638,
+            0.00945694579763141,
+            0.012260210500300907,
+            0.012871574615676298
+          ],
+          "Cycles_full_image_PSNR": 36.64180428261566,
+          "median_render_seconds": 0.1314442679286003,
+          "ratio_to_fixed64": 1.1033548989082174,
+          "ratio_to_fixed16": 1.0575813798185367,
+          "temporal_NI_passed": false
+        },
+        "fixed16": {
+          "temporal_difference_error_RMSE": 0.010082825267701163,
+          "per_transition_RMSE": [
+            0.010641725166486102,
+            0.01068997776220252,
+            0.009153786036991449,
+            0.005102921238605304,
+            0.009385761363382955,
+            0.011885613419281708,
+            0.012038674838873794
+          ],
+          "Cycles_full_image_PSNR": 39.03355215355545,
+          "median_render_seconds": 0.1025722287595272
+        },
+        "fixed64": {
+          "temporal_difference_error_RMSE": 0.009664531575140665,
+          "per_transition_RMSE": [
+            0.010099675444973047,
+            0.010195649572684849,
+            0.00877855558677671,
+            0.004803066802202725,
+            0.008890928799755726,
+            0.011527679211657746,
+            0.011653282277525668
+          ],
+          "Cycles_full_image_PSNR": 39.32412968599635,
+          "median_render_seconds": 0.40713206864893436
+        },
+        "random16": {
+          "temporal_difference_error_RMSE": 0.015257200252641677,
+          "per_transition_RMSE": [
+            0.015221266882686156,
+            0.017749354001835808,
+            0.013269706944585923,
+            0.013799389609036431,
+            0.013498862011636968,
+            0.016881708792822605,
+            0.01578065082612147
+          ],
+          "Cycles_full_image_PSNR": 37.292887843792684,
+          "median_render_seconds": 0.10277551412582397
+        }
+      },
+      "cloud": "O5",
+      "motion_aligned": false,
+      "flicker_claim": false,
+      "definition": "unaligned displayRGB frame-difference minus independent Cycles frame-difference; includes geometry,appearance,motion and integration errors",
+      "criteria": "03_实验记录/records/route3-dual-layer-criteria-L1-2026-11-10.json"
+    },
+    "formal_quality_and_temporal_noninferiority_passed": false,
+    "analytic1_speed": "about7-10x versusfixed64 inprimary pairedrendering,notE2E",
+    "analytic4": "quadrant second-moment residual avoids duplicated fullCoC;diagnostic-only",
+    "chosen_L2_renderer": "fixed64",
+    "artifacts": "partial-occlusion color leakage/halo and highlight attenuation inanalytic examples;doesnotuniquely attribute to sorting versus alpha convolution",
+    "serious_primary_artifact_stop_triggered": false,
+    "prototype_backward_implemented": false,
+    "focus_field_K1_supported": true,
+    "scalar_to_constant_field_test_max_error": 0.0,
+    "related_work": [
+      {
+        "name": "DOF-GS",
+        "source": "https://dof-gs.github.io/",
+        "relationship": "CoC-guided per-Gaussian blur already exists; this is an untrained controlled prototype,not official reproduction"
+      },
+      {
+        "name": "CoCoGaussian",
+        "source": "https://jho-yonsei.github.io/CoCoGaussian/",
+        "relationship": "CoC-aware additional Gaussians already exist; changing to video input alone is not novelty"
+      }
+    ]
+  },
+  "L2": {
+    "decisions": {
+      "B2-high": {
+        "1.4": {
+          "comparisons": {
+            "O5_shared": {
+              "PSNR_gain_dB": 2.6637067771722513,
+              "LPIPS_change": -0.004265773563909032,
+              "relative_LPIPS_change": -0.47092335156707193,
+              "noise": 8.634590285333868e-05,
+              "LPIPS_noise_ties": 0,
+              "quality_passed": true,
+              "secondary_metric_passed": true,
+              "same_direction_count": 6,
+              "valid_groups": 6,
+              "required_same_direction": 5,
+              "stable_passed": true,
+              "O3_guardrails_dB": {
+                "full_image": 0.364468570502261,
+                "in_focus": -0.2772891955060999
+              },
+              "guardrails_passed": false,
+              "passed": false
+            },
+            "O3": {
+              "PSNR_gain_dB": 0.7955079955240052,
+              "LPIPS_change": 0.000502771294398149,
+              "relative_LPIPS_change": 0.11720229833776048,
+              "noise": 8.634590285333868e-05,
+              "LPIPS_noise_ties": 1,
+              "quality_passed": true,
+              "secondary_metric_passed": false,
+              "same_direction_count": 1,
+              "valid_groups": 6,
+              "required_same_direction": 5,
+              "stable_passed": false,
+              "O3_guardrails_dB": {
+                "full_image": 0.364468570502261,
+                "in_focus": -0.2772891955060999
+              },
+              "guardrails_passed": false,
+              "passed": false
+            }
+          },
+          "passed": false
+        },
+        "5.0": {
+          "comparisons": {
+            "O5_shared": {
+              "PSNR_gain_dB": 5.456394337618256,
+              "LPIPS_change": -0.00960718127274023,
+              "relative_LPIPS_change": -0.6246298618598145,
+              "noise": 0.0001466170036847375,
+              "LPIPS_noise_ties": 0,
+              "quality_passed": true,
+              "secondary_metric_passed": true,
+              "same_direction_count": 6,
+              "valid_groups": 6,
+              "required_same_direction": 5,
+              "stable_passed": true,
+              "O3_guardrails_dB": {
+                "full_image": 0.12647677439559146,
+                "in_focus": 0.789202538442872
+              },
+              "guardrails_passed": true,
+              "passed": true
+            },
+            "O3": {
+              "PSNR_gain_dB": 0.6027333786033395,
+              "LPIPS_change": 0.00026724581751475223,
+              "relative_LPIPS_change": 0.04853568577465721,
+              "noise": 0.0001466170036847375,
+              "LPIPS_noise_ties": 0,
+              "quality_passed": true,
+              "secondary_metric_passed": true,
+              "same_direction_count": 2,
+              "valid_groups": 6,
+              "required_same_direction": 5,
+              "stable_passed": false,
+              "O3_guardrails_dB": {
+                "full_image": 0.12647677439559146,
+                "in_focus": 0.789202538442872
+              },
+              "guardrails_passed": true,
+              "passed": false
+            }
+          },
+          "passed": false
+        }
+      },
+      "B2-low": {
+        "5.3": {
+          "status": "low_CoC_descriptive_control",
+          "passed": null
+        },
+        "8.4": {
+          "status": "low_CoC_descriptive_control",
+          "passed": null
+        }
+      }
+    },
+    "formal_method_value_passed": false,
+    "pixels_and_coverage": {
+      "B2-high": {
+        "geometry": {
+          "all_recoverable": {
+            "rays": 594025,
+            "matched_rays": 570120,
+            "ray_weighted_fraction": 0.9597575859601869,
+            "per_case_fraction_range": [
+              0.8958863236157307,
+              0.9928568168332649
+            ]
+          },
+          "static_hidden_surface": {
+            "rays": 589500,
+            "matched_rays": 567784,
+            "ray_weighted_fraction": 0.9631620016963528,
+            "per_case_fraction_range": [
+              0.902833817040655,
+              0.994995996797438
+            ]
+          },
+          "dynamic_hidden_surface": {
+            "rays": 4525,
+            "matched_rays": 2336,
+            "ray_weighted_fraction": 0.5162430939226519,
+            "per_case_fraction_range": [
+              0.0,
+              0.7389210019267822
+            ]
+          }
+        },
+        "band_pixels_per_case": [
+          58653,
+          89105
+        ],
+        "band_image_fraction_range": [
+          0.22374343872070312,
+          0.33991241455078125
+        ],
+        "band_recall_range": [
+          0.9979425792574581,
+          0.9999165066377222
+        ],
+        "band_precision_range": [
+          0.18635271680328622,
+          0.23679555549732045
+        ]
+      },
+      "B2-low": {
+        "geometry": {
+          "all_recoverable": {
+            "rays": 42384,
+            "matched_rays": 28167,
+            "ray_weighted_fraction": 0.6645668176670442,
+            "per_case_fraction_range": [
+              0.08579088471849866,
+              0.9959919839679359
+            ]
+          },
+          "static_hidden_surface": {
+            "rays": 41708,
+            "matched_rays": 27647,
+            "ray_weighted_fraction": 0.6628704325309294,
+            "per_case_fraction_range": [
+              0.08579088471849866,
+              0.9958660603555188
+            ]
+          },
+          "dynamic_hidden_surface": {
+            "rays": 676,
+            "matched_rays": 520,
+            "ray_weighted_fraction": 0.7692307692307693,
+            "per_case_fraction_range": [
+              0.0,
+              1.0
+            ]
+          }
+        },
+        "band_pixels_per_case": [
+          18256,
+          22684
+        ],
+        "band_image_fraction_range": [
+          0.06964111328125,
+          0.0865325927734375
+        ],
+        "band_recall_range": [
+          0.9898674980514419,
+          1.0
+        ],
+        "band_precision_range": [
+          0.04409609379978334,
+          0.07883791669253212
+        ]
+      }
+    }
+  },
+  "L3": {
+    "decisions": {
+      "B2-high": {
+        "1.4": {
+          "comparisons": {
+            "O5_shared": {
+              "PSNR_gain_dB": 1.8469576241135854,
+              "LPIPS_change": -0.003188010826233648,
+              "relative_LPIPS_change": -0.35194290569570313,
+              "noise": 8.634590285333868e-05,
+              "LPIPS_noise_ties": 0,
+              "quality_passed": true,
+              "secondary_metric_passed": true,
+              "same_direction_count": 6,
+              "valid_groups": 6,
+              "required_same_direction": 5,
+              "stable_passed": true,
+              "O3_guardrails_dB": {
+                "full_image": -0.15536024054187436,
+                "in_focus": -0.3518240189530957
+              },
+              "guardrails_passed": false,
+              "passed": false
+            },
+            "O3": {
+              "PSNR_gain_dB": -0.021241157534660715,
+              "LPIPS_change": 0.0015805340320735328,
+              "relative_LPIPS_change": 0.36844231805599215,
+              "noise": 8.634590285333868e-05,
+              "LPIPS_noise_ties": 0,
+              "quality_passed": false,
+              "secondary_metric_passed": false,
+              "same_direction_count": 0,
+              "valid_groups": 6,
+              "required_same_direction": 5,
+              "stable_passed": false,
+              "O3_guardrails_dB": {
+                "full_image": -0.15536024054187436,
+                "in_focus": -0.3518240189530957
+              },
+              "guardrails_passed": false,
+              "passed": false
+            }
+          },
+          "passed": false,
+          "retained_L2_MSE_reduction_vs_O3": -0.02929304673496981,
+          "L3_minus_L2": {
+            "PSNR_dB": -0.8167491530586659,
+            "LPIPS": 0.0010777627376753838
+          }
+        },
+        "5.0": {
+          "comparisons": {
+            "O5_shared": {
+              "PSNR_gain_dB": 3.372700464222092,
+              "LPIPS_change": -0.007234391712550111,
+              "relative_LPIPS_change": -0.47035826302890943,
+              "noise": 0.0001466170036847375,
+              "LPIPS_noise_ties": 0,
+              "quality_passed": true,
+              "secondary_metric_passed": true,
+              "same_direction_count": 6,
+              "valid_groups": 6,
+              "required_same_direction": 5,
+              "stable_passed": true,
+              "O3_guardrails_dB": {
+                "full_image": -1.7620399618392,
+                "in_focus": 0.7248067199862476
+              },
+              "guardrails_passed": false,
+              "passed": false
+            },
+            "O3": {
+              "PSNR_gain_dB": -1.480960494792825,
+              "LPIPS_change": 0.0026400353777048724,
+              "relative_LPIPS_change": 0.4794684112097991,
+              "noise": 0.0001466170036847375,
+              "LPIPS_noise_ties": 0,
+              "quality_passed": false,
+              "secondary_metric_passed": false,
+              "same_direction_count": 0,
+              "valid_groups": 6,
+              "required_same_direction": 5,
+              "stable_passed": false,
+              "O3_guardrails_dB": {
+                "full_image": -1.7620399618392,
+                "in_focus": 0.7248067199862476
+              },
+              "guardrails_passed": false,
+              "passed": false
+            }
+          },
+          "passed": false,
+          "retained_L2_MSE_reduction_vs_O3": -3.135859704826221,
+          "L3_minus_L2": {
+            "PSNR_dB": -2.0836938733961645,
+            "LPIPS": 0.00237278956019012
+          }
+        }
+      },
+      "B2-low": {
+        "5.3": {
+          "status": "low_CoC_descriptive_control",
+          "passed": null
+        },
+        "8.4": {
+          "status": "low_CoC_descriptive_control",
+          "passed": null
+        }
+      }
+    },
+    "formal_method_value_passed": false,
+    "pixels_and_coverage": {
+      "B2-high": {
+        "geometry": {
+          "all_recoverable": {
+            "rays": 594025,
+            "matched_rays": 478008,
+            "ray_weighted_fraction": 0.8046934051597155,
+            "per_case_fraction_range": [
+              0.7301408726276658,
+              0.8647228090018463
+            ]
+          },
+          "static_hidden_surface": {
+            "rays": 589500,
+            "matched_rays": 477916,
+            "ray_weighted_fraction": 0.8107141645462256,
+            "per_case_fraction_range": [
+              0.7417992047713717,
+              0.865787018525923
+            ]
+          },
+          "dynamic_hidden_surface": {
+            "rays": 4525,
+            "matched_rays": 92,
+            "ray_weighted_fraction": 0.02033149171270718,
+            "per_case_fraction_range": [
+              0.0,
+              0.2625
+            ]
+          }
+        },
+        "band_pixels_per_case": [
+          58653,
+          89105
+        ],
+        "band_image_fraction_range": [
+          0.22374343872070312,
+          0.33991241455078125
+        ],
+        "band_recall_range": [
+          0.9979425792574581,
+          0.9999165066377222
+        ],
+        "band_precision_range": [
+          0.18635271680328622,
+          0.23679555549732045
+        ]
+      },
+      "B2-low": {
+        "geometry": {
+          "all_recoverable": {
+            "rays": 42384,
+            "matched_rays": 22012,
+            "ray_weighted_fraction": 0.5193469233673084,
+            "per_case_fraction_range": [
+              0.0762160091918805,
+              0.8434991974317817
+            ]
+          },
+          "static_hidden_surface": {
+            "rays": 41708,
+            "matched_rays": 21997,
+            "ray_weighted_fraction": 0.5274048144240913,
+            "per_case_fraction_range": [
+              0.0762160091918805,
+              0.8626237623762376
+            ]
+          },
+          "dynamic_hidden_surface": {
+            "rays": 676,
+            "matched_rays": 15,
+            "ray_weighted_fraction": 0.022189349112426034,
+            "per_case_fraction_range": [
+              0.0,
+              0.16176470588235295
+            ]
+          }
+        },
+        "band_pixels_per_case": [
+          18256,
+          22684
+        ],
+        "band_image_fraction_range": [
+          0.06964111328125,
+          0.0865325927734375
+        ],
+        "band_recall_range": [
+          0.9898674980514419,
+          1.0
+        ],
+        "band_precision_range": [
+          0.04409609379978334,
+          0.07883791669253212
+        ]
+      }
+    },
+    "retention": {
+      "1.4": {
+        "hidden_mechanism_MSE_reduction_retained_vs_O5": 0.7555961254837615,
+        "net_method_MSE_reduction_retained_vs_O3": -0.02929304673496981,
+        "meaning": "mechanism retention is not net method value;net gains versusO3 turn negative"
+      },
+      "5.0": {
+        "hidden_mechanism_MSE_reduction_retained_vs_O5": 0.7549506700106106,
+        "net_method_MSE_reduction_retained_vs_O3": -3.135859704826221,
+        "meaning": "mechanism retention is not net method value;net gains versusO3 turn negative"
+      }
+    },
+    "no_target_hidden_GT_in_prediction": true,
+    "GT_dynamic_labels_used_only_in_evaluation": true,
+    "aggregation": "nearestbehind-visibledepth+median within1%;no motioncompensation",
+    "dynamic_visible_error": {
+      "1.4": {
+        "O3": {
+          "pixels": 82336,
+          "sse": 3.4999233972281245,
+          "psnr": 48.48652480192551,
+          "patch_lpips": 0.002762900954519926
+        },
+        "L2": {
+          "pixels": 82336,
+          "sse": 3.900660921833888,
+          "psnr": 48.0157281981657,
+          "patch_lpips": 0.0024588209362589224
+        },
+        "L3": {
+          "pixels": 82336,
+          "sse": 4.679604382202075,
+          "psnr": 47.22501880254649,
+          "patch_lpips": 0.0026866216414296582
+        }
+      },
+      "5.0": {
+        "O3": {
+          "pixels": 82336,
+          "sse": 11.144522410520107,
+          "psnr": 43.4564955737309,
+          "patch_lpips": 0.0052774880019386
+        },
+        "L2": {
+          "pixels": 82336,
+          "sse": 5.728818991506068,
+          "psnr": 46.34645918807246,
+          "patch_lpips": 0.004121654654549993
+        },
+        "L3": {
+          "pixels": 82336,
+          "sse": 6.9660010976558375,
+          "psnr": 45.497274806944745,
+          "patch_lpips": 0.004599523046074393
+        }
+      }
+    }
+  },
+  "implementation_correction": {
+    "initial_L2_record": "route3-dual-layer-2026-11-11-L2-evaluation.json",
+    "corrected_L2_record": "route3-dual-layer-2026-11-11-L2-observed-sky-evaluation.json",
+    "issue": "finite-depth-only VG omitted already observed sky colors;new input-only LaMa mask could overwrite those visible colors,violating full-image visible-layer contract",
+    "correction": "include input observed sky at existing10km method-only farfield;farclip100km admits it;no true skygeometry asserted",
+    "zero_aperture_contract_record": "route3-dual-layer-2026-11-11-observed-sky-check.json",
+    "not_a_fix_for_all_original_B2_loss": true,
+    "LaMa_mask_and_lookup_changed": false,
+    "lens_K_band_thresholds_changed": false,
+    "initial_failed_outputs_preserved": true,
+    "L1_scalar_outputs_or_parameters_changed": false,
+    "L3_same_corrected_visible_as_L2": true
+  },
+  "C_fill": {
+    "new_input_only_fill": true,
+    "GT_segmentation_used": false,
+    "true_hidden_background_depth_used": false,
+    "shared_between_L2_L3": true,
+    "reason": "oldB2GTsegmentation andhiddenbackgrounddepth would violateL3 allowedinputs",
+    "controls": "same-new-fill O5/fullhidden/bandhidden;initial finite-only and observed-sky versions preserved as implementation ablation"
+  },
+  "runtime": {
+    "L2": {
+      "median_two_pass_render_seconds": 0.9062440097332001,
+      "peak_allocated_MiB": 2849.560546875,
+      "boundary": "synchronized render only;visiblepass+jointpass;cloud preparation,inputIO and retriever excluded;shared O5 cached inL3"
+    },
+    "L3": {
+      "median_two_pass_render_seconds": 0.9039659537374973,
+      "peak_allocated_MiB": 2648.01953125,
+      "boundary": "synchronized render only;visiblepass+jointpass;cloud preparation,inputIO and retriever excluded;shared O5 cached inL3"
+    },
+    "retrieval": {
+      "approximate_process_wall_seconds": 19.299240827560425,
+      "measurement": "record-write timestamp minus empty stdout log creation;includes imports,inputreads and CPUretrieval;not isolated kernel time"
+    },
+    "new_Cycles_temporal": {
+      "images": 7,
+      "sum_render_write_seconds": 18.072076570242643,
+      "SPP": 1024,
+      "denoising": false,
+      "motion_blur": false,
+      "frame30_reused": true
+    }
+  },
+  "software": {
+    "Blender": "4.5.3 LTS",
+    "Python": "3.10.22",
+    "torch": "2.7.1+cu128",
+    "gsplat": "1.5.0",
+    "triton": "3.3.1",
+    "LPIPS_package": "0.1.4",
+    "LPIPS_net": "alex",
+    "LPIPS_metric_version": "0.1",
+    "numpy": "1.26.4",
+    "LaMa_interpreter": "/root/miniconda3/envs/magicbokeh/bin/python",
+    "GPU": "RTX4090D49140MiB,GPU0,driver580.105.08"
+  },
+  "resources_after": {
+    "/": {
+      "available_bytes": 2613092352,
+      "available_GiB": 2.4336318969726562
+    },
+    "/root/autodl-tmp": {
+      "available_bytes": 331936661504,
+      "available_GiB": 309.1401062011719
+    },
+    "GPU_end": "0MiB,no computeprocesses"
+  },
+  "validation_record": "route3-dual-layer-2026-11-11-validation.json",
+  "unfinished_or_not_run": [
+    {
+      "item": "L4",
+      "reason": "neitherprimary-focusL3 passes frozencriteria;optionalconditionnotmet"
+    },
+    {
+      "item": "O6 continuous-time diagnosis",
+      "reason": "temporalO5only was declared beforeL1;representativeO6quality already fails;no newhiddenreference sequenceacquired"
+    },
+    {
+      "item": "f2.8formal newrenders",
+      "reason": "auxiliary only;notexpanded thisround"
+    },
+    {
+      "item": "training",
+      "reason": "explicitly outside scope"
+    }
+  ],
+  "conclusions": {
+    "observed": "hidden layers improve sampled visible-only rendering;L2 fullimagePSNRexceedsO3 afterfull-visible contractrepair,butfocalguard/LPIPSstability fail;input-only retrieval loses netgainsversusO3",
+    "analytic": "faster butfails Cycles-quality andtemporalnoninferiority;notadopted",
+    "route": "currentdual-layer pipelinehasnotpassed fullmethod-value criteria;doesnot support proceeding directlyto training;pausefor userroute decision",
+    "limits": [
+      "one controlledmain scene pluslowCoCvariant,3representativeframes,6groupsperfocus;notcrossscene generalization",
+      "untrainedfixedGaussian appearance/discretization,finiteK64 andfill/skyproxies remain",
+      "L3geometrycoverage doesnotcertify texture;uncompensated dynamics are weak",
+      "pixelcounts/rays repeatacross lensconditions;notindependent statisticalsamples",
+      "O5/O6 arenotperfect opticalOracles;L2minusO3 isnot singlefactor attribution"
+    ]
+  },
+  "figures": {
+    "L1": "outputs/route3-dual-layer-2026-11-10-01/L1-evaluation/",
+    "L2": [
+      "outputs/route3-dual-layer-2026-11-10-01/L2-observed-sky-evaluation/B2-high-f001-N1.4-F1.4.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L2-observed-sky-evaluation/B2-high-f001-N1.4-F5.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L2-observed-sky-evaluation/B2-high-f001-N2-F1.4.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L2-observed-sky-evaluation/B2-high-f001-N2-F5.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L2-observed-sky-evaluation/B2-high-f030-N1.4-F1.4.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L2-observed-sky-evaluation/B2-high-f030-N1.4-F5.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L2-observed-sky-evaluation/B2-high-f030-N2-F1.4.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L2-observed-sky-evaluation/B2-high-f030-N2-F5.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L2-observed-sky-evaluation/B2-high-f060-N1.4-F1.4.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L2-observed-sky-evaluation/B2-high-f060-N1.4-F5.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L2-observed-sky-evaluation/B2-high-f060-N2-F1.4.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L2-observed-sky-evaluation/B2-high-f060-N2-F5.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L2-observed-sky-evaluation/B2-low-f001-N1.4-F5.3.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L2-observed-sky-evaluation/B2-low-f001-N1.4-F8.4.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L2-observed-sky-evaluation/B2-low-f001-N2-F5.3.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L2-observed-sky-evaluation/B2-low-f001-N2-F8.4.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L2-observed-sky-evaluation/B2-low-f030-N1.4-F5.3.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L2-observed-sky-evaluation/B2-low-f030-N1.4-F8.4.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L2-observed-sky-evaluation/B2-low-f030-N2-F5.3.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L2-observed-sky-evaluation/B2-low-f030-N2-F8.4.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L2-observed-sky-evaluation/B2-low-f060-N1.4-F5.3.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L2-observed-sky-evaluation/B2-low-f060-N1.4-F8.4.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L2-observed-sky-evaluation/B2-low-f060-N2-F5.3.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L2-observed-sky-evaluation/B2-low-f060-N2-F8.4.png"
+    ],
+    "L3": [
+      "outputs/route3-dual-layer-2026-11-10-01/L3-evaluation/B2-high-f001-N1.4-F1.4.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L3-evaluation/B2-high-f001-N1.4-F5.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L3-evaluation/B2-high-f001-N2-F1.4.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L3-evaluation/B2-high-f001-N2-F5.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L3-evaluation/B2-high-f030-N1.4-F1.4.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L3-evaluation/B2-high-f030-N1.4-F5.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L3-evaluation/B2-high-f030-N2-F1.4.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L3-evaluation/B2-high-f030-N2-F5.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L3-evaluation/B2-high-f060-N1.4-F1.4.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L3-evaluation/B2-high-f060-N1.4-F5.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L3-evaluation/B2-high-f060-N2-F1.4.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L3-evaluation/B2-high-f060-N2-F5.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L3-evaluation/B2-low-f001-N1.4-F5.3.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L3-evaluation/B2-low-f001-N1.4-F8.4.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L3-evaluation/B2-low-f001-N2-F5.3.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L3-evaluation/B2-low-f001-N2-F8.4.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L3-evaluation/B2-low-f030-N1.4-F5.3.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L3-evaluation/B2-low-f030-N1.4-F8.4.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L3-evaluation/B2-low-f030-N2-F5.3.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L3-evaluation/B2-low-f030-N2-F8.4.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L3-evaluation/B2-low-f060-N1.4-F5.3.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L3-evaluation/B2-low-f060-N1.4-F8.4.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L3-evaluation/B2-low-f060-N2-F5.3.png",
+      "outputs/route3-dual-layer-2026-11-10-01/L3-evaluation/B2-low-f060-N2-F8.4.png"
+    ]
+  },
+  "next_step": "Pause;user decides whether to investigate appearance/visibility/retrieval further or change maincontribution;no automatic training,mask tuning orscope expansion",
+  "ablations_and_reproduction": {
+    "analytic_modes": "scripts/route3_dual_layer_l1.py --mode render: analytic1/analytic4/fixed16/fixed64/random16;--probe is fixedframes1/30 f1.4 only;--include-pressure descriptive",
+    "visible_form_diagnosis": "scripts/route3_dual_layer_l0.py --mode zero/scan/repair/vp-repair; legacy VP remains default,depth-slope correction explicitly enabled in vp-repair",
+    "no_observed_sky": "scripts/route3_dual_layer_l23.py --mode render --stage L2 without --include-observed-sky;initial results preserved",
+    "current_observed_sky": "same command with --include-observed-sky;all other criteria,lenses,masks,fill identical",
+    "no_hidden": "O5_shared output;visible+same residualfill",
+    "no_band_limitation": "O6_full_shared output;all GT-recoverable hidden parents, same visible/fill",
+    "band_oracle": "L2 output;GT-recoverable parents inband plus per-output-ray band activation",
+    "input_only_retrieval": "scripts/route3_dual_layer_prepare.py --mode retrieval using shared-inputs manifest;L23 --stage L3 --include-observed-sky --parents retrievaldirectory --L2-record correctedL2renderrecord",
+    "comparator_cache": "L3 reuses only input-derived O5 visible component from correctedL2;it has no hidden contribution;independent RGB agreement check0",
+    "scoring": "L23 --mode evaluate --stage L2/L3;hiddenGT is loaded only here;L3 may reuse identical O3/O5/L2 metrics via --reuse-evaluation",
+    "all_output_paths_must_be_new": true
+  },
+  "validation_compile": "all14 newPythonfiles compiled;strictJSON/size/credential checks passed"
+}
