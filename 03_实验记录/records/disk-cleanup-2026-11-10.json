@@ -1,0 +1,253 @@
+{
+  "schema_version": 1,
+  "request_date": "2026-11-10",
+  "recorded_at_utc": "2026-11-10T06:58:56.579048+00:00",
+  "status": "partial_cleanup_stopped_at_explicit_pip_cache_path_mismatch",
+  "authorization": "User explicitly authorized only listed tier-one cleanup targets, sequential deletion with prechecks and per-item inventories.",
+  "execution_order": "01,02,03,04,05,06 file,06 empty directory; stop at07a;07b/07c untouched",
+  "process_safety": {
+    "initial_ps_and_proc_fd_maps_cwd_passed": true,
+    "per_deletion_ps_and_proc_checks_passed": true,
+    "initial_evidence": "logs/disk-cleanup-2026-11-10/process-check-before.json",
+    "no_processes_terminated": true,
+    "concurrent_work": "Parent C1 uses data/raw and route3-cache; Blender portable installation uses /root/autodl-tmp/tools, outside cleanup targets."
+  },
+  "df_before": {
+    "human": "Filesystem      Size  Used Avail Use% Mounted on\n/dev/md0        837G  723G  115G  87% /root/autodl-tmp\n",
+    "bytes": {
+      "size": 898721906688,
+      "used": 775305318400,
+      "available": 123416588288
+    }
+  },
+  "df_after": {
+    "human": "Filesystem      Size  Used Avail Use% Mounted on\n/dev/md0        837G  513G  325G  62% /root/autodl-tmp\n",
+    "bytes": {
+      "size": 898721906688,
+      "used": 550005702656,
+      "available": 348716204032
+    },
+    "available_gib": 324.76727294921875
+  },
+  "totals": {
+    "deleted_logical_bytes": 226639398868,
+    "deleted_allocated_bytes_from_manifests": 226640461824,
+    "sum_per_item_df_available_increase_bytes": 226640474112,
+    "net_df_available_increase_bytes": 225299615744,
+    "measurement_note": "df deltas include small journal/metadata/log changes and concurrent Blender/C1 writes; logical and allocated totals describe only authorized deleted files, not an exact attribution of net filesystem growth."
+  },
+  "items": [
+    {
+      "item": "01-scale1-npy",
+      "target": "outputs/any2bokeh-scale1-experiment-20261008/**/*.npy",
+      "predelete_file_count": 170,
+      "predelete_logical_bytes": 170470364416,
+      "predelete_allocated_bytes": 170471137280,
+      "verification": {
+        "passed": true,
+        "status": "FOUR_SCENE_EXPERIMENT_COMPLETE",
+        "results_record": "03_实验记录/records/any2bokeh-encoder-scale1-experiment-4090d-20261008.json",
+        "results_json_parsed": true,
+        "preserve_non_npy": true
+      },
+      "deleted": true,
+      "df_available_increase_bytes": 170471165952,
+      "files_manifest": "logs/disk-cleanup-2026-11-10/01-scale1-npy-files-before.json",
+      "execution_log": "logs/disk-cleanup-2026-11-10/01-scale1-npy-delete.log",
+      "postcheck": {
+        "remaining_npy_files": 0,
+        "retained_non_npy_files": 186,
+        "retained_non_npy_size_and_mtime_unchanged": true,
+        "directories_retained": true
+      }
+    },
+    {
+      "item": "02-camvfx-ranges",
+      "target": "data/archives/CamVFX-4D-selected/*.range",
+      "predelete_file_count": 16,
+      "predelete_logical_bytes": 33581560560,
+      "predelete_allocated_bytes": 33581629440,
+      "verification": {
+        "passed": true,
+        "raw_scenes": [
+          "ball",
+          "basketball_1",
+          "basketball_2",
+          "box",
+          "cat",
+          "cube",
+          "lego",
+          "plant"
+        ],
+        "png_count_by_scene": {
+          "ball": 5000,
+          "basketball_1": 5000,
+          "basketball_2": 5000,
+          "box": 5000,
+          "cat": 5000,
+          "cube": 5000,
+          "lego": 5000,
+          "plant": 5000
+        },
+        "png_count": 40000,
+        "record_crc_verified": true,
+        "record_png_headers_and_pose_pairs_passed": true,
+        "record": "03_实验记录/records/route3-prep-2026-11-09-camvfx4d.json"
+      },
+      "deleted": true,
+      "df_available_increase_bytes": 33581625344,
+      "files_manifest": "logs/disk-cleanup-2026-11-10/02-camvfx-ranges-files-before.json",
+      "execution_log": "logs/disk-cleanup-2026-11-10/02-camvfx-ranges-delete.log",
+      "postcheck": {
+        "remaining_range_files": 0,
+        "retained_download_metadata_chunks_files": 32,
+        "retained_file_size_and_mtime_unchanged": true
+      }
+    },
+    {
+      "item": "03-bg20k-archive",
+      "target": "data/archives/BG-20k-hf/",
+      "predelete_file_count": 94,
+      "predelete_logical_bytes": 14123704137,
+      "predelete_allocated_bytes": 14123921408,
+      "verification": {
+        "passed": true,
+        "splits": {
+          "train": {
+            "list_lines": 15000,
+            "file_count": 15000,
+            "filename_set_equal": true,
+            "passed": true
+          },
+          "testval": {
+            "list_lines": 5000,
+            "file_count": 5000,
+            "filename_set_equal": true,
+            "passed": true
+          }
+        },
+        "raw_preserved": true
+      },
+      "deleted": true,
+      "df_available_increase_bytes": 14123921408,
+      "files_manifest": "logs/disk-cleanup-2026-11-10/03-bg20k-archive-files-before.json",
+      "execution_log": "logs/disk-cleanup-2026-11-10/03-bg20k-archive-delete.log"
+    },
+    {
+      "item": "04-videomatte-tar",
+      "target": "data/archives/VideoMatte240K_HEVC.tar",
+      "predelete_file_count": 1,
+      "predelete_logical_bytes": 5022392320,
+      "predelete_allocated_bytes": 5022392320,
+      "verification": {
+        "passed": true,
+        "tar_tf_returncode": 0,
+        "tar_entries": 975,
+        "tar_regular_files": 968,
+        "tar_directories": 7,
+        "tar_other_entries": [],
+        "raw_file_count": 968,
+        "counts_equal_excluding_directory_entries": true,
+        "archive_listing": "logs/disk-cleanup-2026-11-10/04-videomatte-tar-list.txt",
+        "raw_preserved": true
+      },
+      "deleted": true,
+      "df_available_increase_bytes": 5022388224,
+      "files_manifest": "logs/disk-cleanup-2026-11-10/04-videomatte-tar-files-before.json",
+      "execution_log": "logs/disk-cleanup-2026-11-10/04-videomatte-tar-delete.log"
+    },
+    {
+      "item": "05-davis-zip",
+      "target": "data/archives/DAVIS-2017-trainval-Full-Resolution.zip",
+      "predelete_file_count": 1,
+      "predelete_logical_bytes": 2956935323,
+      "predelete_allocated_bytes": 2956939264,
+      "verification": {
+        "passed": true,
+        "unzip_l_returncode": 0,
+        "zip_entries": 12610,
+        "zip_regular_files": 12422,
+        "zip_directories": 188,
+        "raw_file_count": 12422,
+        "filename_sets_equal": true,
+        "archive_only_count": 0,
+        "raw_only_count": 0,
+        "archive_listing": "logs/disk-cleanup-2026-11-10/05-davis-zip-list.txt",
+        "raw_preserved": true,
+        "filename_normalization": "none: extracted raw root contains DAVIS/ as does the archive"
+      },
+      "deleted": true,
+      "df_available_increase_bytes": 2956935168,
+      "files_manifest": "logs/disk-cleanup-2026-11-10/05-davis-zip-files-before.json",
+      "execution_log": "logs/disk-cleanup-2026-11-10/05-davis-zip-delete.log"
+    },
+    {
+      "item": "06-incomplete-part",
+      "target": "data/archives/incomplete/VideoMatte240K_JPEG_HD.zipd_lxn8w6.part",
+      "predelete_file_count": 1,
+      "predelete_logical_bytes": 484442112,
+      "predelete_allocated_bytes": 484442112,
+      "verification": {
+        "passed": true,
+        "kind": "explicitly authorized incomplete download residue"
+      },
+      "deleted": true,
+      "df_available_increase_bytes": 484438016,
+      "files_manifest": "logs/disk-cleanup-2026-11-10/06-incomplete-part-files-before.json",
+      "execution_log": "logs/disk-cleanup-2026-11-10/06-incomplete-part-delete.log",
+      "postcheck": {
+        "empty_parent_removed_using_rmdir": true,
+        "empty_parent_result": "logs/disk-cleanup-2026-11-10/06-incomplete-empty-directory-result.json"
+      }
+    },
+    {
+      "item": "07a-pip-cache",
+      "target": "/root/autodl-tmp/.cache/pip",
+      "deleted": false,
+      "status": "stopped_path_mismatch",
+      "verification": {
+        "passed": false,
+        "command": [
+          "/root/autodl-tmp/envs/route3/bin/pip",
+          "cache",
+          "dir"
+        ],
+        "expected": "/root/autodl-tmp/.cache/pip",
+        "actual": "/root/.cache/pip"
+      },
+      "skip_reason": "Explicit stop: pip cache dir differs from authorized data-disk cache; purge not executed; configuration unchanged.",
+      "released_bytes": 0
+    },
+    {
+      "item": "07b-pip-temp-directories",
+      "target": "/root/autodl-tmp/.cache/tmp/{pip-unpack-,pip-install-,pip-build-tracker-,pip-ephem-wheel-cache-}*",
+      "deleted": false,
+      "status": "not_attempted_after_stop",
+      "verification": null,
+      "skip_reason": "Stopped at 07a path mismatch; no temporary directory removed.",
+      "released_bytes": 0
+    },
+    {
+      "item": "07c-conda-tarballs",
+      "target": "/root/autodl-tmp/.cache/conda-pkgs (tarballs only)",
+      "deleted": false,
+      "status": "not_attempted_after_stop",
+      "verification": null,
+      "skip_reason": "Stopped at 07a path mismatch; conda config/clean not executed.",
+      "released_bytes": 0
+    }
+  ],
+  "preserved": {
+    "data_raw": true,
+    "data_processed": true,
+    "models": true,
+    "envs": true,
+    "other_outputs": true,
+    "ours_geometry_pilot_archive": true,
+    "root_autodl_tmp_conda_pkgs": true,
+    "all_pip_and_conda_caches": true,
+    "pip_and_conda_configuration_unchanged": true
+  },
+  "logs_directory": "logs/disk-cleanup-2026-11-10/",
+  "stop_reason": "pip cache dir reports /root/.cache/pip, not /root/autodl-tmp/.cache/pip; user explicitly requires stopping on this mismatch."
+}
