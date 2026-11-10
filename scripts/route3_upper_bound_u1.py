@@ -85,7 +85,7 @@ def fit(a):
         fixed_hidden=True,heldout_selects_checkpoint=False)
     write(folder/'config.json',config)
     rng=np.random.default_rng(config['seed']);rows=[];step_times=[];overfit_count=0;diverged_count=0;initial_train_loss=None
-    torch.cuda.reset_peak_memory_stats();start=time.monotonic();stop_reason=None
+    torch.cuda.reset_peak_memory_stats();start=time.monotonic();stop_reason=None;first_gradients={}
     for step in range(a.steps+1):
         if step%500==0 or step in [0,100,a.steps]:
             with torch.inference_mode():
@@ -118,16 +118,22 @@ def fit(a):
         pc=merge_layers(fitted.scene(),hidden);pred=pinhole(pc,K,v['E'],v['background'])
         loss=.8*abs(pred-v['rgb']).mean()+.2*(1-ssim(pred,v['rgb']))
         if not torch.isfinite(loss):stop_reason='nonfinite training loss';break
-        loss.backward();optimizer.step();fitted.project_constraints();torch.cuda.synchronize()
+        loss.backward()
+        if step==0:
+            for name,param in fitted.named_parameters():
+                if param.grad is None or not torch.isfinite(param.grad).all():
+                    raise RuntimeError('Missing/nonfinite first backward gradient: '+name)
+                first_gradients[name]=dict(norm=float(param.grad.norm()),max_abs=float(param.grad.abs().max()),parameters=param.numel())
+        optimizer.step();fitted.project_constraints();torch.cuda.synchronize()
         step_times.append(time.monotonic()-begin);del pc,pred,loss
         if step==99:
             write(folder/'backward-profile.json',dict(steps=100,median_step_seconds=float(np.median(step_times)),
-                peak_allocated_MiB=torch.cuda.max_memory_allocated()/2**20,config=config))
+                peak_allocated_MiB=torch.cuda.max_memory_allocated()/2**20,first_backward_gradients=first_gradients,config=config))
     with torch.no_grad():
         scene=fitted.scene();torch.save({key:getattr(scene,key).detach().cpu() for key in scene.__dataclass_fields__},folder/'visible-final.pt')
     report=dict(completed=stop_reason is None and step==a.steps,stop_reason=stop_reason,config=config,rows=rows,
-        wall_seconds=time.monotonic()-start,median_step_seconds=float(np.median(step_times)),
-        peak_allocated_MiB=torch.cuda.max_memory_allocated()/2**20,output=str(folder/'visible-final.pt'))
+        wall_seconds=time.monotonic()-start,median_step_seconds=float(np.median(step_times)) if step_times else None,
+        peak_allocated_MiB=torch.cuda.max_memory_allocated()/2**20,first_backward_gradients=first_gradients,output=str(folder/'visible-final.pt'))
     write(folder/'result.json',report);write(RECORDS/f'route3-upper-bound-2026-11-11-U1-f{a.frame:03d}.json',report)
     if stop_reason:raise RuntimeError('U1_STOP '+stop_reason)
 

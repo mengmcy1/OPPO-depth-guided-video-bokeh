@@ -98,6 +98,7 @@ def evaluate(a):
     c=json.loads((RECORDS/'route3-upper-bound-criteria-2026-11-11.json').read_text());assert c['frozen']
     model=lpips_cpu(SimpleNamespace(alexnet_weights=ROOT.parent/'.cache/torch/hub/checkpoints/alexnet-owt-7be5be79.pth'))
     manifest=json.loads(a.manifest.read_text());lookup={x['id']:x for x in items()};metrics=baseline_metrics();flat=[];plots=[]
+    previous={r['id']:r for r in json.loads((RECORDS/'route3-dual-layer-2026-11-11-L2-observed-sky-render.json').read_text())['rows']}
     dest=OUT/(a.stage+'-evaluation');dest.mkdir(exist_ok=False)
     for r in manifest['rows']:
         x=lookup[r['id']];pred=np.load(r['path'])['prediction_srgb'];target=display(exr(x['gt_rgb_exr']));masks=masks_for(x,c)
@@ -110,10 +111,18 @@ def evaluate(a):
         for region,v in stats.items():flat.append(dict(id=x['id'],method=r['method'],region=region,**v))
         import matplotlib
         matplotlib.use('Agg');import matplotlib.pyplot as plt
-        O3=np.load(BASE/'methods-2d/bokehme'/x['id']/'prediction.npz')['prediction_srgb']
-        fig,ax=plt.subplots(1,4,figsize=(16,4))
-        for axis,img,title in zip(ax,[target,O3,pred,np.minimum(abs(pred-target)*15,1)],['Cycles','O3 GT-depth',r['method'],'absolute error x15']):
-            axis.imshow(img);axis.axis('off');axis.set_title(title)
+        O3=np.load((OUT/'U2-O3'/(x['id']+'.npz')) if a.stage=='U2' else (BASE/'methods-2d/bokehme'/x['id']/'prediction.npz'))['prediction_srgb']
+        imgs=[target,O3,pred,np.minimum(abs(pred-target)*15,1)]
+        titles=['Cycles','O3 DA3-depth' if a.stage=='U2' else 'O3 GT-depth',r['method'],'absolute error x15']
+        if a.stage=='U1':
+            imgs=[target,O3,np.load(previous[x['id']]['outputs']['L2'])['prediction_srgb'],pred]
+            titles=['Cycles','O3 GT-depth','unoptimized L2',r['method']]
+        ys,xs=np.nonzero(masks['band']);index=np.argmin((ys-np.median(ys))**2+(xs-np.median(xs))**2)
+        cy=int(np.clip(ys[index]-64,0,384));cx=int(np.clip(xs[index]-64,0,384))
+        fig,ax=plt.subplots(2,4,figsize=(16,8))
+        for column,(img,title) in enumerate(zip(imgs,titles)):
+            ax[0,column].imshow(img);ax[1,column].imshow(img[cy:cy+128,cx:cx+128]);ax[0,column].set_title(title)
+            ax[0,column].axis('off');ax[1,column].axis('off')
         fig.suptitle(x['id']);fig.tight_layout();path=dest/(x['id']+'-'+r['method']+'.png');fig.savefig(path,dpi=110);plt.close(fig);plots.append(str(path))
         print('UPPER_SCORE',r['method'],r['id'],stats['full_image']['psnr'],stats['band']['psnr'],flush=True)
     noise=[]
@@ -124,18 +133,24 @@ def evaluate(a):
         threshold=full_noise(x['focus_distance_m'],x['fstop'])
         noise.append(dict(id=r['id'],statistics=stats,existing_Cycles_noise_patch_LPIPS=threshold,
             below_existing_noise=stats['full_image']['patch_lpips']<threshold))
-    pooled={};comparisons={}
+    pooled={};comparisons={};per_aperture={}
     for focus in [1.4,5.]:
         selected=[x for x in items() if x['focus_distance_m']==focus];ids=[x['id'] for x in selected]
         methods=set.intersection(*(set(metrics[i]) for i in ids));table={m:{reg:pool([metrics[i][m][reg] for i in ids]) for reg in c['regions']} for m in sorted(methods)}
         pooled[str(focus)]=table;comparisons[str(focus)]={}
+        per_aperture[str(focus)]={}
+        for stop in [1.4,2.]:
+            group=[x['id'] for x in selected if x['fstop']==stop]
+            per_aperture[str(focus)][str(stop)]={m:{reg:pool([metrics[i][m][reg] for i in group])
+                for reg in c['regions']} for m in sorted(methods)}
         for m in methods-{'O3_GT','L2','L3_GT'}:
             comparisons[str(focus)][m]={b:{reg:dict(
                 PSNR_gain_dB=table[m][reg]['psnr']-table[b][reg]['psnr'] if table[m][reg]['pixels'] else None,
                 LPIPS_change=table[m][reg]['patch_lpips']-table[b][reg]['patch_lpips'] if table[m][reg]['pixels'] else None)
                 for reg in c['regions']} for b in ['O3_GT','L2','L3_GT']}
     report=dict(completed=len({r['id'] for r in manifest['rows']})==12,stage=a.stage,criteria='11c78ca',
-        manifest=str(a.manifest),per_case_metrics=metrics,pooled=pooled,comparisons=comparisons,noise=noise,visualizations=plots)
+        manifest=str(a.manifest),per_case_metrics=metrics,pooled=pooled,per_aperture=per_aperture,
+        comparisons=comparisons,noise=noise,visualizations=plots)
     if a.record.exists():raise FileExistsError(a.record)
     a.record.write_text(json.dumps(report,indent=2)+'\n')
     with a.record.with_suffix('.csv').open('w',newline='') as f:
