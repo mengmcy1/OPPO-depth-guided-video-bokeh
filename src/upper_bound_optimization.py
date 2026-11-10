@@ -43,7 +43,10 @@ class FittedVisible(nn.Module):
             torch.minimum(self.log_scales,self.initial_log_scales+2.302585093)))
         self.quats.copy_(F.normalize(self.quats,dim=-1))
         self.opacity_logits.clamp_(-12,12)
-        self.colors.clamp_(0,1)
+        # Learned linear radiance may exceed1, inferred only through the same
+        # clipped LDR pinhole loss. A color<=1 bound is not in the protocol and
+        # would impose an artificial brightness ceiling on emissive pixels.
+        self.colors.clamp_min_(0)
 
 
 def ssim(x,y):

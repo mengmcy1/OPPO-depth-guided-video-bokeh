@@ -80,12 +80,12 @@ def bokehme():
         d=np.load(x['input_npz']);rgb=d['rgb_srgb'];depth=d['center_depth'];fx=d['K'][0,0]
         for case in lens_cases(x['frame']):
             control=(fx*case['aperture']*(1/depth-1/case['focus_m'])/10).astype(np.float32)
-            torch.cuda.synchronize();start=time.monotonic()
+            torch.cuda.synchronize();torch.cuda.reset_peak_memory_stats();start=time.monotonic()
             pred,_=predict(pipeline,settings,nets,np.ascontiguousarray(rgb),np.ascontiguousarray(control))
             torch.cuda.synchronize();seconds=time.monotonic()-start
             path=dest/(case['id']+'.npz');np.savez_compressed(path,prediction_srgb=pred.clip(0,1).astype(np.float32))
             for variant in ['E1','E2']:rows.append(dict(id=case['id'],method='O3_'+variant,path=str(path)))
-            timings.append(dict(id=case['id'],seconds=seconds))
+            timings.append(dict(id=case['id'],seconds=seconds,peak_allocated_MiB=torch.cuda.max_memory_allocated()/2**20))
             print('U2_O3',case['id'],seconds,flush=True)
     write(OUT/'U2-O3-predictions.json',dict(rows=rows))
     write(RECORDS/'route3-upper-bound-2026-11-11-U2-O3.json',dict(completed=True,rows=timings,

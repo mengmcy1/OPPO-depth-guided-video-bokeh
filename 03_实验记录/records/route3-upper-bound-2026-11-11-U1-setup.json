@@ -1,0 +1,23 @@
+{
+  "recorded_at_utc": "2026-11-10T18:22:44.234240+00:00",
+  "before_any_U1_optimization": true,
+  "criterion_commit": "11c78ca",
+  "criteria_changed": false,
+  "input_and_supervision_policy": "same clipped displayRGB, standard transfer;no HDR labels or DOF GT in fitting",
+  "implementation_correction": "remove gratuitous upper1 cap on learned linear Gaussian radiance;nonnegative radiance remains;all evaluated outputs remain displayRGB[0,1]",
+  "reason": "input EXR contains bright emitters with linear peak8.85..8.88; hard cap1 would preclude recovery even if partial-coverage LDR training views constrain intensity",
+  "input_HDR_pixels_by_frame": {
+    "1": 181,
+    "30": 124,
+    "60": 265
+  },
+  "input_HDR_peak_by_frame": {
+    "1": 8.858343124389648,
+    "30": 8.850117683410645,
+    "60": 8.884974479675293
+  },
+  "old_L0_L3_results_changed": false,
+  "hidden_parameters_still_fixed": true,
+  "training_view_selection_changed": false,
+  "formal_criteria_or_loss_changed": false
+}

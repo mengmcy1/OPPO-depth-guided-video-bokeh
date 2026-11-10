@@ -78,6 +78,7 @@ def fit(a):
     config=dict(frame=a.frame,steps=a.steps,train_views=65,heldout_views=16,center_included=True,seed=2026111105+a.frame,
         code_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
         loss='0.8displayRGB L1+0.2(1-SSIM11sigma1.5)',position_bound='min(2cm,1%initialdepth)',scale_bound='0.1x..10x initialscale',
+        color_bound='nonnegative learned linear radiance;no uppercap;supervision and evaluation remain sameLDR;no rawHDR labels',
         learning_rates={g['name']:g['lr'] for g in optimizer.param_groups},learning_rate_schedule='cosine1to0.01 overfixedbudget',
         hidden_parents=int(chosen.sum()),visible_gaussians=len(fitted.means),
         hidden_training_band='union of main-lens input-depth method bands only;score masks never read',
@@ -132,6 +133,7 @@ def fit(a):
     with torch.no_grad():
         scene=fitted.scene();torch.save({key:getattr(scene,key).detach().cpu() for key in scene.__dataclass_fields__},folder/'visible-final.pt')
     report=dict(completed=stop_reason is None and step==a.steps,stop_reason=stop_reason,config=config,rows=rows,
+        learned_linear_color_max=float(scene.colors.max()),learned_Gaussian_fraction_any_color_above1=float((scene.colors>1).any(-1).float().mean()),
         wall_seconds=time.monotonic()-start,median_step_seconds=float(np.median(step_times)) if step_times else None,
         peak_allocated_MiB=torch.cuda.max_memory_allocated()/2**20,first_backward_gradients=first_gradients,output=str(folder/'visible-final.pt'))
     write(folder/'result.json',report);write(RECORDS/f'route3-upper-bound-2026-11-11-U1-f{a.frame:03d}.json',report)
