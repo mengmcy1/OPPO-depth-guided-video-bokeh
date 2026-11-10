@@ -1,0 +1,337 @@
+{
+  "schema_version": 1,
+  "stage": "L2 and same fixed protocol forL3",
+  "project_date": "2026-11-11",
+  "frozen": true,
+  "frozen_at_utc": "2026-11-10T16:04:25.335939+00:00",
+  "L2_or_L3_predictions_existed_at_freeze": false,
+  "scope": {
+    "primary_scene": "B2-high",
+    "control_scene": "B2-low",
+    "frames": [
+      1,
+      30,
+      60
+    ],
+    "focuses": {
+      "B2-high": [
+        1.4,
+        5.0
+      ],
+      "B2-low": [
+        5.3,
+        8.4
+      ]
+    },
+    "main_fstops": [
+      1.4,
+      2.0
+    ],
+    "groups_per_high_focus": 6,
+    "pressure": "L1 diagnostic only; not main decision",
+    "low_CoC": "B2-low descriptive control, not scored as pass/fail"
+  },
+  "visible_form": "V-G",
+  "profile": {
+    "subdivisions": 5,
+    "sigma_pixels": 0.7,
+    "opacity": 0.999,
+    "eps2d": 0.0015,
+    "rasterize_mode": "antialiased"
+  },
+  "renderer": "native deterministic fixed64, no analytic inflation",
+  "K": 64,
+  "selection": "L0 zero-aperture focus criterion passes VG-AA; VP remains a finite-aperture coverage-failure diagnosis. L1 analytic modes fail quality/temporalNI, so fixed64 isolates structure",
+  "band": {
+    "multiplier": 1.5,
+    "relative_inverse_depth_jump": 0.03,
+    "minimum_radius_px": 1.0,
+    "definition": "3x3 relative inverse-depth jump, union of max-local-CoC1.5x footprints; exclusively target current visible depth",
+    "GT_hidden_used_for_construction": false,
+    "primary_evaluation": "band excluding previously flagged peeled-reference residual pixels;band itself is never GT-filtered",
+    "report": "independent disocclusionGT recall/precision/FP/FN, unknownGT support and CoC distribution; no tuning toGT recall"
+  },
+  "min_pixels": 1000,
+  "min_groups": 6,
+  "same_direction_required": 5,
+  "pre_method_raw_band_counts": [
+    {
+      "scene": "B2-high",
+      "frame": 1,
+      "focus_m": 1.4,
+      "fstop": 1.4,
+      "band_pixels": 84516
+    },
+    {
+      "scene": "B2-high",
+      "frame": 1,
+      "focus_m": 1.4,
+      "fstop": 2.0,
+      "band_pixels": 63486
+    },
+    {
+      "scene": "B2-high",
+      "frame": 1,
+      "focus_m": 5.0,
+      "fstop": 1.4,
+      "band_pixels": 78317
+    },
+    {
+      "scene": "B2-high",
+      "frame": 1,
+      "focus_m": 5.0,
+      "fstop": 2.0,
+      "band_pixels": 58653
+    },
+    {
+      "scene": "B2-high",
+      "frame": 30,
+      "focus_m": 1.4,
+      "fstop": 1.4,
+      "band_pixels": 89106
+    },
+    {
+      "scene": "B2-high",
+      "frame": 30,
+      "focus_m": 1.4,
+      "fstop": 2.0,
+      "band_pixels": 66827
+    },
+    {
+      "scene": "B2-high",
+      "frame": 30,
+      "focus_m": 5.0,
+      "fstop": 1.4,
+      "band_pixels": 79836
+    },
+    {
+      "scene": "B2-high",
+      "frame": 30,
+      "focus_m": 5.0,
+      "fstop": 2.0,
+      "band_pixels": 59894
+    },
+    {
+      "scene": "B2-high",
+      "frame": 60,
+      "focus_m": 1.4,
+      "fstop": 1.4,
+      "band_pixels": 85143
+    },
+    {
+      "scene": "B2-high",
+      "frame": 60,
+      "focus_m": 1.4,
+      "fstop": 2.0,
+      "band_pixels": 64101
+    },
+    {
+      "scene": "B2-high",
+      "frame": 60,
+      "focus_m": 5.0,
+      "fstop": 1.4,
+      "band_pixels": 79448
+    },
+    {
+      "scene": "B2-high",
+      "frame": 60,
+      "focus_m": 5.0,
+      "fstop": 2.0,
+      "band_pixels": 60246
+    },
+    {
+      "scene": "B2-low",
+      "frame": 1,
+      "focus_m": 5.3,
+      "fstop": 1.4,
+      "band_pixels": 22423
+    },
+    {
+      "scene": "B2-low",
+      "frame": 1,
+      "focus_m": 5.3,
+      "fstop": 2.0,
+      "band_pixels": 20326
+    },
+    {
+      "scene": "B2-low",
+      "frame": 1,
+      "focus_m": 8.4,
+      "fstop": 1.4,
+      "band_pixels": 20326
+    },
+    {
+      "scene": "B2-low",
+      "frame": 1,
+      "focus_m": 8.4,
+      "fstop": 2.0,
+      "band_pixels": 18256
+    },
+    {
+      "scene": "B2-low",
+      "frame": 30,
+      "focus_m": 5.3,
+      "fstop": 1.4,
+      "band_pixels": 22442
+    },
+    {
+      "scene": "B2-low",
+      "frame": 30,
+      "focus_m": 5.3,
+      "fstop": 2.0,
+      "band_pixels": 20345
+    },
+    {
+      "scene": "B2-low",
+      "frame": 30,
+      "focus_m": 8.4,
+      "fstop": 1.4,
+      "band_pixels": 20345
+    },
+    {
+      "scene": "B2-low",
+      "frame": 30,
+      "focus_m": 8.4,
+      "fstop": 2.0,
+      "band_pixels": 18284
+    },
+    {
+      "scene": "B2-low",
+      "frame": 60,
+      "focus_m": 5.3,
+      "fstop": 1.4,
+      "band_pixels": 22684
+    },
+    {
+      "scene": "B2-low",
+      "frame": 60,
+      "focus_m": 5.3,
+      "fstop": 2.0,
+      "band_pixels": 20587
+    },
+    {
+      "scene": "B2-low",
+      "frame": 60,
+      "focus_m": 8.4,
+      "fstop": 1.4,
+      "band_pixels": 20587
+    },
+    {
+      "scene": "B2-low",
+      "frame": 60,
+      "focus_m": 8.4,
+      "fstop": 2.0,
+      "band_pixels": 18517
+    }
+  ],
+  "quality": {
+    "PSNR_gain_dB": 0.5,
+    "LPIPS_relative_drop": 0.1,
+    "LPIPS_drop_must_exceed_noise_multiple": 3,
+    "OR_rule": "PSNRgain>=0.5 OR relativeLPIPSdrop>=10% AND absoluteLPIPSdrop>3noise",
+    "secondary": "bandPSNR drop<=0.2dB and LPIPSworsening<=3noise",
+    "direction": "PSNRgain>0 AND LPIPSchange<-3noise;absLPIPSchange<=3noise is tie,not direction improvement or significant deterioration",
+    "guardrails": "per-focus pooled full-image and in-focus PSNR versusO3 each drop<=0.2dB; individual cases also reported"
+  },
+  "noise": {
+    "per_lens_band": {
+      "N1.4-F1.4": 6.890230572564765e-05,
+      "N1.4-F5": 0.00015369987618877754,
+      "N2-F1.4": 0.00010956290865626447,
+      "N2-F5": 0.00013720452299674835
+    },
+    "source": "L1 preregistered band-weighted independent Cycles pairs at frames1/30;maximum corresponding lens pair used forframe60",
+    "is_confidence_interval": false
+  },
+  "statistics": {
+    "PSNR": "poolfloat64SSE/(3validpixels), then -10log10; independently per scene/focus, each aperture also reported",
+    "patch_size": 64,
+    "LPIPS_net": "alex",
+    "LPIPS_version": "0.1",
+    "LPIPS_package": "0.1.4",
+    "LPIPS_spatial": false,
+    "patch_pool": "whole unmasked fixed64px grid weighted by regional pixel support",
+    "RGB": "standard displayRGBfloat[0,1];raw linearEXR retained;3D integrates true linearRGB",
+    "full_image": "all pixels including sky and peeled-reference residuals",
+    "in_focus": "finite current-visible GTdepth,absCoC<=1px;residuals retained"
+  },
+  "comparisons": {
+    "mechanism": "stage method versusO5_shared with identical input-only fill",
+    "method_value": "stage method versusO3",
+    "DrBokeh": "excluded, failed prerequisite focus check",
+    "L2_controls": [
+      "O5_shared",
+      "O6_full_shared",
+      "L2 with selected hidden parents and per-ray output band activation"
+    ],
+    "descriptive": "O3 outside+fullO6 inside band, reference only; never part of formal decisions",
+    "L3": [
+      "sameL2 criteria and visible/fill/lens",
+      "versusL2 true-hidden Oracle difference",
+      "fraction ofL2MSE reduction retained vsO3,only whenL2 improvesMSE"
+    ]
+  },
+  "C_fill": {
+    "shared_across_L2_L3": true,
+    "model": "existingLaMa,one fixed lookup per scene/targetframe",
+    "mask": "union of input-visible depth bands over predetermined main/pressure lenses,5x5 dilation2",
+    "uses_GT_segmentation": false,
+    "depth": "max current visible finite depth within radius ceil(2maxCoC)+4;sky10km;input-only background extension proxy",
+    "uses_true_hidden_depth": false,
+    "composition": "merge visible+hidden,depth-sort andalpha-compose per lens ray;remainingT*projectedLaMa lookup,average64 in linearRGB",
+    "delta_to_B2": "B2GTseg/truehiddenBG depth not allowed asL3 inputs; include same-new-fill O5 and full-hidden controls to isolate this change"
+  },
+  "L2": {
+    "hidden": "B2O6-GT-rec truehiddenparents;only parentcenters inband;hiddenalpha disabled outside outputband for each ray",
+    "name": "\u53ef\u6062\u590d\u8868\u9762\u7684 GT Oracle",
+    "perfect_optical_oracle": false
+  },
+  "L3": {
+    "allowed_input_frames": [
+      1,
+      6,
+      11,
+      16,
+      21,
+      26,
+      30,
+      35,
+      40,
+      45,
+      50,
+      55,
+      60
+    ],
+    "target_frames": [
+      1,
+      30,
+      60
+    ],
+    "allowed_fields": [
+      "RGB",
+      "source visible depth",
+      "sourceK/poses",
+      "target current visible depth",
+      "lensparameters"
+    ],
+    "target_hidden_geometry_allowed": false,
+    "target_hidden_texture_allowed": false,
+    "GT_recoverability_allowed": false,
+    "GT_object_or_dynamic_labels_allowed": false,
+    "extra_future_frames_allowed": false,
+    "filtering": "projectother12 sourcevisiblepoints;targetFOV+band and z>target_visible+max1mm,0.5%targetdepth",
+    "aggregation": "nearestbehind-visibledepth,medianRGB/depth within1%ofnearest;singleparentperpixel;no motioncompensation",
+    "retrieval_cache": "unionband cache independent of currentfocal setting;render applies frozen per-lens band",
+    "dynamic": "diagnose separate current dynamic-pixel error and hidden-dynamic geometrycoverage using GT only in evaluator",
+    "geometry_coverage": "GT recovered-aperture ray center-projection nearestparent depthwithin max5mm,2%;evaluation only"
+  },
+  "interpretations": [
+    "L2/L3 remain controlledscene geometryOracle diagnostics,not trained methods",
+    "L2minusO3 is not singlefactor hidden-content attribution",
+    "L3 geometrycoverage is not texture correctness",
+    "one main controlledscene pluslowCoCcontrol,6groups per focus;no crossscene generalization"
+  ],
+  "optional_L4": "only consider if at least onehigh-focusL3 passes;optional,not automatic",
+  "no_training": true,
+  "old_results_or_criteria_modified": false
+}
