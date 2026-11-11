@@ -1,0 +1,233 @@
+{
+  "statistics": {
+    "PSNR": "poolfloat64SSE/(3validpixels), then -10log10; independently per scene/focus, each aperture also reported",
+    "patch_size": 64,
+    "LPIPS_net": "alex",
+    "LPIPS_version": "0.1",
+    "LPIPS_package": "0.1.4",
+    "LPIPS_spatial": false,
+    "patch_pool": "whole unmasked fixed64px grid weighted by regional pixel support",
+    "RGB": "standard displayRGBfloat[0,1];raw linearEXR retained;3D integrates true linearRGB",
+    "full_image": "all pixels including sky and peeled-reference residuals",
+    "in_focus": "finite current-visible GTdepth,absCoC<=1px;residuals retained"
+  },
+  "quality": {
+    "PSNR_gain_dB": 0.5,
+    "LPIPS_relative_drop": 0.1,
+    "LPIPS_drop_must_exceed_noise_multiple": 3,
+    "OR_rule": "PSNRgain>=0.5 OR relativeLPIPSdrop>=10% AND absoluteLPIPSdrop>3noise",
+    "secondary": "bandPSNR drop<=0.2dB and LPIPSworsening<=3noise",
+    "direction": "PSNRgain>0 AND LPIPSchange<-3noise;absLPIPSchange<=3noise is tie,not direction improvement or significant deterioration",
+    "guardrails": "per-focus pooled full-image and in-focus PSNR versusO3 each drop<=0.2dB; individual cases also reported"
+  },
+  "noise": {
+    "per_lens_band": {
+      "N1.4-F1.4": 6.890230572564765e-05,
+      "N1.4-F5": 0.00015369987618877754,
+      "N2-F1.4": 0.00010956290865626447,
+      "N2-F5": 0.00013720452299674835
+    },
+    "source": "L1 preregistered band-weighted independent Cycles pairs at frames1/30;maximum corresponding lens pair used forframe60",
+    "is_confidence_interval": false
+  },
+  "min_pixels": 1000,
+  "min_groups": 6,
+  "same_direction_required": 5,
+  "band": {
+    "multiplier": 1.5,
+    "relative_inverse_depth_jump": 0.03,
+    "minimum_radius_px": 1.0,
+    "definition": "3x3 relative inverse-depth jump, union of max-local-CoC1.5x footprints; exclusively target current visible depth",
+    "GT_hidden_used_for_construction": false,
+    "primary_evaluation": "band excluding previously flagged peeled-reference residual pixels;band itself is never GT-filtered",
+    "report": "independent disocclusionGT recall/precision/FP/FN, unknownGT support and CoC distribution; no tuning toGT recall"
+  },
+  "high_light_influence": {
+    "definition": "max_RGB abs(S(Cycles_linear)-R_LDR)>0.02 in displayRGB; no dilation",
+    "threshold": 0.02,
+    "report": "imagefraction,counts,spatial heatmap/connectedcomponent distribution and overlapwith frozen scoringregions;also influenced/uninfluenced scores",
+    "evaluator_only": true,
+    "not_pure_light_ground_truth": "difference also includes finiteK andMC noise;not used to selectmethod content"
+  },
+  "regions": [
+    "full_image",
+    "in_focus",
+    "out_of_focus",
+    "band",
+    "recoverable",
+    "highlight_influence",
+    "outside_highlight_influence"
+  ],
+  "references": {
+    "primary": "unchanged Cycles full-scene GT at nominal1.4/5m",
+    "auxiliary": "unchanged R1 LDR consistent mean64; no new reference generation",
+    "noise": "existing R2 Cycles lens noise and R1 max independent-pair LDR noise"
+  },
+  "target_focus": {
+    "rule": "median used method depth inside original R3 GT in-focus mask at nominal focus/current aperture; GT mask simulates user-selected target only",
+    "shared": "O3_SHARP,VG_SHARP,SHARP front/full andretrieval variants share the same front-depth scalar percase/scale; cached O3_DA3/VG_DA3 retain original R3 depth/focus",
+    "score_masks": "original nominal GT scoring masks unchanged"
+  },
+  "fill": {
+    "rule": "same U2 input-side depth-band mask and background-depth extension + fixed LaMa; recompute SHARP mask/fill from its own depth where needed, not GT segmentation/hidden depth",
+    "sharing": "per frame/scale one fill and background depth for VG_SHARP/front/full/retrieval E1/E2, same per-ray lookup; native fill never receives Oracle S",
+    "compositing": "merge visible/back/retrieved Gaussians, depth-sorted alpha on each lens ray, residualT*Cfill, linear mean64; retrieved hidden active only outputband, no opaque LaMa covering hidden"
+  },
+  "stage": "S1d fixed calibrated visible layer; retrieval diagnostics and cumulative untrained rules",
+  "frozen": true,
+  "frozen_at_host_UTC": "2026-11-11T09:32:05.042920+00:00",
+  "client_date": "2026-11-11",
+  "client_timezone": "America/Los_Angeles",
+  "any_new_metrics_computed": false,
+  "basis": {
+    "S1b": "590a665",
+    "S1c_criteria": "4569f66",
+    "S1c_summary": "0212291"
+  },
+  "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-sharp-s1d-2026-11-11-01",
+  "frames": [
+    1,
+    30,
+    60
+  ],
+  "input_frames": [
+    1,
+    6,
+    11,
+    16,
+    21,
+    26,
+    30,
+    35,
+    40,
+    45,
+    50,
+    55,
+    60
+  ],
+  "focuses_m": [
+    1.4,
+    5.0
+  ],
+  "fstops": [
+    1.4,
+    2.0
+  ],
+  "K": 64,
+  "visible": "exact S1c cal_E1 A_color;no refit or geometry/attribute change",
+  "poses": "E1 GT poses only;claims conditional onaccurateposes",
+  "primary_baseline": "S1c calibratedO3-DA3;O3-SHARP separately",
+  "P6": {
+    "method": "R4_final=R1+R2+R3+R4 preregisteredorder,neverresultselected",
+    "control": "calibratedA_color",
+    "regions": [
+      "recoverable",
+      "band"
+    ],
+    "pass_rule": "perfocus bothregions requireinheritedquality,>=5/6direction,>=1000pixelsandfull/infocusPSNRguard>=-0.2dB"
+  },
+  "recovery": {
+    "definition": "(MSE_visible-MSE_method)/(MSE_visible-MSE_GTrec)",
+    "pool": "samepooledregionalRGBSSE/(3pixels);negativeand>1 retained",
+    "report_only_if": "GTrecbetterthanvisibleby>=0.1dB ANDpositivedenominator>=1%visibleMSE;elseNA",
+    "GTrec_descriptive_not_method": true
+  },
+  "decomposition": {
+    "geometry": "derivedK64ray/meshintersections onexistingmesh,restricted tofrozenGTrecoverablescorepixels;nonewBlenderorDOFimages",
+    "rays": "exactrenderer aperture_xy;GTgeometrynominalevaluationfocus,methodunchangedtargetclickfocus;focusmismatchremainserror",
+    "eligible": "actualK64hidden,recoverableinother12inputframes;originalK16scoremaskunchanged",
+    "association": "GTsurfacecentralprojection to nearestaggregatedparentwithin1.5px;GS hasnoharduniquehit,notopticalalphadecomposition",
+    "coverage_radius_px": 1.5,
+    "GT_surface_color": "existingrecoverablepeeledGTparents,matchingobjectID,radius<=1.5px,depthwithinmax0.02m/2%truez;LDRlinearRGBasGTrec",
+    "depth_error": "abs(candidatez-truehiddenz)>max(0.02m,0.02truez)",
+    "front_error": "candidatez<GTvisibledepth-max(0.001m,0.005visiblez)",
+    "color_error": "linearRGBLinf>0.05",
+    "primary_order": [
+      "ring_miss",
+      "candidate_missing",
+      "motion_related",
+      "depth_infront_visible",
+      "depth_too_far",
+      "depth_too_near_behind_visible",
+      "color_source_edge",
+      "color_view_exposure_proxy",
+      "color_other",
+      "depth_color_correct",
+      "unclassified"
+    ],
+    "ring_miss": "outputpixel ORGTsurfaceprojectedpixel outsidemethodband",
+    "motion": "GThit/blockerdynamic OR>=50%contributingsourcewitnessesGTdynamic;alsoreportoverlapflags",
+    "color_source_edge": ">=50%sourcewitnessesinsideownpredicteddepth3%edge+dilation3px",
+    "color_view_exposure_proxy": ">=50%witnessescorrectGTsurface,sourceobject/depthandGTprojection<=1.5px,notedge;cannotseparateexposurefromview/lighting",
+    "fractional_pixel_share": "perpixel category-rec-raycount/rec-raycount thenaverage;alsoany-raypixelunion(nonadditive)andall64rayfractions",
+    "SSE_share": "finaldisplayRGBpixelSSEvsCycles/LDR apportionedbycategory-rec-rays/rec-rays;associationnotcausalorperrayradianceSSE;replacementsprovideinterventionevidence",
+    "unclassified_stop_fraction": 0.05,
+    "unclassified_denominator": "eligiblehiddenrecoverableK64rays;correct/nonhiddenraysnotunknown",
+    "unknown": "missingGTpeeledcolor,unsupportedassociation,nonfinite;neverhideunknownasother"
+  },
+  "replacements": {
+    "reference": "R0 oldrule,independentonefactorchanges",
+    "depth": "GTfirstrecoverablehiddenatparentUV;depthonly;movealongray+scalesamepixelkernel,RGB/opacity/countunchanged",
+    "color": "sameGTmatch,RGBonly,depthunchanged",
+    "missing": "appendGTrecwhere nearestR0parent>1.5px ANDinsidemethodband;notringrepair",
+    "unmatched": "leaveunchanged/report;Oracleonly"
+  },
+  "rules": {
+    "R0": "exactS1c:behind0.5%/1mm,medianwithin1%nearestdepth;reproduceparentarrays",
+    "R1": {
+      "reference": "centerfullA-colorownrenderexpecteddepth;alpha<0.1 fallbackcalSHARPdepth",
+      "margin": "max(0.005m,0.02visibledepth)",
+      "center_uncertainty_approximation": true
+    },
+    "R2": {
+      "edge": "sourcecalSHARPinversedepth3x3range>3%localmax",
+      "dilation_px": 3,
+      "GT_used": false
+    },
+    "R3": {
+      "min_distinct_frames": 2,
+      "depth_tolerance": "max(0.02m,2%minclusterdepth)",
+      "color_Linf": 0.05,
+      "clusters": "greedyall-pairdepth/colorconsistent,depthsortedseed;onewitness/source,closestseeddepththeninputorder;R3nearestvalidcluster;rejectifnone"
+    },
+    "R4": {
+      "weight": "exp(-0.5*(median_reprojection_px/1)^2)*exp(-0.5*(median_FB_px/1)^2)*min(1,sin(median_parallax)/sin(2deg))",
+      "unknown_evidence_weight": 0.05,
+      "evidence": "cachedS1cflow/E1poses/triangulatedreference,nonewmodelorGTdepth",
+      "aggregate": "validR3clusterwithmaxsumconfidence,tienearestdepth;confidenceweightedmeanlinearRGBanddepth",
+      "opacity": "same0.999,nogateorlearnedweight"
+    },
+    "order": [
+      "R1",
+      "R1+R2",
+      "R1+R2+R3",
+      "R1+R2+R3+R4"
+    ]
+  },
+  "source_profile": {
+    "subdivisions": 5,
+    "sigma_pixels": 0.7,
+    "opacity": 0.999,
+    "eps2d": 0.0015,
+    "rasterize_mode": "antialiased"
+  },
+  "stop": {
+    "unclassified_fraction": 0.05,
+    "focus_trigger": "newruleinfocusdrop>0.5dBvsprevstageorcrosses-0.2dBguardvsvisible;inspectcoverage/depth/alpha;stopifcauseunlocated;notune"
+  },
+  "constraints": [
+    "noGTinordinaryfilters,confidence,edges",
+    "GTonlydiagnosis,replacement,score",
+    "fixedvisible,band,Cfill,K64,thinlens",
+    "nonewBlender/DOFtruth,networktraining,E2/posechanges",
+    "data-diskcache/tmp/outputs,largefilesignored"
+  ],
+  "boundaries": [
+    "onecontrolledscene,3frames,6groups/focus",
+    "E1usesGTposes",
+    "categoriesdiagnosticassociations,notuniquecausalpartition",
+    "Oracle/replacementsnotmethods",
+    "failedfiniterulesdonotprovelearningmathematicallynecessary"
+  ],
+  "after_report": "pauseforuser"
+}
