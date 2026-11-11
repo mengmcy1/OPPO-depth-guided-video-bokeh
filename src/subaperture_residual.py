@@ -28,37 +28,41 @@ def render_residual(scene,K,E,width,height,focus,aperture,samples,fill,bgdepth,
     from gsplat import rasterization
     from gsplat.cuda._wrapper import quat_scale_to_covar_preci,proj
     disk=lens_points(samples,aperture,K.device,K.dtype,residual,seed)
-    covars=quat_scale_to_covar_preci(scene.quats,scene.scales,compute_covar=True,compute_preci=False,triu=False)[0] if residual else None
+    means=scene.means;covars=None;cov_new=None;variance=None
+    if residual:
+        cov_world=quat_scale_to_covar_preci(scene.quats,scene.scales,compute_covar=True,compute_preci=False,triu=False)[0]
+        rotation=E[:3,:3];covars=rotation@cov_world@rotation.T
+        z=(means@rotation.T+E[:3,3])[:,2].clamp_min(1e-4);radius=K[0,0]*aperture*(1/z-1/focus);variance=radius.square()/(4*samples)
+        extra=torch.zeros_like(covars);extra[:,0,0]=variance*(z/K[0,0]).square();extra[:,1,1]=variance*(z/K[1,1]).square()
+        cov_new=cov_world+rotation.T@extra@rotation
     y,x=torch.meshgrid(torch.arange(height,device=K.device),torch.arange(width,device=K.device),indexing='ij')
     pixel=torch.stack([x+.5,y+.5],-1);zbg=torch.where(bgdepth>0,bgdepth,torch.full_like(bgdepth,1e4))
-    def ray(means,quats,scales,opacities,colors,base_cov,view,intr,xy):
+    def ray(means,quats,scales,opacities,colors,base_cov,expanded_cov,variance,view,intr,xy):
         uv=pixel+xy*torch.stack([K[0,0],K[1,1]])*(1/zbg-1/focus)[...,None]
         grid=torch.stack([2*uv[...,0]/width-1,2*uv[...,1]/height-1],-1)
         colorfill=F.grid_sample(fill.permute(2,0,1)[None],grid[None],padding_mode='border',align_corners=False)[0].permute(1,2,0)
-        cov_new=None;op=opacities
+        op=opacities
         if residual:
-            rotation=view[:3,:3];camera=means@rotation.T+view[:3,3];z=camera[:,2].clamp_min(1e-4)
-            camera_cov=rotation@base_cov@rotation.T
-            _,projected_cov=proj(camera[None],camera_cov[None],intr[None],width,height,camera_model='pinhole')
-            # A disk of radius absCoC/sqrtK has component variance CoC^2/(4K).
-            radius=K[0,0]*aperture*(1/z-1/focus);variance=radius.square()/(4*samples)
-            xy_cov=projected_cov[0];det_old=torch.linalg.det(xy_cov).clamp_min(1e-20)
-            cov2_new=xy_cov+variance[:,None,None]*torch.eye(2,device=K.device,dtype=K.dtype)
-            det_new=torch.linalg.det(cov2_new).clamp_min(1e-20)
+            camera=means@view[:3,:3].T+view[:3,3]
+            _,projected_cov=proj(camera[None],base_cov[None],intr[None],width,height,camera_model='pinhole')
+            xy_cov=projected_cov[0]
+            # Explicit 2x2 determinants avoid launching batched LU solves for
+            # millions of small matrices; this is the same area formula.
+            xx=xy_cov[:,0,0];yy=xy_cov[:,1,1];cross=xy_cov[:,0,1]*xy_cov[:,1,0]
+            det_old=(xx*yy-cross).clamp_min(1e-20)
+            det_new=((xx+variance)*(yy+variance)-cross).clamp_min(1e-20)
             op=opacities*(det_old/det_new).clamp(0,1).sqrt()
-            # Camera-plane covariance lifts exactly to the requested 2D
-            # increment; there is no longitudinal variance or eigendecomposition.
-            extra=torch.zeros_like(base_cov)
-            extra[:,0,0]=variance*(z/K[0,0]).square();extra[:,1,1]=variance*(z/K[1,1]).square()
-            cov_new=base_cov+rotation.T@extra@rotation
         image,a,_=rasterization(means,None if residual else quats,None if residual else scales,op,colors,view[None],intr[None],width,height,
-            packed=False,render_mode='RGB+ED',rasterize_mode='antialiased',near_plane=1e-4,far_plane=far_plane,eps2d=eps2d,covars=cov_new)
+            packed=False,render_mode='RGB+ED',rasterize_mode='antialiased',near_plane=1e-4,far_plane=far_plane,eps2d=eps2d,covars=expanded_cov)
         alpha=a[0,...,0]
         return image[0,...,:3]+(1-alpha[...,None])*colorfill,alpha
     rgb=torch.zeros_like(fill);alpha=torch.zeros_like(bgdepth)
     for xy in disk:
-        view=E.clone();view[:2,3]-=xy;intr=K.clone();intr[0,2]+=K[0,0]*xy[0]/focus;intr[1,2]+=K[1,1]*xy[1]/focus
-        args=(scene.means,scene.quats,scene.scales,scene.opacities,scene.colors,covars,view,intr,xy)
+        # Residual covariance and camera rotation are invariant to lens-plane
+        # translation; hoist them once while preserving the same ray geometry.
+        view=E.clone()
+        view[:2,3]-=xy;intr=K.clone();intr[0,2]+=K[0,0]*xy[0]/focus;intr[1,2]+=K[1,1]*xy[1]/focus
+        args=(means,scene.quats,scene.scales,scene.opacities,scene.colors,covars,cov_new,variance,view,intr,xy)
         if checkpoint_rays and torch.is_grad_enabled():color,a=checkpoint(ray,*args,use_reentrant=False)
         else:color,a=ray(*args)
         rgb=rgb+color;alpha=alpha+a

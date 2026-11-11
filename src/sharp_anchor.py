@@ -2,12 +2,12 @@
 import time
 import numpy as np
 import torch
-from gsplat import rasterization
 from .aperture_renderer import GaussianScene,linear_to_srgb
 from .upper_bound_optimization import ssim
 
 
 def zero_image(cloud,K,fill):
+    from gsplat import rasterization
     image,alpha,_=rasterization(cloud.means,cloud.quats,cloud.scales,cloud.opacities,cloud.colors,
         torch.eye(4,device=K.device)[None],K[None],512,512,packed=False,render_mode='RGB+ED',
         rasterize_mode='antialiased',eps2d=.0015,near_plane=1e-4,far_plane=1e5)

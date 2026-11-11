@@ -20,6 +20,7 @@ from route3_ldr_u1r import model
 OUT=ROOT/'outputs/route3-sharp-s1b-2026-11-11-01'
 PREFIX='route3-sharp-s1b-2026-11-11'
 CRITERIA=RECORDS/'route3-sharp-s1b-criteria-2026-11-11.json'
+RUN_NAME='residual-hoistedcov'
 SEEDS=[2026111123,2026111124,2026111125,2026111126]
 MODES=[('fixed64',64,False,None),('fixed16',16,False,None),('fixed16_residual',16,True,None)]+[(f'stratified16_residual_seed{s}',16,True,s) for s in SEEDS]
 
@@ -58,7 +59,7 @@ def gradient_cost(cloud,K,E,focus,aperture,k,residual,seed,fill,bg):
 
 
 def render(c):
-    root=OUT/'residual';root.mkdir(exist_ok=False);rows=[];profiles=[]
+    root=OUT/RUN_NAME;root.mkdir(exist_ok=False);rows=[];profiles=[]
     # This profile subset is fixed by frame/time, never selected by quality.
     write(root/'execution-plan.json',dict(frozen_before_residual_metrics=True,quality_frames=[1,30,60],profile_frames=[30],profile_all_focuses_and_apertures_and_clouds=True,
         random_quality_seeds=SEEDS,random_gradient_profile_seed=SEEDS[0],gradient_checkpoint_all_modes=True,timed_repetitions=3,warmup=1))
@@ -81,7 +82,7 @@ def render(c):
                     write(root/'progress.json',dict(completed=False,rows=rows,profiles=profiles))
                 del result
             del cloud;torch.cuda.empty_cache()
-    report=dict(completed=True,rows=rows,profiles=profiles,profile_frame=30,ordinary_default_physical=True,residual_is_moment_approximation=True,
+    report=dict(completed=True,rows=rows,profiles=profiles,profile_frame=30,ordinary_default_physical=True,residual_is_moment_approximation=True,determinant_implementation='explicit2x2',covariance_implementation='camera_rotation_and_residual_hoisted_once',
         L1_original_cloud_and_fill_convention=True,no_optimization_or_network_training=True)
     write(root/'predictions.json',report);write(RECORDS/(PREFIX+'-residual-render.json'),report)
 
@@ -89,7 +90,7 @@ def render(c):
 def evaluate(c):
     import matplotlib
     matplotlib.use('Agg');import matplotlib.pyplot as plt
-    root=OUT/'residual-evaluation';root.mkdir(exist_ok=False);network=model();run=json.loads((OUT/'residual/predictions.json').read_text());lookup={x['id']:x for x in items()}
+    root=OUT/(RUN_NAME+'-evaluation');root.mkdir(exist_ok=False);network=model();run=json.loads((OUT/RUN_NAME/'predictions.json').read_text());lookup={x['id']:x for x in items()}
     metrics={};flat=[];plots=[]
     from src.dual_layer import depth_band
     for row in run['rows']:
