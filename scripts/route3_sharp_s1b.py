@@ -22,15 +22,23 @@ def write(path,value):path.write_text(json.dumps(value,ensure_ascii=False,indent
 
 
 def anchor_native(c):
-    root=OUT/'anchor/native';root.mkdir(parents=True,exist_ok=False)
+    root=OUT/'anchor/native';root.mkdir(parents=True,exist_ok=True)
     prior=json.loads((S1/'prepared.json').read_text())['rows']
     for frame in [1,30,60]:
         entry=next(r for r in prior if r['scale_label']=='native' and r['frame']==frame)
         d=np.load(entry['input_npz']);K=torch.tensor(d['K'],device='cuda');fill=torch.tensor(np.load(S1/'fill'/entry['id']/'fill.npz')['fill_rgb_linear'],device='cuda')
         target=torch.tensor(d['rgb_srgb'],device='cuda');base=original_scene(frame,'full')
         for name,op in [('A_color',False),('A_color_opacity',True)]:
-            if (OUT/'stop.json').exists():raise RuntimeError('S1B_STOP another authorized stage triggered stop; do not launch new fits')
-            torch.manual_seed(2026111121+frame);folder=root/f'f{frame:03d}'/name;folder.mkdir(parents=True,exist_ok=False)
+            if (OUT/'stop.json').exists():
+                stopped=json.loads((OUT/'stop.json').read_text())
+                if stopped['stage']!='calibration' or not (OUT/'native-continuation-authorized.json').exists():
+                    raise RuntimeError('S1B_STOP another authorized stage triggered stop; do not launch new fits')
+            torch.manual_seed(2026111121+frame);folder=root/f'f{frame:03d}'/name
+            if (folder/'result.json').exists():
+                prior_result=json.loads((folder/'result.json').read_text())
+                assert prior_result['completed'] and prior_result['completed_updates']==1000 and Path(prior_result['attributes']).exists()
+                print('ANCHOR_REUSE_COMPLETED',frame,name,flush=True);continue
+            folder.mkdir(parents=True,exist_ok=False)
             def monitor(value):write(folder/'monitor.json',value)
             fitted,result=anchor(base,K,fill,target,op,monitor)
             torch.save(dict(colors=fitted.colors.detach().cpu(),opacities=fitted.opacities.detach().cpu(),completed_updates=result['completed_updates']),folder/'attributes-final.pt')
