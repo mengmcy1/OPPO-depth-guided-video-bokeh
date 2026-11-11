@@ -1,0 +1,247 @@
+{
+  "schema_version": 1,
+  "stage": "U1-video input-video-only visible fitting upper-bound check",
+  "frozen": true,
+  "frozen_at_utc": "2026-11-11T03:54:09.620501+00:00",
+  "any_new_optimization_or_scoring_computed_at_freeze": false,
+  "basis": {
+    "code": "f713c39d0ff84c03cb69dedc0122c4bc55230472",
+    "U1_criteria": "11c78ca",
+    "R2_criteria": "c18e323",
+    "R2_summary": "84f77ad",
+    "R3_summary": "f713c39"
+  },
+  "output": "outputs/route3-u1video-2026-11-11-01",
+  "scope": {
+    "scene": "B2-high",
+    "frames": [
+      1,
+      30,
+      60
+    ],
+    "input_frames": [
+      1,
+      6,
+      11,
+      16,
+      21,
+      26,
+      30,
+      35,
+      40,
+      45,
+      50,
+      55,
+      60
+    ],
+    "focuses_m": [
+      1.4,
+      5.0
+    ],
+    "fstops": [
+      1.4,
+      2.0
+    ],
+    "groups_per_focus": 6
+  },
+  "statistics": {
+    "PSNR": "poolfloat64SSE/(3validpixels), then -10log10; independently per scene/focus, each aperture also reported",
+    "patch_size": 64,
+    "LPIPS_net": "alex",
+    "LPIPS_version": "0.1",
+    "LPIPS_package": "0.1.4",
+    "LPIPS_spatial": false,
+    "patch_pool": "whole unmasked fixed64px grid weighted by regional pixel support",
+    "RGB": "standard displayRGBfloat[0,1];raw linearEXR retained;3D integrates true linearRGB",
+    "full_image": "all pixels including sky and peeled-reference residuals",
+    "in_focus": "finite current-visible GTdepth,absCoC<=1px;residuals retained"
+  },
+  "band": {
+    "multiplier": 1.5,
+    "relative_inverse_depth_jump": 0.03,
+    "minimum_radius_px": 1.0,
+    "definition": "3x3 relative inverse-depth jump, union of max-local-CoC1.5x footprints; exclusively target current visible depth",
+    "GT_hidden_used_for_construction": false,
+    "primary_evaluation": "band excluding previously flagged peeled-reference residual pixels;band itself is never GT-filtered",
+    "report": "independent disocclusionGT recall/precision/FP/FN, unknownGT support and CoC distribution; no tuning toGT recall"
+  },
+  "quality": {
+    "PSNR_gain_dB": 0.5,
+    "LPIPS_relative_drop": 0.1,
+    "LPIPS_drop_must_exceed_noise_multiple": 3,
+    "OR_rule": "PSNRgain>=0.5 OR relativeLPIPSdrop>=10% AND absoluteLPIPSdrop>3noise",
+    "secondary": "bandPSNR drop<=0.2dB and LPIPSworsening<=3noise",
+    "direction": "PSNRgain>0 AND LPIPSchange<-3noise;absLPIPSchange<=3noise is tie,not direction improvement or significant deterioration",
+    "guardrails": "per-focus pooled full-image and in-focus PSNR versusO3 each drop<=0.2dB; individual cases also reported"
+  },
+  "regions": [
+    "full_image",
+    "in_focus",
+    "out_of_focus",
+    "band",
+    "recoverable",
+    "motion_required",
+    "parallax_sufficient"
+  ],
+  "min_pixels": 1000,
+  "min_groups": 6,
+  "same_direction_required": 5,
+  "high_light_influence": {
+    "definition": "max_RGB abs(S(Cycles_linear)-R_LDR)>0.02 in displayRGB; no dilation",
+    "threshold": 0.02,
+    "report": "imagefraction,counts,spatial heatmap/connectedcomponent distribution and overlapwith frozen scoringregions;also influenced/uninfluenced scores",
+    "evaluator_only": true,
+    "not_pure_light_ground_truth": "difference also includes finiteK andMC noise;not used to selectmethod content"
+  },
+  "R2": {
+    "configuration": "same U1-positions.json,U1-supervision,initialization,loss,constraints,optimizer,cosine schedule andper-frame RNGrecipe asf5e452d",
+    "source": "outputs/route3-upper-bound-2026-11-11-01",
+    "steps": 8000,
+    "reuse_frame1": {
+      "path": "outputs/route3-upper-bound-2026-11-11-01/U1-fit/f001/visible-final.pt",
+      "source_step": 8000,
+      "reason": "fixed predetermined final budget;not heldout-selected;old overfit decision remains inhistorical record",
+      "replay_new_stop_rule_on_existing_monitors": true
+    },
+    "optimize_frames": [
+      30,
+      60
+    ],
+    "monitor_steps": "0,100,500,1000,...,8000 identical tooriginal;trainmonitor train[::4]17of65;heldoutall16",
+    "stopping": "historicalbest includesinitial monitor;stop ifheldoutPSNR <=best_seen-0.5dB for3 consecutive monitors OR any nonfinite loss/optimization value;train-minus-heldout gap reportedonly",
+    "final_selection": "fixed step8000 only ifstop rule nottriggered;never select checkpoint byheldout",
+    "methods": {
+      "U1": "learned nonnegative radiance,may>1, fixed sameband O6-GT-rec hidden,Cfill,K64",
+      "U1_clip": "same fitted visible Gaussians butclip visible linear colors[0,1] before rendering;hidden unchanged",
+      "controls": "sameoptimized visible without hidden for eachcolor mode;O3 andunoptimized L2"
+    },
+    "Cycles": {
+      "criteria_source": "11c78ca original U1 rule unchanged",
+      "noise": {
+        "per_lens_band": {
+          "N1.4-F1.4": 6.890230572564765e-05,
+          "N1.4-F5": 0.00015369987618877754,
+          "N2-F1.4": 0.00010956290865626447,
+          "N2-F5": 0.00013720452299674835
+        },
+        "source": "L1 preregistered band-weighted independent Cycles pairs at frames1/30;maximum corresponding lens pair used forframe60",
+        "is_confidence_interval": false
+      },
+      "worth_training": "at least onefocus passes formal_method_value AND pooled full-image PSNR gain overO3>=0.5dB AND full-image LPIPS not worse beyond3noise",
+      "full_noise_source": {
+        "rule": "absolute difference <=3 times maximum independent-pair whole-image patch LPIPS at same lens and formal B2 SPP, frames1/30; frame60 uses maximum; existing B2 noise record only",
+        "source": "route3-c1-b2-2026-11-10-noise.json",
+        "not_confidence_interval": true
+      }
+    },
+    "LDR": {
+      "criteria": "same form asoriginal U1, new per-region max-pair reference noise",
+      "worth_training": "atleast onefocus passes formalvalue AND full-image gain>=0.5dB versusO3 AND full-image LPIPS worsening<=3newfullnoise"
+    },
+    "radiance_analysis": "fraction anyRGB>1,projected spatialdensity;fraction/enrichment within3px (7x7dilation) of inputEXR pixels anyRGB>1;analysis only,not supervision"
+  },
+  "references": {
+    "Cycles": "unchanged B2 complete-scene truth, evaluate learned nonnegative unbounded visible colors",
+    "LDR": "unchanged R1 mean of individually clipped linear subviews; evaluate same visible colors clipped[0,1] before rendering",
+    "noise": "same frozen R2 Cycles lens noise and R1 per-region max independent-pair LDR noise"
+  },
+  "formal_methods": {
+    "primary": "U1_video with fixed GT-rec hidden layer",
+    "full_video": "same U1_video fitted visible + exact cached L3 retrieved hidden and shared L3 fill; GT geometry, separate same gates",
+    "control": "same fitted visible with no hidden; not independently refitted",
+    "reuse": "O3,L2,R2 U1/U1_clip predictions and scores, no recomputation of baseline predictions"
+  },
+  "worth_training": "at least onefocus passes formal_method_value AND pooled full-image PSNR gain overO3>=0.5dB AND full-image LPIPS not worse beyond3noise",
+  "retention": {
+    "quantity": "MSE",
+    "formula": "(MSE(method)-MSE(O3))/(MSE(R2_U1)-MSE(O3)) = MSE improvement over O3 divided by R2 improvement",
+    "matching": "Cycles uses original U1; LDR uses U1_clip; independently per region and nominal focus, pooled SSE/(3*pixels)",
+    "do_not_report": "R2 PSNR advantage <=0.2 dB OR R2 MSE improvement<=1e-8 OR empty region",
+    "not_clamped": true,
+    "LPIPS_reported_separately": true
+  },
+  "optimization": {
+    "steps": 8000,
+    "one_fit_per_target_for_all_lenses": true,
+    "initialization": "exact R2 observed-sky V-G and FittedVisible class, same R2 inputs()",
+    "hidden": "fixed original R2 GT-rec selected by union of four main-lens bands, same sparse Gaussian profile, no color optimization",
+    "attributes": [
+      "position",
+      "scale",
+      "rotation",
+      "opacity",
+      "nonnegative_unbounded_linear_color"
+    ],
+    "position_bound": "min(0.02m,0.01*initial_axial_depth)",
+    "scale_bound": "0.1x..10x",
+    "opacity_logit_bound": [
+      -12,
+      12
+    ],
+    "learning_rates": {
+      "position": 0.0001,
+      "scale": 0.005,
+      "rotation": 0.001,
+      "opacity": 0.01,
+      "color": 0.02
+    },
+    "optimizer": "Adam eps1e-15",
+    "schedule": "same cosine1to0.01 over8000",
+    "seed": "2026111105+target_frame",
+    "supervised_views": 13,
+    "target_sampling_probability": 0.5,
+    "neighbor_sampling_probability_each": 0.041666666666666664,
+    "stochastic_loss": "sample one view by fixed categorical distribution each step, per-view normalize valid pixels; 0.8 displayRGB L1 +0.2(1-SSIM11sigma1.5); no LPIPS loss",
+    "target_loss": "all target-frame pixels, same R2 loss, including dynamic content and observed-sky RGB",
+    "neighbor_loss": "only static, in-frustum, high-alpha, explained-depth pixels; fixed initial mask intersect current detached depth/alpha consistency every use; SSIM windows must be fully valid",
+    "depth_consistency": {
+      "formula": "abs(render_expected_axial_depth - own_GT_axial_depth) <= max(0.01m,0.02*own_GT_axial_depth)",
+      "absolute_tolerance_m": 0.01,
+      "relative_tolerance": 0.02,
+      "min_alpha": 0.95,
+      "initial_mask": "render initial target visible+fixed hidden depth into each own GT camera, no score masks",
+      "live_mask": "detach rendered depth/alpha, recheck every sampled neighbor; loss cannot differentiate through mask"
+    },
+    "dynamic_exclusion": {
+      "GT_dynamic_object_ids": [
+        7
+      ],
+      "own_neighbor": "own GT ID dynamic mask dilated2px; sky/no hit also excluded",
+      "projected_target": "initial merged cloud rendered dynamic-contribution alpha >0.01, dilated2px; excluded even if target geometry overlaps static target-frame content",
+      "GT_Oracle_setting": true
+    },
+    "minimum_supervision": {
+      "every_neighbor_fraction": 0.1,
+      "every_neighbor_pixels": 26215,
+      "every_neighbor_valid_SSIM_window_fraction": 0.05,
+      "check": "before optimization and every sampled view using live mask; failure stops whole trial without threshold relaxation"
+    },
+    "background": "same fixed LaMa C_fill image and local background-depth extension; warp background through source camera using target-depth-plane intersections; remaining transmittance only"
+  },
+  "monitoring": {
+    "steps": "0,100,500,...,8000",
+    "train": "target and all12 masked video views, report target and neighbor separately; gap vs heldout descriptive only",
+    "heldout": "same R2 16 light-aperture heldout views, all16; not part of loss, not checkpoint selection",
+    "stopping": "same R2: nonfinite loss/parameters or heldout PSNR >=0.5dB below historical best for3 consecutive monitors; save actual final only; stop and report without expanding",
+    "selection": "fixed step8000 only; no heldout-selected checkpoint",
+    "forbidden_in_optimizer": [
+      "Cycles DOF truth",
+      "LDR DOF reference",
+      "evaluation fixedK64 positions",
+      "evaluation masks"
+    ]
+  },
+  "reporting": {
+    "baseline": "12 relative camera centers in target coordinates, norm/lateral/axial and ratios to f1.4/f2 lens radii; not equal angular coverage",
+    "regions": "full/in/out/band/recoverable/highlight-influence/non-highlight; inherited motion/parallax also available",
+    "radiance": "fraction any visible Gaussian RGB>1; parameters not physically certified radiance"
+  },
+  "limits": [
+    "one controlled scene,3 target frames,6 groups/focus; no crossscene or temporal generalization",
+    "per-scene fit is upper proxy, not proof a feedforward network can attain it",
+    "GT depths/poses and dynamic IDs are Oracle inputs; primary additionally has real hidden GT-rec; full-video uses GT geometry",
+    "LDR reference measures capped-radiance consistency, not true highlights",
+    "No new Blender render,DA3 inference,feedforward training or old-result changes"
+  ],
+  "after_report": "pause for user decision"
+}
