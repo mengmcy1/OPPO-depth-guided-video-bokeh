@@ -1,0 +1,33 @@
+{
+  "frozen_before_optional6_metrics": true,
+  "user_continuation": "276e7cd",
+  "seeds": [
+    2026111011,
+    2026111012,
+    2026111013,
+    2026111014
+  ],
+  "K": 16,
+  "no_residual_covariance": true,
+  "no_sample_center_contraction": true,
+  "pattern": "4radialCDF x4angularstrata,8samples+antipodal pairs,physical lens disk",
+  "quality": "expected single-drawMSE/LPIPS and per-pixel seedvariance ddof1;never score averaged64ray image asK16",
+  "quality_frames": [
+    1,
+    30,
+    60
+  ],
+  "profile_frames": [
+    30
+  ],
+  "profile_seed": 2026111011,
+  "profile_modes": [
+    "fixed64",
+    "stratified16"
+  ],
+  "warmup": 1,
+  "timed_repeats": 3,
+  "checkpoints": "same per-ray nonreentrant for all5 Gaussianattributes",
+  "GT_clouds": "identical original L1/S1b O5 andO6-GT-rec,not SHARP",
+  "formal_main_criterion": false
+}

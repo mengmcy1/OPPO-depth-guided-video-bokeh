@@ -14,12 +14,22 @@ def zero_image(cloud,K,fill):
     return linear_to_srgb(image[0,...,:3]+(1-alpha[0])*fill).clamp(0,1)
 
 
-def anchor(cloud,K,fill,target,with_opacity,callback,steps=1000):
+def anchor(cloud,K,fill,target,with_opacity,callback,steps=1000,loss_mask=None):
     """All supervision is supplied as the single current RGB tensor."""
     assert not any(x.requires_grad for x in [cloud.means,cloud.quats,cloud.scales,cloud.opacities,cloud.colors])
     colors=torch.nn.Parameter(cloud.colors.detach().clone());delta=torch.nn.Parameter(torch.zeros_like(cloud.opacities)) if with_opacity else None
     optimizer=torch.optim.Adam([colors]+([delta] if delta is not None else []),lr=.01,eps=1e-8)
     original_colors=cloud.colors;original_opacity=cloud.opacities
+    windows=None
+    if loss_mask is not None:
+        loss_mask=loss_mask.to(device=target.device,dtype=target.dtype).detach()
+        windows=(torch.nn.functional.conv2d(loss_mask[None,None],torch.ones((1,1,11,11),device=target.device))>=121).to(target.dtype)[0,0]
+        if not bool(loss_mask.any()) or not bool(windows.any()):raise ValueError('No valid target RGB/SSIM support after edge exclusion')
+    def objective(pred):
+        if loss_mask is None:return .8*(pred-target).abs().mean()+.2*(1-ssim(pred,target))
+        l1=((pred-target).abs()*loss_mask[...,None]).sum()/(3*loss_mask.sum())
+        value=(ssim(pred,target,return_map=True)[0]*windows).sum()/(3*windows.sum())
+        return .8*l1+.2*(1-value)
     def current():
         opacity=(original_opacity+.02*delta.tanh()).clamp(0,1) if delta is not None else original_opacity
         return GaussianScene(cloud.means,cloud.quats,cloud.scales,opacity,colors,cloud.source_frames)
@@ -29,7 +39,7 @@ def anchor(cloud,K,fill,target,with_opacity,callback,steps=1000):
         if step in [0,50,100,250,500,750,1000]:
             with torch.inference_mode():
                 pred=zero_image(current(),K,fill);mse=float((pred-target).square().double().mean())
-                loss=float(.8*(pred-target).abs().mean()+.2*(1-ssim(pred,target)))
+                loss=float(objective(pred))
             if not np.isfinite(loss+mse):reason='nonfinite target-only monitor';break
             row=dict(step=step,input_PSNR_dB=float(-10*np.log10(max(mse,1e-12))),input_loss=loss,seconds=time.monotonic()-started,
                 peak_allocated_MiB=torch.cuda.max_memory_allocated()/2**20)
@@ -40,7 +50,7 @@ def anchor(cloud,K,fill,target,with_opacity,callback,steps=1000):
         if step==steps:break
         optimizer.param_groups[0]['lr']=.01*(.01+.99*.5*(1+np.cos(np.pi*step/steps)))
         optimizer.zero_grad(set_to_none=True);torch.cuda.synchronize();start=time.monotonic()
-        pred=zero_image(current(),K,fill);loss=.8*(pred-target).abs().mean()+.2*(1-ssim(pred,target))
+        pred=zero_image(current(),K,fill);loss=objective(pred)
         if not bool(torch.isfinite(loss)):reason='nonfinite optimization loss';break
         loss.backward()
         if not bool(torch.isfinite(colors.grad).all()) or (delta is not None and not bool(torch.isfinite(delta.grad).all())):
@@ -60,5 +70,6 @@ def anchor(cloud,K,fill,target,with_opacity,callback,steps=1000):
     result=dict(completed=reason is None and completed_updates==steps,stop_reason=reason,completed_updates=completed_updates,rows=rows,
         wall_seconds=time.monotonic()-started,median_step_seconds=float(np.median(times)) if times else None,
         peak_allocated_MiB=torch.cuda.max_memory_allocated()/2**20,geometry_fixed=True,network_weights_updated=False,
-        target_RGB_only=True,evaluation_data_read=False,**stats)
+        target_RGB_only=True,evaluation_data_read=False,loss_mask_valid_pixels=int(loss_mask.sum()) if loss_mask is not None else 512*512,
+        valid_SSIM_windows=int(windows.sum()) if windows is not None else 502*502,**stats)
     return fitted,result
