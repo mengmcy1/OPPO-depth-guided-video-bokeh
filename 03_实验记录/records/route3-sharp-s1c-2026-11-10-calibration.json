@@ -1,0 +1,2236 @@
+{
+  "completed": false,
+  "rows": [
+    {
+      "variant": "E1",
+      "frame": 1,
+      "dense_valid_pixels": 185601,
+      "support": {
+        "points": 5563,
+        "train_points": 4509,
+        "heldout_points": 1054,
+        "occupied_train_cells": 16,
+        "train_inverse_depth_span_P90_P10": 0.5149278191554106,
+        "strata": {
+          "near": {
+            "all": 2000,
+            "train": 1497,
+            "heldout": 503
+          },
+          "middle": {
+            "all": 1563,
+            "train": 1408,
+            "heldout": 155
+          },
+          "far": {
+            "all": 2000,
+            "train": 1604,
+            "heldout": 396
+          }
+        },
+        "depth_p10_p50_p90": [
+          1.3827327251434327,
+          3.334308624267578,
+          4.883110809326172
+        ],
+        "supported": true
+      },
+      "pairs": [
+        {
+          "source_frame": 60,
+          "pixels": 262144,
+          "in_bounds": 241759,
+          "FB_pass": 145066,
+          "epipolar_pass": 137090,
+          "pair_valid": 137090
+        },
+        {
+          "source_frame": 50,
+          "pixels": 262144,
+          "in_bounds": 243661,
+          "FB_pass": 148843,
+          "epipolar_pass": 143220,
+          "pair_valid": 143220
+        },
+        {
+          "source_frame": 55,
+          "pixels": 262144,
+          "in_bounds": 244636,
+          "FB_pass": 159460,
+          "epipolar_pass": 155570,
+          "pair_valid": 155570
+        },
+        {
+          "source_frame": 40,
+          "pixels": 262144,
+          "in_bounds": 244525,
+          "FB_pass": 147011,
+          "epipolar_pass": 130168,
+          "pair_valid": 130168
+        },
+        {
+          "source_frame": 45,
+          "pixels": 262144,
+          "in_bounds": 244127,
+          "FB_pass": 162827,
+          "epipolar_pass": 162481,
+          "pair_valid": 162481
+        },
+        {
+          "source_frame": 30,
+          "pixels": 262144,
+          "in_bounds": 252628,
+          "FB_pass": 152507,
+          "epipolar_pass": 147576,
+          "pair_valid": 147576
+        }
+      ],
+      "models": {
+        "SHARP": {
+          "a": 0.8862624317930516,
+          "b": -0.029232697229773525,
+          "minimum_predicted_inverse_depth": 0.24832302340556084,
+          "objective": 0.00015257100873866891,
+          "iterations": 15,
+          "success": true,
+          "heldout_before": {
+            "points": 1054,
+            "inverse_RMSE": 0.10920161614100013,
+            "inverse_MAE": 0.09446920008330226,
+            "sparse_depth_AbsRel": 0.19103096404942918
+          },
+          "heldout_after": {
+            "points": 1054,
+            "inverse_RMSE": 0.05525899787255588,
+            "inverse_MAE": 0.03115802487175949,
+            "sparse_depth_AbsRel": 0.07025513155497728
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 4509,
+            "inverse_RMSE": 0.11655680542293471,
+            "inverse_MAE": 0.09836357102115427,
+            "sparse_depth_AbsRel": 0.21459260303092698
+          },
+          "train_after": {
+            "points": 4509,
+            "inverse_RMSE": 0.06766876963598491,
+            "inverse_MAE": 0.032939475682049954,
+            "sparse_depth_AbsRel": 0.08162389762939602
+          }
+        },
+        "DA3": {
+          "a": 0.7655992283179385,
+          "b": 0.017158464490859414,
+          "minimum_predicted_inverse_depth": 0.22532572087723035,
+          "objective": 9.143399328847156e-05,
+          "iterations": 15,
+          "success": true,
+          "heldout_before": {
+            "points": 1054,
+            "inverse_RMSE": 0.15392675347276957,
+            "inverse_MAE": 0.11866963878005886,
+            "sparse_depth_AbsRel": 0.19158743419674
+          },
+          "heldout_after": {
+            "points": 1054,
+            "inverse_RMSE": 0.061639028272781414,
+            "inverse_MAE": 0.020713446654321354,
+            "sparse_depth_AbsRel": 0.0390548547184157
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 4509,
+            "inverse_RMSE": 0.15573981931649097,
+            "inverse_MAE": 0.11110541671938169,
+            "sparse_depth_AbsRel": 0.19836566252043422
+          },
+          "train_after": {
+            "points": 4509,
+            "inverse_RMSE": 0.07501675543138842,
+            "inverse_MAE": 0.02054982613406047,
+            "sparse_depth_AbsRel": 0.039062746127888195
+          }
+        }
+      }
+    },
+    {
+      "variant": "E1",
+      "frame": 6,
+      "dense_valid_pixels": 159445,
+      "support": {
+        "points": 4632,
+        "train_points": 3757,
+        "heldout_points": 875,
+        "occupied_train_cells": 16,
+        "train_inverse_depth_span_P90_P10": 0.48525735352589694,
+        "strata": {
+          "near": {
+            "all": 1020,
+            "train": 825,
+            "heldout": 195
+          },
+          "middle": {
+            "all": 1612,
+            "train": 1363,
+            "heldout": 249
+          },
+          "far": {
+            "all": 2000,
+            "train": 1569,
+            "heldout": 431
+          }
+        },
+        "depth_p10_p50_p90": [
+          1.4488218665122985,
+          3.7147010564804077,
+          4.874148988723755
+        ],
+        "supported": true
+      },
+      "pairs": [
+        {
+          "source_frame": 60,
+          "pixels": 262144,
+          "in_bounds": 240882,
+          "FB_pass": 148096,
+          "epipolar_pass": 136169,
+          "pair_valid": 136169
+        },
+        {
+          "source_frame": 50,
+          "pixels": 262144,
+          "in_bounds": 242421,
+          "FB_pass": 153717,
+          "epipolar_pass": 137162,
+          "pair_valid": 137162
+        },
+        {
+          "source_frame": 55,
+          "pixels": 262144,
+          "in_bounds": 244675,
+          "FB_pass": 143201,
+          "epipolar_pass": 133886,
+          "pair_valid": 133886
+        },
+        {
+          "source_frame": 40,
+          "pixels": 262144,
+          "in_bounds": 243517,
+          "FB_pass": 134538,
+          "epipolar_pass": 130061,
+          "pair_valid": 130061
+        },
+        {
+          "source_frame": 45,
+          "pixels": 262144,
+          "in_bounds": 244191,
+          "FB_pass": 145663,
+          "epipolar_pass": 132294,
+          "pair_valid": 132294
+        },
+        {
+          "source_frame": 1,
+          "pixels": 262144,
+          "in_bounds": 256250,
+          "FB_pass": 220579,
+          "epipolar_pass": 218274,
+          "pair_valid": 168844
+        }
+      ],
+      "models": {
+        "SHARP": {
+          "a": 1.0685972964710138,
+          "b": -0.0659752312092655,
+          "minimum_predicted_inverse_depth": 0.23737501504001862,
+          "objective": 0.0001586479367029161,
+          "iterations": 16,
+          "success": true,
+          "heldout_before": {
+            "points": 875,
+            "inverse_RMSE": 0.06279441907525063,
+            "inverse_MAE": 0.053361834442329725,
+            "sparse_depth_AbsRel": 0.16179902256402762
+          },
+          "heldout_after": {
+            "points": 875,
+            "inverse_RMSE": 0.0461147342163139,
+            "inverse_MAE": 0.027805416055671668,
+            "sparse_depth_AbsRel": 0.07915675765489745
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 3757,
+            "inverse_RMSE": 0.07240383623729824,
+            "inverse_MAE": 0.06048147818918599,
+            "sparse_depth_AbsRel": 0.1716003212965344
+          },
+          "train_after": {
+            "points": 3757,
+            "inverse_RMSE": 0.05369668592651335,
+            "inverse_MAE": 0.03414677734088982,
+            "sparse_depth_AbsRel": 0.09270130819746042
+          }
+        },
+        "DA3": {
+          "a": 0.7497488234476695,
+          "b": 0.022184872170583583,
+          "minimum_predicted_inverse_depth": 0.22384929043210242,
+          "objective": 6.093392842978482e-05,
+          "iterations": 14,
+          "success": true,
+          "heldout_before": {
+            "points": 875,
+            "inverse_RMSE": 0.11112763545598268,
+            "inverse_MAE": 0.08614806789319317,
+            "sparse_depth_AbsRel": 0.1832053025415452
+          },
+          "heldout_after": {
+            "points": 875,
+            "inverse_RMSE": 0.012804622295501649,
+            "inverse_MAE": 0.007469109716008648,
+            "sparse_depth_AbsRel": 0.019831642856820802
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 3757,
+            "inverse_RMSE": 0.12624115324117244,
+            "inverse_MAE": 0.09214691247788834,
+            "sparse_depth_AbsRel": 0.19140652296351304
+          },
+          "train_after": {
+            "points": 3757,
+            "inverse_RMSE": 0.05099320895899763,
+            "inverse_MAE": 0.014323898712947992,
+            "sparse_depth_AbsRel": 0.03239282211189166
+          }
+        }
+      }
+    },
+    {
+      "variant": "E1",
+      "frame": 11,
+      "dense_valid_pixels": 183702,
+      "support": {
+        "points": 5185,
+        "train_points": 4084,
+        "heldout_points": 1101,
+        "occupied_train_cells": 16,
+        "train_inverse_depth_span_P90_P10": 0.5020533655129064,
+        "strata": {
+          "near": {
+            "all": 1554,
+            "train": 1304,
+            "heldout": 250
+          },
+          "middle": {
+            "all": 1631,
+            "train": 1148,
+            "heldout": 483
+          },
+          "far": {
+            "all": 2000,
+            "train": 1632,
+            "heldout": 368
+          }
+        },
+        "depth_p10_p50_p90": [
+          1.4069530010223388,
+          3.4895732402801514,
+          4.87883415222168
+        ],
+        "supported": true
+      },
+      "pairs": [
+        {
+          "source_frame": 60,
+          "pixels": 262144,
+          "in_bounds": 244807,
+          "FB_pass": 151309,
+          "epipolar_pass": 142944,
+          "pair_valid": 142944
+        },
+        {
+          "source_frame": 55,
+          "pixels": 262144,
+          "in_bounds": 247583,
+          "FB_pass": 156824,
+          "epipolar_pass": 141968,
+          "pair_valid": 141968
+        },
+        {
+          "source_frame": 50,
+          "pixels": 262144,
+          "in_bounds": 248067,
+          "FB_pass": 157673,
+          "epipolar_pass": 148314,
+          "pair_valid": 148314
+        },
+        {
+          "source_frame": 40,
+          "pixels": 262144,
+          "in_bounds": 247751,
+          "FB_pass": 144441,
+          "epipolar_pass": 137559,
+          "pair_valid": 137559
+        },
+        {
+          "source_frame": 30,
+          "pixels": 262144,
+          "in_bounds": 254925,
+          "FB_pass": 164922,
+          "epipolar_pass": 155165,
+          "pair_valid": 155165
+        },
+        {
+          "source_frame": 1,
+          "pixels": 262144,
+          "in_bounds": 257334,
+          "FB_pass": 203105,
+          "epipolar_pass": 184922,
+          "pair_valid": 184922
+        }
+      ],
+      "models": {
+        "SHARP": {
+          "a": 0.8794830940455153,
+          "b": -0.039028779425189765,
+          "minimum_predicted_inverse_depth": 0.26394474653669997,
+          "objective": 0.00014493582970861874,
+          "iterations": 14,
+          "success": true,
+          "heldout_before": {
+            "points": 1101,
+            "inverse_RMSE": 0.11983324473401157,
+            "inverse_MAE": 0.11279582093364438,
+            "sparse_depth_AbsRel": 0.2580462522699398
+          },
+          "heldout_after": {
+            "points": 1101,
+            "inverse_RMSE": 0.049322533537239324,
+            "inverse_MAE": 0.03353087438456759,
+            "sparse_depth_AbsRel": 0.08918104494899697
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 4084,
+            "inverse_RMSE": 0.11873395718829544,
+            "inverse_MAE": 0.11028435318063677,
+            "sparse_depth_AbsRel": 0.24355744803871185
+          },
+          "train_after": {
+            "points": 4084,
+            "inverse_RMSE": 0.05180984515627175,
+            "inverse_MAE": 0.03136438526227634,
+            "sparse_depth_AbsRel": 0.08013426546163958
+          }
+        },
+        "DA3": {
+          "a": 0.7701188048339896,
+          "b": 0.016444948955558654,
+          "minimum_predicted_inverse_depth": 0.22323312662968595,
+          "objective": 5.2012211730903714e-05,
+          "iterations": 15,
+          "success": true,
+          "heldout_before": {
+            "points": 1101,
+            "inverse_RMSE": 0.11661358583523339,
+            "inverse_MAE": 0.0942337672163833,
+            "sparse_depth_AbsRel": 0.19123655890945784
+          },
+          "heldout_after": {
+            "points": 1101,
+            "inverse_RMSE": 0.018198819179849786,
+            "inverse_MAE": 0.010590837583373406,
+            "sparse_depth_AbsRel": 0.026878571420704035
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 4084,
+            "inverse_RMSE": 0.11863470142225795,
+            "inverse_MAE": 0.0976940521703284,
+            "sparse_depth_AbsRel": 0.18786322908929068
+          },
+          "train_after": {
+            "points": 4084,
+            "inverse_RMSE": 0.020223044448726083,
+            "inverse_MAE": 0.01262111636958864,
+            "sparse_depth_AbsRel": 0.029615730852796233
+          }
+        }
+      }
+    },
+    {
+      "variant": "E1",
+      "frame": 16,
+      "dense_valid_pixels": 180482,
+      "support": {
+        "points": 5205,
+        "train_points": 4042,
+        "heldout_points": 1163,
+        "occupied_train_cells": 16,
+        "train_inverse_depth_span_P90_P10": 0.4952263799184926,
+        "strata": {
+          "near": {
+            "all": 1431,
+            "train": 1077,
+            "heldout": 354
+          },
+          "middle": {
+            "all": 1774,
+            "train": 1378,
+            "heldout": 396
+          },
+          "far": {
+            "all": 2000,
+            "train": 1587,
+            "heldout": 413
+          }
+        },
+        "depth_p10_p50_p90": [
+          1.422456955909729,
+          3.526927947998047,
+          4.869974422454834
+        ],
+        "supported": true
+      },
+      "pairs": [
+        {
+          "source_frame": 60,
+          "pixels": 262144,
+          "in_bounds": 248111,
+          "FB_pass": 146033,
+          "epipolar_pass": 138284,
+          "pair_valid": 138284
+        },
+        {
+          "source_frame": 50,
+          "pixels": 262144,
+          "in_bounds": 249195,
+          "FB_pass": 140811,
+          "epipolar_pass": 137774,
+          "pair_valid": 137774
+        },
+        {
+          "source_frame": 55,
+          "pixels": 262144,
+          "in_bounds": 251988,
+          "FB_pass": 149431,
+          "epipolar_pass": 140247,
+          "pair_valid": 140247
+        },
+        {
+          "source_frame": 40,
+          "pixels": 262144,
+          "in_bounds": 250646,
+          "FB_pass": 150087,
+          "epipolar_pass": 137945,
+          "pair_valid": 137945
+        },
+        {
+          "source_frame": 30,
+          "pixels": 262144,
+          "in_bounds": 259758,
+          "FB_pass": 177752,
+          "epipolar_pass": 168865,
+          "pair_valid": 168863
+        },
+        {
+          "source_frame": 1,
+          "pixels": 262144,
+          "in_bounds": 256372,
+          "FB_pass": 196595,
+          "epipolar_pass": 193035,
+          "pair_valid": 193035
+        }
+      ],
+      "models": {
+        "SHARP": {
+          "a": 0.9696992060989713,
+          "b": -0.03440709933564586,
+          "minimum_predicted_inverse_depth": 0.23342270723334224,
+          "objective": 0.00010210951946311565,
+          "iterations": 14,
+          "success": true,
+          "heldout_before": {
+            "points": 1163,
+            "inverse_RMSE": 0.06457618413294748,
+            "inverse_MAE": 0.05648644234732644,
+            "sparse_depth_AbsRel": 0.14651703812990782
+          },
+          "heldout_after": {
+            "points": 1163,
+            "inverse_RMSE": 0.05107537062872655,
+            "inverse_MAE": 0.025570394887684252,
+            "sparse_depth_AbsRel": 0.0649236778715165
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 4042,
+            "inverse_RMSE": 0.06393232735741894,
+            "inverse_MAE": 0.05607030809764602,
+            "sparse_depth_AbsRel": 0.15195352138422358
+          },
+          "train_after": {
+            "points": 4042,
+            "inverse_RMSE": 0.04729721623611639,
+            "inverse_MAE": 0.02280691438755914,
+            "sparse_depth_AbsRel": 0.06282648266780953
+          }
+        },
+        "DA3": {
+          "a": 0.7272749116610046,
+          "b": 0.028188658318973835,
+          "minimum_predicted_inverse_depth": 0.23002402079608647,
+          "objective": 4.478823608382775e-05,
+          "iterations": 15,
+          "success": true,
+          "heldout_before": {
+            "points": 1163,
+            "inverse_RMSE": 0.13941124143670788,
+            "inverse_MAE": 0.11152304419452072,
+            "sparse_depth_AbsRel": 0.20100599343420816
+          },
+          "heldout_after": {
+            "points": 1163,
+            "inverse_RMSE": 0.024816483376924426,
+            "inverse_MAE": 0.00942831559097319,
+            "sparse_depth_AbsRel": 0.02227842265445118
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 4042,
+            "inverse_RMSE": 0.1211943549981873,
+            "inverse_MAE": 0.09701600279638856,
+            "sparse_depth_AbsRel": 0.19224948024772845
+          },
+          "train_after": {
+            "points": 4042,
+            "inverse_RMSE": 0.022728383245186598,
+            "inverse_MAE": 0.010896317924950284,
+            "sparse_depth_AbsRel": 0.02528573127689989
+          }
+        }
+      }
+    },
+    {
+      "variant": "E1",
+      "frame": 21,
+      "dense_valid_pixels": 198340,
+      "support": {
+        "points": 5931,
+        "train_points": 4536,
+        "heldout_points": 1395,
+        "occupied_train_cells": 16,
+        "train_inverse_depth_span_P90_P10": 0.5126359171051147,
+        "strata": {
+          "near": {
+            "all": 2000,
+            "train": 1420,
+            "heldout": 580
+          },
+          "middle": {
+            "all": 1931,
+            "train": 1515,
+            "heldout": 416
+          },
+          "far": {
+            "all": 2000,
+            "train": 1601,
+            "heldout": 399
+          }
+        },
+        "depth_p10_p50_p90": [
+          1.4300339221954346,
+          3.347193956375122,
+          4.897246837615967
+        ],
+        "supported": true
+      },
+      "pairs": [
+        {
+          "source_frame": 60,
+          "pixels": 262144,
+          "in_bounds": 252461,
+          "FB_pass": 161461,
+          "epipolar_pass": 156872,
+          "pair_valid": 156872
+        },
+        {
+          "source_frame": 50,
+          "pixels": 262144,
+          "in_bounds": 253929,
+          "FB_pass": 164971,
+          "epipolar_pass": 159058,
+          "pair_valid": 159058
+        },
+        {
+          "source_frame": 55,
+          "pixels": 262144,
+          "in_bounds": 255366,
+          "FB_pass": 173531,
+          "epipolar_pass": 166537,
+          "pair_valid": 166537
+        },
+        {
+          "source_frame": 1,
+          "pixels": 262144,
+          "in_bounds": 251233,
+          "FB_pass": 165409,
+          "epipolar_pass": 151829,
+          "pair_valid": 151829
+        },
+        {
+          "source_frame": 6,
+          "pixels": 262144,
+          "in_bounds": 248228,
+          "FB_pass": 180968,
+          "epipolar_pass": 172419,
+          "pair_valid": 172419
+        },
+        {
+          "source_frame": 11,
+          "pixels": 262144,
+          "in_bounds": 252256,
+          "FB_pass": 172536,
+          "epipolar_pass": 163436,
+          "pair_valid": 163436
+        }
+      ],
+      "models": {
+        "SHARP": {
+          "a": 1.1224731132557857,
+          "b": -0.07975496351828142,
+          "minimum_predicted_inverse_depth": 0.2383253747670473,
+          "objective": 0.0001844881563515988,
+          "iterations": 17,
+          "success": true,
+          "heldout_before": {
+            "points": 1395,
+            "inverse_RMSE": 0.07442582403648683,
+            "inverse_MAE": 0.058533658526831005,
+            "sparse_depth_AbsRel": 0.15200604716277577
+          },
+          "heldout_after": {
+            "points": 1395,
+            "inverse_RMSE": 0.06235132462415028,
+            "inverse_MAE": 0.0404437530253507,
+            "sparse_depth_AbsRel": 0.09762282439680908
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 4536,
+            "inverse_RMSE": 0.07399519156195997,
+            "inverse_MAE": 0.06211801880999265,
+            "sparse_depth_AbsRel": 0.168250092331332
+          },
+          "train_after": {
+            "points": 4536,
+            "inverse_RMSE": 0.057829479148286685,
+            "inverse_MAE": 0.03930366425841242,
+            "sparse_depth_AbsRel": 0.09944755936513323
+          }
+        },
+        "DA3": {
+          "a": 0.755973665156504,
+          "b": 0.020118749966821406,
+          "minimum_predicted_inverse_depth": 0.22329292844113438,
+          "objective": 5.245139994590416e-05,
+          "iterations": 17,
+          "success": true,
+          "heldout_before": {
+            "points": 1395,
+            "inverse_RMSE": 0.128899505903363,
+            "inverse_MAE": 0.10875196803016483,
+            "sparse_depth_AbsRel": 0.1892849761505563
+          },
+          "heldout_after": {
+            "points": 1395,
+            "inverse_RMSE": 0.0285927152411013,
+            "inverse_MAE": 0.0186516782631846,
+            "sparse_depth_AbsRel": 0.0362395280763431
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 4536,
+            "inverse_RMSE": 0.11825782027748957,
+            "inverse_MAE": 0.09694265354652112,
+            "sparse_depth_AbsRel": 0.1867310026729579
+          },
+          "train_after": {
+            "points": 4536,
+            "inverse_RMSE": 0.023274648448745106,
+            "inverse_MAE": 0.012604593935240785,
+            "sparse_depth_AbsRel": 0.027673446999772335
+          }
+        }
+      }
+    },
+    {
+      "variant": "E1",
+      "frame": 26,
+      "dense_valid_pixels": 181468,
+      "support": {
+        "points": 5515,
+        "train_points": 4476,
+        "heldout_points": 1039,
+        "occupied_train_cells": 16,
+        "train_inverse_depth_span_P90_P10": 0.5247649718990463,
+        "strata": {
+          "near": {
+            "all": 1763,
+            "train": 1518,
+            "heldout": 245
+          },
+          "middle": {
+            "all": 1752,
+            "train": 1420,
+            "heldout": 332
+          },
+          "far": {
+            "all": 2000,
+            "train": 1538,
+            "heldout": 462
+          }
+        },
+        "depth_p10_p50_p90": [
+          1.375696635246277,
+          3.430983543395996,
+          4.930533409118652
+        ],
+        "supported": true
+      },
+      "pairs": [
+        {
+          "source_frame": 60,
+          "pixels": 262144,
+          "in_bounds": 244204,
+          "FB_pass": 140210,
+          "epipolar_pass": 134026,
+          "pair_valid": 134026
+        },
+        {
+          "source_frame": 50,
+          "pixels": 262144,
+          "in_bounds": 247997,
+          "FB_pass": 145423,
+          "epipolar_pass": 133305,
+          "pair_valid": 133248
+        },
+        {
+          "source_frame": 55,
+          "pixels": 262144,
+          "in_bounds": 248507,
+          "FB_pass": 151490,
+          "epipolar_pass": 144585,
+          "pair_valid": 144585
+        },
+        {
+          "source_frame": 40,
+          "pixels": 262144,
+          "in_bounds": 248615,
+          "FB_pass": 159260,
+          "epipolar_pass": 153257,
+          "pair_valid": 153257
+        },
+        {
+          "source_frame": 6,
+          "pixels": 262144,
+          "in_bounds": 251118,
+          "FB_pass": 178348,
+          "epipolar_pass": 171104,
+          "pair_valid": 171043
+        },
+        {
+          "source_frame": 11,
+          "pixels": 262144,
+          "in_bounds": 255977,
+          "FB_pass": 187789,
+          "epipolar_pass": 167679,
+          "pair_valid": 149781
+        }
+      ],
+      "models": {
+        "SHARP": {
+          "a": 1.1663045630111393,
+          "b": -0.07196516430261275,
+          "minimum_predicted_inverse_depth": 0.22084059718467075,
+          "objective": 0.00017073041024453353,
+          "iterations": 20,
+          "success": true,
+          "heldout_before": {
+            "points": 1039,
+            "inverse_RMSE": 0.0610538282669031,
+            "inverse_MAE": 0.049253462836405915,
+            "sparse_depth_AbsRel": 0.14249727547387606
+          },
+          "heldout_after": {
+            "points": 1039,
+            "inverse_RMSE": 0.04892886325066256,
+            "inverse_MAE": 0.03041348023648243,
+            "sparse_depth_AbsRel": 0.0848937003611459
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 4476,
+            "inverse_RMSE": 0.06724405779589891,
+            "inverse_MAE": 0.056074422448423304,
+            "sparse_depth_AbsRel": 0.14334876442492703
+          },
+          "train_after": {
+            "points": 4476,
+            "inverse_RMSE": 0.05533586207194917,
+            "inverse_MAE": 0.036527765128060344,
+            "sparse_depth_AbsRel": 0.09156998087885836
+          }
+        },
+        "DA3": {
+          "a": 0.7489957724050755,
+          "b": 0.021487944931207894,
+          "minimum_predicted_inverse_depth": 0.22703772428770316,
+          "objective": 4.797259227830301e-05,
+          "iterations": 15,
+          "success": true,
+          "heldout_before": {
+            "points": 1039,
+            "inverse_RMSE": 0.10561402291943447,
+            "inverse_MAE": 0.08332165725027905,
+            "sparse_depth_AbsRel": 0.18008977516753058
+          },
+          "heldout_after": {
+            "points": 1039,
+            "inverse_RMSE": 0.0235237211170995,
+            "inverse_MAE": 0.009590212930618621,
+            "sparse_depth_AbsRel": 0.023779439826318746
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 4476,
+            "inverse_RMSE": 0.12883233836793634,
+            "inverse_MAE": 0.10571153859142798,
+            "sparse_depth_AbsRel": 0.19300807812421805
+          },
+          "train_after": {
+            "points": 4476,
+            "inverse_RMSE": 0.02797156263759124,
+            "inverse_MAE": 0.011675075644059639,
+            "sparse_depth_AbsRel": 0.026465996552009156
+          }
+        }
+      }
+    },
+    {
+      "variant": "E1",
+      "frame": 30,
+      "dense_valid_pixels": 203666,
+      "support": {
+        "points": 5885,
+        "train_points": 4656,
+        "heldout_points": 1229,
+        "occupied_train_cells": 16,
+        "train_inverse_depth_span_P90_P10": 0.5074093418226131,
+        "strata": {
+          "near": {
+            "all": 2000,
+            "train": 1496,
+            "heldout": 504
+          },
+          "middle": {
+            "all": 1885,
+            "train": 1562,
+            "heldout": 323
+          },
+          "far": {
+            "all": 2000,
+            "train": 1598,
+            "heldout": 402
+          }
+        },
+        "depth_p10_p50_p90": [
+          1.4160645246505736,
+          3.3729770183563232,
+          4.911548900604248
+        ],
+        "supported": true
+      },
+      "pairs": [
+        {
+          "source_frame": 1,
+          "pixels": 262144,
+          "in_bounds": 251115,
+          "FB_pass": 151180,
+          "epipolar_pass": 144907,
+          "pair_valid": 144907
+        },
+        {
+          "source_frame": 6,
+          "pixels": 262144,
+          "in_bounds": 249465,
+          "FB_pass": 159870,
+          "epipolar_pass": 151845,
+          "pair_valid": 151845
+        },
+        {
+          "source_frame": 11,
+          "pixels": 262144,
+          "in_bounds": 251583,
+          "FB_pass": 162050,
+          "epipolar_pass": 150736,
+          "pair_valid": 150736
+        },
+        {
+          "source_frame": 16,
+          "pixels": 262144,
+          "in_bounds": 255224,
+          "FB_pass": 173917,
+          "epipolar_pass": 167156,
+          "pair_valid": 167151
+        },
+        {
+          "source_frame": 50,
+          "pixels": 262144,
+          "in_bounds": 249574,
+          "FB_pass": 162871,
+          "epipolar_pass": 156954,
+          "pair_valid": 156954
+        },
+        {
+          "source_frame": 60,
+          "pixels": 262144,
+          "in_bounds": 248579,
+          "FB_pass": 176687,
+          "epipolar_pass": 162761,
+          "pair_valid": 162761
+        }
+      ],
+      "models": {
+        "SHARP": {
+          "a": 1.1740064830527632,
+          "b": -0.06882648128073625,
+          "minimum_predicted_inverse_depth": 0.21266022512768068,
+          "objective": 0.00016712674085170667,
+          "iterations": 19,
+          "success": true,
+          "heldout_before": {
+            "points": 1229,
+            "inverse_RMSE": 0.0641892377907471,
+            "inverse_MAE": 0.050918804240394015,
+            "sparse_depth_AbsRel": 0.12570968850777683
+          },
+          "heldout_after": {
+            "points": 1229,
+            "inverse_RMSE": 0.05105780257602593,
+            "inverse_MAE": 0.03069147742205128,
+            "sparse_depth_AbsRel": 0.0783812195666626
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 4656,
+            "inverse_RMSE": 0.06666014219076817,
+            "inverse_MAE": 0.05357213928408639,
+            "sparse_depth_AbsRel": 0.13678737164278967
+          },
+          "train_after": {
+            "points": 4656,
+            "inverse_RMSE": 0.05506293330700737,
+            "inverse_MAE": 0.03583036511458334,
+            "sparse_depth_AbsRel": 0.09366128102162627
+          }
+        },
+        "DA3": {
+          "a": 0.74499745447146,
+          "b": 0.02268545058385161,
+          "minimum_predicted_inverse_depth": 0.2285153149191161,
+          "objective": 4.054709337907134e-05,
+          "iterations": 16,
+          "success": true,
+          "heldout_before": {
+            "points": 1229,
+            "inverse_RMSE": 0.13906402022871694,
+            "inverse_MAE": 0.11491526525494915,
+            "sparse_depth_AbsRel": 0.19661082234454824
+          },
+          "heldout_after": {
+            "points": 1229,
+            "inverse_RMSE": 0.020429978262643655,
+            "inverse_MAE": 0.01221162160757814,
+            "sparse_depth_AbsRel": 0.024515034154198336
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 4656,
+            "inverse_RMSE": 0.12625182273887536,
+            "inverse_MAE": 0.10383856370851911,
+            "sparse_depth_AbsRel": 0.19482056742716486
+          },
+          "train_after": {
+            "points": 4656,
+            "inverse_RMSE": 0.017411780855040724,
+            "inverse_MAE": 0.010060708435966268,
+            "sparse_depth_AbsRel": 0.0229575572770887
+          }
+        }
+      }
+    },
+    {
+      "variant": "E1",
+      "frame": 35,
+      "dense_valid_pixels": 204214,
+      "support": {
+        "points": 5912,
+        "train_points": 4743,
+        "heldout_points": 1169,
+        "occupied_train_cells": 16,
+        "train_inverse_depth_span_P90_P10": 0.5073355773616803,
+        "strata": {
+          "near": {
+            "all": 2000,
+            "train": 1433,
+            "heldout": 567
+          },
+          "middle": {
+            "all": 1912,
+            "train": 1723,
+            "heldout": 189
+          },
+          "far": {
+            "all": 2000,
+            "train": 1587,
+            "heldout": 413
+          }
+        },
+        "depth_p10_p50_p90": [
+          1.3832356333732605,
+          3.345223307609558,
+          4.911965990066529
+        ],
+        "supported": true
+      },
+      "pairs": [
+        {
+          "source_frame": 60,
+          "pixels": 262144,
+          "in_bounds": 246830,
+          "FB_pass": 168258,
+          "epipolar_pass": 166456,
+          "pair_valid": 166456
+        },
+        {
+          "source_frame": 1,
+          "pixels": 262144,
+          "in_bounds": 252155,
+          "FB_pass": 175549,
+          "epipolar_pass": 161692,
+          "pair_valid": 161692
+        },
+        {
+          "source_frame": 6,
+          "pixels": 262144,
+          "in_bounds": 248855,
+          "FB_pass": 164332,
+          "epipolar_pass": 161699,
+          "pair_valid": 161699
+        },
+        {
+          "source_frame": 50,
+          "pixels": 262144,
+          "in_bounds": 251048,
+          "FB_pass": 158843,
+          "epipolar_pass": 144254,
+          "pair_valid": 144254
+        },
+        {
+          "source_frame": 55,
+          "pixels": 262144,
+          "in_bounds": 251470,
+          "FB_pass": 169368,
+          "epipolar_pass": 157264,
+          "pair_valid": 157264
+        },
+        {
+          "source_frame": 11,
+          "pixels": 262144,
+          "in_bounds": 253462,
+          "FB_pass": 165913,
+          "epipolar_pass": 156302,
+          "pair_valid": 156302
+        }
+      ],
+      "models": {
+        "SHARP": {
+          "a": 1.0695111160224573,
+          "b": -0.08042683671448421,
+          "minimum_predicted_inverse_depth": 0.2523600178793199,
+          "objective": 0.00020393537003972502,
+          "iterations": 19,
+          "success": true,
+          "heldout_before": {
+            "points": 1169,
+            "inverse_RMSE": 0.06782209210874181,
+            "inverse_MAE": 0.05880711014076862,
+            "sparse_depth_AbsRel": 0.15254918270298148
+          },
+          "heldout_after": {
+            "points": 1169,
+            "inverse_RMSE": 0.049402949077802134,
+            "inverse_MAE": 0.031094170020374623,
+            "sparse_depth_AbsRel": 0.07213145886676033
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 4743,
+            "inverse_RMSE": 0.0876517222935828,
+            "inverse_MAE": 0.07605612923698776,
+            "sparse_depth_AbsRel": 0.19672783678070313
+          },
+          "train_after": {
+            "points": 4743,
+            "inverse_RMSE": 0.061311426040498294,
+            "inverse_MAE": 0.043223760218404794,
+            "sparse_depth_AbsRel": 0.1100689035139123
+          }
+        },
+        "DA3": {
+          "a": 0.7597352715421983,
+          "b": 0.01817665932527308,
+          "minimum_predicted_inverse_depth": 0.22781585296568235,
+          "objective": 3.9888330916265495e-05,
+          "iterations": 16,
+          "success": true,
+          "heldout_before": {
+            "points": 1169,
+            "inverse_RMSE": 0.14862961313864526,
+            "inverse_MAE": 0.12288506337362773,
+            "sparse_depth_AbsRel": 0.19457242986854142
+          },
+          "heldout_after": {
+            "points": 1169,
+            "inverse_RMSE": 0.023727076445724016,
+            "inverse_MAE": 0.014405762196851784,
+            "sparse_depth_AbsRel": 0.02727947987471577
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 4743,
+            "inverse_RMSE": 0.11785313499066749,
+            "inverse_MAE": 0.09831455195370016,
+            "sparse_depth_AbsRel": 0.19097620769587353
+          },
+          "train_after": {
+            "points": 4743,
+            "inverse_RMSE": 0.017025788674168502,
+            "inverse_MAE": 0.010101443621994397,
+            "sparse_depth_AbsRel": 0.02430209241463935
+          }
+        }
+      }
+    },
+    {
+      "variant": "E1",
+      "frame": 40,
+      "dense_valid_pixels": 191635,
+      "support": {
+        "points": 5843,
+        "train_points": 4596,
+        "heldout_points": 1247,
+        "occupied_train_cells": 16,
+        "train_inverse_depth_span_P90_P10": 0.5056273949999895,
+        "strata": {
+          "near": {
+            "all": 2000,
+            "train": 1455,
+            "heldout": 545
+          },
+          "middle": {
+            "all": 1843,
+            "train": 1598,
+            "heldout": 245
+          },
+          "far": {
+            "all": 2000,
+            "train": 1543,
+            "heldout": 457
+          }
+        },
+        "depth_p10_p50_p90": [
+          1.4047311782836913,
+          3.364614725112915,
+          4.908433246612549
+        ],
+        "supported": true
+      },
+      "pairs": [
+        {
+          "source_frame": 1,
+          "pixels": 262144,
+          "in_bounds": 245689,
+          "FB_pass": 147314,
+          "epipolar_pass": 130535,
+          "pair_valid": 130535
+        },
+        {
+          "source_frame": 6,
+          "pixels": 262144,
+          "in_bounds": 243094,
+          "FB_pass": 133582,
+          "epipolar_pass": 129587,
+          "pair_valid": 129587
+        },
+        {
+          "source_frame": 16,
+          "pixels": 262144,
+          "in_bounds": 249249,
+          "FB_pass": 148553,
+          "epipolar_pass": 140380,
+          "pair_valid": 140380
+        },
+        {
+          "source_frame": 11,
+          "pixels": 262144,
+          "in_bounds": 247254,
+          "FB_pass": 142915,
+          "epipolar_pass": 135965,
+          "pair_valid": 135965
+        },
+        {
+          "source_frame": 60,
+          "pixels": 262144,
+          "in_bounds": 247861,
+          "FB_pass": 195128,
+          "epipolar_pass": 195109,
+          "pair_valid": 195109
+        },
+        {
+          "source_frame": 50,
+          "pixels": 262144,
+          "in_bounds": 258386,
+          "FB_pass": 206601,
+          "epipolar_pass": 190620,
+          "pair_valid": 190619
+        }
+      ],
+      "models": {
+        "SHARP": {
+          "a": 1.2405824353154011,
+          "b": -0.08293299183741798,
+          "minimum_predicted_inverse_depth": 0.21733554943564215,
+          "objective": 0.00019383462846382407,
+          "iterations": 18,
+          "success": true,
+          "heldout_before": {
+            "points": 1247,
+            "inverse_RMSE": 0.07818477251625125,
+            "inverse_MAE": 0.06207944976349108,
+            "sparse_depth_AbsRel": 0.143473280429517
+          },
+          "heldout_after": {
+            "points": 1247,
+            "inverse_RMSE": 0.0555747946963927,
+            "inverse_MAE": 0.03590474910180222,
+            "sparse_depth_AbsRel": 0.0877428364173639
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 4596,
+            "inverse_RMSE": 0.07756121518783632,
+            "inverse_MAE": 0.06060677742826098,
+            "sparse_depth_AbsRel": 0.1490060610718676
+          },
+          "train_after": {
+            "points": 4596,
+            "inverse_RMSE": 0.061266723179801114,
+            "inverse_MAE": 0.04119417578584413,
+            "sparse_depth_AbsRel": 0.10748092763187922
+          }
+        },
+        "DA3": {
+          "a": 0.7427034497410548,
+          "b": 0.022938986720704272,
+          "minimum_predicted_inverse_depth": 0.23073624061196013,
+          "objective": 5.4565343832401424e-05,
+          "iterations": 15,
+          "success": true,
+          "heldout_before": {
+            "points": 1247,
+            "inverse_RMSE": 0.14325621325307658,
+            "inverse_MAE": 0.11851059373592002,
+            "sparse_depth_AbsRel": 0.1984509379497227
+          },
+          "heldout_after": {
+            "points": 1247,
+            "inverse_RMSE": 0.030136828630489575,
+            "inverse_MAE": 0.016432856486903645,
+            "sparse_depth_AbsRel": 0.03340741524529453
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 4596,
+            "inverse_RMSE": 0.12419060622999803,
+            "inverse_MAE": 0.10237472349100195,
+            "sparse_depth_AbsRel": 0.19488432342379444
+          },
+          "train_after": {
+            "points": 4596,
+            "inverse_RMSE": 0.02992363511829778,
+            "inverse_MAE": 0.012953160841637874,
+            "sparse_depth_AbsRel": 0.030014174694954727
+          }
+        }
+      }
+    },
+    {
+      "variant": "E1",
+      "frame": 45,
+      "dense_valid_pixels": 192409,
+      "support": {
+        "points": 5872,
+        "train_points": 4774,
+        "heldout_points": 1098,
+        "occupied_train_cells": 16,
+        "train_inverse_depth_span_P90_P10": 0.5156203406571845,
+        "strata": {
+          "near": {
+            "all": 2000,
+            "train": 1532,
+            "heldout": 468
+          },
+          "middle": {
+            "all": 1872,
+            "train": 1578,
+            "heldout": 294
+          },
+          "far": {
+            "all": 2000,
+            "train": 1664,
+            "heldout": 336
+          }
+        },
+        "depth_p10_p50_p90": [
+          1.3755136251449585,
+          3.3337552547454834,
+          4.866167211532593
+        ],
+        "supported": true
+      },
+      "pairs": [
+        {
+          "source_frame": 1,
+          "pixels": 262144,
+          "in_bounds": 248509,
+          "FB_pass": 165119,
+          "epipolar_pass": 164917,
+          "pair_valid": 164917
+        },
+        {
+          "source_frame": 6,
+          "pixels": 262144,
+          "in_bounds": 245963,
+          "FB_pass": 146143,
+          "epipolar_pass": 137348,
+          "pair_valid": 137348
+        },
+        {
+          "source_frame": 16,
+          "pixels": 262144,
+          "in_bounds": 252523,
+          "FB_pass": 176888,
+          "epipolar_pass": 170493,
+          "pair_valid": 170493
+        },
+        {
+          "source_frame": 11,
+          "pixels": 262144,
+          "in_bounds": 248826,
+          "FB_pass": 150520,
+          "epipolar_pass": 145298,
+          "pair_valid": 145298
+        },
+        {
+          "source_frame": 60,
+          "pixels": 262144,
+          "in_bounds": 252123,
+          "FB_pass": 188318,
+          "epipolar_pass": 170685,
+          "pair_valid": 170685
+        },
+        {
+          "source_frame": 30,
+          "pixels": 262144,
+          "in_bounds": 256596,
+          "FB_pass": 207461,
+          "epipolar_pass": 184515,
+          "pair_valid": 159506
+        }
+      ],
+      "models": {
+        "SHARP": {
+          "a": 1.1657697484667209,
+          "b": -0.08005376527653393,
+          "minimum_predicted_inverse_depth": 0.2331250330014201,
+          "objective": 0.00015890882541073122,
+          "iterations": 16,
+          "success": true,
+          "heldout_before": {
+            "points": 1098,
+            "inverse_RMSE": 0.07104711917812467,
+            "inverse_MAE": 0.0557249017836217,
+            "sparse_depth_AbsRel": 0.13774024909461086
+          },
+          "heldout_after": {
+            "points": 1098,
+            "inverse_RMSE": 0.060426569104602874,
+            "inverse_MAE": 0.03989319577217466,
+            "sparse_depth_AbsRel": 0.09105664660153817
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 4774,
+            "inverse_RMSE": 0.0649683797569208,
+            "inverse_MAE": 0.05625096031156144,
+            "sparse_depth_AbsRel": 0.14818226938052945
+          },
+          "train_after": {
+            "points": 4774,
+            "inverse_RMSE": 0.04957761191155424,
+            "inverse_MAE": 0.03418398811456692,
+            "sparse_depth_AbsRel": 0.08659123528306385
+          }
+        },
+        "DA3": {
+          "a": 0.7687234479222513,
+          "b": 0.016832567529826575,
+          "minimum_predicted_inverse_depth": 0.23085282322336567,
+          "objective": 5.972699888845118e-05,
+          "iterations": 15,
+          "success": true,
+          "heldout_before": {
+            "points": 1098,
+            "inverse_RMSE": 0.1387182287123928,
+            "inverse_MAE": 0.11646066787648295,
+            "sparse_depth_AbsRel": 0.19458318165030034
+          },
+          "heldout_after": {
+            "points": 1098,
+            "inverse_RMSE": 0.02849402618339159,
+            "inverse_MAE": 0.014543564538959948,
+            "sparse_depth_AbsRel": 0.0324679915817651
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 4774,
+            "inverse_RMSE": 0.11616859182632192,
+            "inverse_MAE": 0.09623794918115602,
+            "sparse_depth_AbsRel": 0.18598082812717381
+          },
+          "train_after": {
+            "points": 4774,
+            "inverse_RMSE": 0.026106287193164462,
+            "inverse_MAE": 0.01416194499668502,
+            "sparse_depth_AbsRel": 0.03195630448877931
+          }
+        }
+      }
+    },
+    {
+      "variant": "E1",
+      "frame": 50,
+      "dense_valid_pixels": 168004,
+      "support": {
+        "points": 4887,
+        "train_points": 3833,
+        "heldout_points": 1054,
+        "occupied_train_cells": 16,
+        "train_inverse_depth_span_P90_P10": 0.5044896435010338,
+        "strata": {
+          "near": {
+            "all": 1284,
+            "train": 1144,
+            "heldout": 140
+          },
+          "middle": {
+            "all": 1603,
+            "train": 1268,
+            "heldout": 335
+          },
+          "far": {
+            "all": 2000,
+            "train": 1421,
+            "heldout": 579
+          }
+        },
+        "depth_p10_p50_p90": [
+          1.4112272024154664,
+          3.595860719680786,
+          4.882838249206543
+        ],
+        "supported": true
+      },
+      "pairs": [
+        {
+          "source_frame": 1,
+          "pixels": 262144,
+          "in_bounds": 247229,
+          "FB_pass": 150090,
+          "epipolar_pass": 142556,
+          "pair_valid": 142556
+        },
+        {
+          "source_frame": 6,
+          "pixels": 262144,
+          "in_bounds": 243775,
+          "FB_pass": 153213,
+          "epipolar_pass": 137890,
+          "pair_valid": 137890
+        },
+        {
+          "source_frame": 16,
+          "pixels": 262144,
+          "in_bounds": 249957,
+          "FB_pass": 140647,
+          "epipolar_pass": 137342,
+          "pair_valid": 137342
+        },
+        {
+          "source_frame": 11,
+          "pixels": 262144,
+          "in_bounds": 249586,
+          "FB_pass": 157695,
+          "epipolar_pass": 147640,
+          "pair_valid": 147640
+        },
+        {
+          "source_frame": 26,
+          "pixels": 262144,
+          "in_bounds": 253239,
+          "FB_pass": 148045,
+          "epipolar_pass": 139678,
+          "pair_valid": 139633
+        },
+        {
+          "source_frame": 60,
+          "pixels": 262144,
+          "in_bounds": 257334,
+          "FB_pass": 220565,
+          "epipolar_pass": 201114,
+          "pair_valid": 201114
+        }
+      ],
+      "models": {
+        "SHARP": {
+          "a": 0.9358271668609207,
+          "b": -0.022562004466079044,
+          "minimum_predicted_inverse_depth": 0.23135085427033678,
+          "objective": 0.00013170969262966782,
+          "iterations": 14,
+          "success": true,
+          "heldout_before": {
+            "points": 1054,
+            "inverse_RMSE": 0.059464661675986095,
+            "inverse_MAE": 0.05200598041547009,
+            "sparse_depth_AbsRel": 0.1569228088922352
+          },
+          "heldout_after": {
+            "points": 1054,
+            "inverse_RMSE": 0.031876415458721274,
+            "inverse_MAE": 0.022090180770366494,
+            "sparse_depth_AbsRel": 0.06464147052949008
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 3833,
+            "inverse_RMSE": 0.06931600913122939,
+            "inverse_MAE": 0.05996273920944871,
+            "sparse_depth_AbsRel": 0.15300445883520802
+          },
+          "train_after": {
+            "points": 3833,
+            "inverse_RMSE": 0.0524981311876815,
+            "inverse_MAE": 0.028719304255912154,
+            "sparse_depth_AbsRel": 0.07332143293908436
+          }
+        },
+        "DA3": {
+          "a": 0.7388097924910433,
+          "b": 0.024550412043712243,
+          "minimum_predicted_inverse_depth": 0.22865461612250376,
+          "objective": 4.064543294168602e-05,
+          "iterations": 16,
+          "success": true,
+          "heldout_before": {
+            "points": 1054,
+            "inverse_RMSE": 0.09949176324117774,
+            "inverse_MAE": 0.0766222652820011,
+            "sparse_depth_AbsRel": 0.18442333570165526
+          },
+          "heldout_after": {
+            "points": 1054,
+            "inverse_RMSE": 0.022876185029903757,
+            "inverse_MAE": 0.007914258432600716,
+            "sparse_depth_AbsRel": 0.02402226290914906
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 3833,
+            "inverse_RMSE": 0.12644799930363043,
+            "inverse_MAE": 0.102384677933947,
+            "sparse_depth_AbsRel": 0.19383522515883747
+          },
+          "train_after": {
+            "points": 3833,
+            "inverse_RMSE": 0.0205881773398569,
+            "inverse_MAE": 0.010168374961462556,
+            "sparse_depth_AbsRel": 0.023232102337374168
+          }
+        }
+      }
+    },
+    {
+      "variant": "E1",
+      "frame": 55,
+      "dense_valid_pixels": 174345,
+      "support": {
+        "points": 5284,
+        "train_points": 4020,
+        "heldout_points": 1264,
+        "occupied_train_cells": 16,
+        "train_inverse_depth_span_P90_P10": 0.5143667422860903,
+        "strata": {
+          "near": {
+            "all": 1578,
+            "train": 1220,
+            "heldout": 358
+          },
+          "middle": {
+            "all": 1706,
+            "train": 1166,
+            "heldout": 540
+          },
+          "far": {
+            "all": 2000,
+            "train": 1634,
+            "heldout": 366
+          }
+        },
+        "depth_p10_p50_p90": [
+          1.4006965279579162,
+          3.466606855392456,
+          4.881374645233154
+        ],
+        "supported": true
+      },
+      "pairs": [
+        {
+          "source_frame": 1,
+          "pixels": 262144,
+          "in_bounds": 249062,
+          "FB_pass": 160999,
+          "epipolar_pass": 158703,
+          "pair_valid": 158703
+        },
+        {
+          "source_frame": 6,
+          "pixels": 262144,
+          "in_bounds": 246514,
+          "FB_pass": 143287,
+          "epipolar_pass": 135057,
+          "pair_valid": 135057
+        },
+        {
+          "source_frame": 16,
+          "pixels": 262144,
+          "in_bounds": 252905,
+          "FB_pass": 149416,
+          "epipolar_pass": 141148,
+          "pair_valid": 141148
+        },
+        {
+          "source_frame": 11,
+          "pixels": 262144,
+          "in_bounds": 249563,
+          "FB_pass": 156886,
+          "epipolar_pass": 141943,
+          "pair_valid": 141943
+        },
+        {
+          "source_frame": 26,
+          "pixels": 262144,
+          "in_bounds": 254287,
+          "FB_pass": 154379,
+          "epipolar_pass": 145069,
+          "pair_valid": 145069
+        },
+        {
+          "source_frame": 60,
+          "pixels": 262144,
+          "in_bounds": 252823,
+          "FB_pass": 216071,
+          "epipolar_pass": 194178,
+          "pair_valid": 192963
+        }
+      ],
+      "models": {
+        "SHARP": {
+          "a": 1.0959698509678546,
+          "b": -0.06372461035175955,
+          "minimum_predicted_inverse_depth": 0.22451303365888398,
+          "objective": 0.00017869225061395365,
+          "iterations": 14,
+          "success": true,
+          "heldout_before": {
+            "points": 1264,
+            "inverse_RMSE": 0.07711270020346132,
+            "inverse_MAE": 0.06170774718317827,
+            "sparse_depth_AbsRel": 0.16686467431432794
+          },
+          "heldout_after": {
+            "points": 1264,
+            "inverse_RMSE": 0.06644227457898563,
+            "inverse_MAE": 0.041679915044355316,
+            "sparse_depth_AbsRel": 0.1074900839710434
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 4020,
+            "inverse_RMSE": 0.07349627455446132,
+            "inverse_MAE": 0.057946659984062066,
+            "sparse_depth_AbsRel": 0.15916815015917093
+          },
+          "train_after": {
+            "points": 4020,
+            "inverse_RMSE": 0.06354505192911493,
+            "inverse_MAE": 0.03808091200426128,
+            "sparse_depth_AbsRel": 0.09442850553661312
+          }
+        },
+        "DA3": {
+          "a": 0.7389146557286187,
+          "b": 0.024354169171503445,
+          "minimum_predicted_inverse_depth": 0.22880112644475475,
+          "objective": 4.733350378240006e-05,
+          "iterations": 15,
+          "success": true,
+          "heldout_before": {
+            "points": 1264,
+            "inverse_RMSE": 0.11928886839822647,
+            "inverse_MAE": 0.09919778083493669,
+            "sparse_depth_AbsRel": 0.19368754520438533
+          },
+          "heldout_after": {
+            "points": 1264,
+            "inverse_RMSE": 0.021342831280540545,
+            "inverse_MAE": 0.010461556602168088,
+            "sparse_depth_AbsRel": 0.02351111763772885
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 4020,
+            "inverse_RMSE": 0.12877569952453127,
+            "inverse_MAE": 0.10356758964472043,
+            "sparse_depth_AbsRel": 0.19613292333677637
+          },
+          "train_after": {
+            "points": 4020,
+            "inverse_RMSE": 0.02881143062701522,
+            "inverse_MAE": 0.011494626283433368,
+            "sparse_depth_AbsRel": 0.02728240148361253
+          }
+        }
+      }
+    },
+    {
+      "variant": "E1",
+      "frame": 60,
+      "dense_valid_pixels": 164725,
+      "support": {
+        "points": 4882,
+        "train_points": 3875,
+        "heldout_points": 1007,
+        "occupied_train_cells": 16,
+        "train_inverse_depth_span_P90_P10": 0.49276300732729605,
+        "strata": {
+          "near": {
+            "all": 1275,
+            "train": 895,
+            "heldout": 380
+          },
+          "middle": {
+            "all": 1607,
+            "train": 1306,
+            "heldout": 301
+          },
+          "far": {
+            "all": 2000,
+            "train": 1674,
+            "heldout": 326
+          }
+        },
+        "depth_p10_p50_p90": [
+          1.4296099662780761,
+          3.6122413873672485,
+          4.895636558532715
+        ],
+        "supported": true
+      },
+      "pairs": [
+        {
+          "source_frame": 1,
+          "pixels": 262144,
+          "in_bounds": 243922,
+          "FB_pass": 144779,
+          "epipolar_pass": 137929,
+          "pair_valid": 137929
+        },
+        {
+          "source_frame": 6,
+          "pixels": 262144,
+          "in_bounds": 240820,
+          "FB_pass": 146431,
+          "epipolar_pass": 134180,
+          "pair_valid": 134180
+        },
+        {
+          "source_frame": 16,
+          "pixels": 262144,
+          "in_bounds": 247266,
+          "FB_pass": 144449,
+          "epipolar_pass": 137296,
+          "pair_valid": 137296
+        },
+        {
+          "source_frame": 11,
+          "pixels": 262144,
+          "in_bounds": 245131,
+          "FB_pass": 150332,
+          "epipolar_pass": 141609,
+          "pair_valid": 141609
+        },
+        {
+          "source_frame": 26,
+          "pixels": 262144,
+          "in_bounds": 249788,
+          "FB_pass": 141505,
+          "epipolar_pass": 140749,
+          "pair_valid": 140749
+        },
+        {
+          "source_frame": 21,
+          "pixels": 262144,
+          "in_bounds": 253312,
+          "FB_pass": 161884,
+          "epipolar_pass": 154186,
+          "pair_valid": 154186
+        }
+      ],
+      "models": {
+        "SHARP": {
+          "a": 1.0955973744528462,
+          "b": -0.06728396153544688,
+          "minimum_predicted_inverse_depth": 0.22534910999463156,
+          "objective": 0.00019397966605806154,
+          "iterations": 17,
+          "success": true,
+          "heldout_before": {
+            "points": 1007,
+            "inverse_RMSE": 0.08120755110606127,
+            "inverse_MAE": 0.06639871829893722,
+            "sparse_depth_AbsRel": 0.1657310214320082
+          },
+          "heldout_after": {
+            "points": 1007,
+            "inverse_RMSE": 0.0715237243538161,
+            "inverse_MAE": 0.04804120232678366,
+            "sparse_depth_AbsRel": 0.10644026254509661
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 3875,
+            "inverse_RMSE": 0.08544196866761058,
+            "inverse_MAE": 0.06518611203140941,
+            "sparse_depth_AbsRel": 0.17533218832853656
+          },
+          "train_after": {
+            "points": 3875,
+            "inverse_RMSE": 0.07283705698942088,
+            "inverse_MAE": 0.041111936193203955,
+            "sparse_depth_AbsRel": 0.09666625749761132
+          }
+        },
+        "DA3": {
+          "a": 0.7511225503905137,
+          "b": 0.021314091547901613,
+          "minimum_predicted_inverse_depth": 0.2220175945454326,
+          "objective": 5.823396163075787e-05,
+          "iterations": 16,
+          "success": true,
+          "heldout_before": {
+            "points": 1007,
+            "inverse_RMSE": 0.13200087177689052,
+            "inverse_MAE": 0.10968214375827363,
+            "sparse_depth_AbsRel": 0.1925325829708793
+          },
+          "heldout_after": {
+            "points": 1007,
+            "inverse_RMSE": 0.029026929032297533,
+            "inverse_MAE": 0.010428973721972205,
+            "sparse_depth_AbsRel": 0.023891281552709684
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 3875,
+            "inverse_RMSE": 0.13628149474867146,
+            "inverse_MAE": 0.09582170911165969,
+            "sparse_depth_AbsRel": 0.19401066774058714
+          },
+          "train_after": {
+            "points": 3875,
+            "inverse_RMSE": 0.06190784840716591,
+            "inverse_MAE": 0.013677515387750052,
+            "sparse_depth_AbsRel": 0.028855178779015864
+          }
+        }
+      }
+    },
+    {
+      "variant": "E2",
+      "frame": 1,
+      "dense_valid_pixels": 40230,
+      "support": {
+        "points": 2526,
+        "train_points": 2074,
+        "heldout_points": 452,
+        "occupied_train_cells": 16,
+        "train_inverse_depth_span_P90_P10": 0.5413328238811652,
+        "strata": {
+          "near": {
+            "all": 829,
+            "train": 693,
+            "heldout": 136
+          },
+          "middle": {
+            "all": 794,
+            "train": 573,
+            "heldout": 221
+          },
+          "far": {
+            "all": 903,
+            "train": 808,
+            "heldout": 95
+          }
+        },
+        "depth_p10_p50_p90": [
+          1.2773087620735168,
+          3.8673410415649414,
+          4.087630271911621
+        ],
+        "supported": true
+      },
+      "pairs": [
+        {
+          "source_frame": 60,
+          "pixels": 262144,
+          "in_bounds": 241759,
+          "FB_pass": 145066,
+          "epipolar_pass": 88143,
+          "pair_valid": 88143
+        },
+        {
+          "source_frame": 50,
+          "pixels": 262144,
+          "in_bounds": 243661,
+          "FB_pass": 148843,
+          "epipolar_pass": 9321,
+          "pair_valid": 9321
+        },
+        {
+          "source_frame": 55,
+          "pixels": 262144,
+          "in_bounds": 244636,
+          "FB_pass": 159460,
+          "epipolar_pass": 147029,
+          "pair_valid": 147029
+        },
+        {
+          "source_frame": 40,
+          "pixels": 262144,
+          "in_bounds": 244525,
+          "FB_pass": 147011,
+          "epipolar_pass": 97216,
+          "pair_valid": 97216
+        },
+        {
+          "source_frame": 45,
+          "pixels": 262144,
+          "in_bounds": 244127,
+          "FB_pass": 162827,
+          "epipolar_pass": 140262,
+          "pair_valid": 140262
+        },
+        {
+          "source_frame": 30,
+          "pixels": 262144,
+          "in_bounds": 252628,
+          "FB_pass": 152507,
+          "epipolar_pass": 10130,
+          "pair_valid": 10130
+        }
+      ],
+      "models": {
+        "SHARP": {
+          "a": 0.8959551915987214,
+          "b": 0.01964749226943186,
+          "minimum_predicted_inverse_depth": 0.24832302340556084,
+          "objective": 0.0001223468787251875,
+          "iterations": 12,
+          "success": true,
+          "heldout_before": {
+            "points": 452,
+            "inverse_RMSE": 0.044961599348476024,
+            "inverse_MAE": 0.029447499497527525,
+            "sparse_depth_AbsRel": 0.05805028498520054
+          },
+          "heldout_after": {
+            "points": 452,
+            "inverse_RMSE": 0.03553079485228702,
+            "inverse_MAE": 0.020651658927503605,
+            "sparse_depth_AbsRel": 0.04429755789979755
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 2074,
+            "inverse_RMSE": 0.06113921815287089,
+            "inverse_MAE": 0.038308446932237006,
+            "sparse_depth_AbsRel": 0.075245606735111
+          },
+          "train_after": {
+            "points": 2074,
+            "inverse_RMSE": 0.05183778470666375,
+            "inverse_MAE": 0.026587225218261814,
+            "sparse_depth_AbsRel": 0.05908621085249023
+          }
+        },
+        "DA3": {
+          "a": 0.7851050968683552,
+          "b": 0.06244839038435225,
+          "minimum_predicted_inverse_depth": 0.22532572087723035,
+          "objective": 5.8725529548702764e-05,
+          "iterations": 13,
+          "success": true,
+          "heldout_before": {
+            "points": 452,
+            "inverse_RMSE": 0.06980501276139307,
+            "inverse_MAE": 0.0456269613091979,
+            "sparse_depth_AbsRel": 0.0813819468592623
+          },
+          "heldout_after": {
+            "points": 452,
+            "inverse_RMSE": 0.024223004822806597,
+            "inverse_MAE": 0.013779007186739151,
+            "sparse_depth_AbsRel": 0.0300680997399934
+          },
+          "heldout_not_worse": true,
+          "train_before": {
+            "points": 2074,
+            "inverse_RMSE": 0.07864691768541236,
+            "inverse_MAE": 0.051576529981437136,
+            "sparse_depth_AbsRel": 0.08368234607875606
+          },
+          "train_after": {
+            "points": 2074,
+            "inverse_RMSE": 0.023013070410340453,
+            "inverse_MAE": 0.013810013131187094,
+            "sparse_depth_AbsRel": 0.030013553191489448
+          }
+        }
+      }
+    },
+    {
+      "variant": "E2",
+      "frame": 6,
+      "dense_valid_pixels": 79457,
+      "support": {
+        "points": 2729,
+        "train_points": 2176,
+        "heldout_points": 553,
+        "occupied_train_cells": 16,
+        "train_inverse_depth_span_P90_P10": 0.49776415250851036,
+        "strata": {
+          "near": {
+            "all": 720,
+            "train": 555,
+            "heldout": 165
+          },
+          "middle": {
+            "all": 2000,
+            "train": 1616,
+            "heldout": 384
+          },
+          "far": {
+            "all": 9,
+            "train": 5,
+            "heldout": 4
+          }
+        },
+        "depth_p10_p50_p90": [
+          1.3228885173797607,
+          3.3828680515289307,
+          3.8565792083740233
+        ],
+        "supported": false
+      },
+      "pairs": [
+        {
+          "source_frame": 60,
+          "pixels": 262144,
+          "in_bounds": 240882,
+          "FB_pass": 148096,
+          "epipolar_pass": 99297,
+          "pair_valid": 99297
+        },
+        {
+          "source_frame": 50,
+          "pixels": 262144,
+          "in_bounds": 242421,
+          "FB_pass": 153717,
+          "epipolar_pass": 27709,
+          "pair_valid": 27709
+        },
+        {
+          "source_frame": 55,
+          "pixels": 262144,
+          "in_bounds": 244675,
+          "FB_pass": 143201,
+          "epipolar_pass": 125550,
+          "pair_valid": 125550
+        },
+        {
+          "source_frame": 40,
+          "pixels": 262144,
+          "in_bounds": 243517,
+          "FB_pass": 134538,
+          "epipolar_pass": 115145,
+          "pair_valid": 115145
+        },
+        {
+          "source_frame": 45,
+          "pixels": 262144,
+          "in_bounds": 244191,
+          "FB_pass": 145663,
+          "epipolar_pass": 133094,
+          "pair_valid": 133094
+        },
+        {
+          "source_frame": 1,
+          "pixels": 262144,
+          "in_bounds": 256250,
+          "FB_pass": 220579,
+          "epipolar_pass": 144761,
+          "pair_valid": 53784
+        }
+      ],
+      "models": {}
+    }
+  ],
+  "seconds": 36.81756213307381,
+  "GT_depth_or_mask_used_in_geometric_filter_or_fit": false,
+  "stop_reason": "E2 frame6: dense triangulation below frozen support"
+}

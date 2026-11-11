@@ -1,0 +1,842 @@
+{
+  "status": "E2 blocked; E1 continuation authorized",
+  "E1_completed_frames13": true,
+  "E2_completed_calibrated_frames": [
+    1
+  ],
+  "E2_failed_frame": 6,
+  "E2_far_diagnosis": {
+    "physically_far_GT_visible_supported_pixels": 50645,
+    "triangulated_depth_p10_p50_p90": [
+      3.31581130027771,
+      3.687199115753174,
+      3.8720993041992187
+    ],
+    "fraction_predicted_below4m": 0.9972356599861782,
+    "median_tri_to_GT": 0.7648072242736816,
+    "GT_only_used_after_support_stop": true,
+    "interpretation": "Many physically far surfaces still have dense correspondences but triangulated depth falls into frozen middle stratum underE2 poses. This is not evidence that denseflow lacks far-background correspondences; do not alter thresholds afterobservingthis."
+  },
+  "cross_frame_scale": {
+    "E1": {
+      "SHARP": {
+        "frames": [
+          1,
+          6,
+          11,
+          16,
+          21,
+          26,
+          30,
+          35,
+          40,
+          45,
+          50,
+          55,
+          60
+        ],
+        "median_ratio_before": [
+          0.8044106215745701,
+          0.8409293533488882,
+          0.7589405434447977,
+          0.8589100383454171,
+          0.8352761801145909,
+          0.8895254324542969,
+          0.9111228674002927,
+          0.7988131458100299,
+          0.9230171716911076,
+          0.863595532071765,
+          0.8697805086412704,
+          0.8559382486402881,
+          0.8412439942930818
+        ],
+        "median_ratio_after": [
+          1.0368451860562438,
+          1.0465504966398471,
+          1.0264715714521204,
+          1.034632269409532,
+          1.0382667219887538,
+          1.0332907989174103,
+          1.0406214152931668,
+          1.0433228560775754,
+          1.0536550767441295,
+          1.033166632663789,
+          1.0311274602927991,
+          1.023226820178044,
+          1.0222412255857272
+        ],
+        "log_scale_std_before": 0.0517859772349374,
+        "log_scale_std_after": 0.008401441887306538,
+        "definition": "GT-evaluator perframe median depth ratio; standard deviation oflogratios; not a calibration constraint"
+      },
+      "DA3": {
+        "frames": [
+          1,
+          6,
+          11,
+          16,
+          21,
+          26,
+          30,
+          35,
+          40,
+          45,
+          50,
+          55,
+          60
+        ],
+        "median_ratio_before": [
+          0.8465249310702609,
+          0.8441718100802668,
+          0.8426427522643312,
+          0.842692083472832,
+          0.8453655260271137,
+          0.8433799967653459,
+          0.8411179855008932,
+          0.8428106894920233,
+          0.842802702853379,
+          0.8449580625722093,
+          0.8453862288341034,
+          0.8431946704903384,
+          0.8454684001760615
+        ],
+        "median_ratio_after": [
+          1.018267902162035,
+          1.0134118413208701,
+          1.0127920250324007,
+          1.0120545640464669,
+          1.016323581137319,
+          1.0163947499073853,
+          1.0136940324212267,
+          1.0177846415834235,
+          1.0157602058232467,
+          1.0136813559815463,
+          1.0153483825884604,
+          1.0142403155306199,
+          1.0142955862547165
+        ],
+        "log_scale_std_before": 0.0017647674092296686,
+        "log_scale_std_after": 0.001798732813289596,
+        "definition": "GT-evaluator perframe median depth ratio; standard deviation oflogratios; not a calibration constraint"
+      }
+    },
+    "E2": {
+      "SHARP": {
+        "frames": [
+          1
+        ],
+        "median_ratio_before": [
+          0.8044106215745701
+        ],
+        "median_ratio_after": [
+          0.8268185177365528
+        ],
+        "log_scale_std_before": 0.0,
+        "log_scale_std_after": 0.0,
+        "definition": "GT-evaluator perframe median depth ratio; standard deviation oflogratios; not a calibration constraint"
+      },
+      "DA3": {
+        "frames": [
+          1
+        ],
+        "median_ratio_before": [
+          0.8465249310702609
+        ],
+        "median_ratio_after": [
+          0.8234173049271329
+        ],
+        "log_scale_std_before": 0.0,
+        "log_scale_std_after": 0.0,
+        "definition": "GT-evaluator perframe median depth ratio; standard deviation oflogratios; not a calibration constraint"
+      }
+    }
+  },
+  "point_rows": [
+    {
+      "variant": "E1",
+      "frame": 1,
+      "dense_valid_pixels": 185601,
+      "points": 5563,
+      "train_points": 4509,
+      "heldout_points": 1054,
+      "occupied_train_cells": 16,
+      "train_inverse_depth_span_P90_P10": 0.5149278191554106,
+      "strata": {
+        "near": {
+          "all": 2000,
+          "train": 1497,
+          "heldout": 503
+        },
+        "middle": {
+          "all": 1563,
+          "train": 1408,
+          "heldout": 155
+        },
+        "far": {
+          "all": 2000,
+          "train": 1604,
+          "heldout": 396
+        }
+      },
+      "depth_p10_p50_p90": [
+        1.3827327251434327,
+        3.334308624267578,
+        4.883110809326172
+      ],
+      "supported": true
+    },
+    {
+      "variant": "E1",
+      "frame": 6,
+      "dense_valid_pixels": 159445,
+      "points": 4632,
+      "train_points": 3757,
+      "heldout_points": 875,
+      "occupied_train_cells": 16,
+      "train_inverse_depth_span_P90_P10": 0.48525735352589694,
+      "strata": {
+        "near": {
+          "all": 1020,
+          "train": 825,
+          "heldout": 195
+        },
+        "middle": {
+          "all": 1612,
+          "train": 1363,
+          "heldout": 249
+        },
+        "far": {
+          "all": 2000,
+          "train": 1569,
+          "heldout": 431
+        }
+      },
+      "depth_p10_p50_p90": [
+        1.4488218665122985,
+        3.7147010564804077,
+        4.874148988723755
+      ],
+      "supported": true
+    },
+    {
+      "variant": "E1",
+      "frame": 11,
+      "dense_valid_pixels": 183702,
+      "points": 5185,
+      "train_points": 4084,
+      "heldout_points": 1101,
+      "occupied_train_cells": 16,
+      "train_inverse_depth_span_P90_P10": 0.5020533655129064,
+      "strata": {
+        "near": {
+          "all": 1554,
+          "train": 1304,
+          "heldout": 250
+        },
+        "middle": {
+          "all": 1631,
+          "train": 1148,
+          "heldout": 483
+        },
+        "far": {
+          "all": 2000,
+          "train": 1632,
+          "heldout": 368
+        }
+      },
+      "depth_p10_p50_p90": [
+        1.4069530010223388,
+        3.4895732402801514,
+        4.87883415222168
+      ],
+      "supported": true
+    },
+    {
+      "variant": "E1",
+      "frame": 16,
+      "dense_valid_pixels": 180482,
+      "points": 5205,
+      "train_points": 4042,
+      "heldout_points": 1163,
+      "occupied_train_cells": 16,
+      "train_inverse_depth_span_P90_P10": 0.4952263799184926,
+      "strata": {
+        "near": {
+          "all": 1431,
+          "train": 1077,
+          "heldout": 354
+        },
+        "middle": {
+          "all": 1774,
+          "train": 1378,
+          "heldout": 396
+        },
+        "far": {
+          "all": 2000,
+          "train": 1587,
+          "heldout": 413
+        }
+      },
+      "depth_p10_p50_p90": [
+        1.422456955909729,
+        3.526927947998047,
+        4.869974422454834
+      ],
+      "supported": true
+    },
+    {
+      "variant": "E1",
+      "frame": 21,
+      "dense_valid_pixels": 198340,
+      "points": 5931,
+      "train_points": 4536,
+      "heldout_points": 1395,
+      "occupied_train_cells": 16,
+      "train_inverse_depth_span_P90_P10": 0.5126359171051147,
+      "strata": {
+        "near": {
+          "all": 2000,
+          "train": 1420,
+          "heldout": 580
+        },
+        "middle": {
+          "all": 1931,
+          "train": 1515,
+          "heldout": 416
+        },
+        "far": {
+          "all": 2000,
+          "train": 1601,
+          "heldout": 399
+        }
+      },
+      "depth_p10_p50_p90": [
+        1.4300339221954346,
+        3.347193956375122,
+        4.897246837615967
+      ],
+      "supported": true
+    },
+    {
+      "variant": "E1",
+      "frame": 26,
+      "dense_valid_pixels": 181468,
+      "points": 5515,
+      "train_points": 4476,
+      "heldout_points": 1039,
+      "occupied_train_cells": 16,
+      "train_inverse_depth_span_P90_P10": 0.5247649718990463,
+      "strata": {
+        "near": {
+          "all": 1763,
+          "train": 1518,
+          "heldout": 245
+        },
+        "middle": {
+          "all": 1752,
+          "train": 1420,
+          "heldout": 332
+        },
+        "far": {
+          "all": 2000,
+          "train": 1538,
+          "heldout": 462
+        }
+      },
+      "depth_p10_p50_p90": [
+        1.375696635246277,
+        3.430983543395996,
+        4.930533409118652
+      ],
+      "supported": true
+    },
+    {
+      "variant": "E1",
+      "frame": 30,
+      "dense_valid_pixels": 203666,
+      "points": 5885,
+      "train_points": 4656,
+      "heldout_points": 1229,
+      "occupied_train_cells": 16,
+      "train_inverse_depth_span_P90_P10": 0.5074093418226131,
+      "strata": {
+        "near": {
+          "all": 2000,
+          "train": 1496,
+          "heldout": 504
+        },
+        "middle": {
+          "all": 1885,
+          "train": 1562,
+          "heldout": 323
+        },
+        "far": {
+          "all": 2000,
+          "train": 1598,
+          "heldout": 402
+        }
+      },
+      "depth_p10_p50_p90": [
+        1.4160645246505736,
+        3.3729770183563232,
+        4.911548900604248
+      ],
+      "supported": true
+    },
+    {
+      "variant": "E1",
+      "frame": 35,
+      "dense_valid_pixels": 204214,
+      "points": 5912,
+      "train_points": 4743,
+      "heldout_points": 1169,
+      "occupied_train_cells": 16,
+      "train_inverse_depth_span_P90_P10": 0.5073355773616803,
+      "strata": {
+        "near": {
+          "all": 2000,
+          "train": 1433,
+          "heldout": 567
+        },
+        "middle": {
+          "all": 1912,
+          "train": 1723,
+          "heldout": 189
+        },
+        "far": {
+          "all": 2000,
+          "train": 1587,
+          "heldout": 413
+        }
+      },
+      "depth_p10_p50_p90": [
+        1.3832356333732605,
+        3.345223307609558,
+        4.911965990066529
+      ],
+      "supported": true
+    },
+    {
+      "variant": "E1",
+      "frame": 40,
+      "dense_valid_pixels": 191635,
+      "points": 5843,
+      "train_points": 4596,
+      "heldout_points": 1247,
+      "occupied_train_cells": 16,
+      "train_inverse_depth_span_P90_P10": 0.5056273949999895,
+      "strata": {
+        "near": {
+          "all": 2000,
+          "train": 1455,
+          "heldout": 545
+        },
+        "middle": {
+          "all": 1843,
+          "train": 1598,
+          "heldout": 245
+        },
+        "far": {
+          "all": 2000,
+          "train": 1543,
+          "heldout": 457
+        }
+      },
+      "depth_p10_p50_p90": [
+        1.4047311782836913,
+        3.364614725112915,
+        4.908433246612549
+      ],
+      "supported": true
+    },
+    {
+      "variant": "E1",
+      "frame": 45,
+      "dense_valid_pixels": 192409,
+      "points": 5872,
+      "train_points": 4774,
+      "heldout_points": 1098,
+      "occupied_train_cells": 16,
+      "train_inverse_depth_span_P90_P10": 0.5156203406571845,
+      "strata": {
+        "near": {
+          "all": 2000,
+          "train": 1532,
+          "heldout": 468
+        },
+        "middle": {
+          "all": 1872,
+          "train": 1578,
+          "heldout": 294
+        },
+        "far": {
+          "all": 2000,
+          "train": 1664,
+          "heldout": 336
+        }
+      },
+      "depth_p10_p50_p90": [
+        1.3755136251449585,
+        3.3337552547454834,
+        4.866167211532593
+      ],
+      "supported": true
+    },
+    {
+      "variant": "E1",
+      "frame": 50,
+      "dense_valid_pixels": 168004,
+      "points": 4887,
+      "train_points": 3833,
+      "heldout_points": 1054,
+      "occupied_train_cells": 16,
+      "train_inverse_depth_span_P90_P10": 0.5044896435010338,
+      "strata": {
+        "near": {
+          "all": 1284,
+          "train": 1144,
+          "heldout": 140
+        },
+        "middle": {
+          "all": 1603,
+          "train": 1268,
+          "heldout": 335
+        },
+        "far": {
+          "all": 2000,
+          "train": 1421,
+          "heldout": 579
+        }
+      },
+      "depth_p10_p50_p90": [
+        1.4112272024154664,
+        3.595860719680786,
+        4.882838249206543
+      ],
+      "supported": true
+    },
+    {
+      "variant": "E1",
+      "frame": 55,
+      "dense_valid_pixels": 174345,
+      "points": 5284,
+      "train_points": 4020,
+      "heldout_points": 1264,
+      "occupied_train_cells": 16,
+      "train_inverse_depth_span_P90_P10": 0.5143667422860903,
+      "strata": {
+        "near": {
+          "all": 1578,
+          "train": 1220,
+          "heldout": 358
+        },
+        "middle": {
+          "all": 1706,
+          "train": 1166,
+          "heldout": 540
+        },
+        "far": {
+          "all": 2000,
+          "train": 1634,
+          "heldout": 366
+        }
+      },
+      "depth_p10_p50_p90": [
+        1.4006965279579162,
+        3.466606855392456,
+        4.881374645233154
+      ],
+      "supported": true
+    },
+    {
+      "variant": "E1",
+      "frame": 60,
+      "dense_valid_pixels": 164725,
+      "points": 4882,
+      "train_points": 3875,
+      "heldout_points": 1007,
+      "occupied_train_cells": 16,
+      "train_inverse_depth_span_P90_P10": 0.49276300732729605,
+      "strata": {
+        "near": {
+          "all": 1275,
+          "train": 895,
+          "heldout": 380
+        },
+        "middle": {
+          "all": 1607,
+          "train": 1306,
+          "heldout": 301
+        },
+        "far": {
+          "all": 2000,
+          "train": 1674,
+          "heldout": 326
+        }
+      },
+      "depth_p10_p50_p90": [
+        1.4296099662780761,
+        3.6122413873672485,
+        4.895636558532715
+      ],
+      "supported": true
+    },
+    {
+      "variant": "E2",
+      "frame": 1,
+      "dense_valid_pixels": 40230,
+      "points": 2526,
+      "train_points": 2074,
+      "heldout_points": 452,
+      "occupied_train_cells": 16,
+      "train_inverse_depth_span_P90_P10": 0.5413328238811652,
+      "strata": {
+        "near": {
+          "all": 829,
+          "train": 693,
+          "heldout": 136
+        },
+        "middle": {
+          "all": 794,
+          "train": 573,
+          "heldout": 221
+        },
+        "far": {
+          "all": 903,
+          "train": 808,
+          "heldout": 95
+        }
+      },
+      "depth_p10_p50_p90": [
+        1.2773087620735168,
+        3.8673410415649414,
+        4.087630271911621
+      ],
+      "supported": true
+    },
+    {
+      "variant": "E2",
+      "frame": 6,
+      "dense_valid_pixels": 79457,
+      "points": 2729,
+      "train_points": 2176,
+      "heldout_points": 553,
+      "occupied_train_cells": 16,
+      "train_inverse_depth_span_P90_P10": 0.49776415250851036,
+      "strata": {
+        "near": {
+          "all": 720,
+          "train": 555,
+          "heldout": 165
+        },
+        "middle": {
+          "all": 2000,
+          "train": 1616,
+          "heldout": 384
+        },
+        "far": {
+          "all": 9,
+          "train": 5,
+          "heldout": 4
+        }
+      },
+      "depth_p10_p50_p90": [
+        1.3228885173797607,
+        3.3828680515289307,
+        3.8565792083740233
+      ],
+      "supported": false
+    }
+  ],
+  "motion_rejection_rows": [
+    {
+      "variant": "E1",
+      "frame": 1,
+      "dynamic_pixels": 12094,
+      "dynamic_accepted": 4169,
+      "dynamic_rejected_fraction": 0.6552836117082851,
+      "static_pixels": 224662,
+      "static_accepted": 166726
+    },
+    {
+      "variant": "E1",
+      "frame": 6,
+      "dynamic_pixels": 12541,
+      "dynamic_accepted": 1372,
+      "dynamic_rejected_fraction": 0.8905988358185153,
+      "static_pixels": 225576,
+      "static_accepted": 143439
+    },
+    {
+      "variant": "E1",
+      "frame": 11,
+      "dynamic_pixels": 12351,
+      "dynamic_accepted": 0,
+      "dynamic_rejected_fraction": 1.0,
+      "static_pixels": 223642,
+      "static_accepted": 169058
+    },
+    {
+      "variant": "E1",
+      "frame": 16,
+      "dynamic_pixels": 14292,
+      "dynamic_accepted": 0,
+      "dynamic_rejected_fraction": 1.0,
+      "static_pixels": 224063,
+      "static_accepted": 163709
+    },
+    {
+      "variant": "E1",
+      "frame": 21,
+      "dynamic_pixels": 16747,
+      "dynamic_accepted": 0,
+      "dynamic_rejected_fraction": 1.0,
+      "static_pixels": 219768,
+      "static_accepted": 189221
+    },
+    {
+      "variant": "E1",
+      "frame": 26,
+      "dynamic_pixels": 16865,
+      "dynamic_accepted": 0,
+      "dynamic_rejected_fraction": 1.0,
+      "static_pixels": 218733,
+      "static_accepted": 171554
+    },
+    {
+      "variant": "E1",
+      "frame": 30,
+      "dynamic_pixels": 17068,
+      "dynamic_accepted": 0,
+      "dynamic_rejected_fraction": 1.0,
+      "static_pixels": 220378,
+      "static_accepted": 189885
+    },
+    {
+      "variant": "E1",
+      "frame": 35,
+      "dynamic_pixels": 17776,
+      "dynamic_accepted": 0,
+      "dynamic_rejected_fraction": 1.0,
+      "static_pixels": 217826,
+      "static_accepted": 191674
+    },
+    {
+      "variant": "E1",
+      "frame": 40,
+      "dynamic_pixels": 18780,
+      "dynamic_accepted": 0,
+      "dynamic_rejected_fraction": 1.0,
+      "static_pixels": 217918,
+      "static_accepted": 175702
+    },
+    {
+      "variant": "E1",
+      "frame": 45,
+      "dynamic_pixels": 16589,
+      "dynamic_accepted": 0,
+      "dynamic_rejected_fraction": 1.0,
+      "static_pixels": 221863,
+      "static_accepted": 182905
+    },
+    {
+      "variant": "E1",
+      "frame": 50,
+      "dynamic_pixels": 14411,
+      "dynamic_accepted": 0,
+      "dynamic_rejected_fraction": 1.0,
+      "static_pixels": 221711,
+      "static_accepted": 154339
+    },
+    {
+      "variant": "E1",
+      "frame": 55,
+      "dynamic_pixels": 13475,
+      "dynamic_accepted": 0,
+      "dynamic_rejected_fraction": 1.0,
+      "static_pixels": 224799,
+      "static_accepted": 161177
+    },
+    {
+      "variant": "E1",
+      "frame": 60,
+      "dynamic_pixels": 12006,
+      "dynamic_accepted": 2052,
+      "dynamic_rejected_fraction": 0.8290854572713643,
+      "static_pixels": 224824,
+      "static_accepted": 152658
+    },
+    {
+      "variant": "E2",
+      "frame": 1,
+      "dynamic_pixels": 12094,
+      "dynamic_accepted": 1,
+      "dynamic_rejected_fraction": 0.9999173143707624,
+      "static_pixels": 224662,
+      "static_accepted": 37410
+    },
+    {
+      "variant": "E2",
+      "frame": 6,
+      "dynamic_pixels": 12541,
+      "dynamic_accepted": 0,
+      "dynamic_rejected_fraction": 1.0,
+      "static_pixels": 225576,
+      "static_accepted": 76836
+    }
+  ],
+  "S1b_sparse_comparison": {
+    "E1_frame1_points": 146,
+    "depth_p10_p50_p90": [
+      4.681225,
+      4.854967,
+      4.952502
+    ],
+    "new_E1_frame1": {
+      "points": 5563,
+      "train_points": 4509,
+      "heldout_points": 1054,
+      "occupied_train_cells": 16,
+      "train_inverse_depth_span_P90_P10": 0.5149278191554106,
+      "strata": {
+        "near": {
+          "all": 2000,
+          "train": 1497,
+          "heldout": 503
+        },
+        "middle": {
+          "all": 1563,
+          "train": 1408,
+          "heldout": 155
+        },
+        "far": {
+          "all": 2000,
+          "train": 1604,
+          "heldout": 396
+        }
+      },
+      "depth_p10_p50_p90": [
+        1.3827327251434327,
+        3.334308624267578,
+        4.883110809326172
+      ],
+      "supported": true
+    },
+    "sampling_differs_and_dense_points_correlated": true,
+    "near_points": 9
+  },
+  "flow_runtime": {
+    "directed_pairs": 112,
+    "sum_inference_seconds": 9.500981632620096,
+    "median_pair_seconds": 0.07754604332149029,
+    "peak_allocated_MiB": 299.04052734375
+  },
+  "calibrated_model_count": 28,
+  "P3": "not run afterstop",
+  "P4": "image-quality evaluation notrun afterstop;depthreportsavailable",
+  "P5": "not run afterstop",
+  "retrieval_ladder": "notrun afterstop",
+  "optional6": "notrun",
+  "criteria_unchanged": true,
+  "geometry_selection_and_fit_GT_depth_free": true
+}
