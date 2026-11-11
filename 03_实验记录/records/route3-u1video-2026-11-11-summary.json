@@ -1,0 +1,281 @@
+{
+  "status": "stopped_support_window_rule_pause_for_user",
+  "recorded_at_utc": "2026-11-11T04:03:50.887384+00:00",
+  "criteria": {
+    "path": "03_实验记录/records/route3-u1video-criteria-2026-11-11.json",
+    "commit": "98eb521",
+    "unchanged": true
+  },
+  "implementation_commit": "1ced3ad",
+  "output": "outputs/route3-u1video-2026-11-11-01",
+  "scope": {
+    "scene": "B2-high",
+    "frames": [
+      1,
+      30,
+      60
+    ],
+    "input_frames": [
+      1,
+      6,
+      11,
+      16,
+      21,
+      26,
+      30,
+      35,
+      40,
+      45,
+      50,
+      55,
+      60
+    ],
+    "focuses_m": [
+      1.4,
+      5.0
+    ],
+    "fstops": [
+      1.4,
+      2.0
+    ]
+  },
+  "completed": [
+    "prospective frozen and pushed criteria",
+    "all39 input-video supervision caches with36 neighboring baseline vectors and initial masks",
+    "R2-equivalent full-mask loss and excluded-pixel zero-gradient checks",
+    "initial frame1 train/heldout monitor",
+    "minimal no-update inference/gradient-mode depth-mask comparison"
+  ],
+  "stop": {
+    "reason": "U1_VIDEO_STOP live supervision f1 source11: 135124 pixels, 4437 SSIM windows",
+    "stopped_at_utc": "2026-11-11T03:58:42.148718+00:00",
+    "criterion": "each neighboring view >=10% valid pixels AND>=5% fully-valid11x11 SSIM windows, including live checks",
+    "failing_neighbor_frame": 11,
+    "failing_target_frame": 1,
+    "retained_pixels": 135124,
+    "retained_fraction": 0.5154571533203125,
+    "valid_SSIM_windows": 4437,
+    "valid_SSIM_fraction": 0.017606863383120903,
+    "pixel_gate_passed": true,
+    "SSIM_window_gate_passed": false,
+    "initial_same_neighbor": {
+      "retained_pixels": 189458,
+      "valid_SSIM_windows": 142962
+    },
+    "completed_updates": "unknown: only step0 monitor persisted; stop before step100 monitor, no final checkpoint; do not infer exact count from view RNG",
+    "result_is_method_failure": false,
+    "exact_stop_state_unavailable": true
+  },
+  "baseline_and_initial_supervision": {
+    "1": {
+      "distance_m_range": [
+        0.01800309681364747,
+        0.12999999399029347
+      ],
+      "lateral_m_range": [
+        0.010465679925218586,
+        0.12991532187733967
+      ],
+      "ratio_to_f1_4_radius_range": [
+        1.0081734215642582,
+        7.279999663456433
+      ],
+      "ratio_to_f2_radius_range": [
+        1.4402477450917974,
+        10.399999519223476
+      ],
+      "initial_neighbor_valid_fraction_range": [
+        0.570404052734375,
+        0.76055908203125
+      ],
+      "initial_neighbor_valid_SSIM_fraction_range": [
+        0.42027507499880956,
+        0.6100657132426469
+      ]
+    },
+    "30": {
+      "distance_m_range": [
+        0.022558712824772533,
+        0.07865355161487234
+      ],
+      "lateral_m_range": [
+        0.012127634329011852,
+        0.0761090527112954
+      ],
+      "ratio_to_f1_4_radius_range": [
+        1.2632879181872616,
+        4.40459889043285
+      ],
+      "ratio_to_f2_radius_range": [
+        1.8046970259818025,
+        6.292284129189786
+      ],
+      "initial_neighbor_valid_fraction_range": [
+        0.606719970703125,
+        0.7321929931640625
+      ],
+      "initial_neighbor_valid_SSIM_fraction_range": [
+        0.4526277360676815,
+        0.5899707941143791
+      ]
+    },
+    "60": {
+      "distance_m_range": [
+        0.022140449147562857,
+        0.12999999399029347
+      ],
+      "lateral_m_range": [
+        0.016357727374188558,
+        0.12991532187733967
+      ],
+      "ratio_to_f1_4_radius_range": [
+        1.2398651522635198,
+        7.279999663456433
+      ],
+      "ratio_to_f2_radius_range": [
+        1.7712359318050286,
+        10.399999519223476
+      ],
+      "initial_neighbor_valid_fraction_range": [
+        0.585205078125,
+        0.7501869201660156
+      ],
+      "initial_neighbor_valid_SSIM_fraction_range": [
+        0.4353422961540293,
+        0.6055657846700846
+      ]
+    }
+  },
+  "aperture_radius_m": {
+    "f1_4": 0.01785714285714286,
+    "f2": 0.0125
+  },
+  "view_coverage_limit": "handheld camera path supplies off-center views at differing orientations and baselines, not the same angular samples as a filled aperture disk",
+  "initial_monitor_only": [
+    {
+      "step": 0,
+      "seconds": 1.1797442063689232,
+      "metrics": {
+        "train": {
+          "psnr": 40.41902451508946,
+          "loss": 0.0038326574528279407,
+          "views": 13
+        },
+        "target": {
+          "psnr": 60.80333006707189,
+          "loss": 0.0003552916459739208
+        },
+        "neighbors": {
+          "psnr": 37.42864593978175,
+          "views": 12
+        },
+        "heldout": {
+          "psnr": 35.766601314517594,
+          "views": 16
+        }
+      },
+      "train_minus_heldout_PSNR_dB": 4.652423200571867,
+      "best_heldout_PSNR": 35.766601314517594,
+      "heldout_decline_dB": 0.0,
+      "consecutive_declines": 0,
+      "minimum_live_neighbor_pixels": {
+        "6": 199376,
+        "11": 189458,
+        "16": 187142,
+        "21": 168665,
+        "26": 176959,
+        "30": 161587,
+        "35": 164595,
+        "40": 149528,
+        "45": 155682,
+        "50": 155434,
+        "55": 159482,
+        "60": 156740
+      },
+      "median_step_seconds": null,
+      "peak_allocated_MiB": 1966.51806640625
+    }
+  ],
+  "mask_diagnostic": {
+    "inference": {
+      "valid": true,
+      "pixels": 189458,
+      "SSIM_windows": 142962,
+      "alpha_min": 0.0,
+      "alpha_max": 0.9998999834060669
+    },
+    "gradient": {
+      "valid": true,
+      "pixels": 189458,
+      "SSIM_windows": 142962,
+      "alpha_min": 0.0,
+      "alpha_max": 0.9998999834060669
+    },
+    "max_abs_depth_difference": 0.0,
+    "max_abs_alpha_difference": 0.0,
+    "mask_xor_pixels": 0,
+    "optimizer_steps": 0,
+    "gsplat_path": "/root/autodl-tmp/gsplat-route3-v1.5.0/gsplat/__init__.py"
+  },
+  "minimal_diagnostic_conclusion": "unchanged initial inference and gradient passes have identical depth, alpha and masks; this excludes an initial inference-vs-gradient forward discrepancy, not later mask sensitivity after updates",
+  "suspected_not_verified": "live expected-depth/alpha thresholds can fragment support as optimized surfels change. Expected depth may be sensitive to small far-sky transmittance; stopped state was not saved so this cause is not established.",
+  "decisions": {
+    "Cycles_U1_video": null,
+    "LDR_U1_video_clip": null,
+    "complete_video_chain": null,
+    "worth_training": null,
+    "advantage_retention": null
+  },
+  "unfinished": [
+    {
+      "item": "8000-step fits for frames1/30/60",
+      "reason": "f001 aborted before first100 monitor; f030/f060 not launched"
+    },
+    {
+      "item": "DOF rendering,dual-reference scoring,GT-hidden vs L3 retrieval comparison,retention,radiance and convergence curves",
+      "reason": "no completed fixed-budget fit; stopped snapshot not a valid final method"
+    }
+  ],
+  "existing_baseline_record": "03_实验记录/records/route3-u1video-2026-11-11-existing-baselines.csv",
+  "supervision_table": "03_实验记录/records/route3-u1video-2026-11-11-supervision.csv",
+  "visualizations": [
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-u1video-2026-11-11-01/video-baselines.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-u1video-2026-11-11-01/initial-supervision-f001.png"
+  ],
+  "old_results_and_criteria_changed": false,
+  "new_Blender_or_DA3_runs": false,
+  "feedforward_training": false,
+  "software": {
+    "Python": "3.10.22",
+    "torch": "2.7.1+cu128",
+    "gsplat": "1.5.0",
+    "GPU": "RTX4090D",
+    "GPU_total_MiB": 49140,
+    "driver": "580.105.08",
+    "env": "/root/autodl-tmp/envs/route3"
+  },
+  "runtime": {
+    "prepare_queue_seconds": 29.325414,
+    "first_fit_queue_seconds": 9.985274,
+    "initial_monitor_peak_allocated_MiB": 1966.51806640625,
+    "actual_training_peak_not_recorded": true,
+    "additional_diagnostic_optimizer_updates": 0
+  },
+  "resources_after": {
+    "/": {
+      "free_bytes": 2035138560
+    },
+    "/root/autodl-tmp": {
+      "free_bytes": 322514739200
+    }
+  },
+  "limitations": [
+    "one controlled scene; per-scene optimization not proof of feedforward attainability",
+    "GT depth,poses,dynamic IDs,GT-rec hidden in primary fit; full-video variant also would inherit this fitting setup",
+    "support-window stop is not negative evidence that video information is insufficient",
+    "R2/U2/R3 decisions and outputs remain unchanged"
+  ],
+  "next_step": "Pause under original frozen stop rule. A changed live-mask/depth rule or support-window threshold requires a new prospective protocol; do not relax existing criteria or continue automatically.",
+  "validation_record": "03_实验记录/records/route3-u1video-2026-11-11-validation.json",
+  "stop_logging_improvement": "capture actual completed-update count and mask on future live-support failure; compiled only, no rerun and no threshold changes"
+}

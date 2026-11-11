@@ -163,7 +163,16 @@ def fit(frame,c):
         if mask is not None:
             ok,n,nw=valid_supervision(mask)
             min_counts[str(v['frame'])]=min(min_counts.get(str(v['frame']),n),n)
-            if not ok:raise RuntimeError(f'U1_VIDEO_STOP live supervision f{frame} source{v["frame"]}: {n} pixels, {nw} SSIM windows')
+            if not ok:
+                reason=f'U1_VIDEO_STOP live supervision f{frame} source{v["frame"]}: {n} pixels, {nw} SSIM windows'
+                # Keep a failed support mask and the precise update count;
+                # never score this stopped snapshot as the fixed-budget fit.
+                np.savez_compressed(folder/'stop-support.npz',mask=mask.cpu().numpy(),depth=dep.cpu().numpy(),alpha=alpha.cpu().numpy())
+                failure=dict(completed=False,stop_reason=reason,frame=frame,source_frame=v['frame'],completed_optimizer_updates=len(times),
+                    attempted_step=step,valid_pixels=n,valid_SSIM_windows=nw,config=config,rows=rows,wall_seconds=time.monotonic()-started,
+                    peak_allocated_MiB=torch.cuda.max_memory_allocated()/2**20,formal_evaluation_permitted=False)
+                write(folder/'result.json',failure);write(RECORDS/(PREFIX+f'-fit-f{frame:03d}.json'),failure)
+                raise RuntimeError(reason)
         return pred,mask
 
     for step in range(8001):
