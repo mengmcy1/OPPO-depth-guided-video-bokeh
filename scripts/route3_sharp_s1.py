@@ -16,7 +16,6 @@ os.environ.setdefault('OPENCV_IO_ENABLE_OPENEXR','1')
 import cv2
 import numpy as np
 import torch
-from gsplat import rasterization
 from scipy.ndimage import distance_transform_edt
 ROOT=Path(__file__).resolve().parents[1];sys.path[:0]=[str(ROOT),str(ROOT/'scripts')]
 OFFICIAL=ROOT.parent/'ml-sharp-s1-20261111'
@@ -48,6 +47,7 @@ def scene(frame,layer='full',scale=1.):
 
 
 def raster(cloud,K,mode='antialiased',eps=.0015):
+    from gsplat import rasterization
     image,alpha,_=rasterization(cloud.means,cloud.quats,cloud.scales,cloud.opacities,cloud.colors,
         torch.eye(4,device='cuda')[None],K[None],512,512,packed=False,render_mode='RGB+ED',
         rasterize_mode=mode,eps2d=eps,near_plane=1e-4,far_plane=1e5)
@@ -150,10 +150,82 @@ def prepare(c):
     write(RECORDS/(PREFIX+'-preparation.json'),dict(completed=True,rows=rows,single_global_Oracle_scale=oracle))
 
 
+def bokehme(c):
+    from src.baselines.bokehme import setup,predict
+    pipeline,settings,nets,_=setup(ROOT.parent/'BokehMe',ROOT/'models/BokehMe',dict(gamma=2.2,highlight=False,defocus_scale=10.))
+    dest=OUT/'O3';dest.mkdir(exist_ok=False);rows=[];runtime=[]
+    for entry in json.loads((OUT/'prepared.json').read_text())['rows']:
+        d=np.load(entry['input_npz'])
+        for case in entry['cases']:
+            control=(d['K'][0,0]*.05/(2*case['fstop'])*(1/d['depth']-1/case['focus_m'])/10).astype(np.float32)
+            torch.cuda.synchronize();torch.cuda.reset_peak_memory_stats();start=time.monotonic()
+            prediction,_=predict(pipeline,settings,nets,np.ascontiguousarray(d['rgb_srgb']),np.ascontiguousarray(control));torch.cuda.synchronize()
+            path=dest/(entry['scale_label']+'-'+case['id']+'.npz');np.savez_compressed(path,prediction_srgb=prediction.clip(0,1),focus_m=case['focus_m'])
+            rows.append(dict(id=case['id'],scale_label=entry['scale_label'],method='O3_SHARP',path=str(path)))
+            runtime.append(dict(id=case['id'],scale_label=entry['scale_label'],seconds=time.monotonic()-start,peak_allocated_MiB=torch.cuda.max_memory_allocated()/2**20))
+            print('SHARP_O3',entry['scale_label'],case['id'],flush=True)
+    write(OUT/'O3-predictions.json',dict(rows=rows));write(RECORDS/(PREFIX+'-O3.json'),dict(completed=True,rows=runtime,same_global_scale_as_SHARP=True))
+
+
+def zero(c):
+    dest=OUT/'zero';dest.mkdir(exist_ok=False);rows=[]
+    for entry in json.loads((OUT/'prepared.json').read_text())['rows']:
+        d=np.load(entry['input_npz']);K=torch.tensor(d['K'],device='cuda');eye=torch.eye(4,device='cuda')
+        fill=torch.tensor(np.load(OUT/'fill'/entry['id']/'fill.npz')['fill_rgb_linear'],device='cuda')
+        vg=pixel_layer(torch.tensor(d['rgb_linear'],device='cuda'),torch.tensor(d['depth'],device='cuda'),K,eye)
+        for name,cloud in [('VG_SHARP',vg),('SHARP_front',scene(entry['frame'],'front',entry['scale'])),('SHARP_full',scene(entry['frame'],'full',entry['scale']))]:
+            with torch.inference_mode():rgb,depth,alpha=raster(cloud,K)
+            residual=(1-alpha[...,None])*fill;path=dest/(entry['id']+'-'+name+'.npz')
+            np.savez_compressed(path,prediction_srgb=display((rgb+residual).cpu().numpy()),black_srgb=display(rgb.cpu().numpy()),alpha=alpha.cpu().numpy(),depth=depth.cpu().numpy(),fill_contribution_linear=residual.cpu().numpy())
+            rows.append(dict(frame=entry['frame'],scale_label=entry['scale_label'],method=name,path=str(path)))
+        del vg,cloud;torch.cuda.empty_cache()
+    write(OUT/'zero-predictions.json',dict(completed=True,rows=rows,K=1,aperture=0))
+
+
+def render(c):
+    dest=OUT/'render';dest.mkdir(exist_ok=False);rows=[];runtime=[]
+    profile=json.loads((RECORDS/'route3-dual-layer-criteria-L2-2026-11-11.json').read_text())['profile']
+    for entry in json.loads((OUT/'prepared.json').read_text())['rows']:
+        d=np.load(entry['input_npz']);K=torch.tensor(d['K'],device='cuda');eye=torch.eye(4,device='cuda')
+        fill=torch.tensor(np.load(OUT/'fill'/entry['id']/'fill.npz')['fill_rgb_linear'],device='cuda');bg=torch.tensor(d['background_depth'],device='cuda')
+        clouds=dict(VG_SHARP=pixel_layer(torch.tensor(d['rgb_linear'],device='cuda'),torch.tensor(d['depth'],device='cuda'),K,eye),
+            SHARP_front=scene(entry['frame'],'front',entry['scale']),SHARP_full=scene(entry['frame'],'full',entry['scale']))
+        parents={v:np.load(path) for v,path in entry['parents'].items()}
+        for case in entry['cases']:
+            band,_,_=depth_band(d['depth'],d['K'][0,0],case['focus_m'],.05/(2*case['fstop']));values={};times={};torch.cuda.reset_peak_memory_stats()
+            for name,cloud in clouds.items():
+                with torch.inference_mode():
+                    torch.cuda.synchronize();started=time.monotonic()
+                    result=sampled(cloud,K,eye,512,512,case['focus_m'],.05/(2*case['fstop']),64,fill,bg,far_plane=1e5,return_fill_contribution=True)
+                    torch.cuda.synchronize();times[name]=time.monotonic()-started
+                values[name]={k:v.cpu().numpy() for k,v in result.items()}
+            for variant,parent in parents.items():
+                uv=parent['uv'];x=np.clip(uv[:,0].astype(int),0,511);y=np.clip(uv[:,1].astype(int),0,511)
+                hidden=sparse_pixel_layer(parent,band[y,x],K,eye,profile,'cuda')
+                for base in ['SHARP_front','SHARP_full']:
+                    name=base+'_L3_'+variant
+                    with torch.inference_mode():
+                        torch.cuda.synchronize();started=time.monotonic()
+                        result=sampled(merge_layers(clouds[base],hidden),K,eye,512,512,case['focus_m'],.05/(2*case['fstop']),64,fill,bg,far_plane=1e5,return_fill_contribution=True)
+                        torch.cuda.synchronize();times[name]=time.monotonic()-started
+                    values[name]={k:np.where(band[...,None] if v.ndim==3 else band,v.cpu().numpy(),values[base][k]) for k,v in result.items()}
+                del hidden
+            for name,result in values.items():
+                path=dest/(entry['scale_label']+'-'+case['id']+'-'+name+'.npz')
+                np.savez_compressed(path,prediction_srgb=display(result['rgb_linear']),**result,band=band,focus_m=case['focus_m'])
+                rows.append(dict(id=case['id'],scale_label=entry['scale_label'],method=name,path=str(path)))
+            runtime.append(dict(id=case['id'],scale_label=entry['scale_label'],seconds=times,peak_allocated_MiB=torch.cuda.max_memory_allocated()/2**20))
+            print('SHARP_RENDER',entry['scale_label'],case['id'],flush=True)
+        del clouds;torch.cuda.empty_cache()
+    rows+=json.loads((OUT/'O3-predictions.json').read_text())['rows']
+    write(OUT/'predictions.json',dict(completed=True,rows=rows));write(RECORDS/(PREFIX+'-render.json'),dict(completed=True,K=64,rows=runtime,
+        SHARP_architecture_modified=False,learned_or_optimized=False,GT_hidden_used=False,all_groups_shared_renderer=True))
+
+
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--mode',choices=['inference','prepare'],required=True);a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--mode',choices=['inference','prepare','bokehme','zero','render'],required=True);a=p.parse_args()
     c=json.loads(CRITERIA.read_text());assert c['frozen'];torch.set_num_threads(8);cv2.setNumThreads(1)
-    if a.mode=='inference':
+    if a.mode!='prepare':
         if os.environ.get('CUDA_VISIBLE_DEVICES')!='0':raise ValueError('Explicit GPU0')
         subprocess.run(['nvidia-smi'],check=True)
     globals()[a.mode](c)
