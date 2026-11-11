@@ -1,0 +1,2334 @@
+{
+  "status": "completed_pause_for_user",
+  "reported_at_utc": "2026-11-11T03:46:18.354765+00:00",
+  "criteria": {
+    "path": "03_实验记录/records/route3-target-focus-criteria-2026-11-10.json",
+    "commit": "be99e50",
+    "implementation_commit": "d1d64d8"
+  },
+  "basis": {
+    "U2_criteria": "11c78ca",
+    "U2_summary": "5933ccc",
+    "R1_R2_summary": "84f77ad"
+  },
+  "output": "outputs/route3-target-focus-2026-11-10-01",
+  "scope": {
+    "scene": "B2-high",
+    "frames": [
+      1,
+      30,
+      60
+    ],
+    "nominal_focuses_m": [
+      1.4,
+      5.0
+    ],
+    "fstops": [
+      1.4,
+      2.0
+    ],
+    "groups_per_focus": 6,
+    "variants": [
+      "E1",
+      "E2"
+    ]
+  },
+  "focus_selection": {
+    "formula": "median of unchanged DA3 estimated depth inside original GT in-focus mask",
+    "ranges": {
+      "1.4": {
+        "min_m": 1.0787156820297241,
+        "max_m": 1.1013623476028442
+      },
+      "5.0": {
+        "min_m": 4.136355400085449,
+        "max_m": 4.148368835449219
+      }
+    },
+    "plan_record": "03_实验记录/records/route3-target-focus-2026-11-10-focus.json",
+    "E1_E2_and_all_methods_identical": true,
+    "GT_mask_is_user_target_proxy_only": true
+  },
+  "decisions": {
+    "Cycles": {
+      "E1": {
+        "1.4": {
+          "passed": false,
+          "valid_groups": 6,
+          "same_direction": 0,
+          "guardrails_passed": false,
+          "band_advantage_dB": -2.1661525949321145,
+          "groups": [
+            {
+              "id": "B2-high-f001-N1.4-F1.4",
+              "pixels": 84516,
+              "degradation_advantage_dB": -2.8438929864818157
+            },
+            {
+              "id": "B2-high-f001-N2-F1.4",
+              "pixels": 63486,
+              "degradation_advantage_dB": -2.3922631124188136
+            },
+            {
+              "id": "B2-high-f030-N1.4-F1.4",
+              "pixels": 89105,
+              "degradation_advantage_dB": -1.8906542933480743
+            },
+            {
+              "id": "B2-high-f030-N2-F1.4",
+              "pixels": 66827,
+              "degradation_advantage_dB": -1.3782908130712457
+            },
+            {
+              "id": "B2-high-f060-N1.4-F1.4",
+              "pixels": 85138,
+              "degradation_advantage_dB": -2.284811280858918
+            },
+            {
+              "id": "B2-high-f060-N2-F1.4",
+              "pixels": 64100,
+              "degradation_advantage_dB": -2.3999262182879946
+            }
+          ],
+          "primary": true
+        },
+        "5.0": {
+          "passed": false,
+          "valid_groups": 6,
+          "same_direction": 2,
+          "guardrails_passed": false,
+          "band_advantage_dB": 0.03987584147441936,
+          "groups": [
+            {
+              "id": "B2-high-f001-N1.4-F5",
+              "pixels": 78317,
+              "degradation_advantage_dB": -1.8206491327538998
+            },
+            {
+              "id": "B2-high-f001-N2-F5",
+              "pixels": 58653,
+              "degradation_advantage_dB": -0.6364819211408772
+            },
+            {
+              "id": "B2-high-f030-N1.4-F5",
+              "pixels": 79834,
+              "degradation_advantage_dB": 0.6064714460575686
+            },
+            {
+              "id": "B2-high-f030-N2-F5",
+              "pixels": 59894,
+              "degradation_advantage_dB": 1.678376800824669
+            },
+            {
+              "id": "B2-high-f060-N1.4-F5",
+              "pixels": 79443,
+              "degradation_advantage_dB": -0.7196572465574533
+            },
+            {
+              "id": "B2-high-f060-N2-F5",
+              "pixels": 60242,
+              "degradation_advantage_dB": -0.4535698419349927
+            }
+          ],
+          "primary": true
+        }
+      },
+      "E2": {
+        "1.4": {
+          "passed": false,
+          "valid_groups": 6,
+          "same_direction": 0,
+          "guardrails_passed": false,
+          "band_advantage_dB": -2.150800709242379,
+          "groups": [
+            {
+              "id": "B2-high-f001-N1.4-F1.4",
+              "pixels": 84516,
+              "degradation_advantage_dB": -2.8992220620796942
+            },
+            {
+              "id": "B2-high-f001-N2-F1.4",
+              "pixels": 63486,
+              "degradation_advantage_dB": -2.4474518627591983
+            },
+            {
+              "id": "B2-high-f030-N1.4-F1.4",
+              "pixels": 89105,
+              "degradation_advantage_dB": -1.7980388806465584
+            },
+            {
+              "id": "B2-high-f030-N2-F1.4",
+              "pixels": 66827,
+              "degradation_advantage_dB": -1.2869261899476037
+            },
+            {
+              "id": "B2-high-f060-N1.4-F1.4",
+              "pixels": 85138,
+              "degradation_advantage_dB": -2.2697028784413966
+            },
+            {
+              "id": "B2-high-f060-N2-F1.4",
+              "pixels": 64100,
+              "degradation_advantage_dB": -2.417996809480286
+            }
+          ],
+          "primary": true
+        },
+        "5.0": {
+          "passed": false,
+          "valid_groups": 6,
+          "same_direction": 2,
+          "guardrails_passed": false,
+          "band_advantage_dB": 0.08154844257300198,
+          "groups": [
+            {
+              "id": "B2-high-f001-N1.4-F5",
+              "pixels": 78317,
+              "degradation_advantage_dB": -1.9570867103408958
+            },
+            {
+              "id": "B2-high-f001-N2-F5",
+              "pixels": 58653,
+              "degradation_advantage_dB": -0.7095298943499131
+            },
+            {
+              "id": "B2-high-f030-N1.4-F5",
+              "pixels": 79834,
+              "degradation_advantage_dB": 0.7702270356939067
+            },
+            {
+              "id": "B2-high-f030-N2-F5",
+              "pixels": 59894,
+              "degradation_advantage_dB": 1.881018494653489
+            },
+            {
+              "id": "B2-high-f060-N1.4-F5",
+              "pixels": 79443,
+              "degradation_advantage_dB": -0.7116543067120347
+            },
+            {
+              "id": "B2-high-f060-N2-F5",
+              "pixels": 60242,
+              "degradation_advantage_dB": -0.4577755516697053
+            }
+          ],
+          "primary": true
+        }
+      }
+    },
+    "LDR": {
+      "E1": {
+        "1.4": {
+          "passed": false,
+          "valid_groups": 6,
+          "same_direction": 0,
+          "guardrails_passed": false,
+          "band_advantage_dB": -2.710144668631262,
+          "groups": [
+            {
+              "id": "B2-high-f001-N1.4-F1.4",
+              "pixels": 84516,
+              "degradation_advantage_dB": -4.543471675133606
+            },
+            {
+              "id": "B2-high-f001-N2-F1.4",
+              "pixels": 63486,
+              "degradation_advantage_dB": -2.8270466488245773
+            },
+            {
+              "id": "B2-high-f030-N1.4-F1.4",
+              "pixels": 89105,
+              "degradation_advantage_dB": -2.073685270230868
+            },
+            {
+              "id": "B2-high-f030-N2-F1.4",
+              "pixels": 66827,
+              "degradation_advantage_dB": -0.2702981337628714
+            },
+            {
+              "id": "B2-high-f060-N1.4-F1.4",
+              "pixels": 85138,
+              "degradation_advantage_dB": -3.8351610014965445
+            },
+            {
+              "id": "B2-high-f060-N2-F1.4",
+              "pixels": 64100,
+              "degradation_advantage_dB": -2.8348076697261106
+            }
+          ],
+          "primary": false
+        },
+        "5.0": {
+          "passed": false,
+          "valid_groups": 6,
+          "same_direction": 2,
+          "guardrails_passed": false,
+          "band_advantage_dB": -0.021538203511603626,
+          "groups": [
+            {
+              "id": "B2-high-f001-N1.4-F5",
+              "pixels": 78317,
+              "degradation_advantage_dB": -2.2704971799122617
+            },
+            {
+              "id": "B2-high-f001-N2-F5",
+              "pixels": 58653,
+              "degradation_advantage_dB": -1.1134652781203513
+            },
+            {
+              "id": "B2-high-f030-N1.4-F5",
+              "pixels": 79834,
+              "degradation_advantage_dB": 1.293982870413629
+            },
+            {
+              "id": "B2-high-f030-N2-F5",
+              "pixels": 59894,
+              "degradation_advantage_dB": 3.1797863782310216
+            },
+            {
+              "id": "B2-high-f060-N1.4-F5",
+              "pixels": 79443,
+              "degradation_advantage_dB": -2.0943754464813225
+            },
+            {
+              "id": "B2-high-f060-N2-F5",
+              "pixels": 60242,
+              "degradation_advantage_dB": -1.3039867691704572
+            }
+          ],
+          "primary": false
+        }
+      },
+      "E2": {
+        "1.4": {
+          "passed": false,
+          "valid_groups": 6,
+          "same_direction": 0,
+          "guardrails_passed": false,
+          "band_advantage_dB": -2.7075996379562,
+          "groups": [
+            {
+              "id": "B2-high-f001-N1.4-F1.4",
+              "pixels": 84516,
+              "degradation_advantage_dB": -4.608044258156141
+            },
+            {
+              "id": "B2-high-f001-N2-F1.4",
+              "pixels": 63486,
+              "degradation_advantage_dB": -2.888574483887975
+            },
+            {
+              "id": "B2-high-f030-N1.4-F1.4",
+              "pixels": 89105,
+              "degradation_advantage_dB": -2.004381955205062
+            },
+            {
+              "id": "B2-high-f030-N2-F1.4",
+              "pixels": 66827,
+              "degradation_advantage_dB": -0.21035943206800312
+            },
+            {
+              "id": "B2-high-f060-N1.4-F1.4",
+              "pixels": 85138,
+              "degradation_advantage_dB": -3.814833477140226
+            },
+            {
+              "id": "B2-high-f060-N2-F1.4",
+              "pixels": 64100,
+              "degradation_advantage_dB": -2.8541965406615546
+            }
+          ],
+          "primary": false
+        },
+        "5.0": {
+          "passed": false,
+          "valid_groups": 6,
+          "same_direction": 2,
+          "guardrails_passed": false,
+          "band_advantage_dB": -0.018116603454245706,
+          "groups": [
+            {
+              "id": "B2-high-f001-N1.4-F5",
+              "pixels": 78317,
+              "degradation_advantage_dB": -2.415043665273565
+            },
+            {
+              "id": "B2-high-f001-N2-F5",
+              "pixels": 58653,
+              "degradation_advantage_dB": -1.1929367055484903
+            },
+            {
+              "id": "B2-high-f030-N1.4-F5",
+              "pixels": 79834,
+              "degradation_advantage_dB": 1.3927047771550818
+            },
+            {
+              "id": "B2-high-f030-N2-F5",
+              "pixels": 59894,
+              "degradation_advantage_dB": 3.280717302056381
+            },
+            {
+              "id": "B2-high-f060-N1.4-F5",
+              "pixels": 79443,
+              "degradation_advantage_dB": -2.082521672715636
+            },
+            {
+              "id": "B2-high-f060-N2-F5",
+              "pixels": 60242,
+              "degradation_advantage_dB": -1.3049048950672173
+            }
+          ],
+          "primary": false
+        }
+      }
+    }
+  },
+  "comparisons": {
+    "Cycles": {
+      "E1": {
+        "1.4": {
+          "degradation": {
+            "full_image": {
+              "Delta_ours_PSNR_dB": -5.440957202245315,
+              "Delta_O3_PSNR_dB": -4.388021566227728,
+              "advantage_dB": -1.0529356360175868,
+              "Delta_ours_LPIPS": 0.03335610979632975,
+              "Delta_O3_LPIPS": 0.024588399332884592
+            },
+            "in_focus": {
+              "Delta_ours_PSNR_dB": -10.421154187863287,
+              "Delta_O3_PSNR_dB": -7.477582399784765,
+              "advantage_dB": -2.943571788078522,
+              "Delta_ours_LPIPS": 0.033267080897057356,
+              "Delta_O3_LPIPS": 0.020380869825517376
+            },
+            "out_of_focus": {
+              "Delta_ours_PSNR_dB": -4.732203148163279,
+              "Delta_O3_PSNR_dB": -4.053416407226358,
+              "advantage_dB": -0.6787867409369213,
+              "Delta_ours_LPIPS": 0.03534413257824939,
+              "Delta_O3_LPIPS": 0.027172974015730943
+            },
+            "band": {
+              "Delta_ours_PSNR_dB": -5.103788413736975,
+              "Delta_O3_PSNR_dB": -2.9376358188048606,
+              "advantage_dB": -2.1661525949321145,
+              "Delta_ours_LPIPS": 0.038105805637466836,
+              "Delta_O3_LPIPS": 0.02373868874464477
+            },
+            "recoverable": {
+              "Delta_ours_PSNR_dB": -4.218038044389285,
+              "Delta_O3_PSNR_dB": -1.7340922895205004,
+              "advantage_dB": -2.4839457548687847,
+              "Delta_ours_LPIPS": 0.05291585667017525,
+              "Delta_O3_LPIPS": 0.03398074348873946
+            }
+          },
+          "direct": {
+            "full_image": {
+              "PSNR_gain_dB": -1.2082958765594611,
+              "LPIPS_change": 0.009738412569580152
+            },
+            "in_focus": {
+              "PSNR_gain_dB": -3.2953958070316176,
+              "LPIPS_change": 0.014691076751251992
+            },
+            "out_of_focus": {
+              "PSNR_gain_dB": -0.7825739302901056,
+              "LPIPS_change": 0.008784308257528347
+            },
+            "band": {
+              "PSNR_gain_dB": -2.1873937524667753,
+              "LPIPS_change": 0.0159476509248956
+            },
+            "recoverable": {
+              "PSNR_gain_dB": -2.179960284505192,
+              "LPIPS_change": 0.02015820108378289
+            }
+          },
+          "change_from_U2": {
+            "O3": {
+              "full_image": {
+                "PSNR_recovered_dB": -2.313935052656916,
+                "LPIPS_change": 1.8276839720478277e-05
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": 1.6873861169448787,
+                "LPIPS_change": -0.03940362621535079
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -3.3606701364522777,
+                "LPIPS_change": 0.014492129837378055
+              },
+              "band": {
+                "PSNR_recovered_dB": -0.6533668416967338,
+                "LPIPS_change": -0.005563555722431127
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -0.7305859264160297,
+                "LPIPS_change": 0.0007001582617472343
+              }
+            },
+            "O5": {
+              "full_image": {
+                "PSNR_recovered_dB": -2.6767755727498184,
+                "LPIPS_change": 0.009748027255151708
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": -0.5069921683394512,
+                "LPIPS_change": -0.020435893547142703
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -3.5036018040646866,
+                "LPIPS_change": 0.021416360868526736
+              },
+              "band": {
+                "PSNR_recovered_dB": -1.8976072157452712,
+                "LPIPS_change": 0.010959367476976907
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -1.8331529578714445,
+                "LPIPS_change": 0.01906624563972268
+              }
+            },
+            "ours": {
+              "full_image": {
+                "PSNR_recovered_dB": -2.8662560901814373,
+                "LPIPS_change": 0.010999087791788039
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": -0.7553710825071818,
+                "LPIPS_change": -0.017677237689163336
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -3.634689062644597,
+                "LPIPS_change": 0.02218260358937764
+              },
+              "band": {
+                "PSNR_recovered_dB": -2.0992069639738453,
+                "LPIPS_change": 0.013355927509813202
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -2.0802961034260115,
+                "LPIPS_change": 0.02106386848435836
+              }
+            },
+            "descriptive": {
+              "full_image": {
+                "PSNR_recovered_dB": -2.97014896735336,
+                "LPIPS_change": 0.011593167047863066
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": -0.9036905803609514,
+                "LPIPS_change": -0.017551562849485045
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -3.7002265900964524,
+                "LPIPS_change": 0.02294493960845297
+              },
+              "band": {
+                "PSNR_recovered_dB": -2.12366128962282,
+                "LPIPS_change": 0.01394700379770385
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -2.080351300314799,
+                "LPIPS_change": 0.021532776180218635
+              }
+            }
+          }
+        },
+        "5.0": {
+          "degradation": {
+            "full_image": {
+              "Delta_ours_PSNR_dB": -3.5053553682993197,
+              "Delta_O3_PSNR_dB": -3.634920190814981,
+              "advantage_dB": 0.12956482251566115,
+              "Delta_ours_LPIPS": 0.0066857213675299105,
+              "Delta_O3_LPIPS": 0.004646519378515827
+            },
+            "in_focus": {
+              "Delta_ours_PSNR_dB": -5.238095243824077,
+              "Delta_O3_PSNR_dB": -4.569561141816692,
+              "advantage_dB": -0.668534102007385,
+              "Delta_ours_LPIPS": 0.004870564311873479,
+              "Delta_O3_LPIPS": 0.002771335866128038
+            },
+            "out_of_focus": {
+              "Delta_ours_PSNR_dB": -3.439416719561592,
+              "Delta_O3_PSNR_dB": -3.3287354514468745,
+              "advantage_dB": -0.11068126811471757,
+              "Delta_ours_LPIPS": 0.014425871096139041,
+              "Delta_O3_LPIPS": 0.01064864006209323
+            },
+            "band": {
+              "Delta_ours_PSNR_dB": -3.4882812747172522,
+              "Delta_O3_PSNR_dB": -3.5281571161916716,
+              "advantage_dB": 0.03987584147441936,
+              "Delta_ours_LPIPS": 0.009952981104718943,
+              "Delta_O3_LPIPS": 0.006558491223635602
+            },
+            "recoverable": {
+              "Delta_ours_PSNR_dB": -4.01782026176355,
+              "Delta_O3_PSNR_dB": -2.8224350707086323,
+              "advantage_dB": -1.1953851910549176,
+              "Delta_ours_LPIPS": 0.01275883687594869,
+              "Delta_O3_LPIPS": 0.008186937214863549
+            }
+          },
+          "direct": {
+            "full_image": {
+              "PSNR_gain_dB": -1.6324751393235388,
+              "LPIPS_change": 0.003297925883749035
+            },
+            "in_focus": {
+              "PSNR_gain_dB": 0.05627261797886263,
+              "LPIPS_change": 0.0021311725933679275
+            },
+            "out_of_focus": {
+              "PSNR_gain_dB": -2.2146143185523783,
+              "LPIPS_change": 0.007155609351054564
+            },
+            "band": {
+              "PSNR_gain_dB": -1.4410846533184056,
+              "LPIPS_change": 0.006034525258788214
+            },
+            "recoverable": {
+              "PSNR_gain_dB": -2.277757989397493,
+              "LPIPS_change": 0.007167248947200432
+            }
+          },
+          "change_from_U2": {
+            "O3": {
+              "full_image": {
+                "PSNR_recovered_dB": 0.5959623888204604,
+                "LPIPS_change": -0.0024138774680469615
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": 1.0130960724432967,
+                "LPIPS_change": -0.0011877104500568336
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": 0.38230608487494067,
+                "LPIPS_change": -0.004320236062189144
+              },
+              "band": {
+                "PSNR_recovered_dB": 0.5497758758549764,
+                "LPIPS_change": -0.0033326103561615635
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -0.15800927301656387,
+                "LPIPS_change": -0.0036950811676369853
+              }
+            },
+            "O5": {
+              "full_image": {
+                "PSNR_recovered_dB": 0.06671134444672333,
+                "LPIPS_change": -0.0006520464033057394
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": 0.7672721402609923,
+                "LPIPS_change": -9.774631128708564e-05
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -0.12460098513287221,
+                "LPIPS_change": -0.0003704605161185745
+              },
+              "band": {
+                "PSNR_recovered_dB": -0.14551021942873632,
+                "LPIPS_change": 0.00039717057145630466
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -0.51158375688901,
+                "LPIPS_change": 0.0007544448882832941
+              }
+            },
+            "ours": {
+              "full_image": {
+                "PSNR_recovered_dB": 0.019588805740085036,
+                "LPIPS_change": -0.000554884867460359
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": 0.8308615737073453,
+                "LPIPS_change": -3.263965409084583e-05
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -0.22391727272856343,
+                "LPIPS_change": -0.0002147639296348966
+              },
+              "band": {
+                "PSNR_recovered_dB": -0.24062646759396955,
+                "LPIPS_change": 0.0006391954340386127
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -0.6783791241746222,
+                "LPIPS_change": 0.0010543523627456301
+              }
+            },
+            "descriptive": {
+              "full_image": {
+                "PSNR_recovered_dB": -0.15643343048485292,
+                "LPIPS_change": -0.00035994915177798605
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": 0.03165002809751627,
+                "LPIPS_change": 0.0002741539458220388
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -0.2206716394299022,
+                "LPIPS_change": -0.00017898700084616886
+              },
+              "band": {
+                "PSNR_recovered_dB": -0.25056426146316113,
+                "LPIPS_change": 0.0007173986865998717
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -0.6775963369243954,
+                "LPIPS_change": 0.0011085219442065995
+              }
+            }
+          }
+        }
+      },
+      "E2": {
+        "1.4": {
+          "degradation": {
+            "full_image": {
+              "Delta_ours_PSNR_dB": -5.431892928133912,
+              "Delta_O3_PSNR_dB": -4.388021566227728,
+              "advantage_dB": -1.0438713619061843,
+              "Delta_ours_LPIPS": 0.033391544222259505,
+              "Delta_O3_LPIPS": 0.024588399332884592
+            },
+            "in_focus": {
+              "Delta_ours_PSNR_dB": -10.438204589962638,
+              "Delta_O3_PSNR_dB": -7.477582399784765,
+              "advantage_dB": -2.9606221901778724,
+              "Delta_ours_LPIPS": 0.03354717890678823,
+              "Delta_O3_LPIPS": 0.020380869825517376
+            },
+            "out_of_focus": {
+              "Delta_ours_PSNR_dB": -4.716552630662029,
+              "Delta_O3_PSNR_dB": -4.053416407226358,
+              "advantage_dB": -0.6631362234356715,
+              "Delta_ours_LPIPS": 0.03529754318879944,
+              "Delta_O3_LPIPS": 0.027172974015730943
+            },
+            "band": {
+              "Delta_ours_PSNR_dB": -5.0884365280472394,
+              "Delta_O3_PSNR_dB": -2.9376358188048606,
+              "advantage_dB": -2.150800709242379,
+              "Delta_ours_LPIPS": 0.038210330576543404,
+              "Delta_O3_LPIPS": 0.02373868874464477
+            },
+            "recoverable": {
+              "Delta_ours_PSNR_dB": -4.158481444242025,
+              "Delta_O3_PSNR_dB": -1.7340922895205004,
+              "advantage_dB": -2.424389154721524,
+              "Delta_ours_LPIPS": 0.053042963496901796,
+              "Delta_O3_LPIPS": 0.03398074348873946
+            }
+          },
+          "direct": {
+            "full_image": {
+              "PSNR_gain_dB": -1.1992316024480587,
+              "LPIPS_change": 0.00977384699550991
+            },
+            "in_focus": {
+              "PSNR_gain_dB": -3.312446209130968,
+              "LPIPS_change": 0.014971174760982867
+            },
+            "out_of_focus": {
+              "PSNR_gain_dB": -0.7669234127888558,
+              "LPIPS_change": 0.008737718868078396
+            },
+            "band": {
+              "PSNR_gain_dB": -2.1720418667770396,
+              "LPIPS_change": 0.016052175863972167
+            },
+            "recoverable": {
+              "PSNR_gain_dB": -2.1204036843579317,
+              "LPIPS_change": 0.020285307910509434
+            }
+          },
+          "change_from_U2": {
+            "O3": {
+              "full_image": {
+                "PSNR_recovered_dB": -2.313935052656916,
+                "LPIPS_change": 1.8276839720478277e-05
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": 1.6873861169448787,
+                "LPIPS_change": -0.03940362621535079
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -3.3606701364522777,
+                "LPIPS_change": 0.014492129837378055
+              },
+              "band": {
+                "PSNR_recovered_dB": -0.6533668416967338,
+                "LPIPS_change": -0.005563555722431127
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -0.7305859264160297,
+                "LPIPS_change": 0.0007001582617472343
+              }
+            },
+            "O5": {
+              "full_image": {
+                "PSNR_recovered_dB": -2.6767697143263405,
+                "LPIPS_change": 0.009748000131745961
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": -0.5069819002100715,
+                "LPIPS_change": -0.020435832338311227
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -3.5035944770128324,
+                "LPIPS_change": 0.021416276898051083
+              },
+              "band": {
+                "PSNR_recovered_dB": -1.8976102789643505,
+                "LPIPS_change": 0.01095933808636352
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -1.8331591675846788,
+                "LPIPS_change": 0.01906616823987272
+              }
+            },
+            "ours": {
+              "full_image": {
+                "PSNR_recovered_dB": -2.849279884727146,
+                "LPIPS_change": 0.010645103051804956
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": -0.7156404560622249,
+                "LPIPS_change": -0.01853205484077823
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -3.6343088760893707,
+                "LPIPS_change": 0.021954667029155914
+              },
+              "band": {
+                "PSNR_recovered_dB": -2.073590012351058,
+                "LPIPS_change": 0.012740957811397086
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -2.0737616157492234,
+                "LPIPS_change": 0.020669683916002247
+              }
+            },
+            "descriptive": {
+              "full_image": {
+                "PSNR_recovered_dB": -2.952985706669729,
+                "LPIPS_change": 0.011219357152867818
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": -0.8616477570315269,
+                "LPIPS_change": -0.018463670810162813
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -3.700090892588321,
+                "LPIPS_change": 0.022708544398560036
+              },
+              "band": {
+                "PSNR_recovered_dB": -2.0980020852310908,
+                "LPIPS_change": 0.013300076442663868
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -2.073817463929629,
+                "LPIPS_change": 0.021124868603239116
+              }
+            }
+          }
+        },
+        "5.0": {
+          "degradation": {
+            "full_image": {
+              "Delta_ours_PSNR_dB": -3.466870788911919,
+              "Delta_O3_PSNR_dB": -3.634920190814981,
+              "advantage_dB": 0.16804940190306183,
+              "Delta_ours_LPIPS": 0.0071365956032523785,
+              "Delta_O3_LPIPS": 0.004646519378515827
+            },
+            "in_focus": {
+              "Delta_ours_PSNR_dB": -5.179062297009274,
+              "Delta_O3_PSNR_dB": -4.569561141816692,
+              "advantage_dB": -0.6095011551925822,
+              "Delta_ours_LPIPS": 0.005076815503447395,
+              "Delta_O3_LPIPS": 0.002771335866128038
+            },
+            "out_of_focus": {
+              "Delta_ours_PSNR_dB": -3.4054826106033573,
+              "Delta_O3_PSNR_dB": -3.3287354514468745,
+              "advantage_dB": -0.07674715915648278,
+              "Delta_ours_LPIPS": 0.015595077190486091,
+              "Delta_O3_LPIPS": 0.01064864006209323
+            },
+            "band": {
+              "Delta_ours_PSNR_dB": -3.4466086736186696,
+              "Delta_O3_PSNR_dB": -3.5281571161916716,
+              "advantage_dB": 0.08154844257300198,
+              "Delta_ours_LPIPS": 0.01079710625828245,
+              "Delta_O3_LPIPS": 0.006558491223635602
+            },
+            "recoverable": {
+              "Delta_ours_PSNR_dB": -3.889662140397533,
+              "Delta_O3_PSNR_dB": -2.8224350707086323,
+              "advantage_dB": -1.0672270696889008,
+              "Delta_ours_LPIPS": 0.013794606853355986,
+              "Delta_O3_LPIPS": 0.008186937214863549
+            }
+          },
+          "direct": {
+            "full_image": {
+              "PSNR_gain_dB": -1.5939905599361381,
+              "LPIPS_change": 0.003748800119471503
+            },
+            "in_focus": {
+              "PSNR_gain_dB": 0.11530556479366538,
+              "LPIPS_change": 0.002337423784941844
+            },
+            "out_of_focus": {
+              "PSNR_gain_dB": -2.1806802095941435,
+              "LPIPS_change": 0.008324815445401614
+            },
+            "band": {
+              "PSNR_gain_dB": -1.399412052219823,
+              "LPIPS_change": 0.0068786504123517205
+            },
+            "recoverable": {
+              "PSNR_gain_dB": -2.1495998680314763,
+              "LPIPS_change": 0.008203018924607728
+            }
+          },
+          "change_from_U2": {
+            "O3": {
+              "full_image": {
+                "PSNR_recovered_dB": 0.5959623888204604,
+                "LPIPS_change": -0.0024138774680469615
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": 1.0130960724432967,
+                "LPIPS_change": -0.0011877104500568336
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": 0.38230608487494067,
+                "LPIPS_change": -0.004320236062189144
+              },
+              "band": {
+                "PSNR_recovered_dB": 0.5497758758549764,
+                "LPIPS_change": -0.0033326103561615635
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -0.15800927301656387,
+                "LPIPS_change": -0.0036950811676369853
+              }
+            },
+            "O5": {
+              "full_image": {
+                "PSNR_recovered_dB": 0.06671923199944274,
+                "LPIPS_change": -0.0006520644859232157
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": 0.7673247104822138,
+                "LPIPS_change": -9.779310940383288e-05
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -0.12460544501082893,
+                "LPIPS_change": -0.0003704169868121998
+              },
+              "band": {
+                "PSNR_recovered_dB": -0.1455177794898539,
+                "LPIPS_change": 0.0003971893984173712
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -0.5115927757954708,
+                "LPIPS_change": 0.0007544782344415593
+              }
+            },
+            "ours": {
+              "full_image": {
+                "PSNR_recovered_dB": 0.05061919414514193,
+                "LPIPS_change": -0.0004970574020720289
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": 0.8269657575349427,
+                "LPIPS_change": -2.0818950584224755e-06
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -0.1803306290245672,
+                "LPIPS_change": -6.440773821372522e-05
+              },
+              "band": {
+                "PSNR_recovered_dB": -0.20725460484375446,
+                "LPIPS_change": 0.0007084975930080825
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -0.6350001673370613,
+                "LPIPS_change": 0.001161326498016011
+              }
+            },
+            "descriptive": {
+              "full_image": {
+                "PSNR_recovered_dB": -0.12527798401800538,
+                "LPIPS_change": -0.0003134031343180084
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": 0.014625562273110404,
+                "LPIPS_change": 0.0002982083653299628
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -0.17644080886508107,
+                "LPIPS_change": -5.3036997483012216e-05
+              },
+              "band": {
+                "PSNR_recovered_dB": -0.21719333833693355,
+                "LPIPS_change": 0.0007651539844610762
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -0.6342038433425685,
+                "LPIPS_change": 0.0011889503845079058
+              }
+            }
+          }
+        }
+      }
+    },
+    "LDR": {
+      "E1": {
+        "1.4": {
+          "degradation": {
+            "full_image": {
+              "Delta_ours_PSNR_dB": -9.649781344840093,
+              "Delta_O3_PSNR_dB": -8.837042061666999,
+              "advantage_dB": -0.8127392831730944,
+              "Delta_ours_LPIPS": 0.03276670219149006,
+              "Delta_O3_LPIPS": 0.023847447914079112
+            },
+            "in_focus": {
+              "Delta_ours_PSNR_dB": -11.241810204401858,
+              "Delta_O3_PSNR_dB": -8.362842229984253,
+              "advantage_dB": -2.8789679744176055,
+              "Delta_ours_LPIPS": 0.03220967961356753,
+              "Delta_O3_LPIPS": 0.019430753552859704
+            },
+            "out_of_focus": {
+              "Delta_ours_PSNR_dB": -9.340786458414804,
+              "Delta_O3_PSNR_dB": -8.95158596033675,
+              "advantage_dB": -0.3892004980780541,
+              "Delta_ours_LPIPS": 0.03487586146377904,
+              "Delta_O3_LPIPS": 0.02643165540943217
+            },
+            "band": {
+              "Delta_ours_PSNR_dB": -8.202547962475837,
+              "Delta_O3_PSNR_dB": -5.492403293844575,
+              "advantage_dB": -2.710144668631262,
+              "Delta_ours_LPIPS": 0.03717027303673949,
+              "Delta_O3_LPIPS": 0.022730618060662615
+            },
+            "recoverable": {
+              "Delta_ours_PSNR_dB": -6.084633489145894,
+              "Delta_O3_PSNR_dB": -2.778631856138901,
+              "advantage_dB": -3.306001633006993,
+              "Delta_ours_LPIPS": 0.052018615370105055,
+              "Delta_O3_LPIPS": 0.03271845421704857
+            }
+          },
+          "direct": {
+            "full_image": {
+              "PSNR_gain_dB": -1.6009847830980775,
+              "LPIPS_change": 0.009822620507141739
+            },
+            "in_focus": {
+              "PSNR_gain_dB": -3.372599375883752,
+              "LPIPS_change": 0.014645870235983453
+            },
+            "out_of_focus": {
+              "PSNR_gain_dB": -1.1101243045409248,
+              "LPIPS_change": 0.008924211083393217
+            },
+            "band": {
+              "PSNR_gain_dB": -2.978046676959277,
+              "LPIPS_change": 0.016001794969048216
+            },
+            "recoverable": {
+              "PSNR_gain_dB": -3.1858055733459167,
+              "LPIPS_change": 0.020335085479845715
+            }
+          },
+          "change_from_U2": {
+            "O3": {
+              "full_image": {
+                "PSNR_recovered_dB": -3.716127628944399,
+                "LPIPS_change": 3.133255482149627e-05
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": 1.7201995549855695,
+                "LPIPS_change": -0.039025347462622054
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -6.780730524065284,
+                "LPIPS_change": 0.014378088473149071
+              },
+              "band": {
+                "PSNR_recovered_dB": -0.9776533180574418,
+                "LPIPS_change": -0.005570381660880364
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -1.0931116387299618,
+                "LPIPS_change": 0.00039762365683530115
+              }
+            },
+            "O5": {
+              "full_image": {
+                "PSNR_recovered_dB": -3.7454263377349477,
+                "LPIPS_change": 0.009681171504022736
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": -0.5270574144141733,
+                "LPIPS_change": -0.020514319794150082
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -5.928883421604901,
+                "LPIPS_change": 0.02134240832616979
+              },
+              "band": {
+                "PSNR_recovered_dB": -2.4775662618402414,
+                "LPIPS_change": 0.010759748769661112
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -2.4802699707249722,
+                "LPIPS_change": 0.01881193427236867
+              }
+            },
+            "ours": {
+              "full_image": {
+                "PSNR_recovered_dB": -4.119686965734722,
+                "LPIPS_change": 0.010883933465872055
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": -0.7815825172760213,
+                "LPIPS_change": -0.017902736769620044
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -6.380595315370641,
+                "LPIPS_change": 0.022088075640849997
+              },
+              "band": {
+                "PSNR_recovered_dB": -2.826112918603119,
+                "LPIPS_change": 0.013085550893657354
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -2.9253253530607353,
+                "LPIPS_change": 0.020803465438826524
+              }
+            },
+            "descriptive": {
+              "full_image": {
+                "PSNR_recovered_dB": -4.3135185494879735,
+                "LPIPS_change": 0.011411324135963241
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": -0.9339481982070978,
+                "LPIPS_change": -0.017777378547936505
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -6.615691142395882,
+                "LPIPS_change": 0.02275651451094211
+              },
+              "band": {
+                "PSNR_recovered_dB": -2.8624315475190585,
+                "LPIPS_change": 0.013635446662158733
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -2.925424699819036,
+                "LPIPS_change": 0.02121426925922107
+              }
+            }
+          }
+        },
+        "5.0": {
+          "degradation": {
+            "full_image": {
+              "Delta_ours_PSNR_dB": -4.4130508144133955,
+              "Delta_O3_PSNR_dB": -4.560170754902707,
+              "advantage_dB": 0.14711994048931132,
+              "Delta_ours_LPIPS": 0.006999822235807567,
+              "Delta_O3_LPIPS": 0.004980810510597658
+            },
+            "in_focus": {
+              "Delta_ours_PSNR_dB": -6.155988609240417,
+              "Delta_O3_PSNR_dB": -5.043173331116478,
+              "advantage_dB": -1.1128152781239393,
+              "Delta_ours_LPIPS": 0.00497194127380352,
+              "Delta_O3_LPIPS": 0.002961412638398774
+            },
+            "out_of_focus": {
+              "Delta_ours_PSNR_dB": -4.4130347461518795,
+              "Delta_O3_PSNR_dB": -4.393360426585616,
+              "advantage_dB": -0.01967431956626342,
+              "Delta_ours_LPIPS": 0.01535738315453247,
+              "Delta_O3_LPIPS": 0.011466651295507998
+            },
+            "band": {
+              "Delta_ours_PSNR_dB": -4.526538336793905,
+              "Delta_O3_PSNR_dB": -4.5050001332823015,
+              "advantage_dB": -0.021538203511603626,
+              "Delta_ours_LPIPS": 0.01036926203225928,
+              "Delta_O3_LPIPS": 0.007103223590522001
+            },
+            "recoverable": {
+              "Delta_ours_PSNR_dB": -4.590169122225163,
+              "Delta_O3_PSNR_dB": -3.3903732753532765,
+              "advantage_dB": -1.1997958468718863,
+              "Delta_ours_LPIPS": 0.013257224935857683,
+              "Delta_O3_LPIPS": 0.008775472123620853
+            }
+          },
+          "direct": {
+            "full_image": {
+              "PSNR_gain_dB": -1.5735930690398376,
+              "LPIPS_change": 0.0036527704399323593
+            },
+            "in_focus": {
+              "PSNR_gain_dB": 0.15624495192694354,
+              "LPIPS_change": 0.0023328653736282463
+            },
+            "out_of_focus": {
+              "PSNR_gain_dB": -2.3154243195919904,
+              "LPIPS_change": 0.008157335790670104
+            },
+            "band": {
+              "PSNR_gain_dB": -1.3504879850972031,
+              "LPIPS_change": 0.006467972213480125
+            },
+            "recoverable": {
+              "PSNR_gain_dB": -2.4290100492838107,
+              "LPIPS_change": 0.00773513799092536
+            }
+          },
+          "change_from_U2": {
+            "O3": {
+              "full_image": {
+                "PSNR_recovered_dB": 0.6390676398999773,
+                "LPIPS_change": -0.002337440826189882
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": 0.9100060975282815,
+                "LPIPS_change": -0.0010898087737358638
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": 0.45710737046039895,
+                "LPIPS_change": -0.004256024257271469
+              },
+              "band": {
+                "PSNR_recovered_dB": 0.5959530222122353,
+                "LPIPS_change": -0.0032243671226701662
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -0.15783777789770426,
+                "LPIPS_change": -0.0035425034585651483
+              }
+            },
+            "O5": {
+              "full_image": {
+                "PSNR_recovered_dB": 0.08074464928424874,
+                "LPIPS_change": -0.0005221715058768926
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": 0.6835421714184662,
+                "LPIPS_change": 3.433155207786982e-05
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -0.11159897294933074,
+                "LPIPS_change": -0.00019328132143579466
+              },
+              "band": {
+                "PSNR_recovered_dB": -0.15875247016238703,
+                "LPIPS_change": 0.0006245315101492677
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -0.5554463428509813,
+                "LPIPS_change": 0.0010520193828350254
+              }
+            },
+            "ours": {
+              "full_image": {
+                "PSNR_recovered_dB": 0.0331871786680793,
+                "LPIPS_change": -0.0004213576564128605
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": 0.7487672013397031,
+                "LPIPS_change": 0.00010176007289805847
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -0.22724757460725442,
+                "LPIPS_change": -2.704170545947751e-05
+              },
+              "band": {
+                "PSNR_recovered_dB": -0.27009375485045695,
+                "LPIPS_change": 0.0008632196795918985
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -0.7670351966170159,
+                "LPIPS_change": 0.0013546303696985139
+              }
+            },
+            "descriptive": {
+              "full_image": {
+                "PSNR_recovered_dB": -0.1717445757332996,
+                "LPIPS_change": -0.00021880111984036964
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": -0.06336424385344941,
+                "LPIPS_change": 0.00040404305528783137
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -0.22344874617560606,
+                "LPIPS_change": 4.245696279266478e-05
+              },
+              "band": {
+                "PSNR_recovered_dB": -0.2818335594225516,
+                "LPIPS_change": 0.0009432146223002161
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -0.7661208258038954,
+                "LPIPS_change": 0.0014065392163397535
+              }
+            }
+          }
+        }
+      },
+      "E2": {
+        "1.4": {
+          "degradation": {
+            "full_image": {
+              "Delta_ours_PSNR_dB": -9.648561120527795,
+              "Delta_O3_PSNR_dB": -8.837042061666999,
+              "advantage_dB": -0.8115190588607959,
+              "Delta_ours_LPIPS": 0.03281533811673398,
+              "Delta_O3_LPIPS": 0.023847447914079112
+            },
+            "in_focus": {
+              "Delta_ours_PSNR_dB": -11.25867868740334,
+              "Delta_O3_PSNR_dB": -8.362842229984253,
+              "advantage_dB": -2.8958364574190867,
+              "Delta_ours_LPIPS": 0.032529125475303275,
+              "Delta_O3_LPIPS": 0.019430753552859704
+            },
+            "out_of_focus": {
+              "Delta_ours_PSNR_dB": -9.333748503355274,
+              "Delta_O3_PSNR_dB": -8.95158596033675,
+              "advantage_dB": -0.3821625430185236,
+              "Delta_ours_LPIPS": 0.03483565950468678,
+              "Delta_O3_LPIPS": 0.02643165540943217
+            },
+            "band": {
+              "Delta_ours_PSNR_dB": -8.200002931800775,
+              "Delta_O3_PSNR_dB": -5.492403293844575,
+              "advantage_dB": -2.7075996379562,
+              "Delta_ours_LPIPS": 0.037296859314933234,
+              "Delta_O3_LPIPS": 0.022730618060662615
+            },
+            "recoverable": {
+              "Delta_ours_PSNR_dB": -6.036489729906268,
+              "Delta_O3_PSNR_dB": -2.778631856138901,
+              "advantage_dB": -3.2578578737673674,
+              "Delta_ours_LPIPS": 0.05215373968174448,
+              "Delta_O3_LPIPS": 0.03271845421704857
+            }
+          },
+          "direct": {
+            "full_image": {
+              "PSNR_gain_dB": -1.599764558785779,
+              "LPIPS_change": 0.00987125643238566
+            },
+            "in_focus": {
+              "PSNR_gain_dB": -3.389467858885233,
+              "LPIPS_change": 0.0149653160977192
+            },
+            "out_of_focus": {
+              "PSNR_gain_dB": -1.1030863494813943,
+              "LPIPS_change": 0.008884009124300964
+            },
+            "band": {
+              "PSNR_gain_dB": -2.975501646284215,
+              "LPIPS_change": 0.01612838124724196
+            },
+            "recoverable": {
+              "PSNR_gain_dB": -3.1376618141062913,
+              "LPIPS_change": 0.020470209791485137
+            }
+          },
+          "change_from_U2": {
+            "O3": {
+              "full_image": {
+                "PSNR_recovered_dB": -3.716127628944399,
+                "LPIPS_change": 3.133255482149627e-05
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": 1.7201995549855695,
+                "LPIPS_change": -0.039025347462622054
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -6.780730524065284,
+                "LPIPS_change": 0.014378088473149071
+              },
+              "band": {
+                "PSNR_recovered_dB": -0.9776533180574418,
+                "LPIPS_change": -0.005570381660880364
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -1.0931116387299618,
+                "LPIPS_change": 0.00039762365683530115
+              }
+            },
+            "O5": {
+              "full_image": {
+                "PSNR_recovered_dB": -3.7454176943380943,
+                "LPIPS_change": 0.009681130513664964
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": -0.5270469672512448,
+                "LPIPS_change": -0.020514268608340283
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -5.928867585063955,
+                "LPIPS_change": 0.02134230627106211
+              },
+              "band": {
+                "PSNR_recovered_dB": -2.4775713652020634,
+                "LPIPS_change": 0.010759717325755577
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -2.4802796594725116,
+                "LPIPS_change": 0.01881186010047902
+              }
+            },
+            "ours": {
+              "full_image": {
+                "PSNR_recovered_dB": -4.086429760764318,
+                "LPIPS_change": 0.010539749592415621
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": -0.7420306058187336,
+                "LPIPS_change": -0.018724807248293236
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -6.367433466766251,
+                "LPIPS_change": 0.0218643504157176
+              },
+              "band": {
+                "PSNR_recovered_dB": -2.784487813312694,
+                "LPIPS_change": 0.01247943435126661
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -2.894829918583639,
+                "LPIPS_change": 0.02039591245975554
+              }
+            },
+            "descriptive": {
+              "full_image": {
+                "PSNR_recovered_dB": -4.278555513497061,
+                "LPIPS_change": 0.011048236624958466
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": -0.8920404492133969,
+                "LPIPS_change": -0.01865441980907387
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -6.602099334207352,
+                "LPIPS_change": 0.02252482409720266
+              },
+              "band": {
+                "PSNR_recovered_dB": -2.820511697532133,
+                "LPIPS_change": 0.012998542743824257
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -2.894929508704042,
+                "LPIPS_change": 0.020792798197042224
+              }
+            }
+          }
+        },
+        "5.0": {
+          "degradation": {
+            "full_image": {
+              "Delta_ours_PSNR_dB": -4.409836998912617,
+              "Delta_O3_PSNR_dB": -4.560170754902707,
+              "advantage_dB": 0.1503337559900899,
+              "Delta_ours_LPIPS": 0.007475037054652727,
+              "Delta_O3_LPIPS": 0.004980810510597658
+            },
+            "in_focus": {
+              "Delta_ours_PSNR_dB": -6.097611663296988,
+              "Delta_O3_PSNR_dB": -5.043173331116478,
+              "advantage_dB": -1.05443833218051,
+              "Delta_ours_LPIPS": 0.00518663037802743,
+              "Delta_O3_LPIPS": 0.002961412638398774
+            },
+            "out_of_focus": {
+              "Delta_ours_PSNR_dB": -4.426087724552353,
+              "Delta_O3_PSNR_dB": -4.393360426585616,
+              "advantage_dB": -0.03272729796673701,
+              "Delta_ours_LPIPS": 0.016587883396367645,
+              "Delta_O3_LPIPS": 0.011466651295507998
+            },
+            "band": {
+              "Delta_ours_PSNR_dB": -4.523116736736547,
+              "Delta_O3_PSNR_dB": -4.5050001332823015,
+              "advantage_dB": -0.018116603454245706,
+              "Delta_ours_LPIPS": 0.01126699467820164,
+              "Delta_O3_LPIPS": 0.007103223590522001
+            },
+            "recoverable": {
+              "Delta_ours_PSNR_dB": -4.5234404107975905,
+              "Delta_O3_PSNR_dB": -3.3903732753532765,
+              "advantage_dB": -1.133067135444314,
+              "Delta_ours_LPIPS": 0.014342492613827975,
+              "Delta_O3_LPIPS": 0.008775472123620853
+            }
+          },
+          "direct": {
+            "full_image": {
+              "PSNR_gain_dB": -1.570379253539059,
+              "LPIPS_change": 0.004127985258777519
+            },
+            "in_focus": {
+              "PSNR_gain_dB": 0.2146218978703729,
+              "LPIPS_change": 0.002547554477852156
+            },
+            "out_of_focus": {
+              "PSNR_gain_dB": -2.328477297992464,
+              "LPIPS_change": 0.009387836032505276
+            },
+            "band": {
+              "PSNR_gain_dB": -1.3470663850398452,
+              "LPIPS_change": 0.007365704859422485
+            },
+            "recoverable": {
+              "PSNR_gain_dB": -2.3622813378562384,
+              "LPIPS_change": 0.008820405668895652
+            }
+          },
+          "change_from_U2": {
+            "O3": {
+              "full_image": {
+                "PSNR_recovered_dB": 0.6390676398999773,
+                "LPIPS_change": -0.002337440826189882
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": 0.9100060975282815,
+                "LPIPS_change": -0.0010898087737358638
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": 0.45710737046039895,
+                "LPIPS_change": -0.004256024257271469
+              },
+              "band": {
+                "PSNR_recovered_dB": 0.5959530222122353,
+                "LPIPS_change": -0.0032243671226701662
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -0.15783777789770426,
+                "LPIPS_change": -0.0035425034585651483
+              }
+            },
+            "O5": {
+              "full_image": {
+                "PSNR_recovered_dB": 0.0807569045854919,
+                "LPIPS_change": -0.0005222001435202604
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": 0.683603350880567,
+                "LPIPS_change": 3.4275279826416656e-05
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -0.11160206582081145,
+                "LPIPS_change": -0.0001932626042878728
+              },
+              "band": {
+                "PSNR_recovered_dB": -0.15875892687717652,
+                "LPIPS_change": 0.0006245239634177085
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -0.5554534372293567,
+                "LPIPS_change": 0.001052017686638363
+              }
+            },
+            "ours": {
+              "full_image": {
+                "PSNR_recovered_dB": 0.060832297463612406,
+                "LPIPS_change": -0.0003782378066479915
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": 0.7413201934259632,
+                "LPIPS_change": 0.00011724019231784937
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -0.18201710847176855,
+                "LPIPS_change": 9.169324768153186e-05
+              },
+              "band": {
+                "PSNR_recovered_dB": -0.23738501969851455,
+                "LPIPS_change": 0.0009108604158987246
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -0.7191035760131115,
+                "LPIPS_change": 0.0014246807824889116
+              }
+            },
+            "descriptive": {
+              "full_image": {
+                "PSNR_recovered_dB": -0.14245632594771251,
+                "LPIPS_change": -0.00018494310252137325
+              },
+              "in_focus": {
+                "PSNR_recovered_dB": -0.08483089617212158,
+                "LPIPS_change": 0.00041352756356980835
+              },
+              "out_of_focus": {
+                "PSNR_recovered_dB": -0.17745464838260716,
+                "LPIPS_change": 0.0001436799595424705
+              },
+              "band": {
+                "PSNR_recovered_dB": -0.24902556056593994,
+                "LPIPS_change": 0.000971923554415683
+              },
+              "recoverable": {
+                "PSNR_recovered_dB": -0.7181877132792067,
+                "LPIPS_change": 0.0014534212366884292
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "focal_recovery": {
+    "Cycles": {
+      "E1": {
+        "1.4": {
+          "O3": {
+            "PSNR_recovered_dB": 1.6873861169448787,
+            "LPIPS_change": -0.03940362621535079
+          },
+          "O5": {
+            "PSNR_recovered_dB": -0.5069921683394512,
+            "LPIPS_change": -0.020435893547142703
+          },
+          "ours": {
+            "PSNR_recovered_dB": -0.7553710825071818,
+            "LPIPS_change": -0.017677237689163336
+          },
+          "descriptive": {
+            "PSNR_recovered_dB": -0.9036905803609514,
+            "LPIPS_change": -0.017551562849485045
+          }
+        },
+        "5.0": {
+          "O3": {
+            "PSNR_recovered_dB": 1.0130960724432967,
+            "LPIPS_change": -0.0011877104500568336
+          },
+          "O5": {
+            "PSNR_recovered_dB": 0.7672721402609923,
+            "LPIPS_change": -9.774631128708564e-05
+          },
+          "ours": {
+            "PSNR_recovered_dB": 0.8308615737073453,
+            "LPIPS_change": -3.263965409084583e-05
+          },
+          "descriptive": {
+            "PSNR_recovered_dB": 0.03165002809751627,
+            "LPIPS_change": 0.0002741539458220388
+          }
+        }
+      },
+      "E2": {
+        "1.4": {
+          "O3": {
+            "PSNR_recovered_dB": 1.6873861169448787,
+            "LPIPS_change": -0.03940362621535079
+          },
+          "O5": {
+            "PSNR_recovered_dB": -0.5069819002100715,
+            "LPIPS_change": -0.020435832338311227
+          },
+          "ours": {
+            "PSNR_recovered_dB": -0.7156404560622249,
+            "LPIPS_change": -0.01853205484077823
+          },
+          "descriptive": {
+            "PSNR_recovered_dB": -0.8616477570315269,
+            "LPIPS_change": -0.018463670810162813
+          }
+        },
+        "5.0": {
+          "O3": {
+            "PSNR_recovered_dB": 1.0130960724432967,
+            "LPIPS_change": -0.0011877104500568336
+          },
+          "O5": {
+            "PSNR_recovered_dB": 0.7673247104822138,
+            "LPIPS_change": -9.779310940383288e-05
+          },
+          "ours": {
+            "PSNR_recovered_dB": 0.8269657575349427,
+            "LPIPS_change": -2.0818950584224755e-06
+          },
+          "descriptive": {
+            "PSNR_recovered_dB": 0.014625562273110404,
+            "LPIPS_change": 0.0002982083653299628
+          }
+        }
+      }
+    },
+    "LDR": {
+      "E1": {
+        "1.4": {
+          "O3": {
+            "PSNR_recovered_dB": 1.7201995549855695,
+            "LPIPS_change": -0.039025347462622054
+          },
+          "O5": {
+            "PSNR_recovered_dB": -0.5270574144141733,
+            "LPIPS_change": -0.020514319794150082
+          },
+          "ours": {
+            "PSNR_recovered_dB": -0.7815825172760213,
+            "LPIPS_change": -0.017902736769620044
+          },
+          "descriptive": {
+            "PSNR_recovered_dB": -0.9339481982070978,
+            "LPIPS_change": -0.017777378547936505
+          }
+        },
+        "5.0": {
+          "O3": {
+            "PSNR_recovered_dB": 0.9100060975282815,
+            "LPIPS_change": -0.0010898087737358638
+          },
+          "O5": {
+            "PSNR_recovered_dB": 0.6835421714184662,
+            "LPIPS_change": 3.433155207786982e-05
+          },
+          "ours": {
+            "PSNR_recovered_dB": 0.7487672013397031,
+            "LPIPS_change": 0.00010176007289805847
+          },
+          "descriptive": {
+            "PSNR_recovered_dB": -0.06336424385344941,
+            "LPIPS_change": 0.00040404305528783137
+          }
+        }
+      },
+      "E2": {
+        "1.4": {
+          "O3": {
+            "PSNR_recovered_dB": 1.7201995549855695,
+            "LPIPS_change": -0.039025347462622054
+          },
+          "O5": {
+            "PSNR_recovered_dB": -0.5270469672512448,
+            "LPIPS_change": -0.020514268608340283
+          },
+          "ours": {
+            "PSNR_recovered_dB": -0.7420306058187336,
+            "LPIPS_change": -0.018724807248293236
+          },
+          "descriptive": {
+            "PSNR_recovered_dB": -0.8920404492133969,
+            "LPIPS_change": -0.01865441980907387
+          }
+        },
+        "5.0": {
+          "O3": {
+            "PSNR_recovered_dB": 0.9100060975282815,
+            "LPIPS_change": -0.0010898087737358638
+          },
+          "O5": {
+            "PSNR_recovered_dB": 0.683603350880567,
+            "LPIPS_change": 3.4275279826416656e-05
+          },
+          "ours": {
+            "PSNR_recovered_dB": 0.7413201934259632,
+            "LPIPS_change": 0.00011724019231784937
+          },
+          "descriptive": {
+            "PSNR_recovered_dB": -0.08483089617212158,
+            "LPIPS_change": 0.00041352756356980835
+          }
+        }
+      }
+    }
+  },
+  "original_U2_decisions": {
+    "E1": {
+      "1.4": {
+        "degradation": {
+          "band": {
+            "Delta_ours_PSNR_dB": -3.00458144976313,
+            "Delta_O3_PSNR_dB": -2.284268977108127,
+            "advantage_dB": -0.720312472655003,
+            "Delta_ours_LPIPS": 0.024749878127653634,
+            "Delta_O3_LPIPS": 0.029302244467075897
+          },
+          "recoverable": {
+            "Delta_ours_PSNR_dB": -2.1377419409632736,
+            "Delta_O3_PSNR_dB": -1.0035063631044707,
+            "advantage_dB": -1.134235577858803,
+            "Delta_ours_LPIPS": 0.031851988185816894,
+            "Delta_O3_LPIPS": 0.033280585226992225
+          },
+          "full_image": {
+            "Delta_ours_PSNR_dB": -2.5747011120638774,
+            "Delta_O3_PSNR_dB": -2.074086513570812,
+            "advantage_dB": -0.5006145984930654,
+            "Delta_ours_LPIPS": 0.022357022004541705,
+            "Delta_O3_LPIPS": 0.024570122493164114
+          },
+          "in_focus": {
+            "Delta_ours_PSNR_dB": -9.665783105356105,
+            "Delta_O3_PSNR_dB": -9.164968516729644,
+            "advantage_dB": -0.5008145886264614,
+            "Delta_ours_LPIPS": 0.05094431858622069,
+            "Delta_O3_LPIPS": 0.05978449604086816
+          }
+        },
+        "direct": {
+          "band": {
+            "PSNR_gain_dB": -0.7415536301896637,
+            "LPIPS_change": -0.0029718323073487304
+          },
+          "recoverable": {
+            "PSNR_gain_dB": -0.8302501074952104,
+            "LPIPS_change": -0.00020550913882823318
+          },
+          "full_image": {
+            "PSNR_gain_dB": -0.6559748390349398,
+            "LPIPS_change": -0.0012423983824874085
+          },
+          "in_focus": {
+            "PSNR_gain_dB": -0.8526386075795571,
+            "LPIPS_change": -0.0070353117749354585
+          }
+        },
+        "valid_groups": 6,
+        "same_direction": 1,
+        "guardrails_passed": false,
+        "passed": false,
+        "groups": [
+          {
+            "id": "B2-high-f001-N1.4-F1.4",
+            "pixels": 84516,
+            "degradation_advantage_dB": -1.538147112101214,
+            "direct_PSNR_gain_dB": -0.5082819341101938,
+            "direct_LPIPS_change": -0.003125799231299256
+          },
+          {
+            "id": "B2-high-f001-N2-F1.4",
+            "pixels": 63486,
+            "degradation_advantage_dB": -1.0553564211196402,
+            "direct_PSNR_gain_dB": -0.6975595669526697,
+            "direct_LPIPS_change": -0.0011320264697307555
+          },
+          {
+            "id": "B2-high-f030-N1.4-F1.4",
+            "pixels": 89105,
+            "degradation_advantage_dB": -0.5992710606993867,
+            "direct_PSNR_gain_dB": -0.7057095591694065,
+            "direct_LPIPS_change": -0.0034533170282567277
+          },
+          {
+            "id": "B2-high-f030-N2-F1.4",
+            "pixels": 66827,
+            "degradation_advantage_dB": 0.2669270391312324,
+            "direct_PSNR_gain_dB": -0.8154010281647643,
+            "direct_LPIPS_change": -0.0022478879295457985
+          },
+          {
+            "id": "B2-high-f060-N1.4-F1.4",
+            "pixels": 85138,
+            "degradation_advantage_dB": -0.8223007684335215,
+            "direct_PSNR_gain_dB": -0.8199061651646886,
+            "direct_LPIPS_change": -0.004081371857879448
+          },
+          {
+            "id": "B2-high-f060-N2-F1.4",
+            "pixels": 64100,
+            "degradation_advantage_dB": -0.6339634630989082,
+            "direct_PSNR_gain_dB": -1.0417142352533446,
+            "direct_LPIPS_change": -0.00320274652713436
+          }
+        ]
+      },
+      "5.0": {
+        "degradation": {
+          "band": {
+            "Delta_ours_PSNR_dB": -3.2476548071232827,
+            "Delta_O3_PSNR_dB": -4.077932992046648,
+            "advantage_dB": 0.8302781849233654,
+            "Delta_ours_LPIPS": 0.00931378567068033,
+            "Delta_O3_LPIPS": 0.009891101579797165
+          },
+          "recoverable": {
+            "Delta_ours_PSNR_dB": -3.3394411375889277,
+            "Delta_O3_PSNR_dB": -2.6644257976920684,
+            "advantage_dB": -0.6750153398968592,
+            "Delta_ours_LPIPS": 0.01170448451320306,
+            "Delta_O3_LPIPS": 0.011882018382500532
+          },
+          "full_image": {
+            "Delta_ours_PSNR_dB": -3.5249441740394047,
+            "Delta_O3_PSNR_dB": -4.230882579635441,
+            "advantage_dB": 0.7059384055960365,
+            "Delta_ours_LPIPS": 0.0072406062349902696,
+            "Delta_O3_LPIPS": 0.007060396846562789
+          },
+          "in_focus": {
+            "Delta_ours_PSNR_dB": -6.068956817531422,
+            "Delta_O3_PSNR_dB": -5.582657214259989,
+            "advantage_dB": -0.4862996032714335,
+            "Delta_ours_LPIPS": 0.004903203965964324,
+            "Delta_O3_LPIPS": 0.003959046316184872
+          }
+        },
+        "direct": {
+          "band": {
+            "PSNR_gain_dB": -0.6506823098694596,
+            "LPIPS_change": 0.0020627194685880375
+          },
+          "recoverable": {
+            "PSNR_gain_dB": -1.7573881382394347,
+            "LPIPS_change": 0.0024178154168178166
+          },
+          "full_image": {
+            "PSNR_gain_dB": -1.0561015562431635,
+            "LPIPS_change": 0.0014389332831624326
+          },
+          "in_focus": {
+            "PSNR_gain_dB": 0.23850711671481406,
+            "LPIPS_change": 0.0009761017974019397
+          }
+        },
+        "valid_groups": 6,
+        "same_direction": 4,
+        "guardrails_passed": false,
+        "passed": false,
+        "groups": [
+          {
+            "id": "B2-high-f001-N1.4-F5",
+            "pixels": 78317,
+            "degradation_advantage_dB": -1.100956819221345,
+            "direct_PSNR_gain_dB": -0.2449868325527973,
+            "direct_LPIPS_change": 0.00456375597870134
+          },
+          {
+            "id": "B2-high-f001-N2-F5",
+            "pixels": 58653,
+            "degradation_advantage_dB": -0.1901929074969715,
+            "direct_PSNR_gain_dB": -0.650879955460681,
+            "direct_LPIPS_change": 0.003307223119775684
+          },
+          {
+            "id": "B2-high-f030-N1.4-F5",
+            "pixels": 79834,
+            "degradation_advantage_dB": 1.5556369826206158,
+            "direct_PSNR_gain_dB": -0.29479576359424087,
+            "direct_LPIPS_change": -0.0030630155894209588
+          },
+          {
+            "id": "B2-high-f030-N2-F5",
+            "pixels": 59894,
+            "degradation_advantage_dB": 2.3305803459447887,
+            "direct_PSNR_gain_dB": -0.7987831200933186,
+            "direct_LPIPS_change": 0.001310335460657305
+          },
+          {
+            "id": "B2-high-f060-N1.4-F5",
+            "pixels": 79443,
+            "degradation_advantage_dB": 0.3002854933608745,
+            "direct_PSNR_gain_dB": -0.8974164792672212,
+            "direct_LPIPS_change": 0.0034865718922987878
+          },
+          {
+            "id": "B2-high-f060-N2-F5",
+            "pixels": 60242,
+            "degradation_advantage_dB": 0.31517547304130744,
+            "direct_PSNR_gain_dB": -1.4458732621731158,
+            "direct_LPIPS_change": 0.003262688979553601
+          }
+        ]
+      }
+    },
+    "E2": {
+      "1.4": {
+        "degradation": {
+          "band": {
+            "Delta_ours_PSNR_dB": -3.0148465156961812,
+            "Delta_O3_PSNR_dB": -2.284268977108127,
+            "advantage_dB": -0.7305775385880544,
+            "Delta_ours_LPIPS": 0.02546937276514632,
+            "Delta_O3_LPIPS": 0.029302244467075897
+          },
+          "recoverable": {
+            "Delta_ours_PSNR_dB": -2.0847198284928012,
+            "Delta_O3_PSNR_dB": -1.0035063631044707,
+            "advantage_dB": -1.0812134653883305,
+            "Delta_ours_LPIPS": 0.03237327958089955,
+            "Delta_O3_LPIPS": 0.033280585226992225
+          },
+          "full_image": {
+            "Delta_ours_PSNR_dB": -2.5826130434067665,
+            "Delta_O3_PSNR_dB": -2.074086513570812,
+            "advantage_dB": -0.5085265298359545,
+            "Delta_ours_LPIPS": 0.022746441170454545,
+            "Delta_O3_LPIPS": 0.024570122493164114
+          },
+          "in_focus": {
+            "Delta_ours_PSNR_dB": -9.722564133900413,
+            "Delta_O3_PSNR_dB": -9.164968516729644,
+            "advantage_dB": -0.5575956171707688,
+            "Delta_ours_LPIPS": 0.05207923374756646,
+            "Delta_O3_LPIPS": 0.05978449604086816
+          }
+        },
+        "direct": {
+          "band": {
+            "PSNR_gain_dB": -0.7518186961227151,
+            "LPIPS_change": -0.0022523376698560457
+          },
+          "recoverable": {
+            "PSNR_gain_dB": -0.777227995024738,
+            "LPIPS_change": 0.000315782256254421
+          },
+          "full_image": {
+            "PSNR_gain_dB": -0.6638867703778288,
+            "LPIPS_change": -0.0008529792165745675
+          },
+          "in_focus": {
+            "PSNR_gain_dB": -0.9094196361238644,
+            "LPIPS_change": -0.005900396613589688
+          }
+        },
+        "valid_groups": 6,
+        "same_direction": 1,
+        "guardrails_passed": false,
+        "passed": false,
+        "groups": [
+          {
+            "id": "B2-high-f001-N1.4-F1.4",
+            "pixels": 84516,
+            "degradation_advantage_dB": -1.608387985000551,
+            "direct_PSNR_gain_dB": -0.5785228070095307,
+            "direct_LPIPS_change": -0.0007105553228651112
+          },
+          {
+            "id": "B2-high-f001-N2-F1.4",
+            "pixels": 63486,
+            "degradation_advantage_dB": -1.042675442323329,
+            "direct_PSNR_gain_dB": -0.6848785881563586,
+            "direct_LPIPS_change": -0.0002856834064941978
+          },
+          {
+            "id": "B2-high-f030-N1.4-F1.4",
+            "pixels": 89105,
+            "degradation_advantage_dB": -0.49577723295552545,
+            "direct_PSNR_gain_dB": -0.6022157314255452,
+            "direct_LPIPS_change": -0.003901432420277115
+          },
+          {
+            "id": "B2-high-f030-N2-F1.4",
+            "pixels": 66827,
+            "degradation_advantage_dB": 0.3298964922363936,
+            "direct_PSNR_gain_dB": -0.7524315750596031,
+            "direct_LPIPS_change": -0.0025020822650222325
+          },
+          {
+            "id": "B2-high-f060-N1.4-F1.4",
+            "pixels": 85138,
+            "degradation_advantage_dB": -0.9128840312391233,
+            "direct_PSNR_gain_dB": -0.9104894279702904,
+            "direct_LPIPS_change": -0.0030192620327069153
+          },
+          {
+            "id": "B2-high-f060-N2-F1.4",
+            "pixels": 64100,
+            "degradation_advantage_dB": -0.7399519981191034,
+            "direct_PSNR_gain_dB": -1.1477027702735398,
+            "direct_LPIPS_change": -0.0026615984062092098
+          }
+        ]
+      },
+      "5.0": {
+        "degradation": {
+          "band": {
+            "Delta_ours_PSNR_dB": -3.239354068774915,
+            "Delta_O3_PSNR_dB": -4.077932992046648,
+            "advantage_dB": 0.8385789232717329,
+            "Delta_ours_LPIPS": 0.010088608665274367,
+            "Delta_O3_LPIPS": 0.009891101579797165
+          },
+          "recoverable": {
+            "Delta_ours_PSNR_dB": -3.254661973060472,
+            "Delta_O3_PSNR_dB": -2.6644257976920684,
+            "advantage_dB": -0.5902361753684033,
+            "Delta_ours_LPIPS": 0.012633280355339975,
+            "Delta_O3_LPIPS": 0.011882018382500532
+          },
+          "full_image": {
+            "Delta_ours_PSNR_dB": -3.517489983057061,
+            "Delta_O3_PSNR_dB": -4.230882579635441,
+            "advantage_dB": 0.7133925965783803,
+            "Delta_ours_LPIPS": 0.007633653005324407,
+            "Delta_O3_LPIPS": 0.007060396846562789
+          },
+          "in_focus": {
+            "Delta_ours_PSNR_dB": -6.006028054544217,
+            "Delta_O3_PSNR_dB": -5.582657214259989,
+            "advantage_dB": -0.4233708402842282,
+            "Delta_ours_LPIPS": 0.0050788973985058175,
+            "Delta_O3_LPIPS": 0.003959046316184872
+          }
+        },
+        "direct": {
+          "band": {
+            "PSNR_gain_dB": -0.6423815715210921,
+            "LPIPS_change": 0.0028375424631820745
+          },
+          "recoverable": {
+            "PSNR_gain_dB": -1.6726089737109788,
+            "LPIPS_change": 0.003346611258954732
+          },
+          "full_image": {
+            "PSNR_gain_dB": -1.0486473652608197,
+            "LPIPS_change": 0.0018319800534965704
+          },
+          "in_focus": {
+            "PSNR_gain_dB": 0.30143587970201935,
+            "LPIPS_change": 0.001151795229943433
+          }
+        },
+        "valid_groups": 6,
+        "same_direction": 4,
+        "guardrails_passed": false,
+        "passed": false,
+        "groups": [
+          {
+            "id": "B2-high-f001-N1.4-F5",
+            "pixels": 78317,
+            "degradation_advantage_dB": -1.2578600104096296,
+            "direct_PSNR_gain_dB": -0.40189002374108185,
+            "direct_LPIPS_change": 0.006184957733609621
+          },
+          {
+            "id": "B2-high-f001-N2-F5",
+            "pixels": 58653,
+            "degradation_advantage_dB": -0.28845843543674476,
+            "direct_PSNR_gain_dB": -0.7491454834004543,
+            "direct_LPIPS_change": 0.004278265384069505
+          },
+          {
+            "id": "B2-high-f030-N1.4-F5",
+            "pixels": 79834,
+            "degradation_advantage_dB": 1.6777556795445392,
+            "direct_PSNR_gain_dB": -0.17267706667031746,
+            "direct_LPIPS_change": -0.0024069315709690266
+          },
+          {
+            "id": "B2-high-f030-N2-F5",
+            "pixels": 59894,
+            "degradation_advantage_dB": 2.479299786699354,
+            "direct_PSNR_gain_dB": -0.6500636793387535,
+            "direct_LPIPS_change": 0.0016976344939426662
+          },
+          {
+            "id": "B2-high-f060-N1.4-F5",
+            "pixels": 79443,
+            "degradation_advantage_dB": 0.271889559687466,
+            "direct_PSNR_gain_dB": -0.9258124129406298,
+            "direct_LPIPS_change": 0.00415917194466001
+          },
+          {
+            "id": "B2-high-f060-N2-F5",
+            "pixels": 60242,
+            "degradation_advantage_dB": 0.2946429288845991,
+            "direct_PSNR_gain_dB": -1.4664058063298242,
+            "direct_LPIPS_change": 0.003423587644983952
+          }
+        ]
+      }
+    }
+  },
+  "old_U2_decisions_changed": false,
+  "cache_audit": [
+    {
+      "id": "E1-B2-high-f001",
+      "new_band_missing_cache_pixels": 0,
+      "parent_cache_regenerated": false,
+      "original_fill_reused": true,
+      "original_background_depth_reused": true
+    },
+    {
+      "id": "E1-B2-high-f030",
+      "new_band_missing_cache_pixels": 0,
+      "parent_cache_regenerated": false,
+      "original_fill_reused": true,
+      "original_background_depth_reused": true
+    },
+    {
+      "id": "E1-B2-high-f060",
+      "new_band_missing_cache_pixels": 0,
+      "parent_cache_regenerated": false,
+      "original_fill_reused": true,
+      "original_background_depth_reused": true
+    },
+    {
+      "id": "E2-B2-high-f001",
+      "new_band_missing_cache_pixels": 0,
+      "parent_cache_regenerated": false,
+      "original_fill_reused": true,
+      "original_background_depth_reused": true
+    },
+    {
+      "id": "E2-B2-high-f030",
+      "new_band_missing_cache_pixels": 0,
+      "parent_cache_regenerated": false,
+      "original_fill_reused": true,
+      "original_background_depth_reused": true
+    },
+    {
+      "id": "E2-B2-high-f060",
+      "new_band_missing_cache_pixels": 0,
+      "parent_cache_regenerated": false,
+      "original_fill_reused": true,
+      "original_background_depth_reused": true
+    }
+  ],
+  "CoC_diagnostic": {
+    "descriptive": true,
+    "weighted": {
+      "1.4": {
+        "pixels": 383463,
+        "estimated_CoC_le1_fraction_before": 0.04940241952939397,
+        "estimated_CoC_le1_fraction_after": 0.735898900285034,
+        "local_depth_ratio_median_range": [
+          0.7807672917842865,
+          0.7930171191692352
+        ]
+      },
+      "5.0": {
+        "pixels": 915410,
+        "estimated_CoC_le1_fraction_before": 0.8888978708993784,
+        "estimated_CoC_le1_fraction_after": 0.9486350378518915,
+        "local_depth_ratio_median_range": [
+          0.8508013486862183,
+          0.8540614247322083
+        ]
+      }
+    },
+    "record": "03_实验记录/records/route3-target-focus-2026-11-10-CoC-diagnostic.json"
+  },
+  "tables": {
+    "pooled_focus_regions": "03_实验记录/records/route3-target-focus-2026-11-10-region-tables.csv",
+    "per_case_regions": "03_实验记录/records/route3-target-focus-2026-11-10-evaluation.csv",
+    "all_scores_and_per_aperture": "03_实验记录/records/route3-target-focus-2026-11-10-evaluation.json"
+  },
+  "visualizations": [
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/focal-recovery-Cycles.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/focal-recovery-LDR.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/focus-selection.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/evaluation/B2-high-f001-N1.4-F1.4-E1.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/evaluation/B2-high-f001-N1.4-F5-E1.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/evaluation/B2-high-f001-N2-F1.4-E1.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/evaluation/B2-high-f001-N2-F5-E1.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/evaluation/B2-high-f030-N1.4-F1.4-E1.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/evaluation/B2-high-f030-N1.4-F5-E1.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/evaluation/B2-high-f030-N2-F1.4-E1.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/evaluation/B2-high-f030-N2-F5-E1.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/evaluation/B2-high-f060-N1.4-F1.4-E1.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/evaluation/B2-high-f060-N1.4-F5-E1.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/evaluation/B2-high-f060-N2-F1.4-E1.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/evaluation/B2-high-f060-N2-F5-E1.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/evaluation/B2-high-f001-N1.4-F1.4-E2.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/evaluation/B2-high-f001-N1.4-F5-E2.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/evaluation/B2-high-f001-N2-F1.4-E2.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/evaluation/B2-high-f001-N2-F5-E2.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/evaluation/B2-high-f030-N1.4-F1.4-E2.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/evaluation/B2-high-f030-N1.4-F5-E2.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/evaluation/B2-high-f030-N2-F1.4-E2.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/evaluation/B2-high-f030-N2-F5-E2.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/evaluation/B2-high-f060-N1.4-F1.4-E2.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/evaluation/B2-high-f060-N1.4-F5-E2.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/evaluation/B2-high-f060-N2-F1.4-E2.png",
+    "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-target-focus-2026-11-10-01/evaluation/B2-high-f060-N2-F5-E2.png"
+  ],
+  "runtime": {
+    "O3_prediction_seconds": 1.1775931753218174,
+    "O3_peak_allocated_MiB": 177.2548828125,
+    "sampled_render_seconds": 25.114945247769356,
+    "sampled_render_peak_allocated_MiB": 2572.6962890625,
+    "queue_UTC": {
+      "bokehme": [
+        "2026-11-11T03:28:47Z",
+        "2026-11-11T03:28:55Z"
+      ],
+      "render": [
+        "2026-11-11T03:28:55Z",
+        "2026-11-11T03:29:57Z"
+      ],
+      "evaluate": [
+        "2026-11-11T03:29:57Z",
+        "2026-11-11T03:31:34Z"
+      ]
+    },
+    "timing_note": "Prediction CUDA synchronization timings exclude loading and I/O; queue wall times include them. Two GPU stages ran sequentially; LPIPS scored on CPU."
+  },
+  "resources_after": {
+    "/": {
+      "total_bytes": 32212254720,
+      "free_bytes": 2070605824
+    },
+    "/root/autodl-tmp": {
+      "total_bytes": 898721906688,
+      "free_bytes": 322739253248
+    }
+  },
+  "software": {
+    "renderer_env": "/root/autodl-tmp/envs/route3",
+    "python": "3.10.22",
+    "torch": "2.7.1+cu128",
+    "gsplat": "1.5.0",
+    "LPIPS_package": "0.1.4",
+    "LPIPS_model": "alex metric 0.1",
+    "patch": 64,
+    "O3_env": "/root/autodl-tmp/envs/dofgaussian",
+    "O3_python": "3.9.25",
+    "O3_torch": "2.1.2+cu121",
+    "O3_gamma": 2.2,
+    "O3_defocus_scale": 10,
+    "physical_focal_length_m": 0.05,
+    "K": 64,
+    "GPU": "RTX 4090 D",
+    "GPU_index": 0,
+    "GPU_total_MiB": 49140,
+    "driver": "580.105.08"
+  },
+  "observations": [
+    "Target focus improves O3 focal PSNR by about 1.69/1.01 dB and focal LPIPS. It does not recover all previous 9-10 dB focal loss.",
+    "Ours focal PSNR decreases about 0.76/0.72 dB near-focus (E1/E2), improves about 0.83 dB far-focus, while focal LPIPS improves or is nearly unchanged.",
+    "Near-focus out-of-focus and full-image errors increase after selecting the subject. Moving a scalar focus plane does not correct spatially nonuniform depth or CoC magnitude.",
+    "All E1/E2 nominal focuses fail the prospectively frozen Cycles R3 gate and auxiliary LDR gate; the prior far-focus degradation advantage shrinks substantially.",
+    "Residual errors can include depth/CoC, edge representation and retrieval. This experiment does not isolate their individual causal contributions.",
+    "Original U2 decisions and the positive R2 GT-geometry/true-hidden upper-bound observations remain unchanged."
+  ],
+  "limits": [
+    "One controlled scene, three frames, six lens groups per focus; GT mask simulates target selection, not automatic focusing.",
+    "Unoptimized V-G plus input-only cross-frame retrieval; no R2 fitted visible layer or hidden GT is used by the R3 method.",
+    "Descriptive splice is not a method or formal decision; fixed original GT scoring masks and nominal Cycles/LDR references.",
+    "No new Blender rendering, DA3 inference, training, global scale correction or aperture/CoC retuning."
+  ],
+  "next_step": "Pause for user decision; do not start training or geometry/CoC retuning automatically.",
+  "validation_record": "03_实验记录/records/route3-target-focus-2026-11-10-validation.json"
+}

@@ -227,8 +227,107 @@ def evaluate(c):
         writer=csv.DictWriter(f,fieldnames=list(flat[0]),lineterminator='\n');writer.writeheader();writer.writerows(flat)
 
 
+def report():
+    """Summarize existing scores; never rerender or alter frozen decisions."""
+    import shutil
+    import matplotlib
+    matplotlib.use('Agg');import matplotlib.pyplot as plt
+    evaluation=json.loads((RECORDS/(PREFIX+'-evaluation.json')).read_text())
+    focus=json.loads((OUT/'focus-plan.json').read_text())
+    diagnostic=json.loads((RECORDS/(PREFIX+'-CoC-diagnostic.json')).read_text())
+    o3=json.loads((RECORDS/(PREFIX+'-O3.json')).read_text())
+    rendered=json.loads((RECORDS/(PREFIX+'-render.json')).read_text())
+    old_summary=json.loads((RECORDS/'route3-upper-bound-2026-11-11-summary.json').read_text())
+    flat=[];figures=[];focus_stats={};coc_stats={}
+    for reference,tables in evaluation['pooled'].items():
+        fig,axes=plt.subplots(2,2,figsize=(11,8))
+        for vi,variant in enumerate(['E1','E2']):
+            for fi,nominal in enumerate(['1.4','5.0']):
+                t=tables[nominal];old=evaluation['original_U2_and_GT_pooled'][reference][nominal]
+                ax=axes[vi,fi];names=['O3','O5','ours'];x=np.arange(3)
+                for label,offset,values in [
+                    ('Original U2',-.16,[old['U2_'+m+'_'+variant]['in_focus']['psnr'] for m in names]),
+                    ('R3 target focus',0,[t[m+'_'+variant]['in_focus']['psnr'] for m in names]),
+                    ('GT geometry baseline',.16,[old['L3' if m=='ours' else m]['in_focus']['psnr'] for m in names])]:
+                    ax.plot(x+offset,values,'o',label=label)
+                ax.set_xticks(x,names);ax.set_ylabel('In-focus pooled PSNR (dB)')
+                ax.set_title(f'{variant}, nominal focus {nominal} m');ax.grid(alpha=.2)
+                if vi==fi==0:ax.legend(fontsize=8)
+        fig.suptitle(reference+' reference: original U2 vs target focus');fig.tight_layout()
+        path=OUT/('focal-recovery-'+reference+'.png');fig.savefig(path,dpi=140);plt.close(fig);figures.append(str(path))
+        for variant in ['E1','E2']:
+            for nominal,t in tables.items():
+                old=evaluation['original_U2_and_GT_pooled'][reference][nominal]
+                for method in ['O3','O5','ours','descriptive']:
+                    for region in REGIONS:
+                        a=t[method+'_'+variant][region];b=old['U2_'+method+'_'+variant][region]
+                        baseline=old['L3' if method=='ours' else 'descriptive_O3_outside_L2_inside' if method=='descriptive' else method][region]
+                        flat.append(dict(reference=reference,variant=variant,nominal_focus_m=nominal,method=method,region=region,
+                            pixels=a['pixels'],U2_PSNR_dB=b['psnr'],R3_PSNR_dB=a['psnr'],PSNR_change_dB=a['psnr']-b['psnr'],
+                            U2_patch_LPIPS=b['patch_lpips'],R3_patch_LPIPS=a['patch_lpips'],LPIPS_change=a['patch_lpips']-b['patch_lpips'],
+                            GT_geometry_PSNR_dB=baseline['psnr'],GT_geometry_patch_LPIPS=baseline['patch_lpips'],
+                            U2_degradation_PSNR_dB=b['psnr']-baseline['psnr'],R3_degradation_PSNR_dB=a['psnr']-baseline['psnr'],
+                            descriptive_only=method=='descriptive'))
+    table=RECORDS/(PREFIX+'-region-tables.csv')
+    with table.open('x',newline='') as f:
+        writer=csv.DictWriter(f,fieldnames=list(flat[0]),lineterminator='\n');writer.writeheader();writer.writerows(flat)
+    selected=[r for r in focus['rows'] if r['variant']=='E1'];fig,axes=plt.subplots(3,4,figsize=(13,10));lookup={x['id']:x for x in items()}
+    for ax,row in zip(axes.flat,selected):
+        d=np.load(row['input_npz']);ax.imshow(d['rgb_srgb'])
+        mask=target_mask(lookup[row['id']]);overlay=np.zeros((*mask.shape,4));overlay[mask]=[1.,.15,.1,.25]
+        ax.imshow(overlay);ax.set_title(f'f{row["frame"]} N{row["fstop"]}: {row["nominal_focus_m"]:g} -> {row["render_focus_m"]:.3f} m',fontsize=9);ax.axis('off')
+    fig.suptitle('Original GT in-focus target selection (red); shared E1/E2 focus');fig.tight_layout()
+    path=OUT/'focus-selection.png';fig.savefig(path,dpi=120);plt.close(fig);figures.append(str(path))
+    for nominal in [1.4,5.]:
+        rows=[r for r in selected if r['nominal_focus_m']==nominal]
+        focus_stats[str(nominal)]=dict(min_m=min(r['render_focus_m'] for r in rows),max_m=max(r['render_focus_m'] for r in rows))
+        rows=[r for r in diagnostic['rows'] if r['nominal_focus_m']==nominal];pixels=sum(r['pixels'] for r in rows)
+        coc_stats[str(nominal)]=dict(pixels=pixels,
+            estimated_CoC_le1_fraction_before=sum(r['pixels']*r['fraction_estimated_CoC_le1_before'] for r in rows)/pixels,
+            estimated_CoC_le1_fraction_after=sum(r['pixels']*r['fraction_estimated_CoC_le1_after'] for r in rows)/pixels,
+            local_depth_ratio_median_range=[min(r['DA3_to_GT_depth_ratio_p10_p50_p90'][1] for r in rows),max(r['DA3_to_GT_depth_ratio_p10_p50_p90'][1] for r in rows)])
+    runtime=dict(O3_prediction_seconds=sum(r['seconds'] for r in o3['rows']),
+        O3_peak_allocated_MiB=max(r['peak_allocated_MiB'] for r in o3['rows']),
+        sampled_render_seconds=sum(sum(r['seconds'].values()) for r in rendered['rows']),
+        sampled_render_peak_allocated_MiB=max(r['peak_allocated_MiB'] for r in rendered['rows']),
+        queue_UTC=dict(bokehme=['2026-11-11T03:28:47Z','2026-11-11T03:28:55Z'],render=['2026-11-11T03:28:55Z','2026-11-11T03:29:57Z'],evaluate=['2026-11-11T03:29:57Z','2026-11-11T03:31:34Z']),
+        timing_note='Prediction CUDA synchronization timings exclude loading and I/O; queue wall times include them. Two GPU stages ran sequentially; LPIPS scored on CPU.')
+    resources={path:dict(total_bytes=shutil.disk_usage(path).total,free_bytes=shutil.disk_usage(path).free) for path in ['/','/root/autodl-tmp']}
+    summary=dict(status='completed_pause_for_user',reported_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        criteria=dict(path=str(CRITERIA.relative_to(ROOT)),commit='be99e50',implementation_commit='d1d64d8'),
+        basis=dict(U2_criteria='11c78ca',U2_summary='5933ccc',R1_R2_summary='84f77ad'),output=str(OUT.relative_to(ROOT)),
+        scope=dict(scene='B2-high',frames=[1,30,60],nominal_focuses_m=[1.4,5.],fstops=[1.4,2.],groups_per_focus=6,variants=['E1','E2']),
+        focus_selection=dict(formula='median of unchanged DA3 estimated depth inside original GT in-focus mask',ranges=focus_stats,
+            plan_record=str((RECORDS/(PREFIX+'-focus.json')).relative_to(ROOT)),E1_E2_and_all_methods_identical=True,GT_mask_is_user_target_proxy_only=True),
+        decisions=evaluation['decisions'],comparisons=evaluation['comparisons'],focal_recovery=evaluation['focal_recovery'],
+        original_U2_decisions=old_summary['U2']['decisions'],old_U2_decisions_changed=False,
+        cache_audit=focus['cache_audit'],CoC_diagnostic=dict(descriptive=True,weighted=coc_stats,record=str((RECORDS/(PREFIX+'-CoC-diagnostic.json')).relative_to(ROOT))),
+        tables=dict(pooled_focus_regions=str(table.relative_to(ROOT)),per_case_regions=str((RECORDS/(PREFIX+'-evaluation.csv')).relative_to(ROOT)),
+            all_scores_and_per_aperture=str((RECORDS/(PREFIX+'-evaluation.json')).relative_to(ROOT))),
+        visualizations=figures+evaluation['visualizations'],runtime=runtime,resources_after=resources,
+        software=dict(GPU='RTX 4090 D',GPU_index=0,GPU_total_MiB=49140,driver='580.105.08',renderer_env='/root/autodl-tmp/envs/route3',python='3.10.22',torch='2.7.1+cu128',gsplat='1.5.0',LPIPS_package='0.1.4',LPIPS_model='alex metric 0.1',patch=64,
+            O3_env='/root/autodl-tmp/envs/dofgaussian',O3_python='3.9.25',O3_torch='2.1.2+cu121',O3_gamma=2.2,O3_defocus_scale=10,physical_focal_length_m=.05,K=64),
+        observations=[
+            'Target focus improves O3 focal PSNR by about 1.69/1.01 dB and focal LPIPS. It does not recover all previous 9-10 dB focal loss.',
+            'Ours focal PSNR decreases about 0.76/0.72 dB near-focus (E1/E2), improves about 0.83 dB far-focus, while focal LPIPS improves or is nearly unchanged.',
+            'Near-focus out-of-focus and full-image errors increase after selecting the subject. Moving a scalar focus plane does not correct spatially nonuniform depth or CoC magnitude.',
+            'All E1/E2 nominal focuses fail the prospectively frozen Cycles R3 gate and auxiliary LDR gate; the prior far-focus degradation advantage shrinks substantially.',
+            'Residual errors can include depth/CoC, edge representation and retrieval. This experiment does not isolate their individual causal contributions.',
+            'Original U2 decisions and the positive R2 GT-geometry/true-hidden upper-bound observations remain unchanged.'
+        ],limits=[
+            'One controlled scene, three frames, six lens groups per focus; GT mask simulates target selection, not automatic focusing.',
+            'Unoptimized V-G plus input-only cross-frame retrieval; no R2 fitted visible layer or hidden GT is used by the R3 method.',
+            'Descriptive splice is not a method or formal decision; fixed original GT scoring masks and nominal Cycles/LDR references.',
+            'No new Blender rendering, DA3 inference, training, global scale correction or aperture/CoC retuning.'
+        ],next_step='Pause for user decision; do not start training or geometry/CoC retuning automatically.',
+        validation_record=str((RECORDS/(PREFIX+'-validation.json')).relative_to(ROOT)))
+    path=RECORDS/(PREFIX+'-summary.json')
+    with path.open('x') as f:f.write(json.dumps(summary,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
+    print('R3_REPORT',str(path),len(flat),'pooled regional rows',len(figures),'overview plots',flush=True)
+
+
 def main():
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--mode',choices=['prepare','bokehme','render','evaluate'],required=True);a=parser.parse_args()
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--mode',choices=['prepare','bokehme','render','evaluate','report'],required=True);a=parser.parse_args()
     cv2.setNumThreads(1);criteria=json.loads(CRITERIA.read_text());assert criteria['frozen']
     if a.mode in ['bokehme','render']:
         if os.environ.get('CUDA_VISIBLE_DEVICES')!='0':raise ValueError('Explicit GPU0')
