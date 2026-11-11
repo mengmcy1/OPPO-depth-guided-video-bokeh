@@ -1,0 +1,465 @@
+{
+  "completed": true,
+  "stop_reason": null,
+  "config": {
+    "frame": 30,
+    "steps": 8000,
+    "train_views": 65,
+    "heldout_views": 16,
+    "center_included": true,
+    "seed": 2026111135,
+    "code_commit": "287996beb988c95762e1d9fba8bd46450661b32e",
+    "loss": "0.8displayRGB L1+0.2(1-SSIM11sigma1.5)",
+    "position_bound": "min(2cm,1%initialdepth)",
+    "scale_bound": "0.1x..10x initialscale",
+    "color_bound": "nonnegative learned linear radiance;no uppercap;supervision and evaluation remain sameLDR;no rawHDR labels",
+    "learning_rates": {
+      "position": 0.0001,
+      "scale": 0.005,
+      "rotation": 0.001,
+      "opacity": 0.01,
+      "color": 0.02
+    },
+    "learning_rate_schedule": "cosine1to0.01 overfixedbudget",
+    "hidden_parents": 28753,
+    "visible_gaussians": 6553600,
+    "hidden_training_band": "union of main-lens input-depth method bands only;score masks never read",
+    "DOF_GT_read": false,
+    "evaluation_positions_read": false,
+    "evaluation_masks_read": false,
+    "fixed_hidden": true,
+    "heldout_selects_checkpoint": false,
+    "stop_policy": "heldout-decline"
+  },
+  "rows": [
+    {
+      "step": 0,
+      "seconds": 1.2671312391757965,
+      "metrics": {
+        "train": {
+          "psnr": 36.78012711719958,
+          "loss": 0.007358217004152453,
+          "views": 17
+        },
+        "heldout": {
+          "psnr": 36.31700209659335,
+          "loss": 0.007820462225936353,
+          "views": 16
+        }
+      },
+      "train_minus_heldout_PSNR_dB": 0.4631250206062276,
+      "median_step_seconds": null,
+      "peak_allocated_MiB": 2160.05224609375,
+      "best_heldout_PSNR": 36.31700209659335,
+      "heldout_decline_dB": 0.0,
+      "consecutive_declines": 0
+    },
+    {
+      "step": 100,
+      "seconds": 5.474151026457548,
+      "metrics": {
+        "train": {
+          "psnr": 28.139624344183044,
+          "loss": 0.08382036098662544,
+          "views": 17
+        },
+        "heldout": {
+          "psnr": 27.930861119468634,
+          "loss": 0.08603370236232877,
+          "views": 16
+        }
+      },
+      "train_minus_heldout_PSNR_dB": 0.20876322471441,
+      "median_step_seconds": 0.03613940812647343,
+      "peak_allocated_MiB": 3248.5341796875,
+      "best_heldout_PSNR": 36.31700209659335,
+      "heldout_decline_dB": 8.386140977124715,
+      "consecutive_declines": 1
+    },
+    {
+      "step": 500,
+      "seconds": 20.25500389188528,
+      "metrics": {
+        "train": {
+          "psnr": 30.618389756236905,
+          "loss": 0.05734558096703361,
+          "views": 17
+        },
+        "heldout": {
+          "psnr": 30.39414101660851,
+          "loss": 0.058655926724895835,
+          "views": 16
+        }
+      },
+      "train_minus_heldout_PSNR_dB": 0.22424873962839342,
+      "median_step_seconds": 0.035787949338555336,
+      "peak_allocated_MiB": 3248.5341796875,
+      "best_heldout_PSNR": 36.31700209659335,
+      "heldout_decline_dB": 5.922861079984838,
+      "consecutive_declines": 2
+    },
+    {
+      "step": 1000,
+      "seconds": 38.38414057716727,
+      "metrics": {
+        "train": {
+          "psnr": 37.458184986473285,
+          "loss": 0.014384921914076103,
+          "views": 17
+        },
+        "heldout": {
+          "psnr": 36.38035447705404,
+          "loss": 0.016813764872495085,
+          "views": 16
+        }
+      },
+      "train_minus_heldout_PSNR_dB": 1.0778305094192433,
+      "median_step_seconds": 0.03509374521672726,
+      "peak_allocated_MiB": 3248.5341796875,
+      "best_heldout_PSNR": 36.38035447705404,
+      "heldout_decline_dB": 0.0,
+      "consecutive_declines": 0
+    },
+    {
+      "step": 1500,
+      "seconds": 59.87018479406834,
+      "metrics": {
+        "train": {
+          "psnr": 40.088434468093645,
+          "loss": 0.00814357542378061,
+          "views": 17
+        },
+        "heldout": {
+          "psnr": 38.87403970891363,
+          "loss": 0.009790713345864788,
+          "views": 16
+        }
+      },
+      "train_minus_heldout_PSNR_dB": 1.214394759180017,
+      "median_step_seconds": 0.03505462594330311,
+      "peak_allocated_MiB": 3248.5341796875,
+      "best_heldout_PSNR": 38.87403970891363,
+      "heldout_decline_dB": 0.0,
+      "consecutive_declines": 0
+    },
+    {
+      "step": 2000,
+      "seconds": 77.76188253611326,
+      "metrics": {
+        "train": {
+          "psnr": 41.7510129510741,
+          "loss": 0.005925542044946376,
+          "views": 17
+        },
+        "heldout": {
+          "psnr": 39.452489999276665,
+          "loss": 0.007871322304708883,
+          "views": 16
+        }
+      },
+      "train_minus_heldout_PSNR_dB": 2.2985229517974375,
+      "median_step_seconds": 0.034784579649567604,
+      "peak_allocated_MiB": 3248.5341796875,
+      "best_heldout_PSNR": 39.452489999276665,
+      "heldout_decline_dB": 0.0,
+      "consecutive_declines": 0
+    },
+    {
+      "step": 2500,
+      "seconds": 99.56387173756957,
+      "metrics": {
+        "train": {
+          "psnr": 41.89328583393326,
+          "loss": 0.005700872608405703,
+          "views": 17
+        },
+        "heldout": {
+          "psnr": 40.34491392365985,
+          "loss": 0.006962904357351363,
+          "views": 16
+        }
+      },
+      "train_minus_heldout_PSNR_dB": 1.54837191027341,
+      "median_step_seconds": 0.03483618050813675,
+      "peak_allocated_MiB": 3249.0810546875,
+      "best_heldout_PSNR": 40.34491392365985,
+      "heldout_decline_dB": 0.0,
+      "consecutive_declines": 0
+    },
+    {
+      "step": 3000,
+      "seconds": 117.40025074407458,
+      "metrics": {
+        "train": {
+          "psnr": 43.99968166982367,
+          "loss": 0.00389973635730498,
+          "views": 17
+        },
+        "heldout": {
+          "psnr": 42.001117297592515,
+          "loss": 0.005025368562201038,
+          "views": 16
+        }
+      },
+      "train_minus_heldout_PSNR_dB": 1.998564372231158,
+      "median_step_seconds": 0.034806303679943085,
+      "peak_allocated_MiB": 3249.0810546875,
+      "best_heldout_PSNR": 42.001117297592515,
+      "heldout_decline_dB": 0.0,
+      "consecutive_declines": 0
+    },
+    {
+      "step": 3500,
+      "seconds": 139.13187671080232,
+      "metrics": {
+        "train": {
+          "psnr": 45.13606976686954,
+          "loss": 0.003326775848536807,
+          "views": 17
+        },
+        "heldout": {
+          "psnr": 42.87266337244172,
+          "loss": 0.0044074337056372315,
+          "views": 16
+        }
+      },
+      "train_minus_heldout_PSNR_dB": 2.263406394427818,
+      "median_step_seconds": 0.03480045311152935,
+      "peak_allocated_MiB": 3249.0810546875,
+      "best_heldout_PSNR": 42.87266337244172,
+      "heldout_decline_dB": 0.0,
+      "consecutive_declines": 0
+    },
+    {
+      "step": 4000,
+      "seconds": 156.51937395334244,
+      "metrics": {
+        "train": {
+          "psnr": 46.25793932109774,
+          "loss": 0.002734366537290899,
+          "views": 17
+        },
+        "heldout": {
+          "psnr": 43.48561130014854,
+          "loss": 0.0037884378543822095,
+          "views": 16
+        }
+      },
+      "train_minus_heldout_PSNR_dB": 2.772328020949196,
+      "median_step_seconds": 0.03330732323229313,
+      "peak_allocated_MiB": 3249.0810546875,
+      "best_heldout_PSNR": 43.48561130014854,
+      "heldout_decline_dB": 0.0,
+      "consecutive_declines": 0
+    },
+    {
+      "step": 4500,
+      "seconds": 178.25142461806536,
+      "metrics": {
+        "train": {
+          "psnr": 47.18652971297623,
+          "loss": 0.002288845997741994,
+          "views": 17
+        },
+        "heldout": {
+          "psnr": 44.25573278395007,
+          "loss": 0.003231478447560221,
+          "views": 16
+        }
+      },
+      "train_minus_heldout_PSNR_dB": 2.930796929026158,
+      "median_step_seconds": 0.034717459231615067,
+      "peak_allocated_MiB": 3249.0810546875,
+      "best_heldout_PSNR": 44.25573278395007,
+      "heldout_decline_dB": 0.0,
+      "consecutive_declines": 0
+    },
+    {
+      "step": 5000,
+      "seconds": 196.05828127637506,
+      "metrics": {
+        "train": {
+          "psnr": 47.92326550734069,
+          "loss": 0.00196445662090007,
+          "views": 17
+        },
+        "heldout": {
+          "psnr": 44.64930075975233,
+          "loss": 0.0029505576676456258,
+          "views": 16
+        }
+      },
+      "train_minus_heldout_PSNR_dB": 3.2739647475883586,
+      "median_step_seconds": 0.03474922478199005,
+      "peak_allocated_MiB": 3249.0810546875,
+      "best_heldout_PSNR": 44.64930075975233,
+      "heldout_decline_dB": 0.0,
+      "consecutive_declines": 0
+    },
+    {
+      "step": 5500,
+      "seconds": 217.7868403941393,
+      "metrics": {
+        "train": {
+          "psnr": 48.58044239542687,
+          "loss": 0.0016778471386607956,
+          "views": 17
+        },
+        "heldout": {
+          "psnr": 45.06412262394521,
+          "loss": 0.002606441848911345,
+          "views": 16
+        }
+      },
+      "train_minus_heldout_PSNR_dB": 3.516319771481662,
+      "median_step_seconds": 0.03461468406021595,
+      "peak_allocated_MiB": 3249.0810546875,
+      "best_heldout_PSNR": 45.06412262394521,
+      "heldout_decline_dB": 0.0,
+      "consecutive_declines": 0
+    },
+    {
+      "step": 6000,
+      "seconds": 235.57557049021125,
+      "metrics": {
+        "train": {
+          "psnr": 48.993825347935015,
+          "loss": 0.001479401273707695,
+          "views": 17
+        },
+        "heldout": {
+          "psnr": 45.34269771985677,
+          "loss": 0.0023990961417439394,
+          "views": 16
+        }
+      },
+      "train_minus_heldout_PSNR_dB": 3.6511276280782425,
+      "median_step_seconds": 0.034703271463513374,
+      "peak_allocated_MiB": 3249.0810546875,
+      "best_heldout_PSNR": 45.34269771985677,
+      "heldout_decline_dB": 0.0,
+      "consecutive_declines": 0
+    },
+    {
+      "step": 6500,
+      "seconds": 257.54208759218454,
+      "metrics": {
+        "train": {
+          "psnr": 49.47254657449495,
+          "loss": 0.0012455467127866166,
+          "views": 17
+        },
+        "heldout": {
+          "psnr": 45.51049215752567,
+          "loss": 0.0022088106998126023,
+          "views": 16
+        }
+      },
+      "train_minus_heldout_PSNR_dB": 3.9620544169692806,
+      "median_step_seconds": 0.03470296412706375,
+      "peak_allocated_MiB": 3249.0810546875,
+      "best_heldout_PSNR": 45.51049215752567,
+      "heldout_decline_dB": 0.0,
+      "consecutive_declines": 0
+    },
+    {
+      "step": 7000,
+      "seconds": 275.3645396530628,
+      "metrics": {
+        "train": {
+          "psnr": 49.64421155547717,
+          "loss": 0.001148556057802018,
+          "views": 17
+        },
+        "heldout": {
+          "psnr": 45.560147305093196,
+          "loss": 0.002146949896996375,
+          "views": 16
+        }
+      },
+      "train_minus_heldout_PSNR_dB": 4.084064250383975,
+      "median_step_seconds": 0.03481118753552437,
+      "peak_allocated_MiB": 3249.0810546875,
+      "best_heldout_PSNR": 45.560147305093196,
+      "heldout_decline_dB": 0.0,
+      "consecutive_declines": 0
+    },
+    {
+      "step": 7500,
+      "seconds": 296.38143400102854,
+      "metrics": {
+        "train": {
+          "psnr": 49.79563130685224,
+          "loss": 0.001063324894536944,
+          "views": 17
+        },
+        "heldout": {
+          "psnr": 45.65510426163419,
+          "loss": 0.0020560423654387705,
+          "views": 16
+        }
+      },
+      "train_minus_heldout_PSNR_dB": 4.14052704521805,
+      "median_step_seconds": 0.03351292014122009,
+      "peak_allocated_MiB": 3249.0810546875,
+      "best_heldout_PSNR": 45.65510426163419,
+      "heldout_decline_dB": 0.0,
+      "consecutive_declines": 0
+    },
+    {
+      "step": 8000,
+      "seconds": 313.5939829200506,
+      "metrics": {
+        "train": {
+          "psnr": 49.85188969584132,
+          "loss": 0.0010358989478417618,
+          "views": 17
+        },
+        "heldout": {
+          "psnr": 45.662451450071934,
+          "loss": 0.0020608130216714926,
+          "views": 16
+        }
+      },
+      "train_minus_heldout_PSNR_dB": 4.189438245769388,
+      "median_step_seconds": 0.03339262492954731,
+      "peak_allocated_MiB": 3249.0810546875,
+      "best_heldout_PSNR": 45.662451450071934,
+      "heldout_decline_dB": 0.0,
+      "consecutive_declines": 0
+    }
+  ],
+  "learned_linear_color_max": 33.53017044067383,
+  "learned_Gaussian_fraction_any_color_above1": 0.0013975524343550205,
+  "wall_seconds": 318.99512230977416,
+  "median_step_seconds": 0.034769292920827866,
+  "peak_allocated_MiB": 3249.0810546875,
+  "first_backward_gradients": {
+    "means": {
+      "norm": 0.07937882840633392,
+      "max_abs": 0.0036506853066384792,
+      "parameters": 19660800
+    },
+    "log_scales": {
+      "norm": 5.163459718460217e-05,
+      "max_abs": 2.153913328584167e-06,
+      "parameters": 19660800
+    },
+    "quats": {
+      "norm": 2.1923005988355726e-05,
+      "max_abs": 1.0532219221204286e-06,
+      "parameters": 26214400
+    },
+    "opacity_logits": {
+      "norm": 3.754425037527653e-08,
+      "max_abs": 1.0373766290427966e-09,
+      "parameters": 6553600
+    },
+    "colors": {
+      "norm": 0.0013409910025075078,
+      "max_abs": 1.4196508345776238e-05,
+      "parameters": 19660800
+    }
+  },
+  "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-ldr-u1r-2026-11-10-01/R2-fit/f030/visible-final.pt"
+}

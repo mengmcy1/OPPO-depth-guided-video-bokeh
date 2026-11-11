@@ -61,9 +61,11 @@ def pinhole(pc,K,E,background):
 
 
 def fit(a):
-    folder=getattr(a,'fit_output',None) or OUT/'U1-fit'/f'f{a.frame:03d}';folder.mkdir(parents=True,exist_ok=False)
+    folder=getattr(a,'fit_output',None) or OUT/'U1-fit'/f'f{a.frame:03d}'
     stop_policy=getattr(a,'stop_policy','legacy')
     result_record=getattr(a,'record',None) or RECORDS/f'route3-upper-bound-2026-11-11-U1-f{a.frame:03d}.json'
+    if result_record.exists():raise FileExistsError(result_record)
+    folder.mkdir(parents=True,exist_ok=False)
     plan=json.loads((OUT/'U1-positions.json').read_text());d,K,cam,initial,parent,fill,bg,profile=inputs(a.frame)
     views=[]
     for r in plan['positions']:
