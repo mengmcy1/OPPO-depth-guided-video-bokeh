@@ -1,0 +1,38 @@
+{
+  "completed": true,
+  "findings": [
+    "Baseline projected candidate coverage is nearly99.8% but correct-depth coverage is onlyabout23% at thefrozen2%tolerance; geometricpresence is not opticalcoverage.",
+    "Depth andsource-edgecolor errors overlap heavily; unconditional colorerrors mustnotbeestimatedfromtheconditional primarycolorclass alone.",
+    "R2 sourceedge rejection gives thelargest descriptive improvement; R3/R4 additionalfilters andconfidence weighting reducecoverage anddonotimproveonR2.",
+    "Official finalR4 remains preregistered; noresultselectedreplacementwithR2. CyclesP6failsbothfocuses;LDRfarrecoverablepassesalonebutbandfails.",
+    "ThreeindependentOracle swaps arenotadditive repairs; preservingwrong-sourcecolorwhilerelocatingdepthcanhurt,ascanrecoloringwronggeometry. Thefixedfirst-hidden-surfacepairingandvisiblegeometrybiaslimitthecausalinterpretation.",
+    "R4 frame60 improvementsareweak,whileGTrec stilloffers0.8-0.9dBnear and1.8-2.4dBfarrecoverablePSNR; theunrecoveredgap isnotjust anabsence ofOraclepotential."
+  ],
+  "recommendation": "Keep learned explicitvisible+coloranchoring candidate. About half theMSEgap canbe recoveredbyuntrainedrules,so this studydoesnotestablishlearningaggregationasnecessary. A simplerR1+R2 is a candidatefor a new preregisteredcheck,not a replacementforcurrentR4verdict.",
+  "if_training_chosen": {
+    "inputs": [
+      "candidatecalibrateddepthand3Doffset/targetprojection",
+      "candidateRGBandlocalsourcepatch",
+      "sourceframeIDandrelativepose/baseline",
+      "sourcepredicted-depthedge/distance",
+      "triangulationreprojection,parallax,FBerrorandmissingconfidenceflag",
+      "targetvisibleownrenderdepth/alphaanddepthuncertainty"
+    ],
+    "supervision": [
+      "peeledhiddenRGB/GTdepthwithcorrectsurface/objectcorrespondence",
+      "GTsource/targetvisibilityandcandidatecorrectnesslabels",
+      "foreground/backgroundedge-colorseparation,notdiscardingentireedgebands",
+      "jointhiddengeometry/color/opacityconsistencyandphysicalK64renderedDOFloss"
+    ],
+    "focus": "Joint geometry/visibility andsource-edgeunmixing before treatingtheproblem as exposure-onlycolorfusion; physicaldepthandcolor losses shouldbecompatiblewiththefixedvisible representation.",
+    "data": "Onecontrolledscene cannotcertifytraininggeneralization. Moreindependentscenes/motions/occlusions andview/lightingconditions are needed; no suchdataortraininggeneratedhere."
+  },
+  "stop_conditions": {
+    "classification_unknown_below5percent": true,
+    "R1_focus_loss_was_inherited_from_R0_and_slightly_reduced": true,
+    "R2_R3_R4_no_new_large_unexplained_focus_drop": true,
+    "thresholds_not_changed": true
+  },
+  "no_new_trials_after_observing_results": true,
+  "E1_claims_require_accurate_GTposes": true
+}

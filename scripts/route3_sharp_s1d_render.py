@@ -51,7 +51,7 @@ def main():
         now=pooled_score([x for x in focus if x['focus_m']==f]);before=pooled_score([x for x in previous if x['focus_m']==f]);summary[str(f)]=dict(in_focus_PSNR=now['psnr'],visible_PSNR=before['psnr'],change_vs_visible_dB=now['psnr']-before['psnr'])
         if a.method in ['R2','R3','R4']:
             prior=json.loads((RECORDS/(PREFIX+'-render-R'+str(int(a.method[1])-1)+'.json')).read_text());summary[str(f)]['change_vs_preceding_stage_dB']=now['psnr']-prior['focus_quick_check'][str(f)]['in_focus_PSNR']
-    write(RECORDS/(PREFIX+'-render-'+a.method+'.json'),dict(completed=True,rows=rows,diagnostics=diagnostics,focus_quick_check=summary,fixed_visible_and_fill=True,GT_only_post_prediction_diagnostic=True));write(folder/'predictions.json',dict(completed=True,rows=rows));print('S1D_FOCUS_CHECK',a.method,summary,flush=True)
+    write(RECORDS/(PREFIX+'-render-'+a.method+'.json'),dict(completed=True,rows=rows,diagnostics=diagnostics,focus_quick_check=summary,fixed_visible_and_fill=True,GT_only_post_prediction_diagnostic=a.method.startswith('R'),GT_used_in_declared_Oracle_prediction=a.method.startswith('Oracle')));write(folder/'predictions.json',dict(completed=True,rows=rows));print('S1D_FOCUS_CHECK',a.method,summary,flush=True)
 
 
 if __name__=='__main__':main()
