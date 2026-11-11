@@ -1,0 +1,123 @@
+{
+  "status": "calibration remains paused; alternatives not executed",
+  "evidence": {
+    "feature_counts": [
+      {
+        "frame": 1,
+        "count": 502
+      },
+      {
+        "frame": 6,
+        "count": 499
+      },
+      {
+        "frame": 11,
+        "count": 496
+      },
+      {
+        "frame": 16,
+        "count": 498
+      },
+      {
+        "frame": 21,
+        "count": 578
+      },
+      {
+        "frame": 26,
+        "count": 515
+      },
+      {
+        "frame": 30,
+        "count": 554
+      },
+      {
+        "frame": 35,
+        "count": 529
+      },
+      {
+        "frame": 40,
+        "count": 522
+      },
+      {
+        "frame": 45,
+        "count": 459
+      },
+      {
+        "frame": 50,
+        "count": 488
+      },
+      {
+        "frame": 55,
+        "count": 534
+      },
+      {
+        "frame": 60,
+        "count": 561
+      }
+    ],
+    "tracks430": 430,
+    "frame1": {
+      "frame": 1,
+      "points": 146,
+      "train_points": 121,
+      "heldout_points": 25,
+      "occupied_train_cells": 15,
+      "train_inverse_depth_span_P90_P10": 0.011951725844107836,
+      "near_points_below_2_5m": 9,
+      "far_points_atleast_2_5m": 137,
+      "supported": false,
+      "triangulated_depth_p10_p50_p90": [
+        4.681225246600717,
+        4.854966816818015,
+        4.9525018839198784
+      ],
+      "models": {}
+    },
+    "pair_baseline_m_quantiles": [
+      0.01605401206217924,
+      0.022433233930437543,
+      0.05526285154311431,
+      0.09925210796080712,
+      0.12999999523162842
+    ],
+    "near_fraction": 0.06164383561643835,
+    "support_image": "outputs/route3-sharp-s1b-2026-11-11-01/calibration/support-f001.png"
+  },
+  "observations": [
+    "SIFT cap4000 is not reached:459-578 keypoints/frame; mutual descriptor ratio0.75,1px epipolar/reprojection and>=3views retain430 E1tracks.",
+    "146 first-frame track observations occupy15cells but only9 are near2.5m; spatial distribution does not imply depth-span coverage.",
+    "Pair camera baselines1.61-13cm give geometric parallax, but stable matches concentrate at4.68-4.95m (depth P10-P90); insufficient near depth coverage, not zero camera motion.",
+    "Procedural scene/input inspection shows fine/repeating background texture and comparatively smooth narrow foreground bars. Texture and track selection plausibly explain far bias; no ablation was run to isolate each cause.",
+    "The threshold is a conservative preregistered support rule for two-parameter inverse-depth fitting. It does not prove calibration impossible. E2 and later-frame fits were not attempted."
+  ],
+  "alternatives": [
+    {
+      "method": "Pose-constrained dense optical flow triangulation",
+      "source": "https://github.com/princeton-vl/RAFT",
+      "proposal": "Dense bidirectional flow on a small selection of near/far input pairs; epipolar,reprojection,positive-depth and multi-view tests, dynamic/occlusion rejection; stratify supports by triangulated inverse depth before heldout fit.",
+      "estimated_engineering": "0.5-2 days",
+      "estimated_single13frame_runtime": "5-30 minutes including matching/filtering at512px, provisional; not measured",
+      "risk": "Smooth occluders may still lack correspondence; motion/occlusion violates static triangulation, short baseline magnifies flow error."
+    },
+    {
+      "method": "Existing DA3 multi-view pointcloud cross-consistency",
+      "source": "https://github.com/ByteDance-Seed/Depth-Anything-3/blob/main/docs/API.md",
+      "proposal": "Use existing DA3-BASE joint13-frame geometry and cross-view projection consistency/confidence as a video reference, not independent geometric truth. Separate E1/E2, reserve views/points, report circular bias.",
+      "estimated_engineering": "0.5-1 day",
+      "estimated_single13frame_runtime": "1-10 minutes including fusion/filtering; cached inference can be reused",
+      "risk": "DA3 shared depth/scale bias can be transferred into SHARP; consistency alone does not certify metric correctness."
+    },
+    {
+      "method": "Given-pose dense stereo / plane sweep",
+      "source": "https://colmap.github.io/faq.html#reconstruct-sparse-dense-model-from-known-camera-poses",
+      "proposal": "Use fixed input camera poses for photometric dense stereo and geometric filtering, with independent heldout support checks. No new scene or network training.",
+      "estimated_engineering": "1-3 days including existing COLMAP environment compatibility",
+      "estimated_single13frame_runtime": "10-60 minutes at512px, provisional; not measured",
+      "risk": "Repeating checker, narrow textureless foreground, view-dependent appearance and dynamic object can leave the same near-support gap."
+    }
+  ],
+  "estimates_are_planning_not_benchmarks": true,
+  "GT_depth_read_for_analysis": false,
+  "thresholds_unchanged": true,
+  "user_decides_new_calibration_round": true
+}

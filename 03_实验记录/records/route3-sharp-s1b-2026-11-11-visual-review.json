@@ -1,0 +1,20 @@
+{
+  "inspected_paths": [
+    "edge-artifacts/B2-high-f001-N1.4-F1.4.png",
+    "edge-artifacts/B2-high-f030-N1.4-F5.png",
+    "edge-artifacts/B2-high-f060-N2-F5.png",
+    "residual-hoistedcov-evaluation/B2-high-f001-N1.4-F1.4-O6-GT-rec.png",
+    "residual-hoistedcov-evaluation/B2-high-f030-N1.4-F5-O6-GT-rec.png",
+    "temporal/evaluation/F5-curves.png"
+  ],
+  "output_root": "outputs/route3-sharp-s1b-2026-11-11-01",
+  "observations": [
+    "Anchoring reduces background checker cross-edge color error visible in unanchored full; sphere contour differences and too-sharp thin stems remain in inspected far-focus examples.",
+    "No broad new halo was apparent in the inspected anchored-only crops. This is a limited visual check, not certification across all content; all12 foreground crop panels are retained.",
+    "Adding uncalibrated L3 changes foreground contour/background details, consistent with reported far-focus metric losses; no calibration-versus-aggregation attribution is established.",
+    "Residual covariance far-focus output visibly reveals checker/background pattern across the sphere interior and changes near edge profiles. This fails quality NI; no parameter search was performed.",
+    "Total scene alpha alone cannot identify foreground opacity loss when background Gaussians are opaque; the residual core alpha diagnostic is not a foreground-layer decomposition."
+  ],
+  "no_new_method_tuning": true,
+  "causal_claim_limited": true
+}

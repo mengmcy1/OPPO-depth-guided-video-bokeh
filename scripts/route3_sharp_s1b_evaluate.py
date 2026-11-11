@@ -110,6 +110,26 @@ def flypoints(c):
     write(RECORDS/(PREFIX+'-fly-opacity.json'),dict(completed=True,rows=rows,tagged_K1_proxy_not_certified_outlier_or_K64_contribution=True,GT_evaluator_only=True))
 
 
+def artifacts(c):
+    import matplotlib
+    matplotlib.use('Agg');import matplotlib.pyplot as plt
+    from src.c1_bokehme import region_sse
+    root=OUT/'edge-artifacts';root.mkdir(exist_ok=False);ev=json.loads((RECORDS/(PREFIX+'-native-evaluation.json')).read_text());rows=[];figures=[]
+    for case in items():
+        frame=case['frame_id'];g,edge,_,_=edge_maps(frame);near=edge&(g['depth_axial_m']<2.5);y,x=np.nonzero(near)
+        # Input geometry alone selects a foreground boundary crop, never error.
+        i=np.argmin((y-np.median(y))**2+(x-np.median(x))**2);cy=int(np.clip(y[i]-64,0,384));cx=int(np.clip(x[i]-64,0,384))
+        truth=display(exr(case['gt_rgb_exr']));names=['O3_SHARP','SHARP_full','A_color','A_color_opacity','A_color_L3_E1','A_color_L3_E2'];images=[truth]
+        for name in names:
+            p=np.load(ev['predictions'][case['id']][name])['prediction_srgb'];images.append(p);rows.append(dict(id=case['id'],method=name,region='GT-depth-boundary diagnostic',**region_sse(p,truth,edge)))
+        fig,axes=plt.subplots(2,len(images),figsize=(3*len(images),6))
+        for col,(img,name) in enumerate(zip(images,['Cycles']+names)):
+            axes[0,col].imshow(img[cy:cy+128,cx:cx+128]);axes[1,col].imshow(np.clip(abs(img-truth)[cy:cy+128,cx:cx+128]*10,0,1));axes[0,col].set_title(name,fontsize=8)
+            for ax in axes[:,col]:ax.axis('off')
+        fig.suptitle(case['id']+' foreground boundary; bottom absolute error x10');fig.tight_layout();p=root/(case['id']+'.png');fig.savefig(p,dpi=125);plt.close(fig);figures.append(str(p))
+    write(RECORDS/(PREFIX+'-edge-artifacts.json'),dict(completed=True,rows=rows,visualizations=figures,descriptive_only=True,no_new_pass_fail_gate=True,crop_selected_by_GT_geometry_only_for_visualization=True))
+
+
 def temporal(c):
     import matplotlib
     matplotlib.use('Agg');import matplotlib.pyplot as plt
@@ -148,7 +168,7 @@ def temporal(c):
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--mode',choices=['quality','zero_diagnostics','flypoints','temporal'],required=True);a=p.parse_args();torch.set_num_threads(8)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--mode',choices=['quality','zero_diagnostics','flypoints','artifacts','temporal'],required=True);a=p.parse_args();torch.set_num_threads(8)
     c=json.loads(CRITERIA.read_text());assert c['frozen'];globals()[a.mode](c)
 
 

@@ -130,8 +130,35 @@ def evaluate(c):
         writer=csv.DictWriter(f,fieldnames=list(flat[0]),lineterminator='\n');writer.writeheader();writer.writerows(flat)
 
 
+def diagnose(c):
+    """Read-only transparency diagnosis of the registered residual outputs."""
+    import matplotlib
+    matplotlib.use('Agg');import matplotlib.pyplot as plt
+    root=OUT/(RUN_NAME+'-diagnostics');root.mkdir(exist_ok=False);run=json.loads((OUT/RUN_NAME/'predictions.json').read_text());lookup={x['id']:x for x in items()};rows=[];figures=[]
+    for case in items():
+        d=np.load(case['input_npz']);fg=d['center_surface_valid']&(d['center_depth']<2.5)
+        # A fixed 15px erosion isolates an opaque foreground interior for this
+        # descriptive check. It never enters method construction or NI gates.
+        core=cv2.erode(fg.astype(np.uint8),np.ones((31,31),np.uint8),borderType=cv2.BORDER_CONSTANT,borderValue=0)>0
+        for cloud in ['O5','O6-GT-rec']:
+            values={}
+            for mode in ['fixed64','fixed16','fixed16_residual',f'stratified16_residual_seed{SEEDS[0]}']:
+                row=next(r for r in run['rows'] if r['id']==case['id'] and r['cloud']==cloud and r['mode']==mode);p=np.load(row['path']);T=1-p['alpha'];values[mode]=T
+                rows.append(dict(id=case['id'],cloud=cloud,mode=mode,core_pixels=int(core.sum()),core_mean_transmittance=float(T[core].mean()) if core.any() else None,
+                    core_fraction_transmittance_gt_0p1=float((T[core]>.1).mean()) if core.any() else None))
+            if case['frame_id']==30 and case['fstop']==1.4:
+                fig,axes=plt.subplots(1,5,figsize=(15,3));images=[core]+[values[m] for m in values]
+                for ax,image,title in zip(axes,images,['GT-depth foreground core']+list(values)):
+                    ax.imshow(image,vmin=0,vmax=1);ax.set_title(title,fontsize=7);ax.axis('off')
+                fig.suptitle(case['id']+' '+cloud+'; transmittance');fig.tight_layout();path=root/(case['id']+'-'+cloud+'.png');fig.savefig(path,dpi=135);plt.close(fig);figures.append(str(path))
+    write(RECORDS/(PREFIX+'-residual-artifacts.json'),dict(completed=True,rows=rows,visualizations=figures,diagnostic_only=True,frozen_parameters_changed=False,
+        observed='At far focus residual modes can make opaque foreground transmit background/fill; fixed64 comparison and core statistics retained.',
+        possible_explanation='Determinant area normalization preserves per-Gaussian opacity mass, not nonlinear alpha composition of an opaque surface. Covariance blur also mixes depths. These effects were not independently ablated.',
+        no_implementation_or_constant_tuning_after_scores=True))
+
+
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--mode',choices=['render','evaluate'],required=True);a=p.parse_args();c=json.loads(CRITERIA.read_text());assert c['frozen']
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--mode',choices=['render','evaluate','diagnose'],required=True);a=p.parse_args();c=json.loads(CRITERIA.read_text());assert c['frozen']
     torch.set_num_threads(8);cv2.setNumThreads(1)
     if a.mode=='render':
         if os.environ.get('CUDA_VISIBLE_DEVICES')!='0':raise ValueError('Explicit GPU0')

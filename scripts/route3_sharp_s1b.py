@@ -100,7 +100,7 @@ def render_native(c):
                 print('S1B_RENDER',case['id'],name,flush=True)
             del cloud;torch.cuda.empty_cache()
     write(OUT/'native-predictions.json',dict(completed=True,rows=rows,zero=zeros));write(RECORDS/(PREFIX+'-native-render.json'),dict(completed=True,rows=timing,K=64,hidden_results_descriptive_only=True,
-        GT_geometry_or_hidden_used_in_prediction=False,calibration_used=False))
+        GT_depth_or_hidden_surfaces_used_in_prediction=False,E1_retrieval_uses_given_GT_poses=True,E2_retrieval_uses_globally_aligned_DA3_poses=True,calibration_used=False))
 
 
 def main():
