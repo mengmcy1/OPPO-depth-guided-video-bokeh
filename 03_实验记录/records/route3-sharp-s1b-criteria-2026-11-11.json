@@ -257,8 +257,8 @@
     "fstop": 1.4,
     "requested_focus_m": 1.4,
     "available_existing_focus_m": 5.0,
-    "scope_pending_user_clarification": true,
-    "selection": "await user: useexisting5mGT ormarktemporalunavailable;no newGT renders; prospective supplementbeforetemporal metrics",
+    "scope_pending_user_clarification": false,
+    "selection": "user explicitly selects existing5m asprimary andauthorizes new1.4m second group; neverpoolfocuses",
     "methods": [
       "O3_DA3",
       "O3_SHARP",
@@ -270,7 +270,37 @@
     "SHARP": "officialsameS1model,res1536; frame30cache reused,other7frames eachonce;anchor samefixedrecipe",
     "calibrated_optional": "independent temporal sparse tracks usingthese8frames withsame thresholds andEposes; noGTdepth, no temporal smoothing; if notsupported report separately",
     "metric": "L1 unaligned displayRGB frame-difference minusCyclesframe-difference RMSE, pertransition+pooled; also perframequality",
-    "diagnostic_rule": "A_color relativeRMSE<=1.05*SHARPfull andpairedothercomparisonsreported; not a flickeror methodvalueclaim"
+    "diagnostic_rule": "A_color relativeRMSE<=1.05*SHARPfull andpairedothercomparisonsreported; not a flickeror methodvalueclaim",
+    "focus_groups_m": [
+      5.0,
+      1.4
+    ],
+    "primary_focus_m": 5.0,
+    "secondary_focus_m": 1.4,
+    "new_GT_exception": {
+      "frames": [
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34
+      ],
+      "scene": "same L1 B2-high blend/camera",
+      "fstop": 1.4,
+      "focus_m": 1.4,
+      "spp": 2048,
+      "spp_source": "route3-c1-b2-2026-11-10-noise.json formal_samples B2-high N1.4 F1.4",
+      "seed": 20261110,
+      "denoising": false,
+      "motion_blur": false,
+      "adaptive_sampling": false,
+      "EXR": "32bit linearRGB",
+      "output": "outputs/route3-sharp-s1b-2026-11-11-01/temporal/Cycles-F1.4",
+      "time_record_required": true
+    }
   },
   "residual": {
     "clouds": [
@@ -352,8 +382,10 @@
   "constraints": [
     "no network weighttraining/fine-tuning/architecturechanges",
     "no GTdepth in calibration or anchoring; onlyevaluation/focusselection/reports",
-    "no newBlender scenes orDOF renders",
+    "no newBlender scenes; only newlyauthorized8-frameN1.4F1.4 temporalGT extension; nootherDOF rendering",
     "no learnedgates/subjectprotection/apertureweights,U1video,StreamSplat orlargerDA3"
   ],
-  "after_report": "pause for user decision"
+  "after_report": "pause for user decision",
+  "user_temporal_amendment_at_utc": "2026-11-11T05:26:53.607210+00:00",
+  "any_new_metrics_or_optimization_computed_at_amendment": false
 }
