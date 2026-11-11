@@ -49,7 +49,7 @@ class FittedVisible(nn.Module):
         self.colors.clamp_min_(0)
 
 
-def ssim(x,y):
+def ssim(x,y,return_map=False):
     """Standard local SSIM, 11x11 Gaussian sigma1.5, RGB range0..1."""
     x=x.permute(2,0,1)[None];y=y.permute(2,0,1)[None]
     v=torch.arange(11,device=x.device,dtype=x.dtype)-5
@@ -59,5 +59,6 @@ def ssim(x,y):
     vx=F.conv2d(x*x,kernel,groups=3)-mux.square()
     vy=F.conv2d(y*y,kernel,groups=3)-muy.square()
     cov=F.conv2d(x*y,kernel,groups=3)-mux*muy
-    return (((2*mux*muy+.01**2)*(2*cov+.03**2))/
-            ((mux.square()+muy.square()+.01**2)*(vx+vy+.03**2))).mean()
+    value=(((2*mux*muy+.01**2)*(2*cov+.03**2))/
+           ((mux.square()+muy.square()+.01**2)*(vx+vy+.03**2)))
+    return value if return_map else value.mean()
