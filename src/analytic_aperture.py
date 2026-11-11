@@ -92,7 +92,7 @@ def analytic_single(scene,K,E,width,height,focus,aperture,quadrant=None,eps2d=.0
     return dict(rgb_linear=image[...,:3],alpha=alpha,depth=image[...,3]/alpha.clamp_min(1e-10),**stats)
 
 
-def sampled(scene,K,E,width,height,focus,aperture,samples,fill,bgdepth,random_seed=None,eps2d=.0015,far_plane=1e4):
+def sampled(scene,K,E,width,height,focus,aperture,samples,fill,bgdepth,random_seed=None,eps2d=.0015,far_plane=1e4,return_fill_contribution=False):
     from gsplat import rasterization
     fills,_,_=aperture_fill_samples(fill,bgdepth,K,focus,aperture,samples)
     if random_seed is None:disk=aperture_disk(samples,aperture,device=K.device,dtype=K.dtype)
@@ -106,13 +106,17 @@ def sampled(scene,K,E,width,height,focus,aperture,samples,fill,bgdepth,random_se
         grid=torch.stack([2*uv[...,0]/w-1,2*uv[...,1]/h-1],-1)
         fills=torch.nn.functional.grid_sample(fill.permute(2,0,1)[None].expand(samples,3,h,w),grid,align_corners=False,padding_mode='border').permute(0,2,3,1)
     rgb=torch.zeros_like(fill);alpha=torch.zeros_like(bgdepth)
+    fill_contribution=torch.zeros_like(fill) if return_fill_contribution else None
     for i,xy in enumerate(disk):
         view=E.clone();view[:2,3]-=xy
         intr=K.clone();intr[0,2]+=K[0,0]*xy[0]/focus;intr[1,2]+=K[1,1]*xy[1]/focus
         image,a,_=rasterization(scene.means,scene.quats,scene.scales,scene.opacities,scene.colors,view[None],intr[None],width,height,
             packed=False,render_mode='RGB+ED',rasterize_mode='antialiased',near_plane=1e-4,far_plane=far_plane,eps2d=eps2d)
         a=a[0,...,0];rgb+=image[0,...,:3]+(1-a[...,None])*fills[i];alpha+=a
-    return dict(rgb_linear=rgb/samples,alpha=alpha/samples)
+        if return_fill_contribution:fill_contribution+=(1-a[...,None])*fills[i]
+    result=dict(rgb_linear=rgb/samples,alpha=alpha/samples)
+    if return_fill_contribution:result['fill_contribution_linear']=fill_contribution/samples
+    return result
 
 
 def analytic(scene,K,E,width,height,focus,aperture,samples,fill,bgdepth,eps2d=.0015):
