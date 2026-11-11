@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "stage": "R3 U2 target-focus reevaluation",
+  "frozen": true,
+  "frozen_at_utc": "2026-11-11T03:19:03.768359+00:00",
+  "any_R3_focus_parameters_predictions_or_metrics_computed_at_freeze": false,
+  "authorization": "latest user R3 addendum;R1/R2 already complete,so newprospective freeze instead of rewritingc18e323",
+  "basis": {
+    "U2_criteria": "11c78ca",
+    "U2_summary": "5933ccc",
+    "R1_R2_criteria": "c18e323",
+    "R1_R2_summary": "84f77ad"
+  },
+  "output": "outputs/route3-target-focus-2026-11-10-01",
+  "scope": {
+    "scene": "B2-high",
+    "frames": [
+      1,
+      30,
+      60
+    ],
+    "nominal_focuses_m": [
+      1.4,
+      5.0
+    ],
+    "fstops": [
+      1.4,
+      2.0
+    ],
+    "groups_per_focus": 6,
+    "variants": [
+      "E1",
+      "E2"
+    ]
+  },
+  "target_focus": {
+    "mask": "original finite GTvisible pixels withabs physicalCoC<=1px at nominalGTfocus andcurrentaperture,exactly original in_focus scoringmask",
+    "formula": "zf(method,variant,frame,lens)=median(used_estimated_input_depth[GT_in_focus_mask &finite_positive_est_depth])",
+    "per_aperture": true,
+    "shared_depth": "U2 E1/E2 andO3/O5/ours useidentical globallyscaledDA3 inputdepth;therefore all methods use same zf for eachconfiguration",
+    "GT_use": "mask selects user-targetregion only;notautomatic focusing;no additional GTdepth fit,pose correction or hidden data",
+    "invalid": "empty valid selection stops andreports;never fallback toGTdistance",
+    "nominal_GT_focus_not_used_as_render_focus": true
+  },
+  "unchanged": {
+    "input_depth_pose_scale": "same cachedDA3 outputs andsingleSim3 scale,GTposes onlyforE1 asbefore",
+    "RGB": "same U2 clippedLDR inputs;no optimizedR2 Gaussians",
+    "aperture": "samephysical50mm/(2*fstop),no CoCgain orscale retuning",
+    "renderer": "same native deterministic64,VG observed-sky policy,profile andfarclip;no newtraining",
+    "C_fill": "identical U2LaMa fill image/mask andbackgrounddepth,withsame per-ray lookup formula atnewzf;no LaMa rerun",
+    "retrieval": "sameother12 inputframes,nearestbehind-visibledepth+median within1%,samefilters,no motioncompensation",
+    "band": "same inputestimateddepth discontinuity+CoC rule,CoCuses newzf;GTmask never usedas band orhole selection",
+    "cache": "verify currentbands are inside originalnominal/pressure union;reuse U2parent cache where valid;ifnot,recompute same retrieval onexpanded input-onlyunion andrecord,do not change aggregation",
+    "baseline_GT_geometry": "unchanged original GT-geometry L3 andO3/O5 atnominalGT focus,not optimizedU1 orrefocusedGTbaseline"
+  },
+  "methods": [
+    "O3",
+    "O5",
+    "ours",
+    "descriptive O3 outside estimatedband+oursinside;notformalmethod"
+  ],
+  "scoring": {
+    "primary": "Cycles samefullscene truth atnominal1.4/5m",
+    "auxiliary": "existing R1LDRconsistent reference,same nominalcase",
+    "masks": "all original GTnominalfocus masks unchanged,not recomputed atestimatedzf",
+    "regions": [
+      "full_image",
+      "in_focus",
+      "out_of_focus",
+      "band",
+      "recoverable"
+    ],
+    "statistics": {
+      "PSNR": "poolfloat64SSE/(3validpixels), then -10log10; independently per scene/focus, each aperture also reported",
+      "patch_size": 64,
+      "LPIPS_net": "alex",
+      "LPIPS_version": "0.1",
+      "LPIPS_package": "0.1.4",
+      "LPIPS_spatial": false,
+      "patch_pool": "whole unmasked fixed64px grid weighted by regional pixel support",
+      "RGB": "standard displayRGBfloat[0,1];raw linearEXR retained;3D integrates true linearRGB",
+      "full_image": "all pixels including sky and peeled-reference residuals",
+      "in_focus": "finite current-visible GTdepth,absCoC<=1px;residuals retained"
+    },
+    "reference_sources": "route3-ldr-u1r-2026-11-10-R1-evaluation.json supplies originalU2 andGTgeometry scores forbothreferences"
+  },
+  "degradation": {
+    "ours": "R3ours(estimatedgeometry,targetfocus)-oldL3(GTgeometry,nominalfocus)",
+    "O3": "R3O3(DA3depth,targetfocus)-oldO3(GTdepth,nominalfocus)",
+    "comparison": "Deltaours-DeltaO3 perregion,perfocus;also R3ours-R3O3 direct andR3minusoriginalU2 for allmethods"
+  },
+  "decision": {
+    "form": "same U2 frozenform,unchanged0.3dB+5/6 anddirect full/focus guardrails",
+    "band_advantage_threshold_dB": 0.3,
+    "same_direction_required": 5,
+    "min_pixels": 1000,
+    "groups_per_focus": 6,
+    "same_direction": "casePSNR degradationadvantage>0;LPIPS andchanges reported,not a new extraU2gate",
+    "guardrails": "direct R3ours-R3O3 pooledfullimage andin-focus PSNR each>=-0.2dB",
+    "primary": "R3 Cycles only,reported separately fromU2",
+    "auxiliary": "sameform calculated onLDRreference asR3auxiliary;doesnot change oldU2 orprimaryCyclesresult"
+  },
+  "focal_recovery": {
+    "PSNR": "R3 in-focus PSNR minusoriginalU2 in-focus PSNR,positive isrecovereddB",
+    "LPIPS": "R3 minusU2 LPIPS,negativeisimprovement",
+    "remaining": "also report distance tosameoriginal GTgeometry baseline"
+  },
+  "limits": [
+    "one controlledscene,3frames,6lensgroups/focus;notcrossscene orautomaticfocus evidence",
+    "GT focal-region mask is privileged targetselection,user-clickproxy;not allowed forgeometrycorrection",
+    "targetfocus doesnotfix spatialdeptherror,CoCmagnitude orincorrectretrievedcontent",
+    "ours usesunoptimizedVG+input-onlyL3retrieval,not fittedR2 truehiddenOracle",
+    "descriptive splice isnot a method orformal decision;no feedforwardtraining,newBlenderorDA3 inference"
+  ],
+  "old_results_and_U2_decisions_modified": false,
+  "after_report": "pause for user route decision"
+}
