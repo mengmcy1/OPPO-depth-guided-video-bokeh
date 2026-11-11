@@ -1,0 +1,268 @@
+{
+  "statistics": {
+    "PSNR": "poolfloat64SSE/(3validpixels), then -10log10; independently per scene/focus, each aperture also reported",
+    "patch_size": 64,
+    "LPIPS_net": "alex",
+    "LPIPS_version": "0.1",
+    "LPIPS_package": "0.1.4",
+    "LPIPS_spatial": false,
+    "patch_pool": "whole unmasked fixed64px grid weighted by regional pixel support",
+    "RGB": "standard displayRGBfloat[0,1];raw linearEXR retained;3D integrates true linearRGB",
+    "full_image": "all pixels including sky and peeled-reference residuals",
+    "in_focus": "finite current-visible GTdepth,absCoC<=1px;residuals retained"
+  },
+  "quality": {
+    "PSNR_gain_dB": 0.5,
+    "LPIPS_relative_drop": 0.1,
+    "LPIPS_drop_must_exceed_noise_multiple": 3,
+    "OR_rule": "PSNRgain>=0.5 OR relativeLPIPSdrop>=10% AND absoluteLPIPSdrop>3noise",
+    "secondary": "bandPSNR drop<=0.2dB and LPIPSworsening<=3noise",
+    "direction": "PSNRgain>0 AND LPIPSchange<-3noise;absLPIPSchange<=3noise is tie,not direction improvement or significant deterioration",
+    "guardrails": "per-focus pooled full-image and in-focus PSNR versusO3 each drop<=0.2dB; individual cases also reported"
+  },
+  "noise": {
+    "per_lens_band": {
+      "N1.4-F1.4": 6.890230572564765e-05,
+      "N1.4-F5": 0.00015369987618877754,
+      "N2-F1.4": 0.00010956290865626447,
+      "N2-F5": 0.00013720452299674835
+    },
+    "source": "L1 preregistered band-weighted independent Cycles pairs at frames1/30;maximum corresponding lens pair used forframe60",
+    "is_confidence_interval": false
+  },
+  "min_pixels": 1000,
+  "min_groups": 6,
+  "same_direction_required": 5,
+  "band": {
+    "multiplier": 1.5,
+    "relative_inverse_depth_jump": 0.03,
+    "minimum_radius_px": 1.0,
+    "definition": "3x3 relative inverse-depth jump, union of max-local-CoC1.5x footprints; exclusively target current visible depth",
+    "GT_hidden_used_for_construction": false,
+    "primary_evaluation": "band excluding previously flagged peeled-reference residual pixels;band itself is never GT-filtered",
+    "report": "independent disocclusionGT recall/precision/FP/FN, unknownGT support and CoC distribution; no tuning toGT recall"
+  },
+  "high_light_influence": {
+    "definition": "max_RGB abs(S(Cycles_linear)-R_LDR)>0.02 in displayRGB; no dilation",
+    "threshold": 0.02,
+    "report": "imagefraction,counts,spatial heatmap/connectedcomponent distribution and overlapwith frozen scoringregions;also influenced/uninfluenced scores",
+    "evaluator_only": true,
+    "not_pure_light_ground_truth": "difference also includes finiteK andMC noise;not used to selectmethod content"
+  },
+  "regions": [
+    "full_image",
+    "in_focus",
+    "out_of_focus",
+    "band",
+    "recoverable",
+    "highlight_influence",
+    "outside_highlight_influence"
+  ],
+  "references": {
+    "primary": "unchanged Cycles full-scene GT at nominal1.4/5m",
+    "auxiliary": "unchanged R1 LDR consistent mean64; no new reference generation",
+    "noise": "existing R2 Cycles lens noise and R1 max independent-pair LDR noise"
+  },
+  "target_focus": {
+    "rule": "median used method depth inside original R3 GT in-focus mask at nominal focus/current aperture; GT mask simulates user-selected target only",
+    "shared": "O3_SHARP,VG_SHARP,SHARP front/full andretrieval variants share the same front-depth scalar percase/scale; cached O3_DA3/VG_DA3 retain original R3 depth/focus",
+    "score_masks": "original nominal GT scoring masks unchanged"
+  },
+  "fill": {
+    "rule": "same U2 input-side depth-band mask and background-depth extension + fixed LaMa; recompute SHARP mask/fill from its own depth where needed, not GT segmentation/hidden depth",
+    "sharing": "per frame/scale one fill and background depth for VG_SHARP/front/full/retrieval E1/E2, same per-ray lookup; native fill never receives Oracle S",
+    "compositing": "merge visible/back/retrieved Gaussians, depth-sorted alpha on each lens ray, residualT*Cfill, linear mean64; retrieved hidden active only outputband, no opaque LaMa covering hidden"
+  },
+  "anchor": {
+    "steps": 1000,
+    "seed": "2026111121+frame",
+    "variants": [
+      "A-color",
+      "A-color+opacity"
+    ],
+    "optimized": "output Gaussian RGB colors only; optional bounded opacity. Network weights,means,scales,rotations fixed",
+    "initialization": "exact original SHARP full2layers; calibrated geometries independently restart from mapped original attributes, not from the native fitted checkpoint",
+    "colors": "linear RGB projected to[0,1] afterevery update, preservingoriginal SHARP bounded color policy; no HDR recovery",
+    "opacity": "p=clamp(p0+0.02*tanh(delta),0,1),delta initialized0;absolutechange<=0.02",
+    "optimizer": "Adam eps1e-8, colorlr0.01,opacity-deltalr0.01; cosine factor1to0.01 over1000 steps",
+    "loss": "0.8 target displayRGB L1 +0.2(1-SSIM11sigma1.5), all target pixels,zeroaperture K1,sharedAAeps0.0015,remainingT*samefixedtargetLaMa",
+    "supervision": "only current target inputLDR RGB; no otherframeRGB,DOF,apertureviews,GTdepth or evaluationmasks read byoptimizer",
+    "monitor_steps": [
+      0,
+      50,
+      100,
+      250,
+      500,
+      750,
+      1000
+    ],
+    "selection": "fixed final1000 only, no checkpoint selection byany scores",
+    "changed_Gaussian_threshold": "maxabsRGBdelta>1e-5; opacityabsdelta>1e-5; reportquantiles and spatialchanges",
+    "stop": "nonfinite loss/attributes OR inputloss>5x initial for3 consecutive monitors OR finalinputPSNR<=initialinputPSNR; save exactstep andcontext before raising",
+    "zero_evaluation": "afterfit score full,near-in-focus,far-in-focus,GTdepth-boundary; masks onlyin evaluator"
+  },
+  "stage": "S1c dense flow calibration, hidden retrieval ladder, predicted-depth edge-masked color anchoring",
+  "frozen": true,
+  "frozen_at_host_UTC": "2026-11-11T07:39:04.194061+00:00",
+  "client_date": "2026-11-10",
+  "client_timezone": "America/Los_Angeles",
+  "filename_date_uses_client_context": true,
+  "any_new_metrics_computed": false,
+  "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-sharp-s1c-2026-11-10-01",
+  "basis": {
+    "S1b_summary": "590a665",
+    "S1b_criteria": [
+      "9dc09ef",
+      "36011d7",
+      "62516ca"
+    ]
+  },
+  "frames": [
+    1,
+    30,
+    60
+  ],
+  "input_frames": [
+    1,
+    6,
+    11,
+    16,
+    21,
+    26,
+    30,
+    35,
+    40,
+    45,
+    50,
+    55,
+    60
+  ],
+  "focuses_m": [
+    1.4,
+    5.0
+  ],
+  "fstops": [
+    1.4,
+    2.0
+  ],
+  "K": 64,
+  "flow": {
+    "model": "original official RAFT large, raft-things.pth preferred; torchvision public RAFT weights fallback only if original unavailable",
+    "iterations": 32,
+    "mixed_precision": false,
+    "input_resolution": [
+      512,
+      512
+    ],
+    "image_source": "same clipped-linear LDR RGB as S1; displayRGB uint8, network0..255",
+    "pairs": "per E1/E2 target all13frames: >=0.01m baseline; choose largest baseline in each of4 target-camera XY angular quadrants, then fill by baseline descending to6; compute union directed pairs and reverse for FB; no GTdepth",
+    "FB_max_px": 1.0,
+    "symmetric_epipolar_max_px": 1.0,
+    "pair_and_multiview_reprojection_max_px": 1.0,
+    "minimum_angle_degrees": 0.1,
+    "positive_depth_all_views": true,
+    "multiview": "median axial depth across pair triangulations; at least2 additional views agree within max(0.005m,2%depth), then reprojection <=1px ineachsupportingview; no GT masks"
+  },
+  "calibration": {
+    "features": "OpenCV SIFT nfeatures4000,contrast0.02,edgeThreshold10,sigma1.6; grayscale uint8 from inputLDR only",
+    "pairs": "all13 choose2 withbaseline>=0.01m",
+    "matching": "mutual nearest descriptor, Lowe ratio0.75 bothdirections, symmetric epipolar distance<=1px usingprovidedposes",
+    "pixel_convention": "keypoint OpenCV arrayindex xy +0.5 for camera pixel centers; depth bilinear sampled at original index xy",
+    "tracks": "union consistent featurematches,onekeypoint/frame; reject merging same-frame-conflict components; >=3 views",
+    "triangulation": "multi-view DLT fromprovidedK/E, positive depth inall observations, maxreprojection<=1px, maxrayangle>=0.1degree; noGTdepth/segmentation/dynamiclabels",
+    "split": "heldout spatial32x32 image blocks,20% chosen with seed2026111032+frame+variant before balancedstratum caps; no point inbothsplits",
+    "minimum": {
+      "train_points_each_frame": 100,
+      "heldout_points_each_frame": 25,
+      "occupied_4x4_train_cells": 6,
+      "train_inverse_depth_P90_minus_P10_min_per_m": 0.03,
+      "train_near_points_below2p5m": 25,
+      "heldout_near_points_below2p5m": 10,
+      "train_far_points_atleast4m": 25,
+      "heldout_far_points_atleast4m": 10
+    },
+    "near_far_reporting": "triangulated axial depth below/above2.5m,plus data median split; noGTdepth used for segmentation or fit",
+    "fit": "per frame anddepthsource ytri=1/ztri=a*(1/zpred)+b, robustHuber delta0.005 m^-1, SLSQP fixed maxiter500",
+    "bounds": "a in[0.05,20],b in[-2,2] m^-1; constrain a*minimum_input_inverse_depth+b>=1e-4; weak1e-6 identity regularizer; no spatialterms",
+    "mapping": "zcal=1/max(a/z+b,1e-4); report flooredpixel/Gaussian counts, noGT-basedcorrection or validationselection",
+    "Gaussian_mapping": "every SHARP Gaussian mean multiplied zcal/z alongits own ray; all3 scales multipliedsamepositivefactor,quat/opacity/color unchanged beforeanchor. Includes bothlayers",
+    "validation": "heldout sparse inverse-depth errorsbefore/after,notusedtochoosebestfit; preserve finalfittedcoefficients; GTdepth read onlylaterforreports",
+    "risk": "rigid-track verification cannotcertify allmoving-object matches; no newmotionsegmentation method",
+    "geometry_stop": "any main13 frame/Evariant belowminimum cannot supportregisteredcalibration; report before expansion",
+    "method": "same bounded robust affine inverse depth as S1b",
+    "sampling": "sample fixed4px lattice from geometry-consistent densepoints; near<2.5m,middle2.5<=z<4m,far>=4m inverse-depth strata, cap2000points/stratum/frame with seed2026111031+frame+variant; no resampling after scores",
+    "support_rule_note": "S1b did not freeze an independent near-count minimum; add explicit near/far25train10held floors here, all previously frozen numerical support thresholds retained",
+    "validation_stop": "stop if heldout inverse-depth RMSE OR heldout sparse depth AbsRel increases beyond1e-10 absolute arithmetic tolerance; check eachframe,eachdepthsource,eachEvariant before GTdepth reports",
+    "spatial_terms": false,
+    "GT_depth_used_for_fit_or_point_selection": false
+  },
+  "geometry_variants": [
+    "native",
+    "cal_E1",
+    "cal_E2"
+  ],
+  "comparisons": {
+    "P3": "A_color_cal_Ek+L3_cal_Ek vs A_color_cal_Ek; primaryband;guard sameA_color_cal_Ek; E1/E2 separate",
+    "P4": "each calibrated O3_SHARP,O3_DA3,A_color,A_color+L3 minus native paired counterpart;primaryband;guard native counterpart",
+    "P5": "A_color_edge vs A_color,primaryrecoverable,focuses separately;guard A_color; native primary,calvariants separate",
+    "P1_edge": "A_color_edge vs O3_SHARP atsamegeometry;primaryband;guard O3_SHARP",
+    "direction": "positivePSNRgain AND LPIPSdrop>3reference/lensnoise;tiesnotsame-direction",
+    "guardrail": "pooled full and in_focus PSNR vs named control >=-0.2dB"
+  },
+  "edge_anchor": {
+    "edge": "3x3 relative inverse-depth range>3% localmax from corresponding SHARP first-layer depth only",
+    "width_px": 3,
+    "dilation_kernel": 7,
+    "L1": "exclude dilated edge pixels;normalize by retained RGB scalar count",
+    "SSIM": "same11x11 sigma1.5,only windows fullyoutside exclusion;renormalize retainedwindows; no GT",
+    "steps": 1000,
+    "learning_rate": 0.01,
+    "optional_edge_downweight": false,
+    "geometry_variants": [
+      "native",
+      "cal_E1",
+      "cal_E2"
+    ]
+  },
+  "ladder": {
+    "descriptive_only": true,
+    "visible_layers": "same A_color visible cloud for each native/cal_E1/cal_E2 set; hidden switches alone",
+    "levels": [
+      "O6_GT_rec",
+      "L3_GTgeometry",
+      "L3_cal_E1",
+      "L3_cal_E2",
+      "L3_native_E1",
+      "L3_native_E2"
+    ],
+    "GT_reference": "O6-GT-rec is recoverable-surface GT Oracle reference,not a mathematical bound on the combined biased visible representation",
+    "GT_retrieval": "all13 visible GTdepth/GTposes with inputLDRRGB,including target current visibleGTdepth forbehind filter; no targethiddenGT,onlyallowedOracle",
+    "ordinary_retrieval": "unchanged L3 nearestbehind relativemargin0.005,within1% nearest depth median RGB/depth; no motioncompensation,nonewfilter",
+    "band": "eachvisiblegeometry same predicted-depth/CoCband and samefill used for all ladderlevels",
+    "composition": "merge visible+activehidden,sortdepth alpha perray;remainingT*LaMa lookup;linear meanK64",
+    "wrong_hidden": "GT usedonlyafterretrieval to count depths <target currentvisibleGTdepth-max(.001,.005*GTdepth); tagged rendering contribution; no point deletion byGT"
+  },
+  "optional6": {
+    "executed": false,
+    "reason": "optional training-cost diagnosis deferred; complete primary questions and respect calibration stop first"
+  },
+  "stop_conditions": [
+    "model/license unavailable",
+    "dense support below frozen minimum",
+    "heldout calibration error worsens",
+    "GPU inference/memory fails"
+  ],
+  "after_stop": "report and stop expansion; independent edge/ladders not automatically continued without user steering",
+  "constraints": [
+    "no GTdepth/masks in optical flow,triangulation,calibration oredge mask",
+    "onlydeclared Oracle ladder/focusclick/evaluation mayuseGT",
+    "no networkweights updated",
+    "no newBlender/DA3model/newGT",
+    "alloldoutputsanddecisionsunchanged"
+  ],
+  "boundaries": [
+    "one controlledscene,3frames,6groupsperfocus",
+    "outputparametercoloranchoringonlytargetRGB",
+    "Oracle ladder descriptiveonly"
+  ]
+}
