@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "stage": "R1 LDR-consistent rescoring and R2 fixed-budget U1 rerun",
+  "frozen": true,
+  "frozen_at_utc": "2026-11-11T02:21:27.052236+00:00",
+  "any_new_R1_R2_metrics_computed_at_freeze": false,
+  "authorization": "latest user R1/R2 prompt supersedes only this new trial stopping rule;all historical decisions unchanged",
+  "output": "outputs/route3-ldr-u1r-2026-11-10-01",
+  "basis": {
+    "B2": "61dbce2",
+    "dual_layer": "7dea2e9",
+    "upper_criteria": "11c78ca",
+    "upper_summary": "5933ccc"
+  },
+  "scope": {
+    "scene": "B2-high",
+    "frames": [
+      1,
+      30,
+      60
+    ],
+    "focuses_m": [
+      1.4,
+      5.0
+    ],
+    "fstops": [
+      1.4,
+      2.0
+    ],
+    "groups_per_focus": 6
+  },
+  "reference": {
+    "source": "outputs/route3-upper-bound-2026-11-11-01/U0-subviews",
+    "K": 64,
+    "formula": "R_LDR(x)=S((1/64)*sum_k clip(I_k_linear(x),0,1));clamp each linear EXR subview before mean;float64 accumulation;float32 saved",
+    "display_transfer": "S(l)=12.92*l for l<=0.0031308;else1.055*l^(1/2.4)-0.055;clip displayRGB[0,1]",
+    "input_policy": "identical to existing HDR diagnostic and baseline clipped-linear -> standard displayRGB;no gamma2.2 change to BokehMe adapter",
+    "frame1_check": {
+      "id": "B2-high-f001-N1.4-F1.4",
+      "existing": "route3-upper-bound-2026-11-11-HDR-diagnostic.json",
+      "max_RGB_abs_tolerance": 2e-07,
+      "max_PSNR_abs_tolerance_dB": 1e-06,
+      "max_LPIPS_abs_tolerance": 1e-07
+    }
+  },
+  "reference_noise": {
+    "source": "outputs/route3-upper-bound-2026-11-11-01/U0-noise",
+    "complete_pairs": [
+      "B2-high-f001-N1.4-F1.4",
+      "B2-high-f030-N2-F5"
+    ],
+    "formula": "same clip-linear-mean-S operation independently for seed2026111102 andseed2026111103",
+    "report": "fixed-mask regional PSNR and patch LPIPS between two independent reference means",
+    "formal_noise": "for each region,max patchLPIPS over two available complete pairs;apply same conservative value toall12 configs;not a confidence interval or all-lens replication",
+    "adequacy_stop": "stop if either pairfull PSNR<50dB OR3*max_band_LPIPS_noise>=10%of pooled O3_LDR_bandLPIPS in eitherfocus;no new Cycles renders"
+  },
+  "statistics": {
+    "PSNR": "poolfloat64SSE/(3validpixels), then -10log10; independently per scene/focus, each aperture also reported",
+    "patch_size": 64,
+    "LPIPS_net": "alex",
+    "LPIPS_version": "0.1",
+    "LPIPS_package": "0.1.4",
+    "LPIPS_spatial": false,
+    "patch_pool": "whole unmasked fixed64px grid weighted by regional pixel support",
+    "RGB": "standard displayRGBfloat[0,1];raw linearEXR retained;3D integrates true linearRGB",
+    "full_image": "all pixels including sky and peeled-reference residuals",
+    "in_focus": "finite current-visible GTdepth,absCoC<=1px;residuals retained"
+  },
+  "band": {
+    "multiplier": 1.5,
+    "relative_inverse_depth_jump": 0.03,
+    "minimum_radius_px": 1.0,
+    "definition": "3x3 relative inverse-depth jump, union of max-local-CoC1.5x footprints; exclusively target current visible depth",
+    "GT_hidden_used_for_construction": false,
+    "primary_evaluation": "band excluding previously flagged peeled-reference residual pixels;band itself is never GT-filtered",
+    "report": "independent disocclusionGT recall/precision/FP/FN, unknownGT support and CoC distribution; no tuning toGT recall"
+  },
+  "quality": {
+    "PSNR_gain_dB": 0.5,
+    "LPIPS_relative_drop": 0.1,
+    "LPIPS_drop_must_exceed_noise_multiple": 3,
+    "OR_rule": "PSNRgain>=0.5 OR relativeLPIPSdrop>=10% AND absoluteLPIPSdrop>3noise",
+    "secondary": "bandPSNR drop<=0.2dB and LPIPSworsening<=3noise",
+    "direction": "PSNRgain>0 AND LPIPSchange<-3noise;absLPIPSchange<=3noise is tie,not direction improvement or significant deterioration",
+    "guardrails": "per-focus pooled full-image and in-focus PSNR versusO3 each drop<=0.2dB; individual cases also reported"
+  },
+  "regions": [
+    "full_image",
+    "in_focus",
+    "out_of_focus",
+    "band",
+    "recoverable",
+    "motion_required",
+    "parallax_sufficient"
+  ],
+  "min_pixels": 1000,
+  "min_groups": 6,
+  "same_direction_required": 5,
+  "high_light_influence": {
+    "definition": "max_RGB abs(S(Cycles_linear)-R_LDR)>0.02 in displayRGB; no dilation",
+    "threshold": 0.02,
+    "report": "imagefraction,counts,spatial heatmap/connectedcomponent distribution and overlapwith frozen scoringregions;also influenced/uninfluenced scores",
+    "evaluator_only": true,
+    "not_pure_light_ground_truth": "difference also includes finiteK andMC noise;not used to selectmethod content"
+  },
+  "R1": {
+    "methods": [
+      "O3 GT-depth",
+      "O5_shared fromcorrectedL2",
+      "L2 observed-sky corrected",
+      "L3 corrected",
+      "descriptive O3outside+L2inside"
+    ],
+    "existing_predictions_only": true,
+    "new_predictions": false,
+    "descriptive_splice": "np.where(same input-depth band,L2_sRGB,O3_sRGB);not old fullO6 splice;not method orgate",
+    "additional_U2": "existing E1/E2 ours,O3,O5 anddescriptive outputs scored descriptively;old U2 decisions never changed",
+    "comparisons": "L2 andL3 versusO3 undernew LDR reference, per-focus quality+secondary+5/6direction+full/focus guardrails;historical Cycles scores/decisions retained forcomparison"
+  },
+  "R2": {
+    "configuration": "same U1-positions.json,U1-supervision,initialization,loss,constraints,optimizer,cosine schedule andper-frame RNGrecipe asf5e452d",
+    "source": "outputs/route3-upper-bound-2026-11-11-01",
+    "steps": 8000,
+    "reuse_frame1": {
+      "path": "outputs/route3-upper-bound-2026-11-11-01/U1-fit/f001/visible-final.pt",
+      "source_step": 8000,
+      "reason": "fixed predetermined final budget;not heldout-selected;old overfit decision remains inhistorical record",
+      "replay_new_stop_rule_on_existing_monitors": true
+    },
+    "optimize_frames": [
+      30,
+      60
+    ],
+    "monitor_steps": "0,100,500,1000,...,8000 identical tooriginal;trainmonitor train[::4]17of65;heldoutall16",
+    "stopping": "historicalbest includesinitial monitor;stop ifheldoutPSNR <=best_seen-0.5dB for3 consecutive monitors OR any nonfinite loss/optimization value;train-minus-heldout gap reportedonly",
+    "final_selection": "fixed step8000 only ifstop rule nottriggered;never select checkpoint byheldout",
+    "methods": {
+      "U1": "learned nonnegative radiance,may>1, fixed sameband O6-GT-rec hidden,Cfill,K64",
+      "U1_clip": "same fitted visible Gaussians butclip visible linear colors[0,1] before rendering;hidden unchanged",
+      "controls": "sameoptimized visible without hidden for eachcolor mode;O3 andunoptimized L2"
+    },
+    "Cycles": {
+      "criteria_source": "11c78ca original U1 rule unchanged",
+      "noise": {
+        "per_lens_band": {
+          "N1.4-F1.4": 6.890230572564765e-05,
+          "N1.4-F5": 0.00015369987618877754,
+          "N2-F1.4": 0.00010956290865626447,
+          "N2-F5": 0.00013720452299674835
+        },
+        "source": "L1 preregistered band-weighted independent Cycles pairs at frames1/30;maximum corresponding lens pair used forframe60",
+        "is_confidence_interval": false
+      },
+      "worth_training": "at least onefocus passes formal_method_value AND pooled full-image PSNR gain overO3>=0.5dB AND full-image LPIPS not worse beyond3noise",
+      "full_noise_source": {
+        "rule": "absolute difference <=3 times maximum independent-pair whole-image patch LPIPS at same lens and formal B2 SPP, frames1/30; frame60 uses maximum; existing B2 noise record only",
+        "source": "route3-c1-b2-2026-11-10-noise.json",
+        "not_confidence_interval": true
+      }
+    },
+    "LDR": {
+      "criteria": "same form asoriginal U1, new per-region max-pair reference noise",
+      "worth_training": "atleast onefocus passes formalvalue AND full-image gain>=0.5dB versusO3 AND full-image LPIPS worsening<=3newfullnoise"
+    },
+    "radiance_analysis": "fraction anyRGB>1,projected spatialdensity;fraction/enrichment within3px (7x7dilation) of inputEXR pixels anyRGB>1;analysis only,not supervision"
+  },
+  "optional_HDR_input": {
+    "scheduled": "only after core completes without stop;descriptive only",
+    "definition": "current center EXR rawlinear HDR colors forV-G,visibleGTdepth,unoptimizedsameprofile;band GT-recoverable hidden,Cfill andK64 sameL2;no extraBlender renders",
+    "scored_against": "Cycles",
+    "formal_gate": false
+  },
+  "limits": [
+    "one controlledmain scene,3frames,6configs/focus,correlated samples;not crossscene performance",
+    "LDRreference answersrelative performance atsame capped radiance;not trueHDR highlight fidelity",
+    "U1 scene-fit upperproxy is not feedforward achievable performance",
+    "O5/O6 notperfect optical Oracles;descriptive splices/HDR-input variant are notmethod results",
+    "both references andhighlight masks are evaluator-only;no new loss orcheckpoint selection fromthem"
+  ],
+  "old_results_or_criteria_modified": false,
+  "deadline": "2026-11-13 approximately;report incompleteitems andcauses;pauseafterreport"
+}
