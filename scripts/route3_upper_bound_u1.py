@@ -61,7 +61,9 @@ def pinhole(pc,K,E,background):
 
 
 def fit(a):
-    folder=OUT/'U1-fit'/f'f{a.frame:03d}';folder.mkdir(parents=True,exist_ok=False)
+    folder=getattr(a,'fit_output',None) or OUT/'U1-fit'/f'f{a.frame:03d}';folder.mkdir(parents=True,exist_ok=False)
+    stop_policy=getattr(a,'stop_policy','legacy')
+    result_record=getattr(a,'record',None) or RECORDS/f'route3-upper-bound-2026-11-11-U1-f{a.frame:03d}.json'
     plan=json.loads((OUT/'U1-positions.json').read_text());d,K,cam,initial,parent,fill,bg,profile=inputs(a.frame)
     views=[]
     for r in plan['positions']:
@@ -84,9 +86,10 @@ def fit(a):
         hidden_training_band='union of main-lens input-depth method bands only;score masks never read',
         DOF_GT_read=False,evaluation_positions_read=False,evaluation_masks_read=False,
         fixed_hidden=True,heldout_selects_checkpoint=False)
+    config['stop_policy']=stop_policy
     write(folder/'config.json',config)
     rng=np.random.default_rng(config['seed']);rows=[];step_times=[];overfit_count=0;diverged_count=0;initial_train_loss=None
-    torch.cuda.reset_peak_memory_stats();start=time.monotonic();stop_reason=None;first_gradients={}
+    torch.cuda.reset_peak_memory_stats();start=time.monotonic();stop_reason=None;first_gradients={};best_heldout=-float('inf');decline_count=0
     for step in range(a.steps+1):
         if step%500==0 or step in [0,100,a.steps]:
             with torch.inference_mode():
@@ -99,15 +102,23 @@ def fit(a):
                     monitor[name]=dict(psnr=float(-10*np.log10(max(sse/pixels,1e-12))),loss=float(np.mean(losses)),views=len(group))
                 del pc
             gap=monitor['train']['psnr']-monitor['heldout']['psnr']
+            if stop_policy=='heldout-decline' and not all(np.isfinite(v[k]) for v in monitor.values() for k in ['psnr','loss']):
+                raise RuntimeError('R2_STOP nonfinite monitor loss/PSNR')
+            best_heldout=max(best_heldout,monitor['heldout']['psnr'])
+            decline=best_heldout-monitor['heldout']['psnr']
+            decline_count=decline_count+1 if decline>=.5 else 0
             row=dict(step=step,seconds=time.monotonic()-start,metrics=monitor,train_minus_heldout_PSNR_dB=gap,
                 median_step_seconds=float(np.median(step_times[-100:])) if step_times else None,peak_allocated_MiB=torch.cuda.max_memory_allocated()/2**20)
+            if stop_policy=='heldout-decline':row.update(best_heldout_PSNR=best_heldout,heldout_decline_dB=decline,consecutive_declines=decline_count)
             rows.append(row);write(folder/'monitor.json',dict(completed=False,rows=rows,config=config));print('U1_MONITOR',a.frame,json.dumps(row),flush=True)
             if initial_train_loss is None:initial_train_loss=monitor['train']['loss']
-            if step>=1000:
+            if stop_policy=='legacy' and step>=1000:
                 overfit_count=overfit_count+1 if gap>3 else 0
                 diverged_count=diverged_count+1 if monitor['train']['loss']>1.05*initial_train_loss else 0
-            if overfit_count>=3:stop_reason='training PSNR exceeds heldout by>3dB for3 consecutive monitors'
-            if diverged_count>=3:stop_reason='persistent training loss divergence above initial loss'
+            if stop_policy=='legacy':
+                if overfit_count>=3:stop_reason='training PSNR exceeds heldout by>3dB for3 consecutive monitors'
+                if diverged_count>=3:stop_reason='persistent training loss divergence above initial loss'
+            elif decline_count>=3:stop_reason='heldout PSNR declined>=0.5dB from historicalbest for3 consecutive monitors'
             if stop_reason:break
             if step>0 and step%1000==0:
                 torch.save(dict(step=step,parameters=fitted.state_dict(),optimizer=optimizer.state_dict(),rng=rng.bit_generator.state),folder/'latest.pt')
@@ -136,7 +147,7 @@ def fit(a):
         learned_linear_color_max=float(scene.colors.max()),learned_Gaussian_fraction_any_color_above1=float((scene.colors>1).any(-1).float().mean()),
         wall_seconds=time.monotonic()-start,median_step_seconds=float(np.median(step_times)) if step_times else None,
         peak_allocated_MiB=torch.cuda.max_memory_allocated()/2**20,first_backward_gradients=first_gradients,output=str(folder/'visible-final.pt'))
-    write(folder/'result.json',report);write(RECORDS/f'route3-upper-bound-2026-11-11-U1-f{a.frame:03d}.json',report)
+    write(folder/'result.json',report);write(result_record,report)
     if stop_reason:raise RuntimeError('U1_STOP '+stop_reason)
 
 
@@ -166,7 +177,9 @@ def render(a):
 
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--mode',choices=['fit','render'],required=True)
-    p.add_argument('--frame',type=int,choices=[1,30,60]);p.add_argument('--steps',type=int,default=8000);a=p.parse_args()
+    p.add_argument('--frame',type=int,choices=[1,30,60]);p.add_argument('--steps',type=int,default=8000)
+    p.add_argument('--fit-output',type=Path);p.add_argument('--record',type=Path)
+    p.add_argument('--stop-policy',choices=['legacy','heldout-decline'],default='legacy');a=p.parse_args()
     if os.environ.get('CUDA_VISIBLE_DEVICES')!='0':raise ValueError('Explicit GPU0')
     subprocess.run(['nvidia-smi'],check=True);torch.set_num_threads(4);cv2.setNumThreads(1)
     if a.mode=='fit':fit(a)
