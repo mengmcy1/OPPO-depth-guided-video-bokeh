@@ -3,7 +3,24 @@
   "date": "2026-11-12",
   "timezone": "America/Los_Angeles",
   "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01",
-  "scenes": [],
+  "scenes": [
+    "scene-121302-broad",
+    "scene-121303-multilayer",
+    "scene-121304-thin",
+    "scene-121305-broad",
+    "scene-121306-multilayer",
+    "scene-121307-thin",
+    "scene-121308-broad",
+    "scene-121309-multilayer",
+    "scene-121311-broad",
+    "scene-121312-multilayer",
+    "scene-121313-thin",
+    "scene-121314-broad",
+    "scene-121316-thin",
+    "scene-121317-broad",
+    "scene-121318-multilayer",
+    "scene-121319-thin"
+  ],
   "input_frames": [
     1,
     6,
@@ -181,7 +198,11 @@
     "q_multiplies_alpha": false,
     "visible_layer": "fixed calibrated A-color;no joint update",
     "source_RGB_resampling": "project corrected fused position back to original input views;linearRGB bilinear",
-    "query_cap": 32768,
+    "query_cap": {
+      "train256": 32768,
+      "eval512": 262144,
+      "forward_chunk": 2048
+    },
     "feature_normalization": "fixed physical constants;no heldout fitted statistics",
     "loss": "direct matched-ray depth/RGB L1;candidate correctness BCE;opacity/selection supervision;no K64 render loss",
     "candidate_order": "estimated target depth ascending;no GT in selection",
@@ -201,7 +222,64 @@
     "checkpoint_selection": "final fixed step;heldout monitors do not select checkpoint",
     "all_training_inputs": "256/5 candidate fusion;frozen geometry frontend cached from13frames",
     "S2a_evaluation_inputs": "512/13 without retraining",
-    "development_success_reference": "scheme2.5:qualified-cell recovery~75-80% or farfocus full-image>=+0.3dBvsR1R2;focusguard reported separately"
+    "development_success_reference": "scheme2.5:qualified-cell recovery~75-80% or farfocus full-image>=+0.3dBvsR1R2;focusguard reported separately",
+    "query_cap_reason": "pointwise MLP streams all512 band pixels for fair dense comparison;no attention;twoGSperposition;256training remains capped",
+    "overfit_engineering_check": {
+      "scope": "first training scene frame30,N1.4,F5;full active queries",
+      "loss_final_max_initial_fraction": 0.5,
+      "selection_correct_min": 0.9,
+      "matched_ray_relative_depth_L1_max": 0.05,
+      "matched_ray_linear_RGB_L1_max": 0.05,
+      "false_activation": "report,not an extra stopping gate",
+      "meaning": "development fit check,not a new paper success criterion"
+    },
+    "loss_weights": {
+      "relative_depth_L1": 1,
+      "linear_RGB_L1": 1,
+      "q_BCE": 0.2,
+      "selection_CE": 0.2,
+      "opacity_BCE": 0.2
+    },
+    "opacity_BCE_positive_weight": 4,
+    "two_surface_label_packing": "nearest2GT-positive depth clusters,max10mmor2%;onlyoutput-slot packing,not candidate content correctness;anchor byaperturehitfraction andGT-queryplacementproximity",
+    "public_query_conditions": [
+      "query_u_divW",
+      "query_v_divH",
+      "2_over_focus_m",
+      "50_times_aperture_radius_m",
+      "visible_depth_m_div5",
+      "target_frame_div60"
+    ],
+    "checkpoint_every_steps": {
+      "overfit": 1000,
+      "S2a": 2000
+    },
+    "overfit_monitor_steps": 1000,
+    "eval_rendering": {
+      "K": 64,
+      "hidden_sigma_pixels": 0.7,
+      "post_visibility": "existing S1dR1 centre own-renderdepth+max5mmor2%;noGT",
+      "opacity_prune": 0.0001,
+      "source_provenance": "raw refs+model source weights;layercodes in GaussianScene are not temporal source IDs"
+    }
   },
-  "network_status": "not_started;pending full formal data"
+  "network_status": "MLP implemented and CPU gradient checks passed;not trained",
+  "seeds": [
+    121302,
+    121303,
+    121304,
+    121305,
+    121306,
+    121307,
+    121308,
+    121309,
+    121311,
+    121312,
+    121313,
+    121314,
+    121316,
+    121317,
+    121318,
+    121319
+  ]
 }

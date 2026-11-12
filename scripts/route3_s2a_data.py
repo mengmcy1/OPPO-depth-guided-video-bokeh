@@ -78,7 +78,7 @@ def input_cache_512(name,desc,out):
             for k in extras:extras[k][at]=v[k][y,x]
             for dy in [-1,0,1]:
                 for dx in [-1,0,1]:patch[at,dy+1,dx+1]=np.uint8(np.rint(v['rgb_srgb'][np.clip(y+dy,0,511),np.clip(x+dx,0,511)]*255))
-        rawpool.update(position_world_estimated=xyz,source_frame_id=np.array(ALL)[rawpool['slot']],rgb_patch=patch,**extras);q,qa=pack_queries(rawpool,band,8,32768);valid=q['candidate_valid'];ix=np.maximum(q['candidate_indices'],0);gather=lambda x:np.where(valid.reshape(*valid.shape,*([1]*(x.ndim-1))),x[ix],0) if n else np.zeros((*valid.shape,*x.shape[1:]),x.dtype);features=query_features(rawpool,q['candidate_indices'],valid)[0]['features'] if n else np.zeros((*valid.shape,19),np.float32);inp=dict(**q,features=features,position_world=gather(xyz),source_slots=gather(rawpool['slot']),source_xy=gather(rawpool['source_xy']),target_K=target['K'],target_c2w=target['c2w'],target_depth=target['depth'],band=band);source_depth=np.zeros(valid.shape,np.float32)
+        rawpool.update(position_world_estimated=xyz,source_frame_id=np.array(ALL)[rawpool['slot']],rgb_patch=patch,**extras);q,qa=pack_queries(rawpool,band,8,262144);valid=q['candidate_valid'];ix=np.maximum(q['candidate_indices'],0);gather=lambda x:np.where(valid.reshape(*valid.shape,*([1]*(x.ndim-1))),x[ix],0) if n else np.zeros((*valid.shape,*x.shape[1:]),x.dtype);features=query_features(rawpool,q['candidate_indices'],valid)[0]['features'] if n else np.zeros((*valid.shape,19),np.float32);inp=dict(**q,features=features,position_world=gather(xyz),source_slots=gather(rawpool['slot']),source_xy=gather(rawpool['source_xy']),target_K=target['K'],target_c2w=target['c2w'],target_depth=target['depth'],band=band);source_depth=np.zeros(valid.shape,np.float32)
         for slot,v in enumerate(views):
             at=valid&(inp['source_slots']==slot);xy=inp['source_xy'][at];source_depth[at]=v['depth'][xy[:,1],xy[:,0]]
         inp['source_depth']=source_depth;inp['memory_verified']=np.zeros(valid.shape,bool);inp['memory_entry_id']=np.full(valid.shape,-1,np.int32);s=desc['source_root']
@@ -88,7 +88,7 @@ def input_cache_512(name,desc,out):
         local=out/f'f{f:03d}';local.mkdir(exist_ok=True);path=local/'inputs.npz'
         if not path.exists():save_npz(path,inp)
         for c in entry['cases']:rows.append(dict(frame=f,case=c,input=str(path),target=None,query_stats=qa))
-    save_json(out/'manifest.json',dict(scene=name,rows=rows,context=str(context),size=512,frames=ALL,M=8,features=19,query_cap=32768,model_input_only=True,hidden_GT_not_read=True,calibration_and_memory_flags_loaded=True))
+    save_json(out/'manifest.json',dict(scene=name,rows=rows,context=str(context),size=512,frames=ALL,M=8,features=19,query_cap=262144,model_input_only=True,hidden_GT_not_read=True,calibration_and_memory_flags_loaded=True))
 
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--scene',required=True);p.add_argument('--size',type=int,choices=[256,512],default=256);p.add_argument('--GT-warmup',action='store_true');a=p.parse_args();cv2.setNumThreads(2);desc=descriptor(a.scene);frames=FIVE if a.size==256 else ALL;size=a.size;tag=f'{size}-{len(frames)}'+('-GTwarmup' if a.GT_warmup else '');out=OUT/'learning-data'/a.scene/tag;out.mkdir(parents=True,exist_ok=True)
@@ -113,6 +113,8 @@ def main():
             z=native[f]['depth_axial_m'][native[f]['center_visible']];low,high=z.min(),z.max()
             for u in (np.arange(4)+.5)/4:
                 focus=float(1/((1-u)/low+u/high));cases.append(dict(id=f'f{f:03d}-N1.4-F{focus:.6f}',frame=f,nominal_focus_m=focus,focus_m=focus,fstop=1.4,training_focus_only=True))
+        if a.GT_warmup:
+            for case in cases:case['focus_m']=case['nominal_focus_m']
         band=np.zeros((size,size),bool)
         for case in cases:band|=depth_band(target['depth'],K[0,0],case['focus_m'],.05/(2*case['fstop']))[0]
         pool=collect(target['depth'],K,pose,band,views,f);n=len(pool['depth']);xyz=np.empty((n,3),np.float32);source=np.empty((n,3),np.float32);oid=np.zeros(n,np.int16);foot=np.zeros(n,np.float32);patch=np.empty((n,3,3,3),np.uint8);extras={k:np.empty(n,np.float32) for k in ['edge_distance','reprojection','FB','angle_radians']};verified=np.zeros(n,bool);entryid=np.full(n,-1,np.int32)

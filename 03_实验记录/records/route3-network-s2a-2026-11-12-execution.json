@@ -1,9 +1,9 @@
 {
-  "status": "D_screening_in_progress",
+  "status": "formal_data_recheck_in_progress",
   "base_revision": "03b6890541391e6f71b4f0f06619ba146fa0bb11",
   "output": "outputs/route3-network-s2a-2026-11-12-01",
   "config": "configs/route3-network-s2a-2026-11-12.json",
-  "current_free_GiB": 246.12966918945312,
+  "current_free_GiB": 263.0592613220215,
   "GPU": "RTX4090D48GiB GPU0;checked before GPU subprocesses;no foreign processes killed",
   "environment": "reuse pilot route3/magicbokeh/dofgs/Blender4.5.3;no installation or global configuration changes",
   "models_licenses_reused_from": "route3-network-pilot-2026-11-12-model-licenses.json",
@@ -13,7 +13,6 @@
     "runner": "unittest;existing environment has no pytest;no package installed"
   },
   "old_results_unchanged": true,
-  "no_network_implementation_or_training_yet": true,
   "stop_conditions": [
     "first30 passes<12",
     "projected free disk<60GiB",
@@ -26,5 +25,14 @@
     "used": "586G",
     "available": "252G",
     "source": "df -h at start;rounded human-readable units"
-  }
+  },
+  "new_network_implemented": true,
+  "new_network_trained": false,
+  "optimizer_updates": 0,
+  "network_architecture_record": "route3-network-s2a-2026-11-12-network-architecture.json",
+  "screening_completed": {
+    "candidates": 19,
+    "passed": 16
+  },
+  "stage_meaning": "current scores are A-color and GTrec rendering references,not learned light-fusion outputs"
 }

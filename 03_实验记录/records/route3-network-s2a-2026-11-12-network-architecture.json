@@ -1,0 +1,46 @@
+{
+  "implemented": true,
+  "trained": false,
+  "trainable_parameters": 38281,
+  "input_shapes": {
+    "features": "B x8 x19",
+    "public_query_lens_condition": "B x6",
+    "source_images": "V x3 xH xW;V=5 training,13 rendering eval",
+    "source_poses": "V x4 x4"
+  },
+  "outputs": {
+    "means_camera": "B x2 x3",
+    "colors_linear": "B x2 x3",
+    "opacity": "B x2",
+    "source_weights": "B x2 x8",
+    "content_q": "B x8"
+  },
+  "architecture": "pointwise two-layer width128 MLP;two global slot embeddings;no attention;source RGB resampled after corrected fused position;grouped sampling avoids image replication",
+  "GT_absent_from_forward": true,
+  "q_multiplies_alpha": false,
+  "depth_bound": "plus/minus50% source axial depth",
+  "color_residual_bound": 0.05,
+  "source_RGB_range": [
+    0,
+    1
+  ],
+  "optimizer_updates_executed": 0,
+  "tests_passed": 5,
+  "tests": [
+    "finite gradients through corrected geometry and RGB",
+    "empty candidates zero opacity and weights",
+    "uniform q does not dim opacity",
+    "rotated-camera source projection and pixel centers",
+    "content remains positive when placement unsupported"
+  ],
+  "training_barriers": [
+    "all formal master data and heldout references ready",
+    "five-frame labels ready",
+    "12/4 split fixed using only GTrec gain",
+    "single-scene fit before S2a"
+  ],
+  "evaluation_query_cap": 262144,
+  "training_query_cap": 32768,
+  "stream_chunk": 2048,
+  "notes": "all512 ring pixels processed by pointwise MLP;no attention or96GB machine needed;only256/5 optimizer training planned"
+}
