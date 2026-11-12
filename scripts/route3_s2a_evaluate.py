@@ -33,13 +33,36 @@ def figure(name,c,truth,region,images,special=None):
     for col,(im,label) in enumerate(zip(ims,names)):
         axes[0,col].imshow(im);axes[0,col].set_title(label);axes[1,col].imshow(im[y:y+64,x:x+64],interpolation='nearest');err=np.sqrt(np.mean((im-truth)**2,axis=-1));axes[2,col].imshow(err,vmin=0,vmax=.25,cmap='magma',interpolation='nearest');last=axes[3,col].imshow(err[y:y+64,x:x+64],vmin=0,vmax=.25,cmap='magma',interpolation='nearest')
         for row in range(4):axes[row,col].axis('off')
-    fig.colorbar(last,ax=axes[3,:].tolist(),fraction=.02,pad=.02,label='display RGB RMSE;shared scale0-.25');fig.suptitle(name+' '+c['id']+(';estimated E1 geometry;historical PPT comparison used GT geometry' if special is not None else ';crop selected from GT support only'));path=dest/(name+'-'+c['id']+('-PPT-same-location' if special is not None else '')+'.png');fig.savefig(path,dpi=120);plt.close(fig)
+    fig.colorbar(last,ax=axes[3,:].tolist(),fraction=.02,pad=.02,label='display RGB RMSE;shared scale0-.25');fig.suptitle(name+' '+c['id']+(';estimated E1 geometry;historical PPT comparison used GT geometry' if special is not None else ';crop selected from GT support only'));path=dest/(name+'-'+c['id']+('-PPT-same-location' if special is not None else '')+'.png');
+    if not path.exists():fig.savefig(path,dpi=120)
+    plt.close(fig)
     fig,ax=plt.subplots(figsize=(5,5));ax.imshow(truth)
     if region['recoverable'].any():ax.contour(region['recoverable'].astype(np.uint8),levels=[.5],colors=['lime'],linewidths=.5)
-    ax.add_patch(Rectangle((x-.5,y-.5),64,64,fill=False,edgecolor='yellow',linewidth=1.5));ax.set_title(name+' '+c['id']+f' crop=({y},{x})');ax.axis('off');locator=path.with_name(path.stem+'-locator.png');fig.savefig(locator,dpi=120);plt.close(fig);return dict(scene=name,id=c['id'],path=str(path),locator=str(locator),crop_yx=[y,x],crop_size=64,interpolation='nearest',shared_error_scale=[0,.25],**selection)
+    ax.add_patch(Rectangle((x-.5,y-.5),64,64,fill=False,edgecolor='yellow',linewidth=1.5));ax.set_title(name+' '+c['id']+f' crop=({y},{x})');ax.axis('off');locator=path.with_name(path.stem+'-locator.png');
+    if not locator.exists():fig.savefig(locator,dpi=120)
+    plt.close(fig);return dict(scene=name,id=c['id'],path=str(path),locator=str(locator),crop_yx=[y,x],crop_size=64,interpolation='nearest',shared_error_scale=[0,.25],**selection)
+
+
+def ppt_same_location(examples):
+    import matplotlib
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
+    from matplotlib.patches import Rectangle
+    dest=OUT/'visualizations';dest.mkdir(exist_ok=True);examples=sorted(examples,key=lambda e:e['frame']);names=['Cycles','A_color','R1_R2','LightFusion','GTrec'];fig,axes=plt.subplots(len(examples),5,figsize=(15,3*len(examples)),squeeze=False);locator,lax=plt.subplots(1,len(examples),figsize=(5*len(examples),5),squeeze=False)
+    for row,e in enumerate(examples):
+        y,x=e['crop'];ims=dict(Cycles=e['truth'],**e['images'])
+        for col,name in enumerate(names):axes[row,col].imshow(ims[name][y:y+64,x:x+64],interpolation='nearest');axes[row,col].set_title(f"t{e['frame']} {name};crop({y},{x})");axes[row,col].axis('off')
+        ax=lax[0,row];ax.imshow(e['truth']);ax.contour(e['mask'].astype('uint8'),levels=[.5],colors=['lime'],linewidths=.5);ax.add_patch(Rectangle((x-.5,y-.5),64,64,fill=False,edgecolor='yellow',linewidth=1.5));ax.set_title(f"t{e['frame']} crop({y},{x})");ax.axis('off')
+    fig.suptitle('B2-high N1.4 F5: same frame/crop as1111 report; current=E1 GTposes+estimatedcalibrateddepth; old O5/O6=GTgeometry');fig.tight_layout(rect=[0,0,1,.94]);path=dest/'B2-high-N1.4-F5-PPT-same-location.png'
+    if not path.exists():fig.savefig(path,dpi=140)
+    plt.close(fig);lp=dest/'B2-high-N1.4-F5-PPT-same-location-locator.png'
+    if not lp.exists():locator.savefig(lp,dpi=140)
+    plt.close(locator);return dict(scene='B2-high',kind='PPTsame-location',path=str(path),locator=str(lp),cases=[dict(frame=e['frame'],crop_yx=e['crop']) for e in examples],crop_size=64,interpolation='nearest',geometry='currentE1GTposes+calibratedestimateddepth;oldreportGTgeometryO5/O6')
 
 def evaluate(reference):
-    torch.set_num_threads(6);net=model();split=json.loads((OUT/'split.json').read_text());names=split['heldout']+['B2-high','pilot-thin','pilot-multilayer'];metrics={};paths={};cells=[];figs=[];cohort=[]
+    completed_record=RECORDS/('route3-network-s2a-2026-11-12-evaluation-'+reference+'.json')
+    if completed_record.exists() and json.loads(completed_record.read_text()).get('completed'):return
+    torch.set_num_threads(6);net=model();split=json.loads((OUT/'split.json').read_text());names=split['heldout']+['B2-high','pilot-thin','pilot-multilayer'];metrics={};paths={};cells=[];figs=[];cohort=[];ppt_examples=[]
     previous=json.loads((RECORDS/'route3-network-pilot-2026-11-12-baseline-'+reference+'.json').read_text());ldr_b2={r['id']:r['path'] for r in json.loads((ROOT/'outputs/route3-ldr-u1r-2026-11-10-01/references.json').read_text())['rows']};b2items={x['id']:x for x in items()};criteria=json.loads((RECORDS/'route3-sharp-s1d-criteria-2026-11-11.json').read_text());historic=json.loads((RECORDS/'route3-c1-b2-2026-11-10-visualizations.json').read_text());historic_rows=historic['rows'] if 'rows' in historic else historic.get('plots',historic.get('figures',[]))
     # Historical figure list has a stable scene/fstop/focus and per-frame crop.
     if not historic_rows:
@@ -71,8 +94,9 @@ def evaluate(reference):
                         cells.append(dict(scene=name,split='heldout' if name in split['heldout'] else 'fixed-development',id=cid,frame=e['frame'],focus_m=c['nominal_focus_m'],fstop=c['fstop'],region=reg,method=method,PSNR_dB=v['psnr'],patch_LPIPS=v['patch_lpips'],pixels=v['pixels'],valid_pixels_ge1000=v['pixels']>=1000,calibration='accepted' if cal else 'rejected-native-retained',GTrec_minus_visible_dB=oracle['psnr']-vis['psnr'] if vis['pixels'] else None,qualified_for_gap_ratio=qualified,MSE_gap_recovery=ratio,PSNR_vs_R1R2_dB=v['psnr']-mm['R1_R2'][reg]['psnr'] if v['pixels'] else None,PSNR_vs_visible_dB=v['psnr']-vis['psnr'] if v['pixels'] else None,focus_guardrail_pass=(v['psnr']-vis['psnr']>=-.2) if reg=='in_focus' and v['pixels'] else None))
                 if reference=='Cycles':
                     ims={n:np.load(pp[n])['prediction_srgb'] for n in ['A_color','R1_R2','LightFusion','GTrec','C2_ProPainter']};figs.append(figure(name,c,truth,regions,ims))
-                    if cid in special:figs.append(figure(name,c,truth,regions,{n:ims[n] for n in ['A_color','R1_R2','LightFusion','GTrec']},special[cid]))
+                    if cid in special:ppt_examples.append(dict(frame=e['frame'],crop=special[cid],truth=truth,mask=regions['recoverable'],images={n:ims[n] for n in ['A_color','R1_R2','LightFusion','GTrec']}))
                 print('S2A_SCORE',reference,name,cid,flush=True)
+    if ppt_examples:figs.append(ppt_same_location(ppt_examples))
     pooled={};summary=[]
     for name in names:
         pooled[name]={}

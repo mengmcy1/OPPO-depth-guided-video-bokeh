@@ -4,6 +4,7 @@ CPU Embree from existing Blender-exported meshes; independently checked against
 native Blender Position/Z/Index/AOV passes. Never consumes predicted geometry.
 """
 import argparse
+import fcntl
 import json
 from pathlib import Path
 import sys
@@ -17,6 +18,7 @@ from route3_blender_b2_full_geometry import FullWorld,save_npz,save_json
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--scene',type=Path,required=True)
     p.add_argument('--mode',choices=['center','aperture','training_focus'],required=True);a=p.parse_args()
+    lock=(a.scene/'.geometry.lock').open('a');fcntl.flock(lock,fcntl.LOCK_EX)
     out=a.scene/'geometry';out.mkdir(exist_ok=True);w=FullWorld(a.scene/'scene-geometry.npz',512)
     rows=[];record=out/(a.mode+'-summary.json')
     if record.exists():rows=json.loads(record.read_text())
