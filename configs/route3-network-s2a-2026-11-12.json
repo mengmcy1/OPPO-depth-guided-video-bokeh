@@ -3,10 +3,6 @@
   "date": "2026-11-12",
   "timezone": "America/Los_Angeles",
   "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01",
-  "seeds": [
-    120101,
-    120202
-  ],
   "scenes": [],
   "input_frames": [
     1,
@@ -172,5 +168,40 @@
     "per_cell_min_GTrec_gain_dB": 1.0,
     "formula": "(MSE_visible-MSE_method)/(MSE_visible-MSE_GTrec)",
     "others": "N/A;all-cell dB vs R1R2 also reported"
-  }
+  },
+  "light_fusion": {
+    "candidate_features": 19,
+    "M": 8,
+    "hidden_Gaussians_per_query": 2,
+    "encoder_width": 128,
+    "decoder": "pointwise MLP with normalized candidate weights;no attention",
+    "source_axial_depth_delta_bound_fraction": 0.5,
+    "linear_RGB_residual_bound": 0.05,
+    "opacity_separate_from_confidence": true,
+    "q_multiplies_alpha": false,
+    "visible_layer": "fixed calibrated A-color;no joint update",
+    "source_RGB_resampling": "project corrected fused position back to original input views;linearRGB bilinear",
+    "query_cap": 32768,
+    "feature_normalization": "fixed physical constants;no heldout fitted statistics",
+    "loss": "direct matched-ray depth/RGB L1;candidate correctness BCE;opacity/selection supervision;no K64 render loss",
+    "candidate_order": "estimated target depth ascending;no GT in selection",
+    "overfit": "one training scene/frame,final step;loss and hidden-surface correctness checked before S2a",
+    "S2a_steps": 20000,
+    "GT_warmup_steps": 200,
+    "overfit_max_steps": 8000,
+    "batch_queries": 1024,
+    "optimizer": "Adam",
+    "learning_rate": 0.0002,
+    "final_learning_rate": 2e-05,
+    "seeds": {
+      "overfit": 2026111301,
+      "S2a": 2026111302
+    },
+    "eval_every_steps": 2000,
+    "checkpoint_selection": "final fixed step;heldout monitors do not select checkpoint",
+    "all_training_inputs": "256/5 candidate fusion;frozen geometry frontend cached from13frames",
+    "S2a_evaluation_inputs": "512/13 without retraining",
+    "development_success_reference": "scheme2.5:qualified-cell recovery~75-80% or farfocus full-image>=+0.3dBvsR1R2;focusguard reported separately"
+  },
+  "network_status": "not_started;pending full formal data"
 }

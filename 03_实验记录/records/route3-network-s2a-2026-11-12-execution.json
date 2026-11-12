@@ -3,7 +3,6 @@
   "base_revision": "03b6890541391e6f71b4f0f06619ba146fa0bb11",
   "output": "outputs/route3-network-s2a-2026-11-12-01",
   "config": "configs/route3-network-s2a-2026-11-12.json",
-  "initial_free_GiB": 251.5,
   "current_free_GiB": 246.12966918945312,
   "GPU": "RTX4090D48GiB GPU0;checked before GPU subprocesses;no foreign processes killed",
   "environment": "reuse pilot route3/magicbokeh/dofgs/Blender4.5.3;no installation or global configuration changes",
@@ -20,5 +19,12 @@
     "projected free disk<60GiB",
     "single-scene cannot overfit",
     "after S2a evaluation stop regardless result"
-  ]
+  ],
+  "initial_disk_df_h": {
+    "filesystem": "/dev/md0",
+    "size": "837G",
+    "used": "586G",
+    "available": "252G",
+    "source": "df -h at start;rounded human-readable units"
+  }
 }

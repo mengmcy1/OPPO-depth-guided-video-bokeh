@@ -4,6 +4,7 @@ Original procedural assets only. Build in Blender 4.5.3; render with the
 previous independently checked explicit-job renderer.
 """
 import argparse
+import hashlib
 import json
 import math
 from pathlib import Path
@@ -46,7 +47,7 @@ def textured(name,rng,kind,frequency):
     else:
         tex=n.new('ShaderNodeTexChecker');tex.inputs['Scale'].default_value=1
         tex.inputs['Color1'].default_value=(*color0,1);tex.inputs['Color2'].default_value=(*color1,1)
-    l.new(mapping.outputs[0],tex.inputs['Vector'])
+    rotation=n.new('ShaderNodeVectorRotate');rotation.rotation_type='AXIS_ANGLE';rotation.inputs['Axis'].default_value=(0,1,0);angle=float(rng.uniform(0,2*math.pi));rotation.inputs['Angle'].default_value=angle;l.new(mapping.outputs[0],rotation.inputs['Vector']);l.new(rotation.outputs['Vector'],tex.inputs['Vector']);m['texture_rotation_radians']=angle
     if kind in ['checker','blocks']:
         l.new(tex.outputs['Color'],bs.inputs['Base Color'])
     else:
@@ -96,7 +97,7 @@ def build(out,seed,index):
     for frame in range(1,61):s.frame_set(frame);cameras.append(np.array(cam.matrix_world));transforms.append(np.stack([np.array(o.matrix_world) for o in objects]))
     ids=np.arange(1,len(objects)+1);fg=[int(i) for i,o in zip(ids,objects) if o.name.startswith('foreground_')];np.savez_compressed(out/'scene-geometry.npz',**arrays,object_names=[o.name for o in objects],object_ids=ids,triangle_object_id=np.concatenate(parts),triangle_polygon_id=np.concatenate(polys),object_world_matrices=np.stack(transforms),camera_c2w_blender=np.stack(cameras),camera_c2w_opencv=np.stack(cameras)@np.diag([1,-1,-1,1]),intrinsics=[[512*50/36,0,256],[0,512*50/36,256],[0,0,1]],foreground_object_ids=fg,dynamic_object_ids=np.array([],np.int16),input_frames=INPUTS)
     layer=s.view_layers[0];layer.use_pass_z=True;layer.use_pass_position=True;layer.use_pass_object_index=True;layer.use_pass_cryptomatte_object=True;layer.pass_cryptomatte_depth=6;bpy.ops.scene.view_layer_add_aov();layer.aovs[-1].name='ObjectLocal';s.frame_set(1);ensure_object_local_aov();bpy.ops.wm.save_as_mainfile(filepath=str(out/'scene.blend'))
-    write(out/'scene.json',dict(label=out.name,seed=seed,candidate_index=index,generator_version="v2-focus-support",family=family,low_texture=low,texture_kinds=kinds,texture_frequency=freqs.tolist(),foreground_depth_design_m=fgdepth,background_depth_design_m=bgdepth,foreground_background_depth_ratio=fgdepth/bgdepth,camera_translation_baseline_design_m=baseline,forward_amplitude_m=forward,blender=bpy.app.version_string,frames=60,input_frames=INPUTS,focus_distances_m=[1.4,5.],focal_length_mm=50,sensor_width_mm=36,objects=[dict(id=int(i),name=o.name) for i,o in zip(ids,objects)],foreground_names=[o.name for o in objects if o.name.startswith('foreground_')],dynamic_names=[],assets_source='independent original procedural primitives and high-contrast node patterns;not B2 layout',assets_license='CC0-1.0 generated assets',render=dict(filter_type='BOX',filter_width=1.,denoising=False,motion_blur=False,adaptive=False),static_object_transforms_verified=bool(np.allclose(transforms,transforms[0]))))
+    write(out/'scene.json',dict(label=out.name,seed=seed,candidate_index=index,generator_version="v3-oriented-patterns-and-AOV",generator_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),family=family,low_texture=low,texture_kinds=kinds,texture_frequency=freqs.tolist(),texture_rotation_radians=[float(m["texture_rotation_radians"]) for m in mats],foreground_depth_design_m=fgdepth,background_depth_design_m=bgdepth,foreground_background_depth_ratio=fgdepth/bgdepth,camera_translation_baseline_design_m=baseline,forward_amplitude_m=forward,blender=bpy.app.version_string,frames=60,input_frames=INPUTS,focus_distances_m=[1.4,5.],focal_length_mm=50,sensor_width_mm=36,objects=[dict(id=int(i),name=o.name) for i,o in zip(ids,objects)],foreground_names=[o.name for o in objects if o.name.startswith('foreground_')],dynamic_names=[],assets_source='independent original procedural primitives and high-contrast node patterns;not B2 layout',assets_license='CC0-1.0 generated assets',render=dict(filter_type='BOX',filter_width=1.,denoising=False,motion_blur=False,adaptive=False),static_object_transforms_verified=bool(np.allclose(transforms,transforms[0]))))
 
 
 def main():
