@@ -1,0 +1,1868 @@
+{
+  "rows": [
+    {
+      "scene": "pilot-thin",
+      "scene_metadata": {
+        "label": "pilot-thin",
+        "seed": 120101,
+        "blender": "4.5.3 LTS",
+        "frames": 60,
+        "input_frames": [
+          1,
+          6,
+          11,
+          16,
+          21,
+          26,
+          30,
+          35,
+          40,
+          45,
+          50,
+          55,
+          60
+        ],
+        "focus_distances_m": [
+          1.4,
+          5.0
+        ],
+        "focal_length_mm": 50,
+        "sensor_width_mm": 36,
+        "objects": [
+          {
+            "id": 1,
+            "name": "background_floor"
+          },
+          {
+            "id": 2,
+            "name": "background_static_sphere_0"
+          },
+          {
+            "id": 3,
+            "name": "background_static_sphere_1"
+          },
+          {
+            "id": 4,
+            "name": "background_static_sphere_2"
+          },
+          {
+            "id": 5,
+            "name": "background_wall"
+          },
+          {
+            "id": 6,
+            "name": "foreground_0_crossbar"
+          },
+          {
+            "id": 7,
+            "name": "foreground_0_stem_0"
+          },
+          {
+            "id": 8,
+            "name": "foreground_0_stem_1"
+          },
+          {
+            "id": 9,
+            "name": "foreground_0_stem_2"
+          },
+          {
+            "id": 10,
+            "name": "foreground_0_stem_3"
+          },
+          {
+            "id": 11,
+            "name": "foreground_1_backpost"
+          }
+        ],
+        "foreground_names": [
+          "foreground_0_crossbar",
+          "foreground_0_stem_0",
+          "foreground_0_stem_1",
+          "foreground_0_stem_2",
+          "foreground_0_stem_3",
+          "foreground_1_backpost"
+        ],
+        "dynamic_names": [],
+        "assets_source": "independent original procedural primitives and node textures;no downloaded assets",
+        "assets_license": "CC0-1.0 generated assets",
+        "render": {
+          "filter_type": "BOX",
+          "filter_width": 1.0,
+          "denoising": false,
+          "motion_blur": false,
+          "adaptive": false
+        },
+        "static_object_transforms_verified": true
+      },
+      "split": "pipeline-development;not an untouched publication test scene",
+      "inputs": [
+        {
+          "frame": 1,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f001.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f001.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f001-Position-0001.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f001-IndexOB-0001.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f001-ObjectLocal-0001.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f001-crypto-0001.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f001-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/SHARP/f001.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/DA3/f001.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/SHARP/f001.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/DA3/f001.npz"
+        },
+        {
+          "frame": 6,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f006.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f006.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f006-Position-0006.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f006-IndexOB-0006.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f006-ObjectLocal-0006.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f006-crypto-0006.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f006-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/SHARP/f006.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/DA3/f006.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/SHARP/f006.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/DA3/f006.npz"
+        },
+        {
+          "frame": 11,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f011.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f011.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f011-Position-0011.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f011-IndexOB-0011.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f011-ObjectLocal-0011.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f011-crypto-0011.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f011-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/SHARP/f011.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/DA3/f011.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/SHARP/f011.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/DA3/f011.npz"
+        },
+        {
+          "frame": 16,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f016.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f016.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f016-Position-0016.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f016-IndexOB-0016.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f016-ObjectLocal-0016.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f016-crypto-0016.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f016-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/SHARP/f016.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/DA3/f016.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/SHARP/f016.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/DA3/f016.npz"
+        },
+        {
+          "frame": 21,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f021.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f021.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f021-Position-0021.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f021-IndexOB-0021.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f021-ObjectLocal-0021.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f021-crypto-0021.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f021-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/SHARP/f021.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/DA3/f021.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/SHARP/f021.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/DA3/f021.npz"
+        },
+        {
+          "frame": 26,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f026.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f026.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f026-Position-0026.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f026-IndexOB-0026.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f026-ObjectLocal-0026.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f026-crypto-0026.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f026-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/SHARP/f026.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/DA3/f026.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/SHARP/f026.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/DA3/f026.npz"
+        },
+        {
+          "frame": 30,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f030.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f030.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f030-Position-0030.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f030-IndexOB-0030.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f030-ObjectLocal-0030.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f030-crypto-0030.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f030-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/SHARP/f030.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/DA3/f030.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/SHARP/f030.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/DA3/f030.npz"
+        },
+        {
+          "frame": 35,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f035.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f035.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f035-Position-0035.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f035-IndexOB-0035.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f035-ObjectLocal-0035.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f035-crypto-0035.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f035-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/SHARP/f035.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/DA3/f035.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/SHARP/f035.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/DA3/f035.npz"
+        },
+        {
+          "frame": 40,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f040.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f040.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f040-Position-0040.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f040-IndexOB-0040.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f040-ObjectLocal-0040.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f040-crypto-0040.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f040-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/SHARP/f040.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/DA3/f040.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/SHARP/f040.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/DA3/f040.npz"
+        },
+        {
+          "frame": 45,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f045.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f045.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f045-Position-0045.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f045-IndexOB-0045.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f045-ObjectLocal-0045.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f045-crypto-0045.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f045-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/SHARP/f045.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/DA3/f045.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/SHARP/f045.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/DA3/f045.npz"
+        },
+        {
+          "frame": 50,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f050.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f050.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f050-Position-0050.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f050-IndexOB-0050.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f050-ObjectLocal-0050.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f050-crypto-0050.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f050-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/SHARP/f050.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/DA3/f050.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/SHARP/f050.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/DA3/f050.npz"
+        },
+        {
+          "frame": 55,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f055.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f055.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f055-Position-0055.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f055-IndexOB-0055.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f055-ObjectLocal-0055.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f055-crypto-0055.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f055-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/SHARP/f055.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/DA3/f055.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/SHARP/f055.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/DA3/f055.npz"
+        },
+        {
+          "frame": 60,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f060.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f060.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f060-Position-0060.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f060-IndexOB-0060.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/input-passes-v2/f060-ObjectLocal-0060.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/inputs/f060-crypto-0060.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f060-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/SHARP/f060.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/DA3/f060.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/SHARP/f060.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/models/calibration/DA3/f060.npz"
+        }
+      ],
+      "targets": [
+        {
+          "id": "f001-N1.4-F1.4",
+          "frame": 1,
+          "focus_m": 1.8655996322631836,
+          "nominal_focus_m": 1.4,
+          "fstop": 1.4,
+          "band_pixels": 92390,
+          "GT_DOF": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/dof/f001-N1.4-F1.4.exr",
+          "native_K16_world_pass_pattern": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/aperture-passes-v2/f001-N1.4-F1.4-kXX-Position-0001.exr",
+          "GT_visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f001-N1.4-F1.4-K16.npz",
+          "candidate_pool": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f001/pool.npz",
+          "query_M8": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f001/query-M8.npz",
+          "query_features": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f001/query-M8-features.npz",
+          "query_memory_evidence": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f001/query-M8-memory-evidence.npz",
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f001/f001-N1.4-F1.4.npz",
+          "appearance_labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f001/appearance-targets.npz",
+          "placement_validity": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f001/placement-support-v2.npz",
+          "visible_GS": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/visible/f001.pt",
+          "label_files_must_not_enter_model_inputs": true
+        },
+        {
+          "id": "f001-N2-F1.4",
+          "frame": 1,
+          "focus_m": 2.0731520652770996,
+          "nominal_focus_m": 1.4,
+          "fstop": 2.0,
+          "band_pixels": 81385,
+          "GT_DOF": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/dof/f001-N2-F1.4.exr",
+          "native_K16_world_pass_pattern": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/aperture-passes-v2/f001-N2-F1.4-kXX-Position-0001.exr",
+          "GT_visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f001-N2-F1.4-K16.npz",
+          "candidate_pool": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f001/pool.npz",
+          "query_M8": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f001/query-M8.npz",
+          "query_features": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f001/query-M8-features.npz",
+          "query_memory_evidence": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f001/query-M8-memory-evidence.npz",
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f001/f001-N2-F1.4.npz",
+          "appearance_labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f001/appearance-targets.npz",
+          "placement_validity": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f001/placement-support-v2.npz",
+          "visible_GS": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/visible/f001.pt",
+          "label_files_must_not_enter_model_inputs": true
+        },
+        {
+          "id": "f001-N1.4-F5",
+          "frame": 1,
+          "focus_m": 3.2724616527557373,
+          "nominal_focus_m": 5.0,
+          "fstop": 1.4,
+          "band_pixels": 83382,
+          "GT_DOF": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/dof/f001-N1.4-F5.exr",
+          "native_K16_world_pass_pattern": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/aperture-passes-v2/f001-N1.4-F5-kXX-Position-0001.exr",
+          "GT_visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f001-N1.4-F5-K16.npz",
+          "candidate_pool": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f001/pool.npz",
+          "query_M8": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f001/query-M8.npz",
+          "query_features": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f001/query-M8-features.npz",
+          "query_memory_evidence": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f001/query-M8-memory-evidence.npz",
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f001/f001-N1.4-F5.npz",
+          "appearance_labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f001/appearance-targets.npz",
+          "placement_validity": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f001/placement-support-v2.npz",
+          "visible_GS": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/visible/f001.pt",
+          "label_files_must_not_enter_model_inputs": true
+        },
+        {
+          "id": "f001-N2-F5",
+          "frame": 1,
+          "focus_m": 3.250518798828125,
+          "nominal_focus_m": 5.0,
+          "fstop": 2.0,
+          "band_pixels": 79746,
+          "GT_DOF": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/dof/f001-N2-F5.exr",
+          "native_K16_world_pass_pattern": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/aperture-passes-v2/f001-N2-F5-kXX-Position-0001.exr",
+          "GT_visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f001-N2-F5-K16.npz",
+          "candidate_pool": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f001/pool.npz",
+          "query_M8": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f001/query-M8.npz",
+          "query_features": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f001/query-M8-features.npz",
+          "query_memory_evidence": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f001/query-M8-memory-evidence.npz",
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f001/f001-N2-F5.npz",
+          "appearance_labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f001/appearance-targets.npz",
+          "placement_validity": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f001/placement-support-v2.npz",
+          "visible_GS": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/visible/f001.pt",
+          "label_files_must_not_enter_model_inputs": true
+        },
+        {
+          "id": "f030-N1.4-F1.4",
+          "frame": 30,
+          "focus_m": 1.9401339292526245,
+          "nominal_focus_m": 1.4,
+          "fstop": 1.4,
+          "band_pixels": 85002,
+          "GT_DOF": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/dof/f030-N1.4-F1.4.exr",
+          "native_K16_world_pass_pattern": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/aperture-passes-v2/f030-N1.4-F1.4-kXX-Position-0030.exr",
+          "GT_visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f030-N1.4-F1.4-K16.npz",
+          "candidate_pool": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f030/pool.npz",
+          "query_M8": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f030/query-M8.npz",
+          "query_features": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f030/query-M8-features.npz",
+          "query_memory_evidence": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f030/query-M8-memory-evidence.npz",
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f030/f030-N1.4-F1.4.npz",
+          "appearance_labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f030/appearance-targets.npz",
+          "placement_validity": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f030/placement-support-v2.npz",
+          "visible_GS": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/visible/f030.pt",
+          "label_files_must_not_enter_model_inputs": true
+        },
+        {
+          "id": "f030-N2-F1.4",
+          "frame": 30,
+          "focus_m": 2.1745121479034424,
+          "nominal_focus_m": 1.4,
+          "fstop": 2.0,
+          "band_pixels": 75486,
+          "GT_DOF": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/dof/f030-N2-F1.4.exr",
+          "native_K16_world_pass_pattern": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/aperture-passes-v2/f030-N2-F1.4-kXX-Position-0030.exr",
+          "GT_visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f030-N2-F1.4-K16.npz",
+          "candidate_pool": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f030/pool.npz",
+          "query_M8": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f030/query-M8.npz",
+          "query_features": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f030/query-M8-features.npz",
+          "query_memory_evidence": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f030/query-M8-memory-evidence.npz",
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f030/f030-N2-F1.4.npz",
+          "appearance_labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f030/appearance-targets.npz",
+          "placement_validity": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f030/placement-support-v2.npz",
+          "visible_GS": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/visible/f030.pt",
+          "label_files_must_not_enter_model_inputs": true
+        },
+        {
+          "id": "f030-N1.4-F5",
+          "frame": 30,
+          "focus_m": 3.2642784118652344,
+          "nominal_focus_m": 5.0,
+          "fstop": 1.4,
+          "band_pixels": 77102,
+          "GT_DOF": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/dof/f030-N1.4-F5.exr",
+          "native_K16_world_pass_pattern": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/aperture-passes-v2/f030-N1.4-F5-kXX-Position-0030.exr",
+          "GT_visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f030-N1.4-F5-K16.npz",
+          "candidate_pool": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f030/pool.npz",
+          "query_M8": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f030/query-M8.npz",
+          "query_features": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f030/query-M8-features.npz",
+          "query_memory_evidence": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f030/query-M8-memory-evidence.npz",
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f030/f030-N1.4-F5.npz",
+          "appearance_labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f030/appearance-targets.npz",
+          "placement_validity": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f030/placement-support-v2.npz",
+          "visible_GS": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/visible/f030.pt",
+          "label_files_must_not_enter_model_inputs": true
+        },
+        {
+          "id": "f030-N2-F5",
+          "frame": 30,
+          "focus_m": 3.253937244415283,
+          "nominal_focus_m": 5.0,
+          "fstop": 2.0,
+          "band_pixels": 74597,
+          "GT_DOF": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/dof/f030-N2-F5.exr",
+          "native_K16_world_pass_pattern": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/aperture-passes-v2/f030-N2-F5-kXX-Position-0030.exr",
+          "GT_visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f030-N2-F5-K16.npz",
+          "candidate_pool": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f030/pool.npz",
+          "query_M8": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f030/query-M8.npz",
+          "query_features": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f030/query-M8-features.npz",
+          "query_memory_evidence": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f030/query-M8-memory-evidence.npz",
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f030/f030-N2-F5.npz",
+          "appearance_labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f030/appearance-targets.npz",
+          "placement_validity": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f030/placement-support-v2.npz",
+          "visible_GS": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/visible/f030.pt",
+          "label_files_must_not_enter_model_inputs": true
+        },
+        {
+          "id": "f060-N1.4-F1.4",
+          "frame": 60,
+          "focus_m": 1.8384974002838135,
+          "nominal_focus_m": 1.4,
+          "fstop": 1.4,
+          "band_pixels": 131964,
+          "GT_DOF": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/dof/f060-N1.4-F1.4.exr",
+          "native_K16_world_pass_pattern": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/aperture-passes-v2/f060-N1.4-F1.4-kXX-Position-0060.exr",
+          "GT_visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f060-N1.4-F1.4-K16.npz",
+          "candidate_pool": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f060/pool.npz",
+          "query_M8": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f060/query-M8.npz",
+          "query_features": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f060/query-M8-features.npz",
+          "query_memory_evidence": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f060/query-M8-memory-evidence.npz",
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f060/f060-N1.4-F1.4.npz",
+          "appearance_labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f060/appearance-targets.npz",
+          "placement_validity": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f060/placement-support-v2.npz",
+          "visible_GS": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/visible/f060.pt",
+          "label_files_must_not_enter_model_inputs": true
+        },
+        {
+          "id": "f060-N2-F1.4",
+          "frame": 60,
+          "focus_m": 1.9034422636032104,
+          "nominal_focus_m": 1.4,
+          "fstop": 2.0,
+          "band_pixels": 120242,
+          "GT_DOF": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/dof/f060-N2-F1.4.exr",
+          "native_K16_world_pass_pattern": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/aperture-passes-v2/f060-N2-F1.4-kXX-Position-0060.exr",
+          "GT_visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f060-N2-F1.4-K16.npz",
+          "candidate_pool": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f060/pool.npz",
+          "query_M8": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f060/query-M8.npz",
+          "query_features": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f060/query-M8-features.npz",
+          "query_memory_evidence": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f060/query-M8-memory-evidence.npz",
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f060/f060-N2-F1.4.npz",
+          "appearance_labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f060/appearance-targets.npz",
+          "placement_validity": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f060/placement-support-v2.npz",
+          "visible_GS": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/visible/f060.pt",
+          "label_files_must_not_enter_model_inputs": true
+        },
+        {
+          "id": "f060-N1.4-F5",
+          "frame": 60,
+          "focus_m": 4.921225070953369,
+          "nominal_focus_m": 5.0,
+          "fstop": 1.4,
+          "band_pixels": 121392,
+          "GT_DOF": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/dof/f060-N1.4-F5.exr",
+          "native_K16_world_pass_pattern": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/aperture-passes-v2/f060-N1.4-F5-kXX-Position-0060.exr",
+          "GT_visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f060-N1.4-F5-K16.npz",
+          "candidate_pool": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f060/pool.npz",
+          "query_M8": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f060/query-M8.npz",
+          "query_features": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f060/query-M8-features.npz",
+          "query_memory_evidence": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f060/query-M8-memory-evidence.npz",
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f060/f060-N1.4-F5.npz",
+          "appearance_labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f060/appearance-targets.npz",
+          "placement_validity": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f060/placement-support-v2.npz",
+          "visible_GS": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/visible/f060.pt",
+          "label_files_must_not_enter_model_inputs": true
+        },
+        {
+          "id": "f060-N2-F5",
+          "frame": 60,
+          "focus_m": 4.878615379333496,
+          "nominal_focus_m": 5.0,
+          "fstop": 2.0,
+          "band_pixels": 111686,
+          "GT_DOF": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/dof/f060-N2-F5.exr",
+          "native_K16_world_pass_pattern": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/aperture-passes-v2/f060-N2-F5-kXX-Position-0060.exr",
+          "GT_visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f060-N2-F5-K16.npz",
+          "candidate_pool": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f060/pool.npz",
+          "query_M8": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f060/query-M8.npz",
+          "query_features": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f060/query-M8-features.npz",
+          "query_memory_evidence": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/candidates/f060/query-M8-memory-evidence.npz",
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f060/f060-N2-F5.npz",
+          "appearance_labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f060/appearance-targets.npz",
+          "placement_validity": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels/f060/placement-support-v2.npz",
+          "visible_GS": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/visible/f060.pt",
+          "label_files_must_not_enter_model_inputs": true
+        }
+      ],
+      "training_focus_targets": [
+        {
+          "id": "f001-N1.4-F1.528916",
+          "frame": 1,
+          "focus_m": 1.5289157658885002,
+          "nominal_focus_m": 1.5289157658885002,
+          "fstop": 1.4,
+          "training_focus_only": true,
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels-training-focus/f001/f001-N1.4-F1.528916.npz",
+          "GT_mesh_ray_hit": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f001-N1.4-F1.528916-K16.npz",
+          "appearance_and_placement_validity_shared_with_evaluation_labels": true,
+          "labels_depend_on_focus": true,
+          "not_a_new_DOF_render": true
+        },
+        {
+          "id": "f001-N1.4-F1.909757",
+          "frame": 1,
+          "focus_m": 1.9097567279318006,
+          "nominal_focus_m": 1.9097567279318006,
+          "fstop": 1.4,
+          "training_focus_only": true,
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels-training-focus/f001/f001-N1.4-F1.909757.npz",
+          "GT_mesh_ray_hit": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f001-N1.4-F1.909757-K16.npz",
+          "appearance_and_placement_validity_shared_with_evaluation_labels": true,
+          "labels_depend_on_focus": true,
+          "not_a_new_DOF_render": true
+        },
+        {
+          "id": "f001-N1.4-F2.543264",
+          "frame": 1,
+          "focus_m": 2.543263871454375,
+          "nominal_focus_m": 2.543263871454375,
+          "fstop": 1.4,
+          "training_focus_only": true,
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels-training-focus/f001/f001-N1.4-F2.543264.npz",
+          "GT_mesh_ray_hit": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f001-N1.4-F2.543264-K16.npz",
+          "appearance_and_placement_validity_shared_with_evaluation_labels": true,
+          "labels_depend_on_focus": true,
+          "not_a_new_DOF_render": true
+        },
+        {
+          "id": "f001-N1.4-F3.805694",
+          "frame": 1,
+          "focus_m": 3.8056939244091303,
+          "nominal_focus_m": 3.8056939244091303,
+          "fstop": 1.4,
+          "training_focus_only": true,
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels-training-focus/f001/f001-N1.4-F3.805694.npz",
+          "GT_mesh_ray_hit": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f001-N1.4-F3.805694-K16.npz",
+          "appearance_and_placement_validity_shared_with_evaluation_labels": true,
+          "labels_depend_on_focus": true,
+          "not_a_new_DOF_render": true
+        },
+        {
+          "id": "f030-N1.4-F1.572205",
+          "frame": 30,
+          "focus_m": 1.5722050224289195,
+          "nominal_focus_m": 1.5722050224289195,
+          "fstop": 1.4,
+          "training_focus_only": true,
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels-training-focus/f030/f030-N1.4-F1.572205.npz",
+          "GT_mesh_ray_hit": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f030-N1.4-F1.572205-K16.npz",
+          "appearance_and_placement_validity_shared_with_evaluation_labels": true,
+          "labels_depend_on_focus": true,
+          "not_a_new_DOF_render": true
+        },
+        {
+          "id": "f030-N1.4-F1.952659",
+          "frame": 30,
+          "focus_m": 1.952659050223756,
+          "nominal_focus_m": 1.952659050223756,
+          "fstop": 1.4,
+          "training_focus_only": true,
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels-training-focus/f030/f030-N1.4-F1.952659.npz",
+          "GT_mesh_ray_hit": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f030-N1.4-F1.952659-K16.npz",
+          "appearance_and_placement_validity_shared_with_evaluation_labels": true,
+          "labels_depend_on_focus": true,
+          "not_a_new_DOF_render": true
+        },
+        {
+          "id": "f030-N1.4-F2.576025",
+          "frame": 30,
+          "focus_m": 2.5760250083077842,
+          "nominal_focus_m": 2.5760250083077842,
+          "fstop": 1.4,
+          "training_focus_only": true,
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels-training-focus/f030/f030-N1.4-F2.576025.npz",
+          "GT_mesh_ray_hit": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f030-N1.4-F2.576025-K16.npz",
+          "appearance_and_placement_validity_shared_with_evaluation_labels": true,
+          "labels_depend_on_focus": true,
+          "not_a_new_DOF_render": true
+        },
+        {
+          "id": "f030-N1.4-F3.784040",
+          "frame": 30,
+          "focus_m": 3.7840402359859584,
+          "nominal_focus_m": 3.7840402359859584,
+          "fstop": 1.4,
+          "training_focus_only": true,
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels-training-focus/f030/f030-N1.4-F3.784040.npz",
+          "GT_mesh_ray_hit": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f030-N1.4-F3.784040-K16.npz",
+          "appearance_and_placement_validity_shared_with_evaluation_labels": true,
+          "labels_depend_on_focus": true,
+          "not_a_new_DOF_render": true
+        },
+        {
+          "id": "f060-N1.4-F1.525985",
+          "frame": 60,
+          "focus_m": 1.5259854972074303,
+          "nominal_focus_m": 1.5259854972074303,
+          "fstop": 1.4,
+          "training_focus_only": true,
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels-training-focus/f060/f060-N1.4-F1.525985.npz",
+          "GT_mesh_ray_hit": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f060-N1.4-F1.525985-K16.npz",
+          "appearance_and_placement_validity_shared_with_evaluation_labels": true,
+          "labels_depend_on_focus": true,
+          "not_a_new_DOF_render": true
+        },
+        {
+          "id": "f060-N1.4-F1.907235",
+          "frame": 60,
+          "focus_m": 1.907234673173449,
+          "nominal_focus_m": 1.907234673173449,
+          "fstop": 1.4,
+          "training_focus_only": true,
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels-training-focus/f060/f060-N1.4-F1.907235.npz",
+          "GT_mesh_ray_hit": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f060-N1.4-F1.907235-K16.npz",
+          "appearance_and_placement_validity_shared_with_evaluation_labels": true,
+          "labels_depend_on_focus": true,
+          "not_a_new_DOF_render": true
+        },
+        {
+          "id": "f060-N1.4-F2.542430",
+          "frame": 60,
+          "focus_m": 2.5424304243947065,
+          "nominal_focus_m": 2.5424304243947065,
+          "fstop": 1.4,
+          "training_focus_only": true,
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels-training-focus/f060/f060-N1.4-F2.542430.npz",
+          "GT_mesh_ray_hit": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f060-N1.4-F2.542430-K16.npz",
+          "appearance_and_placement_validity_shared_with_evaluation_labels": true,
+          "labels_depend_on_focus": true,
+          "not_a_new_DOF_render": true
+        },
+        {
+          "id": "f060-N1.4-F3.811999",
+          "frame": 60,
+          "focus_m": 3.8119992838701178,
+          "nominal_focus_m": 3.8119992838701178,
+          "fstop": 1.4,
+          "training_focus_only": true,
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/labels-training-focus/f060/f060-N1.4-F3.811999.npz",
+          "GT_mesh_ray_hit": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/geometry/f060-N1.4-F3.811999-K16.npz",
+          "appearance_and_placement_validity_shared_with_evaluation_labels": true,
+          "labels_depend_on_focus": true,
+          "not_a_new_DOF_render": true
+        }
+      ],
+      "training_focus_plan": {
+        "rows": [
+          {
+            "frame": 1,
+            "GT_visible_depth_range_m": [
+              1.3902908563613892,
+              5.062048435211182
+            ],
+            "cases": [
+              {
+                "id": "f001-N1.4-F1.528916",
+                "frame": 1,
+                "focus_m": 1.5289157658885002,
+                "nominal_focus_m": 1.5289157658885002,
+                "fstop": 1.4,
+                "training_focus_only": true
+              },
+              {
+                "id": "f001-N1.4-F1.909757",
+                "frame": 1,
+                "focus_m": 1.9097567279318006,
+                "nominal_focus_m": 1.9097567279318006,
+                "fstop": 1.4,
+                "training_focus_only": true
+              },
+              {
+                "id": "f001-N1.4-F2.543264",
+                "frame": 1,
+                "focus_m": 2.543263871454375,
+                "nominal_focus_m": 2.543263871454375,
+                "fstop": 1.4,
+                "training_focus_only": true
+              },
+              {
+                "id": "f001-N1.4-F3.805694",
+                "frame": 1,
+                "focus_m": 3.8056939244091303,
+                "nominal_focus_m": 3.8056939244091303,
+                "fstop": 1.4,
+                "training_focus_only": true
+              }
+            ]
+          },
+          {
+            "frame": 30,
+            "GT_visible_depth_range_m": [
+              1.432638168334961,
+              4.943050861358643
+            ],
+            "cases": [
+              {
+                "id": "f030-N1.4-F1.572205",
+                "frame": 30,
+                "focus_m": 1.5722050224289195,
+                "nominal_focus_m": 1.5722050224289195,
+                "fstop": 1.4,
+                "training_focus_only": true
+              },
+              {
+                "id": "f030-N1.4-F1.952659",
+                "frame": 30,
+                "focus_m": 1.952659050223756,
+                "nominal_focus_m": 1.952659050223756,
+                "fstop": 1.4,
+                "training_focus_only": true
+              },
+              {
+                "id": "f030-N1.4-F2.576025",
+                "frame": 30,
+                "focus_m": 2.5760250083077842,
+                "nominal_focus_m": 2.5760250083077842,
+                "fstop": 1.4,
+                "training_focus_only": true
+              },
+              {
+                "id": "f030-N1.4-F3.784040",
+                "frame": 30,
+                "focus_m": 3.7840402359859584,
+                "nominal_focus_m": 3.7840402359859584,
+                "fstop": 1.4,
+                "training_focus_only": true
+              }
+            ]
+          },
+          {
+            "frame": 60,
+            "GT_visible_depth_range_m": [
+              1.3873249292373657,
+              5.080472469329834
+            ],
+            "cases": [
+              {
+                "id": "f060-N1.4-F1.525985",
+                "frame": 60,
+                "focus_m": 1.5259854972074303,
+                "nominal_focus_m": 1.5259854972074303,
+                "fstop": 1.4,
+                "training_focus_only": true
+              },
+              {
+                "id": "f060-N1.4-F1.907235",
+                "frame": 60,
+                "focus_m": 1.907234673173449,
+                "nominal_focus_m": 1.907234673173449,
+                "fstop": 1.4,
+                "training_focus_only": true
+              },
+              {
+                "id": "f060-N1.4-F2.542430",
+                "frame": 60,
+                "focus_m": 2.5424304243947065,
+                "nominal_focus_m": 2.5424304243947065,
+                "fstop": 1.4,
+                "training_focus_only": true
+              },
+              {
+                "id": "f060-N1.4-F3.811999",
+                "frame": 60,
+                "focus_m": 3.8119992838701178,
+                "nominal_focus_m": 3.8119992838701178,
+                "fstop": 1.4,
+                "training_focus_only": true
+              }
+            ]
+          }
+        ],
+        "K": 16,
+        "initial_training_focus_count": 4,
+        "selection": "centersof4equalinverse-depthbinsinthisframevisibleGTdepthrange",
+        "GT_label_generation_only": true,
+        "sample_training_only_from_precomputed_focuses": true,
+        "additional_continuous_random_focus_requires_recomputed_ray_labels": true,
+        "scheme_update": "688bc47"
+      },
+      "continuous_GT": [
+        "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/continuous/f027.exr",
+        "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/continuous/f028.exr",
+        "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/continuous/f029.exr",
+        "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/continuous/f030.exr",
+        "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/continuous/f031.exr",
+        "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/continuous/f032.exr",
+        "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/continuous/f033.exr",
+        "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/continuous/f034.exr"
+      ],
+      "focus_rack_GT": [
+        {
+          "frame": 27,
+          "focus_m": 1.4,
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/rack/f027.exr"
+        },
+        {
+          "frame": 28,
+          "focus_m": 1.5605095541401273,
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/rack/f028.exr"
+        },
+        {
+          "frame": 29,
+          "focus_m": 1.7625899280575539,
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/rack/f029.exr"
+        },
+        {
+          "frame": 30,
+          "focus_m": 2.0247933884297518,
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/rack/f030.exr"
+        },
+        {
+          "frame": 31,
+          "focus_m": 2.378640776699029,
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/rack/f031.exr"
+        },
+        {
+          "frame": 32,
+          "focus_m": 2.88235294117647,
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/rack/f032.exr"
+        },
+        {
+          "frame": 33,
+          "focus_m": 3.656716417910447,
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/rack/f033.exr"
+        },
+        {
+          "frame": 34,
+          "focus_m": 4.999999999999998,
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/rack/f034.exr"
+        }
+      ],
+      "foreground_only_trial": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/preflight/foreground.exr",
+      "background_only_trial": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/preflight/background.exr",
+      "long_term_memory": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/memory/verified-index.npz",
+      "raw_observations": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-thin/memory/observations.npz",
+      "optional_feature_dimension": 0,
+      "tensor_schema": {
+        "input_RGB": "13x512x512x3",
+        "depth": "13x512x512",
+        "poses": "13x4x4",
+        "candidate_RGB_patch": "Nx3x3x3 uint8",
+        "candidate_world_position": "Nx3 float32,estimated",
+        "source_reference": "Nx(frame,source_x,source_y)",
+        "query": "Qx8 indices+valid;Q<=32768",
+        "query_features": "Qx8x19 float32+missing flags;finite",
+        "query_memory_evidence": "Qx8 verified + memory entryID",
+        "lens_condition": "estimatedfocus_m + aperture_radius_m suppliedpercase",
+        "content_hit_weight": "Nx1 float32;K16 bitset",
+        "placement_ray_depth": "16x512x512 float32",
+        "candidate_placement": "Nx3 alignedcameraXYZ,labels only",
+        "hidden_RGB_label": "Nx3 float32+valid,labels only",
+        "optional_feature": "entriesx0",
+        "future_hidden_outputs": "Qx2xGSattributes,no decoder implemented"
+      },
+      "S2a_interface": {
+        "resolution": 256,
+        "input_frames": [
+          1,
+          16,
+          30,
+          45,
+          60
+        ],
+        "intrinsics_scale": 0.5,
+        "pixel_CoC_scale": 0.5,
+        "projected_footprint_scale": 0.5,
+        "five_frame_recoverability_requires_fresh_recomputation": true,
+        "not_computed_or_trained_in_step1": true
+      },
+      "disk_bytes": 11073350204,
+      "disk_by_component": {
+        "inputs": 95711243,
+        "input-passes-v2": 87184148,
+        "aperture-passes-v2": 1276512505,
+        "geometry": 3225797557,
+        "models": 602051595,
+        "candidates": 143829620,
+        "memory": 116123648,
+        "labels": 254456411,
+        "labels-training-focus": 236350945,
+        "oracle": 4873747,
+        "references": 142711619,
+        "visible": 226518709,
+        "dof": 35074406,
+        "continuous": 23321554,
+        "rack": 23427912,
+        "predictions": 487557947,
+        "LDR-subviews": 2612004087,
+        "LDR-reference": 73678179,
+        "aperture-passes": 1276064832,
+        "labels-query-conditioned-v1": 77671999
+      },
+      "conservative_training_sync_bytes": 1669648627,
+      "invalid_development_outputs_excluded": [
+        "aperture-passes/",
+        "labels-query-conditioned-v1/",
+        "memory/memory.npz",
+        "memory-evidence-int16-invalid-v1.npz"
+      ],
+      "no_neural_network_implemented": true,
+      "no_network_training": true
+    },
+    {
+      "scene": "pilot-multilayer",
+      "scene_metadata": {
+        "label": "pilot-multilayer",
+        "seed": 120202,
+        "blender": "4.5.3 LTS",
+        "frames": 60,
+        "input_frames": [
+          1,
+          6,
+          11,
+          16,
+          21,
+          26,
+          30,
+          35,
+          40,
+          45,
+          50,
+          55,
+          60
+        ],
+        "focus_distances_m": [
+          1.4,
+          5.0
+        ],
+        "focal_length_mm": 50,
+        "sensor_width_mm": 36,
+        "objects": [
+          {
+            "id": 1,
+            "name": "background_floor"
+          },
+          {
+            "id": 2,
+            "name": "background_shelf_0"
+          },
+          {
+            "id": 3,
+            "name": "background_shelf_1"
+          },
+          {
+            "id": 4,
+            "name": "background_shelf_2"
+          },
+          {
+            "id": 5,
+            "name": "background_wall"
+          },
+          {
+            "id": 6,
+            "name": "foreground_0_panel_0"
+          },
+          {
+            "id": 7,
+            "name": "foreground_0_panel_1"
+          },
+          {
+            "id": 8,
+            "name": "foreground_0_panel_2"
+          },
+          {
+            "id": 9,
+            "name": "foreground_1_rear_panel"
+          }
+        ],
+        "foreground_names": [
+          "foreground_0_panel_0",
+          "foreground_0_panel_1",
+          "foreground_0_panel_2",
+          "foreground_1_rear_panel"
+        ],
+        "dynamic_names": [],
+        "assets_source": "independent original procedural primitives and node textures;no downloaded assets",
+        "assets_license": "CC0-1.0 generated assets",
+        "render": {
+          "filter_type": "BOX",
+          "filter_width": 1.0,
+          "denoising": false,
+          "motion_blur": false,
+          "adaptive": false
+        },
+        "static_object_transforms_verified": true
+      },
+      "split": "pipeline-development;not an untouched publication test scene",
+      "inputs": [
+        {
+          "frame": 1,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f001.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f001.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f001-Position-0001.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f001-IndexOB-0001.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f001-ObjectLocal-0001.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f001-crypto-0001.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f001-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/SHARP/f001.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/DA3/f001.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/SHARP/f001.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/DA3/f001.npz"
+        },
+        {
+          "frame": 6,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f006.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f006.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f006-Position-0006.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f006-IndexOB-0006.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f006-ObjectLocal-0006.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f006-crypto-0006.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f006-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/SHARP/f006.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/DA3/f006.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/SHARP/f006.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/DA3/f006.npz"
+        },
+        {
+          "frame": 11,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f011.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f011.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f011-Position-0011.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f011-IndexOB-0011.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f011-ObjectLocal-0011.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f011-crypto-0011.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f011-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/SHARP/f011.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/DA3/f011.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/SHARP/f011.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/DA3/f011.npz"
+        },
+        {
+          "frame": 16,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f016.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f016.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f016-Position-0016.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f016-IndexOB-0016.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f016-ObjectLocal-0016.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f016-crypto-0016.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f016-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/SHARP/f016.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/DA3/f016.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/SHARP/f016.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/DA3/f016.npz"
+        },
+        {
+          "frame": 21,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f021.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f021.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f021-Position-0021.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f021-IndexOB-0021.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f021-ObjectLocal-0021.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f021-crypto-0021.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f021-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/SHARP/f021.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/DA3/f021.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/SHARP/f021.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/DA3/f021.npz"
+        },
+        {
+          "frame": 26,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f026.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f026.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f026-Position-0026.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f026-IndexOB-0026.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f026-ObjectLocal-0026.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f026-crypto-0026.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f026-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/SHARP/f026.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/DA3/f026.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/SHARP/f026.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/DA3/f026.npz"
+        },
+        {
+          "frame": 30,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f030.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f030.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f030-Position-0030.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f030-IndexOB-0030.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f030-ObjectLocal-0030.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f030-crypto-0030.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f030-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/SHARP/f030.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/DA3/f030.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/SHARP/f030.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/DA3/f030.npz"
+        },
+        {
+          "frame": 35,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f035.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f035.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f035-Position-0035.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f035-IndexOB-0035.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f035-ObjectLocal-0035.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f035-crypto-0035.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f035-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/SHARP/f035.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/DA3/f035.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/SHARP/f035.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/DA3/f035.npz"
+        },
+        {
+          "frame": 40,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f040.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f040.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f040-Position-0040.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f040-IndexOB-0040.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f040-ObjectLocal-0040.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f040-crypto-0040.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f040-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/SHARP/f040.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/DA3/f040.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/SHARP/f040.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/DA3/f040.npz"
+        },
+        {
+          "frame": 45,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f045.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f045.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f045-Position-0045.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f045-IndexOB-0045.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f045-ObjectLocal-0045.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f045-crypto-0045.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f045-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/SHARP/f045.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/DA3/f045.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/SHARP/f045.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/DA3/f045.npz"
+        },
+        {
+          "frame": 50,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f050.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f050.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f050-Position-0050.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f050-IndexOB-0050.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f050-ObjectLocal-0050.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f050-crypto-0050.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f050-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/SHARP/f050.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/DA3/f050.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/SHARP/f050.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/DA3/f050.npz"
+        },
+        {
+          "frame": 55,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f055.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f055.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f055-Position-0055.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f055-IndexOB-0055.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f055-ObjectLocal-0055.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f055-crypto-0055.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f055-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/SHARP/f055.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/DA3/f055.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/SHARP/f055.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/DA3/f055.npz"
+        },
+        {
+          "frame": 60,
+          "linear_EXR": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f060.exr",
+          "display_RGB": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f060.png",
+          "native_firsthit_world_position": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f060-Position-0060.exr",
+          "native_object_ID": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f060-IndexOB-0060.exr",
+          "native_object_local_AOV": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/input-passes-v2/f060-ObjectLocal-0060.exr",
+          "pinhole_AA_Cryptomatte": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/inputs/f060-crypto-0060.exr",
+          "GT_geometry": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f060-center.npz",
+          "SHARP_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/SHARP/f060.npz",
+          "DA3_depth": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/DA3/f060.npz",
+          "calibration_SHARP": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/SHARP/f060.npz",
+          "calibration_DA3": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/models/calibration/DA3/f060.npz"
+        }
+      ],
+      "targets": [
+        {
+          "id": "f001-N1.4-F1.4",
+          "frame": 1,
+          "focus_m": 1.3587620258331299,
+          "nominal_focus_m": 1.4,
+          "fstop": 1.4,
+          "band_pixels": 112816,
+          "GT_DOF": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/dof/f001-N1.4-F1.4.exr",
+          "native_K16_world_pass_pattern": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/aperture-passes-v2/f001-N1.4-F1.4-kXX-Position-0001.exr",
+          "GT_visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f001-N1.4-F1.4-K16.npz",
+          "candidate_pool": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f001/pool.npz",
+          "query_M8": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f001/query-M8.npz",
+          "query_features": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f001/query-M8-features.npz",
+          "query_memory_evidence": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f001/query-M8-memory-evidence.npz",
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f001/f001-N1.4-F1.4.npz",
+          "appearance_labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f001/appearance-targets.npz",
+          "placement_validity": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f001/placement-support-v2.npz",
+          "visible_GS": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/visible/f001.pt",
+          "label_files_must_not_enter_model_inputs": true
+        },
+        {
+          "id": "f001-N2-F1.4",
+          "frame": 1,
+          "focus_m": 1.3587620258331299,
+          "nominal_focus_m": 1.4,
+          "fstop": 2.0,
+          "band_pixels": 102485,
+          "GT_DOF": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/dof/f001-N2-F1.4.exr",
+          "native_K16_world_pass_pattern": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/aperture-passes-v2/f001-N2-F1.4-kXX-Position-0001.exr",
+          "GT_visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f001-N2-F1.4-K16.npz",
+          "candidate_pool": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f001/pool.npz",
+          "query_M8": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f001/query-M8.npz",
+          "query_features": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f001/query-M8-features.npz",
+          "query_memory_evidence": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f001/query-M8-memory-evidence.npz",
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f001/f001-N2-F1.4.npz",
+          "appearance_labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f001/appearance-targets.npz",
+          "placement_validity": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f001/placement-support-v2.npz",
+          "visible_GS": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/visible/f001.pt",
+          "label_files_must_not_enter_model_inputs": true
+        },
+        {
+          "id": "f001-N1.4-F5",
+          "frame": 1,
+          "focus_m": 4.936663627624512,
+          "nominal_focus_m": 5.0,
+          "fstop": 1.4,
+          "band_pixels": 105498,
+          "GT_DOF": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/dof/f001-N1.4-F5.exr",
+          "native_K16_world_pass_pattern": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/aperture-passes-v2/f001-N1.4-F5-kXX-Position-0001.exr",
+          "GT_visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f001-N1.4-F5-K16.npz",
+          "candidate_pool": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f001/pool.npz",
+          "query_M8": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f001/query-M8.npz",
+          "query_features": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f001/query-M8-features.npz",
+          "query_memory_evidence": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f001/query-M8-memory-evidence.npz",
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f001/f001-N1.4-F5.npz",
+          "appearance_labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f001/appearance-targets.npz",
+          "placement_validity": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f001/placement-support-v2.npz",
+          "visible_GS": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/visible/f001.pt",
+          "label_files_must_not_enter_model_inputs": true
+        },
+        {
+          "id": "f001-N2-F5",
+          "frame": 1,
+          "focus_m": 4.895916938781738,
+          "nominal_focus_m": 5.0,
+          "fstop": 2.0,
+          "band_pixels": 94997,
+          "GT_DOF": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/dof/f001-N2-F5.exr",
+          "native_K16_world_pass_pattern": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/aperture-passes-v2/f001-N2-F5-kXX-Position-0001.exr",
+          "GT_visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f001-N2-F5-K16.npz",
+          "candidate_pool": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f001/pool.npz",
+          "query_M8": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f001/query-M8.npz",
+          "query_features": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f001/query-M8-features.npz",
+          "query_memory_evidence": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f001/query-M8-memory-evidence.npz",
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f001/f001-N2-F5.npz",
+          "appearance_labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f001/appearance-targets.npz",
+          "placement_validity": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f001/placement-support-v2.npz",
+          "visible_GS": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/visible/f001.pt",
+          "label_files_must_not_enter_model_inputs": true
+        },
+        {
+          "id": "f030-N1.4-F1.4",
+          "frame": 30,
+          "focus_m": 1.414493441581726,
+          "nominal_focus_m": 1.4,
+          "fstop": 1.4,
+          "band_pixels": 96523,
+          "GT_DOF": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/dof/f030-N1.4-F1.4.exr",
+          "native_K16_world_pass_pattern": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/aperture-passes-v2/f030-N1.4-F1.4-kXX-Position-0030.exr",
+          "GT_visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f030-N1.4-F1.4-K16.npz",
+          "candidate_pool": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f030/pool.npz",
+          "query_M8": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f030/query-M8.npz",
+          "query_features": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f030/query-M8-features.npz",
+          "query_memory_evidence": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f030/query-M8-memory-evidence.npz",
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f030/f030-N1.4-F1.4.npz",
+          "appearance_labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f030/appearance-targets.npz",
+          "placement_validity": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f030/placement-support-v2.npz",
+          "visible_GS": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/visible/f030.pt",
+          "label_files_must_not_enter_model_inputs": true
+        },
+        {
+          "id": "f030-N2-F1.4",
+          "frame": 30,
+          "focus_m": 1.414493441581726,
+          "nominal_focus_m": 1.4,
+          "fstop": 2.0,
+          "band_pixels": 86914,
+          "GT_DOF": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/dof/f030-N2-F1.4.exr",
+          "native_K16_world_pass_pattern": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/aperture-passes-v2/f030-N2-F1.4-kXX-Position-0030.exr",
+          "GT_visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f030-N2-F1.4-K16.npz",
+          "candidate_pool": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f030/pool.npz",
+          "query_M8": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f030/query-M8.npz",
+          "query_features": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f030/query-M8-features.npz",
+          "query_memory_evidence": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f030/query-M8-memory-evidence.npz",
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f030/f030-N2-F1.4.npz",
+          "appearance_labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f030/appearance-targets.npz",
+          "placement_validity": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f030/placement-support-v2.npz",
+          "visible_GS": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/visible/f030.pt",
+          "label_files_must_not_enter_model_inputs": true
+        },
+        {
+          "id": "f030-N1.4-F5",
+          "frame": 30,
+          "focus_m": 4.847267150878906,
+          "nominal_focus_m": 5.0,
+          "fstop": 1.4,
+          "band_pixels": 91469,
+          "GT_DOF": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/dof/f030-N1.4-F5.exr",
+          "native_K16_world_pass_pattern": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/aperture-passes-v2/f030-N1.4-F5-kXX-Position-0030.exr",
+          "GT_visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f030-N1.4-F5-K16.npz",
+          "candidate_pool": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f030/pool.npz",
+          "query_M8": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f030/query-M8.npz",
+          "query_features": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f030/query-M8-features.npz",
+          "query_memory_evidence": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f030/query-M8-memory-evidence.npz",
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f030/f030-N1.4-F5.npz",
+          "appearance_labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f030/appearance-targets.npz",
+          "placement_validity": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f030/placement-support-v2.npz",
+          "visible_GS": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/visible/f030.pt",
+          "label_files_must_not_enter_model_inputs": true
+        },
+        {
+          "id": "f030-N2-F5",
+          "frame": 30,
+          "focus_m": 4.816293716430664,
+          "nominal_focus_m": 5.0,
+          "fstop": 2.0,
+          "band_pixels": 81705,
+          "GT_DOF": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/dof/f030-N2-F5.exr",
+          "native_K16_world_pass_pattern": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/aperture-passes-v2/f030-N2-F5-kXX-Position-0030.exr",
+          "GT_visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f030-N2-F5-K16.npz",
+          "candidate_pool": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f030/pool.npz",
+          "query_M8": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f030/query-M8.npz",
+          "query_features": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f030/query-M8-features.npz",
+          "query_memory_evidence": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f030/query-M8-memory-evidence.npz",
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f030/f030-N2-F5.npz",
+          "appearance_labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f030/appearance-targets.npz",
+          "placement_validity": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f030/placement-support-v2.npz",
+          "visible_GS": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/visible/f030.pt",
+          "label_files_must_not_enter_model_inputs": true
+        },
+        {
+          "id": "f060-N1.4-F1.4",
+          "frame": 60,
+          "focus_m": 1.455786943435669,
+          "nominal_focus_m": 1.4,
+          "fstop": 1.4,
+          "band_pixels": 85893,
+          "GT_DOF": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/dof/f060-N1.4-F1.4.exr",
+          "native_K16_world_pass_pattern": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/aperture-passes-v2/f060-N1.4-F1.4-kXX-Position-0060.exr",
+          "GT_visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f060-N1.4-F1.4-K16.npz",
+          "candidate_pool": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f060/pool.npz",
+          "query_M8": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f060/query-M8.npz",
+          "query_features": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f060/query-M8-features.npz",
+          "query_memory_evidence": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f060/query-M8-memory-evidence.npz",
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f060/f060-N1.4-F1.4.npz",
+          "appearance_labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f060/appearance-targets.npz",
+          "placement_validity": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f060/placement-support-v2.npz",
+          "visible_GS": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/visible/f060.pt",
+          "label_files_must_not_enter_model_inputs": true
+        },
+        {
+          "id": "f060-N2-F1.4",
+          "frame": 60,
+          "focus_m": 1.455786943435669,
+          "nominal_focus_m": 1.4,
+          "fstop": 2.0,
+          "band_pixels": 78460,
+          "GT_DOF": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/dof/f060-N2-F1.4.exr",
+          "native_K16_world_pass_pattern": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/aperture-passes-v2/f060-N2-F1.4-kXX-Position-0060.exr",
+          "GT_visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f060-N2-F1.4-K16.npz",
+          "candidate_pool": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f060/pool.npz",
+          "query_M8": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f060/query-M8.npz",
+          "query_features": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f060/query-M8-features.npz",
+          "query_memory_evidence": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f060/query-M8-memory-evidence.npz",
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f060/f060-N2-F1.4.npz",
+          "appearance_labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f060/appearance-targets.npz",
+          "placement_validity": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f060/placement-support-v2.npz",
+          "visible_GS": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/visible/f060.pt",
+          "label_files_must_not_enter_model_inputs": true
+        },
+        {
+          "id": "f060-N1.4-F5",
+          "frame": 60,
+          "focus_m": 3.9745566844940186,
+          "nominal_focus_m": 5.0,
+          "fstop": 1.4,
+          "band_pixels": 89187,
+          "GT_DOF": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/dof/f060-N1.4-F5.exr",
+          "native_K16_world_pass_pattern": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/aperture-passes-v2/f060-N1.4-F5-kXX-Position-0060.exr",
+          "GT_visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f060-N1.4-F5-K16.npz",
+          "candidate_pool": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f060/pool.npz",
+          "query_M8": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f060/query-M8.npz",
+          "query_features": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f060/query-M8-features.npz",
+          "query_memory_evidence": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f060/query-M8-memory-evidence.npz",
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f060/f060-N1.4-F5.npz",
+          "appearance_labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f060/appearance-targets.npz",
+          "placement_validity": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f060/placement-support-v2.npz",
+          "visible_GS": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/visible/f060.pt",
+          "label_files_must_not_enter_model_inputs": true
+        },
+        {
+          "id": "f060-N2-F5",
+          "frame": 60,
+          "focus_m": 3.9246697425842285,
+          "nominal_focus_m": 5.0,
+          "fstop": 2.0,
+          "band_pixels": 79049,
+          "GT_DOF": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/dof/f060-N2-F5.exr",
+          "native_K16_world_pass_pattern": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/aperture-passes-v2/f060-N2-F5-kXX-Position-0060.exr",
+          "GT_visibility": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f060-N2-F5-K16.npz",
+          "candidate_pool": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f060/pool.npz",
+          "query_M8": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f060/query-M8.npz",
+          "query_features": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f060/query-M8-features.npz",
+          "query_memory_evidence": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/candidates/f060/query-M8-memory-evidence.npz",
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f060/f060-N2-F5.npz",
+          "appearance_labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f060/appearance-targets.npz",
+          "placement_validity": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels/f060/placement-support-v2.npz",
+          "visible_GS": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/visible/f060.pt",
+          "label_files_must_not_enter_model_inputs": true
+        }
+      ],
+      "training_focus_targets": [
+        {
+          "id": "f001-N1.4-F1.458211",
+          "frame": 1,
+          "focus_m": 1.4582105367739617,
+          "nominal_focus_m": 1.4582105367739617,
+          "fstop": 1.4,
+          "training_focus_only": true,
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels-training-focus/f001/f001-N1.4-F1.458211.npz",
+          "GT_mesh_ray_hit": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f001-N1.4-F1.458211-K16.npz",
+          "appearance_and_placement_validity_shared_with_evaluation_labels": true,
+          "labels_depend_on_focus": true,
+          "not_a_new_DOF_render": true
+        },
+        {
+          "id": "f001-N1.4-F1.830244",
+          "frame": 1,
+          "focus_m": 1.8302442236705383,
+          "nominal_focus_m": 1.8302442236705383,
+          "fstop": 1.4,
+          "training_focus_only": true,
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels-training-focus/f001/f001-N1.4-F1.830244.npz",
+          "GT_mesh_ray_hit": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f001-N1.4-F1.830244-K16.npz",
+          "appearance_and_placement_validity_shared_with_evaluation_labels": true,
+          "labels_depend_on_focus": true,
+          "not_a_new_DOF_render": true
+        },
+        {
+          "id": "f001-N1.4-F2.457133",
+          "frame": 1,
+          "focus_m": 2.457133396027856,
+          "nominal_focus_m": 2.457133396027856,
+          "fstop": 1.4,
+          "training_focus_only": true,
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels-training-focus/f001/f001-N1.4-F2.457133.npz",
+          "GT_mesh_ray_hit": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f001-N1.4-F2.457133-K16.npz",
+          "appearance_and_placement_validity_shared_with_evaluation_labels": true,
+          "labels_depend_on_focus": true,
+          "not_a_new_DOF_render": true
+        },
+        {
+          "id": "f001-N1.4-F3.737180",
+          "frame": 1,
+          "focus_m": 3.7371798123589666,
+          "nominal_focus_m": 3.7371798123589666,
+          "fstop": 1.4,
+          "training_focus_only": true,
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels-training-focus/f001/f001-N1.4-F3.737180.npz",
+          "GT_mesh_ray_hit": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f001-N1.4-F3.737180-K16.npz",
+          "appearance_and_placement_validity_shared_with_evaluation_labels": true,
+          "labels_depend_on_focus": true,
+          "not_a_new_DOF_render": true
+        },
+        {
+          "id": "f030-N1.4-F1.512316",
+          "frame": 30,
+          "focus_m": 1.5123163877461014,
+          "nominal_focus_m": 1.5123163877461014,
+          "fstop": 1.4,
+          "training_focus_only": true,
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels-training-focus/f030/f030-N1.4-F1.512316.npz",
+          "GT_mesh_ray_hit": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f030-N1.4-F1.512316-K16.npz",
+          "appearance_and_placement_validity_shared_with_evaluation_labels": true,
+          "labels_depend_on_focus": true,
+          "not_a_new_DOF_render": true
+        },
+        {
+          "id": "f030-N1.4-F1.886357",
+          "frame": 30,
+          "focus_m": 1.8863571005398367,
+          "nominal_focus_m": 1.8863571005398367,
+          "fstop": 1.4,
+          "training_focus_only": true,
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels-training-focus/f030/f030-N1.4-F1.886357.npz",
+          "GT_mesh_ray_hit": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f030-N1.4-F1.886357-K16.npz",
+          "appearance_and_placement_validity_shared_with_evaluation_labels": true,
+          "labels_depend_on_focus": true,
+          "not_a_new_DOF_render": true
+        },
+        {
+          "id": "f030-N1.4-F2.506220",
+          "frame": 30,
+          "focus_m": 2.506219555651135,
+          "nominal_focus_m": 2.506219555651135,
+          "fstop": 1.4,
+          "training_focus_only": true,
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels-training-focus/f030/f030-N1.4-F2.506220.npz",
+          "GT_mesh_ray_hit": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f030-N1.4-F2.506220-K16.npz",
+          "appearance_and_placement_validity_shared_with_evaluation_labels": true,
+          "labels_depend_on_focus": true,
+          "not_a_new_DOF_render": true
+        },
+        {
+          "id": "f030-N1.4-F3.732843",
+          "frame": 30,
+          "focus_m": 3.732842512503989,
+          "nominal_focus_m": 3.732842512503989,
+          "fstop": 1.4,
+          "training_focus_only": true,
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels-training-focus/f030/f030-N1.4-F3.732843.npz",
+          "GT_mesh_ray_hit": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f030-N1.4-F3.732843-K16.npz",
+          "appearance_and_placement_validity_shared_with_evaluation_labels": true,
+          "labels_depend_on_focus": true,
+          "not_a_new_DOF_render": true
+        },
+        {
+          "id": "f060-N1.4-F1.465596",
+          "frame": 60,
+          "focus_m": 1.4655956828557601,
+          "nominal_focus_m": 1.4655956828557601,
+          "fstop": 1.4,
+          "training_focus_only": true,
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels-training-focus/f060/f060-N1.4-F1.465596.npz",
+          "GT_mesh_ray_hit": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f060-N1.4-F1.465596-K16.npz",
+          "appearance_and_placement_validity_shared_with_evaluation_labels": true,
+          "labels_depend_on_focus": true,
+          "not_a_new_DOF_render": true
+        },
+        {
+          "id": "f060-N1.4-F1.837032",
+          "frame": 60,
+          "focus_m": 1.837031884269308,
+          "nominal_focus_m": 1.837031884269308,
+          "fstop": 1.4,
+          "training_focus_only": true,
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels-training-focus/f060/f060-N1.4-F1.837032.npz",
+          "GT_mesh_ray_hit": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f060-N1.4-F1.837032-K16.npz",
+          "appearance_and_placement_validity_shared_with_evaluation_labels": true,
+          "labels_depend_on_focus": true,
+          "not_a_new_DOF_render": true
+        },
+        {
+          "id": "f060-N1.4-F2.460652",
+          "frame": 60,
+          "focus_m": 2.460652258210749,
+          "nominal_focus_m": 2.460652258210749,
+          "fstop": 1.4,
+          "training_focus_only": true,
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels-training-focus/f060/f060-N1.4-F2.460652.npz",
+          "GT_mesh_ray_hit": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f060-N1.4-F2.460652-K16.npz",
+          "appearance_and_placement_validity_shared_with_evaluation_labels": true,
+          "labels_depend_on_focus": true,
+          "not_a_new_DOF_render": true
+        },
+        {
+          "id": "f060-N1.4-F3.725279",
+          "frame": 60,
+          "focus_m": 3.72527919502842,
+          "nominal_focus_m": 3.72527919502842,
+          "fstop": 1.4,
+          "training_focus_only": true,
+          "labels": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/labels-training-focus/f060/f060-N1.4-F3.725279.npz",
+          "GT_mesh_ray_hit": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/geometry/f060-N1.4-F3.725279-K16.npz",
+          "appearance_and_placement_validity_shared_with_evaluation_labels": true,
+          "labels_depend_on_focus": true,
+          "not_a_new_DOF_render": true
+        }
+      ],
+      "training_focus_plan": {
+        "rows": [
+          {
+            "frame": 1,
+            "GT_visible_depth_range_m": [
+              1.3236784934997559,
+              5.05349063873291
+            ],
+            "cases": [
+              {
+                "id": "f001-N1.4-F1.458211",
+                "frame": 1,
+                "focus_m": 1.4582105367739617,
+                "nominal_focus_m": 1.4582105367739617,
+                "fstop": 1.4,
+                "training_focus_only": true
+              },
+              {
+                "id": "f001-N1.4-F1.830244",
+                "frame": 1,
+                "focus_m": 1.8302442236705383,
+                "nominal_focus_m": 1.8302442236705383,
+                "fstop": 1.4,
+                "training_focus_only": true
+              },
+              {
+                "id": "f001-N1.4-F2.457133",
+                "frame": 1,
+                "focus_m": 2.457133396027856,
+                "nominal_focus_m": 2.457133396027856,
+                "fstop": 1.4,
+                "training_focus_only": true
+              },
+              {
+                "id": "f001-N1.4-F3.737180",
+                "frame": 1,
+                "focus_m": 3.7371798123589666,
+                "nominal_focus_m": 3.7371798123589666,
+                "fstop": 1.4,
+                "training_focus_only": true
+              }
+            ]
+          },
+          {
+            "frame": 30,
+            "GT_visible_depth_range_m": [
+              1.3759042024612427,
+              4.9423017501831055
+            ],
+            "cases": [
+              {
+                "id": "f030-N1.4-F1.512316",
+                "frame": 30,
+                "focus_m": 1.5123163877461014,
+                "nominal_focus_m": 1.5123163877461014,
+                "fstop": 1.4,
+                "training_focus_only": true
+              },
+              {
+                "id": "f030-N1.4-F1.886357",
+                "frame": 30,
+                "focus_m": 1.8863571005398367,
+                "nominal_focus_m": 1.8863571005398367,
+                "fstop": 1.4,
+                "training_focus_only": true
+              },
+              {
+                "id": "f030-N1.4-F2.506220",
+                "frame": 30,
+                "focus_m": 2.506219555651135,
+                "nominal_focus_m": 2.506219555651135,
+                "fstop": 1.4,
+                "training_focus_only": true
+              },
+              {
+                "id": "f030-N1.4-F3.732843",
+                "frame": 30,
+                "focus_m": 3.732842512503989,
+                "nominal_focus_m": 3.732842512503989,
+                "fstop": 1.4,
+                "training_focus_only": true
+              }
+            ]
+          },
+          {
+            "frame": 60,
+            "GT_visible_depth_range_m": [
+              1.3310325145721436,
+              5.013631343841553
+            ],
+            "cases": [
+              {
+                "id": "f060-N1.4-F1.465596",
+                "frame": 60,
+                "focus_m": 1.4655956828557601,
+                "nominal_focus_m": 1.4655956828557601,
+                "fstop": 1.4,
+                "training_focus_only": true
+              },
+              {
+                "id": "f060-N1.4-F1.837032",
+                "frame": 60,
+                "focus_m": 1.837031884269308,
+                "nominal_focus_m": 1.837031884269308,
+                "fstop": 1.4,
+                "training_focus_only": true
+              },
+              {
+                "id": "f060-N1.4-F2.460652",
+                "frame": 60,
+                "focus_m": 2.460652258210749,
+                "nominal_focus_m": 2.460652258210749,
+                "fstop": 1.4,
+                "training_focus_only": true
+              },
+              {
+                "id": "f060-N1.4-F3.725279",
+                "frame": 60,
+                "focus_m": 3.72527919502842,
+                "nominal_focus_m": 3.72527919502842,
+                "fstop": 1.4,
+                "training_focus_only": true
+              }
+            ]
+          }
+        ],
+        "K": 16,
+        "initial_training_focus_count": 4,
+        "selection": "centersof4equalinverse-depthbinsinthisframevisibleGTdepthrange",
+        "GT_label_generation_only": true,
+        "sample_training_only_from_precomputed_focuses": true,
+        "additional_continuous_random_focus_requires_recomputed_ray_labels": true,
+        "scheme_update": "688bc47"
+      },
+      "continuous_GT": [
+        "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/continuous/f027.exr",
+        "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/continuous/f028.exr",
+        "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/continuous/f029.exr",
+        "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/continuous/f030.exr",
+        "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/continuous/f031.exr",
+        "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/continuous/f032.exr",
+        "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/continuous/f033.exr",
+        "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/continuous/f034.exr"
+      ],
+      "focus_rack_GT": [
+        {
+          "frame": 27,
+          "focus_m": 1.4,
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/rack/f027.exr"
+        },
+        {
+          "frame": 28,
+          "focus_m": 1.5605095541401273,
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/rack/f028.exr"
+        },
+        {
+          "frame": 29,
+          "focus_m": 1.7625899280575539,
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/rack/f029.exr"
+        },
+        {
+          "frame": 30,
+          "focus_m": 2.0247933884297518,
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/rack/f030.exr"
+        },
+        {
+          "frame": 31,
+          "focus_m": 2.378640776699029,
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/rack/f031.exr"
+        },
+        {
+          "frame": 32,
+          "focus_m": 2.88235294117647,
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/rack/f032.exr"
+        },
+        {
+          "frame": 33,
+          "focus_m": 3.656716417910447,
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/rack/f033.exr"
+        },
+        {
+          "frame": 34,
+          "focus_m": 4.999999999999998,
+          "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/rack/f034.exr"
+        }
+      ],
+      "foreground_only_trial": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/preflight/foreground.exr",
+      "background_only_trial": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/preflight/background.exr",
+      "long_term_memory": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/memory/verified-index.npz",
+      "raw_observations": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-pilot-2026-11-12-01/pilot-multilayer/memory/observations.npz",
+      "optional_feature_dimension": 0,
+      "tensor_schema": {
+        "input_RGB": "13x512x512x3",
+        "depth": "13x512x512",
+        "poses": "13x4x4",
+        "candidate_RGB_patch": "Nx3x3x3 uint8",
+        "candidate_world_position": "Nx3 float32,estimated",
+        "source_reference": "Nx(frame,source_x,source_y)",
+        "query": "Qx8 indices+valid;Q<=32768",
+        "query_features": "Qx8x19 float32+missing flags;finite",
+        "query_memory_evidence": "Qx8 verified + memory entryID",
+        "lens_condition": "estimatedfocus_m + aperture_radius_m suppliedpercase",
+        "content_hit_weight": "Nx1 float32;K16 bitset",
+        "placement_ray_depth": "16x512x512 float32",
+        "candidate_placement": "Nx3 alignedcameraXYZ,labels only",
+        "hidden_RGB_label": "Nx3 float32+valid,labels only",
+        "optional_feature": "entriesx0",
+        "future_hidden_outputs": "Qx2xGSattributes,no decoder implemented"
+      },
+      "S2a_interface": {
+        "resolution": 256,
+        "input_frames": [
+          1,
+          16,
+          30,
+          45,
+          60
+        ],
+        "intrinsics_scale": 0.5,
+        "pixel_CoC_scale": 0.5,
+        "projected_footprint_scale": 0.5,
+        "five_frame_recoverability_requires_fresh_recomputation": true,
+        "not_computed_or_trained_in_step1": true
+      },
+      "disk_bytes": 10823665067,
+      "disk_by_component": {
+        "inputs": 91575454,
+        "input-passes-v2": 84168197,
+        "aperture-passes-v2": 1234836267,
+        "geometry": 3124235512,
+        "models": 607497735,
+        "candidates": 138132520,
+        "memory": 114387264,
+        "labels": 229803250,
+        "labels-training-focus": 216843837,
+        "oracle": 13005684,
+        "references": 79982072,
+        "visible": 226518364,
+        "dof": 35801249,
+        "continuous": 23866514,
+        "rack": 23892596,
+        "predictions": 488099983,
+        "LDR-subviews": 2670711034,
+        "LDR-reference": 75114509,
+        "aperture-passes": 1234457844,
+        "labels-query-conditioned-v1": 63331911
+      },
+      "conservative_training_sync_bytes": 1625140231,
+      "invalid_development_outputs_excluded": [
+        "aperture-passes/",
+        "labels-query-conditioned-v1/",
+        "memory/memory.npz",
+        "memory-evidence-int16-invalid-v1.npz"
+      ],
+      "no_neural_network_implemented": true,
+      "no_network_training": true
+    }
+  ],
+  "B2_high_excluded_from_training": true,
+  "formal_future_holdout": "reserve3-4new independent asset combinations;pilotsarealreadyinspected"
+}

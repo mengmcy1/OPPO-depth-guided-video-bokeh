@@ -1,0 +1,416 @@
+{
+  "status": "pose_comparison_completed_calibration_and_hidden_retention_not_yet_run",
+  "rows": [
+    {
+      "scene": "B2-high",
+      "model": "VGGT-1B",
+      "seconds": 1.5796462185680866,
+      "peak_allocated_MiB": 7186.87744140625,
+      "translation_RMSE_m": 0.007315598312894229,
+      "rotation_mean_deg": 5.450466471822475,
+      "rotation_max_deg": 5.524277719257051,
+      "per_frame_rotation_deg": [
+        5.471386430868354,
+        5.4421113841531055,
+        5.325215869198956,
+        5.42676881188028,
+        5.447032879093839,
+        5.42763067571851,
+        5.453009600046092,
+        5.400614144421539,
+        5.462337122228662,
+        5.489070660345707,
+        5.485526322759634,
+        5.501082513720444,
+        5.524277719257051
+      ],
+      "global_sim3_scale": 3.5273700697280796,
+      "camera_center_singular_values": [
+        0.0004855751317040547,
+        3.522374039228648e-05,
+        1.2994889583949421e-05
+      ],
+      "DA3": {
+        "completed": true,
+        "model": "DA3-BASE",
+        "weights_license": "Apache-2.0",
+        "input_frames": [
+          1,
+          6,
+          11,
+          16,
+          21,
+          26,
+          30,
+          35,
+          40,
+          45,
+          50,
+          55,
+          60
+        ],
+        "input_paths": [
+          "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f001.png",
+          "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f006.png",
+          "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f011.png",
+          "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f016.png",
+          "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f021.png",
+          "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f026.png",
+          "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f030.png",
+          "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f035.png",
+          "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f040.png",
+          "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f045.png",
+          "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f050.png",
+          "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f055.png",
+          "outputs/route3-upper-bound-2026-11-11-01/U2-da3/input-images/f060.png"
+        ],
+        "original_linear_sources": [
+          "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f001-pinhole-s1024-seed20261110-hidenone.exr",
+          "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f006-pinhole-s1024-seed20261110-hidenone.exr",
+          "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f011-pinhole-s1024-seed20261110-hidenone.exr",
+          "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f016-pinhole-s1024-seed20261110-hidenone.exr",
+          "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f021-pinhole-s1024-seed20261110-hidenone.exr",
+          "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f026-pinhole-s1024-seed20261110-hidenone.exr",
+          "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f030-pinhole-s1024-seed20261110-hidenone.exr",
+          "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f035-pinhole-s1024-seed20261110-hidenone.exr",
+          "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f040-pinhole-s1024-seed20261110-hidenone.exr",
+          "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f045-pinhole-s1024-seed20261110-hidenone.exr",
+          "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f050-pinhole-s1024-seed20261110-hidenone.exr",
+          "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f055-pinhole-s1024-seed20261110-hidenone.exr",
+          "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-b2only-2026-11-10-01/inputs/B2-high/pinhole/f060-pinhole-s1024-seed20261110-hidenone.exr"
+        ],
+        "input_transfer": "same clipped linear EXR -> standard displayRGB as baselines, rounded8bit only at DA3 image input",
+        "process_res": 518,
+        "output_shape": [
+          13,
+          518,
+          518
+        ],
+        "inference_seconds": 2.073958668857813,
+        "peak_allocated_MiB": 3345.93017578125,
+        "GT_conditioned_inference": false,
+        "global_sim3": {
+          "scale": 3.236534892909495,
+          "rotation": [
+            [
+              0.9999071713506456,
+              0.0047478689345569845,
+              0.012771312467040165
+            ],
+            [
+              -0.013040801606627357,
+              0.06189100378058031,
+              0.9979977160016393
+            ],
+            [
+              0.003947933004382453,
+              -0.9980716213737428,
+              0.06194717453912171
+            ]
+          ],
+          "translation": [
+            -0.007565648335994881,
+            -1.5027305493076692,
+            0.9987265288183136
+          ],
+          "singular_values": [
+            0.0005274689570368887,
+            4.833540374031226e-05,
+            1.9416567144825144e-05
+          ],
+          "camera_center_rmse_m": 0.003154808207266549,
+          "camera_center_max_error_m": 0.004725143489611455,
+          "rotation_error_deg": [
+            3.2413407807864285,
+            3.2800986133756496,
+            3.2393672943066254,
+            3.1459974744078725,
+            3.1234234390914675,
+            3.119669152672972,
+            3.1421733824068623,
+            3.142468503232094,
+            3.1657753044407264,
+            3.169555961014074,
+            3.316758340779904,
+            3.2103119979321613,
+            3.233783928297135
+          ]
+        },
+        "depth_alignment": "same one global camera-derived scale, bilinear resize only; no depth fitting",
+        "intrinsics": "known fixed input lens50mm/sensor36mm/512px shared by all methods; DA3 predicted intrinsics retained for diagnosis",
+        "geometry_rows": [
+          {
+            "frame": 1,
+            "focus_m": 1.4,
+            "fstop": 1.4,
+            "band_pixels": 76132,
+            "depth_p01_p50_p99": [
+              0.9268494862318039,
+              4.012030363082886,
+              4.290072765350342
+            ],
+            "CoC_p50_p99": [
+              5.905210494995117,
+              6.110341877937317
+            ]
+          },
+          {
+            "frame": 1,
+            "focus_m": 1.4,
+            "fstop": 2.0,
+            "band_pixels": 59340,
+            "depth_p01_p50_p99": [
+              0.9268494862318039,
+              4.012030363082886,
+              4.290072765350342
+            ],
+            "CoC_p50_p99": [
+              4.133647441864014,
+              4.277239246368408
+            ]
+          },
+          {
+            "frame": 1,
+            "focus_m": 5.0,
+            "fstop": 1.4,
+            "band_pixels": 96847,
+            "depth_p01_p50_p99": [
+              0.9268494862318039,
+              4.012030363082886,
+              4.290072765350342
+            ],
+            "CoC_p50_p99": [
+              0.6254013180732727,
+              11.160936737060547
+            ]
+          },
+          {
+            "frame": 1,
+            "focus_m": 5.0,
+            "fstop": 2.0,
+            "band_pixels": 73782,
+            "depth_p01_p50_p99": [
+              0.9268494862318039,
+              4.012030363082886,
+              4.290072765350342
+            ],
+            "CoC_p50_p99": [
+              0.4377809166908264,
+              7.812655634880066
+            ]
+          },
+          {
+            "frame": 30,
+            "focus_m": 1.4,
+            "fstop": 1.4,
+            "band_pixels": 79178,
+            "depth_p01_p50_p99": [
+              0.887003653049469,
+              3.8955633640289307,
+              4.2308054494857785
+            ],
+            "CoC_p50_p99": [
+              5.811286687850952,
+              6.0689383172988896
+            ]
+          },
+          {
+            "frame": 30,
+            "focus_m": 1.4,
+            "fstop": 2.0,
+            "band_pixels": 61475,
+            "depth_p01_p50_p99": [
+              0.887003653049469,
+              3.8955633640289307,
+              4.2308054494857785
+            ],
+            "CoC_p50_p99": [
+              4.067900657653809,
+              4.248256883621216
+            ]
+          },
+          {
+            "frame": 30,
+            "focus_m": 5.0,
+            "fstop": 1.4,
+            "band_pixels": 103185,
+            "depth_p01_p50_p99": [
+              0.887003653049469,
+              3.8955633640289307,
+              4.2308054494857785
+            ],
+            "CoC_p50_p99": [
+              0.7200287878513336,
+              11.776394004821778
+            ]
+          },
+          {
+            "frame": 30,
+            "focus_m": 5.0,
+            "fstop": 2.0,
+            "band_pixels": 78079,
+            "depth_p01_p50_p99": [
+              0.887003653049469,
+              3.8955633640289307,
+              4.2308054494857785
+            ],
+            "CoC_p50_p99": [
+              0.5040201544761658,
+              8.243475761413574
+            ]
+          },
+          {
+            "frame": 60,
+            "focus_m": 1.4,
+            "fstop": 1.4,
+            "band_pixels": 74335,
+            "depth_p01_p50_p99": [
+              0.9465455484390258,
+              4.014080286026001,
+              4.235830779075623
+            ],
+            "CoC_p50_p99": [
+              5.906827211380005,
+              6.072438168525696
+            ]
+          },
+          {
+            "frame": 60,
+            "focus_m": 1.4,
+            "fstop": 2.0,
+            "band_pixels": 57561,
+            "depth_p01_p50_p99": [
+              0.9465455484390258,
+              4.014080286026001,
+              4.235830779075623
+            ],
+            "CoC_p50_p99": [
+              4.13477897644043,
+              4.250706534385682
+            ]
+          },
+          {
+            "frame": 60,
+            "focus_m": 5.0,
+            "fstop": 1.4,
+            "band_pixels": 93847,
+            "depth_p01_p50_p99": [
+              0.9465455484390258,
+              4.014080286026001,
+              4.235830779075623
+            ],
+            "CoC_p50_p99": [
+              0.6237848997116089,
+              10.875850229263309
+            ]
+          },
+          {
+            "frame": 60,
+            "focus_m": 5.0,
+            "fstop": 2.0,
+            "band_pixels": 70823,
+            "depth_p01_p50_p99": [
+              0.9465455484390258,
+              4.014080286026001,
+              4.235830779075623
+            ],
+            "CoC_p50_p99": [
+              0.436649426817894,
+              7.613095283508303
+            ]
+          }
+        ],
+        "band_construction_valid": true,
+        "raw_prediction": "outputs/route3-upper-bound-2026-11-11-01/U2-da3/raw-prediction.npz",
+        "output": "outputs/route3-upper-bound-2026-11-11-01/U2-da3"
+      }
+    },
+    {
+      "scene": "pilot-multilayer",
+      "model": "VGGT-1B",
+      "seconds": 0.7721176408231258,
+      "peak_allocated_MiB": 7228.013671875,
+      "translation_RMSE_m": 0.004677756121655551,
+      "rotation_mean_deg": 0.44364071656786624,
+      "rotation_max_deg": 0.8759926634634463,
+      "per_frame_rotation_deg": [
+        0.7236251029610654,
+        0.5217281164921572,
+        0.42203984110327564,
+        0.45194898693737307,
+        0.3696595092452981,
+        0.37902246268249057,
+        0.29444654042403784,
+        0.3054091501604098,
+        0.2770420004433542,
+        0.3415947625765027,
+        0.37007613672573925,
+        0.4347440421671114,
+        0.8759926634634463
+      ],
+      "global_sim3_scale": 2.6068784698459573,
+      "camera_center_singular_values": [
+        0.0029827950895006243,
+        2.8657314091208917e-05,
+        2.7011843148621924e-05
+      ],
+      "DA3": {
+        "completed": true,
+        "seconds": 1.1797229498624802,
+        "peak_allocated_MiB": 3345.93017578125,
+        "license": "Apache-2.0",
+        "GT_conditioned_inference": false,
+        "global_sim3": {
+          "scale": 1.885511681882248,
+          "R": [
+            [
+              0.9814017141864362,
+              0.012964826603809865,
+              0.19152699199605705
+            ],
+            [
+              -0.19046038989516778,
+              -0.058922985850501194,
+              0.9799249571367409
+            ],
+            [
+              0.023989899393396234,
+              -0.9981783382790858,
+              -0.05535783338877921
+            ]
+          ],
+          "translation": [
+            -0.13859573016935506,
+            -1.5024393307731192,
+            0.9886318756318477
+          ],
+          "translation_RMSE_m": 0.005339630338127672,
+          "rotation_deg": [
+            7.790504674747795,
+            7.629676529141941,
+            7.658990638499401,
+            7.388643436768654,
+            6.8866060415056225,
+            6.942548891393711,
+            6.639236646792082,
+            6.277324302907899,
+            6.4379115891098175,
+            6.149580030905891,
+            5.764321400589174,
+            5.711462964597229,
+            5.72306385357735
+          ]
+        },
+        "per_frame_GT_depth_fit": false
+      }
+    }
+  ],
+  "VGGT_license": "localcode:MetaVGGTLicensev1July29,2025+AUP;fixedHF860abecweightcard:CC-BY-NC-4.0;researchpermitted;notApache",
+  "license_original": "VGGT License\n\nv1 Last Updated: July 29, 2025\n\n“Acceptable Use Policy” means the Acceptable Use Policy, applicable to Research Materials, that is incorporated into this Agreement.\n\n“Agreement” means the terms and conditions for use, reproduction, distribution and modification of the Research Materials set forth herein.\n\n\n“Documentation” means the specifications, manuals and documentation accompanying \nResearch Materials distributed by Meta.\n\n\n“Licensee” or “you” means you, or your employer or any other person or entity (if you are entering into this Agreement on such person or entity’s behalf), of the age required under applicable laws, rules or regulations to provide legal consent and that has legal authority to bind your employer or such other person or entity if you are entering in this Agreement on their behalf.\n\n“Meta” or “we” means Meta Platforms Ireland Limited (if you are located in or, if you are an entity, your principal place of business is in the EEA or Switzerland) and Meta Platforms, Inc. (if you are located outside of the EEA or Switzerland).\n“Research Materials” means, collectively, Documentation and the models, software and algorithms, including machine-learning model code, trained model weights, inference-enabling code, training-enabling code, fine-tuning enabling code, demonstration materials and other elements of the foregoing distributed by Meta and made available under this Agreement.\n\nBy clicking “I Accept” below or by using or distributing any portion or element of the Research Materials, you agree to be bound by this Agreement.\n\n\n1. License Rights and Redistribution.\n\n\na. Grant of Rights. You are granted a non-exclusive, worldwide, non-transferable and royalty-free limited license under Meta’s intellectual property or other rights owned by Meta embodied in the Research Materials to use, reproduce, distribute, copy, create derivative works of, and make modifications to the Research Materials.  \n \nb. Redistribution and Use.  \n\n\ni. Distribution of Research Materials, and any derivative works thereof, are subject to the terms of this Agreement. If you distribute or make the Research Materials, or any derivative works thereof, available to a third party, you may only do so under the terms of this Agreement. You shall also provide a copy of this Agreement to such third party.\n\n\nii.  If you submit for publication the results of research you perform on, using, or otherwise in connection with Research Materials, you must acknowledge the use of Research Materials in your publication.\n\n\niii. Your use of the Research Materials must comply with applicable laws and regulations (including Trade Control Laws) and adhere to the Acceptable Use Policy, which is hereby incorporated by reference into this Agreement.\n2. User Support. Your  use of the Research Materials is done at your own discretion; Meta does not process any information nor provide any service in relation to such use.  Meta is under no obligation to provide any support services for the Research Materials. Any support provided is “as is”, “with all faults”, and without warranty of any kind.\n\n\n3. Disclaimer of Warranty. UNLESS REQUIRED BY APPLICABLE LAW, THE RESEARCH MATERIALS AND ANY OUTPUT AND RESULTS THEREFROM ARE PROVIDED ON AN “AS IS” BASIS, WITHOUT WARRANTIES OF ANY KIND, AND META DISCLAIMS ALL WARRANTIES OF ANY KIND, BOTH EXPRESS AND IMPLIED, INCLUDING, WITHOUT LIMITATION, ANY WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY, OR FITNESS FOR A PARTICULAR PURPOSE. YOU ARE SOLELY RESPONSIBLE FOR DETERMINING THE APPROPRIATENESS OF USING OR REDISTRIBUTING THE RESEARCH MATERIALS AND ASSUME ANY RISKS ASSOCIATED WITH YOUR USE OF THE RESEARCH MATERIALS AND ANY OUTPUT AND RESULTS.\n \n4. Limitation of Liability. IN NO EVENT WILL META OR ITS AFFILIATES BE LIABLE UNDER ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, TORT, NEGLIGENCE, PRODUCTS LIABILITY, OR OTHERWISE, ARISING OUT OF THIS AGREEMENT, FOR ANY LOST PROFITS OR ANY DIRECT OR INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL, EXEMPLARY OR PUNITIVE DAMAGES, EVEN IF META OR ITS AFFILIATES HAVE BEEN ADVISED OF THE POSSIBILITY OF ANY OF THE FOREGOING.\n \n5. Intellectual Property.\n\n\na. Subject to Meta’s ownership of Research Materials and derivatives made by or for Meta, with respect to any derivative works and modifications of the Research Materials that are made by you, as between you and Meta, you are and will be the owner of such derivative works and modifications.\n \nb. If you institute litigation or other proceedings against Meta or any entity (including a cross-claim or counterclaim in a lawsuit) alleging that the Research Materials, outputs or results, or any portion of any of the foregoing, constitutes infringement of intellectual property or other rights owned or licensable by you, then any licenses granted to you under this Agreement shall terminate as of the date such litigation or claim is filed or instituted. You will indemnify and hold harmless Meta from and against any claim by any third party arising out of or related to your use or distribution of the Research Materials.\n \n6. Term and Termination. The term of this Agreement will commence upon your acceptance of this Agreement or access to the Research Materials and will continue in full force and effect until terminated in accordance with the terms and conditions herein. Meta may terminate this Agreement if you are in breach of any term or condition of this Agreement. Upon termination of this Agreement, you shall delete and cease use of the Research Materials. Sections 5, 6 and 9 shall survive the termination of this Agreement. \n \n7. Governing Law and Jurisdiction. This Agreement will be governed and construed under the laws of the State of California without regard to choice of law principles, and the UN Convention on Contracts for the International Sale of Goods does not apply to this Agreement. The courts of California shall have exclusive jurisdiction of any dispute arising out of this Agreement. \n\n\n8. Modifications and Amendments. Meta may modify this Agreement from time to time; provided that they are similar in spirit to the current version of the Agreement, but may differ in detail to address new problems or concerns. All such changes will be effective immediately. Your continued use of the Research Materials after any modification to this Agreement constitutes your agreement to such modification. Except as provided in this Agreement, no modification or addition to any provision of this Agreement will be binding unless it is in writing and signed by an authorized representative of both you and Meta.\n\n\nAcceptable Use Policy \n\nMeta seeks to further understanding of new and existing research domains with the mission of advancing the state-of-the-art in artificial intelligence through open research for the benefit of all. \n\nAs part of this mission, Meta makes certain research materials available for use in accordance with this Agreement (including the Acceptable Use Policy). Meta is committed to promoting the safe and responsible use of such research materials.  \n\nProhibited Uses\n\nYou agree you will not use, or allow others to use, Research Materials to:\n\n Violate the law or others’ rights, including to:\nEngage in, promote, generate, contribute to, encourage, plan, incite, or further illegal or unlawful activity or content, such as:\nViolence or terrorism\nExploitation or harm to children, including the solicitation, creation, acquisition, or dissemination of child exploitative content or failure to report Child Sexual Abuse Material\nHuman trafficking, exploitation, and sexual violence\nThe illegal distribution of information or materials to minors, including obscene materials, or failure to employ legally required age-gating in connection with such information or materials.\nSexual solicitation\nAny other criminal activity\n\nEngage in, promote, incite, or facilitate the harassment, abuse, threatening, or bullying of individuals or groups of individuals\n\nEngage in, promote, incite, or facilitate discrimination or other unlawful or harmful conduct in the provision of employment, employment benefits, credit, housing, other economic benefits, or other essential goods and services\n\nEngage in the unauthorized or unlicensed practice of any profession including, but not limited to, financial, legal, medical/health, or related professional practices\n\nCollect, process, disclose, generate, or infer health, demographic, or other sensitive personal or private information about individuals without rights and consents required by applicable laws\n\nEngage in or facilitate any action or generate any content that infringes, misappropriates, or otherwise violates any third-party rights, including the outputs or results of any technology using Research Materials\n\nCreate, generate, or facilitate the creation of malicious code, malware, computer viruses or do anything else that could disable, overburden, interfere with or impair the proper working, integrity, operation or appearance of a website or computer system\n\n2. Engage in, promote, incite, facilitate, or assist in the planning or development of activities that present a risk of death or bodily harm to individuals, including use of research artifacts related to the following:\n\nMilitary, warfare, nuclear industries or applications, espionage, use for materials or activities that are subject to the International Traffic Arms Regulations (ITAR) maintained by the United States Department of State\n\nGuns and illegal weapons (including weapon development)\n\nIllegal drugs and regulated/controlled substances\nOperation of critical infrastructure, transportation technologies, or heavy machinery\n\nSelf-harm or harm to others, including suicide, cutting, and eating disorders\nAny content intended to incite or promote violence, abuse, or any infliction of bodily harm to an individual\n\n3. Intentionally deceive or mislead others, including use of Research Materials related to the following:\n\n Generating, promoting, or furthering fraud or the creation or promotion of disinformation\n Generating, promoting, or furthering defamatory content, including the creation of defamatory statements, images, or other content\n\nGenerating, promoting, or further distributing spam\n\n Impersonating another individual without consent, authorization, or legal right\n\nRepresenting that outputs of research materials or outputs from technology using Research Materials are human-generated\n\nGenerating or facilitating false online engagement, including fake reviews and other means of fake online engagement\n\n4. Fail to appropriately disclose to end users any known dangers of your Research Materials.\n",
+  "code_revision": "a288dd0f14786c93483e45524328726ab7b1b4ce",
+  "weights_reference": "models/VGGT-stage0/download.json;existing5GBweightsreused",
+  "DA3_license": "Apache-2.0",
+  "no_new_weight_download": true,
+  "nonblocking_for_pilot": true,
+  "training": false
+}

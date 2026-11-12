@@ -1,0 +1,52 @@
+{
+  "rows": [
+    {
+      "scene": "pilot-thin",
+      "frame": 30,
+      "mask_fraction": 0.48834991455078125,
+      "foreground_mask_IoU": 0.3386175256677013,
+      "foreground_mask_recall": 0.950908786129936,
+      "foreground_mask_precision": 0.3101829430236373,
+      "extension_depth_error_vs_GT_background": {
+        "pixels": 115218,
+        "AbsRel": 0.31628748774528503,
+        "RMSE_m": 1.4549062252044678,
+        "median_scale_ratio": 0.670432448387146
+      },
+      "GT_only_after_predictions": true,
+      "inpaint_RGB_vs_peeled_background_in_GT_foreground_PSNR": 20.884015755127944
+    },
+    {
+      "scene": "pilot-multilayer",
+      "frame": 30,
+      "mask_fraction": 0.622528076171875,
+      "foreground_mask_IoU": 0.7353345083147542,
+      "foreground_mask_recall": 0.8832804621497979,
+      "foreground_mask_precision": 0.8104441394185989,
+      "extension_depth_error_vs_GT_background": {
+        "pixels": 156584,
+        "AbsRel": 0.45159363746643066,
+        "RMSE_m": 2.5828893184661865,
+        "median_scale_ratio": 0.37919914722442627
+      },
+      "GT_only_after_predictions": true,
+      "inpaint_RGB_vs_peeled_background_in_GT_foreground_PSNR": 24.46667694268617
+    },
+    {
+      "scene": "B2-high",
+      "frame": 30,
+      "mask_fraction": 0.40715789794921875,
+      "foreground_mask_IoU": 0.6603020424456124,
+      "foreground_mask_recall": 1.0,
+      "foreground_mask_precision": 0.6509172334963554,
+      "extension_depth_error_vs_GT_background": {
+        "pixels": 101755,
+        "AbsRel": 0.10037805140018463,
+        "RMSE_m": 0.7917750477790833,
+        "median_scale_ratio": 1.0321398973464966
+      },
+      "GT_only_after_predictions": true
+    }
+  ],
+  "interpretation": "baseline includesinput-depthmask andS1ddepth-extensionerrors;notanisolatedtestofProPainterRGBability;nomask/depthtuningafterqualityscores"
+}

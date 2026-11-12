@@ -1,0 +1,115 @@
+{
+  "passed": true,
+  "passed_means": "interfaces/nativepasses/provenance checked,notallestimatedgeometryorOraclequalitypassed",
+  "rows": [
+    {
+      "scene": "pilot-thin",
+      "frame": 1,
+      "candidates": 760986,
+      "query_shape": [
+        32768,
+        8
+      ],
+      "RGB_original_source_exact": true,
+      "source_references_int64_correct": true,
+      "target_frame_excluded": true,
+      "GT_absent_from_input_pool": true,
+      "content_bits_match_hit_fraction": true
+    },
+    {
+      "scene": "pilot-thin",
+      "frame": 30,
+      "candidates": 705387,
+      "query_shape": [
+        32768,
+        8
+      ],
+      "RGB_original_source_exact": true,
+      "source_references_int64_correct": true,
+      "target_frame_excluded": true,
+      "GT_absent_from_input_pool": true,
+      "content_bits_match_hit_fraction": true
+    },
+    {
+      "scene": "pilot-thin",
+      "frame": 60,
+      "candidates": 581243,
+      "query_shape": [
+        32768,
+        8
+      ],
+      "RGB_original_source_exact": true,
+      "source_references_int64_correct": true,
+      "target_frame_excluded": true,
+      "GT_absent_from_input_pool": true,
+      "content_bits_match_hit_fraction": true
+    },
+    {
+      "scene": "pilot-multilayer",
+      "frame": 1,
+      "candidates": 747050,
+      "query_shape": [
+        32768,
+        8
+      ],
+      "RGB_original_source_exact": true,
+      "source_references_int64_correct": true,
+      "target_frame_excluded": true,
+      "GT_absent_from_input_pool": true,
+      "content_bits_match_hit_fraction": true
+    },
+    {
+      "scene": "pilot-multilayer",
+      "frame": 30,
+      "candidates": 608573,
+      "query_shape": [
+        32768,
+        8
+      ],
+      "RGB_original_source_exact": true,
+      "source_references_int64_correct": true,
+      "target_frame_excluded": true,
+      "GT_absent_from_input_pool": true,
+      "content_bits_match_hit_fraction": true
+    },
+    {
+      "scene": "pilot-multilayer",
+      "frame": 60,
+      "candidates": 642745,
+      "query_shape": [
+        32768,
+        8
+      ],
+      "RGB_original_source_exact": true,
+      "source_references_int64_correct": true,
+      "target_frame_excluded": true,
+      "GT_absent_from_input_pool": true,
+      "content_bits_match_hit_fraction": true
+    }
+  ],
+  "field_crosschecks": "nativeBlenderfirsthit-vsindependentEmbree;allK16configs",
+  "unit_tests": "4 focused source-reference/memory/query/finite-evidence contracts passed",
+  "continuous_truth_consistency": [
+    {
+      "scene": "pilot-thin",
+      "max_linear_error": 6.258487701416016e-07,
+      "RMSE": 5.655057606734051e-08,
+      "independent_seed_linear_RMSE": 0.0013771591358987558,
+      "ratio_to_independent_seed_noise": 4.1063210919655056e-05,
+      "exact_bitwise_equal": false
+    },
+    {
+      "scene": "pilot-multilayer",
+      "max_linear_error": 0.0006915926933288574,
+      "RMSE": 8.941137004841243e-06,
+      "independent_seed_linear_RMSE": 0.0012295530072042897,
+      "ratio_to_independent_seed_noise": 0.007271859734759428,
+      "exact_bitwise_equal": false
+    }
+  ],
+  "placement_loss_requires_content_ray_and_safe_v2_mask": true,
+  "old_experiment_outputs_unchanged": true,
+  "no_network_training": true,
+  "no_network_implementation": true,
+  "phase2_not_started": true
+}

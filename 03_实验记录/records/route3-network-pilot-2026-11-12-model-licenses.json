@@ -1,0 +1,63 @@
+{
+  "ProPainter": {
+    "code_source": "https://github.com/sczhou/ProPainter",
+    "archive": {
+      "source": "GitHub official zipball main",
+      "archive_root": "sczhou-ProPainter-3267825",
+      "download_bytes": 58376160
+    },
+    "license": "NTU S-Lab License1.0;non-commercial research only;code and models",
+    "license_original": "# S-Lab License 1.0  \n\nCopyright 2023 S-Lab\n\nRedistribution and use for non-commercial purpose in source and binary forms, with or without modification, are permitted provided that the following conditions are met:\n1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.\n2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.\n3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.\\\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n4. In the event that redistribution and/or use for commercial purpose in source or binary forms, with or without modification is required, please contact the contributor(s) of the work.\n\n\n---\nFor inquiries or to obtain permission for commercial use, please consult Dr. Shangchen Zhou (shangchenzhou@gmail.com) and Prof. Chen Change Loy (ccloy@ntu.edu.sg).",
+    "weights": [
+      {
+        "name": "ProPainter.pth",
+        "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/models/ProPainter/ProPainter.pth",
+        "bytes": 157780510,
+        "sha256": "12c070c4b48f374c91d8a2a17851140b85c159621080989f9e191bbc18bd6591",
+        "source": "https://github.com/sczhou/ProPainter/releases/download/v0.1.0/ProPainter.pth"
+      },
+      {
+        "name": "recurrent_flow_completion.pth",
+        "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/models/ProPainter/recurrent_flow_completion.pth",
+        "bytes": 20348681,
+        "sha256": "22939a1a7900da878dbe1ccd011d646b1bfb30b8290039d8ff0e0c2fefbfd283",
+        "source": "https://github.com/sczhou/ProPainter/releases/download/v0.1.0/recurrent_flow_completion.pth"
+      },
+      {
+        "name": "raft-things.pth",
+        "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/models/ProPainter/raft-things.pth",
+        "bytes": 21108000,
+        "sha256": "fcfa4125d6418f4de95d84aec20a3c5f4e205101715a79f193243c186ac9a7e1",
+        "source": "https://github.com/sczhou/ProPainter/releases/download/v0.1.0/raft-things.pth"
+      }
+    ],
+    "inference_only": true,
+    "download": "official GitHub through existing request-local proxy after slowdirect;no global config changes",
+    "code_revision": "326782529a63d997cab80ab21439b92ed422b3d3"
+  },
+  "SHARP": {
+    "reference": "route3-sharp-s1-2026-11-11-model-licenses.json",
+    "unchanged_weights": true,
+    "research_only": true
+  },
+  "DA3_BASE": {
+    "license": "Apache-2.0",
+    "existing_weight_path": "models/DA3-BASE"
+  },
+  "RAFT": {
+    "reference": "route3-sharp-s1c-2026-11-10-model-licenses.json",
+    "weight": "TorchvisionRAFTlarge C_T_SKHT_V2",
+    "unchanged": true
+  },
+  "VGGT": {
+    "license_record": "route3-network-pilot-2026-11-12-E2-prime.json",
+    "local_pinned_license": "Meta VGGT Licensev1July29,2025+AUP",
+    "weights_download_record": "models/VGGT-stage0/download.json",
+    "research_use": true,
+    "pinned_weight_model_card": {
+      "url": "https://huggingface.co/facebook/VGGT-1B/raw/860abec7937da0a4c03c41d3c269c366e82abdf9/README.md",
+      "declared_license": "cc-by-nc-4.0",
+      "original_header": "---\ntags:\n- model_hub_mixin\n- pytorch_model_hub_mixin\nlicense: cc-by-nc-4.0\nlanguage:\n- en\npipeline_tag: image-to-3d\n---\n\n\n<div align=\"center\">\n<h1>VGGT: Visual Geometry Grounded Transformer</h1>\n\n<a href=\"https://jytime.github.io/data/VGGT_CVPR25.pdf\" target=\"_blank\" rel=\"noopener noreferrer\">\n  <img src=\"https://img.shields.io/badge/Paper-VGGT\" alt=\"Paper PDF\">\n</a>\n<a href=\"https://arxiv.org/abs/2503.11651\"><img src=\"https://img.shields.io/badge/arXiv-2503.11651-b31b1b\" alt=\"arXiv\"></a>\n<a href=\"https://vgg-t.github.io/\"><img src=\"https://img.shields.io/badge/Project_Page-green\" alt=\"Project Page\"></a>\n<a href='https://huggingface.co/spaces/facebook/vggt'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Demo-blue'></a>\n\n\n**[Meta AI Research](https://ai.facebook.com/research/)**; **[University of Oxford, VGG](https://www.robots.ox.ac.uk/~vgg/)**\n\n\n[Jianyuan Wang](https://jytime.github.io/), [Minghao Chen](https://silent-chen.github.io/), [Nikita Karaev](https://nikitakaraevv.github.io/),   \n[Andrea Vedaldi](https://www.robots.ox.ac.uk/~vedaldi/), [Christian Rupprecht](https://chrirupp.github.io/), [David Novotny](https://d-novotny.github.io/)\n</div>\n\n## Overview\n\nVisual Geometry Grounded Transformer (VGGT, CVPR 2025) is a feed-forward neural network that directly infers all key 3D attributes of a scene, including extrinsic and intrinsic camera parameters, point maps, depth maps, and 3D point tracks, **from one, a few, or hundreds of its views, within seconds**.\n\n## Quick Start\n\nPlease refer to our [Github Repo](https://github.com/facebookresearch/vggt)\n\n\n## Citation\nIf you find our repository useful, please consider giving it a star ⭐ and citing our paper in your work:\n\n```bibtex\n@inproceedings{wang2025vggt,\n  title={VGGT: Visual Geometry Grounded Transformer},\n  author={Wang, Jianyuan and Chen, Minghao and Karaev, Nikita and Vedaldi, Andrea and Rupprecht, Christian and Novotny, David},\n  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},\n  year={2025}\n}\n```"
+    }
+  }
+}
