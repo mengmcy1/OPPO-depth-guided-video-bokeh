@@ -1,16 +1,16 @@
 {
-  "status": "formal_data_recheck_in_progress",
+  "status": "stopped_before_training_insufficient_qualified_heldout",
   "base_revision": "03b6890541391e6f71b4f0f06619ba146fa0bb11",
   "output": "outputs/route3-network-s2a-2026-11-12-01",
   "config": "configs/route3-network-s2a-2026-11-12.json",
-  "current_free_GiB": 263.0592613220215,
+  "current_free_GiB": 217.95956802368164,
   "GPU": "RTX4090D48GiB GPU0;checked before GPU subprocesses;no foreign processes killed",
   "environment": "reuse pilot route3/magicbokeh/dofgs/Blender4.5.3;no installation or global configuration changes",
   "models_licenses_reused_from": "route3-network-pilot-2026-11-12-model-licenses.json",
   "known_proxy_threshold_record": "route3-network-s2a-2026-11-12-screen-thresholds.json",
   "tests": {
-    "passed": 5,
-    "runner": "unittest;existing environment has no pytest;no package installed"
+    "passed": 10,
+    "runner": "focused unittest;no pytest installed or package installation"
   },
   "old_results_unchanged": true,
   "stop_conditions": [
@@ -34,5 +34,9 @@
     "candidates": 19,
     "passed": 16
   },
-  "stage_meaning": "current scores are A-color and GTrec rendering references,not learned light-fusion outputs"
+  "stage_meaning": "current scores are A-color and GTrec rendering references,not learned light-fusion outputs",
+  "formal_scenes_completed": 16,
+  "qualified_heldout_scenes": 1,
+  "split_fixed": false,
+  "summary_record": "route3-network-s2a-2026-11-12-summary.json"
 }
