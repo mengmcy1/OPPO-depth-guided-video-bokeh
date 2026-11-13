@@ -19,4 +19,3 @@ def sample_identity_rgb(uv,local,ids,gt,rgb,foot):
         xx=np.clip(x0+dx,0,511);yy=np.clip(y0+dy,0,511);match=(gt['object_id'][yy,xx]==ids)&(np.linalg.norm(gt['local_surface_point'][yy,xx]-local,axis=-1)<=3*foot[yy,xx]);weight=ww*match;total+=weight;color+=rgb[yy,xx]*weight[:,None]
     good=total>1e-6;color/=np.maximum(total[:,None],1e-30)
     return color.astype(np.float32),good
-
