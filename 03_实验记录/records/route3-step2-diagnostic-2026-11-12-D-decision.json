@@ -1,0 +1,13 @@
+{
+  "development_interpretation": "texture sampling is a confirmed major problem;foreground geometry also affects nearfocus;fix texture with G2 first;no geometry frontend change",
+  "G_authorized_condition_satisfied": true,
+  "evidence": [
+    "new highcontrast zeroaperture median36.76/38.85dB vs lowtexture60.05/smooth69.61",
+    "near-focus display-SSE remaining after sigma2 .110/.086 in highcontrast scenes;absolute control error is far smaller",
+    "corrected foreground depth improves near-focus PSNR vs focus-only by15.1/5.1dB in new scenes;fixed-appearance depth edits also alter sorting",
+    "GTrec gain and prefix transmittance do not increase consistently;no claim of proven foreground-occlusion mechanism"
+  ],
+  "implementation_caveat": "initial direct layer collapse invalid for causal inference;retained;relative two-layer warp is main diagnostic and still has color/sort coupling",
+  "high_residual_frame": "scene121302/frame30 global BG inverse affine heldout relative residual22.1percent;report separately,not repaired",
+  "next": "G1/G2 two pilots;GT-side checks before method outputs;halt if zeroaperture or in-focus still clearly below controls;no formal training"
+}

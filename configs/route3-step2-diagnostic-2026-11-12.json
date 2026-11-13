@@ -1,0 +1,59 @@
+{
+  "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-step2-diagnostic-2026-11-12-01",
+  "base_revision": "3bbf072",
+  "client_timezone": "America/Los_Angeles",
+  "client_date": "2026-11-12",
+  "scenes": [
+    "scene-121302-broad",
+    "scene-121303-multilayer",
+    "B2-high",
+    "scene-121305-broad",
+    "pilot-multilayer"
+  ],
+  "frames": [
+    1,
+    30,
+    60
+  ],
+  "focus_m": [
+    1.4,
+    5.0
+  ],
+  "fstop": 1.4,
+  "K_render": 64,
+  "K_stats": 16,
+  "Gaussian_lowpass_sigma": [
+    1,
+    2,
+    4
+  ],
+  "alias_frame": 30,
+  "alias_shift_pixels": [
+    0.5,
+    0
+  ],
+  "alias_noise_seed": 2026111202,
+  "alias_spp": 256,
+  "foreground_oracle_selection": "GT foreground object-ID at projected Gaussian center;both SHARP layers;keep color,opacity,rotation;move means along camera rays and scale proportionally",
+  "D2_hidden": "same unmodified GTrec parents and colors as original baseline;no hidden geometry refit",
+  "D2_fit": "GTvisiblebackground inverse depth to estimated inverse depth;Huber IRLS,heldout spatial20percent report;positive mappings required;no fallback on failure",
+  "O": {
+    "scene": "scene-121303-multilayer",
+    "frame": 30,
+    "focus_m": 5.0,
+    "fstop": 1.4,
+    "fixed_training_queries": 1024,
+    "seed": 2026111208,
+    "steps": 8000,
+    "loss": "same existing direct supervision",
+    "optimizer": "Adam",
+    "learning_rate": 0.0002,
+    "final_learning_rate": 2e-05,
+    "success": "recorded previous engineering checks on fixed minibatch:loss<=.5initial;selection>=.9;matcheddepth/RGB<=.05;not method result",
+    "test_scope": "single scene/frame/lens fixed minibatch;full-query metrics and rendering descriptive"
+  },
+  "no_formal_model_training": true,
+  "no_old_outputs_modified": true,
+  "initial_direct_depth_collapse": "retained in render/;invalid for isolated geometry inference because changes layer order and zero-aperture appearance",
+  "corrected_depth_intervention": "render-relative/:radial ratio target GT depth / own zero-aperture expected depth at projected Gaussian center;keeps relative two-layer depth;colors/opacity/rotation fixed;remaining zero-aperture change reported as appearance/order coupling"
+}

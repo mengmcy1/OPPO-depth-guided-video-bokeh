@@ -1,0 +1,288 @@
+{
+  "stage": "appendix7_step2_D_then_S2a",
+  "date": "2026-11-12",
+  "timezone": "America/Los_Angeles",
+  "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-step2-diagnostic-2026-11-12-01/G2",
+  "scenes": [
+    "metric-pilot-122001-broad",
+    "metric-pilot-122002-multilayer"
+  ],
+  "input_frames": [
+    1,
+    6,
+    11,
+    16,
+    21,
+    26,
+    30,
+    35,
+    40,
+    45,
+    50,
+    55,
+    60
+  ],
+  "representative_frames": [
+    1,
+    30,
+    60
+  ],
+  "representative_reason": "trajectory start/middle/end, predetermined independently of method scores",
+  "continuous_frames": [
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34
+  ],
+  "focus_rack_frames": [
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34
+  ],
+  "focus_distances_m": [
+    1.4,
+    5.0
+  ],
+  "fstops": [
+    1.4,
+    2.0
+  ],
+  "resolution": [
+    512,
+    512
+  ],
+  "K_render": 64,
+  "K_labels": 16,
+  "cycles": {
+    "version": "4.5.3 LTS",
+    "binary": "/root/autodl-tmp/tools/blender-4.5.3-linux-x64/blender",
+    "device": "GPU OptiX0",
+    "filter_type": "BOX",
+    "filter_width": 1.0,
+    "pinhole_spp": 256,
+    "reference_spp_candidates": [
+      512,
+      1024,
+      2048
+    ],
+    "initial_dof_spp": 1024,
+    "denoising": false,
+    "motion_blur": false,
+    "adaptive": false
+  },
+  "calibration": {
+    "method": "S1c RAFT-large;given GT poses E1;inverse depth affine",
+    "GT_depth_used": false,
+    "heldout_rejection": "S1c affine candidate;reject if inverseRMSE or sparseDepthAbsRel worsens vsidentity onheldout;explicitlyretainnativeandflaguncalibrated,nofallbackfittingorGTcorrection"
+  },
+  "rules": [
+    "R1",
+    "R2"
+  ],
+  "network_implementation": true,
+  "network_training": false,
+  "b2high_train": false,
+  "split": {
+    "train": 12,
+    "heldout": 4,
+    "excluded": [
+      "B2-high",
+      "pilot-thin",
+      "pilot-multilayer"
+    ]
+  },
+  "labels": {
+    "content": "source own GT world point to K16 first-hit surface;object+surfacefootprint,not estimated-depth threshold",
+    "placement": "local GT disparity to estimated disparity affine,background-visible window",
+    "features_slot": 0,
+    "placement_validity": "placement-support-v2:localfit+sameS1dR1behindmargin;unsafeGTtargetsnotclamped,excludedfromdepthloss"
+  },
+  "report_node": "stop after S2a and evaluation or specified stop condition",
+  "record_prefix": "route3-step2-diagnostic-2026-11-12-G2",
+  "scheme_update": "688bc47:4extra trainingfocuses/frame,mesh ray labels;nativeK16 retainedasvalidationonly",
+  "candidate_seeds": [
+    121301,
+    121302,
+    121303,
+    121304,
+    121305,
+    121306,
+    121307,
+    121308,
+    121309,
+    121310,
+    121311,
+    121312,
+    121313,
+    121314,
+    121315,
+    121316,
+    121317,
+    121318,
+    121319,
+    121320,
+    121321,
+    121322,
+    121323,
+    121324,
+    121325,
+    121326,
+    121327,
+    121328,
+    121329,
+    121330
+  ],
+  "screening": {
+    "K": 16,
+    "resolution": 512,
+    "pinhole_spp": 256,
+    "peeled_spp": 32,
+    "DOF_render": false,
+    "threshold_fit": "3 known scenes only;weak calibration; frozen before candidate screening",
+    "minimum_passed_first30": 12,
+    "required_passed": 16
+  },
+  "training": {
+    "resolution": 256,
+    "frames": [
+      1,
+      16,
+      30,
+      45,
+      60
+    ],
+    "M": 8,
+    "feature_dim": 19,
+    "hidden_layers_per_query": 2,
+    "pose_perturbation": false,
+    "render_loss": false
+  },
+  "disk_min_free_GiB": 60,
+  "recovery_ratio": {
+    "per_cell_min_GTrec_gain_dB": 1.0,
+    "formula": "(MSE_visible-MSE_method)/(MSE_visible-MSE_GTrec)",
+    "others": "N/A;all-cell dB vs R1R2 also reported"
+  },
+  "light_fusion": {
+    "candidate_features": 19,
+    "M": 8,
+    "hidden_Gaussians_per_query": 2,
+    "encoder_width": 128,
+    "decoder": "pointwise MLP with normalized candidate weights;no attention",
+    "source_axial_depth_delta_bound_fraction": 0.5,
+    "linear_RGB_residual_bound": 0.05,
+    "opacity_separate_from_confidence": true,
+    "q_multiplies_alpha": false,
+    "visible_layer": "fixed calibrated A-color;no joint update",
+    "source_RGB_resampling": "project corrected fused position back to original input views;linearRGB bilinear",
+    "query_cap": {
+      "train256": 32768,
+      "eval512": 262144,
+      "forward_chunk": 2048
+    },
+    "feature_normalization": "fixed physical constants;no heldout fitted statistics",
+    "loss": "direct matched-ray depth/RGB L1;candidate correctness BCE;opacity/selection supervision;no K64 render loss",
+    "candidate_order": "estimated target depth ascending;no GT in selection",
+    "overfit": "one training scene/frame,final step;loss and hidden-surface correctness checked before S2a",
+    "S2a_steps": 20000,
+    "GT_warmup_steps": 200,
+    "overfit_max_steps": 8000,
+    "batch_queries": 1024,
+    "optimizer": "Adam",
+    "learning_rate": 0.0002,
+    "final_learning_rate": 2e-05,
+    "seeds": {
+      "overfit": 2026111301,
+      "S2a": 2026111302
+    },
+    "eval_every_steps": 2000,
+    "checkpoint_selection": "final fixed step;heldout monitors do not select checkpoint",
+    "all_training_inputs": "256/5 candidate fusion;frozen geometry frontend cached from13frames",
+    "S2a_evaluation_inputs": "512/13 without retraining",
+    "development_success_reference": "scheme2.5:qualified-cell recovery~75-80% or farfocus full-image>=+0.3dBvsR1R2;focusguard reported separately",
+    "query_cap_reason": "pointwise MLP streams all512 band pixels for fair dense comparison;no attention;twoGSperposition;256training remains capped",
+    "overfit_engineering_check": {
+      "scope": "first training scene frame30,N1.4,F5;full active queries",
+      "loss_final_max_initial_fraction": 0.5,
+      "selection_correct_min": 0.9,
+      "matched_ray_relative_depth_L1_max": 0.05,
+      "matched_ray_linear_RGB_L1_max": 0.05,
+      "false_activation": "report,not an extra stopping gate",
+      "meaning": "development fit check,not a new paper success criterion"
+    },
+    "loss_weights": {
+      "relative_depth_L1": 1,
+      "linear_RGB_L1": 1,
+      "q_BCE": 0.2,
+      "selection_CE": 0.2,
+      "opacity_BCE": 0.2
+    },
+    "opacity_BCE_positive_weight": 4,
+    "two_surface_label_packing": "nearest2GT-positive depth clusters,max10mmor2%;onlyoutput-slot packing,not candidate content correctness;anchor byaperturehitfraction andGT-queryplacementproximity",
+    "public_query_conditions": [
+      "query_u_divW",
+      "query_v_divH",
+      "2_over_focus_m",
+      "50_times_aperture_radius_m",
+      "visible_depth_m_div5",
+      "target_frame_div60"
+    ],
+    "checkpoint_every_steps": {
+      "overfit": 1000,
+      "S2a": 2000
+    },
+    "overfit_monitor_steps": 1000,
+    "eval_rendering": {
+      "K": 64,
+      "hidden_sigma_pixels": 0.7,
+      "post_visibility": "existing S1dR1 centre own-renderdepth+max5mmor2%;noGT",
+      "opacity_prune": 0.0001,
+      "source_provenance": "raw refs+model source weights;layercodes in GaussianScene are not temporal source IDs"
+    }
+  },
+  "network_status": "MLP implemented and CPU gradient checks passed;not trained",
+  "seeds": [
+    121302,
+    121303,
+    121304,
+    121305,
+    121306,
+    121307,
+    121308,
+    121309,
+    121311,
+    121312,
+    121313,
+    121314,
+    121316,
+    121317,
+    121318,
+    121319
+  ],
+  "G2_truth_checks": {
+    "period_low_quantile": 0.01,
+    "minimum_projected_period_pixels": 8,
+    "grazing_degrees": 75,
+    "alias_excess_RMSE_limit": 0.01,
+    "alias_min_object_interior_pixels": 25,
+    "independent_DOF_noise_PSNR_min": 45,
+    "independent_DOF_noise_patch_LPIPS_max": 0.002,
+    "method_results_not_used_for_scene_selection": true
+  },
+  "G2_method_diagnostic_reference": {
+    "zeroaperture_median_full_PSNR_min": 57.05,
+    "near_infocus_pooled_PSNR_min": 39.92,
+    "far_infocus_pooled_PSNR_min": 40.27,
+    "definition": "3dB below lower same-scene-control summary at D;generator-level stop/reference,never per-scene selection;both pilots reported",
+    "not_formal_method_success_gate": true
+  }
+}
