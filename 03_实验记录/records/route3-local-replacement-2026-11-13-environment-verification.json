@@ -1,0 +1,84 @@
+{
+  "base_commit": "7e5779b",
+  "python": "3.10.22 (main, Oct 29 2026, 20:33:25) [GCC 14.3.0]",
+  "torch": "2.7.1+cu128",
+  "cuda": "12.8",
+  "gsplat": "1.5.0",
+  "route3_environment": "/root/autodl-tmp/envs/route3",
+  "GPU": "RTX4090D48GiB,GPU0",
+  "shared_GPU": "matrix+prefix statistics and smallrayverification overlap,allowned taskprocesses;CPUscore overlaps",
+  "assets": "existing Blender4.5.3LTS BOX1.0 assets;no Blender call/no new truth",
+  "resource": {
+    "data_free_GiB": 188.06618881225586,
+    "system_free_GiB": 21.303691864013672,
+    "new_output_GiB": 18.29014823678881
+  },
+  "logged_stage_walls": {
+    "prepare": {
+      "log": "logs/route3-local-replacement-2026-11-13/prepare.log",
+      "logged_wall_seconds": 105.95602989196777
+    },
+    "render": {
+      "log": "logs/route3-local-replacement-2026-11-13/render.log",
+      "logged_wall_seconds": 1338.9533050060272
+    },
+    "prefix-broad": {
+      "log": "logs/route3-local-replacement-2026-11-13/prefix-broad.log",
+      "logged_wall_seconds": 161.18572640419006
+    },
+    "prefix-all": {
+      "log": "logs/route3-local-replacement-2026-11-13/prefix-all.log",
+      "logged_wall_seconds": 209.12875533103943
+    },
+    "evaluate-incremental": {
+      "log": "logs/route3-local-replacement-2026-11-13/evaluate-incremental.log",
+      "logged_wall_seconds": 536.949187040329
+    },
+    "report": {
+      "log": "logs/route3-local-replacement-2026-11-13/report.log",
+      "logged_wall_seconds": 66.1280562877655
+    }
+  },
+  "timing_boundary": "logs contain compilation,IO andoverlap;do not sum as GPUelapsed or claim method efficiency",
+  "verification": {
+    "passed": true,
+    "maximum_weight_vs_native_basis_RGB_error": 5.820766091346741e-11,
+    "sum_weights_vs_native_basis_RGB_error": 4.57763671875e-05,
+    "R1_expected_mask": [
+      false,
+      true,
+      false
+    ],
+    "R2_expected_mask": [
+      false,
+      true,
+      true
+    ],
+    "footprint_intersection_detected_outside_center_pixel": true,
+    "reused_projection_blocker_vs_fresh_prefix_max_error": 3.4924596548080444e-10,
+    "accepted_hits": 756,
+    "max_hits_per_pixel": 3,
+    "weights": "native front-to-back alpha contributions,including native cutoff and earlystop",
+    "input_view": "target frame center camera only;not the other12 cameras",
+    "exact_grid_ray_prefix_vs_grid_kernel_max_error": 1.7881393432617188e-07,
+    "continuous_fractional_ray_vs_direct_alpha_max_error": 0.0,
+    "ray_lookup_uses_actual_parent_projection": true,
+    "verification_overlapped_with_owned_matrix_process": true,
+    "runtime_query_stride_errors": [
+      8.940696716308594e-08,
+      8.940696716308594e-08,
+      0.0
+    ],
+    "query_count_is_runtime_not_compiletime": true
+  },
+  "cache": {
+    "base": "data disk route3-cache,.cache",
+    "Triton": "explicit TRITON_CACHE_DIR data disk after first statistics worker;pre-existing /root/.triton cache retained,no cleanup",
+    "statistics_optimization": "own worker346280 interrupted during needless per-query-countJITcompilation;Q made runtime stride;completedresults retained;verification passed,remaining cases resumed"
+  },
+  "completed_UTC": "2026-11-13T08:42:46.569880+00:00",
+  "not_training": true,
+  "no_new_scene": true,
+  "no_deletion": true,
+  "no_96GB": true
+}

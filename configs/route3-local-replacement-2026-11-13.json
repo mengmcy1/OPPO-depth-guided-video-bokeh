@@ -1,0 +1,104 @@
+{
+  "base_commit": "7e5779b1a3ce79dc18d72da132e8c6526adfb669",
+  "protocol": "appendix10 seventh revision,user prompt",
+  "output": "outputs/route3-local-replacement-2026-11-13-01",
+  "scenes": [
+    "metric-pilot-122001-broad",
+    "metric-pilot-122002-multilayer",
+    "scene-121305-broad",
+    "pilot-multilayer",
+    "B2-high"
+  ],
+  "frames": [
+    1,
+    30,
+    60
+  ],
+  "nominal_focus_m": [
+    1.4,
+    5.0
+  ],
+  "fstop": [
+    1.4,
+    2.0
+  ],
+  "focus_rules": [
+    "P2",
+    "P1"
+  ],
+  "K_render": 64,
+  "K_labels": 16,
+  "rows": [
+    "R0",
+    "R1",
+    "R2"
+  ],
+  "columns": [
+    "none",
+    "retrieval",
+    "GTraw",
+    "GTaligned"
+  ],
+  "observability": {
+    "input_view": "target frame center camera",
+    "unobserved_max_pixel_alpha_weight_lt": 0.01,
+    "contributions": "native gsplat AA front-to-back with cutoff and earlystop"
+  },
+  "suppression": {
+    "R1": "source1;unoccluded footprint hits support;z>renderedvisibledepth;abs(z-hiddenED)<=.2*hiddenED",
+    "R2": "any source layer,unobserved;unoccluded footprint intersects support",
+    "footprint": "native AA alpha>=1/255,sigma>=0;not center-only",
+    "outside_support_gaussians": "never suppressed if footprint misses support",
+    "operation": "opacity0;allotherattributesstable",
+    "oracle_support": "GTaligned layer footprint & localfit supported & methodband",
+    "method_support": "R1+R2 placed layer footprint & methodband,no GT"
+  },
+  "alignment": {
+    "fit_target": "unified R0 renderedvisibledepth",
+    "radius_px": 24,
+    "min_background_train_pixels": 32,
+    "heldout": "8px spatial grid20%,unchanged placementv2",
+    "slope": "existing placementv2 clip.1..3;flatregion a1",
+    "unsupported": "no placement,no raw fallback,no nearest fit extrapolation",
+    "invalid_inverse": "discard<=1e-4;no clamping",
+    "position_and_scale": "samecenter-ray scaling;projection preserved",
+    "GT_used": "Oracle placement diagnostic andscore only"
+  },
+  "matrix_conventions": {
+    "focus_and_band": "P2/P1 from full R0,heldfixedthroughmatrix;f2 uses same focus asf1.4",
+    "none_column": "same oracle support suppression asGTaligned column;extra method-support suppression-only control reported",
+    "R1_oracle_depth": "aligned replacement layer ED,same suppression masks forbothGTcols",
+    "compositing": "same depthsortedalpha,linearRGBmean,LaMa residualfill;hidden output onlywithin fixedmethodband;visible suppression itself not pastedaway outsideband"
+  },
+  "guardrails": {
+    "zeroaperture": "PSNRtoinput RGB;fullimage andfocussubsets",
+    "P2_infocus": "Cycles GT",
+    "max_drop_dB": 0.1,
+    "decision_scope": "actual alignedGT candidate cells,all5scenes,bothfocus,3frames,P2f1.4;allcolumns andmethod cells separatelyflagged"
+  },
+  "gates": {
+    "G2_far_pooled_H_min_dB": 1,
+    "each_pilot_frames_H_ge1dB_min": 2,
+    "B2high_far_pooled_H_min_dB": 2.54,
+    "main_fstop": 1.4
+  },
+  "resource": {
+    "data_free_GiB_before": 206.37631225585938,
+    "system_free_GiB_before": 21.403377532958984,
+    "estimated_new_outputs_upper_GiB": 35,
+    "disk_stop_floor_GiB": 60
+  },
+  "started_UTC": "2026-11-13T08:07:27.846626+00:00",
+  "not_training": true,
+  "no_new_scene": true,
+  "no_deletion": true,
+  "statistics": {
+    "primary_reference": "aligned placedGTparent surfaces;raw surface reference auxiliary",
+    "exact_rays": "actual continuous projection through placed parent center,not unadjusted nominal pixels",
+    "blockers": "visible layers0/1 plus separate replacement bins;also visible-only T",
+    "product": "all forwardGaussians beforeplane,no gsplat earlystop;native AA cutoff/cap",
+    "controls": "preserve nominal foreground-blocked ray with focus-induced principalpoint shift;limitplacedhiddenplaneofotherK16rays",
+    "GTparent_lookup": "sameobject trueworld nearestwithin3pixel footprints+0.1mm,unmatchedflagged",
+    "method_no_hidden_control": "extra diagnostic usesretrievalsupport;not amainmatrixcolumn"
+  }
+}

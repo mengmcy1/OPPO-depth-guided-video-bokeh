@@ -1,0 +1,20 @@
+{
+  "category_order": [
+    "visible_layer0_le5pct",
+    "visible_layer0_5to20pct",
+    "visible_layer0_gt20pct",
+    "visible_layer1_le5pct",
+    "visible_layer1_5to20pct",
+    "visible_layer1_gt20pct",
+    "replacement_le5pct",
+    "replacement_5to20pct",
+    "replacement_gt20pct"
+  ],
+  "primary": "aligned placed-parent surface,continuous actual projected rays;support-limited and missing counts explicit",
+  "auxiliary": "raw GT placed-parent plane",
+  "visible_only": "prefix from retained visible SHARP Gaussians",
+  "merged": "visible prefix plus other replacement Gaussians in front ofreference plane;not the post-native-earlystop residual alpha",
+  "cutoff": "sameAA eps2d.0015,alpha>=1/255,cap.999;allforwardproduct,no earlytermination",
+  "controls": "actual nominal foreground-blocked ray,limit median hidden plane fromotherK16rays",
+  "parent_matching": "sameobject trueworld nearestGTparent<=3GTpixelfootprints+0.1mm;unmatched notassumedtransparent"
+}
