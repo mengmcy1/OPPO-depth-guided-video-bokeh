@@ -1,0 +1,487 @@
+{
+  "status": "paused_at_user_G2_stop;no_G3_expansion",
+  "reported_client_time": "2026-11-12T21:29:17.444750-08:00",
+  "base_revision": "3bbf072",
+  "D_O_checkpoint": "46405d2",
+  "outputs": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-step2-diagnostic-2026-11-12-01",
+  "stop": {
+    "condition": "G2 zero-aperture or in-focus still clearly below controls",
+    "scene": "metric-pilot-122001-broad",
+    "zeroaperture_median": 56.22605569997504,
+    "near_infocus": 38.101851282121714,
+    "lower_control_zeroaperture": 60.05,
+    "lower_control_near_infocus": 42.92,
+    "reference_thresholds_pre_method": {
+      "zeroaperture_median_full_PSNR_min": 57.05,
+      "near_infocus_pooled_PSNR_min": 39.92,
+      "far_infocus_pooled_PSNR_min": 40.27,
+      "definition": "3dB below lower same-scene-control summary at D;generator-level stop/reference,never per-scene selection;both pilots reported",
+      "not_formal_method_success_gate": true
+    },
+    "no_scene_discarded": true
+  },
+  "D": {
+    "scenes": [
+      "scene-121302-broad",
+      "scene-121303-multilayer",
+      "B2-high",
+      "scene-121305-broad",
+      "pilot-multilayer"
+    ],
+    "primary_fstop": 1.4,
+    "frames": [
+      1,
+      30,
+      60
+    ],
+    "focus_m": [
+      1.4,
+      5.0
+    ],
+    "metrics": "route3-step2-diagnostic-2026-11-12-D-metrics-relative.json",
+    "compact_table": "route3-step2-diagnostic-2026-11-12-D-brief.csv",
+    "full_table": "route3-step2-diagnostic-2026-11-12-D-cells-relative.csv",
+    "pinhole": "route3-step2-diagnostic-2026-11-12-D-zero-relative.csv",
+    "alias": "route3-step2-diagnostic-2026-11-12-alias.json",
+    "focus_selection": "route3-step2-diagnostic-2026-11-12-focus-selection-relative.csv",
+    "transmittance": "route3-step2-diagnostic-2026-11-12-T-pooled-evaluation-region.json",
+    "transmittance_table": "route3-step2-diagnostic-2026-11-12-T-pooled-evaluation-region.csv",
+    "figures": "route3-step2-diagnostic-2026-11-12-D-figures.json",
+    "initial_direct_collapse_diagnostic_retained": true,
+    "relative_geometry_main": true,
+    "all_D2_appearance_and_opacity_frozen": true,
+    "remaining_depth_sort_color_coupling": true,
+    "mathematical_BG_affine_fits": 15,
+    "high_residual_frame": "121302/frame30 heldoutrelativeinverseMAE22.1percent;no fallback",
+    "focal_rule": "GT visible CoC<=1px mask selects region;median estimated SHARP first-layer depth,not onepoint or full-visible depth",
+    "foreground_wrong_occlusion_mechanism_not_confirmed": true,
+    "texture_sampling_problem_confirmed": true,
+    "LDR_auxiliary": "existing B2-high and pilot-multilayer only;new3 scenes have no cachedLDR reference;not rendered after G2stop",
+    "period_convention": "exact checker/wave principal phase Jacobians;nonperiodic noise finest-octave feature-scale proxy;not a hard spectral bandlimit",
+    "subpixel_probe": "fixed optical center and rotation;principal shift +.5/512;expected image-.5px;Lanczos4;objectinterior erosion11;independent seeds;no1024downsampletest",
+    "strict_direct_depth_replacement_metrics": "route3-step2-diagnostic-2026-11-12-D-metrics.json",
+    "strict_direct_depth_replacement_table": "route3-step2-diagnostic-2026-11-12-D-pooled.csv",
+    "strict_direct_transmittance_per_frame": "route3-step2-diagnostic-2026-11-12-D2-transmittance.json",
+    "relative_variant_is_supplementary_and_not_exact_per_Gaussian_GT": true,
+    "neither_variant_supports_clean_geometry_only_causal_attribution": true
+  },
+  "O": {
+    "status": "fixed_minibatch_engineering_fit_passed",
+    "scene": "scene-121303-multilayer",
+    "frame": 30,
+    "training_queries": 1024,
+    "training_resolution": 256,
+    "training_context": 5,
+    "geometry_frontend_cached_from13": true,
+    "updates": 8000,
+    "initial_loss": 0.6311759352684021,
+    "final_loss": 0.2567524313926697,
+    "train_metrics": {
+      "TP": 107,
+      "FP": 564,
+      "FN": 29,
+      "TN": 1595,
+      "selected_correct": 80,
+      "matched_heads": 87,
+      "matched_ray_weight": 22.625,
+      "weighted_relative_depth_sum": 0.9273346662521362,
+      "weighted_linear_RGB_MAE_sum": 0.5300296545028687,
+      "weighted_placement_pixel_error_sum": 27.957538604736328,
+      "false_activated_queries": 206,
+      "unneeded_queries": 934,
+      "activated_needed_queries": 75,
+      "needed_queries": 90,
+      "candidate_correct_available_queries": 89,
+      "queries": 1024,
+      "candidate_accuracy": 0.7416122004357298,
+      "candidate_precision": 0.15946348733233978,
+      "candidate_recall": 0.7867647058823529,
+      "selection_correct_rate": 0.9195402298850575,
+      "matched_ray_relative_depth_L1": 0.04098716756915519,
+      "matched_ray_linear_RGB_MAE": 0.023426725060900273,
+      "placement_pixel_error": 1.2356923140214953,
+      "false_activation_rate": 0.22055674518201285,
+      "needed_activation_recall": 0.8333333333333334
+    },
+    "full_query_diagnostic": {
+      "loss": 0.6143132226634074,
+      "metrics": {
+        "TP": 2472,
+        "FP": 16431,
+        "FN": 1123,
+        "TN": 47261,
+        "selected_correct": 1780,
+        "matched_heads": 2174,
+        "matched_ray_weight": 562.0625,
+        "weighted_relative_depth_sum": 48.128318428993225,
+        "weighted_linear_RGB_MAE_sum": 34.507596015930176,
+        "weighted_placement_pixel_error_sum": 878.422872543335,
+        "false_activated_queries": 6071,
+        "unneeded_queries": 27004,
+        "activated_needed_queries": 1495,
+        "needed_queries": 2416,
+        "candidate_correct_available_queries": 2256,
+        "queries": 29420,
+        "candidate_accuracy": 0.739117511554981,
+        "candidate_precision": 0.13077289319155688,
+        "candidate_recall": 0.6876216968011126,
+        "selection_correct_rate": 0.8187672493100276,
+        "matched_ray_relative_depth_L1": 0.08562805458288576,
+        "matched_ray_linear_RGB_MAE": 0.061394588708426866,
+        "placement_pixel_error": 1.5628562171348115,
+        "false_activation_rate": 0.22481854540068139,
+        "needed_activation_recall": 0.6187913907284768
+      },
+      "active_queries": 29420
+    },
+    "seconds": 222.0841068290174,
+    "peak_allocated_MiB": 47.40869140625,
+    "checkpoint": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-step2-diagnostic-2026-11-12-01/overfit/final.pt",
+    "record": "route3-step2-diagnostic-2026-11-12-O.json",
+    "render_comparison": "route3-step2-diagnostic-2026-11-12-O-render.json",
+    "whole_scene_overfit_not_established": true,
+    "no_formal_training_or_heldout_evaluation": true
+  },
+  "G": {
+    "generator": "scripts/route3_metric_blender.py",
+    "pilots": [
+      "metric-pilot-122001-broad",
+      "metric-pilot-122002-multilayer"
+    ],
+    "truth_passed": true,
+    "truth_record": "route3-step2-diagnostic-2026-11-12-G2-truth.json",
+    "method_record": "route3-step2-diagnostic-2026-11-12-G2-methods.json",
+    "method_table": "route3-step2-diagnostic-2026-11-12-G2-pooled.csv",
+    "zero_region_report": "route3-step2-diagnostic-2026-11-12-G2-zero-regions.json",
+    "quality": [
+      {
+        "scene": "metric-pilot-122001-broad",
+        "zeroaperture_perframe_input_PSNR": [
+          55.04365433114528,
+          57.055205087016844,
+          56.22605569997504
+        ],
+        "zeroaperture_median_input_PSNR": 56.22605569997504,
+        "N1p4_pooled_infocus": {
+          "1.4": 38.101851282121714,
+          "5.0": 42.35933626612897
+        },
+        "generator_level_reference_pass": false,
+        "SHARP_calibration_accepted_frames": 13,
+        "scene_not_rejected_on_method_score": true
+      },
+      {
+        "scene": "metric-pilot-122002-multilayer",
+        "zeroaperture_perframe_input_PSNR": [
+          66.90806594614864,
+          66.34791692903582,
+          67.7415801722067
+        ],
+        "zeroaperture_median_input_PSNR": 66.90806594614864,
+        "N1p4_pooled_infocus": {
+          "1.4": 44.12737596279567,
+          "5.0": 48.7878903538667
+        },
+        "generator_level_reference_pass": true,
+        "SHARP_calibration_accepted_frames": 13,
+        "scene_not_rejected_on_method_score": true
+      }
+    ],
+    "cost": [
+      {
+        "scene": "metric-pilot-122001-broad",
+        "stages": {
+          "inputs": {
+            "jobs": 13,
+            "seconds": 13.268430192023516,
+            "samples": [
+              256
+            ]
+          },
+          "dof": {
+            "jobs": 16,
+            "seconds": 30.62306972965598,
+            "samples": [
+              512,
+              1024
+            ]
+          },
+          "formal-peels": {
+            "jobs": 38,
+            "seconds": 37.307334415614605,
+            "samples": [
+              256
+            ]
+          },
+          "alias": {
+            "jobs": 3,
+            "seconds": 3.1176996380090714,
+            "samples": [
+              256
+            ]
+          }
+        },
+        "RGB_render_job_seconds": 84.31653397530317,
+        "render_time_not_E2E": true,
+        "allocated_GiB": 3.3521995544433594,
+        "SHARP_inference_seconds": 43.797094527632,
+        "SHARP_peak_allocated_MiB": 7056.35400390625,
+        "DA3_inference": {
+          "completed": true,
+          "seconds": 1.7700668573379517,
+          "peak_allocated_MiB": 3345.93017578125,
+          "license": "Apache-2.0",
+          "GT_conditioned_inference": false,
+          "global_sim3": {
+            "scale": 2.072626556031168,
+            "R": [
+              [
+                0.9957339230974892,
+                0.009859836241040709,
+                -0.09174278185330971
+              ],
+              [
+                0.0922496473931299,
+                -0.08494180510429668,
+                0.9921062908284912
+              ],
+              [
+                0.001989208065365386,
+                -0.9963371283731846,
+                -0.08548900324807357
+              ]
+            ],
+            "translation": [
+              -0.026366017113375276,
+              -1.507639470974006,
+              1.1037671308762411
+            ],
+            "translation_RMSE_m": 0.014399932653305633,
+            "rotation_deg": [
+              6.6985978706166005,
+              6.914462032980497,
+              7.038005192104954,
+              7.168151234215561,
+              7.450637542399866,
+              7.300414902066261,
+              7.462935721924989,
+              7.610912076827865,
+              7.757141679889969,
+              7.989256921288468,
+              8.206190070274008,
+              8.232537861491362,
+              8.32326991085398
+            ]
+          },
+          "per_frame_GT_depth_fit": false
+        },
+        "color_anchor_seconds": 30.650569934397936,
+        "color_anchor_steps_per_frame": 1000
+      },
+      {
+        "scene": "metric-pilot-122002-multilayer",
+        "stages": {
+          "inputs": {
+            "jobs": 13,
+            "seconds": 13.915289871394634,
+            "samples": [
+              256
+            ]
+          },
+          "dof": {
+            "jobs": 16,
+            "seconds": 31.422123309224844,
+            "samples": [
+              512,
+              1024
+            ]
+          },
+          "formal-peels": {
+            "jobs": 49,
+            "seconds": 48.56913523003459,
+            "samples": [
+              256
+            ]
+          },
+          "alias": {
+            "jobs": 3,
+            "seconds": 3.0015734061598778,
+            "samples": [
+              256
+            ]
+          }
+        },
+        "RGB_render_job_seconds": 96.90812181681395,
+        "render_time_not_E2E": true,
+        "allocated_GiB": 3.422504425048828,
+        "SHARP_inference_seconds": 45.275487158447504,
+        "SHARP_peak_allocated_MiB": 7055.85400390625,
+        "DA3_inference": {
+          "completed": true,
+          "seconds": 1.4563386477530003,
+          "peak_allocated_MiB": 3345.93017578125,
+          "license": "Apache-2.0",
+          "GT_conditioned_inference": false,
+          "global_sim3": {
+            "scale": 1.473359082397904,
+            "R": [
+              [
+                0.9957124763115824,
+                -0.027901151200220353,
+                -0.08819404900081762
+              ],
+              [
+                0.0855859281840733,
+                -0.08385638349310778,
+                0.9927956264228438
+              ],
+              [
+                -0.03509577487856377,
+                -0.9960871612008451,
+                -0.08110890133958117
+              ]
+            ],
+            "translation": [
+              0.09151741847139437,
+              -1.4948001120829213,
+              1.095617835574835
+            ],
+            "translation_RMSE_m": 0.006851032755986905,
+            "rotation_deg": [
+              4.5989026571404406,
+              4.578013346513196,
+              4.632064529795559,
+              4.897495589729653,
+              4.9259961582125,
+              5.071467669349033,
+              5.261489710706192,
+              5.452032622913584,
+              5.591256909026198,
+              5.9172661452374555,
+              6.143206739400982,
+              6.438964517921666,
+              6.422717685423756
+            ]
+          },
+          "per_frame_GT_depth_fit": false
+        },
+        "color_anchor_seconds": 32.25625066831708,
+        "color_anchor_steps_per_frame": 1000
+      }
+    ],
+    "correction": "Object coordinates relative identity reference in meters;perobject farthestviewcap;soft patterns;floorlowfrequency;contrast random;emitters retained",
+    "G3_started": false,
+    "G3_split_planned_only": "route3-step2-diagnostic-2026-11-12-G3-planned-split.json",
+    "G4_retention": "route3-step2-diagnostic-2026-11-12-G4-retention.json",
+    "no_individual_scene_removed_or_split_changed_from_method_scores": true
+  },
+  "observations": [
+    "texture correction restores pinhole reconstruction substantially;one controlled pilot remains below the generator-level reference",
+    "GT-side sampling and period checks pass for both pilots;remaining gap is in method pipeline,not demonstrated to be the former Generated-coordinate aliasing",
+    "fixed-color depth changes also change Gaussian order;cannot infer a pure foreground-occlusion benefit",
+    "G2 broad frame30 first-layer focus1.506m vs full-visible depth biasedlow .859medianratio;GTinfocusCoCmedian .156px vs fullvisibleproxy1.944px;focus-depth/rendered-depth mismatch is a concrete next interface check",
+    "fixed minibatch can learn;false activation remains22percent and fullquery metrics are weaker;no claim of whole-scene fit or generalization"
+  ],
+  "next": "await user decision on focus-depth/full-visible geometry consistency before geometry frontend change orG3;keep metric texture version and both pilots;no further model training",
+  "resources": {
+    "output_allocated_GiB": 9.521312713623047,
+    "data_free_GiB": 208.42531967163086,
+    "system_free_GiB": 21.422527313232422,
+    "minimum_free_GiB": 60,
+    "GPU": "GPU0 RTX4090D48GiB;idle at final report",
+    "no_96GB_machine": true,
+    "no_deleted_files": true,
+    "no_foreign_process_killed": true,
+    "no_new_environment_installation": true
+  },
+  "validation": {
+    "prefix_against_gsplat_max_error": 5.960464477539063e-08,
+    "record_JSONs_parse": true,
+    "pycompile_passed": true,
+    "old16_selected_artifacts_unchanged_mtime": [
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121302-broad/formal-interface.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121302-broad/actual-gain-check.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121302-broad/prepared.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121302-broad/predictions.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121302-broad/visible/f030.pt",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121303-multilayer/formal-interface.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121303-multilayer/actual-gain-check.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121303-multilayer/prepared.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121303-multilayer/predictions.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121303-multilayer/visible/f030.pt",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121304-thin/formal-interface.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121304-thin/actual-gain-check.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121304-thin/prepared.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121304-thin/predictions.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121304-thin/visible/f030.pt",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121305-broad/formal-interface.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121305-broad/actual-gain-check.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121305-broad/prepared.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121305-broad/predictions.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121305-broad/visible/f030.pt",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121306-multilayer/formal-interface.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121306-multilayer/actual-gain-check.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121306-multilayer/prepared.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121306-multilayer/predictions.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121306-multilayer/visible/f030.pt",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121307-thin/formal-interface.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121307-thin/actual-gain-check.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121307-thin/prepared.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121307-thin/predictions.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121307-thin/visible/f030.pt",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121308-broad/formal-interface.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121308-broad/actual-gain-check.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121308-broad/prepared.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121308-broad/predictions.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121308-broad/visible/f030.pt",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121309-multilayer/formal-interface.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121309-multilayer/actual-gain-check.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121309-multilayer/prepared.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121309-multilayer/predictions.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121309-multilayer/visible/f030.pt",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121311-broad/formal-interface.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121311-broad/actual-gain-check.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121311-broad/prepared.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121311-broad/predictions.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121311-broad/visible/f030.pt",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121312-multilayer/formal-interface.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121312-multilayer/actual-gain-check.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121312-multilayer/prepared.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121312-multilayer/predictions.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121312-multilayer/visible/f030.pt",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121313-thin/formal-interface.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121313-thin/actual-gain-check.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121313-thin/prepared.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121313-thin/predictions.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121313-thin/visible/f030.pt",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121314-broad/formal-interface.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121314-broad/actual-gain-check.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121314-broad/prepared.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121314-broad/predictions.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121314-broad/visible/f030.pt",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121316-thin/formal-interface.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121316-thin/actual-gain-check.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121316-thin/prepared.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121316-thin/predictions.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121316-thin/visible/f030.pt",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121317-broad/formal-interface.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121317-broad/actual-gain-check.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121317-broad/prepared.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121317-broad/predictions.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121317-broad/visible/f030.pt",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121318-multilayer/formal-interface.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121318-multilayer/actual-gain-check.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121318-multilayer/prepared.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121318-multilayer/predictions.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121318-multilayer/visible/f030.pt",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121319-thin/formal-interface.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121319-thin/actual-gain-check.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121319-thin/prepared.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121319-thin/predictions.json",
+      "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-network-s2a-2026-11-12-01/scene-121319-thin/visible/f030.pt"
+    ],
+    "old_results_and_criteria_not_rewritten": true,
+    "G2_truth_checked_before_methods": true,
+    "formal_network_training": false
+  }
+}

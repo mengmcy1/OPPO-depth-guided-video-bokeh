@@ -87,5 +87,63 @@ def methods():
         for mode in ['anchor_visible','render']:run([PY,'scripts/route3_s2a_baselines.py','--scene',name,'--mode',mode],name+'-'+mode,True)
         print('G2_METHODS_COMPLETE',name,flush=True)
 
+def score_methods():
+    from route3_ldr_u1r import model
+    from route3_upper_bound_evaluate import score,pool
+    from route3_b2_evaluate import gt_supported_crop
+    import route3_s2a_evaluate as visualization
+    visualization.OUT=OUT
+    import matplotlib
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
+    torch.set_num_threads(4);net=model();cells=[];percase={};quality=[];figures=[]
+    for name in C['scenes']:
+        s=OUT/name;entries=json.loads((s/'prepared.json').read_text())['rows'];percase[name]={};anchors=json.loads((s/'visible/summary.json').read_text())['rows'];zero=[x['rows'][-1]['input_PSNR_dB'] for x in anchors];inputPSNR=float(np.median(zero))
+        for entry in entries:
+          f=entry['frame'];g=np.load(s/'geometry'/f'f{f:03d}-center.npz');z=np.where(g['center_visible'],g['depth_axial_m'],1e4)
+          for case in entry['cases']:
+            cid=case['id'];a=np.load(s/'geometry'/(cid+'-K16.npz'));band,_,coc=depth_band(z,g['K'][0,0],case['nominal_focus_m'],.05/(2*case['fstop']));regions=dict(full_image=np.ones((512,512),bool),in_focus=g['center_visible']&(coc<=1),band=band&~a['residual_pixels'],recoverable=band&a['mask_recoverable_total']);target=display(read(s/'dof'/(cid+'.exr')));percase[name][cid]={}
+            for method in ['A_color','R1_R2','GTrec']:
+                pred=np.load(s/'predictions'/(cid+'-'+method+'.npz'))['prediction_srgb'];m=score(pred,target,regions,net);percase[name][cid][method]=m
+                for region,v in m.items():cells.append(dict(scene=name,id=cid,frame=f,focus_m=case['nominal_focus_m'],fstop=case['fstop'],method=method,region=region,**v))
+            if f==30 and case['fstop']==1.4:
+                ims={m:np.load(s/'predictions'/(cid+'-'+m+'.npz'))['prediction_srgb'] for m in ['A_color','R1_R2','GTrec']};figures.append(visualization.figure(name,case,target,regions,ims))
+        infocus={}
+        for focus in [1.4,5.]:
+            chosen=[r for r in cells if r['scene']==name and r['focus_m']==focus and r['fstop']==1.4 and r['method']=='A_color' and r['region']=='in_focus'];infocus[str(focus)]=pool(chosen)['psnr']
+        q=C['G2_method_diagnostic_reference'];passed=inputPSNR>=q['zeroaperture_median_full_PSNR_min'] and infocus['1.4']>=q['near_infocus_pooled_PSNR_min'] and infocus['5.0']>=q['far_infocus_pooled_PSNR_min'];cal=json.loads((s/'models/calibration/summary.json').read_text())['rows'];quality.append(dict(scene=name,zeroaperture_perframe_input_PSNR=zero,zeroaperture_median_input_PSNR=inputPSNR,N1p4_pooled_infocus=infocus,generator_level_reference_pass=bool(passed),SHARP_calibration_accepted_frames=sum(r['models']['SHARP']['calibration_applied'] for r in cal),scene_not_rejected_on_method_score=True))
+    groups={}
+    for r in cells:groups.setdefault((r['scene'],r['focus_m'],r['fstop'],r['method'],r['region']),[]).append(r)
+    pooled=[dict(scene=k[0],focus_m=k[1],fstop=k[2],method=k[3],region=k[4],**pool(v)) for k,v in groups.items()];result=dict(cells=cells,pooled=pooled,per_case=percase,generator_quality=quality,all_generator_references_passed=all(x['generator_level_reference_pass'] for x in quality),reference='Cycles',LDR='not rendered for G2;available auxiliary D references remain separate',figures=figures,method_scores_not_used_for_scene_selection=True,diagnostic_reference=C['G2_method_diagnostic_reference']);write(REC/(PREFIX+'-methods.json'),result);write(OUT/'method-checks.json',result)
+    for tag,rows in [('cells',cells),('pooled',pooled)]:
+        with (REC/(PREFIX+'-'+tag+'.csv')).open('w') as h:w=csv.DictWriter(h,fieldnames=list(rows[0]),lineterminator='\n');w.writeheader();w.writerows(rows)
+    if not result['all_generator_references_passed']:write(OUT/'STOP-method.json',dict(reason='G2 zero-aperture or infocus remains clearly below controls;stop generator expansion,do not discard either pilot',quality=quality))
+    print('G2_METHOD_CHECK',quality,flush=True)
+
+def zero_regions():
+    """Complete G2 zero-aperture/infocus report from frozen attributes only."""
+    from route3_s2a_baselines import scene
+    from route3_sharp_s1 import raster
+    from route3_ldr_u1r import model
+    from route3_upper_bound_evaluate import score
+    subprocess.run(['nvidia-smi'],check=True);torch.set_num_threads(4);net=model();rows=[]
+    def depth_stats(estimate,gt,mask):
+        valid=mask&np.isfinite(estimate)&(estimate>0)&(gt>0)
+        return dict(pixels=int(valid.sum()),AbsRel=float(np.mean(abs(estimate[valid]-gt[valid])/gt[valid])),median_ratio=float(np.median(estimate[valid]/gt[valid]))) if valid.any() else dict(pixels=0)
+    for name in C['scenes']:
+        s=OUT/name;fgids=np.load(s/'scene-geometry.npz')['foreground_object_ids']
+        for e in json.loads((s/'prepared.json').read_text())['rows']:
+            f=e['frame'];d=np.load(e['input_npz']);g=np.load(s/'geometry'/f'f{f:03d}-center.npz');z=g['depth_axial_m'];fg=cv2.erode(np.isin(g['object_id'],fgids).astype(np.uint8),np.ones((7,7),np.uint8))>0;boundary=np.zeros(z.shape,bool)
+            for oid in np.unique(g['object_id']):boundary|=(g['object_id']==oid)&~(cv2.erode((g['object_id']==oid).astype(np.uint8),np.ones((7,7),np.uint8))>0)
+            cloud=scene(s/'visible'/f'f{f:03d}.pt');K=torch.tensor(d['K'],device='cuda');fill=torch.tensor(np.load(e['fill'])['fill_rgb_linear'],device='cuda')
+            with torch.no_grad():rgb,depth,alpha=raster(cloud,K)
+            own=depth.cpu().numpy();a=alpha.cpu().numpy();pred=display((rgb+(1-alpha[...,None])*fill).cpu().numpy());masks=dict(full_image=np.ones(z.shape,bool),boundary=boundary);cocs=[]
+            for focus in [1.4,5.]:
+                case=next(c for c in e['cases'] if c['fstop']==1.4 and c['nominal_focus_m']==focus);GTcoc=g['K'][0,0]*.05/2.8*abs(1/np.maximum(z,1e-6)-1/focus);predcoc=g['K'][0,0]*.05/2.8*abs(1/np.maximum(own,1e-6)-1/case['focus_m']);mask=g['center_visible']&(GTcoc<=1);masks['in_focus_'+str(focus)]=mask;valid=mask&fg&(a>=.1);cocs.append(dict(focus_m=focus,predicted_focus_m=case['focus_m'],GT_infocus_foreground_pixels=int(valid.sum()),GT_CoC_median_px=float(np.median(GTcoc[valid])) if valid.any() else None,full_visible_CoC_median_px=float(np.median(predcoc[valid])) if valid.any() else None,fraction_full_visible_CoC_gt1=float((predcoc[valid]>1).mean()) if valid.any() else None))
+            dest=s/'zero-evaluation';dest.mkdir(exist_ok=True);path=dest/f'f{f:03d}.npz'
+            if not path.exists():np.savez_compressed(path,prediction_srgb=pred,visible_expected_depth=own,alpha=a)
+            rows.append(dict(scene=name,frame=f,path=str(path),input_reconstruction=score(pred,d['rgb_srgb'],masks,net),full_visible_depth_foreground=depth_stats(own,z,fg&(a>=.1)),first_layer_depth_foreground=depth_stats(d['depth'],z,fg),CoC_in_GT_infocus=cocs,no_parameter_updated=True,GT_used_for_report_only=True))
+    write(REC/(PREFIX+'-zero-regions.json'),dict(rows=rows,scope='required G2 zero-aperture/infocus report;cached attributes;no reoptimization or new method'));print('G2_ZERO_REPORT',flush=True)
+
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--phase',choices=['truth-render','truth-score','methods'],required=True);a=p.parse_args();{'truth-render':truth_render,'truth-score':truth_score,'methods':methods}[a.phase]()
+    p=argparse.ArgumentParser();p.add_argument('--phase',choices=['truth-render','truth-score','methods','score-methods','zero-regions'],required=True);a=p.parse_args();{'truth-render':truth_render,'truth-score':truth_score,'methods':methods,'score-methods':score_methods,'zero-regions':zero_regions}[a.phase]()

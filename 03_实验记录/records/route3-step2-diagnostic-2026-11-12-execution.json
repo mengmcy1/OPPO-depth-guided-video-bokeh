@@ -1,6 +1,6 @@
 {
   "base_revision": "3bbf072",
-  "status": "D_and_O_complete;G2_truth_passed;G2_methods_in_progress",
+  "status": "paused_at_user_G2_stop;no_G3_expansion",
   "client_date": "2026-11-12",
   "client_timezone": "America/Los_Angeles",
   "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-step2-diagnostic-2026-11-12-01",
@@ -19,5 +19,23 @@
   "prefix_renderer_check": "2plane maxerror5.96e-8",
   "G2_method_results_not_used_for_selection": true,
   "source_for_wave_period": "https://raw.githubusercontent.com/blender/blender/v4.5.3/intern/cycles/kernel/svm/wave.h",
-  "initial_direct_geometry_collapse_retained_and_marked_invalid": true
+  "initial_direct_geometry_collapse_retained_and_marked_invalid": true,
+  "G3_started": false,
+  "stop_condition": {
+    "condition": "G2 zero-aperture or in-focus still clearly below controls",
+    "scene": "metric-pilot-122001-broad",
+    "zeroaperture_median": 56.22605569997504,
+    "near_infocus": 38.101851282121714,
+    "lower_control_zeroaperture": 60.05,
+    "lower_control_near_infocus": 42.92,
+    "reference_thresholds_pre_method": {
+      "zeroaperture_median_full_PSNR_min": 57.05,
+      "near_infocus_pooled_PSNR_min": 39.92,
+      "far_infocus_pooled_PSNR_min": 40.27,
+      "definition": "3dB below lower same-scene-control summary at D;generator-level stop/reference,never per-scene selection;both pilots reported",
+      "not_formal_method_success_gate": true
+    },
+    "no_scene_discarded": true
+  },
+  "data_free_GiB": 208.42531967163086
 }
