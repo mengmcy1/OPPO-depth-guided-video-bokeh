@@ -1,0 +1,413 @@
+{
+  "protocol": "appendix9 fifth revision,9796bfe",
+  "status": "STOP_REPORT_WAIT_USER",
+  "gates": {
+    "F3_infocus": true,
+    "F4_edge_attribution": true,
+    "F5_hidden_headroom": false
+  },
+  "F3_thresholds": [
+    {
+      "nominal_focus_m": 1.4,
+      "broad_infocus_PSNR": 43.460707981147195,
+      "control_PSNR": [
+        42.589472838430666,
+        50.41470539508842
+      ],
+      "threshold": 39.589472838430666,
+      "passed": true
+    },
+    {
+      "nominal_focus_m": 5.0,
+      "broad_infocus_PSNR": 42.33695478676601,
+      "control_PSNR": [
+        45.16673495890272,
+        43.29090566869888
+      ],
+      "threshold": 40.29090566869888,
+      "passed": true
+    }
+  ],
+  "F4": {
+    "broad": "94.4% of cached zero-aperture SSE is boundary;interior and grazing PSNR around68-69dB;remaining broad loss localizes to SHARP two-layer anchored boundaries",
+    "multilayer": "interior share alone is not evidence of texture failure:interior68.38dB,comparable to smooth pilot control68.87dB;grazing only0.52% of SSE",
+    "no_generator_change": true
+  },
+  "F5": {
+    "P2_far_pooled_recoverable_gain_dB": 0.07711389049045891,
+    "P2_far_Acolor": {
+      "pixels": 59533,
+      "sse": 53.49536318454364,
+      "psnr": 35.23562882558596,
+      "patch_lpips": 0.010872788925439386
+    },
+    "P2_far_GTrec": {
+      "pixels": 59533,
+      "sse": 52.55387591061642,
+      "psnr": 35.31274271607642,
+      "patch_lpips": 0.010429448108247932
+    },
+    "per_pilot": [
+      {
+        "scene": "metric-pilot-122001-broad",
+        "frame_gains": [
+          {
+            "frame": 1,
+            "gain_dB": 0.3244680637364894,
+            "pixels": 7084
+          },
+          {
+            "frame": 30,
+            "gain_dB": 0.051043351556138816,
+            "pixels": 11895
+          },
+          {
+            "frame": 60,
+            "gain_dB": -0.19699563192373404,
+            "pixels": 6689
+          }
+        ],
+        "frames_ge1dB": 0
+      },
+      {
+        "scene": "metric-pilot-122002-multilayer",
+        "frame_gains": [
+          {
+            "frame": 1,
+            "gain_dB": -0.01142823245125868,
+            "pixels": 10494
+          },
+          {
+            "frame": 30,
+            "gain_dB": 0.06300646720983849,
+            "pixels": 15227
+          },
+          {
+            "frame": 60,
+            "gain_dB": 0.29306801878635014,
+            "pixels": 8144
+          }
+        ],
+        "frames_ge1dB": 0
+      }
+    ],
+    "blocker_summary": [
+      {
+        "scene": "metric-pilot-122001-broad",
+        "T": {
+          "n": 104576,
+          "mean": 0.24116140604019165,
+          "median": 0.0013801949098706245,
+          "fraction_gt_half": 0.24176675336597309,
+          "quantiles": [
+            4.372046729439619e-20,
+            2.3552104710944377e-10,
+            0.0013801949680782855,
+            1.0,
+            1.0
+          ]
+        },
+        "category_fraction": [
+          0.13988396525382996,
+          0.2966827154159546,
+          0.0433088056743145,
+          0.13589990139007568,
+          0.3394346237182617,
+          0.044790033251047134
+        ],
+        "layer0_attenuation_fraction": 0.47987548634409904,
+        "layer1_attenuation_fraction": 0.5201245583593845,
+        "T_without_layer1": {
+          "n": 104576,
+          "mean": 0.3236235976219177,
+          "median": 0.09537949413061142,
+          "fraction_gt_half": 0.2856965269277846,
+          "quantiles": [
+            1.9192823979413687e-11,
+            6.519012458738871e-06,
+            0.09537949413061142,
+            1.0,
+            1.0
+          ]
+        },
+        "T_without_gt20pct_foreground": {
+          "n": 104576,
+          "mean": 0.2807604670524597,
+          "median": 0.0025090917479246855,
+          "fraction_gt_half": 0.27896458078335373,
+          "quantiles": [
+            4.9731103321885305e-20,
+            1.4224896816017463e-09,
+            0.0025090917479246855,
+            1.0,
+            1.0
+          ]
+        }
+      },
+      {
+        "scene": "metric-pilot-122002-multilayer",
+        "T": {
+          "n": 125837,
+          "mean": 0.02439279854297638,
+          "median": 1.1275452793668705e-11,
+          "fraction_gt_half": 0.02032788448548519,
+          "quantiles": [
+            6.191096975910828e-31,
+            9.011266980620186e-21,
+            1.1275452793668705e-11,
+            0.0003942682058550432,
+            0.8300523924827574
+          ]
+        },
+        "category_fraction": [
+          0.1668001413345337,
+          0.30221179127693176,
+          0.036320265382528305,
+          0.12311790883541107,
+          0.3280074894428253,
+          0.04353512451052666
+        ],
+        "layer0_attenuation_fraction": 0.5053321979939938,
+        "layer1_attenuation_fraction": 0.49466052278876305,
+        "T_without_layer1": {
+          "n": 125837,
+          "mean": 0.061345264315605164,
+          "median": 5.952676474407781e-06,
+          "fraction_gt_half": 0.057510906966949306,
+          "quantiles": [
+            4.46554924000291e-19,
+            7.47567389935977e-12,
+            5.952676474407781e-06,
+            0.1473737806081773,
+            0.9550312137603759
+          ]
+        },
+        "T_without_gt20pct_foreground": {
+          "n": 125837,
+          "mean": 0.07011006027460098,
+          "median": 7.700245996389299e-11,
+          "fraction_gt_half": 0.06637952271589437,
+          "quantiles": [
+            3.844448458958641e-30,
+            2.7128922996453747e-20,
+            7.700245996389299e-11,
+            0.1135077297687533,
+            1.0
+          ]
+        }
+      }
+    ]
+  },
+  "render": {
+    "configurations": 72,
+    "method_images": 216,
+    "render_write_seconds": 159.82928964868188,
+    "max_peak_MiB": 1272.37939453125,
+    "old_result_reproduction_max_linear_error": 0.0,
+    "outside_band_max_error": 0.0
+  },
+  "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-depth-interface-2026-11-12-01",
+  "records": {
+    "focus": "route3-depth-interface-2026-11-12-F1-F2.json",
+    "F3": "route3-depth-interface-2026-11-12-F3-pooled.csv",
+    "F4": "route3-depth-interface-2026-11-12-F4.json",
+    "F5": "route3-depth-interface-2026-11-12-F5.json",
+    "headroom": "route3-depth-interface-2026-11-12-F5-headroom-pooled.csv"
+  },
+  "figures": [
+    {
+      "scene": "metric-pilot-122001-broad",
+      "frame": 30,
+      "nominal_focus_m": 1.4,
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-depth-interface-2026-11-12-01/visualizations/metric-pilot-122001-broad-f030-N1.4-F1.4.png",
+      "crop_yx": [
+        202,
+        273
+      ],
+      "component_pixels": 4792,
+      "component_centroid_yx": [
+        229.74937395659433,
+        264.4499165275459
+      ],
+      "GT_support_pixel_yx": [
+        234,
+        305
+      ],
+      "crop_GT_pixels": 322,
+      "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+    },
+    {
+      "scene": "metric-pilot-122001-broad",
+      "frame": 30,
+      "nominal_focus_m": 5.0,
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-depth-interface-2026-11-12-01/visualizations/metric-pilot-122001-broad-f030-N1.4-F5.png",
+      "crop_yx": [
+        194,
+        269
+      ],
+      "component_pixels": 4675,
+      "component_centroid_yx": [
+        218.57069518716577,
+        265.95122994652405
+      ],
+      "GT_support_pixel_yx": [
+        226,
+        301
+      ],
+      "crop_GT_pixels": 313,
+      "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+    },
+    {
+      "scene": "metric-pilot-122002-multilayer",
+      "frame": 30,
+      "nominal_focus_m": 1.4,
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-depth-interface-2026-11-12-01/visualizations/metric-pilot-122002-multilayer-f030-N1.4-F1.4.png",
+      "crop_yx": [
+        215,
+        268
+      ],
+      "component_pixels": 12398,
+      "component_centroid_yx": [
+        247.3670753347314,
+        312.45741248588484
+      ],
+      "GT_support_pixel_yx": [
+        247,
+        300
+      ],
+      "crop_GT_pixels": 413,
+      "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+    },
+    {
+      "scene": "metric-pilot-122002-multilayer",
+      "frame": 30,
+      "nominal_focus_m": 5.0,
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-depth-interface-2026-11-12-01/visualizations/metric-pilot-122002-multilayer-f030-N1.4-F5.png",
+      "crop_yx": [
+        212,
+        273
+      ],
+      "component_pixels": 11527,
+      "component_centroid_yx": [
+        243.7546629652121,
+        315.52572221740263
+      ],
+      "GT_support_pixel_yx": [
+        244,
+        305
+      ],
+      "crop_GT_pixels": 394,
+      "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+    },
+    {
+      "scene": "scene-121305-broad",
+      "frame": 30,
+      "nominal_focus_m": 1.4,
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-depth-interface-2026-11-12-01/visualizations/scene-121305-broad-f030-N1.4-F1.4.png",
+      "crop_yx": [
+        196,
+        281
+      ],
+      "component_pixels": 5968,
+      "component_centroid_yx": [
+        227.78870643431637,
+        278.0393766756032
+      ],
+      "GT_support_pixel_yx": [
+        228,
+        313
+      ],
+      "crop_GT_pixels": 372,
+      "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+    },
+    {
+      "scene": "scene-121305-broad",
+      "frame": 30,
+      "nominal_focus_m": 5.0,
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-depth-interface-2026-11-12-01/visualizations/scene-121305-broad-f030-N1.4-F5.png",
+      "crop_yx": [
+        195,
+        276
+      ],
+      "component_pixels": 5467,
+      "component_centroid_yx": [
+        222.89793305286264,
+        272.31168831168833
+      ],
+      "GT_support_pixel_yx": [
+        227,
+        308
+      ],
+      "crop_GT_pixels": 360,
+      "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+    },
+    {
+      "scene": "pilot-multilayer",
+      "frame": 30,
+      "nominal_focus_m": 1.4,
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-depth-interface-2026-11-12-01/visualizations/pilot-multilayer-f030-N1.4-F1.4.png",
+      "crop_yx": [
+        184,
+        313
+      ],
+      "component_pixels": 4498,
+      "component_centroid_yx": [
+        228.6204979991107,
+        252.7594486438417
+      ],
+      "GT_support_pixel_yx": [
+        216,
+        345
+      ],
+      "crop_GT_pixels": 372,
+      "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+    },
+    {
+      "scene": "pilot-multilayer",
+      "frame": 30,
+      "nominal_focus_m": 5.0,
+      "path": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-depth-interface-2026-11-12-01/visualizations/pilot-multilayer-f030-N1.4-F5.png",
+      "crop_yx": [
+        142,
+        129
+      ],
+      "component_pixels": 3851,
+      "component_centroid_yx": [
+        235.30225915346662,
+        253.89067774603998
+      ],
+      "GT_support_pixel_yx": [
+        174,
+        161
+      ],
+      "crop_GT_pixels": 62,
+      "selection": "nearest actual pixel within largest GT-recoverable component to its centroid; deterministic row-major tie; no method scores"
+    }
+  ],
+  "scope": {
+    "GT_poses": true,
+    "unchanged_GS": true,
+    "unchanged_GTrec": true,
+    "training": false,
+    "new_scenes": false,
+    "old_results_and_conclusions_unchanged": true
+  },
+  "next_step": "按用户条件暂停；不启用G3或S2a，等待用户决定可恢复区域内可见层的处理与隐藏层深度次序；不自动抑制第二层、不改GTrec。",
+  "resources": {
+    "data_free_GiB": 206.3775520324707,
+    "system_free_GiB": 21.405197143554688,
+    "new_outputs_GiB": 2.0425853449851274,
+    "no_deletion": true,
+    "no_96GB": true
+  },
+  "verification": "route3-depth-interface-2026-11-12-verification-environment.json",
+  "conclusion": "F1/F2接口统一完成，F3焦内与F4边缘归因通过，F5隐藏层增益仅+0.077dB且两个试点均0/3帧达到1dB，扩充与训练条件未满足。",
+  "limitations": [
+    "4受控静态场景，E1使用GT位姿；不代表真实视频性能。",
+    "F3只重算用户指定三组；O3-SHARP/O3-DA3提供单深度选焦接口记录，未新增其图像评价。",
+    "P1背景仿射的留出残差完整报告；向近处主体外推不保证正确，P1为辅助协议。",
+    "挡光贡献是-logT占比，不是图像SSE占比；去掉挡光只计算乘积，不代表对应画质增益。",
+    "P2/P1统计保留GT名义焦点像素标签，另附同物理标签光线的label-ray检查；两种光线约定均显示两层共同挡光。",
+    "T统计保留全部前方高斯的乘积，不做gsplat的1e-4提前终止；极小T不是原生渲染器最终剩余alpha。"
+  ]
+}

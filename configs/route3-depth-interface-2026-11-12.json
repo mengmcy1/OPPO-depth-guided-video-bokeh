@@ -1,0 +1,62 @@
+{
+  "base_commit": "9796bfe1debb172fc3f9a1751740015683ca13d3",
+  "protocol": "appendix9 fifth revision,user prompt takes precedence",
+  "output": "outputs/route3-depth-interface-2026-11-12-01",
+  "scenes": [
+    "metric-pilot-122001-broad",
+    "metric-pilot-122002-multilayer",
+    "scene-121305-broad",
+    "pilot-multilayer"
+  ],
+  "frames": [
+    1,
+    30,
+    60
+  ],
+  "focus_m": [
+    1.4,
+    5.0
+  ],
+  "fstop": 1.4,
+  "K_render": 64,
+  "K_labels": 16,
+  "depth_interface": "rendered visible ED=sum(wz)/alpha;same gsplat alpha compositor",
+  "cluster": {
+    "relative_to_cluster_median": 0.03,
+    "dominant_alpha_fraction": 0.9,
+    "subject_support_warning_fraction": 0.2,
+    "depth_cluster_median": "ordinary",
+    "pixel_focus_median": "ordinary"
+  },
+  "rules": [
+    "old",
+    "P2",
+    "P1"
+  ],
+  "P1_fit": "same held-out robust visible-background inverse-depth affine as appendix8;unified depth replacing first layer;nonpositive slope/mapped focus or insufficient span fails,no fallback",
+  "scoring": "unchanged GT regions,pooled SSE PSNR,AlexNet LPIPS0.1 fixed64patch",
+  "F4": "cached zero images only,ID7x7erosion boundary,grazing>75deg",
+  "F5": {
+    "classes": "layer0/1 x <=5%,5-20%,>20% axial depth in front of unchanged GTrec parent",
+    "drop_classes": "statistics only",
+    "parent_match_max_GT_pixel_footprints": 3,
+    "selection": "frozen recoverable region,K16 true hidden-ray labels",
+    "label_focus": "nominal;method projection uses P2/P1;report focus induced ray displacement",
+    "physical_label_ray_check": "additional nominal-K projection keeps exact physical labelled rays;descriptive crosscheck of P2/P1 pixel convention;no new render"
+  },
+  "G3_gates": {
+    "P2_broad_infocus_vs_lower_same_rule_control_dB": -3,
+    "edge_attribution_required": true,
+    "P2_far_recoverable_pooled_gain_dB": 1,
+    "each_pilot_frames_gain_ge1dB_min": 2
+  },
+  "constraints": {
+    "disk_floor_GiB": 60,
+    "delete": false,
+    "new_scenes": false,
+    "change_textures": false,
+    "train_SHARP": false,
+    "change_HiddenQuery": false,
+    "GTrec_geometry_unchanged": true
+  }
+}

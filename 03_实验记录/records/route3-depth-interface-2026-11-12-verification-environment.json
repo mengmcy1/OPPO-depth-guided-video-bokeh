@@ -1,0 +1,49 @@
+{
+  "passed": true,
+  "synthetic_cluster_contracts": 3,
+  "alpha_max_abs_error": 5.960464477539063e-08,
+  "category_product_vs_existing_prefix_max_abs_error": 1.1920928955078125e-07,
+  "source_layer_and_margin_bins_correct": true,
+  "real_cloud_API_vs_saved_maps_max_abs_error": {
+    "depth": 0.0,
+    "alpha": 0.0,
+    "cluster_depth": 0.0,
+    "cluster_fraction": 0.0
+  },
+  "CPU_exact_cluster_check_pixels": 12,
+  "CPU_exact_cluster_max_error": 1.1920928955078125e-07,
+  "sum_wz_over_alpha_vs_native_ED_max_error": 2.2558922028181883e-06,
+  "base_commit": "9796bfe1debb172fc3f9a1751740015683ca13d3",
+  "environment": {
+    "python": "3.10.22 (main, Oct 29 2026, 20:33:25) [GCC 14.3.0]",
+    "torch": "2.7.1+cu128",
+    "cuda": "12.8",
+    "gsplat": "1.5.0",
+    "gsplat_source": "/root/autodl-tmp/gsplat-route3-v1.5.0",
+    "environment": "/root/autodl-tmp/envs/route3",
+    "GPU": "RTX4090D48GiB,GPU0",
+    "Blender": "4.5.3 LTS original assets,BOX1.0;no Blender call this round",
+    "cache": "data disk,existing route3-cache and .cache",
+    "new_install": false
+  },
+  "resources": {
+    "data_free_GiB": 206.3775520324707,
+    "system_free_GiB": 21.405197143554688,
+    "new_outputs_GiB": 2.0425853449851274,
+    "no_deletion": true,
+    "no_96GB": true
+  },
+  "finished_UTC": "2026-11-13T07:16:26.952557+00:00",
+  "command_log": "logs/route3-depth-interface-2026-11-12",
+  "commands": [
+    "route3_depth_interface.py verify",
+    "route3_depth_interface.py prepare",
+    "route3_depth_interface.py render",
+    "route3_depth_interface.py f4",
+    "route3_depth_interface.py stats",
+    "route3_depth_interface.py label-rays",
+    "route3_depth_interface.py evaluate",
+    "route3_depth_interface_report.py"
+  ],
+  "implementation_issue_resolved": "scene-121305 lacks cached world_position in K16,npz now reconstructs exact world position from existing object-local point and object transform;no alternative geometry or method change"
+}
