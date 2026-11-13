@@ -1,0 +1,76 @@
+{
+  "base_commit": "9028497",
+  "python": "3.10.22 (main, Oct 29 2026, 20:33:25) [GCC 14.3.0]",
+  "torch": "2.7.1+cu128",
+  "cuda": "12.8",
+  "gsplat": "1.5.0",
+  "triton": "3.3.1",
+  "GPU": "RTX4090D48GB,GPU0",
+  "GPU_environment": "/root/autodl-tmp/envs/route3",
+  "CPU_mesh_environment": "/root/autodl-tmp/envs/dofgs",
+  "resources": {
+    "data_free_GiB": 178.09876251220703,
+    "system_free_GiB": 19.952747344970703,
+    "new_outputs_GiB": 9.940035684965551
+  },
+  "stage_walls": {
+    "identity-all": {
+      "log": "logs/route3-recolor-2026-11-13/identity-all.log",
+      "logged_wall_seconds": 174.32934832572937
+    },
+    "P0": {
+      "log": "logs/route3-recolor-2026-11-13/P0.log",
+      "logged_wall_seconds": 347.35001277923584
+    },
+    "calibration": {
+      "log": "logs/route3-recolor-2026-11-13/calibration.log",
+      "logged_wall_seconds": 9.36656641960144
+    },
+    "P1-render": {
+      "log": "logs/route3-recolor-2026-11-13/P1-render.log",
+      "logged_wall_seconds": 672.088235616684
+    },
+    "P1-evaluate": {
+      "log": "logs/route3-recolor-2026-11-13/P1-evaluate.log",
+      "logged_wall_seconds": 479.0952787399292
+    },
+    "P0-report": {
+      "log": "logs/route3-recolor-2026-11-13/P0-report.log",
+      "logged_wall_seconds": 11.883107662200928
+    },
+    "P1-report": {
+      "log": "logs/route3-recolor-2026-11-13/P1-report.log",
+      "logged_wall_seconds": 4.7416040897369385
+    },
+    "finalize": {
+      "log": "logs/route3-recolor-2026-11-13/finalize.log",
+      "logged_wall_seconds": 12.891154527664185
+    }
+  },
+  "timing_scope": "contains compilation/IO;CPUscore overlapsP1render;do notsumorclaim methodinferenceefficiency",
+  "model_inference": false,
+  "training": false,
+  "network_weights_updated": false,
+  "new_Blender_render": false,
+  "new_scenes": false,
+  "no_96GB": true,
+  "no_deletion": true,
+  "cache": "data disk route3-cache/.cache;explicitTRITON_CACHE_DIR;no globalconfigchanges",
+  "kernel_verification": {
+    "passed": true,
+    "delta_native_max_errors": [
+      8.940696716308594e-08,
+      5.960464477539063e-08
+    ],
+    "earlystop_delta_error": 0.0,
+    "top8_count": 3.0,
+    "top8_match_count": 1.0,
+    "top8_close_depth_wrong_identity_count": 1.0,
+    "matched_gaussian_mass": [
+      0.0,
+      0.0,
+      0.05795350670814514
+    ]
+  },
+  "completed_UTC": "2026-11-13T10:08:08.142729+00:00"
+}

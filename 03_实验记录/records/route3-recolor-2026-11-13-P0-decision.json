@@ -1,0 +1,44 @@
+{
+  "single_frame_check": {
+    "scene": "metric-pilot-122001-broad",
+    "frame": 30,
+    "id": "f030-N1.4-F5",
+    "rule": "P2",
+    "method": "Oracle_main",
+    "actual_recoverable": {
+      "pixels": 11895,
+      "sse": 22.678016660798384,
+      "psnr": 31.968806310720502
+    },
+    "expected_recoverable": {
+      "pixels": 11895,
+      "sse": 22.678016218435083,
+      "psnr": 31.968806395435116
+    },
+    "actual_zero": {
+      "pixels": 262144,
+      "sse": 1.6421315190140913,
+      "psnr": 56.80253239664563
+    },
+    "expected_zero": {
+      "pixels": 262144,
+      "sse": 1.6421316001500124,
+      "psnr": 56.802532182065484
+    },
+    "PSNR_difference_recoverable_dB": 8.471461399039981e-08,
+    "PSNR_difference_zero_dB": 2.1458014742847809e-07,
+    "max_display_abs_error": 2.384185791015625e-07,
+    "passed": true
+  },
+  "B2high_P2_far_main_expected_gain_dB": 0.11095561552981437,
+  "B2high_anchor_pass": false,
+  "P0_trusted_for_early_stop": false,
+  "G2_P2_far_expected_gains_dB": {
+    "Oracle_main": 0.013088391256488308,
+    "Oracle_aux": -1.8822428069392885
+  },
+  "early_stop": false,
+  "next_step": "P1 required;failedanchororcheckdoesnotpermitearlystop",
+  "prediction_method": "K64fixedsampleweights times globallyfixedperGaussian RGBdelta;K16onlyselects/reportsidentities",
+  "guardrail_unchanged": 0.1
+}
