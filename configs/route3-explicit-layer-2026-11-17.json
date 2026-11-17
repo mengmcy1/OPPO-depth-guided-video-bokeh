@@ -1,0 +1,67 @@
+{
+  "protocol": "appendix12 tenth revision",
+  "base_commit": "d6175d3",
+  "output": "outputs/route3-explicit-layer-2026-11-17-01",
+  "scenes": [
+    "metric-pilot-122001-broad",
+    "metric-pilot-122002-multilayer",
+    "B2-high"
+  ],
+  "frames": [
+    1,
+    30,
+    60
+  ],
+  "rules": [
+    "P2",
+    "P1"
+  ],
+  "nominal_focus_m": [
+    1.4,
+    5.0
+  ],
+  "fstop": [
+    1.4,
+    2.0
+  ],
+  "K": 64,
+  "label_K": 16,
+  "focus_and_band": "same A scalar/visible-depth band for all groups within a case;never refocus explicit or GT geometry",
+  "explicit": {
+    "depth": "full-image largest alpha-mass depth cluster,relative3%;dominant at mass>=.9;otherwise same largest cluster flagged invalid;empty only=10000m flagged invalid,no GT fallback",
+    "subdivisions": 5,
+    "sigma_pixels": 0.7,
+    "opacity": 0.999,
+    "eps2d": 0.0015,
+    "colors": "target input LDR linear RGB,no anchoring"
+  },
+  "fill": {
+    "depth": "A actual renderer alpha-composited visible-depth map",
+    "mask": "union of all A P2/P1 focus/fstop method bands,dilate5x5 twice as S1",
+    "depth_max_filter_radius": "ceil(2*max CoC across cases)+4",
+    "source": "existing LaMa,no GTmask or GTbackgrounddepth",
+    "per_ray": "aperture_fill_samples, shared by all groups including DGT",
+    "black": "C0/C1/D0/D1 diagnostic only"
+  },
+  "hidden": {
+    "aligned": "unchanged appendix10 R0 local inverse-depth fit to A visible-depth,r24/min32;only supported and center inside methodband;no fallback",
+    "DGT1": "all raw recoverable parents,no alignment or methodband restriction",
+    "compositor": "single merged front-to-back depth sort per subcamera,no artificial depth clamp or image pasteback"
+  },
+  "validation": {
+    "scene": "B2-high",
+    "frame": 27,
+    "zero_PSNR_min": 50,
+    "no_tuning": true
+  },
+  "gates": {
+    "HGT_pooled_far_f14_min_dB": 1,
+    "each_G2_frames_ge1_min": 2,
+    "HC_HD_same_gain_gate": true,
+    "zero_P2_infocus_drop_max_dB": 0.1,
+    "zero_absolute_aux_min_dB": 50
+  },
+  "execution": "validate,prepare common fill;evaluate H_GT first on G2 far f1.4;stop if H_GT fails as requested;otherwise complete matrix",
+  "data_free_GiB_before": 239.08794403076172,
+  "started_UTC": "2026-11-17T14:41:06.027071+00:00"
+}

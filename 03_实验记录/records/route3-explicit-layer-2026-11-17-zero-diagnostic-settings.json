@@ -1,0 +1,15 @@
+{
+  "category_priority": [
+    "foreground_boundary_pm2",
+    "invalid_geometry",
+    "large_occluder_interior",
+    "other"
+  ],
+  "foreground_boundary": "GT object-ID transitions with at least one foreground side,5x5 dilation (2px);report only",
+  "large_occluder": "GT foreground connected component>=1024px,then boundary/invalid excluded",
+  "positive_pixel_SSE_threshold": 1e-12,
+  "depth_bins": "front<-3%,within±3%,behind>3%;also strictly-front fraction",
+  "depth_reference": "fixed E1 explicit cluster depth at that pixel;C pixels outside explicit coverage separately flagged",
+  "depth_distribution": "strongest actually composited hidden Gaussian,plus all-hidden optical-weight bin masses;no new RGB renders",
+  "SSE": "per-pixel sum of squared display-RGB error to input;delta=with-hidden minus no-hidden;positive increase and signed net both reported"
+}

@@ -1,0 +1,98 @@
+{
+  "base_commit": "d6175d3",
+  "current_parent_commit": "86bd8aea23849399458c22523834a28858f037a8",
+  "python": "3.10.22",
+  "torch": "2.7.1+cu128",
+  "cuda": "12.8",
+  "gsplat": "1.5.0",
+  "triton": "3.3.1",
+  "GPU": "RTX4090D48GB,explicit GPU0",
+  "environments": {
+    "render": "/root/autodl-tmp/envs/route3",
+    "LaMa": "/root/autodl-tmp/envs/conda-magicbokeh"
+  },
+  "cache_root": "/root/autodl-tmp/route3-cache;data disk .cache",
+  "config": "configs/route3-explicit-layer-2026-11-17.json",
+  "main_rendered_cases": 72,
+  "native_images": 648,
+  "black_diagnostics": 288,
+  "score_rows": 8424,
+  "K": 64,
+  "K_labels": 16,
+  "peak_recorded_render_allocated_MiB": 3532.44384765625,
+  "render_timer_scope": "render+zero-aperture+CPU transfers;cached all clouds resident;not method model-efficiency or isolated memory comparison",
+  "summed_render_call_seconds": 236.81522561237216,
+  "same_hidden_count_checks": 72,
+  "full_pixel_Gaussians": 6553600,
+  "zero_partition_check": "disjoint full-image masks;all72 cases each3 pairs;positiveSSE sums pass1e-8",
+  "validation": {
+    "scene": "B2-high",
+    "frame": 27,
+    "evaluation_frames": [
+      1,
+      30,
+      60
+    ],
+    "non_evaluation_frame": true,
+    "zero_PSNR": 63.43618571981696,
+    "threshold_dB": 50,
+    "passed": true,
+    "dominant_fraction": 0.9496688842773438,
+    "no_cluster_pixels": 0,
+    "Gaussian_count": 6553600,
+    "parameters": {
+      "subdivisions": 5,
+      "sigma_pixels": 0.7,
+      "opacity": 0.999,
+      "eps2d": 0.0015
+    },
+    "residual_background": "formal shared E2 input-only LaMa rule;exact residual recomposition of same non-evaluation raster/alpha",
+    "seconds": 13.428569827228785,
+    "peak_allocated_MiB": 1032.23291015625,
+    "zero_PSNR_black": 58.93525980302728
+  },
+  "statistic_verification": {
+    "passed": true,
+    "hidden_depth_bin_weight_vs_native_RGB_max_error": 2.9802322387695312e-08,
+    "dominant_hidden_relative_depth": -0.050000011920928955,
+    "black_D0_exact_residual_subtraction_vs_native_max_linear_error": 5.364418029785156e-07,
+    "scene": "metric-pilot-122001-broad",
+    "frame": 30,
+    "no_new_method_groups": true
+  },
+  "footprint_verification": {
+    "passed": true,
+    "deleted": [
+      true,
+      true,
+      false
+    ],
+    "coverage_pixels": 720,
+    "audit": {
+      "padding_px": 13,
+      "max_Gaussian_CoC_px": 8.465607643127441,
+      "footprint": "pixel-center 3sigma ellipse using native AA covariance; Euclidean band distance <= continuous CoC radius; padded frame",
+      "deleted": 2,
+      "retained_overlapping": 1,
+      "coverage_pixels": 720,
+      "coverage_fraction": 0.00274658203125
+    }
+  },
+  "reference": "existing Cycles only,no new scenes,Blender GT or training",
+  "SHARP_weights_or_architecture_changed": false,
+  "SHARP_inference": false,
+  "existing_SHARP_geometry_and_opacity_modified": false,
+  "explicit_construction": "authorized fixed surfels;C removes selected SHARP Gaussians preserving all retained attributes",
+  "LaMa_inference": true,
+  "HiddenQuery_changed": false,
+  "old_outputs_modified": false,
+  "no_96GB": true,
+  "no_deletion": true,
+  "resources": {
+    "data_free_GiB": 339.2057418823242,
+    "system_free_GiB": 20.183277130126953,
+    "new_outputs_GiB": 11.572720221243799
+  },
+  "completed_UTC": "2026-11-17T15:14:05.399078+00:00",
+  "client_timezone": "America/Los_Angeles"
+}
