@@ -1,0 +1,298 @@
+{
+  "status": "USER_REQUESTED_STOP_AND_REPORT_AFTER_T2_BATCH_CONVERGENCE_CHECK",
+  "T1": {
+    "completed": true,
+    "selection": {
+      "selected_order": "O1",
+      "selected_fallback": "F2",
+      "selected": {
+        "order": "O1",
+        "fallback": "F2",
+        "method": "D1_O1_F2",
+        "zero_PSNR": 69.4837027218384,
+        "zero_vs_A_dB": 10.82272565844842,
+        "zero_guard_pass": true,
+        "recoverable_PSNR": 34.41490325616054,
+        "recoverable_vs_A_dB": -0.827908613950072,
+        "patch_LPIPS": 0.009624297274870316
+      },
+      "within_fallback_winners": [
+        {
+          "order": "O2",
+          "fallback": "F1",
+          "method": "D1_O2_F1",
+          "zero_PSNR": 66.96470105099831,
+          "zero_vs_A_dB": 8.303723987608336,
+          "zero_guard_pass": true,
+          "recoverable_PSNR": 34.197905382857215,
+          "recoverable_vs_A_dB": -1.0449064872533995,
+          "patch_LPIPS": 0.013422332341657003
+        },
+        {
+          "order": "O1",
+          "fallback": "F2",
+          "method": "D1_O1_F2",
+          "zero_PSNR": 69.4837027218384,
+          "zero_vs_A_dB": 10.82272565844842,
+          "zero_guard_pass": true,
+          "recoverable_PSNR": 34.41490325616054,
+          "recoverable_vs_A_dB": -0.827908613950072,
+          "patch_LPIPS": 0.009624297274870316
+        }
+      ],
+      "candidates": [
+        {
+          "order": "O1",
+          "fallback": "F1",
+          "method": "D1_O1_F1",
+          "zero_PSNR": 66.9643743683776,
+          "zero_vs_A_dB": 8.303397304987627,
+          "zero_guard_pass": true,
+          "recoverable_PSNR": 34.19652043844712,
+          "recoverable_vs_A_dB": -1.0462914316634908,
+          "patch_LPIPS": 0.013425202495283443
+        },
+        {
+          "order": "O2",
+          "fallback": "F1",
+          "method": "D1_O2_F1",
+          "zero_PSNR": 66.96470105099831,
+          "zero_vs_A_dB": 8.303723987608336,
+          "zero_guard_pass": true,
+          "recoverable_PSNR": 34.197905382857215,
+          "recoverable_vs_A_dB": -1.0449064872533995,
+          "patch_LPIPS": 0.013422332341657003
+        },
+        {
+          "order": "O1",
+          "fallback": "F2",
+          "method": "D1_O1_F2",
+          "zero_PSNR": 69.4837027218384,
+          "zero_vs_A_dB": 10.82272565844842,
+          "zero_guard_pass": true,
+          "recoverable_PSNR": 34.41490325616054,
+          "recoverable_vs_A_dB": -0.827908613950072,
+          "patch_LPIPS": 0.009624297274870316
+        },
+        {
+          "order": "O2",
+          "fallback": "F2",
+          "method": "D1_O2_F2",
+          "zero_PSNR": 69.48671818341444,
+          "zero_vs_A_dB": 10.82574112002446,
+          "zero_guard_pass": true,
+          "recoverable_PSNR": 34.413536604807945,
+          "recoverable_vs_A_dB": -0.8292752653026696,
+          "patch_LPIPS": 0.00962339054635776
+        }
+      ],
+      "fallback_PSNR_gap_dB": 0.21699787330332754,
+      "scope": "twoG2 only,P2 far f1.4,6cells,SSE pooled;GT Oracle reference excluded",
+      "algorithm": "within each F:zero<=0.1dB loss relative A prioritized,then recPSNR;compare the two winning F,PSNR gap<0.1dB choosesF2",
+      "selection_frozen": true,
+      "T2_authorized_regardless_of_T1_results": true,
+      "A_zero_PSNR": 58.66097706338998,
+      "A_recoverable_PSNR": 35.242811870110614,
+      "order_margin": 1.03,
+      "O2_background_filter_radius_px": 24,
+      "source_commit": "5411f35"
+    },
+    "record": "route3-order-fallback-2026-11-17-summary.json",
+    "scheme2p5_updated": true
+  },
+  "T2": {
+    "completed": false,
+    "planned_scenes": 16,
+    "planned_train": 12,
+    "planned_heldout": 4,
+    "generated_scenes": 2,
+    "generated_stage": "truth-side inputs,DOF,phase/noise checks only;no estimated geometry,candidates or labels yet",
+    "rows": [
+      {
+        "scene": "metric-scene-122101-broad",
+        "seconds": 57.732393492013216,
+        "timings": {
+          "build": 1.4493950381875038,
+          "pinhole": 13.979962941259146,
+          "dof": 31.091597244143486,
+          "alias": 3.838354215025902
+        },
+        "disk_GiB": 0.12559973169118166,
+        "passed": false,
+        "zero_PSNR": 92.43581036192076,
+        "period_pass": true,
+        "alias_pass": true,
+        "convergence_pass": false,
+        "native_reserved_AOV_or_cryptomatte": false,
+        "scene_split_fixed_before_methods": true,
+        "projected_period_p01_min_px": 14.466743164062317,
+        "alias_excess_RMSE_max": 0.006143700516268686,
+        "sampling": [
+          {
+            "focus_m": 1.4,
+            "variant": "independent",
+            "passed": true,
+            "pixels": 262144,
+            "sse": 8.45713568570466,
+            "psnr": 49.68437878233295,
+            "excluded_nonfinite_pixels": 0,
+            "patch_lpips": 0.0002845262183654995
+          },
+          {
+            "focus_m": 1.4,
+            "variant": "lower-spp",
+            "passed": false,
+            "pixels": 262144,
+            "sse": 13.44536220665384,
+            "psnr": 47.670886704294276,
+            "excluded_nonfinite_pixels": 0,
+            "patch_lpips": 0.00249817349777004
+          },
+          {
+            "focus_m": 5.0,
+            "variant": "independent",
+            "passed": true,
+            "pixels": 262144,
+            "sse": 11.188337312895776,
+            "psnr": 48.468956253964855,
+            "excluded_nonfinite_pixels": 0,
+            "patch_lpips": 0.00044092555617680773
+          },
+          {
+            "focus_m": 5.0,
+            "variant": "lower-spp",
+            "passed": false,
+            "pixels": 262144,
+            "sse": 17.550150556422608,
+            "psnr": 46.5138033019751,
+            "excluded_nonfinite_pixels": 0,
+            "patch_lpips": 0.004100741650290729
+          }
+        ]
+      },
+      {
+        "scene": "metric-scene-122102-multilayer",
+        "seconds": 57.275574177503586,
+        "timings": {
+          "build": 0.8677943162620068,
+          "pinhole": 13.666196651756763,
+          "dof": 31.197480462491512,
+          "alias": 3.655779767781496
+        },
+        "disk_GiB": 0.12202810309827328,
+        "passed": false,
+        "zero_PSNR": 96.26143581219453,
+        "period_pass": true,
+        "alias_pass": true,
+        "convergence_pass": false,
+        "native_reserved_AOV_or_cryptomatte": false,
+        "scene_split_fixed_before_methods": true,
+        "projected_period_p01_min_px": 12.242917231343085,
+        "alias_excess_RMSE_max": 0.004718505856007262,
+        "sampling": [
+          {
+            "focus_m": 1.4,
+            "variant": "independent",
+            "passed": true,
+            "pixels": 262144,
+            "sse": 4.405860398465052,
+            "psnr": 52.51630444441413,
+            "excluded_nonfinite_pixels": 0,
+            "patch_lpips": 0.00017727500798514484
+          },
+          {
+            "focus_m": 1.4,
+            "variant": "lower-spp",
+            "passed": true,
+            "pixels": 262144,
+            "sse": 7.028725087549951,
+            "psnr": 50.48784619454417,
+            "excluded_nonfinite_pixels": 0,
+            "patch_lpips": 0.0014598718616980477
+          },
+          {
+            "focus_m": 5.0,
+            "variant": "independent",
+            "passed": true,
+            "pixels": 262144,
+            "sse": 5.681991990411882,
+            "psnr": 51.411605594847536,
+            "excluded_nonfinite_pixels": 0,
+            "patch_lpips": 0.00028901037620698844
+          },
+          {
+            "focus_m": 5.0,
+            "variant": "lower-spp",
+            "passed": false,
+            "pixels": 262144,
+            "sse": 8.803205111322491,
+            "psnr": 49.51020355801326,
+            "excluded_nonfinite_pixels": 0,
+            "patch_lpips": 0.0024781388535757287
+          }
+        ]
+      }
+    ],
+    "stop_reason": "T2 truth-side data validity failed for multiple scenes",
+    "independent_1024_noise_all_passed": true,
+    "lower_512_vs_1024_three_of_four_failed_LPIPS": true,
+    "thresholds_preserved": {
+      "PSNR_min": 45,
+      "patch_LPIPS_max": 0.002,
+      "period_min_px": 8,
+      "alias_excess_RMSE_max": 0.01,
+      "zero_repeat_PSNR_min": 50
+    },
+    "no_method_gain_filtering": true,
+    "split": {
+      "train": [
+        "metric-scene-122101-broad",
+        "metric-scene-122102-multilayer",
+        "metric-scene-122106-thin",
+        "metric-scene-122108-multilayer",
+        "metric-scene-122109-thin",
+        "metric-scene-122110-broad",
+        "metric-scene-122111-multilayer",
+        "metric-scene-122112-thin",
+        "metric-scene-122113-broad",
+        "metric-scene-122114-multilayer",
+        "metric-scene-122115-thin",
+        "metric-scene-122116-broad"
+      ],
+      "heldout": [
+        "metric-scene-122103-thin",
+        "metric-scene-122104-broad",
+        "metric-scene-122105-multilayer",
+        "metric-scene-122107-broad"
+      ],
+      "excluded": [
+        "B2-high",
+        "pilot-thin",
+        "pilot-multilayer",
+        "old16Generatedscenes",
+        "G2two generator development pilots"
+      ]
+    },
+    "raw_STOP_preserved": true
+  },
+  "T3": {
+    "started": false,
+    "reason": "user explicitly retains both convergence conditions and asks to stop/report before T2/T3 continuation",
+    "overfit_run": false,
+    "formal_S2a_run": false
+  },
+  "T4": {
+    "started": false,
+    "reason": "no additional non-blocking experiments before requested report"
+  },
+  "user_decision": "保留两项收敛条件，先汇报本轮结果，暂不继续T2/T3；先结束提交汇报，之后再继续",
+  "resources": {
+    "data_free_GiB": 331.38811111450195,
+    "system_free_GiB": 20.171165466308594,
+    "T1_outputs_GiB": 7.555803814902902,
+    "T2_outputs_GiB": 0.24771329760551453
+  },
+  "environment": "route3-g3-s2a-2026-11-17-environment.json",
+  "next_step": "Wait for user to resume;keep O1/F2 fixed,existing16-scene split and both convergence conditions;do not change spp,thresholds or substitute scenes automatically",
+  "reported_client_time": "2026-11-17T08:24:54.902984-08:00"
+}

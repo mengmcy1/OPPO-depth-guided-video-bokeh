@@ -1,0 +1,90 @@
+{
+  "base_commit": "5411f35",
+  "python": "3.10.22",
+  "torch": "2.7.1+cu128",
+  "cuda": "12.8",
+  "gsplat": "1.5.0",
+  "triton": "3.3.1",
+  "GPU": "RTX4090D48GB,explicitGPU0",
+  "Blender": "4.5.3LTS,BOX1.0,OptiX0",
+  "environment": "/root/autodl-tmp/envs/route3",
+  "cache_root": "data disk route3-cache and .cache;no global config edits",
+  "random_seeds": {
+    "Cycles_main": 20261112,
+    "Cycles_independent": 2026111202
+  },
+  "T1_cases": 72,
+  "T1_groups": 13,
+  "T1_score_rows": 4680,
+  "T1_verification": {
+    "passed": true,
+    "unchanged_F1_baseline_max_linear_errors": {
+      "A": 7.152557373046875e-07,
+      "D0_F1": 0,
+      "D1_none_F1": 0
+    },
+    "cases": 72,
+    "native_sample_backgrounds_check": {
+      "passed": true,
+      "F2_sample_backgrounds_native_max_error": 2.9802322387695312e-08,
+      "O1": {
+        "rule": "O1",
+        "total": 2,
+        "valid_center_pixels": 2,
+        "outside_or_no_reference": 0,
+        "violating": 1,
+        "moved": 1,
+        "dropped": 0,
+        "scale_rotation_opacity_color_unchanged": true,
+        "center_motion": "along camera ray;scales remain fixed",
+        "background_filter_radius_px": null
+      },
+      "O2": {
+        "rule": "O2",
+        "total": 2,
+        "valid_center_pixels": 2,
+        "outside_or_no_reference": 0,
+        "violating": 1,
+        "moved": 1,
+        "dropped": 0,
+        "scale_rotation_opacity_color_unchanged": true,
+        "center_motion": "along camera ray;scales remain fixed",
+        "background_filter_radius_px": 24
+      },
+      "O2_drop": {
+        "rule": "O2",
+        "total": 2,
+        "valid_center_pixels": 2,
+        "outside_or_no_reference": 0,
+        "violating": 1,
+        "moved": 0,
+        "dropped": 1,
+        "scale_rotation_opacity_color_unchanged": true,
+        "center_motion": "along camera ray;scales remain fixed",
+        "background_filter_radius_px": 24
+      },
+      "scales_unchanged": true
+    }
+  },
+  "T2_native_fields": [
+    "RGB",
+    "Position",
+    "Depth",
+    "IndexOB"
+  ],
+  "reserved_ObjectLocal_Cryptomatte_not_exported": true,
+  "SHARP_weights_changed": false,
+  "training_started": false,
+  "T2_geometry_frontend_or_labels_run": false,
+  "pose_calibration_optional_hooks": "implemented as opt-in defaults-preserving interfaces;not exercised this round",
+  "old_outputs_and_results_unchanged": true,
+  "no_deletion": true,
+  "no_96GB": true,
+  "resources": {
+    "data_free_GiB": 331.38811111450195,
+    "system_free_GiB": 20.171165466308594,
+    "T1_outputs_GiB": 7.555803814902902,
+    "T2_outputs_GiB": 0.24771329760551453
+  },
+  "reported_client_time": "2026-11-17T08:24:54.902984-08:00"
+}

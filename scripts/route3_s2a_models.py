@@ -56,23 +56,27 @@ def inference(folder):
         z=z.cpu().numpy();a=a.cpu().numpy();valid=np.isfinite(z)&(z>0)&(a>=.1)
         if not valid.all():index=distance_transform_edt(~valid,return_distances=False,return_indices=True);z[~valid]=z[tuple(index[:,~valid])]
         np.savez_compressed(dest/f'f{f:03d}.npz',depth=z,alpha=a,valid=valid,K=K,rgb_linear=raw,rgb_srgb=rgb)
-        if f in [1,30,60]:torch.save({k:v.detach().cpu() for k,v in values.items()},dest/f'f{f:03d}.pt')
+        if f in [1,30,60] or os.environ.get('ROUTE3_SHARP_SAVE_ALL')=='1':torch.save({k:v.detach().cpu() for k,v in values.items()},dest/f'f{f:03d}.pt')
         rows.append(dict(frame=f,seconds=elapsed,peak_allocated_MiB=torch.cuda.max_memory_allocated()/2**20,gaussians=n));print('S2A_SHARP',folder.name,f,elapsed,flush=True)
         del cloud,values,front;torch.cuda.empty_cache()
     write(root/'SHARP.json',dict(completed=True,rows=rows,code_revision=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT.parent/'ml-sharp-s1-20261111',text=True).strip(),license='Apple research-only;see S1 license record',network_updated=False));del net;torch.cuda.empty_cache()
 
 
 def calibrate(folder):
-    root=folder/'models';dest=root/'calibration';dest.mkdir(exist_ok=True)
+    root=folder/'models';dest=Path(os.environ.get('ROUTE3_CALIBRATION_OUTPUT',root/'calibration'));dest.mkdir(parents=True,exist_ok=True)
     if (dest/'summary.json').exists() and json.loads((dest/'summary.json').read_text()).get('completed'):return
-    gtposes=np.load(folder/'scene-geometry.npz')['camera_c2w_opencv'];poses={f:gtposes[f-1] for f in FRAMES};plan={};pairs=set()
+    pose_source=os.environ.get('ROUTE3_CALIBRATION_POSES')
+    gtposes=np.load(pose_source)['c2w'] if pose_source else np.load(folder/'scene-geometry.npz')['camera_c2w_opencv'];poses={f:gtposes[f-1] for f in FRAMES};plan={};pairs=set()
     for f in FRAMES:
         # Match S1c largest-baseline policy, with six valid input neighbors.
         neighbors=sorted([g for g in FRAMES if g!=f],key=lambda g:(-np.linalg.norm(poses[g][:3,3]-poses[f][:3,3]),g))[:6];plan[f]=neighbors
         for g in neighbors:pairs.add((f,g));pairs.add((g,f))
-    write(dest/'flow-plan.json',dict(selected=plan,directed=sorted(pairs),GT_depth_or_masks=False))
+    frozen_plan=os.environ.get('ROUTE3_CALIBRATION_FLOW_PLAN')
+    if frozen_plan:
+        old=json.loads(Path(frozen_plan).read_text());plan={int(k):v for k,v in old['selected'].items()};pairs={tuple(v) for v in old['directed']}
+    write(dest/'flow-plan.json',dict(selected=plan,directed=sorted(pairs),GT_depth_or_masks=False,pose_noise_before_calibration=bool(pose_source)))
     from torchvision.models.optical_flow import raft_large,Raft_Large_Weights
-    net=raft_large(weights=None,progress=False).eval().cuda();net.load_state_dict(torch.load(ROOT/'models/metrics/hub/checkpoints/raft_large_C_T_SKHT_V2-ff5fadd5.pth',map_location='cpu',weights_only=True));transform=Raft_Large_Weights.C_T_SKHT_V2.transforms();flow=dest/'flow';flow.mkdir(exist_ok=True)
+    net=raft_large(weights=None,progress=False).eval().cuda();net.load_state_dict(torch.load(ROOT/'models/metrics/hub/checkpoints/raft_large_C_T_SKHT_V2-ff5fadd5.pth',map_location='cpu',weights_only=True));transform=Raft_Large_Weights.C_T_SKHT_V2.transforms();flow=Path(os.environ.get('ROUTE3_CALIBRATION_FLOW_CACHE',dest/'flow'));flow.mkdir(parents=True,exist_ok=True)
     images={f:torch.tensor(cv2.imread(str(folder/'inputs'/f'f{f:03d}.png'))[...,::-1].copy(),device='cuda').permute(2,0,1)[None] for f in FRAMES};timings=[]
     for f,g in sorted(pairs):
         path=flow/f'f{f:03d}-f{g:03d}.npz'
@@ -119,7 +123,7 @@ def calibrate(folder):
         good=valid&np.isfinite(re+fb+angle);confidence=np.where(good,np.exp(-.5*re**2-.5*fb**2)*np.minimum(1,np.sin(angle)/np.sin(np.deg2rad(2))),.05).astype(np.float32)
         np.savez_compressed(dest/f'f{f:03d}-confidence.npz',confidence=confidence,reprojection=re,FB=fb,angle_radians=angle,supported=good)
         write(dest/'progress.json',dict(rows=rows));print('S2A_CALIBRATION',folder.name,f,stats['points'],flush=True)
-    write(dest/'summary.json',dict(completed=True,rows=rows,flow_seconds=sum(timings),flow_pairs=len(pairs),E1_GT_poses=True,GT_depth_or_masks_used=False))
+    write(dest/'summary.json',dict(completed=True,rows=rows,flow_seconds=sum(timings),flow_pairs=len(pairs),E1_GT_poses=not bool(pose_source),GT_depth_or_masks_used=False,pose_noise_before_calibration=bool(pose_source),pose_source=pose_source))
 
 
 def main():

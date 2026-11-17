@@ -1,0 +1,29 @@
+{
+  "protocol": "appendix13 twelfthrevision,5411f35",
+  "output": "outputs/route3-order-fallback-2026-11-17-01",
+  "ordering": [
+    "none",
+    "O1",
+    "O2"
+  ],
+  "fallback": [
+    "F1",
+    "F2"
+  ],
+  "order_margin": 1.03,
+  "O2_background_max_filter_radius_px": 24,
+  "center_motion": "camera ray;preserve scales,quats,opacity,colors",
+  "GTfocus": "P2 median GT depth in same GTsubjectmask;P1 nominal physicalGT focus;previous A-focus GT results retained as reference only",
+  "selection": {
+    "scope": "G2only,P2farf1.4,sixcells pooled by SSE",
+    "order": "within eachfallback:pooledzero relativeA >=-.1 haspriority;tiesuse recoverable pooledPSNR",
+    "fallback": "winningorder perF:largerrecoverable pooledPSNR;absdifference<.1 choosesF2",
+    "GT_excluded": true
+  },
+  "result_does_not_gate_T2": true,
+  "K": 64,
+  "base_commit": "5411f35",
+  "disk_min_free_GiB": 60,
+  "data_free_before_GiB": 339.2000961303711,
+  "started_UTC": "2026-11-17T16:01:42.816718+00:00"
+}

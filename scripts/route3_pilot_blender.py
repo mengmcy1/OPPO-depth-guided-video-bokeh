@@ -140,9 +140,15 @@ def render(jobs_path):
             s.camera.data.shift_y=ay/(.036*j['focus']/.05)
         s.camera.data.dof.use_dof=j.get('dof',False);s.camera.data.dof.aperture_fstop=j.get('fstop',1.4);s.camera.data.dof.focus_distance=j.get('focus',1.4)
         s.render.image_settings.file_format='OPEN_EXR';s.render.image_settings.color_mode='RGBA';s.render.image_settings.color_depth='32';s.render.image_settings.exr_codec='ZIP';s.render.film_transparent=j.get('transparent_world',False)
+        if j.get('omit_reserved_passes',False):
+            # Opt-in G3 jobs retain only training-required Position/Z/ID.
+            # Legacy jobs keep the original AOV/Cryptomatte behavior.
+            view_layer=s.view_layers[0]
+            view_layer.use_pass_cryptomatte_object=False
+            for aov in list(view_layer.aovs):view_layer.aovs.remove(aov)
         s.render.filepath=str(out);s.use_nodes=True;s.node_tree.nodes.clear();layer=s.node_tree.nodes.new('CompositorNodeRLayers');passes={}
         if j.get('data_passes',False):
-            for name in ['Position','Depth','IndexOB','ObjectLocal']:
+            for name in j.get('data_pass_names',['Position','Depth','IndexOB','ObjectLocal']):
                 passes[name]=file_output(s,layer.outputs[name],out.with_suffix('').with_name(out.stem+'-'+name))
         if j.get('cryptomatte',False):
             # Preserve raw Cryptomatte float bit patterns in a multilayer EXR.
