@@ -1,0 +1,99 @@
+{
+ "schema_version": 1,
+ "request_date": "2026-11-17",
+ "authorization": "用户授权清理 A 档（A1–A6），逐项执行，每项删后检查无误再进行下一项。",
+ "status": "completed",
+ "method": "逐文件按清单删除（删前核对大小），之后仅移除变空的目录；不使用递归删除；执行前确认无进程使用目标路径、GPU 空闲。",
+ "items": [
+  {
+   "item": "A1",
+   "target": "outputs/dof-gs-repro-2026-11-05 中非评价迭代的 point_cloud/iteration_*（保留 model-metadata 记录的迭代）",
+   "deleted_files": 308,
+   "deleted_bytes": 19410086362,
+   "df_available_increase_bytes": 19410706432,
+   "manifest": "logs/disk-cleanup-2026-11-17/A1-files-before.json",
+   "log": "logs/disk-cleanup-2026-11-17/A1-delete.log"
+  },
+  {
+   "item": "A2",
+   "target": "CoCoGaussian chkpnt10000/20000.pth（保留 chkpnt30000、最终点云、coco-kernel.pt）",
+   "deleted_files": 34,
+   "deleted_bytes": 9465419424,
+   "df_available_increase_bytes": 9465479168,
+   "manifest": "logs/disk-cleanup-2026-11-17/A2-files-before.json",
+   "log": "logs/disk-cleanup-2026-11-17/A2-delete.log"
+  },
+  {
+   "item": "A3",
+   "target": "DoF-Gaussian 深度先验非最后 .tar；被替代 attempt 中的大文件（保留 json/log）",
+   "deleted_files": 1154,
+   "deleted_bytes": 3574343839,
+   "df_available_increase_bytes": 3577589760,
+   "manifest": "logs/disk-cleanup-2026-11-17/A3-files-before.json",
+   "log": "logs/disk-cleanup-2026-11-17/A3-delete.log"
+  },
+  {
+   "item": "A4a",
+   "target": "outputs/drbokeh-track-a-20260928/clips/*/diagnostics/*.npz（保留预测 PNG 与 json）",
+   "deleted_files": 1160,
+   "deleted_bytes": 38482487421,
+   "df_available_increase_bytes": 38484758528,
+   "manifest": "logs/disk-cleanup-2026-11-17/A4a-files-before.json",
+   "log": "logs/disk-cleanup-2026-11-17/A4a-delete.log",
+   "incident": {
+    "summary": "Track A 的 8 个 clip 目录（repro_000/001/003/004/006/007/008/017）是指向 outputs/drbokeh-preflight-20260928 的软链接；经软链接删除了预检目录中这 8 个 clip 的 diagnostics npz，物理位置超出所列目标目录。",
+    "files": 200,
+    "bytes": 6673884117,
+    "real_location": "outputs/drbokeh-preflight-20260928/clips/<clip>/diagnostics/",
+    "impact": "同类中间数组（Track A 复用了这些 clip）；预检的 250 张预测 PNG 与 lens 子目录保留；scripts/check_drbokeh_preflight.py、preview_drbokeh_preflight.py 不能再对这 8 个 clip 重跑。无备份，不可恢复。",
+    "fix": "删除脚本增加真实路径校验：真实路径不等于列出路径或不在指定根目录内的文件一律跳过。"
+   }
+  },
+  {
+   "item": "A4b",
+   "target": "outputs/drbokeh-input-recovery-200-20260929/gt_alpha/clips/*/diagnostics/*.npz（仅目录内真实文件）",
+   "manifest": "logs/disk-cleanup-2026-11-17/A4b-files-before.json",
+   "log": "logs/disk-cleanup-2026-11-17/A4b-delete.log",
+   "df_available_increase_bytes": 25010618368,
+   "deleted_bytes": 25008821893,
+   "deleted_files": 945,
+   "skipped_symlinked_files": 55,
+   "skipped_location": "outputs/drbokeh-protocol-recovery-v2-20260928/gt_alpha（未删除）"
+  },
+  {
+   "item": "A4c",
+   "target": "outputs/davis-baselines-20260929/drbokeh/diagnostics/<scene>/*.npz",
+   "manifest": "logs/disk-cleanup-2026-11-17/A4c-files-before.json",
+   "log": "logs/disk-cleanup-2026-11-17/A4c-delete.log",
+   "df_available_increase_bytes": 12098547712,
+   "deleted_bytes": 12097740797,
+   "deleted_files": 410
+  },
+  {
+   "item": "A5",
+   "target": "outputs/magicbokeh-point-focus-20260930/full/geometry/*/*.npy（MagicBokeh 自身 Depth Anything 预测深度，仅真实文件，跳过 40 个指向 preflight 的软链接）",
+   "manifest": "logs/disk-cleanup-2026-11-17/A5-files-before.json",
+   "log": "logs/disk-cleanup-2026-11-17/A5-delete.log",
+   "df_available_increase_bytes": 11719991296,
+   "deleted_bytes": 11702743040,
+   "deleted_files": 4960,
+   "not_deleted": "outputs/any2bokeh-reproduction-200-20260928/clips/*/depth/*.npy：执行前核查发现是 Synthetic 200 段评测集的深度真值（MPIB 代理集经 geometry_run 软链接共用），不是缓存，移出 A 档、保留 5000 个文件",
+   "impact": "scripts/summarize_magicbokeh_track_a.py 不能直接重跑"
+  },
+  {
+   "item": "A6",
+   "target": "envs/*-incomplete-20261105-1038 三个残缺环境；.cache/tmp 中 dofnerf-zip 两个稀疏探测文件及 9 个空 pip 临时目录（软链接只删链接本身）",
+   "manifest": "logs/disk-cleanup-2026-11-17/A6-files-before.json",
+   "log": "logs/disk-cleanup-2026-11-17/A6-delete.log",
+   "df_available_increase_bytes": 160878592,
+   "deleted_entries": 23905,
+   "allocated_bytes": 805388288,
+   "note": "dofnerf-zip-central-sparse 为稀疏文件，名义 3.7 GB、实占约 1 MB；执行方调度脚本目录保留"
+  }
+ ],
+ "recorded_at_utc": "2026-11-17T14:45:30.404548Z",
+ "safety_change_after_A4a": "删除前校验真实路径，真实路径不等于列出路径或不在指定根目录内的文件跳过；软链接只删除链接本身。",
+ "note_on_concurrency": "A4b 起执行方的附十二（route3_explicit_layer.py）同时在运行并写入数据盘；各项前确认其未打开清理目标；逐项 df 增量受并发写入影响。",
+ "total_deleted_bytes": 120547031064,
+ "completed_at_utc": "2026-11-17T14:59:49.030989Z"
+}
