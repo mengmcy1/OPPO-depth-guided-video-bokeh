@@ -1,0 +1,30 @@
+{
+  "protocol_revision": "be54ed5",
+  "previous": "outputs/route3-g3-r15-2026-11-17-01",
+  "output": "outputs/route3-ovg-1a-2026-11-18-01",
+  "seed": 20261118,
+  "size": 256,
+  "train_steps": 2400,
+  "checkpoint_steps": [600, 1200, 1800, 2400],
+  "batch_probability": {"G": 0.60, "C": 0.25, "B": 0.15},
+  "minimum_train_samples": {"G": 1, "C": 1, "B": 1},
+  "data_workers": 2,
+  "single_batch_steps": 32,
+  "learning_rate": 0.0002,
+  "weights": {"disp": 1.0, "bimodal": 0.25, "alpha": 0.5, "normal": 0.15, "mv": 0.05},
+  "subpixel": {
+    "initial_grid": 4,
+    "fallback_grid": 8,
+    "comparison": {"coverage_mae": 0.0625, "coverage_p95": 0.125, "two_layer_agreement": 0.9, "median_front_inverse_m": 0.01},
+    "separation_relative": 0.03,
+    "min_second_layer_hits": 2,
+    "stable_cluster_normal_cos": 0.85,
+    "thin_max_mean_coverage_error": 0.0625,
+    "thin_interior_phase_max": 0.01,
+    "thin_reference_grid": 16
+  },
+  "zero_aperture_max_drop_db": 0.1,
+  "footprint_min_sigma_px_512": 0.30,
+  "C": {"seed": 631942, "frames": 13, "size": 256, "training_assets": ["wood_floor", "brick_wall_02", "rough_plasterbrick_05"]},
+  "G": {"environments": ["AbandonedCable", "House", "Office"], "difficulty": "Data_easy", "windows_per_environment": 2, "frames_per_window": 8}
+}
