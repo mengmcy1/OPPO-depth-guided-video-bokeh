@@ -1,0 +1,298 @@
+{
+  "stage": "1b entry; unmodified 1a round 2 step-030000, zero 1b optimizer updates",
+  "split": "B development",
+  "reference_rows": "outputs/route3-ovg-1b-2026-11-18-01/P3/1a-paired-prior-reference.json",
+  "checkpoint": "outputs/route3-ovg-1a-r2-2026-11-18-01/checkpoints/step-030000.pt",
+  "high_confidence_rule": "prior_conf[DepthSplat] >= 0.6 AND depth_boundary AND valid",
+  "inputs": "route3_ovg_data.b_input; saved B pinhole-subpixels/{frame}.npz; 1a-r2 split, all DEV frames",
+  "metric": "Pixel-weighted mean absolute inverse axial depth error times fx * 0.05 / (2 * 1.4) * focus_m / (focus_m - 0.05), native 512px. All deltas in px; positive is worse.",
+  "computation": "Raw DepthSplat recomputed from input geometry on CPU. Fusion, full model and best available single prior reuse the matched reference rows. Pixel counts matched for every row and independent best-single-prior recomputation agreed within 1e-5 px.",
+  "limitation": "Combined local multiview and residual correction only; checkpoint geometry errors, not rendered quality. Scenes are development scenes.",
+  "frames": [
+    {
+      "scene": "metric-scene-122104-broad",
+      "frame": 1,
+      "valid_pixels": 15
+    },
+    {
+      "scene": "metric-scene-122104-broad",
+      "frame": 6,
+      "valid_pixels": 10
+    },
+    {
+      "scene": "metric-scene-122104-broad",
+      "frame": 11,
+      "valid_pixels": 21
+    },
+    {
+      "scene": "metric-scene-122104-broad",
+      "frame": 16,
+      "valid_pixels": 28
+    },
+    {
+      "scene": "metric-scene-122104-broad",
+      "frame": 21,
+      "valid_pixels": 19
+    },
+    {
+      "scene": "metric-scene-122104-broad",
+      "frame": 26,
+      "valid_pixels": 12
+    },
+    {
+      "scene": "metric-scene-122104-broad",
+      "frame": 30,
+      "valid_pixels": 10
+    },
+    {
+      "scene": "metric-scene-122104-broad",
+      "frame": 35,
+      "valid_pixels": 11
+    },
+    {
+      "scene": "metric-scene-122104-broad",
+      "frame": 40,
+      "valid_pixels": 19
+    },
+    {
+      "scene": "metric-scene-122104-broad",
+      "frame": 45,
+      "valid_pixels": 24
+    },
+    {
+      "scene": "metric-scene-122104-broad",
+      "frame": 50,
+      "valid_pixels": 52
+    },
+    {
+      "scene": "metric-scene-122104-broad",
+      "frame": 55,
+      "valid_pixels": 111
+    },
+    {
+      "scene": "metric-scene-122104-broad",
+      "frame": 60,
+      "valid_pixels": 180
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "frame": 1,
+      "valid_pixels": 307
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "frame": 6,
+      "valid_pixels": 217
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "frame": 11,
+      "valid_pixels": 186
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "frame": 16,
+      "valid_pixels": 151
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "frame": 21,
+      "valid_pixels": 128
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "frame": 26,
+      "valid_pixels": 198
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "frame": 30,
+      "valid_pixels": 271
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "frame": 35,
+      "valid_pixels": 235
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "frame": 40,
+      "valid_pixels": 203
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "frame": 45,
+      "valid_pixels": 197
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "frame": 50,
+      "valid_pixels": 269
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "frame": 55,
+      "valid_pixels": 327
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "frame": 60,
+      "valid_pixels": 312
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "frame": 1,
+      "valid_pixels": 103
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "frame": 6,
+      "valid_pixels": 130
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "frame": 11,
+      "valid_pixels": 78
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "frame": 16,
+      "valid_pixels": 116
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "frame": 21,
+      "valid_pixels": 46
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "frame": 26,
+      "valid_pixels": 90
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "frame": 30,
+      "valid_pixels": 79
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "frame": 35,
+      "valid_pixels": 44
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "frame": 40,
+      "valid_pixels": 40
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "frame": 45,
+      "valid_pixels": 50
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "frame": 50,
+      "valid_pixels": 108
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "frame": 55,
+      "valid_pixels": 101
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "frame": 60,
+      "valid_pixels": 105
+    }
+  ],
+  "rows": [
+    {
+      "scene": "metric-scene-122104-broad",
+      "focus_m": 1.4,
+      "pixels": 512,
+      "DepthSplat": 0.4431355379151005,
+      "selected_prior_base": 0.4703010222874582,
+      "full_OVG": 0.4839489459991455,
+      "best_single_Oracle": 0.41156962141394615,
+      "delta_fusion_minus_DepthSplat": 0.027165484372357662,
+      "delta_full_minus_fusion": 0.013647923711687326
+    },
+    {
+      "scene": "metric-scene-122104-broad",
+      "focus_m": 5.0,
+      "pixels": 512,
+      "DepthSplat": 0.43162552394327963,
+      "selected_prior_base": 0.4580854255473241,
+      "full_OVG": 0.4713788665831089,
+      "best_single_Oracle": 0.4008795408299193,
+      "delta_fusion_minus_DepthSplat": 0.02645990160404449,
+      "delta_full_minus_fusion": 0.013293441035784781
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "focus_m": 1.4,
+      "pixels": 3001,
+      "DepthSplat": 0.14530177681361026,
+      "selected_prior_base": 0.2670304248508554,
+      "full_OVG": 1.7372161702528193,
+      "best_single_Oracle": 0.14217655216205602,
+      "delta_fusion_minus_DepthSplat": 0.12172864803724512,
+      "delta_full_minus_fusion": 1.470185745401964
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "focus_m": 5.0,
+      "pixels": 3001,
+      "DepthSplat": 0.1415277046885814,
+      "selected_prior_base": 0.2600945863911248,
+      "full_OVG": 1.692093775138105,
+      "best_single_Oracle": 0.13848366812045318,
+      "delta_fusion_minus_DepthSplat": 0.11856688170254343,
+      "delta_full_minus_fusion": 1.4319991887469803
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "focus_m": 1.4,
+      "pixels": 1090,
+      "DepthSplat": 0.20006639393788975,
+      "selected_prior_base": 0.20198030821773985,
+      "full_OVG": 0.5625155483910796,
+      "best_single_Oracle": 0.1840126501310856,
+      "delta_fusion_minus_DepthSplat": 0.001913914279850104,
+      "delta_full_minus_fusion": 0.3605352401733398
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "focus_m": 5.0,
+      "pixels": 1090,
+      "DepthSplat": 0.1948698642252173,
+      "selected_prior_base": 0.19673407974593135,
+      "full_OVG": 0.5479047845263,
+      "best_single_Oracle": 0.17923311880969126,
+      "delta_fusion_minus_DepthSplat": 0.0018642155207140576,
+      "delta_full_minus_fusion": 0.3511707047803686
+    },
+    {
+      "scene": "pooled",
+      "focus_m": 1.4,
+      "pixels": 4603,
+      "DepthSplat": 0.19139873930533904,
+      "selected_prior_base": 0.2742365770901438,
+      "full_OVG": 1.319641437112003,
+      "best_single_Oracle": 0.18204850485447616,
+      "delta_fusion_minus_DepthSplat": 0.08283783778480477,
+      "delta_full_minus_fusion": 1.0454048600218593
+    },
+    {
+      "scene": "pooled",
+      "focus_m": 5.0,
+      "pixels": 4603,
+      "DepthSplat": 0.18642734347922624,
+      "selected_prior_base": 0.26711356475408665,
+      "full_OVG": 1.2853651127555228,
+      "best_single_Oracle": 0.1773199896669481,
+      "delta_fusion_minus_DepthSplat": 0.08068622127486041,
+      "delta_full_minus_fusion": 1.018251548001436
+    }
+  ]
+}
