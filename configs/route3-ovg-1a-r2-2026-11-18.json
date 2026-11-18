@@ -1,0 +1,18 @@
+{
+  "protocol_revision": "63ab9b1",
+  "output": "outputs/route3-ovg-1a-r2-2026-11-18-01",
+  "round1": "outputs/route3-ovg-1a-2026-11-18-01",
+  "seed": 20261118,
+  "train_steps": 30000,
+  "checkpoint_steps": [5000, 10000, 15000, 20000, 25000, 30000],
+  "batch_probability": {"G": 0.60, "C": 0.25, "B": 0.15},
+  "boundary_weight": 2.0,
+  "per_stratum_pixels": 8192,
+  "zero_absolute_min_db": 60.0,
+  "G_round2": {
+    "environments": ["AbandonedCable", "AbandonedFactory", "AbandonedFactory2", "AmericanDiner", "AmusementPark", "Carwelding", "EndofTheWorld", "Gascola", "Hospital", "House", "Office", "SeasideTown"],
+    "windows_per_environment": 24,
+    "frames_per_window": 8
+  },
+  "C_round2": {"sequences": 48, "frames_per_sequence": 8, "size": 256, "first_seed": 631943}
+}

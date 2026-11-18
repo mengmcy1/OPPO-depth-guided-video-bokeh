@@ -130,6 +130,7 @@ def evaluate(net,step,device,save_images):
     net.eval()
     entries=inventory('dev')['B']
     results=[]
+    selection=defaultdict(Counter)
     for item in entries:
         x,y=sample(item,device)
         out=net(x)
@@ -141,8 +142,24 @@ def evaluate(net,step,device,save_images):
         edge=y['depth_boundary'] & y['valid']
         interior=y['valid_alpha']&(y['alpha']>=.9999)&~edge
         v=y['valid']
+        base_name='selected-prior-base' if 'prior_weights' in out else 'confidence-fusion'
         methods={'OVG-Net':(out['depth1'],out['alpha'],out['depth2'],v,'all'),
-                 'confidence-fusion':(out['fused_depth'],None,None,x['prior_conf'].sum(1)>0,'supported')}
+                 base_name:(out['fused_depth'],None,None,x['prior_conf'].sum(1)>0,'supported')}
+        if 'prior_weights' in out:
+            weights=out['prior_weights']
+            supported=weights.sum(1)>0
+            selected=weights.argmax(1)
+            if (weights[x['prior_conf']<=0]!=0).any() or not torch.isfinite(weights).all():
+                raise ValueError('Invalid masked prior weights')
+            for tag,part in [('interior',interior),('boundary',edge),('reliable_dual',y['valid_dual'])]:
+                use=part&supported
+                counts=torch.bincount(selected[use],minlength=3).cpu().tolist()
+                mass=(weights*use[:,None]).sum((0,2,3)).cpu().tolist()
+                for group in (item[1],'pooled'):
+                    acc=selection[group,tag]
+                    acc.update(total=int(part.sum()),supported=int(use.sum()))
+                    acc.update({p+'_wins':counts[j] for j,p in enumerate(PRIORS)})
+                    acc.update({p+'_mass':mass[j] for j,p in enumerate(PRIORS)})
         for k,prior in enumerate(PRIORS):
             supported=x['prior_conf'][:,k]>0
             methods[prior]=(x['prior_depth'][:,k],None,None,supported,'supported')
@@ -179,6 +196,13 @@ def evaluate(net,step,device,save_images):
         CoC='fx*.05/(2*1.4) times inverse axial depth error; native B 512 pixel units',
         resolution='B 512; exact native subpixel labels',
         data_split='three development scenes, never sampled by optimizer')
+    if selection:
+        record['prior_selection']=[
+            dict(scene=scene,region=tag,**acc,
+                 **{p+'_vote_fraction':acc[p+'_wins']/acc['supported'] if acc['supported'] else None for p in PRIORS},
+                 **{p+'_mean_weight':acc[p+'_mass']/acc['supported'] if acc['supported'] else None for p in PRIORS})
+            for (scene,tag),acc in sorted(selection.items())]
+        record['prior_selection_definition']='argmax and mean softmax weight among pixels with any prior; missing prior has exact zero, unsupported counts separate'
     save_json(OUT/'validation'/f'step-{step:06d}.json',record)
     return record
 

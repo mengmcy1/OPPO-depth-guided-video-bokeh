@@ -44,8 +44,19 @@ def fusion_depth(priors, confidence):
     return torch.where(support>0,base,.2), confidence.max(1).values
 
 
+def select_prior(priors, confidence, logits):
+    present=(confidence>0)&torch.isfinite(priors)&(priors>0)
+    any_present=present.any(dim=1,keepdim=True)
+    logits=torch.where(present,logits,-torch.inf)
+    weights=torch.softmax(torch.where(any_present,logits,0.),dim=1)
+    weights=torch.where(present,weights,0.)
+    inverse=torch.where(present,priors.clamp_min(.05).reciprocal(),0.)
+    base=torch.where(any_present[:,0],(weights*inverse).sum(1),.2)
+    return base,weights
+
+
 class OVGNet(nn.Module):
-    def __init__(self, encoder):
+    def __init__(self, encoder, learned_prior_selection=False):
         super().__init__()
         self.encoder = encoder.eval().requires_grad_(False)
         self.register_buffer('mean',torch.tensor([.485,.456,.406])[None,:,None,None])
@@ -67,6 +78,10 @@ class OVGNet(nn.Module):
         self.geometry.weight.data.mul_(.05)
         self.geometry.bias.data.zero_()
         self.coverage.bias.data.fill_(2.2)
+        self.learned_prior_selection=learned_prior_selection
+        if learned_prior_selection:
+            self.prior_head=nn.Sequential(conv(64,32),nn.Conv2d(32,3,1))
+            self.prior_pixel=nn.Conv2d(10,3,1)
 
     def train(self,mode=True):
         super().train(mode)
@@ -129,12 +144,12 @@ class OVGNet(nn.Module):
         rgb=sample['rgb']
         priors,conf=sample['prior_depth'],sample['prior_conf']
         motion=sample['motion']
-        fused,confidence=fusion_depth(priors,conf)
         half=self.rgb_half(rgb)
         quarter=self.rgb_quarter(half)
         h,w=quarter.shape[-2:]
         inv=torch.where(conf>0,priors.clamp_min(.05).reciprocal(),0.)
-        z=self.depth_quarter(torch.cat([inv.clamp(max=5),conf,motion[:,None].float()],1))
+        evidence=torch.cat([inv.clamp(max=5),conf,motion[:,None].float()],1)
+        z=self.depth_quarter(evidence)
         tokens=self.tokens(rgb)
         levels=[(max(1,h//8),max(1,w//8)),(max(1,h//4),max(1,w//4)),
                 (max(1,h//2),max(1,w//2)),(h,w)]
@@ -143,6 +158,14 @@ class OVGNet(nn.Module):
         for f,skip in zip(self.dpt,maps[1:]):
             plane=f(torch.cat([resize(plane,skip.shape[-2:]),skip],1))
         phi=self.quarter(torch.cat([plane,quarter,z],1))
+        prior_weights=None
+        if self.learned_prior_selection:
+            logits=resize(self.prior_head(phi),rgb.shape[-2:])
+            logits=logits+self.prior_pixel(torch.cat([rgb,evidence],1))
+            fused,prior_weights=select_prior(priors,conf,logits)
+            confidence=(prior_weights*conf).sum(1)
+        else:
+            fused,confidence=fusion_depth(priors,conf)
         if sample['neighbors'].shape[1]:
             delta, cost, mask=self.local_cost(phi,rgb,sample['neighbors'],fused,confidence,motion,
                                   sample['K'],sample['neighbor_K'],sample['pose'],sample['neighbor_pose'],
@@ -162,10 +185,13 @@ class OVGNet(nn.Module):
         inverse2=inverse1*(.985-.94*g[:,1].sigmoid())
         front_normal=F.normalize(torch.cat([g[:,2:4],-F.softplus(g[:,4:5])],1),dim=1)
         footprint=self.footprint(phi)
-        return dict(depth1=inverse1.reciprocal(),depth2=inverse2.reciprocal(),inverse1=inverse1,inverse2=inverse2,
+        result=dict(depth1=inverse1.reciprocal(),depth2=inverse2.reciprocal(),inverse1=inverse1,inverse2=inverse2,
                     alpha=self.coverage(phi)[:,0].sigmoid(),normal=front_normal,confidence=conf_out,
                     sigma_px=.3+1.4*footprint[:,:2].sigmoid(),opacity=footprint[:,2].sigmoid(),
                     mv_mask=gate,fused_depth=fused.reciprocal())
+        if prior_weights is not None:
+            result['prior_weights']=prior_weights
+        return result
 
 
 def masked_mean(value,mask):
@@ -200,7 +226,25 @@ def scene_consistency(prediction, inputs):
     return depth.sum()*0,depth.new_zeros((),dtype=torch.int64)
 
 
-def geometry_loss(prediction, inputs, target, weights):
+def balanced_boundary_mean(value, valid, boundary, per_stratum, boundary_weight, generator=None):
+    """Equal samples where both strata exist, plus explicit boundary weight."""
+    v=value.flatten()
+    edge=torch.nonzero((valid&boundary).flatten()).flatten()
+    interior=torch.nonzero((valid&~boundary).flatten()).flatten()
+    if not len(edge) and not len(interior):
+        # Keep an exact zero gradient for tiers without this label.
+        return v.sum()*0
+    common=min(per_stratum,len(edge),len(interior)) if len(edge) and len(interior) else per_stratum
+    chunks=[]
+    for rows,weight in ((edge,boundary_weight),(interior,1.)):
+        if len(rows)>common:
+            rows=rows[torch.randperm(len(rows),device=rows.device,generator=generator)[:common]]
+        if len(rows):
+            chunks.append((v[rows]*weight).sum())
+    return sum(chunks)/(min(len(edge),common)+min(len(interior),common))
+
+
+def geometry_loss(prediction, inputs, target, weights, *, boundary_sampling=None, generator=None):
     valid=target['valid']
     mask_alpha=target['valid_alpha']
     mask_dual=target['valid_dual']&mask_alpha
@@ -208,7 +252,13 @@ def geometry_loss(prediction, inputs, target, weights):
     front=target['depth1'].clamp_min(.05).reciprocal()
     back=target['depth2'].clamp_min(.05).reciprocal()
     e1=(prediction['inverse1']-front).abs()*optics
-    disp=masked_mean(e1*(1+target['depth_boundary'].float()),valid)
+    boundary=target['depth_boundary']
+    if boundary_sampling is None:
+        disp=masked_mean(e1*(1+boundary.float()),valid)
+    else:
+        def reduce(values, mask):
+            return balanced_boundary_mean(values,mask,boundary,*boundary_sampling,generator)
+        disp=reduce(e1,valid)
     alpha=prediction['alpha'].clamp(1e-5,1-1e-5)
     # C/B geometry coverages supervise alpha. G and A are masked out by the
     # loader. A's later appearance loss instead consumes its matte directly.
@@ -218,8 +268,11 @@ def geometry_loss(prediction, inputs, target, weights):
     log_b=torch.stack([b1-(prediction['inverse1']-back).abs()*optics/.15,
                        b2-(prediction['inverse2']-back).abs()*optics/.15],-1)
     mass=target['alpha']
-    bimodal=masked_mean(-(mass*torch.logsumexp(log_f,-1)+(1-mass)*torch.logsumexp(log_b,-1)),mask_dual)
-    alpha_loss=masked_mean(F.binary_cross_entropy(alpha,mass,reduction='none'),mask_alpha)
+    nll=-(mass*torch.logsumexp(log_f,-1)+(1-mass)*torch.logsumexp(log_b,-1))
+    alpha_map=F.binary_cross_entropy(alpha,mass,reduction='none')
+    combine=masked_mean if boundary_sampling is None else reduce
+    bimodal=combine(nll,mask_dual)
+    alpha_loss=combine(alpha_map,mask_alpha)
     normal=masked_mean(1-(prediction['normal']*target['normal']).sum(1).clamp(-1,1),target['valid_normal'])
     mv,mv_count=scene_consistency(prediction,inputs)
     terms=dict(disp=disp,bimodal=bimodal,alpha=alpha_loss,normal=normal,mv=mv)
