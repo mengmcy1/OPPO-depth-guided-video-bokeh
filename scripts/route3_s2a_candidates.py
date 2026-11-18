@@ -100,9 +100,17 @@ def labels(folder,training=False,ordered=False):
         inverse=a[cy,cx]/np.maximum(true_z,1e-6)+b[cy,cx]
         placement_depth=1/np.maximum(inverse,1e-4)
         placement_fields={}
+        def place(z, y, x, support):
+            bound = 1.03*d['depth'][y,x]
+            if ordered != 'O2':
+                return np.maximum(z,bound),support
+            violated = z<bound
+            background = order_background[y,x]
+            back_ok = np.isfinite(background)&(background>=bound)
+            return np.where(violated&back_ok,background,z),support&(~violated|back_ok)
         if ordered:
-            placement_depth=np.maximum(placement_depth,1.03*d['depth'][cy,cx])
-            placement_fields['placement_support_v2']=fit[3][cy,cx]&in_center&(inverse>1e-4)&np.isfinite(inverse)
+            order_background=cv2.dilate(d['depth'],np.ones((49,49),np.uint8)) if ordered=='O2' else None
+            placement_depth,placement_fields['placement_support_v2']=place(placement_depth,cy,cx,fit[3][cy,cx]&in_center&(inverse>1e-4)&np.isfinite(inverse))
         placement_camera=true_camera*(placement_depth/np.maximum(true_z,1e-6))[:,None]
         for case in entry['cases']:
             if (labeldir/(case['id']+'.npz')).exists():continue
@@ -130,8 +138,8 @@ def labels(folder,training=False,ordered=False):
                     px=np.clip(np.floor(parent[...,0]).astype(int),0,511)
                     py=np.clip(np.floor(parent[...,1]).astype(int),0,511)
                     inv_at_parent=a[py,px]/np.maximum(hitz,1e-6)+b[py,px]
-                    mapped=np.maximum(1/np.maximum(inv_at_parent,1e-4),1.03*d['depth'][py,px])
-                    mapped=np.where(fit[3][py,px]&(inv_at_parent>1e-4)&np.isfinite(inv_at_parent),mapped,0)
+                    mapped,supported=place(1/np.maximum(inv_at_parent,1e-4),py,px,fit[3][py,px]&(inv_at_parent>1e-4)&np.isfinite(inv_at_parent))
+                    mapped=np.where(supported,mapped,0)
                 positions.append(np.where(hidden[k],mapped,0).astype(np.float32))
             np.savez_compressed(labeldir/(case['id']+'.npz'),content_hit_bits=bits,content_hit_fraction=match_count.astype(np.float32)/16,placement_depth=np.stack(positions),candidate_placement_depth=placement_depth.astype(np.float32),candidate_placement_camera=placement_camera.astype(np.float32),candidate_GT_center_projection=central.astype(np.float32),placement_affine_a=a,placement_affine_b=b,hidden_ray_mask=hidden,recoverable_ray_mask=geo['recoverable'],GT_source_world=src,GT_source_object_id=srcobj,**placement_fields)
             correct=match_count>0;candidate_error=np.linalg.norm(pool['position_world_estimated']-((placement_camera@pose[:3,:3].T)+pose[:3,3]),axis=-1)

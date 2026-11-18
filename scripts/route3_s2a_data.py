@@ -95,7 +95,7 @@ def input_cache_512(name,desc,out):
     save_json(out/'manifest.json',dict(scene=name,rows=rows,context=str(context),size=512,frames=ALL,M=8,features=19,query_cap=262144,model_input_only=True,hidden_GT_not_read=True,calibration_and_memory_flags_loaded=True))
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--scene',required=True);p.add_argument('--size',type=int,choices=[256,512],default=256);p.add_argument('--GT-warmup',action='store_true');p.add_argument('--ordered-root',type=Path);a=p.parse_args();cv2.setNumThreads(2);data_root=a.ordered_root or OUT
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--scene',required=True);p.add_argument('--size',type=int,choices=[256,512],default=256);p.add_argument('--GT-warmup',action='store_true');p.add_argument('--ordered-root',type=Path);p.add_argument('--ordered-rule',choices=['O1','O2'],default='O1');a=p.parse_args();cv2.setNumThreads(2);data_root=a.ordered_root or OUT
     if a.ordered_root:
         s=data_root/a.scene
         desc=dict(scene=s,entries=json.loads((s/'prepared.json').read_text())['rows'],geometry=s/'geometry',model=s/'models/SHARP',calibration=s/'models/calibration/SHARP',confidence=s/'models/calibration',parents=lambda f:s/'oracle'/f'f{f:03d}.npz',source_root=s,ordered_placement=True)
@@ -158,7 +158,16 @@ def main():
         if a.ordered_root:
             inverse=aa[sy,sx]/np.maximum(gtcam[:,2],1e-6)+bb[sy,sx]
             safe=support[sy,sx]&inside&(oid>0)&np.isfinite(inverse)&(inverse>1e-4)
-            mapped=np.maximum(mapped,1.03*target['depth'][cy,cx])
+            floor=1.03*target['depth'][cy,cx]
+            if a.ordered_rule=='O2':
+                radius=24*size//512
+                bg=cv2.dilate(target['depth'],np.ones((2*radius+1,)*2,np.uint8))[cy,cx]
+                violates=mapped<floor
+                accept=np.isfinite(bg)&(bg>=floor)
+                safe &= ~violates|accept
+                mapped=np.where(violates&accept,bg,mapped)
+            else:
+                mapped=np.maximum(mapped,floor)
             mappedcam=gtcam*(mapped/np.maximum(gtcam[:,2],1e-6))[:,None]
         oracle=np.load(desc['parents'](f));opc=np.c_[oracle['uv'],np.ones(len(oracle['uv']))]@np.linalg.inv(np.array([[711.111111,0,256],[0,711.111111,256],[0,0,1]])).T*oracle['depth'][:,None];opw=opc@label_pose[:3,:3].T+label_pose[:3,3];color=np.zeros((n,3),np.float32);colorvalid=np.zeros(n,bool)
         for obj in np.unique(oid):
@@ -176,6 +185,6 @@ def main():
                 bits|=ok.astype(np.uint16)*(1<<k)
             fraction=np.unpackbits(bits.view(np.uint8).reshape(-1,2),axis=1).sum(1).astype(np.float32)/16;hit=safe_gather(fraction);content=valid&(hit>0);placement_valid=safe_gather(safe)&valid;rgb_valid=safe_gather(colorvalid)&valid;label=dict(content_hit_fraction=hit,content_hit_bits=safe_gather(bits),candidate_depth_target=safe_gather(mapped),candidate_camera_target=safe_gather(mappedcam.astype(np.float32)),candidate_RGB_target=safe_gather(color),placement_support_v2=placement_valid,appearance_valid=rgb_valid,hidden_any_at_query=geo['hidden'].any(0).ravel()[q['query_pixel']],recoverable_at_query=geo['mask_recoverable_total'].ravel()[q['query_pixel']],recoverable_mask=geo['mask_recoverable_total'],residual_pixels=geo['residual_pixels'],hidden_ray_mask=geo['hidden'],recoverable_ray_mask=geo['recoverable'])
             save_npz(targetpath,label);row=dict(frame=f,case=case,input=str(inputpath),target=str(targetpath),queries=len(valid),positive_candidates=int(content.sum()),positive_query_fraction=float(content.any(-1).mean()),safe_positive_fraction=float((content&placement_valid).sum()/max(content.sum(),1)),GT_recoverable_pixels=int(geo['mask_recoverable_total'].sum()),context_frames=frames);rows.append(row);save_json(out/'progress.json',dict(rows=rows));print('S2A_DATA',a.scene,tag,f,key,row['positive_query_fraction'],flush=True)
-    save_json(out/'manifest.json',dict(scene=a.scene,rows=rows,context=str(camera_path),size=size,frames=frames,M=8,features=19,query_cap=32768,geometry_frontend_cached_from_13_frames=True,candidate_and_RGB_context_only=frames,GT_input_only_during_warmup=a.GT_warmup,five_frame_recoverability_recomputed=True,depth_loss_requires_placement_support_v2=True,calibration_and_memory_flags_loaded=True,input_label_files_separate=True,model_not_implemented_here=True))
+    save_json(out/'manifest.json',dict(scene=a.scene,rows=rows,context=str(camera_path),size=size,frames=frames,M=8,features=19,query_cap=32768,geometry_frontend_cached_from_13_frames=True,candidate_and_RGB_context_only=frames,GT_input_only_during_warmup=a.GT_warmup,five_frame_recoverability_recomputed=True,depth_loss_requires_placement_support_v2=True,calibration_and_memory_flags_loaded=True,input_label_files_separate=True,model_not_implemented_here=True,ordered_rule=a.ordered_rule if a.ordered_root else None))
 
 if __name__=='__main__':main()

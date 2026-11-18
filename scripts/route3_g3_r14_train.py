@@ -26,7 +26,8 @@ from src.ordered_layers import order_hidden, ray_samples, render_fallbacks
 SETTINGS = C['light_fusion']
 
 
-def train_network(root, dest, scenes, monitors, single=False, augmentations=()):
+def train_network(root, dest, scenes, monitors, single=False, augmentations=(),
+                  balance_activation=False, require_descent=False):
     legacy.OUT = root
     store = Store()
     seed = SETTINGS['seeds']['overfit' if single else 'S2a']
@@ -58,6 +59,9 @@ def train_network(root, dest, scenes, monitors, single=False, augmentations=()):
     dest.mkdir(parents=True,exist_ok=True)
     torch.cuda.reset_peak_memory_stats()
     init = evaluate_row(net,store,far(first),first) if single else None
+    probe = lambda: [evaluate_row(net,store,far(manifests[n]),manifests[n],
+                      balance_activation=balance_activation)['loss'] for n in scenes]
+    train_probe = [dict(step=0,losses=probe())] if require_descent else []
     curve, validation = [], []
     start = time.monotonic()
     period = SETTINGS['overfit_monitor_steps' if single else 'eval_every_steps']
@@ -74,6 +78,7 @@ def train_network(root, dest, scenes, monitors, single=False, augmentations=()):
         torch.set_rng_state(state['torch_rng'])
         torch.cuda.set_rng_state(state['cuda_rng'])
         init, curve, validation = resume['initial'], resume['curve'], resume['validation']
+        train_probe = resume.get('train_probe',train_probe)
         first_step = step+1
     for step in range(first_step,steps+1):
         eligible = warmup if warmup and step<=SETTINGS['GT_warmup_steps'] else rows
@@ -86,21 +91,32 @@ def train_network(root, dest, scenes, monitors, single=False, augmentations=()):
         net.train()
         optimizer.zero_grad(set_to_none=True)
         pred,valid,_ = store.forward(net,row,indexes,m)
-        loss,terms = objectives(pred,store.target_batch(row,indexes),valid)
+        loss,terms = objectives(pred,store.target_batch(row,indexes),valid,balance_activation)
         if not bool(torch.isfinite(loss)):
             write(dest/'optimization-failure.json',dict(step=step,reason='nonfinite direct loss'))
             raise RuntimeError('Nonfinite direct loss')
         loss.backward()
-        torch.nn.utils.clip_grad_norm_(net.parameters(),1.,error_if_nonfinite=True)
+        try:
+            torch.nn.utils.clip_grad_norm_(net.parameters(),1.,error_if_nonfinite=True)
+        except RuntimeError as error:
+            write(dest/'optimization-failure.json',dict(step=step,reason=str(error)))
+            raise
         optimizer.step()
         if step==1 or step%100==0:
             curve.append(dict(step=step,**{key:float(val.detach()) for key,val in terms.items()}))
             print('TRAIN',name,step,curve[-1]['total'],flush=True)
         if step%period==0 or step==steps:
             review = scenes if single else monitors
-            validation.append(dict(step=step,rows=[dict(scene=n,**evaluate_row(net,store,far(manifests[n]),manifests[n])) for n in review]))
+            validation.append(dict(step=step,rows=[dict(scene=n,**evaluate_row(net,store,far(manifests[n]),manifests[n],balance_activation=balance_activation)) for n in review]))
+            if require_descent:
+                train_probe.append(dict(step=step,losses=probe()))
             legacy.checkpoint(dest/f'step-{step:06d}.pt',net,optimizer,step,rng,dict(scenes=scenes,seed=seed))
-            write(dest/'progress.json',dict(initial=init,curve=curve,validation=validation,step=step))
+            write(dest/'progress.json',dict(initial=init,curve=curve,validation=validation,train_probe=train_probe,step=step))
+            if require_descent and step>=2*period:
+                initial_loss=np.mean(train_probe[0]['losses'])
+                if all(np.mean(row['losses'])>=initial_loss for row in train_probe[1:]):
+                    write(dest/'optimization-failure.json',dict(step=step,reason='fixed training probes have not decreased from initialization',train_probe=train_probe))
+                    raise RuntimeError('S2a fixed training probes did not decrease')
     final = validation[-1]['rows'][0] if single else None
     m = final['metrics'] if final else None
     passed = None if not single else bool(m and m['matched_heads'] and final['loss']<=.5*init['loss']
@@ -109,7 +125,8 @@ def train_network(root, dest, scenes, monitors, single=False, augmentations=()):
     write(dest/'training.json',dict(initial=init,final=final,passed=passed,curve=curve,validation=validation,
           trainable_parameters=sum(p.numel() for p in net.parameters()),contexts='256/5',
           scenes=scenes,seed=seed,seconds=time.monotonic()-start,steps=steps,augmented_roots=[str(p) for p in augmentations],
-          peak_allocated_MiB=torch.cuda.max_memory_allocated()/2**20,GT_warmup_steps=0 if single else SETTINGS['GT_warmup_steps']))
+          peak_allocated_MiB=torch.cuda.max_memory_allocated()/2**20,GT_warmup_steps=0 if single else SETTINGS['GT_warmup_steps'],
+          balance_activation=balance_activation,train_probe=train_probe))
     return net
 
 

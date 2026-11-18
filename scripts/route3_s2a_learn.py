@@ -42,11 +42,11 @@ class Store:
         raw=self.targets(row['target'],row['input']);return {k:torch.tensor(v[indices],device='cuda',dtype=torch.bool if v.dtype==bool else torch.float32) for k,v in raw.items()}
 
 
-def evaluate_row(net,store,row,manifest,batch=2048):
+def evaluate_row(net,store,row,manifest,batch=2048,balance_activation=False):
     indices=store.active(row['input'],row['case']['focus_m'],row['case']['fstop']);stats=None;loss_sum=0.;net.eval()
     with torch.no_grad():
         for offset in range(0,len(indices),batch):
-            ids=indices[offset:offset+batch];p,valid,ctx=store.forward(net,row,ids,manifest);t=store.target_batch(row,ids);loss,_=objectives(p,t,valid);v=direct_metrics(p,t,valid,ctx['K']);stats=v if stats is None else {k:stats[k]+v[k] for k in v};loss_sum+=float(loss)*len(ids)
+            ids=indices[offset:offset+batch];p,valid,ctx=store.forward(net,row,ids,manifest);t=store.target_batch(row,ids);loss,_=objectives(p,t,valid,balance_activation);v=direct_metrics(p,t,valid,ctx['K']);stats=v if stats is None else {k:stats[k]+v[k] for k in v};loss_sum+=float(loss)*len(ids)
     return dict(loss=loss_sum/max(len(indices),1),metrics=summarize(stats) if stats is not None else None,active_queries=len(indices))
 
 

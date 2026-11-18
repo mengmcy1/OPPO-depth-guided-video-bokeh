@@ -18,7 +18,7 @@ def pack_targets(labels,inputs):
     return targets
 
 
-def objectives(pred,target,candidate_valid):
+def objectives(pred,target,candidate_valid,balance_activation=False):
     zero=pred['depth'].sum()*0;valid=target['valid'];weight=target['ray_weight'][valid]
     if bool(valid.any()):
         depth=((pred['depth'][valid]-target['depth'][valid]).abs()/target['depth'][valid].clamp_min(.1)*weight).sum()/weight.sum().clamp_min(1e-8)
@@ -29,7 +29,12 @@ def objectives(pred,target,candidate_valid):
     if bool(positive.any()):parts.append((qloss[positive]*target['hit_weight'][positive]).sum()/target['hit_weight'][positive].sum().clamp_min(1e-8))
     if bool(negative.any()):parts.append(qloss[negative].mean())
     q=sum(parts)/len(parts) if parts else zero
-    opacity=F.binary_cross_entropy_with_logits(pred['opacity_logits'],valid.to(pred['opacity_logits'].dtype)*.999,pos_weight=pred['opacity_logits'].new_tensor(4.))
+    if balance_activation:
+        individually=F.binary_cross_entropy_with_logits(pred['opacity_logits'],valid.to(pred['opacity_logits'].dtype)*.999,reduction='none')
+        classes=[individually[k].mean() for k in (valid,~valid) if bool(k.any())]
+        opacity=torch.stack(classes).mean()
+    else:
+        opacity=F.binary_cross_entropy_with_logits(pred['opacity_logits'],valid.to(pred['opacity_logits'].dtype)*.999,pos_weight=pred['opacity_logits'].new_tensor(4.))
     total=depth+color+.2*q+.2*selection+.2*opacity
     return total,dict(total=total,relative_depth_L1=depth,linear_RGB_L1=color,q_BCE=q,selection_CE=selection,opacity_BCE=opacity)
 
