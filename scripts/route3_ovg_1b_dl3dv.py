@@ -5,17 +5,57 @@ from functools import lru_cache
 import json
 import os
 import subprocess
-from zipfile import ZipFile
+import time
+from urllib.parse import urlsplit
+from zipfile import BadZipFile, ZipFile
 
 import cv2
 import numpy as np
+import requests
 
 from route3_ovg_1b_common import CONFIG, OUT, ROOT, guard, read, link
 from route3_ovg_r2_priors import infer, resize_inputs, stack_depth, support_map, MODEL
 from route3_ovg_subpixel import save_json, save_npz
+from route3_ovg_tartan import RangeArchive
 
 REPO = CONFIG['dl3dv']['repo']
 TERMS = 'https://github.com/DL3DV-10K/Dataset/blob/main/License.md'
+
+
+class DirectDl3dvZip(RangeArchive):
+    """Resolve an authorized URL with Hub metadata, then read the ZIP directly."""
+
+    def __init__(self, metadata, revision, path):
+        if metadata.size is None or urlsplit(metadata.location).scheme != 'https':
+            raise OSError('DL3DV file metadata lacks a size or HTTPS delivery address')
+        super().__init__(metadata.location, metadata.size)
+        self.session.trust_env = False
+        self.delivery_host = urlsplit(metadata.location).hostname
+        self.revision = revision
+        self.archive_path = path
+
+    def read(self, count=-1):
+        start = self.position
+        end = self.size if count < 0 else min(start + count, self.size)
+        if end <= start:
+            return b''
+        headers = {'Range': f'bytes={start}-{end-1}', 'Accept-Encoding': 'identity'}
+        for attempt in range(3):
+            try:
+                with self.session.get(self.url, headers=headers, timeout=(10, 45), stream=True) as response:
+                    expected = f'bytes {start}-{end-1}/{self.size}'
+                    if response.status_code != 206 or response.headers.get('Content-Range') != expected:
+                        raise OSError(f'DL3DV direct range rejected by {self.delivery_host} (HTTP {response.status_code})')
+                    body = response.content
+                if len(body) == end - start:
+                    self.position = end
+                    self.bytes_received += len(body)
+                    return body
+            except requests.RequestException:
+                if attempt == 2:
+                    raise OSError(f'DL3DV direct connection failed to {self.delivery_host}') from None
+            time.sleep(.5)
+        raise OSError(f'DL3DV direct range was incomplete at {self.delivery_host}')
 
 
 def metadata(meta):
@@ -79,7 +119,8 @@ def stage(source, scene):
     p = dest / 'manifest.json'
     if p.exists():
         return p
-    archive = ZipFile(source) if source.is_file() else None
+    remote = isinstance(source, DirectDl3dvZip)
+    archive = ZipFile(source) if remote or source.is_file() else None
     try:
         if archive is not None:
             names = archive.namelist()
@@ -219,7 +260,7 @@ def sources(root, budget):
             for p in sorted(entries)[:budget]:
                 yield p, p.stem
         return
-    from huggingface_hub import HfApi, hf_hub_download
+    from huggingface_hub import HfApi, get_hf_file_metadata, hf_hub_url
     api = HfApi()
     api.auth_check(REPO, repo_type='dataset')
     revision = api.dataset_info(REPO).sha
@@ -228,9 +269,13 @@ def sources(root, budget):
         if i == budget:
             break
         guard()
-        archive = hf_hub_download(REPO, entry.path, repo_type='dataset', revision=revision,
-                                  local_dir=OUT / 'R/archives')
-        yield Path(archive), Path(entry.path).stem
+        try:
+            url = hf_hub_url(REPO, entry.path, repo_type='dataset', revision=revision)
+            meta = get_hf_file_metadata(url, token=True, timeout=15)
+        except requests.RequestException:
+            raise OSError('DL3DV authorized archive metadata request failed') from None
+        with DirectDl3dvZip(meta, revision, entry.path) as archive:
+            yield archive, Path(entry.path).stem
 
 
 def run(root, budget):
@@ -250,15 +295,23 @@ def run(root, budget):
     net, _ = network(ROOT.parent/'depthsplat-r13-20261117', ROOT.parent/'dinov2-depthsplat-r13',
                      ROOT/'models/DepthSplat'/MODEL)
     net = net.cuda().eval()
-    reports = []
+    receipt = OUT / 'R/acquisition.json'
+    reports = {row['scene']: row for row in read(receipt)['scenes']} if receipt.exists() else {}
     from itertools import chain
     for source, scene in chain([first], pending):
         try:
-            reports.append(validate(net, stage(source, scene)))
-        except (OSError, ValueError, KeyError) as exc:
-            reports.append(dict(scene=scene, passed=False, reason=str(exc)))
-        save_json(OUT / 'R/acquisition.json', dict(repo=REPO, terms=TERMS, scenes=reports))
-        print('R_VISIBILITY', scene, reports[-1]['passed'], flush=True)
+            report = dict(validate(net, stage(source, scene)))
+        except (OSError, ValueError, KeyError, BadZipFile) as exc:
+            report = dict(scene=scene, passed=False, reason=str(exc))
+        if isinstance(source, DirectDl3dvZip):
+            previous = reports.get(scene, {}).get('transport', {})
+            downloaded = previous.get('direct_bytes', 0) if previous.get('revision') == source.revision else 0
+            report['transport'] = dict(
+                revision=source.revision, archive=source.archive_path, host=source.delivery_host,
+                archive_bytes=source.size, direct_bytes=downloaded + source.bytes_received, proxy_body_bytes=0)
+        reports[scene] = report
+        save_json(receipt, dict(repo=REPO, terms=TERMS, scenes=list(reports.values())))
+        print('R_VISIBILITY', scene, report['passed'], flush=True)
 
 
 if __name__ == '__main__':
