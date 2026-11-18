@@ -216,6 +216,8 @@ def scene_consistency(prediction, inputs):
             confidence=sample(inputs['neighbor_conf'][i,j,None],grid)[...,0]
             valid=(in_view & static & (confidence>.15) &
                    ((z-observed).abs()<.05*z)).detach()
+            if 'common_neighbor' in inputs:
+                valid = valid & inputs['common_neighbor'][i,j,::4,::4]
             rgb=sample(inputs['neighbors'][i,j],grid)
             err=((rgb-ref).square()+1e-4).sqrt().mean(-1)-.01
             terms.append(torch.where(valid,err,0.).sum())
@@ -244,7 +246,8 @@ def balanced_boundary_mean(value, valid, boundary, per_stratum, boundary_weight,
     return sum(chunks)/(min(len(edge),common)+min(len(interior),common))
 
 
-def geometry_loss(prediction, inputs, target, weights, *, boundary_sampling=None, generator=None):
+def geometry_loss(prediction, inputs, target, weights, *, boundary_sampling=None,
+                  generator=None, alpha_split_weights=None):
     valid=target['valid']
     mask_alpha=target['valid_alpha']
     mask_dual=target['valid_dual']&mask_alpha
@@ -272,7 +275,13 @@ def geometry_loss(prediction, inputs, target, weights, *, boundary_sampling=None
     alpha_map=F.binary_cross_entropy(alpha,mass,reduction='none')
     combine=masked_mean if boundary_sampling is None else reduce
     bimodal=combine(nll,mask_dual)
-    alpha_loss=combine(alpha_map,mask_alpha)
+    if alpha_split_weights is None:
+        alpha_loss=combine(alpha_map,mask_alpha)
+    else:
+        alpha_edge = boundary | (mass < .9999)
+        interior_weight, edge_weight = alpha_split_weights
+        alpha_loss = (interior_weight * masked_mean(alpha_map, mask_alpha & ~alpha_edge) +
+                      edge_weight * masked_mean(alpha_map, mask_alpha & alpha_edge))
     normal=masked_mean(1-(prediction['normal']*target['normal']).sum(1).clamp(-1,1),target['valid_normal'])
     mv,mv_count=scene_consistency(prediction,inputs)
     terms=dict(disp=disp,bimodal=bimodal,alpha=alpha_loss,normal=normal,mv=mv)

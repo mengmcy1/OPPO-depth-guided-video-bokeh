@@ -1,0 +1,393 @@
+{
+  "utc_timestamp": "2026-11-18T16:48:19.154730+00:00",
+  "protocol_revision": "d2dc35d",
+  "source_1a_revision": "a4dfb0e",
+  "source_1a_checkpoint": "outputs/route3-ovg-1a-r2-2026-11-18-01/checkpoints/step-030000.pt",
+  "stage": "1b",
+  "status": "local prerequisites verified; blocked before the prescribed mixed-tier training by DL3DV dataset authorization",
+  "disk_gib_available": 244.5562286376953,
+  "run_disk_allocated_bytes": 13726937088,
+  "gpu": {
+    "name": "NVIDIA GeForce RTX 4090 D",
+    "reserved_memory_MiB": 49140,
+    "device_id": 0
+  },
+  "P1": {
+    "prefix": {
+      "passed": true,
+      "dimensions": [
+        21,
+        31
+      ],
+      "gaussians": 6,
+      "cutoff": "strict axial depth; hard membership, gradient through projection",
+      "peak_gpu_MiB": 0.20703125,
+      "max_abs_forward_vs_brute": 1.1920928955078125e-07,
+      "max_abs_forward_vs_historical": 0.0,
+      "max_abs_backward_vs_brute": {
+        "means": 1.4901161193847656e-08,
+        "quats": 3.259629011154175e-09,
+        "scales": 1.4901161193847656e-08,
+        "opacity": 2.3283064365386963e-10
+      },
+      "tolerances": {
+        "forward_atol": 1e-05,
+        "gradient_atol": 0.0002,
+        "gradient_rtol": 0.002
+      },
+      "foreground_control_pixels": 74,
+      "disocclusion_control_pixels": 453
+    },
+    "C_Cycles": {
+      "passed": true,
+      "matched_B_optics": {
+        "planes": [
+          {
+            "rectangle": [
+              1.4,
+              -0.33,
+              0.028,
+              -0.52,
+              0.29
+            ],
+            "color": [
+              0.15,
+              0.33,
+              0.67
+            ]
+          },
+          {
+            "rectangle": [
+              2.7,
+              -0.05,
+              0.52,
+              -0.62,
+              0.38
+            ],
+            "color": [
+              0.74,
+              0.18,
+              0.09
+            ]
+          },
+          {
+            "rectangle": [
+              5.0,
+              -10.0,
+              10.0,
+              -10.0,
+              10.0
+            ],
+            "color": [
+              0.55,
+              0.79,
+              0.22
+            ]
+          }
+        ],
+        "K": [
+          [
+            177.77777777777777,
+            0,
+            64.0
+          ],
+          [
+            0,
+            177.77777777777777,
+            64.0
+          ],
+          [
+            0,
+            0,
+            1
+          ]
+        ],
+        "size": 128,
+        "focus_m": [
+          1.4,
+          5.0
+        ],
+        "fstop": 1.4,
+        "blender": "4.5.3 LTS",
+        "cycles_samples": 1024,
+        "seconds": 2.756187316030264,
+        "filter": "BOX 1.0",
+        "exr": "scene-linear float32",
+        "seed": 410782,
+        "denoising": false,
+        "motion_blur": false
+      },
+      "rows": [
+        {
+          "focus_m": 1.4,
+          "psnr_db": 47.46259089169907,
+          "mae": 0.000533903901365799,
+          "max_abs": 0.0444696843624115
+        },
+        {
+          "focus_m": 5.0,
+          "psnr_db": 61.19844860387471,
+          "mae": 0.00017448310457742386,
+          "max_abs": 0.017271816730499268
+        }
+      ],
+      "scope": "matched flat emissive planes; no indirect illumination or aperture transmission variation"
+    },
+    "batched_forward_backward": {
+      "passed": true,
+      "rows": [
+        {
+          "tier": "B",
+          "sample": [
+            "B",
+            "metric-scene-122101-broad",
+            0
+          ],
+          "total": 4.465606212615967,
+          "support": {
+            "front": 262144,
+            "dual": 3065,
+            "alpha": 262140,
+            "normal": 260663,
+            "mv": 11492,
+            "occ_reveal": 1103,
+            "occ_block": 97271,
+            "zero_pixels": 65536,
+            "bokeh_pixels": 65536
+          },
+          "losses": {
+            "disp": 1.3034957647323608,
+            "bimodal": 9.363954544067383,
+            "alpha": 1.4142810106277466,
+            "normal": 0.0591936931014061,
+            "mv": 0.00958163756877184,
+            "occ": 0.9543843269348145,
+            "zero": 0.009100312367081642,
+            "bokeh": 0.0016751037910580635
+          },
+          "hidden_placement": {
+            "rule": "O1",
+            "total": 54788,
+            "valid_center_pixels": 54788,
+            "outside_or_no_reference": 0,
+            "violating": 5428,
+            "moved": 5428,
+            "dropped": 4976,
+            "scale_rotation_opacity_color_unchanged": true,
+            "center_motion": "along camera ray;scales remain fixed",
+            "background_filter_radius_px": null,
+            "shrunk": 5288,
+            "eligible": 101028,
+            "placed": 54788
+          },
+          "grad_norm": 37.146148681640625,
+          "optimizer_updates": 0,
+          "seconds": 3.1228700801730156,
+          "peak_MiB": 1102.744140625,
+          "coarse_label": "all four native rays agree and no mixed center pixel"
+        },
+        {
+          "tier": "C",
+          "sample": [
+            "C",
+            "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-ovg-1b-2026-11-18-01/C/windows/card-r2-631943/manifest.json",
+            4
+          ],
+          "total": 2.060894012451172,
+          "losses": {
+            "disp": 0.3111131489276886,
+            "bimodal": 3.559826135635376,
+            "alpha": 1.4324408769607544,
+            "normal": 0.004827729891985655,
+            "mv": 0.010638453997671604,
+            "occ": 1.1893974542617798,
+            "zero": 0.023383881896734238,
+            "bokeh": 0.0004799397138413042
+          },
+          "support": {
+            "front": 65536,
+            "dual": 450,
+            "alpha": 65535,
+            "normal": 65536,
+            "mv": 123,
+            "occ_reveal": 755,
+            "occ_block": 51059,
+            "zero_pixels": 65536,
+            "bokeh_pixels": 65536
+          },
+          "hidden_placement": {
+            "rule": "O1",
+            "total": 24950,
+            "valid_center_pixels": 24950,
+            "outside_or_no_reference": 0,
+            "violating": 85,
+            "moved": 85,
+            "dropped": 0,
+            "scale_rotation_opacity_color_unchanged": true,
+            "center_motion": "along camera ray;scales remain fixed",
+            "background_filter_radius_px": null,
+            "shrunk": 0,
+            "eligible": 998,
+            "placed": 998
+          },
+          "optimizer_updates": 0,
+          "grad_norm": 19.293495178222656,
+          "seconds": 0.40834153816103935,
+          "peak_MiB": 424.373046875
+        }
+      ]
+    },
+    "F2": {
+      "passed": true,
+      "scene": "metric-scene-122101-broad",
+      "frame": 1,
+      "K": 4,
+      "pixel_grid": [
+        512,
+        512
+      ],
+      "method": "per-ray RGB against established F2 ray_samples",
+      "maximum_difference": 0.0
+    },
+    "R": {
+      "access": {
+        "repo": "DL3DV/DL3DV-ALL-480P",
+        "status": 401,
+        "authorized": false,
+        "fetched_archives": 0,
+        "ready_clips": 0,
+        "ready_frames": 0,
+        "terms": "https://github.com/DL3DV-10K/Dataset/blob/main/License.md",
+        "exception": "GatedRepoError",
+        "server_huggingface_auth": false,
+        "time_UTC": "2026-11-18T16:38:52.222745+00:00"
+      },
+      "interface_test": {
+        "scope": "synthetic 4m plane and a depth-inconsistent subregion; not a DL3DV shard",
+        "origin_convention_correct": true,
+        "rigid_plane_support_fraction": 0.9844207763671875,
+        "mismatched_core_support_fraction": 0.0,
+        "passed": true
+      },
+      "first_shard_data_test": "pending authorized 480P images+poses"
+    }
+  },
+  "data": {
+    "B": {
+      "train_frames": 91,
+      "train_scenes": 7,
+      "dev_frames": 39,
+      "dev_scenes": [
+        "metric-scene-122104-broad",
+        "metric-scene-122105-multilayer",
+        "metric-scene-122107-broad"
+      ],
+      "uses_existing_subpixel_and_cycles_labels": true
+    },
+    "C": {
+      "train_frames": 1605,
+      "clips": 200,
+      "optical_clips": 199,
+      "optical_cases": 398,
+      "prior": "float16 DepthSplat",
+      "reused_legacy_geometry_only_clips": 1,
+      "pupil_samples": 256,
+      "spatial_supersampling": 2
+    },
+    "G": {
+      "train_frames": 10032,
+      "windows": 1254,
+      "environment_frames": {
+        "AbandonedCable": 912,
+        "AbandonedFactory": 912,
+        "AbandonedFactory2": 912,
+        "AmericanDiner": 912,
+        "AmusementPark": 912,
+        "EndofTheWorld": 912,
+        "Gascola": 912,
+        "Hospital": 912,
+        "House": 912,
+        "Office": 912,
+        "SeasideTown": 912
+      },
+      "source_revision": "0d2d145e973832742a2aaa04b7d2ebffc8d82817",
+      "prior": "float16 DepthSplat",
+      "bounded_archive_ranges_bytes": 6671864009,
+      "excluded_upstream_404": "Carwelding/Data_easy at pinned revision; retained SeasideTown"
+    },
+    "R": {
+      "train_frames": 0,
+      "clips": 0,
+      "terms": "https://github.com/DL3DV-10K/Dataset/blob/main/License.md",
+      "interface_implemented": true
+    }
+  },
+  "P2": {
+    "step": 0,
+    "goal_steps": 30000,
+    "desired_batch_probability": {
+      "C": 0.4,
+      "B": 0.35,
+      "G": 0.15,
+      "R": 0.1
+    },
+    "actual_batch_probability": null,
+    "L_occ_active_fraction": null,
+    "L_bokeh_active_fraction": null,
+    "EMA_decay": 0.999,
+    "alpha_interior_boundary": [
+      1,
+      2
+    ],
+    "no_GT_warmup": true,
+    "implementation": {
+      "output": "outputs/route3-ovg-1b-2026-11-18-01",
+      "runner": "scripts/route3_ovg_1b_train.py",
+      "optimizer": "AdamW initialized at phase change; weights from fixed 1a 30k",
+      "depth_prefix": "four randomly selected true K16 offsets; supervised in both directions; when reducing B to 256 all four native rays must share class and be non-mixed",
+      "optical_training": "two independent equal-area stratified subsets of 8 lens rays, product of linear RGB residual means; B/C optical cases only",
+      "GT_render_substitute": "footprint-order rule in renderer, fitted local inverse-depth from labeled visible background; no feed to OVG, prior priors, or observation memory",
+      "surfel": "one per pixel, from camera ray and OVG front depth/normal; observed linear RGB, raster opacity in [0.90, 0.999] independent of alpha supervision",
+      "validation_steps": [
+        5000,
+        10000,
+        15000,
+        20000,
+        25000,
+        30000
+      ]
+    },
+    "reason": "the user-specified 10% R tier currently has no authorized clips"
+  },
+  "P3": {
+    "baseline_checkpoints": {
+      "OVG_1a": "outputs/route3-ovg-1a-r2-2026-11-18-01/checkpoints/step-030000.pt",
+      "Query": "outputs/route3-ovg-1a-r2-2026-11-18-01/V1/retrained/step-020000.pt"
+    },
+    "prior_reference": "03_实验记录/records/route3-ovg-1b-2026-11-18-P3-1a-prior-reference.csv",
+    "optical_reference": "03_实验记录/records/route3-ovg-1b-2026-11-18-P3-fixed-reference.csv",
+    "optical_reference_cases_by_protocol": {
+      "P2": 36,
+      "P1": 36
+    },
+    "rows": 3024,
+    "optical_reference_artifact": "outputs/route3-ovg-1b-2026-11-18-01/P3/reference/results.json",
+    "optics": "K64; P2/P1 share a scalar focus anchored to the existing original-estimate path, the same selected hidden IDs and F2 for all arms; placements rebuilt per visible depth",
+    "reference_models": [
+      "fixed-original",
+      "fixed-DepthSplat",
+      "OVG-1a"
+    ],
+    "hidden_branches": [
+      "GT",
+      "Query"
+    ],
+    "terminal_evaluation": "pending 1b raw/EMA checkpoint; no near, far or Query-retention conclusions"
+  },
+  "recover": {
+    "R_input": "Use an approved Hugging Face DL3DV account on this server or supply authorized local 480P+poses.",
+    "R_stage": "scripts/route3_ovg_1b_dl3dv.py --budget 6 (HF_HUB_OFFLINE=0 for official fetch) or --source <authorized directory>",
+    "P2": "scripts/route3_ovg_1b_train.py train",
+    "P3": "scripts/route3_ovg_1b_evaluate.py"
+  }
+}

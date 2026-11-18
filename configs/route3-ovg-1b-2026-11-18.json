@@ -1,0 +1,22 @@
+{
+  "revision": "d2dc35d",
+  "output": "outputs/route3-ovg-1b-2026-11-18-01",
+  "geometry_source": "outputs/route3-ovg-1a-r2-2026-11-18-01",
+  "steps": 30000,
+  "eval_steps": [5000, 10000, 15000, 20000, 25000, 30000],
+  "batch_probability": {"C": 0.40, "B": 0.35, "G": 0.15, "R": 0.10},
+  "ema_decay": 0.999,
+  "seed": 20261118,
+  "learning_rate": 0.0001,
+  "boundary_sampling": [8192, 2.0],
+  "alpha_interior_boundary_weights": [1.0, 2.0],
+  "loss_weights": {"disp": 1.0, "bimodal": 0.25, "alpha": 0.5, "normal": 0.15, "mv": 0.05, "occ": 0.1, "zero": 1.0, "bokeh": 0.05},
+  "prefix_check": {"forward_atol": 0.00001, "gradient_atol": 0.0002, "gradient_rtol": 0.002},
+  "card_check": {"psnr_min_db": 29.0, "near_far_test_focal_m": [1.4, 5.0], "spp": 1024},
+  "card_reference": {"pixel_grid": 2, "lens_samples": 256, "fstop": 1.4, "frames": "middle"},
+  "optical_train": {"max_image_side": 256, "rays_per_subset": 8, "occ_ray_count": 4},
+  "native_eval_rays": 64,
+  "dl3dv": {"repo": "DL3DV/DL3DV-ALL-480P", "frames_per_window": 8, "first_scene_budget": 6, "expand_scene_budget": 60, "min_common_fraction": 0.12},
+  "card_total_target": 200,
+  "tartanair_total_frame_target": 10000
+}

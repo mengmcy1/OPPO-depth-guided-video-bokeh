@@ -68,7 +68,7 @@ def prepare(folder, dominant_p2=False):
 
 def local_placement(gt_depth,estimated,background,radius=24,return_valid=False):
     """GT-label-only disparity mapping; fit visible background, never hidden GT."""
-    valid=background&(gt_depth>0)&np.isfinite(estimated)&(estimated>0);yy,xx=np.mgrid[:512,:512];held=((xx//8+yy//8)%5==0)&valid;train=valid&~held;g=1/np.maximum(gt_depth,1e-6);e=1/np.maximum(estimated,1e-6);size=2*radius+1
+    valid=background&(gt_depth>0)&np.isfinite(estimated)&(estimated>0);height,width=gt_depth.shape;yy,xx=np.mgrid[:height,:width];held=((xx//8+yy//8)%5==0)&valid;train=valid&~held;g=1/np.maximum(gt_depth,1e-6);e=1/np.maximum(estimated,1e-6);size=2*radius+1
     box=lambda v:uniform_filter(v.astype(np.float64),size=size,mode='constant')*size*size
     n=box(train);sx=box(g*train);sy=box(e*train);sxx=box(g*g*train);sxy=box(g*e*train);var=sxx-sx*sx/np.maximum(n,1);cov=sxy-sx*sy/np.maximum(n,1)
     a=np.where(var>1e-5,cov/np.maximum(var,1e-12),1.);a=np.clip(a,.1,3.);b=(sy-a*sx)/np.maximum(n,1);supported=n>=32
