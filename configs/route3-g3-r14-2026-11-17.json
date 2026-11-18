@@ -1,0 +1,330 @@
+{
+  "stage": "appendix13_T2_T3",
+  "date": "2026-11-17",
+  "timezone": "America/Los_Angeles",
+  "output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-g3-r14-2026-11-17-01/truth",
+  "scenes": [
+    "metric-scene-122101-broad",
+    "metric-scene-122102-multilayer",
+    "metric-scene-122103-thin",
+    "metric-scene-122104-broad",
+    "metric-scene-122105-multilayer",
+    "metric-scene-122106-thin",
+    "metric-scene-122107-broad",
+    "metric-scene-122108-multilayer",
+    "metric-scene-122109-thin",
+    "metric-scene-122110-broad",
+    "metric-scene-122111-multilayer",
+    "metric-scene-122112-thin",
+    "metric-scene-122113-broad",
+    "metric-scene-122114-multilayer",
+    "metric-scene-122115-thin",
+    "metric-scene-122116-broad"
+  ],
+  "input_frames": [
+    1,
+    6,
+    11,
+    16,
+    21,
+    26,
+    30,
+    35,
+    40,
+    45,
+    50,
+    55,
+    60
+  ],
+  "representative_frames": [
+    1,
+    30,
+    60
+  ],
+  "representative_reason": "trajectory start/middle/end, predetermined independently of method scores",
+  "continuous_frames": [
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34
+  ],
+  "focus_rack_frames": [
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34
+  ],
+  "focus_distances_m": [
+    1.4,
+    5.0
+  ],
+  "fstops": [
+    1.4,
+    2.0
+  ],
+  "resolution": [
+    512,
+    512
+  ],
+  "K_render": 64,
+  "K_labels": 16,
+  "cycles": {
+    "version": "4.5.3 LTS",
+    "binary": "/root/autodl-tmp/tools/blender-4.5.3-linux-x64/blender",
+    "device": "GPU OptiX0",
+    "filter_type": "BOX",
+    "filter_width": 1.0,
+    "pinhole_spp": 256,
+    "reference_spp_candidates": [
+      1024,
+      2048,
+      4096,
+      8192
+    ],
+    "initial_dof_spp": 2048,
+    "denoising": false,
+    "motion_blur": false,
+    "adaptive": false
+  },
+  "calibration": {
+    "method": "S1c RAFT-large;given GT poses E1;inverse depth affine",
+    "GT_depth_used": false,
+    "heldout_rejection": "S1c affine candidate;reject if inverseRMSE or sparseDepthAbsRel worsens vsidentity onheldout;explicitlyretainnativeandflaguncalibrated,nofallbackfittingorGTcorrection"
+  },
+  "rules": [
+    "R1",
+    "R2"
+  ],
+  "network_implementation": true,
+  "network_training": true,
+  "b2high_train": false,
+  "split": {
+    "train": [
+      "metric-scene-122101-broad",
+      "metric-scene-122102-multilayer",
+      "metric-scene-122106-thin",
+      "metric-scene-122108-multilayer",
+      "metric-scene-122109-thin",
+      "metric-scene-122110-broad",
+      "metric-scene-122111-multilayer",
+      "metric-scene-122112-thin",
+      "metric-scene-122113-broad",
+      "metric-scene-122114-multilayer",
+      "metric-scene-122115-thin",
+      "metric-scene-122116-broad"
+    ],
+    "heldout": [
+      "metric-scene-122103-thin",
+      "metric-scene-122104-broad",
+      "metric-scene-122105-multilayer",
+      "metric-scene-122107-broad"
+    ],
+    "excluded": [
+      "B2-high",
+      "pilot-thin",
+      "pilot-multilayer",
+      "old16Generatedscenes",
+      "G2two generator development pilots"
+    ]
+  },
+  "labels": {
+    "content": "source own GT world point to K16 first-hit surface;object+surfacefootprint,not estimated-depth threshold",
+    "placement": "local GT disparity to estimated disparity affine,background-visible window",
+    "features_slot": 0,
+    "placement_validity": "placement-support-v2 local fit and finite positive inverse depth;O1 z>=1.03 times explicit dominant visible depth"
+  },
+  "report_node": "stop after S2a and evaluation or specified stop condition",
+  "record_prefix": "route3-g3-r14-2026-11-17",
+  "scheme_update": "688bc47:4extra trainingfocuses/frame,mesh ray labels;nativeK16 retainedasvalidationonly",
+  "training": {
+    "resolution": 256,
+    "frames": [
+      1,
+      16,
+      30,
+      45,
+      60
+    ],
+    "M": 8,
+    "feature_dim": 19,
+    "hidden_layers_per_query": 2,
+    "pose_perturbation": true,
+    "render_loss": false
+  },
+  "disk_min_free_GiB": 60,
+  "recovery_ratio": {
+    "per_scene_min_Oracle_gain_dB": 0.5,
+    "per_scene": "(PSNR_learned-PSNR_D0)/(PSNR_Oracle-PSNR_D0),only qualifying heldout scenes",
+    "pooled": "pool SSE first;report both increments"
+  },
+  "light_fusion": {
+    "candidate_features": 19,
+    "M": 8,
+    "hidden_Gaussians_per_query": 2,
+    "encoder_width": 128,
+    "decoder": "pointwise MLP with normalized candidate weights;no attention",
+    "source_axial_depth_delta_bound_fraction": 0.5,
+    "linear_RGB_residual_bound": 0.05,
+    "opacity_separate_from_confidence": true,
+    "q_multiplies_alpha": false,
+    "visible_layer": "frozen full-image E1 dominant-depth pixel layer",
+    "source_RGB_resampling": "project corrected fused position back to original input views;linearRGB bilinear",
+    "query_cap": {
+      "train256": 32768,
+      "eval512": 262144,
+      "forward_chunk": 2048
+    },
+    "feature_normalization": "fixed physical constants;no heldout fitted statistics",
+    "loss": "direct matched-ray depth/RGB L1;candidate correctness BCE;opacity/selection supervision;no K64 render loss",
+    "candidate_order": "estimated target depth ascending;no GT in selection",
+    "overfit": "one training scene/frame,final step;loss and hidden-surface correctness checked before S2a",
+    "S2a_steps": 20000,
+    "GT_warmup_steps": 200,
+    "overfit_max_steps": 8000,
+    "batch_queries": 1024,
+    "optimizer": "Adam",
+    "learning_rate": 0.0002,
+    "final_learning_rate": 2e-05,
+    "seeds": {
+      "overfit": 2026111701,
+      "S2a": 2026111702
+    },
+    "eval_every_steps": 2000,
+    "checkpoint_selection": "final fixed step;heldout monitors do not select checkpoint",
+    "all_training_inputs": "256/5 candidate fusion;frozen geometry frontend cached from13frames",
+    "S2a_evaluation_inputs": "512/13 without retraining",
+    "development_success_reference": "scheme2.5:qualified-cell recovery~75-80% or farfocus full-image>=+0.3dBvsR1R2;focusguard reported separately",
+    "query_cap_reason": "pointwise MLP streams all512 band pixels for fair dense comparison;no attention;twoGSperposition;256training remains capped",
+    "overfit_engineering_check": {
+      "scope": "first training scene frame30,N1.4,F5;full active queries",
+      "loss_final_max_initial_fraction": 0.5,
+      "selection_correct_min": 0.9,
+      "matched_ray_relative_depth_L1_max": 0.05,
+      "matched_ray_linear_RGB_L1_max": 0.05,
+      "false_activation": "report,not an extra stopping gate",
+      "meaning": "development fit check,not a new paper success criterion"
+    },
+    "loss_weights": {
+      "relative_depth_L1": 1,
+      "linear_RGB_L1": 1,
+      "q_BCE": 0.2,
+      "selection_CE": 0.2,
+      "opacity_BCE": 0.2
+    },
+    "opacity_BCE_positive_weight": 4,
+    "two_surface_label_packing": "nearest2GT-positive depth clusters,max10mmor2%;onlyoutput-slot packing,not candidate content correctness;anchor byaperturehitfraction andGT-queryplacementproximity",
+    "public_query_conditions": [
+      "query_u_divW",
+      "query_v_divH",
+      "2_over_focus_m",
+      "50_times_aperture_radius_m",
+      "visible_depth_m_div5",
+      "target_frame_div60"
+    ],
+    "checkpoint_every_steps": {
+      "overfit": 1000,
+      "S2a": 2000
+    },
+    "overfit_monitor_steps": 1000,
+    "eval_rendering": {
+      "K": 64,
+      "hidden_sigma_pixels": 0.7,
+      "post_visibility": "fixed O1 z>=1.03*dominant explicit visible depth;no additional R1 rejection",
+      "opacity_prune": 0.0001,
+      "source_provenance": "raw refs+model source weights;layercodes in GaussianScene are not temporal source IDs"
+    },
+    "placement_rule": "O1,center depth>=1.03*explicit dominant depth;fixed afterT1",
+    "fallback": "F2,A RGB at same aperture ray,not averaged A image"
+  },
+  "network_status": "light fusion 256/5 direct supervision;overfit both valid scenes;formal S2a eligible after checks only",
+  "seeds": [
+    122101,
+    122102,
+    122103,
+    122104,
+    122105,
+    122106,
+    122107,
+    122108,
+    122109,
+    122110,
+    122111,
+    122112,
+    122113,
+    122114,
+    122115,
+    122116
+  ],
+  "G2_truth_checks": {
+    "period_low_quantile": 0.01,
+    "minimum_projected_period_pixels": 8,
+    "grazing_degrees": 75,
+    "alias_excess_RMSE_limit": 0.01,
+    "alias_min_object_interior_pixels": 25,
+    "independent_DOF_noise_PSNR_min": 45,
+    "independent_DOF_noise_patch_LPIPS_max": 0.002,
+    "method_results_not_used_for_scene_selection": true
+  },
+  "selection": "fixed scene seeds and truth checks;pause only failing category, drop thin as a class if any revised thin fails;no score-based scene filtering",
+  "batch_truth_stop": "category-local: more scenes from failing broad/multilayer categories are paused;all five explicit thin probes are retained and reported",
+  "pose_perturbations": {
+    "groups": 3,
+    "seed": 2026111703,
+    "translation_sigma_m": 0.003,
+    "rotation_sigma_degrees": 0.3,
+    "sequence_scale_drift_std": 0.01,
+    "applied_before_calibration": true,
+    "GT_depth_used": false
+  },
+  "disk_budget": {
+    "conservative_master_GiB": 80,
+    "estimated_geometry_labels_and_augmentation_GiB": 90,
+    "training_and_evaluation_reserve_GiB": 25,
+    "minimum_free_GiB": 60,
+    "initial_df_available": "329G (rounded df -h at r14 start)"
+  },
+  "started_UTC": "2026-11-18T03:52:46.318367+00:00",
+  "execution_status": "r14",
+  "run_output": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/outputs/route3-g3-r14-2026-11-17-01",
+  "sampling": {
+    "levels": [
+      2048,
+      4096,
+      8192
+    ],
+    "lower_level_factor": 0.5,
+    "independent_seeds": [
+      20261112,
+      2026111202
+    ],
+    "patch_lpips_max": 0.002,
+    "PSNR_min": 45,
+    "representative_sampling_checks": "frame30,both focus distances,N1.4;inherited G2 check configurations",
+    "scene_level_spp": true
+  },
+  "T4": {
+    "E1": true,
+    "range": "whole frame on static supported pixels",
+    "focus": "version-specific P2",
+    "order": "O1",
+    "fallback": "F2",
+    "DepthSplat_bounds_m": [
+      0.5,
+      200.0
+    ],
+    "candidates": [
+      "flow",
+      "depthsplat-official"
+    ],
+    "original_is_comparator": true
+  },
+  "protocol_revision": "1b5787c"
+}

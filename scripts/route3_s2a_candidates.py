@@ -24,13 +24,25 @@ def load_views(folder):
     return views
 
 
-def prepare(folder):
+def prepare(folder, dominant_p2=False):
     root=folder/'candidates';root.mkdir(exist_ok=True);views=load_views(folder);entries=[];fillitems=[]
     for frame in [1,30,60]:
         target=next(v for v in views if v['frame']==frame);z=target['depth'];g=np.load(folder/'geometry'/f'f{frame:03d}-center.npz');gt=g['depth_axial_m'];union=np.zeros((512,512),bool);cases=[];max_radius=0.
         for nominal in [1.4,5.]:
             for stop in [1.4,2.]:
-                r=.05/(2*stop);focusmask=(gt>0)&(K[0,0]*r*abs(1/np.maximum(gt,1e-6)-1/nominal)<=1);focus=float(np.median(z[focusmask]));band,edge,radius=depth_band(z,K[0,0],focus,r);union|=band;max_radius=max(max_radius,float(radius.max()));cases.append(dict(id=f'f{frame:03d}-N{stop:g}-F{nominal:g}',frame=frame,focus_m=focus,nominal_focus_m=nominal,fstop=stop,band_pixels=int(band.sum())))
+                r=.05/(2*stop)
+                if dominant_p2:
+                    from route3_depth_interface import subject_mask
+                    mask=subject_mask(g,nominal)
+                    with np.load(folder/'models/calibration/SHARP'/f'f{frame:03d}.npz') as data:
+                        focusmask=mask&data['dominant_valid']
+                    if not focusmask.any():
+                        raise ValueError(f'{folder.name} frame {frame}: empty P2 subject support for {nominal} m')
+                    focus_fields=dict(subject_pixels=int(mask.sum()),dominant_subject_pixels=int(focusmask.sum()))
+                else:
+                    focusmask=(gt>0)&(K[0,0]*r*abs(1/np.maximum(gt,1e-6)-1/nominal)<=1)
+                    focus_fields={}
+                focus=float(np.median(z[focusmask]));band,edge,radius=depth_band(z,K[0,0],focus,r);union|=band;max_radius=max(max_radius,float(radius.max()));cases.append(dict(id=f'f{frame:03d}-N{stop:g}-F{nominal:g}',frame=frame,focus_m=focus,nominal_focus_m=nominal,fstop=stop,band_pixels=int(band.sum()),**focus_fields))
         dest=root/f'f{frame:03d}';dest.mkdir(exist_ok=True)
         if not (dest/'pool.npz').exists():
             pool=collect(z,K,target['c2w'],union,views,frame);n=len(pool['depth']);xyz=np.empty((n,3),np.float32);patch=np.empty((n,3,3,3),np.uint8);extra={k:np.empty(n,np.float32) for k in ['edge_distance','reprojection','FB','angle_radians']}
@@ -66,7 +78,7 @@ def local_placement(gt_depth,estimated,background,radius=24,return_valid=False):
     error=(a*g+b-e)[held];result=(a.astype(np.float32),b.astype(np.float32),dict(local_fit_supported_fraction=float(supported.mean()),heldout_pixels=int(held.sum()),heldout_inverse_depth_RMSE=float(np.sqrt(np.mean(error**2))) if len(error) else None,heldout_relative_inverse_error=float(np.mean(abs(error)/np.maximum(e[held],1e-6))) if len(error) else None,window_radius_px=radius,estimated_geometry_consistency_validation_not_true_hidden_depth_error=True));return (*result,supported) if return_valid else result
 
 
-def labels(folder,training=False):
+def labels(folder,training=False,ordered=False):
     label_root=folder/('labels-training-focus' if training else 'labels')
     if (label_root/'summary.json').exists():return
     started=time.monotonic()
@@ -82,10 +94,16 @@ def labels(folder,training=False):
         f=entry['frame'];d=np.load(entry['input_npz']);pool={k:v for k,v in np.load(entry['pool']).items()};n=len(pool['depth']);src=np.empty((n,3),np.float32);srcobj=np.empty(n,np.int16);radius=np.empty(n,np.float32)
         for slot,v in enumerate(views):
             at=pool['slot']==slot;xy=pool['source_xy'][at];raw=native[v['frame']];src[at]=raw['world'][xy[:,1],xy[:,0]];srcobj[at]=raw['object'][xy[:,1],xy[:,0]];radius[at]=raw['footprint'][xy[:,1],xy[:,0]]
-        current=np.load(folder/'geometry'/f'f{f:03d}-center.npz');a,b,audit=local_placement(current['depth_axial_m'],d['depth'],~np.isin(current['object_id'],fg)&current['center_visible']);labeldir=label_root/f'f{f:03d}';labeldir.mkdir(parents=True,exist_ok=True)
+        current=np.load(folder/'geometry'/f'f{f:03d}-center.npz');fit=local_placement(current['depth_axial_m'],d['depth'],~np.isin(current['object_id'],fg)&current['center_visible'],return_valid=ordered);a,b,audit=fit[:3];labeldir=label_root/f'f{f:03d}';labeldir.mkdir(parents=True,exist_ok=True)
         pose=current['camera_c2w'];true_camera=(src-pose[:3,3])@pose[:3,:3];true_z=true_camera[:,2];central=true_camera@K.T;central=central[:,:2]/np.maximum(central[:,2:],1e-8);cx=np.floor(central[:,0]).astype(int);cy=np.floor(central[:,1]).astype(int);in_center=(true_z>0)&(cx>=0)&(cx<512)&(cy>=0)&(cy<512);cx=np.clip(cx,0,511);cy=np.clip(cy,0,511);central_world=native[f]['world'][cy,cx]
         center_hidden=in_center&(srcobj>0)&(current['depth_axial_m'][cy,cx]>0)&(true_z>current['depth_axial_m'][cy,cx]+1e-4)&(np.linalg.norm(src-central_world,axis=-1)>1.5*radius+1e-4)
-        placement_depth=1/np.maximum(a[cy,cx]/np.maximum(true_z,1e-6)+b[cy,cx],1e-4);placement_camera=true_camera*(placement_depth/np.maximum(true_z,1e-6))[:,None]
+        inverse=a[cy,cx]/np.maximum(true_z,1e-6)+b[cy,cx]
+        placement_depth=1/np.maximum(inverse,1e-4)
+        placement_fields={}
+        if ordered:
+            placement_depth=np.maximum(placement_depth,1.03*d['depth'][cy,cx])
+            placement_fields['placement_support_v2']=fit[3][cy,cx]&in_center&(inverse>1e-4)&np.isfinite(inverse)
+        placement_camera=true_camera*(placement_depth/np.maximum(true_z,1e-6))[:,None]
         for case in entry['cases']:
             if (labeldir/(case['id']+'.npz')).exists():continue
             geo=np.load(folder/'geometry'/(case['id']+'-K16.npz'));hidden=geo['hidden'];bits=np.zeros(n,np.uint16);match_count=np.zeros(n,np.uint8);surface_matches=0;positions=[]
@@ -105,8 +123,17 @@ def labels(folder,training=False):
                 for slot,v in enumerate(views):
                     at=np.flatnonzero(good&(pool['slot']==slot));c=(h[at]-v['c2w'][:3,3])@v['c2w'][:3,:3];q=c@K.T;q=q[:,:2]/np.maximum(q[:,2:],1e-8);good[at]&=(np.abs(q-(pool['source_xy'][at]+.5))<=.75).all(-1)
                 bits|=good.astype(np.uint16)*(1<<k);match_count+=good.astype(np.uint8);surface_matches+=int(good.sum())
-                hitz=geo['depth_axial_m'][k];mapped=1/np.maximum(a/np.maximum(hitz,1e-6)+b,1e-4);positions.append(np.where(hidden[k],mapped,0).astype(np.float32))
-            np.savez_compressed(labeldir/(case['id']+'.npz'),content_hit_bits=bits,content_hit_fraction=match_count.astype(np.float32)/16,placement_depth=np.stack(positions),candidate_placement_depth=placement_depth.astype(np.float32),candidate_placement_camera=placement_camera.astype(np.float32),candidate_GT_center_projection=central.astype(np.float32),placement_affine_a=a,placement_affine_b=b,hidden_ray_mask=hidden,recoverable_ray_mask=geo['recoverable'],GT_source_world=src,GT_source_object_id=srcobj)
+                hitz=geo['depth_axial_m'][k];mapped=1/np.maximum(a/np.maximum(hitz,1e-6)+b,1e-4)
+                if ordered:
+                    # Place along the parent’s center ray, never the off-axis pixel.
+                    parent=geo['reference_uv_center'][k]
+                    px=np.clip(np.floor(parent[...,0]).astype(int),0,511)
+                    py=np.clip(np.floor(parent[...,1]).astype(int),0,511)
+                    inv_at_parent=a[py,px]/np.maximum(hitz,1e-6)+b[py,px]
+                    mapped=np.maximum(1/np.maximum(inv_at_parent,1e-4),1.03*d['depth'][py,px])
+                    mapped=np.where(fit[3][py,px]&(inv_at_parent>1e-4)&np.isfinite(inv_at_parent),mapped,0)
+                positions.append(np.where(hidden[k],mapped,0).astype(np.float32))
+            np.savez_compressed(labeldir/(case['id']+'.npz'),content_hit_bits=bits,content_hit_fraction=match_count.astype(np.float32)/16,placement_depth=np.stack(positions),candidate_placement_depth=placement_depth.astype(np.float32),candidate_placement_camera=placement_camera.astype(np.float32),candidate_GT_center_projection=central.astype(np.float32),placement_affine_a=a,placement_affine_b=b,hidden_ray_mask=hidden,recoverable_ray_mask=geo['recoverable'],GT_source_world=src,GT_source_object_id=srcobj,**placement_fields)
             correct=match_count>0;candidate_error=np.linalg.norm(pool['position_world_estimated']-((placement_camera@pose[:3,:3].T)+pose[:3,3]),axis=-1)
             rows.append(dict(frame=f,id=case['id'],candidates=n,correct_any_ray_candidates=int(correct.sum()),content_correct_rate=float(correct.mean()) if n else None,weighted_hit_fraction_mean=float(match_count.mean()/16) if n else None,matched_candidate_rays=surface_matches,placement_alignment=audit,current_candidate_to_aligned_GT_target_distance_p50_p90_m=np.quantile(candidate_error[correct],[.5,.9]).tolist() if correct.any() else None,no_estimated_depth_tolerance_used_in_content_label=True,content_independent_of_estimated_placement=True));print('S2A_LABELS',folder.name,case['id'],rows[-1]['content_correct_rate'],flush=True)
     # World-coordinate-based memory diagnostics, never fed back into memory.

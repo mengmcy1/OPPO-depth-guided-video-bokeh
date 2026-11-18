@@ -1,0 +1,51 @@
+{
+  "default_geometry": "depthsplat-official",
+  "comparison": [
+    {
+      "version": "original",
+      "D0_PSNR": 35.00936006196627,
+      "D1_PSNR": 34.41110111885453,
+      "A_PSNR": 35.242811870110614,
+      "GT_D1_PSNR": 38.480987777362614,
+      "D1_minus_A_dB": -0.8317107512560824,
+      "D1_minus_D0_dB": -0.5982589431117376,
+      "geometry_gap_recovered": 0.0
+    },
+    {
+      "version": "flow",
+      "D0_PSNR": 35.19239170473823,
+      "D1_PSNR": 34.088014998577165,
+      "A_PSNR": 35.242811870110614,
+      "GT_D1_PSNR": 38.480987777362614,
+      "D1_minus_A_dB": -1.1547968715334491,
+      "D1_minus_D0_dB": -1.1043767061610623,
+      "geometry_gap_recovered": -0.07938454983800505
+    },
+    {
+      "version": "depthsplat-official",
+      "D0_PSNR": 35.563979287978064,
+      "D1_PSNR": 35.923912446167165,
+      "A_PSNR": 35.242811870110614,
+      "GT_D1_PSNR": 38.480987777362614,
+      "D1_minus_A_dB": 0.6811005760565507,
+      "D1_minus_D0_dB": 0.35993315818910077,
+      "geometry_gap_recovered": 0.37170846616824255
+    }
+  ],
+  "pixels": "pooled SSE and counts",
+  "configs": "2 G2 scenes, f/1.4, P2 far, all3 frames",
+  "same_ray_F2": true,
+  "A_focus_unchanged": true,
+  "original_comparator": "original explicit depth with its own refocused P2",
+  "depth_fits": "placement only;GT depth not used by estimator",
+  "branches": [
+    "original",
+    "flow",
+    "depthsplat-official"
+  ],
+  "selection_candidates": [
+    "flow",
+    "depthsplat-official"
+  ],
+  "original_retained_for_comparison": true
+}

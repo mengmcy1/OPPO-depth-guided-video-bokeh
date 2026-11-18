@@ -7,17 +7,22 @@ def sample(image,xy):
     return cv2.remap(image,np.float32(xy[...,0]),np.float32(xy[...,1]),cv2.INTER_LINEAR,borderMode=cv2.BORDER_CONSTANT,borderValue=0)
 
 
-def pair_depth(flow,back,K,first,second):
+def pair_depth(flow,back,K,first,second,eligible=None):
     """Closest-ray midpoint followed by the registered geometric checks."""
     h,w=flow.shape[:2];y,x=np.mgrid[:h,:w];uv=np.stack([x,y],-1).astype(np.float64);other=uv+flow
     inside=(other[...,0]>=0)&(other[...,0]<=w-1)&(other[...,1]>=0)&(other[...,1]<=h-1)
     fb=np.linalg.norm(flow+sample(back,other),axis=-1);valid=inside&(fb<=1.)
+    if eligible is not None:
+        valid &= eligible
     left=np.concatenate([uv+.5,np.ones((h,w,1))],-1);right=np.concatenate([other+.5,np.ones((h,w,1))],-1)
     relative=np.linalg.inv(second)@first;t=relative[:3,3];skew=np.array([[0,-t[2],t[1]],[t[2],0,-t[0]],[-t[1],t[0],0]])
     fundamental=np.linalg.inv(K).T@skew@relative[:3,:3]@np.linalg.inv(K)
     line=left@fundamental.T;reverse=right@fundamental;error=abs((right*line).sum(-1))
     epi=np.maximum(error/np.maximum(np.linalg.norm(line[...,:2],axis=-1),1e-12),error/np.maximum(np.linalg.norm(reverse[...,:2],axis=-1),1e-12));epi_valid=valid&(epi<=1.)
     rays1=(left@np.linalg.inv(K).T)@first[:3,:3].T;rays2=(right@np.linalg.inv(K).T)@second[:3,:3].T
+    if eligible is not None:
+        rays1[~eligible] = np.nan
+        rays2[~eligible] = np.nan
     rays1/=np.linalg.norm(rays1,axis=-1,keepdims=True);rays2/=np.linalg.norm(rays2,axis=-1,keepdims=True)
     b=(rays1*rays2).sum(-1);displacement=second[:3,3]-first[:3,3];a=rays1@displacement;c=rays2@displacement
     s=(a-b*c)/np.maximum(1-b*b,1e-12);q=s*b-c

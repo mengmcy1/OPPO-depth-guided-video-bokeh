@@ -14,8 +14,9 @@ from route3_b2_oracle_3d import deduplicate
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--scene',type=Path,required=True);a=p.parse_args();folder=a.scene;w=FullWorld(folder/'scene-geometry.npz',512);out=folder/'oracle';out.mkdir(exist_ok=True)
-    jobs=[j for j in json.loads((folder.parent/'peel-jobs-results.json').read_text()) if j['scene']==folder.name];rows=[]
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--scene',type=Path,required=True);p.add_argument('--peel-manifest',type=Path);a=p.parse_args();folder=a.scene;w=FullWorld(folder/'scene-geometry.npz',512);out=folder/'oracle';out.mkdir(exist_ok=True)
+    manifest=a.peel_manifest or folder.parent/'peel-jobs-results.json'
+    jobs=[j for j in json.loads(manifest.read_text()) if j['scene']==folder.name];rows=[]
     for frame in [1,30,60]:
         path=out/f'f{frame:03d}.npz'
         if path.exists():continue

@@ -57,6 +57,10 @@ def views_for(desc,frames,size,GT=False,world=None):
 
 def placement_map(desc,entry):
     s=desc['source_root'];f=entry['frame']
+    if desc.get('ordered_placement'):
+        path=s/'placement'/f'f{f:03d}.npz'
+        with np.load(path) as p:
+            return p['a'], p['b'], p['local_supported']
     if s is not None:
         lab=np.load(s/'labels'/f'f{f:03d}'/(entry['cases'][0]['id']+'.npz'));v=np.load(s/'labels'/f'f{f:03d}'/'placement-support-v2.npz');return lab['placement_affine_a'],lab['placement_affine_b'],v['local_fit_supported']
     g=np.load(desc['geometry']/f'f{f:03d}-center.npz');z=np.load(entry['input_npz'])['depth'];gt=g['depth_axial_m'];fg=np.load(desc['scene']/'scene-geometry.npz')['foreground_object_ids'];valid=g['center_visible']&~np.isin(g['object_id'],fg);yy,xx=np.mgrid[:512,:512];train=valid&((xx//8+yy//8)%5!=0);x=1/np.maximum(gt,1e-6);y=1/np.maximum(z,1e-6);box=lambda a:uniform_filter(a.astype(np.float64),49,mode='constant')*49**2;n=box(train);sx=box(x*train);sy=box(y*train);var=box(x*x*train)-sx*sx/np.maximum(n,1);cov=box(x*y*train)-sx*sy/np.maximum(n,1);a=np.clip(np.where(var>1e-5,cov/np.maximum(var,1e-12),1),.1,3);b=(sy-a*sx)/np.maximum(n,1);valid=n>=32
@@ -91,7 +95,13 @@ def input_cache_512(name,desc,out):
     save_json(out/'manifest.json',dict(scene=name,rows=rows,context=str(context),size=512,frames=ALL,M=8,features=19,query_cap=262144,model_input_only=True,hidden_GT_not_read=True,calibration_and_memory_flags_loaded=True))
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--scene',required=True);p.add_argument('--size',type=int,choices=[256,512],default=256);p.add_argument('--GT-warmup',action='store_true');a=p.parse_args();cv2.setNumThreads(2);desc=descriptor(a.scene);frames=FIVE if a.size==256 else ALL;size=a.size;tag=f'{size}-{len(frames)}'+('-GTwarmup' if a.GT_warmup else '');out=OUT/'learning-data'/a.scene/tag;out.mkdir(parents=True,exist_ok=True)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--scene',required=True);p.add_argument('--size',type=int,choices=[256,512],default=256);p.add_argument('--GT-warmup',action='store_true');p.add_argument('--ordered-root',type=Path);a=p.parse_args();cv2.setNumThreads(2);data_root=a.ordered_root or OUT
+    if a.ordered_root:
+        s=data_root/a.scene
+        desc=dict(scene=s,entries=json.loads((s/'prepared.json').read_text())['rows'],geometry=s/'geometry',model=s/'models/SHARP',calibration=s/'models/calibration/SHARP',confidence=s/'models/calibration',parents=lambda f:s/'oracle'/f'f{f:03d}.npz',source_root=s,ordered_placement=True)
+    else:
+        desc=descriptor(a.scene)
+    frames=FIVE if a.size==256 else ALL;size=a.size;tag=f'{size}-{len(frames)}'+('-GTwarmup' if a.GT_warmup else '');out=data_root/'learning-data'/a.scene/tag;out.mkdir(parents=True,exist_ok=True)
     if (out/'manifest.json').exists():return
     if size==512:
         if a.GT_warmup:raise ValueError('GT warmup only at256')
@@ -140,11 +150,17 @@ def main():
             cal=json.loads((desc['source_root']/'models/calibration/summary.json').read_text())['rows'];inp['calibration_applied']=np.array([calibration_applied(next(r for r in cal if r['frame']==g)) for g in frames]);inp['target_calibration_applied']=np.array(calibration_applied(next(r for r in cal if r['frame']==f)))
         else:inp['calibration_applied']=np.ones(len(frames),bool);inp['target_calibration_applied']=np.array(True);inp['memory_verified']=np.zeros(valid.shape,bool)
         if not inputpath.exists():save_npz(inputpath,inp)
-        gtcam=(source-pose[:3,3])@pose[:3,:3];gtuvz=gtcam@K.T;gtuv=gtuvz[:,:2]/np.maximum(gtuvz[:,2:],1e-8);cx=np.clip(gtuv[:,0].astype(int),0,size-1);cy=np.clip(gtuv[:,1].astype(int),0,size-1);inside=(gtcam[:,2]>0)&(gtuv[:,0]>=0)&(gtuv[:,0]<size)&(gtuv[:,1]>=0)&(gtuv[:,1]<size);center_hidden=inside&(oid>0)&(gtcam[:,2]>native[f]['depth_axial_m'][cy,cx]+1e-4)&(np.linalg.norm(source-world[f][cy,cx],axis=-1)>1.5*foot+1e-4)
+        label_pose=native[f]['camera_c2w'] if a.ordered_root else pose
+        gtcam=(source-label_pose[:3,3])@label_pose[:3,:3];gtuvz=gtcam@K.T;gtuv=gtuvz[:,:2]/np.maximum(gtuvz[:,2:],1e-8);cx=np.clip(gtuv[:,0].astype(int),0,size-1);cy=np.clip(gtuv[:,1].astype(int),0,size-1);inside=(gtcam[:,2]>0)&(gtuv[:,0]>=0)&(gtuv[:,0]<size)&(gtuv[:,1]>=0)&(gtuv[:,1]<size);center_hidden=inside&(oid>0)&(gtcam[:,2]>native[f]['depth_axial_m'][cy,cx]+1e-4)&(np.linalg.norm(source-world[f][cy,cx],axis=-1)>1.5*foot+1e-4)
         aa,bb,support=placement_map(desc,entry)
         if a.GT_warmup:aa=np.ones_like(aa);bb=np.zeros_like(bb);support=np.ones_like(support)
         sx=np.clip(np.floor(gtuv[:,0]*512/size).astype(int),0,511);sy=np.clip(np.floor(gtuv[:,1]*512/size).astype(int),0,511);mapped=1/np.maximum(aa[sy,sx]/np.maximum(gtcam[:,2],1e-6)+bb[sy,sx],1e-4);mappedcam=gtcam*(mapped/np.maximum(gtcam[:,2],1e-6))[:,None];safe=support[sy,sx]&inside&(oid>0)&(mapped>target['depth'][cy,cx]+np.maximum(.005,.02*target['depth'][cy,cx]))
-        oracle=np.load(desc['parents'](f));opc=np.c_[oracle['uv'],np.ones(len(oracle['uv']))]@np.linalg.inv(np.array([[711.111111,0,256],[0,711.111111,256],[0,0,1]])).T*oracle['depth'][:,None];opw=opc@pose[:3,:3].T+pose[:3,3];color=np.zeros((n,3),np.float32);colorvalid=np.zeros(n,bool)
+        if a.ordered_root:
+            inverse=aa[sy,sx]/np.maximum(gtcam[:,2],1e-6)+bb[sy,sx]
+            safe=support[sy,sx]&inside&(oid>0)&np.isfinite(inverse)&(inverse>1e-4)
+            mapped=np.maximum(mapped,1.03*target['depth'][cy,cx])
+            mappedcam=gtcam*(mapped/np.maximum(gtcam[:,2],1e-6))[:,None]
+        oracle=np.load(desc['parents'](f));opc=np.c_[oracle['uv'],np.ones(len(oracle['uv']))]@np.linalg.inv(np.array([[711.111111,0,256],[0,711.111111,256],[0,0,1]])).T*oracle['depth'][:,None];opw=opc@label_pose[:3,:3].T+label_pose[:3,3];color=np.zeros((n,3),np.float32);colorvalid=np.zeros(n,bool)
         for obj in np.unique(oid):
             at=np.flatnonzero(oid==obj);parents=np.flatnonzero(oracle['object_id']==obj)
             if obj<=0 or not len(parents):continue
@@ -156,7 +172,7 @@ def main():
             for k,xy in enumerate(geo['aperture_xy']):
                 cam=gtcam-np.r_[xy,0];intr=K.copy();intr[:2,2]+=np.diag(K)[:2]*xy/case['nominal_focus_m'];p=cam@intr.T;uv=p[:,:2]/np.maximum(p[:,2:],1e-8);x=np.clip(uv[:,0].astype(int),0,size-1);y=np.clip(uv[:,1].astype(int),0,size-1);ok=center_hidden&(uv[:,0]>=0)&(uv[:,0]<size)&(uv[:,1]>=0)&(uv[:,1]<size)&(cam[:,2]>0)&geo['hidden'][k,y,x]&(oid==geo['object_id'][k,y,x])&(np.linalg.norm(source-hitworld[k,y,x],axis=-1)<=1.5*foot+1e-4)
                 for slot,v in enumerate(views):
-                    at=np.flatnonzero(ok&(pool['slot']==slot));cam_s=(hitworld[k,y[at],x[at]]-v['c2w'][:3,3])@v['c2w'][:3,:3];p=cam_s@K.T;uv_s=p[:,:2]/np.maximum(p[:,2:],1e-8);ok[at]&=(abs(uv_s-(pool['source_xy'][at]+.5))<=.75).all(-1)
+                    at=np.flatnonzero(ok&(pool['slot']==slot));source_pose=native[v['frame']]['camera_c2w'] if a.ordered_root else v['c2w'];cam_s=(hitworld[k,y[at],x[at]]-source_pose[:3,3])@source_pose[:3,:3];p=cam_s@K.T;uv_s=p[:,:2]/np.maximum(p[:,2:],1e-8);ok[at]&=(abs(uv_s-(pool['source_xy'][at]+.5))<=.75).all(-1)
                 bits|=ok.astype(np.uint16)*(1<<k)
             fraction=np.unpackbits(bits.view(np.uint8).reshape(-1,2),axis=1).sum(1).astype(np.float32)/16;hit=safe_gather(fraction);content=valid&(hit>0);placement_valid=safe_gather(safe)&valid;rgb_valid=safe_gather(colorvalid)&valid;label=dict(content_hit_fraction=hit,content_hit_bits=safe_gather(bits),candidate_depth_target=safe_gather(mapped),candidate_camera_target=safe_gather(mappedcam.astype(np.float32)),candidate_RGB_target=safe_gather(color),placement_support_v2=placement_valid,appearance_valid=rgb_valid,hidden_any_at_query=geo['hidden'].any(0).ravel()[q['query_pixel']],recoverable_at_query=geo['mask_recoverable_total'].ravel()[q['query_pixel']],recoverable_mask=geo['mask_recoverable_total'],residual_pixels=geo['residual_pixels'],hidden_ray_mask=geo['hidden'],recoverable_ray_mask=geo['recoverable'])
             save_npz(targetpath,label);row=dict(frame=f,case=case,input=str(inputpath),target=str(targetpath),queries=len(valid),positive_candidates=int(content.sum()),positive_query_fraction=float(content.any(-1).mean()),safe_positive_fraction=float((content&placement_valid).sum()/max(content.sum(),1)),GT_recoverable_pixels=int(geo['mask_recoverable_total'].sum()),context_frames=frames);rows.append(row);save_json(out/'progress.json',dict(rows=rows));print('S2A_DATA',a.scene,tag,f,key,row['positive_query_fraction'],flush=True)

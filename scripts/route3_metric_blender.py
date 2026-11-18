@@ -29,23 +29,52 @@ def metric_material(name,rng,kind,unused_frequency):
     ramp=nodes.new('ShaderNodeValToRGB');ramp.color_ramp.interpolation='EASE';ramp.color_ramp.elements[0].color=(*lo,1);ramp.color_ramp.elements[1].color=(*hi,1);links.new(factor,ramp.inputs[0]);links.new(ramp.outputs[0],bs.inputs['Base Color']);m['metric_contrast']=contrast
     return m
 
-def build(out,seed,index):
+def bar_texture_floor(obj, cameras, K):
+    """Use the projected narrow cross-section and convert it back to meters."""
+    bounds = np.array(obj.bound_box)
+    lo, hi = bounds.min(0), bounds.max(0)
+    center = (lo+hi)/2
+    narrow_axis = 2 if obj.name.endswith('_diagonal') else 0
+    ends = np.stack([center, center]); ends[:, narrow_axis] = [lo[narrow_axis], hi[narrow_axis]]
+    transform = np.array(obj.matrix_world)
+    ends = ends@transform[:3, :3].T+transform[:3, 3]
+    widths, scales = [], []
+    for pose in cameras[[0, 29, 59]]:
+        projected = ((ends-pose[:3, 3])@pose[:3, :3])@K.T
+        widths.append(float(np.linalg.norm(np.diff(projected[:, :2]/projected[:, 2:], axis=0))))
+        scales.append(float(K[0, 0]/projected[:, 2].mean()))
+    narrowest = int(np.argmin(widths))
+    return dict(object=obj.name, frames=[1, 30, 60], widths_px=widths,
+                minimum_period_px=2*widths[narrowest],
+                minimum_period_m=2*widths[narrowest]/scales[narrowest])
+
+
+def build(out,seed,index,thin_floor=False):
     if (out/'scene.blend').exists():raise FileExistsError(out)
     out.mkdir(parents=True,exist_ok=True);draft=out/'authoring'
     if draft.exists():
         trial=1
         while (out/f'authoring-retry-{trial:02d}').exists():trial+=1
         draft=out/f'authoring-retry-{trial:02d}'
-    previous.textured=metric_material;previous.build(draft,seed,index);s=bpy.context.scene;g=np.load(draft/'scene-geometry.npz');cameras=g['camera_c2w_opencv'];objects=[];textures=[]
+    previous.textured=metric_material;previous.build(draft,seed,index);s=bpy.context.scene;g=np.load(draft/'scene-geometry.npz');cameras=g['camera_c2w_opencv'];objects=[];textures=[];floors=[]
     for obj in [o for o in s.objects if o.type=='MESH']:
         corners=np.array(obj.bound_box)@np.array(obj.matrix_world)[:3,:3].T+np.array(obj.matrix_world)[:3,3];maxdepth=max(float(((corners-c[:3,3])@c[:3,:3])[:,2].max()) for c in cameras);cap=.85*(512*50/36)/(36*max(maxdepth,.2));cap=min(cap,.08) if obj.name=='background_floor' else cap
+        if thin_floor and obj.name.startswith('foreground_') and ('_bar_' in obj.name or obj.name.endswith('_diagonal')):
+            floor = bar_texture_floor(obj, cameras, g['intrinsics'])
+            floor['old_shortest_period_m'] = 1/cap
+            cap = min(cap, 1/floor['minimum_period_m'])
+            floor['final_shortest_period_m'] = 1/cap
+            floors.append(floor)
         for i,mat in enumerate(obj.data.materials):
             if not mat or 'metric_texture_kind' not in mat:continue
             own=mat.copy();own.name=mat.name+'-'+obj.name;obj.data.materials[i]=own;f=cap/float(own['metric_frequency_divisor']);own.node_tree.nodes['MetricFrequency'].inputs[1].default_value=(f,f,f);textures.append(dict(object=obj.name,kind=own['metric_texture_kind'],maximum_feature_cycles_per_m=cap,coordinate_cycles_per_m=f,contrast=float(own['metric_contrast']),maximum_camera_depth_m=maxdepth,coordinate='Object with identity world reference;meters independent of mesh scale',minimum_nongrazing_design_period_px=36*math.cos(math.radians(75))/.85))
         objects.append(obj)
-    shutil.copyfile(draft/'scene-geometry.npz',out/'scene-geometry.npz');meta=json.loads((draft/'scene.json').read_text());meta.update(label=out.name,generator_version='metricObject-thirdtexture-v1',texture_version='附八第三版纹理:metric Object soft textures',textures=textures,has_highlights=any('emitter' in o.name or o.name.startswith('background_highlight') for o in objects),legacy_texture_frequency_draws_not_active=True,old_generator_behavior_unchanged=True,authoring_draft_retained=str(draft),texture_period_verified_by_world_pass_before_methods=False,filter_type='BOX',filter_width=1.,assets_source='independent procedural shapes and metric Object soft textures;no external assets');write(out/'scene.json',meta);bpy.ops.wm.save_as_mainfile(filepath=str(out/'scene.blend'));print('METRIC_BUILD',out.name,flush=True)
+    shutil.copyfile(draft/'scene-geometry.npz',out/'scene-geometry.npz');meta=json.loads((draft/'scene.json').read_text());meta.update(label=out.name,generator_version='metricObject-thirdtexture-v1',texture_version='附八第三版纹理:metric Object soft textures',textures=textures,has_highlights=any('emitter' in o.name or o.name.startswith('background_highlight') for o in objects),legacy_texture_frequency_draws_not_active=True,old_generator_behavior_unchanged=True,authoring_draft_retained=str(draft),texture_period_verified_by_world_pass_before_methods=False,filter_type='BOX',filter_width=1.,assets_source='independent procedural shapes and metric Object soft textures;no external assets')
+    if thin_floor:
+        meta.update(generator_version='第三版 + 细杆纹理下限', bar_texture_floor=floors)
+    write(out/'scene.json',meta);bpy.ops.wm.save_as_mainfile(filepath=str(out/'scene.blend'));print('METRIC_BUILD',out.name,flush=True)
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--build',type=Path);p.add_argument('--seed',type=int);p.add_argument('--index',type=int);p.add_argument('--jobs',type=Path);a=p.parse_args(sys.argv[sys.argv.index('--')+1:]);build(a.build,a.seed,a.index) if a.build else render(a.jobs)
+    p=argparse.ArgumentParser();p.add_argument('--build',type=Path);p.add_argument('--seed',type=int);p.add_argument('--index',type=int);p.add_argument('--jobs',type=Path);p.add_argument('--thin-floor',action='store_true');a=p.parse_args(sys.argv[sys.argv.index('--')+1:]);build(a.build,a.seed,a.index,a.thin_floor) if a.build else render(a.jobs)
 
 if __name__=='__main__':main()

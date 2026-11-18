@@ -6,7 +6,11 @@ sys.path.insert(0,str(Path(__file__).resolve().parent))
 from route3_blender_b2_full_geometry import FullWorld,save_npz,save_json
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--scene',type=Path,required=True);a=p.parse_args();s=a.scene;w=FullWorld(s/'scene-geometry.npz',512);jobs=json.loads((s/'formal-peels-jobs.json').read_text())
+    p=argparse.ArgumentParser();p.add_argument('--scene',type=Path,required=True);p.add_argument('--peel-manifest',type=Path);a=p.parse_args();s=a.scene;w=FullWorld(s/'scene-geometry.npz',512)
+    manifest=a.peel_manifest or s/'formal-peels-jobs.json'
+    if not manifest.exists() and a.peel_manifest is None:
+        manifest=s/'peels-jobs.json'
+    jobs=json.loads(manifest.read_text())
     for j in jobs:
         ids=j['hidden_object_ids'];f=j['frame'];key=f'f{f:03d}-exclude-'+ '-'.join(map(str,ids));path=s/'geometry'/(key+'.npz')
         if not path.exists():save_npz(path,w.center_full(f,1,tuple(ids)))

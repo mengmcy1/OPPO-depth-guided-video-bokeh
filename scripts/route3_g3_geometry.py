@@ -136,8 +136,14 @@ def render(version):
                     out.mkdir(exist_ok=True)
                     base = old_cd(name, f, c, 'P2')
                     meta = json.loads((base/'render.json').read_text())
-                    focus = meta['focus_m']
-                    band = load(EXPLICIT/name/f'f{f:03d}'/'P2'/c['id']/'masks.npz')['band']
+                    updated = dest/'focus.json'
+                    if updated.exists():
+                        from src.dual_layer import depth_band
+                        focus = json.loads(updated.read_text())[str(c['nominal_focus_m'])]['focus_m']
+                        band = depth_band(depth, d['K'][0, 0], focus, .05/(2*c['fstop']))[0]
+                    else:
+                        focus = meta['focus_m']
+                        band = load(EXPLICIT/name/f'f{f:03d}'/'P2'/c['id']/'masks.npz')['band']
                     hidden, _ = aligned_hidden(parents, align, band, K)
                     hidden, ordering = order_hidden(hidden, tensor(depth), K, 'O1')
                     with torch.inference_mode():
@@ -157,7 +163,7 @@ def render(version):
                                           peak_MiB=torch.cuda.max_memory_allocated()/2**20))
                         del merged, p
                     write(out/'render.json', dict(scene=name, frame=f, id=c['id'], version=version,
-                          focus_m=focus, P2_focus_fixed_to_T1=True, order=ordering, timings=times))
+                          focus_m=focus, P2_focus_fixed_to_T1=not updated.exists(), order=ordering, timings=times))
                     print('T4_RENDER', version, name, f, c['id'], flush=True)
                     del As, hidden
                 del A, D

@@ -62,7 +62,7 @@ def inference(folder):
     write(root/'SHARP.json',dict(completed=True,rows=rows,code_revision=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT.parent/'ml-sharp-s1-20261111',text=True).strip(),license='Apple research-only;see S1 license record',network_updated=False));del net;torch.cuda.empty_cache()
 
 
-def calibrate(folder):
+def calibrate(folder, *, flow_only=False, cached_flow_only=False):
     root=folder/'models';dest=Path(os.environ.get('ROUTE3_CALIBRATION_OUTPUT',root/'calibration'));dest.mkdir(parents=True,exist_ok=True)
     if (dest/'summary.json').exists() and json.loads((dest/'summary.json').read_text()).get('completed'):return
     pose_source=os.environ.get('ROUTE3_CALIBRATION_POSES')
@@ -75,16 +75,27 @@ def calibrate(folder):
     if frozen_plan:
         old=json.loads(Path(frozen_plan).read_text());plan={int(k):v for k,v in old['selected'].items()};pairs={tuple(v) for v in old['directed']}
     write(dest/'flow-plan.json',dict(selected=plan,directed=sorted(pairs),GT_depth_or_masks=False,pose_noise_before_calibration=bool(pose_source)))
-    from torchvision.models.optical_flow import raft_large,Raft_Large_Weights
-    net=raft_large(weights=None,progress=False).eval().cuda();net.load_state_dict(torch.load(ROOT/'models/metrics/hub/checkpoints/raft_large_C_T_SKHT_V2-ff5fadd5.pth',map_location='cpu',weights_only=True));transform=Raft_Large_Weights.C_T_SKHT_V2.transforms();flow=Path(os.environ.get('ROUTE3_CALIBRATION_FLOW_CACHE',dest/'flow'));flow.mkdir(parents=True,exist_ok=True)
-    images={f:torch.tensor(cv2.imread(str(folder/'inputs'/f'f{f:03d}.png'))[...,::-1].copy(),device='cuda').permute(2,0,1)[None] for f in FRAMES};timings=[]
-    for f,g in sorted(pairs):
-        path=flow/f'f{f:03d}-f{g:03d}.npz'
-        if path.exists():continue
-        a,b=transform(images[f],images[g]);torch.cuda.synchronize();t=time.monotonic()
-        with torch.inference_mode():v=net(a,b,num_flow_updates=32)[-1][0].permute(1,2,0)
-        torch.cuda.synchronize();timings.append(time.monotonic()-t);np.savez_compressed(path,flow=v.cpu().numpy());print('S2A_FLOW',folder.name,f,g,flush=True)
-    del net,images;torch.cuda.empty_cache();rows=[]
+    flow=Path(os.environ.get('ROUTE3_CALIBRATION_FLOW_CACHE',dest/'flow'));flow.mkdir(parents=True,exist_ok=True)
+    missing=[(f,g) for f,g in sorted(pairs) if not (flow/f'f{f:03d}-f{g:03d}.npz').exists()]
+    timings=[]
+    if missing:
+        if cached_flow_only:
+            raise FileNotFoundError(f'{folder.name}: missing {len(missing)} cached flow maps')
+        from torchvision.models.optical_flow import raft_large,Raft_Large_Weights
+        net=raft_large(weights=None,progress=False).eval().cuda();net.load_state_dict(torch.load(ROOT/'models/metrics/hub/checkpoints/raft_large_C_T_SKHT_V2-ff5fadd5.pth',map_location='cpu',weights_only=True));transform=Raft_Large_Weights.C_T_SKHT_V2.transforms()
+        images={f:torch.tensor(cv2.imread(str(folder/'inputs'/f'f{f:03d}.png'))[...,::-1].copy(),device='cuda').permute(2,0,1)[None] for f in FRAMES}
+        for f,g in missing:
+            path=flow/f'f{f:03d}-f{g:03d}.npz'
+            a,b=transform(images[f],images[g]);torch.cuda.synchronize();t=time.monotonic()
+            with torch.inference_mode():v=net(a,b,num_flow_updates=32)[-1][0].permute(1,2,0)
+            torch.cuda.synchronize();timings.append(time.monotonic()-t);np.savez_compressed(path,flow=v.cpu().numpy());print('S2A_FLOW',folder.name,f,g,flush=True)
+        del net,images;torch.cuda.empty_cache()
+        write(dest/'flow-timing.json',dict(seconds=sum(timings),pairs_run=len(missing)))
+    if flow_only:
+        return
+    if (dest/'flow-timing.json').exists() and not timings:
+        timings=[json.loads((dest/'flow-timing.json').read_text())['seconds']]
+    rows=[]
     for f in FRAMES:
         references=[]
         for g in plan[f]:

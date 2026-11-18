@@ -186,7 +186,7 @@ def surface_checks(scene):
                 alias_pass=all(r['passed'] for r in rows), zero_pass=zero >= 50)
 
 
-def sampling(scene, common, net):
+def sampling(scene, common, net, *, category_local=False):
     audit = []
     for spp in C['sampling']['levels']:
         rows = []
@@ -218,6 +218,8 @@ def sampling(scene, common, net):
               [(r['kind'], r['focus_m'], r['patch_lpips']) for r in checks], flush=True)
         if passed:
             return spp, audit
+    if category_local:
+        return None, audit
     write(OUT.parent/'STOP.json', dict(reason='scene failed sampling at8192spp',
                                       scene=scene.name, levels=audit))
     raise RuntimeError('STOP sampling at8192spp')

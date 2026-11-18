@@ -66,8 +66,9 @@ def infer(args):
         poses = torch.tensor(np.array(entry['c2w']), dtype=torch.float32, device='cuda')[None]
         neighbors = torch.cdist(poses[:, :, :3, 3], poses[:, :, :3, 3]).argsort(-1)[:, :, :3]
         n = len(imgs)
-        near = torch.full((1, n), .1, device='cuda')
-        far = torch.full((1, n), 1000., device='cuda')
+        near_m, far_m = entry.get('bounds_m', [.1, 1000.])
+        near = torch.full((1, n), near_m, device='cuda')
+        far = torch.full((1, n), far_m, device='cuda')
         torch.cuda.reset_peak_memory_stats()
         torch.cuda.synchronize()
         start = time.monotonic()
@@ -104,7 +105,7 @@ def infer(args):
         np.savez_compressed(dest, depth=z, consistent=support >= 2, support=support)
         result = dict(seconds=seconds, peak_MiB=torch.cuda.max_memory_allocated()/2**20,
                       frames=entry['frames'], target=entry['target_frame'],
-                      strict_load=keys, resolution=[h, w], near=.1, far=1000.,
+                      strict_load=keys, resolution=[h, w], near=near_m, far=far_m,
                       confidence='>=2other input predictions agree within3% axialdepth',
                       pose_scale_preserved=True, GT_depth_used=False)
         dest.with_suffix('.json').write_text(json.dumps(result, indent=2)+'\n')
