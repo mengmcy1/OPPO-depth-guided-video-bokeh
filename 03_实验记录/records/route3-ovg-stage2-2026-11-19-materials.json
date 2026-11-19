@@ -1,0 +1,35 @@
+{
+  "sources": [
+    {
+      "name": "AM-2k",
+      "split": "train",
+      "role": "estimated foreground and human-labeled matte",
+      "license": "MIT per release agreement",
+      "agreement": "https://jizhizili.github.io/files/gfm_datasets_agreements/AM-2k_Dataset_Release_Agreement.pdf"
+    },
+    {
+      "name": "BG-20k",
+      "split": "train",
+      "role": "real backgrounds",
+      "license": "MIT per release agreement",
+      "agreement": "https://jizhizili.github.io/files/gfm_datasets_agreements/BG-20k_Dataset_Release_Agreement.pdf"
+    }
+  ],
+  "foreground_pairs": 1800,
+  "backgrounds": 2048,
+  "available_train_backgrounds": 15000,
+  "selection_seed": 20261119,
+  "attribution": "Li, Zhang, Maybank and Tao, Bridging Composite and Real: Towards End-to-end Deep Image Matting, IJCV 2021",
+  "local_originals_read_only": true,
+  "original_owner_copyright": true,
+  "memory_2a": {
+    "shift_px": 4,
+    "hole_count": 3,
+    "hole_side_px": [
+      12,
+      44
+    ],
+    "gaussian_rgb_sigma": 0.025
+  },
+  "memory_2b_A": "invalid, no multi-view capture"
+}

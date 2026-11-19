@@ -17,7 +17,7 @@ def pack_queries(pool,band,max_candidates=8,max_queries=32768):
     """
     pixels=np.flatnonzero(band);all_count=len(pixels)
     if all_count>max_queries:pixels=pixels[np.linspace(0,all_count-1,max_queries,dtype=np.int64)]
-    order=np.lexsort((pool['depth'],pool['pixel']));sorted_pixel=pool['pixel'][order];start=np.searchsorted(sorted_pixel,pixels,'left');end=np.searchsorted(sorted_pixel,pixels,'right');counts=np.minimum(end-start,max_candidates);indices=np.full((len(pixels),max_candidates),-1,np.int32)
+    order=np.lexsort((pool.get('priority',pool['depth']),pool['pixel']));sorted_pixel=pool['pixel'][order];start=np.searchsorted(sorted_pixel,pixels,'left');end=np.searchsorted(sorted_pixel,pixels,'right');counts=np.minimum(end-start,max_candidates);indices=np.full((len(pixels),max_candidates),-1,np.int32)
     for column in range(max_candidates):
         valid=counts>column;indices[valid,column]=order[start[valid]+column]
     return dict(query_pixel=pixels.astype(np.int32),query_xy=np.c_[pixels%band.shape[1]+.5,pixels//band.shape[1]+.5].astype(np.float32),candidate_indices=indices,candidate_valid=indices>=0,candidate_count=counts.astype(np.uint8)),dict(full_band_queries=all_count,saved_queries=len(pixels),max_queries=max_queries,M=max_candidates,sort='estimated depth ascending;whole observation retained',cap='deterministic uniform sorted-spatial selection,noGT',second_hidden_slot_reserved=True)

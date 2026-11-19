@@ -152,7 +152,7 @@ class OVGNet(nn.Module):
             deltas.append(correction);all_costs.append(costs)
         return torch.stack(deltas)[:,None],torch.stack(all_costs),mask
 
-    def forward(self, sample, *, protect_residual=False, render_heads=True):
+    def forward(self, sample, *, protect_residual=False, render_heads=True, return_features=False):
         rgb=sample['rgb']
         priors,conf=sample['prior_depth'],sample['prior_conf']
         motion=sample['motion']
@@ -206,6 +206,8 @@ class OVGNet(nn.Module):
                           sigma_px=.3+1.4*footprint[:,:2].sigmoid(),opacity=footprint[:,2].sigmoid())
         if prior_weights is not None:
             result['prior_weights']=prior_weights
+        if return_features:
+            result['features']=phi
         return result
 
 

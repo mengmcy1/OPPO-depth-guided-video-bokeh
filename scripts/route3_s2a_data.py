@@ -80,12 +80,19 @@ def query_memory(source_root, frames):
     return verified, entry_ids, cal
 
 
-def query_input_512(views, target, band, max_candidates, max_queries, memory=None):
+def query_input_512(views, target, band, max_candidates, max_queries, memory=None, *, anchor=None):
     """Build input-only Query features from frozen source views and one target depth map."""
     frames = np.array([view['frame'] for view in views])
     frame, depth, K, pose = (target[k] for k in ('frame','depth','K','c2w'))
     pool = collect(depth,K,pose,band,views,frame)
     n = len(pool['depth'])
+    if anchor is not None:
+        pix = pool['pixel']
+        pool['priority'] = np.abs(1./pool['depth'] - 1./anchor.ravel()[pix])
+        available = np.zeros(band.size, bool)
+        available[pix] = True
+        band = band & available.reshape(band.shape)
+    height, width = depth.shape
     xyz = np.empty((n,3),np.float32)
     patches = np.empty((n,3,3,3),np.uint8)
     extras = {k:np.empty(n,np.float32) for k in ('edge_distance','reprojection','FB','angle_radians')}
@@ -99,7 +106,7 @@ def query_input_512(views, target, band, max_candidates, max_queries, memory=Non
             extras[key][at] = view[key][y,x]
         for dy in (-1,0,1):
             for dx in (-1,0,1):
-                pixels = view['rgb_srgb'][np.clip(y+dy,0,511),np.clip(x+dx,0,511)]
+                pixels = view['rgb_srgb'][np.clip(y+dy,0,height-1),np.clip(x+dx,0,width-1)]
                 patches[at,dy+1,dx+1] = np.uint8(np.rint(pixels*255))
     pool.update(position_world_estimated=xyz,source_frame_id=frames[pool['slot']],rgb_patch=patches,**extras)
     q,audit = pack_queries(pool,band,max_candidates,max_queries)
