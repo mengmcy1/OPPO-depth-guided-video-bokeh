@@ -9,7 +9,8 @@ import numpy as np
 
 from route3_ovg_1b_common import REC, ROOT, read
 from route3_ovg_stage2_data import OUT, PREFIX
-from route3_ovg_stage2_evaluate import FLOORS, STAGES, path_for
+from route3_ovg_stage2_evaluate import (DIAGNOSTICS, FLOORS, OLD_RAY_DEFINITION,
+                                       RAY_DEFINITION, STAGES, path_for)
 from route3_ovg_subpixel import save_json
 from route3_upper_bound_evaluate import pool
 
@@ -99,7 +100,11 @@ def interior_rates(rows):
             for (s,w,n),v in sorted(sums.items())]
 
 
-def leakage_stats(diagnostics):
+def leakage_stats(diagnostics, legacy=False):
+    definition=OLD_RAY_DEFINITION if legacy else RAY_DEFINITION
+    fields=(('T','query_weight','query_front') if legacy else
+            ('T','query_weight','query_depth_m','dominant_visible_depth_m','dominant_visible_weight',
+             'dominant_visible_inverse_depth_minus_GT_inv_m'))
     groups=defaultdict(list)
     for r in diagnostics:
         for scope in (r['scene'],'pooled'):
@@ -111,28 +116,63 @@ def leakage_stats(diagnostics):
         for row in cases:
             if not row['pixels']:
                 continue
-            source=path_for(row['stage'],row['scene'],row['frame'])/row['protocol']/row['id']
+            if legacy:
+                source=path_for(row['stage'],row['scene'],row['frame'])/row['protocol']/row['id']
+            else:
+                source=DIAGNOSTICS/row['stage']/row['scene']/f'f{row["frame"]:03d}'/row['id']
             with np.load(source/f'leakage-{method}.npz') as data:
-                per_case.append({k:data[k].ravel() for k in ('T','query_weight','query_front')})
+                samples={k:data[k].ravel() for k in fields}
+                if not legacy:
+                    samples['harmful']=data['cause'].ravel()>0
+                per_case.append(samples)
             for cat in row['classes']:
                 totals[cat['cause']].update({k:cat[k] for k in ('rays','positive_SSE','net_SSE')})
-        result=dict(scene=scope,method=method,focus=focus,frames=len(per_case),
+        result=dict(reference=definition,scene=scope,method=method,focus=focus,frames=len(per_case),
                     pixels=sum(r['pixels'] for r in cases),rays=sum(r['rays'] for r in cases),
                     delta_SSE=sum(r.get('delta_SSE',0) for r in cases),
                     positive_SSE=sum(r.get('positive_SSE',0) for r in cases),
-                    q_rays=sum(r.get('significant_query_rays',0) for r in cases))
+                    q_rays=sum(r.get('significant_query_rays',0) for r in cases),
+                    harmful_rays=sum(r.get('harmful_rays',0) for r in cases) if not legacy else None)
         if per_case:
-            for field in ('T','query_weight','query_front'):
-                values=np.concatenate([r[field] for r in per_case])
-                result.update({f'{field}_{name}':x for name,x in (
-                    ('mean',float(values.mean())),('median',float(np.median(values))),
-                    ('p95',float(np.quantile(values,.95))),('max',float(values.max())))})
+            for field in fields:
+                for subset in (('all',) if legacy else ('all','harmful')):
+                    values=np.concatenate([r[field] if subset=='all' else r[field][r['harmful']] for r in per_case])
+                    values=values[np.isfinite(values)]
+                    key=field if subset=='all' else f'{field}_harmful'
+                    result[f'{key}_valid_rays']=len(values)
+                    if len(values):
+                        result.update({f'{key}_{name}':x for name,x in (
+                            ('mean',float(values.mean())),('p05',float(np.quantile(values,.05))),
+                            ('median',float(np.median(values))),('p95',float(np.quantile(values,.95))),
+                            ('max',float(values.max())))})
         results.append(result)
         for cat,v in totals.items():
-            classification.append(dict(scene=scope,method=method,focus=focus,cause=cat,**v,
+            classification.append(dict(reference=definition,scene=scope,method=method,focus=focus,cause=cat,**v,
                                        ray_fraction=v['rays']/result['rays'],
                                        positive_SSE_fraction=v['positive_SSE']/max(1e-24,result['positive_SSE'])))
     return results,classification
+
+
+def zero_split_tables(reports):
+    configs=defaultdict(list)
+    for report in reports:
+        for row in report['zero']:
+            for scope,frame in ((row['scene'],row['frame']),(row['scene'],'pooled'),('pooled','pooled')):
+                configs[row['stage'],scope,frame].append(row)
+    quality,contrib=[],[]
+    count_cols=('b1_pixels','b1_GT_interior_pixels','GT_interior_pixels','visible_GT_interior_SSE',
+                'visible_b1_GT_interior_SSE','combined_GT_interior_SSE','combined_b1_GT_interior_SSE')
+    def ratio(a,b):
+        return a/b if b else None
+    for (stage,scene,frame),rows in configs.items():
+        group=dict(stage=stage,scene=scene,frame=frame,cases=len(rows),weights='EMA')
+        for key in rows[0]['visible_only']:
+            quality.append(dict(group,region=key,**pool([r['visible_only'][key] for r in rows])))
+        d={k:sum(r[k] for r in rows) for k in count_cols}
+        contrib.append(dict(group,**d,b1_fraction_in_GT_interior=ratio(d['b1_GT_interior_pixels'],d['b1_pixels']),
+                  b1_share_of_visible_GT_interior_SSE=ratio(d['visible_b1_GT_interior_SSE'],d['visible_GT_interior_SSE']),
+                  b1_share_of_combined_GT_interior_SSE=ratio(d['combined_b1_GT_interior_SSE'],d['combined_GT_interior_SSE'])))
+    return quality,contrib
 
 
 def terminal_summary(aggregate,query_pairs,parts):
@@ -233,17 +273,22 @@ def restart_evidence():
         return values
 
     before=points(previous)
-    after={}
+    episodes=[]
+    all_points=list(before.values())
     for path in resumed:
-        after.update(points(path))
-    common=sorted(before.keys() & after.keys())
-    return dict(last_logged_step_before_interruption=max(before,default=None),
-                restart_logs=[str(p.relative_to(ROOT)) for p in resumed],
-                restarts=[entry for p in resumed for entry in p.read_text().splitlines() if entry.startswith('RESUME ')],
-                replay_logged_steps=common,
-                replay_tier_counts_match=all(before[i]['counts']==after[i]['counts'] for i in common),
-                replay_max_abs_logged_loss_difference=max((abs(after[i]['loss']-before[i]['loss']) for i in common),default=None),
-                peak_allocated_MiB=max((r['peak_MiB'] for r in (*before.values(),*after.values())),default=None),
+        after=points(path)
+        entries=[line for line in path.read_text().splitlines() if line.startswith('RESUME ')]
+        match=re.search(r'step-(\d+)\.pt',entries[-1]) if entries else None
+        step=int(match[1]) if match else None
+        common=sorted(i for i in before.keys() & after.keys() if step is None or i>step)
+        episodes.append(dict(resume_log=str(path.relative_to(ROOT)),checkpoint_step=step,
+            last_logged_step_before_interruption=max(before,default=None),replay_logged_steps=common,
+            replay_tier_counts_match=all(before[i]['counts']==after[i]['counts'] for i in common),
+            replay_max_abs_logged_loss_difference=max((abs(after[i]['loss']-before[i]['loss']) for i in common),default=None)))
+        all_points.extend(after.values())
+        before=after
+    return dict(interruptions=episodes,
+                peak_allocated_MiB=max((r['peak_MiB'] for r in all_points),default=None),
                 note='Model/EMA/optimizer and explicit batch/pixel RNG restored. Cache hits and CUDA rendering may preclude bitwise-identical loss replay.')
 
 
@@ -252,8 +297,18 @@ def report():
     rows=[r for part in reports for r in part['rows']]
     aggregate=summary(rows)
     query,split=optical_pairs(aggregate)
-    leaks=[r for part in reports for r in part['leakage']]
+    diagnostics=[read(DIAGNOSTICS/f'{s}.json') for s in STAGES]
+    leaks=[r for part in diagnostics for r in part['leakage']]
+    legacy_rays=[r for part in reports for r in part['leakage']]
+    def ray_key(row):
+        return tuple(row[k] for k in ('stage','scene','frame','id','method'))
+    legacy_by_key={ray_key(r):r for r in legacy_rays}
+    reused=[r for r in leaks if r.get('sse_source')=='preserved K16 ray image SSE']
+    if any(r['delta_SSE']!=legacy_by_key[ray_key(r)]['delta_SSE'] for r in reused):
+        raise ValueError('Reclassification altered the cached image SSE')
     leak,causes=leakage_stats(leaks)
+    old,old_causes=leakage_stats(legacy_rays,legacy=True)
+    zero_split,b1_interior=zero_split_tables(diagnostics)
     fit,mon,plot=curves()
     frozen=read(OUT/'S3-frozen-boundary.json')
     interior=interior_rates(rows)
@@ -264,6 +319,10 @@ def report():
                query=csv_file('S3-query-pairs',query),split=csv_file('S3-boundary-pairs',split),
                interior=csv_file('S3-interior-and-b',interior),
                leakage=csv_file('S3-leakage',leak),causes=csv_file('S3-leakage-classes',causes),
+               legacy_leakage=csv_file('S3-leakage-GT-reference-legacy',old),
+               legacy_causes=csv_file('S3-leakage-classes-GT-reference-legacy',old_causes),
+               zero_split=csv_file('S3-zero-visible-split-subsets',zero_split),
+               b1_interior=csv_file('S3-b1-in-GT-interior',b1_interior),
                frozen_boundary=csv_file('S3-frozen-boundaries',frozen['rows']),
                zero=csv_file('S3-zero-floors',optics_guards(rows)),monitor=csv_file('S2-monitor',mon))
     save_json(REC/f'{PREFIX}-summary.json',dict(
@@ -272,6 +331,14 @@ def report():
         S2=dict(stages=fit,curves=plot,recovery=restart_evidence()),
         disk_free_GiB=shutil.disk_usage(OUT).free/2**30,S3_runtime=[dict(stage=s,seconds=d['seconds'],peak_MiB=d['peak_MiB'])
             for s,d in zip(STAGES,reports)],S3_scope='three development scenes, exact K64 finite aperture and separately K16 for all blocked-ray checks',
+        S3_leakage=dict(definition=RAY_DEFINITION,legacy_definition=OLD_RAY_DEFINITION,
+            nominal_focus_only=True,focus_note=diagnostics[-1]['focus'],toy=read(DIAGNOSTICS/'toy.json'),
+            reused_K16_cases_with_exact_SSE_match=len(reused),
+            diagnostics_runtime=[{k:v for k,v in d.items() if k in ('stage','seconds','peak_MiB')} for d in diagnostics],
+            GT_depth_role='K16 label inclusion and signed inverse-depth error; never a classifier input'),
+        S3_zero_subsets=dict(samples='EMA, one zero-aperture image per scene/frame; GT boundary may overlap b=1',
+            visible_quality_pooled=[r for r in zero_split if r['scene']=='pooled'],
+            b1_pooled=[r for r in b1_interior if r['scene']=='pooled']),
         S3_guards=list(optics_guards(rows)),S3_interior=interior,milestone=terminal_summary(aggregate,query,causes),files=files))
 
 

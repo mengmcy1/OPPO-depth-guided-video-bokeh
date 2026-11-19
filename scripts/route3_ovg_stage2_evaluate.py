@@ -1,6 +1,7 @@
 """Formal P1/P2 optical pairings and K16 ray attribution for appearance stage."""
 import argparse
 import time
+from dataclasses import replace
 
 import cv2
 import numpy as np
@@ -14,7 +15,7 @@ from route3_ovg_1b_prime_evaluate import A, ORIGINAL, PRIME_EMA
 from route3_ovg_1c_evaluate import case_frames, old_folder
 from route3_ovg_refocus_query import cache_path
 from route3_ovg_refocus_render import check_cache, merged_metrics
-from route3_ovg_stage2_train import (OUT, Model, Q_MIN, guard, load_checkpoint, original_B,
+from route3_ovg_stage2_train import (OUT, Model, Q_MIN, guard, original_B,
                                     label_appearance, tensor)
 from route3_ovg_subpixel import save_json, save_npz
 from route3_g3_r14_train import learned_hidden
@@ -22,9 +23,9 @@ from route3_s2a_evaluate import masks
 from route3_upper_bound_evaluate import display, exr, score
 from src.aperture_renderer import aperture_disk
 from src.footprint_order import apply_footprint_order
-from src.layered_aperture import merge_layers
+from src.layered_aperture import merge_layers, pixel_layer
 from src.ovg_appearance import boundary_candidate, boundary_layer, visible_layer
-from src.ovg_leakage import query_contribution
+from src.ovg_leakage import predicted_surfaces, query_contribution
 from src.ovg_optics import fixed_visible_surfels, raster, subcamera
 from src.prefix_transmittance import prefix_transmittance
 
@@ -33,6 +34,9 @@ TRUE='GT-visible-reference'
 STAGES=('1c','2a','2b')
 ATOL=dict(query_weight=.001,transmittance=.01)
 FLOORS=dict(visible=50.,combined=60.)
+RAY_DEFINITION='predicted visible surface and weighted Query depth'
+OLD_RAY_DEFINITION='GT 深度参照（旧定义）'
+DIAGNOSTICS=OUT/'diagnostics-predicted-rays'
 
 
 def path_for(stamp, name, frame):
@@ -66,8 +70,7 @@ def formal_layer(query, item, manifest, folder, row, depth):
     return cloud,dict(eligible_pixels=active,**metadata)
 
 
-def diagnostic_leakage(visible, first, hidden, K, entry, case, center, regions, target):
-    """Use the exact K16 rays and label focal plane for a single fixed comparison."""
+def leakage_region(entry,case,center,regions):
     root=geometry_root(entry['scene'])
     labels=data.load(root/'geometry'/(case['id']+'-K16.npz'),
                      ('known','hidden','object_id','depth_axial_m','aperture_xy'))
@@ -76,6 +79,12 @@ def diagnostic_leakage(visible, first, hidden, K, entry, case, center, regions, 
     same=(labels['object_id']==object_key[None])&labels['known']&~labels['hidden']
     region=regions['interior']&center['center_visible']&np.isin(object_key,fg)&same.all(0)
     region &= np.isfinite(labels['depth_axial_m']).all(0)&(labels['depth_axial_m']>0).all(0)
+    return labels,region
+
+
+def diagnostic_leakage(visible, first, hidden, K, entry, case, center, regions, target):
+    """Historical GT-depth attribution. Existing results are kept verbatim."""
+    labels,region=leakage_region(entry,case,center,regions)
     if not region.any():
         return dict(pixels=0,rays=0,nominal_focus_m=case['nominal_focus_m']), {}
     focus=case['nominal_focus_m']
@@ -97,7 +106,6 @@ def diagnostic_leakage(visible, first, hidden, K, entry, case, center, regions, 
     T,wq,w_front=map(np.stack,(T,wq,w_front))
     # The sequential attribution implementation is checked independently
     # against the actual renderer with a Query-indicator color.
-    from dataclasses import replace
     first_ray=raster(replace(combined,colors=(combined.source_frames==1).float()[:,None].expand(-1,3).contiguous()),
                      K,focus,offsets[:1],512,512)[0,...,0].cpu().numpy()[region]
     discrepancy=float(np.abs(first_ray-wq[0]).max())
@@ -136,6 +144,86 @@ def diagnostic_leakage(visible, first, hidden, K, entry, case, center, regions, 
                 pixel_SSE_change=delta,per_ray_SSE_change=effect)
 
 
+def ray_effect(before, after, truth):
+    d0,d1=before.mean(0),after.mean(0)
+    s0,s1=display(d0),display(d1)
+    delta=((s1-truth)**2-(s0-truth)**2).sum(-1)
+    linear=d1-d0
+    secant=np.divide(s1-s0,linear,out=np.zeros_like(linear),where=abs(linear)>1e-12)
+    effect=((after-before)*secant[None]*(s1+s0-2*truth)[None]/len(before)).sum(-1)
+    if not np.allclose(effect.sum(0),delta,atol=2e-6,rtol=2e-3):
+        raise ValueError('Per-ray SSE attribution fails conservation')
+    return delta,effect,float(np.square(s0-truth).sum()),float(np.square(s1-truth).sum())
+
+
+RAY_CAUSES=('below_weight_or_nonharmful','front_order','surface_gap','color_vs_F2')
+
+
+def classify_rays(query_weight,z_q,z_v,transmittance,effect):
+    harmful=(query_weight>=ATOL['query_weight']) & (effect>0)
+    if np.any(harmful & (~np.isfinite(transmittance) | (z_q<=0))):
+        raise ValueError('A contributing Query ray has no valid predicted depth or transmittance')
+    front=(z_v>0)&(z_q<z_v)
+    return np.where(harmful,np.where(front,1,np.where(transmittance>=ATOL['transmittance'],2,3)),0).astype(np.uint8)
+
+
+def trace_predicted(visible,base,combined,K,focus,offset,region):
+    intr,view=subcamera(K,focus,offset)
+    weight,zq,zv,dominant_weight=predicted_surfaces(combined,intr,view,region,len(visible.means),len(base.means))
+    T=prefix_transmittance(visible,intr,view,zq)
+    return [m[region].cpu().numpy() for m in (weight,zq,zv,dominant_weight,T)]
+
+
+def corrected_leakage(visible,first,hidden,K,entry,case,center,regions,target,legacy):
+    labels,region=leakage_region(entry,case,center,regions)
+    focus=case['nominal_focus_m']
+    if not region.any():
+        return dict(pixels=0,rays=0,nominal_focus_m=focus),{}
+    offsets=tensor(labels['aperture_xy'].astype(np.float32))
+    base=merge_layers(visible,first)
+    combined=merge_layers(base,hidden)
+    if legacy and legacy.is_file():
+        with np.load(legacy) as f:
+            np.testing.assert_array_equal(f['mask'],region)
+            delta,effect=f['pixel_SSE_change'],f['per_ray_SSE_change']
+            old_q=f['query_weight']
+        before_sse=after_sse=None
+        origin='preserved K16 ray image SSE'
+    else:
+        bg=background_samples(dict(tiers='B',entry=entry),K,focus,offsets,(512,512))
+        before=raster(base,K,focus,offsets,512,512,bg).cpu().numpy()[:,region]
+        after=raster(combined,K,focus,offsets,512,512,bg).cpu().numpy()[:,region]
+        delta,effect,before_sse,after_sse=ray_effect(before,after,target[region])
+        old_q=None
+        origin='K16-only diagnostic render; no changes to the main evaluation'
+    masks=tensor(region)
+    traces=[trace_predicted(visible,base,combined,K,focus,xy,masks) for xy in offsets]
+    wq,zq,zv,wv,T=map(np.stack,zip(*traces))
+    if old_q is not None:
+        np.testing.assert_allclose(wq,old_q,atol=2e-4,rtol=0)
+    indicator=(torch.arange(len(combined.means),device=K.device)>=len(base.means))
+    probe=raster(replace(combined,colors=indicator.float()[:,None].expand(-1,3).contiguous()),
+                 K,focus,offsets[:1],512,512)[0,...,0].cpu().numpy()[region]
+    discrepancy=float(np.max(np.abs(probe-wq[0])))
+    if discrepancy>2e-4:
+        raise ValueError(f'Query attribution differs from the gsplat indicator: {discrepancy}')
+    code=classify_rays(wq,zq,zv,T,effect)
+    gt_inv=1/labels['depth_axial_m'][:,region]
+    inverse_error=np.divide(1.,zv,out=np.full_like(zv,np.nan),where=zv>0)-gt_inv
+    groups=[dict(cause=c,rays=int((code==i).sum()),positive_SSE=float(np.maximum(effect[code==i],0).sum()),
+                 net_SSE=float(effect[code==i].sum())) for i,c in enumerate(RAY_CAUSES)]
+    return dict(pixels=int(region.sum()),rays=wq.size,nominal_focus_m=focus,classes=groups,
+                q_indicator_max_abs=discrepancy,delta_SSE=float(delta.sum()),
+                significant_query_rays=int((wq>=ATOL['query_weight']).sum()),
+                harmful_rays=int((code>0).sum()),positive_SSE=float(np.maximum(effect,0).sum()),
+                no_hidden_SSE=before_sse,with_hidden_SSE=after_sse,
+                reference=RAY_DEFINITION,sse_source=origin,thresholds=ATOL),dict(
+                    mask=region,T=np.where(zq>0,T,np.nan),query_weight=wq,
+                    query_depth_m=np.where(zq>0,zq,np.nan),dominant_visible_depth_m=np.where(zv>0,zv,np.nan),
+                    dominant_visible_weight=wv,dominant_visible_inverse_depth_minus_GT_inv_m=inverse_error,
+                    cause=code,pixel_SSE_change=delta,per_ray_SSE_change=effect)
+
+
 def load_geometry(name,frame,folder):
     prior=old_folder(folder)
     maps=data.load(folder/'visible-depths.npz',(SELECTED,TRUE))
@@ -145,6 +233,152 @@ def load_geometry(name,frame,folder):
 
 def method_row(rows,method):
     return next(x for x in rows if x['method']==method)
+
+
+@torch.no_grad()
+def toy_leakage_check():
+    """Three separated pixels in one frame: covered behind, in front, gap."""
+    guard(gpu=True)
+    size=48
+    K=tensor(np.asarray([[64,0,24],[0,64,24],[0,0,1]],np.float32))
+    rgb=K.new_full((size,size,3),.1)
+    foreground=K.new_full((size,size),2.)
+    samples=[(23,7),(23,23),(23,39)]
+    region=torch.zeros((size,size),device=K.device,dtype=torch.bool)
+    for xy in samples:
+        region[xy]=True
+    covered=region.clone()
+    covered[samples[-1]]=False
+    view=torch.eye(4,device=K.device)
+    visible=pixel_layer(rgb,foreground,K,view,covered,sigma_pixels=1.,opacity=.998,subdivisions=1)
+    depths=K.new_full((size,size),3.)
+    depths[samples[1]]=1.
+    query=pixel_layer(rgb+.8,depths,K,view,region,1,sigma_pixels=1.,opacity=.55,subdivisions=1)
+    second_gap=region&~covered
+    distant=pixel_layer(rgb+.8,depths+1,K,view,second_gap,1,sigma_pixels=1.,opacity=.70,subdivisions=1)
+    combined=merge_layers(visible,merge_layers(query,distant))
+    zero=K.new_zeros((1,2))
+    before=raster(visible,K,2.,zero,size,size)[:,region].cpu().numpy()
+    after=raster(combined,K,2.,zero,size,size)[:,region].cpu().numpy()
+    _,effect,_,_=ray_effect(before,after,display(before[0]))
+    w,zq,zv,wv,T=trace_predicted(visible,visible,combined,K,2.,zero[0],region)
+    codes=classify_rays(w,zq,zv,T,effect[0])
+    assert codes.tolist()==[3,1,2] and 3.<zq[-1]<4.
+    print('STAGE2_LEAKAGE_TOY', [RAY_CAUSES[i] for i in codes], flush=True)
+    audit=dict(passed=True,definition=RAY_DEFINITION,thresholds=ATOL,
+               cases=[dict(setup=s,cause=RAY_CAUSES[int(c)],query_weight=float(w[i]),query_depth_m=float(zq[i]),
+                           dominant_visible_depth_m=float(zv[i]) if zv[i]>0 else None,
+                           dominant_visible_weight=float(wv[i]),T_at_query_depth=float(T[i]),
+                           SSE_increase=float(effect[0,i]))
+                      for i,(s,c) in enumerate(zip(('covered_query_behind','covered_query_in_front','foreground_hole'),codes))])
+    save_json(DIAGNOSTICS/'toy.json',audit)
+
+
+def zero_subsets(prediction,combined,pinhole,split,regions,edge,metric):
+    interior=regions['interior']
+    marked=split&interior
+    scored=score(prediction,pinhole,
+        dict(b0_GT_interior=~split&interior,b1_all=split,GT_boundary=edge,b1_GT_interior=marked),metric)
+    def sse(image,mask):
+        return float(np.square(image[mask].astype(np.float64)-pinhole[mask]).sum())
+    return dict(visible_only=scored,b1_pixels=int(split.sum()),b1_GT_interior_pixels=int(marked.sum()),
+                GT_interior_pixels=int(interior.sum()),visible_GT_interior_SSE=sse(prediction,interior),
+                visible_b1_GT_interior_SSE=scored['b1_GT_interior']['sse'],
+                combined_GT_interior_SSE=sse(combined,interior),
+                combined_b1_GT_interior_SSE=sse(combined,marked))
+
+
+@torch.no_grad()
+def refresh_diagnostics(stage):
+    """Recompute only nominal K16 ray attribution and the requested zero masks."""
+    guard(gpu=True)
+    if not read(DIAGNOSTICS/'toy.json')['passed']:
+        raise ValueError('Run the predicted-surface toy check before real cases')
+    stamp=DIAGNOSTICS/f'{stage}.json'
+    if stamp.is_file():
+        return
+    torch.cuda.reset_peak_memory_stats()
+    start=time.monotonic()
+    model=Model()
+    if stage!='1c':
+        n=10000 if stage=='2a' else 30000
+        ck=torch.load(OUT/stage/f'step-{n:06d}.pt',map_location='cpu',weights_only=True)
+        model.heads.load_state_dict(ck['ema'])
+    metric=lpips()
+    leaks,zeros=[],[]
+    for name,frame,entry,_,_,_,manifest,items,folder in case_frames():
+        guard()
+        trial=original_B(name,frame)
+        x,y,g,first=model.observations(trial,native=True)
+        ap=model.appearance(g,x,first)
+        b=boundary_candidate(ap)&(tensor(first['q'])>=Q_MIN)
+        vis=visible_layer(ap,x,b)
+        first_bg=None if stage=='1c' else boundary_layer(ap,x,b,tensor(first['color']),tensor(first['depth']))
+        K=x['K'][0]
+        saved_focus=read(folder/'focus.json')['rows']
+        old=old_folder(folder)
+        if stage=='1c':
+            past_focus=read(old/'R1.json')['rows']
+            maps=load_geometry(name,frame,folder)
+            original_cloud=fixed_visible_surfels(dict(depth1=tensor(maps[ORIGINAL])[None]),x)
+        pinhole=data.load(entry['input_npz'],('rgb_srgb',))['rgb_srgb']
+        for item in items:
+            case=item['case']
+            cid,protocol,fstop=case['id'],case['protocol'],case['fstop']
+            if protocol!='P2' or fstop!=1.4:
+                continue
+            dest=DIAGNOSTICS/stage/name/f'f{frame:03d}'/cid
+            cached=dest/'case.json'
+            if cached.is_file():
+                prev=read(cached)
+                leaks.extend(prev['leakage'])
+                if prev['zero'] is not None:
+                    zeros.append(prev['zero'])
+                continue
+            score_dir=path_for(stage,name,frame)/protocol/cid
+            center,regions=canonical_shapes(name,frame,y,case)
+            rows=[r for r in saved_focus if r['id']==cid and r['protocol']==protocol]
+            focus_row=method_row(rows,SELECTED)
+            second,_=formal_layer(model.query,item,manifest,folder,focus_row,g['depth1'][0])
+            groups=[(stage,vis,first_bg,second)]
+            if stage=='1c':
+                orig_row=method_row([r for r in past_focus if r['id']==cid and r['protocol']==protocol],ORIGINAL)
+                query,_=formal_layer(model.query,item,manifest,old,orig_row,tensor(maps[ORIGINAL]))
+                groups.append((ORIGINAL,original_cloud,None,query))
+            target=display(exr(geometry_root(name)/'dof'/(cid+'.exr')))
+            meta=dict(stage=stage,scene=name,frame=frame,id=cid,protocol=protocol,aperture=fstop,
+                      nominal_focus_m=case['nominal_focus_m'])
+            local=[]
+            for method,v,f,q in groups:
+                ray,arrays=corrected_leakage(v,f,q,K,entry,case,center,regions,target,
+                                             score_dir/f'leakage-{method}.npz')
+                local.append(dict(meta,method=method,**ray))
+                if arrays:
+                    save_npz(dest/f'leakage-{method}.npz',**arrays)
+            # The zero-aperture ray and b are independent of nominal focal
+            # distance. Record one sample per representative frame.
+            zero_row=None
+            if case['nominal_focus_m']==1.4:
+                reference_split='none' if stage=='1c' else 'retrieved'
+                with np.load(score_dir/f'OVG-EMA-{reference_split}-Q1.npz') as f:
+                    combined=f['zero']
+                zero=K.new_zeros((1,2))
+                z=display(raster(vis,K,focus_row['实际对焦距离_m'],zero,512,512)[0].cpu().numpy())
+                edge=y['depth_boundary'][0].cpu().numpy()
+                zero_row=dict(meta,**zero_subsets(z,combined,pinhole,b.cpu().numpy(),regions,edge,metric))
+                zeros.append(zero_row)
+            leaks.extend(local)
+            save_json(cached,dict(leakage=local,zero=zero_row))
+            print('STAGE2_PREDICTED_RAYS',stage,name,frame,cid,flush=True)
+        model.query.store.inputs.cache_clear()
+        model.query.store.active.cache_clear()
+    assert len(zeros)==9 and len(leaks)==(36 if stage=='1c' else 18)
+    save_json(stamp,dict(stage=stage,leakage=leaks,zero=zeros,seconds=time.monotonic()-start,
+                        peak_MiB=torch.cuda.max_memory_allocated()/2**20,
+                        definition=RAY_DEFINITION,legacy_definition=OLD_RAY_DEFINITION,
+                        focus='K16 nominal label focal plane, not the actual P1/P2 focus of the main evaluation',
+                        dominant_surface='largest depth-sorted visible-only Gaussian weight; excludes first-pass background and second-pass Query',
+                        GT_boundary='unexpanded GT depth boundary; b1 includes overlap with the GT boundary'))
 
 
 @torch.no_grad()
@@ -256,7 +490,7 @@ def evaluate(stage):
                         local_rows[n:n]=[dict(r,split=split_type,b=float(mask.float().mean())) for r in base_rows]
                     else:
                         paired('OVG',weight,split_type,vis,front_layer,second,focus,f2,float(mask.float().mean()),false)
-                    if primary and (stage,weight,split_type) in (('1c','EMA','none'),('2b','EMA','retrieved')):
+                    if primary and (stage,weight,split_type)==('1c','EMA','none'):
                         stats,rays=diagnostic_leakage(vis,front_layer,second,K,entry,case,center,regions,target)
                         local_leaks.append(dict(common,method=stage,**stats))
                         save_npz(path.parent/f'leakage-{stage}.npz',**rays)
@@ -307,10 +541,20 @@ def evaluate(stage):
                 truth_visibility_ray_focus='K16 exact nominal-focus pupil projection; OVG evaluation otherwise official P2/P1',
                 GT_reference='same placed second-pass layer as 1b′ EMA, as in 1c',
                 boundary_oracle='at predicted boundary candidates with valid captured B_gt; depth anchor unchanged')
+    if stage=='2b':
+        for endpoint in STAGES:
+            refresh_diagnostics(endpoint)
     save_json(OUT/f'S3-{stage}.json',result)
 
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('stage',choices=STAGES)
-    evaluate(p.parse_args().stage)
+    p.add_argument('stage',choices=(*STAGES,'toy'))
+    p.add_argument('--diagnostics-only',action='store_true')
+    arg=p.parse_args()
+    if arg.stage=='toy':
+        toy_leakage_check()
+    elif arg.diagnostics_only:
+        refresh_diagnostics(arg.stage)
+    else:
+        evaluate(arg.stage)
