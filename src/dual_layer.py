@@ -28,7 +28,18 @@ def depth_band(depth,fx,focus,aperture,multiplier=1.5,relative_jump=.03):
     for r in np.unique(footprint[edge]):
         seed=(edge&(footprint==r)).astype(np.uint8)
         kernel=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(int(r)*2+1,int(r)*2+1))
-        band|=cv2.dilate(seed,kernel)
+        if r >= 12 and np.count_nonzero(seed) <= 128:
+            # Large radii often come from only a few depth discontinuities.
+            # Stamp the same centered OpenCV kernel at those seed pixels.
+            h,w=band.shape
+            for y,x in zip(*np.nonzero(seed)):
+                y0,y1=max(0,y-r),min(h,y+r+1)
+                x0,x1=max(0,x-r),min(w,x+r+1)
+                band[y0:y1,x0:x1] |= kernel[y0-y+r:y1-y+r,x0-x+r:x1-x+r]
+        else:
+            band |= cv2.dilate(seed,kernel)
+        if band.all():
+            break
     return band.astype(bool),edge,radius
 
 

@@ -68,27 +68,82 @@ def placement_map(desc,entry):
     return a.astype(np.float32),b.astype(np.float32),valid
 
 
+def query_memory(source_root, frames):
+    if source_root is None:
+        return None
+    with np.load(source_root/'memory/verification.npz') as data:
+        verified = data['verified']
+    with np.load(source_root/'memory/verified-index.npz') as data:
+        entry_ids = data['observation_entry_id']
+    rows = json.loads((source_root/'models/calibration/summary.json').read_text())['rows']
+    cal = np.array([calibration_applied(next(row for row in rows if row['frame']==f)) for f in frames])
+    return verified, entry_ids, cal
+
+
+def query_input_512(views, target, band, max_candidates, max_queries, memory=None):
+    """Build input-only Query features from frozen source views and one target depth map."""
+    frames = np.array([view['frame'] for view in views])
+    frame, depth, K, pose = (target[k] for k in ('frame','depth','K','c2w'))
+    pool = collect(depth,K,pose,band,views,frame)
+    n = len(pool['depth'])
+    xyz = np.empty((n,3),np.float32)
+    patches = np.empty((n,3,3,3),np.uint8)
+    extras = {k:np.empty(n,np.float32) for k in ('edge_distance','reprojection','FB','angle_radians')}
+    for slot,view in enumerate(views):
+        at = pool['slot']==slot
+        x,y = pool['source_xy'][at].T
+        z = view['depth'][y,x]
+        rays = np.c_[x+.5,y+.5,np.ones(len(x))]@np.linalg.inv(view['K']).T
+        xyz[at] = (rays*z[:,None])@view['c2w'][:3,:3].T+view['c2w'][:3,3]
+        for key in extras:
+            extras[key][at] = view[key][y,x]
+        for dy in (-1,0,1):
+            for dx in (-1,0,1):
+                pixels = view['rgb_srgb'][np.clip(y+dy,0,511),np.clip(x+dx,0,511)]
+                patches[at,dy+1,dx+1] = np.uint8(np.rint(pixels*255))
+    pool.update(position_world_estimated=xyz,source_frame_id=frames[pool['slot']],rgb_patch=patches,**extras)
+    q,audit = pack_queries(pool,band,max_candidates,max_queries)
+    valid = q['candidate_valid']
+    ix = np.maximum(q['candidate_indices'],0)
+
+    def gather(values):
+        if not n:
+            return np.zeros((*valid.shape,*values.shape[1:]),values.dtype)
+        use = valid.reshape(*valid.shape,*([1]*(values.ndim-1)))
+        return np.where(use,values[ix],0)
+
+    features = (query_features(pool,q['candidate_indices'],valid)[0]['features']
+                if n else np.zeros((*valid.shape,19),np.float32))
+    inp = dict(**q,features=features,position_world=gather(xyz),
+               source_slots=gather(pool['slot']),source_xy=gather(pool['source_xy']),
+               target_K=K,target_c2w=pose,target_depth=depth,band=band)
+    source_depth = np.zeros(valid.shape,np.float32)
+    for slot,view in enumerate(views):
+        at = valid&(inp['source_slots']==slot)
+        xy = inp['source_xy'][at]
+        source_depth[at] = view['depth'][xy[:,1],xy[:,0]]
+    inp['source_depth'] = source_depth
+    if memory is not None:
+        verified, entry_ids, cal = memory
+        ids = observation_flat_index(pool['slot'],pool['source_xy'])
+        inp.update(memory_verified=gather(verified[ids]),memory_entry_id=gather(entry_ids[ids]),
+                   calibration_applied=cal,target_calibration_applied=np.array(cal[np.flatnonzero(frames==frame)[0]]))
+    else:
+        inp.update(memory_verified=np.zeros(valid.shape,bool),memory_entry_id=np.full(valid.shape,-1,np.int32),
+                   calibration_applied=np.ones(len(views),bool),target_calibration_applied=np.array(True))
+    return inp,audit
+
+
 def input_cache_512(name,desc,out):
     """512/13 inference consumes no hidden GT, labels or evaluation masks."""
     views=views_for(desc,ALL,512);context=out/'context.npz'
     if not context.exists():save_npz(context,dict(frames=np.array(ALL),images=np.stack([v['rgb_linear'] for v in views]),depth=np.stack([v['depth'] for v in views]),K=views[0]['K'],c2w=np.stack([v['c2w'] for v in views])))
     rows=[]
+    memory=query_memory(desc['source_root'],ALL)
     for entry in desc['entries']:
         f=entry['frame'];target=next(v for v in views if v['frame']==f);band=np.zeros((512,512),bool)
         for c in entry['cases']:band|=depth_band(target['depth'],target['K'][0,0],c['focus_m'],.05/(2*c['fstop']))[0]
-        rawpool=collect(target['depth'],target['K'],target['c2w'],band,views,f);n=len(rawpool['depth']);xyz=np.empty((n,3),np.float32);patch=np.empty((n,3,3,3),np.uint8);extras={k:np.empty(n,np.float32) for k in ['edge_distance','reprojection','FB','angle_radians']}
-        for slot,v in enumerate(views):
-            at=rawpool['slot']==slot;x,y=rawpool['source_xy'][at].T;z=v['depth'][y,x];r=np.c_[x+.5,y+.5,np.ones(len(x))]@np.linalg.inv(v['K']).T;xyz[at]=(r*z[:,None])@v['c2w'][:3,:3].T+v['c2w'][:3,3]
-            for k in extras:extras[k][at]=v[k][y,x]
-            for dy in [-1,0,1]:
-                for dx in [-1,0,1]:patch[at,dy+1,dx+1]=np.uint8(np.rint(v['rgb_srgb'][np.clip(y+dy,0,511),np.clip(x+dx,0,511)]*255))
-        rawpool.update(position_world_estimated=xyz,source_frame_id=np.array(ALL)[rawpool['slot']],rgb_patch=patch,**extras);q,qa=pack_queries(rawpool,band,8,262144);valid=q['candidate_valid'];ix=np.maximum(q['candidate_indices'],0);gather=lambda x:np.where(valid.reshape(*valid.shape,*([1]*(x.ndim-1))),x[ix],0) if n else np.zeros((*valid.shape,*x.shape[1:]),x.dtype);features=query_features(rawpool,q['candidate_indices'],valid)[0]['features'] if n else np.zeros((*valid.shape,19),np.float32);inp=dict(**q,features=features,position_world=gather(xyz),source_slots=gather(rawpool['slot']),source_xy=gather(rawpool['source_xy']),target_K=target['K'],target_c2w=target['c2w'],target_depth=target['depth'],band=band);source_depth=np.zeros(valid.shape,np.float32)
-        for slot,v in enumerate(views):
-            at=valid&(inp['source_slots']==slot);xy=inp['source_xy'][at];source_depth[at]=v['depth'][xy[:,1],xy[:,0]]
-        inp['source_depth']=source_depth;inp['memory_verified']=np.zeros(valid.shape,bool);inp['memory_entry_id']=np.full(valid.shape,-1,np.int32);s=desc['source_root']
-        if s is not None:
-            status=np.load(s/'memory/verification.npz')['verified'];entries=np.load(s/'memory/verified-index.npz')['observation_entry_id'];idx=observation_flat_index(rawpool['slot'],rawpool['source_xy']);inp['memory_verified']=gather(status[idx]);inp['memory_entry_id']=gather(entries[idx]);cal=json.loads((s/'models/calibration/summary.json').read_text())['rows'];inp['calibration_applied']=np.array([calibration_applied(next(x for x in cal if x['frame']==frame)) for frame in ALL]);inp['target_calibration_applied']=np.array(calibration_applied(next(x for x in cal if x['frame']==f)))
-        else:inp['calibration_applied']=np.ones(13,bool);inp['target_calibration_applied']=np.array(True)
+        inp,qa=query_input_512(views,target,band,8,262144,memory)
         local=out/f'f{f:03d}';local.mkdir(exist_ok=True);path=local/'inputs.npz'
         if not path.exists():save_npz(path,inp)
         for c in entry['cases']:rows.append(dict(frame=f,case=c,input=str(path),target=None,query_stats=qa))
