@@ -135,13 +135,13 @@ def neighbors(index, n):
     return sorted((j for j in range(n) if index!=j),key=lambda j:(abs(index-j),j))[:2]
 
 
-def sample(item,device):
+def sample(item, device, *, b_loader=b_input):
     tier,key,index=item
     if tier=='B':
         frame=TRAIN_FRAMES[index]
         # Construct the observed-input dictionary before reading supervision.
-        current=b_input(key,frame)
-        other=[b_input(key,TRAIN_FRAMES[j]) for j in neighbors(index,len(TRAIN_FRAMES))]
+        current=b_loader(key,frame)
+        other=[b_loader(key,TRAIN_FRAMES[j]) for j in neighbors(index,len(TRAIN_FRAMES))]
         inputs=input_record(current,other)
         target=load(OUT/'B'/key/'pinhole-subpixels'/f'f{frame:03d}.npz',LABELS)
     else:

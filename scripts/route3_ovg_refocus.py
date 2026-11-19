@@ -87,20 +87,25 @@ def per_frame_depths(frame,entry,other,source,target,name,model_specs):
     return depths,valid,surface,heads
 
 
-def focus_records(name, frame, cases, depths, valid, surface):
+def focus_records(name, frame, cases, depths, valid, surface, *, methods=METHODS, common_background=None):
     gt_dir=geometry_root(name)
     g=data.load(gt_dir/'geometry'/f'f{frame:03d}-center.npz',('depth_axial_m','K','center_visible','object_id'))
     foreground=data.load(gt_dir/'scene-geometry.npz',('foreground_object_ids',))['foreground_object_ids']
     background=g['center_visible'] & ~np.isin(g['object_id'],foreground) & valid_depth(g['depth_axial_m'])
     # Use a single common fitting set before the predetermined train/holdout split.
-    background &= np.logical_and.reduce(list(valid.values()))
+    if common_background is None:
+        background &= np.logical_and.reduce(list(valid.values()))
+    else:
+        if np.any(common_background & ~background):
+            raise ValueError('Supplied P1 background includes a non-background pixel')
+        background = common_background
     fits={k:fit_background(g['depth_axial_m'],z,background) for k,z in depths.items()}
     subjects={f:subject_mask(g,f) for f in (1.4,5.)}
     results=[]
     for item in cases:
         c=item['case']
         nominal,protocol=c['nominal_focus_m'],c['protocol']
-        for method in METHODS:
+        for method in methods:
             key=OLD if method==OLD_FIXED else method
             depth=depths[key]
             fit=fits[key]

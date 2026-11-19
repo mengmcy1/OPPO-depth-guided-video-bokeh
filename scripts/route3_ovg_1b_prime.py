@@ -55,12 +55,12 @@ def probe_cases():
 
 
 @torch.inference_mode()
-def zero_monitor(net, one_visible=False):
+def zero_monitor(net, one_visible=False, *, sample=data.sample, method_focus=False):
     zero = PROFILE['zero_aperture']
     scores = []
     for name,entry,case in probe_cases():
         item = ('B', name, data.TRAIN_FRAMES.index(entry['frame']))
-        x,_ = data.sample(item,'cuda')
+        x,_ = sample(item,'cuda')
         pred = net(x, protect_residual=True, render_heads=False)
         visible = fixed_visible_surfels(pred,x)
         size = tuple(pred['depth1'].shape[-2:])
@@ -77,7 +77,16 @@ def zero_monitor(net, one_visible=False):
         if one_visible:
             return row
         parents,gt,background = b_oracle(name,entry['frame'])
-        support = depth_band(obs['depth'], float(K[0,0]), focus, .05/(2*case['fstop']))[0]
+        band_depth = obs['depth']
+        if method_focus:
+            from route3_depth_interface import subject_mask
+            from route3_ovg_1b_optical_data import geometry_root
+            target = data.load(geometry_root(name)/'geometry'/f'f{entry["frame"]:03d}-center.npz')
+            subject = subject_mask(target, case['nominal_focus_m'])
+            band_depth = pred['depth1'][0].cpu().numpy()
+            focus = float(np.median(band_depth[subject & (band_depth > 0)]))
+            row['focus_distance_m'] = focus
+        support = depth_band(band_depth, float(K[0,0]), focus, .05/(2*case['fstop']))[0]
         uv = np.floor(parents['uv']).astype(int).clip(0,511)
         parents = dict(parents, recoverable=parents['recoverable'] & support[uv[:,1],uv[:,0]])
         hidden,_ = place(parents,gt,background,pred['depth1'][0],K,512)

@@ -61,7 +61,7 @@ def coverage(row,band,old_pixels,old_candidate,new_candidate,new_input):
         valid_candidate_slots=int(new_input['candidate_valid'][n_in_band].sum()))
 
 
-def prepare_scene(frames):
+def prepare_scene(frames, *, output=OUT, reuse_audit=True):
     name,_,_,_,source,_,manifest,_,_=frames[0]
     views=original_views(source,manifest)
     memory=query_memory(source,manifest['frames'])
@@ -84,7 +84,7 @@ def prepare_scene(frames):
             old_candidate[orig['query_pixel'][orig['candidate_valid'].any(-1)]]=True
             old_case_control=None
             # Verify the factored builder against one unchanged 512/13 row.
-            if '122105' in name and frame==30:
+            if reuse_audit and '122105' in name and frame==30:
                 rebuilt,_=query_input_512(views,dict(target,depth=orig['target_depth']),orig['band'],
                                           manifest['M'],manifest['query_cap'],memory)
                 for key in orig.files:
@@ -124,7 +124,7 @@ def prepare_scene(frames):
                 for row in method_rows:
                     measured=coverage(row,case_bands[row['protocol'],row['id']],old_pixels,
                                       old_candidate,new_candidate,inp)
-                    rows.append(dict(measured,query_applicable=True,cache_path=str(inp_file.relative_to(OUT)),
+                    rows.append(dict(measured,query_applicable=True,cache_path=str(inp_file.relative_to(output)),
                                      cache_union_pixels=audit['full_band_queries']))
                 del inp
         save_npz(folder/'R2-bands.npz',**band_masks)

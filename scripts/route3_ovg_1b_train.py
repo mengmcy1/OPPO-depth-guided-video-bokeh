@@ -1,5 +1,6 @@
 """Continue 1a at the fixed 1b mixture with EMA and paired validation."""
 import argparse
+import hashlib
 from collections import Counter, defaultdict
 import os
 import subprocess
@@ -49,14 +50,14 @@ def ema_update(net, ema):
             ema[name].lerp_(p, 1. - CONFIG['ema_decay'])
 
 
-def evaluate(net, step, store_predictions=False, *, fixed=False, compare_gate_off=False, output=OUT):
+def evaluate(net, step, store_predictions=False, *, fixed=False, compare_gate_off=False, output=OUT, sample=data.sample):
     """Compare fusion, refinement and best hard prior on identical pixels."""
     net.eval()
     totals = defaultdict(Counter)
     rows = []
     with torch.inference_mode():
         for item in data.inventory('dev')['B']:
-            x, y = data.sample(item, 'cuda')
+            x, y = sample(item, 'cuda')
             pred = net(x, protect_residual=fixed, render_heads=not fixed)
             available = x['prior_conf'] > 0
             gt_inverse = y['depth1'].clamp_min(.05).reciprocal()
@@ -100,7 +101,7 @@ def evaluate(net, step, store_predictions=False, *, fixed=False, compare_gate_of
                 alpha_back_for_single_depth='undefined; null', data_split='39 development frames')
 
 
-def training_objective(net, item, rng, generator, *, fixed=False):
+def training_objective(net, item, rng, generator, *, fixed=False, sample=data.sample):
     tier, key, index = item
     opts = CONFIG['optical_train']
     weights = CONFIG['loss_weights']
@@ -108,7 +109,7 @@ def training_objective(net, item, rng, generator, *, fixed=False):
         x, heldout, common = training_input(key, index, 'cuda')
         truth_geometry = None
     else:
-        x, truth_geometry = data.sample(item, 'cuda')
+        x, truth_geometry = sample(item, 'cuda')
         common = torch.ones(x['rgb'].shape[-2:], device='cuda', dtype=torch.bool)
     pred = net(x, protect_residual=fixed, render_heads=not fixed)
     if tier == 'R':
@@ -187,20 +188,29 @@ def check():
     save_json(OUT/'P1/optical-batch-verified.json', dict(passed=True, rows=rows))
 
 
-def train(*, output=OUT, profile=None, monitor=None):
+def training_pool():
+    pool = data.inventory('train')
+    pool['R'] = list(real_inventory())
+    return pool
+
+
+def train(*, output=OUT, profile=None, monitor=None, sample=data.sample, initialization=None,
+          steps=None, eval_steps=None, fixed_pool=None):
+    steps = steps or CONFIG['steps']
+    eval_steps = eval_steps or CONFIG['eval_steps']
+    run_config = dict(CONFIG, steps=steps, eval_steps=list(eval_steps))
     fixed = profile is not None
     probabilities = CONFIG['batch_probability']
     for path in ('P1/prefix.json', 'P1/card-audit/result.json', 'P1/optical-batch-verified.json'):
         if not read(OUT/path)['passed']:
             raise RuntimeError(f'P1 failed: {path}')
-    if fixed and not read(output/'Q1/check.json')['passed']:
+    if fixed and initialization is None and not read(output/'Q1/check.json')['passed']:
         raise RuntimeError('Q1 fixed-primitive check failed')
-    pool = data.inventory('train')
-    pool['R'] = list(real_inventory())
+    pool = fixed_pool if fixed_pool is not None else training_pool()
     if not all(pool[t] for t in probabilities):
         raise RuntimeError(f'1b required tier missing: {[t for t in probabilities if not pool[t]]}')
     torch.manual_seed(CONFIG['seed'])
-    net = load_model()
+    net = load_model(initialization) if initialization is not None else load_model()
     retained_normal = []
     if fixed:
         net.footprint.requires_grad_(False)
@@ -212,6 +222,14 @@ def train(*, output=OUT, profile=None, monitor=None):
     rng = np.random.default_rng(CONFIG['seed'])
     g = torch.Generator(device='cuda').manual_seed(CONFIG['seed'])
     ema = shadow(net)
+    initialization_note = '1a round 2 fixed 30k model parameters; reset AdamW for the changed objective'
+    if initialization is not None:
+        previous = torch.load(initialization, weights_only=True, map_location='cpu')
+        opt.load_state_dict(previous['optimizer'])
+        for name, value in ema.items():
+            value.copy_(previous['ema'][name])
+        initialization_note = str(initialization.relative_to(data.ROOT)) + ' (raw, AdamW and EMA)'
+    batch_digest = hashlib.sha256()
     counts, active, curve, joins = Counter(), Counter(), [], []
     start_at = 1
     checkpoints = output/'checkpoints'
@@ -235,11 +253,11 @@ def train(*, output=OUT, profile=None, monitor=None):
         active.update(history['active'])
         curve, joins = history['curve'], history['joins']
     start = time.monotonic()
-    for i in range(start_at, CONFIG['steps']+1):
+    for i in range(start_at, steps+1):
         if i == start_at or i % 100 == 1:
             guard()
-            pool = data.inventory('train')
-            pool['R'] = list(real_inventory())
+            if fixed_pool is None:
+                pool = training_pool()
             groups = groups_G(pool)
             sizes = {k: len(v) for k,v in pool.items()}
             if not joins or sizes != joins[-1]['counts']:
@@ -247,9 +265,10 @@ def train(*, output=OUT, profile=None, monitor=None):
         tier = str(rng.choice(list(probabilities), p=list(probabilities.values())))
         items = groups[int(rng.integers(len(groups)))] if tier == 'G' else pool[tier]
         item = items[int(rng.integers(len(items)))]
+        batch_digest.update(repr(item).encode() + b'\n')
         net.train()
         opt.zero_grad(set_to_none=True)
-        loss, detail, stats, hidden = training_objective(net, item, rng, g, fixed=fixed)
+        loss, detail, stats, hidden = training_objective(net, item, rng, g, fixed=fixed, sample=sample)
         loss.backward()
         norm = torch.nn.utils.clip_grad_norm_(net.parameters(), 5., error_if_nonfinite=True)
         opt.step()
@@ -270,10 +289,10 @@ def train(*, output=OUT, profile=None, monitor=None):
                           peak_MiB=torch.cuda.max_memory_allocated()/2**20)
             save_json(output/'progress.json', report)
             print('OVG_1B_PRIME' if fixed else 'OVG_1B', i, dict(counts), dict(active), flush=True)
-        if i in CONFIG['eval_steps']:
+        if i in eval_steps:
             raw = state(net)
-            terminal = i == CONFIG['steps']
-            kwargs = dict(fixed=fixed, compare_gate_off=fixed and terminal, output=output)
+            terminal = i == steps
+            kwargs = dict(fixed=fixed, compare_gate_off=fixed and terminal, output=output, sample=sample)
             val_raw = evaluate(net, i, **kwargs)
             if monitor is not None:
                 val_raw['zero_aperture'] = monitor(net)
@@ -291,19 +310,20 @@ def train(*, output=OUT, profile=None, monitor=None):
             state_ema = dict(raw, **{k: p.cpu() for k,p in ema.items()})
             torch.save(dict(step=i, model=raw, ema=state_ema, optimizer=opt.state_dict(),
                             sampling_rng=rng.bit_generator.state, pixel_rng=g.get_state(),
-                            config=CONFIG, profile=profile), tmp)
+                            config=run_config, profile=profile), tmp)
             tmp.replace(path)
-    fractions = lambda collection: {k: v / CONFIG['steps'] for k,v in collection.items()}
-    save_json(output/'training.json', dict(steps=CONFIG['steps'], counts=counts, active=active, joins=joins,
+    fractions = lambda collection: {k: v / steps for k,v in collection.items()}
+    save_json(output/'training.json', dict(steps=steps, counts=counts, active=active, joins=joins,
               sampled_fractions=fractions(counts), active_fractions=fractions(active),
               curve=curve, seconds=elapsed_offset+time.monotonic()-start,
               peak_MiB=torch.cuda.max_memory_allocated()/2**20, profile=profile,
-              initialization='1a round 2 fixed 30k model parameters; reset AdamW for the changed objective',
+              initialization=initialization_note,
+              batch_sequence_sha256=batch_digest.hexdigest() if start_at==1 else None,
               GT_warmup=False, terminal_only=True))
-    plot_training(curve, output=output)
+    plot_training(curve, output=output, eval_steps=eval_steps)
 
 
-def plot_training(curve, *, output=OUT):
+def plot_training(curve, *, output=OUT, eval_steps=CONFIG['eval_steps']):
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
@@ -317,7 +337,7 @@ def plot_training(curve, *, output=OUT):
         axes[0].plot(steps[window-1:], np.convolve(loss, kernel, mode='valid'), label=tier)
     for weights in ('EMA', 'raw'):
         points = []
-        for step in CONFIG['eval_steps']:
+        for step in eval_steps:
             table = read(output/'validation'/f'step-{step:06d}.json')[weights]['rows']
             r = next(r for r in table if r['scene'] == 'pooled' and r['focus_m'] == 1.4 and
                      r['subset'] == 'any_prior' and r['method'] == 'OVG-Net')
