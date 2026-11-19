@@ -55,6 +55,18 @@ def select_prior(priors, confidence, logits):
     return base,weights
 
 
+def protect_inverse_depth(fused, final, priors, confidence):
+    """Attenuate the entire correction using input confidence and agreement."""
+    available = (confidence > 0) & torch.isfinite(priors) & (priors > 0)
+    inverse = torch.where(available, priors.clamp_min(1e-8).reciprocal(), 0.)
+    depth_splat = inverse[:, 1:2]
+    relative = (inverse - depth_splat).abs() / depth_splat.clamp_min(1e-8)
+    agreement = (available & (relative <= .03)).sum(1) >= 2
+    trusted = available[:, 1] & (confidence[:, 1] >= .6)
+    attenuation = torch.where(trusted, torch.where(agreement, .05, .20), 1.)
+    return fused + attenuation * (final - fused)
+
+
 class OVGNet(nn.Module):
     def __init__(self, encoder, learned_prior_selection=False):
         super().__init__()
@@ -140,7 +152,7 @@ class OVGNet(nn.Module):
             deltas.append(correction);all_costs.append(costs)
         return torch.stack(deltas)[:,None],torch.stack(all_costs),mask
 
-    def forward(self,sample):
+    def forward(self, sample, *, protect_residual=False, render_heads=True):
         rgb=sample['rgb']
         priors,conf=sample['prior_depth'],sample['prior_conf']
         motion=sample['motion']
@@ -182,13 +194,16 @@ class OVGNet(nn.Module):
         gate=(F.interpolate(mask[:,None].float(),rgb.shape[-2:],mode='nearest')[:,0]>.5)&~motion
         correction=resize(delta,rgb.shape[-2:])[:,0]*gate*conf_out
         inverse1=((fused+correction).clamp(.005,20)*torch.exp(1.25*g[:,0].tanh())).clamp(.005,20)
+        if protect_residual:
+            inverse1 = protect_inverse_depth(fused, inverse1, priors, conf)
         inverse2=inverse1*(.985-.94*g[:,1].sigmoid())
-        front_normal=F.normalize(torch.cat([g[:,2:4],-F.softplus(g[:,4:5])],1),dim=1)
-        footprint=self.footprint(phi)
         result=dict(depth1=inverse1.reciprocal(),depth2=inverse2.reciprocal(),inverse1=inverse1,inverse2=inverse2,
-                    alpha=self.coverage(phi)[:,0].sigmoid(),normal=front_normal,confidence=conf_out,
-                    sigma_px=.3+1.4*footprint[:,:2].sigmoid(),opacity=footprint[:,2].sigmoid(),
+                    alpha=self.coverage(phi)[:,0].sigmoid(),confidence=conf_out,
                     mv_mask=gate,fused_depth=fused.reciprocal())
+        if render_heads:
+            footprint=self.footprint(phi)
+            result.update(normal=F.normalize(torch.cat([g[:,2:4],-F.softplus(g[:,4:5])],1),dim=1),
+                          sigma_px=.3+1.4*footprint[:,:2].sigmoid(),opacity=footprint[:,2].sigmoid())
         if prior_weights is not None:
             result['prior_weights']=prior_weights
         return result
@@ -282,9 +297,14 @@ def geometry_loss(prediction, inputs, target, weights, *, boundary_sampling=None
         interior_weight, edge_weight = alpha_split_weights
         alpha_loss = (interior_weight * masked_mean(alpha_map, mask_alpha & ~alpha_edge) +
                       edge_weight * masked_mean(alpha_map, mask_alpha & alpha_edge))
-    normal=masked_mean(1-(prediction['normal']*target['normal']).sum(1).clamp(-1,1),target['valid_normal'])
     mv,mv_count=scene_consistency(prediction,inputs)
-    terms=dict(disp=disp,bimodal=bimodal,alpha=alpha_loss,normal=normal,mv=mv)
+    terms=dict(disp=disp,bimodal=bimodal,alpha=alpha_loss)
+    normal_count=valid.new_zeros((), dtype=torch.long)
+    if 'normal' in prediction:
+        terms['normal']=masked_mean(1-(prediction['normal']*target['normal']).sum(1).clamp(-1,1),
+                                    target['valid_normal'])
+        normal_count=target['valid_normal'].sum()
+    terms['mv']=mv
     total=sum(weights[k]*term for k,term in terms.items())
     return total,terms,dict(front=valid.sum(),dual=mask_dual.sum(),alpha=mask_alpha.sum(),
-                            normal=target['valid_normal'].sum(),mv=mv_count)
+                            normal=normal_count,mv=mv_count)

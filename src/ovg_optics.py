@@ -5,6 +5,7 @@ from torch.nn import functional as F
 from gsplat import rasterization
 
 from .aperture_renderer import GaussianScene
+from .layered_aperture import pixel_layer
 from .ovg_net import masked_mean, rays
 from .prefix_transmittance import differentiable_prefix_transmittance
 
@@ -28,6 +29,14 @@ def visible_surfels(pred, inputs):
     return GaussianScene(xyz.reshape(-1, 3), quat.reshape(-1, 4), scale.reshape(-1, 3), opacity.flatten(),
                          inputs['rgb'][0].permute(1, 2, 0).reshape(-1, 3),
                          torch.zeros(z.numel(), device=z.device, dtype=torch.long))
+
+
+def fixed_visible_surfels(pred, inputs):
+    depth = pred['depth1'][0]
+    K = inputs['K'][0]
+    return pixel_layer(inputs['rgb'][0].permute(1, 2, 0), depth, K,
+                       torch.eye(4, device=K.device, dtype=K.dtype),
+                       sigma_pixels=.7, opacity=.999, subdivisions=5)
 
 
 def subcamera(K, focus, offset):
@@ -81,9 +90,11 @@ def resized_prediction(pred, inputs, target, size):
     K[:, 1] *= h / old_h
     def nearest(value):
         return F.interpolate(value, size=size, mode='nearest-exact')
-    out = dict(pred, depth1=nearest(pred['depth1'][:, None])[:, 0],
-               normal=nearest(pred['normal']), opacity=nearest(pred['opacity'][:, None])[:, 0])
-    out['sigma_px'] = nearest(pred['sigma_px']) * K.new_tensor([w/old_w, h/old_h])[None, :, None, None]
+    out = dict(pred, depth1=nearest(pred['depth1'][:, None])[:, 0])
+    if 'normal' in pred:
+        out['normal'] = nearest(pred['normal'])
+        out['opacity'] = nearest(pred['opacity'][:, None])[:, 0]
+        out['sigma_px'] = nearest(pred['sigma_px']) * K.new_tensor([w/old_w, h/old_h])[None, :, None, None]
     # Sampling a center of the input's observed pixel footprint for visibility
     # is distinct from integrating the full-res photometric reference.
     obs = dict(inputs, rgb=F.interpolate(inputs['rgb'], size=size, mode='area'), K=K)

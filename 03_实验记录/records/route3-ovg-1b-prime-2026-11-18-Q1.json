@@ -1,0 +1,101 @@
+{
+  "profile": {
+    "protocol_revision": "7f98037",
+    "output": "outputs/route3-ovg-1b-prime-2026-11-18-01",
+    "training_and_data_config": "configs/route3-ovg-1b-2026-11-18.json",
+    "primitive": {
+      "subdivisions": 5,
+      "sigma_pixels": 0.7,
+      "opacity": 0.999
+    },
+    "residual_protection": {
+      "depthsplat_confidence": 0.6,
+      "inverse_depth_agreement": 0.03,
+      "single": 0.8,
+      "agreeing": 0.95
+    },
+    "zero_aperture": {
+      "visible_only_min_db": 50,
+      "merged_with_f2_min_db": 60,
+      "validation_probe": {
+        "frame": 30,
+        "protocol": "P2",
+        "nominal_focus_m": 1.4,
+        "fstop": 1.4
+      }
+    }
+  },
+  "check": {
+    "passed": true,
+    "sample": [
+      "B",
+      "metric-scene-122101-broad",
+      0
+    ],
+    "loss": 4.364837646484375,
+    "grad_norm": 32.35712814331055,
+    "terms": {
+      "disp": 1.2582871913909912,
+      "bimodal": 9.257453918457031,
+      "alpha": 1.4142810106277466,
+      "mv": 0.009793145582079887,
+      "occ": 0.8397412300109863,
+      "zero": 0.0005127731128595769,
+      "bokeh": 0.0014055566862225533
+    },
+    "counts": {
+      "front": 262144,
+      "dual": 3065,
+      "alpha": 262140,
+      "normal": 0,
+      "mv": 10655,
+      "occ_reveal": 1103,
+      "occ_block": 97271,
+      "zero_pixels": 65536,
+      "bokeh_pixels": 65536
+    },
+    "hidden_placement": {
+      "rule": "O1",
+      "total": 54788,
+      "valid_center_pixels": 54788,
+      "outside_or_no_reference": 0,
+      "violating": 5433,
+      "moved": 5433,
+      "dropped": 4996,
+      "scale_rotation_opacity_color_unchanged": true,
+      "center_motion": "along camera ray;scales remain fixed",
+      "background_filter_radius_px": null,
+      "shrunk": 5366,
+      "eligible": 101028,
+      "placed": 54788
+    },
+    "visible_only": {
+      "scene": "metric-scene-122104-broad",
+      "frame": 30,
+      "visible_gaussians": 6553600,
+      "visible_only": {
+        "sse": 2.563038887057864,
+        "pixels": 262144,
+        "psnr_db": 54.869059812141465
+      },
+      "visible_below_floor": false
+    },
+    "batch_seconds": 2.96588321775198,
+    "peak_allocated_MiB": 2667.99658203125,
+    "optimizer_updates": 0,
+    "gate_expected_residual_fraction": [
+      1.0,
+      0.2,
+      0.05
+    ]
+  },
+  "prior_source": "1a round 2 terminal 30k",
+  "reference_only": {
+    "cases": 72,
+    "paired_prior_placements_identical": true,
+    "seconds": 236.26482577994466,
+    "peak_allocated_MiB": 2621.22607421875,
+    "local_record": "outputs/route3-ovg-1b-prime-2026-11-18-01/Q3/reference/results.json"
+  },
+  "monitoring": "50 dB is a preflight implementation requirement; 50/60 dB are monitored each fixed validation without a training stop"
+}

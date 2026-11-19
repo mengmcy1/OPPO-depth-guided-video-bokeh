@@ -22,7 +22,7 @@ from route3_ovg_r2_train import groups_G, model
 from route3_ovg_subpixel import save_json
 from src.layered_aperture import merge_layers
 from src.ovg_net import geometry_loss, masked_mean, scene_consistency
-from src.ovg_optics import occlusion_loss, raster, resized_prediction, stratified_pupil, visible_surfels
+from src.ovg_optics import fixed_visible_surfels, occlusion_loss, raster, resized_prediction, stratified_pupil, visible_surfels
 
 
 def load_model(path=SOURCE/'checkpoints/step-030000.pt', key='model'):
@@ -49,7 +49,7 @@ def ema_update(net, ema):
             ema[name].lerp_(p, 1. - CONFIG['ema_decay'])
 
 
-def evaluate(net, step, store_predictions=False):
+def evaluate(net, step, store_predictions=False, *, fixed=False, compare_gate_off=False, output=OUT):
     """Compare fusion, refinement and best hard prior on identical pixels."""
     net.eval()
     totals = defaultdict(Counter)
@@ -57,7 +57,7 @@ def evaluate(net, step, store_predictions=False):
     with torch.inference_mode():
         for item in data.inventory('dev')['B']:
             x, y = data.sample(item, 'cuda')
-            pred = net(x)
+            pred = net(x, protect_residual=fixed, render_heads=not fixed)
             available = x['prior_conf'] > 0
             gt_inverse = y['depth1'].clamp_min(.05).reciprocal()
             errors = (x['prior_depth'].clamp_min(.05).reciprocal() - gt_inverse[:, None]).abs()
@@ -65,15 +65,25 @@ def evaluate(net, step, store_predictions=False):
             oracle = x['prior_depth'].gather(1, best[:, None])[:, 0]
             edge = y['depth_boundary'] & y['valid']
             interior = y['valid_alpha'] & (y['alpha'] >= .9999) & ~edge
-            for subset, mask in {
+            masks = {
                 'any_prior': available.any(1),
                 'at_least_two': available.sum(1) >= 2,
                 'high_conf_DepthSplat_boundary': (x['prior_conf'][:, 1] >= .6) & edge,
-            }.items():
-                for label, depth, alpha, back in (
+            }
+            methods = [
                     ('selected-prior-base', pred['fused_depth'], None, None),
                     ('OVG-Net', pred['depth1'], pred['alpha'], pred['depth2']),
-                    ('best-single-prior-Oracle', oracle, None, None)):
+                    ('best-single-prior-Oracle', oracle, None, None)]
+            if fixed:
+                high = masks['high_conf_DepthSplat_boundary']
+                masks['high_conf_single_prior'] = high & (available.sum(1) == 1)
+                masks['high_conf_multiple_priors'] = high & (available.sum(1) >= 2)
+            if compare_gate_off:
+                unprotected = net(x, render_heads=False)
+                methods.append(('OVG-Net-gate-off', unprotected['depth1'],
+                                unprotected['alpha'], unprotected['depth2']))
+            for subset, mask in masks.items():
+                for label, depth, alpha, back in methods:
                     for focus in (1.4, 5.):
                         factor = x['K'][0, 0, 0] * .05 / (2 * 1.4) * focus / (focus-.05)
                         values = base.measure(depth, alpha, back, y, mask, factor, edge, interior)
@@ -81,7 +91,7 @@ def evaluate(net, step, store_predictions=False):
                             totals[name, subset, label, focus].update(values)
             if store_predictions:
                 from route3_ovg_subpixel import save_npz
-                path = OUT/'dev-predictions'/item[1]/f'f{data.TRAIN_FRAMES[item[2]]:03d}.npz'
+                path = output/'dev-predictions'/item[1]/f'f{data.TRAIN_FRAMES[item[2]]:03d}.npz'
                 save_npz(path, **{k: v[0].cpu().numpy() for k, v in pred.items()
                                   if k in ('depth1', 'depth2', 'alpha', 'sigma_px', 'opacity', 'normal')})
     for (name, subset, label, focus), values in sorted(totals.items()):
@@ -90,7 +100,7 @@ def evaluate(net, step, store_predictions=False):
                 alpha_back_for_single_depth='undefined; null', data_split='39 development frames')
 
 
-def training_objective(net, item, rng, generator):
+def training_objective(net, item, rng, generator, *, fixed=False):
     tier, key, index = item
     opts = CONFIG['optical_train']
     weights = CONFIG['loss_weights']
@@ -100,7 +110,7 @@ def training_objective(net, item, rng, generator):
     else:
         x, truth_geometry = data.sample(item, 'cuda')
         common = torch.ones(x['rgb'].shape[-2:], device='cuda', dtype=torch.bool)
-    pred = net(x)
+    pred = net(x, protect_residual=fixed, render_heads=not fixed)
     if tier == 'R':
         mv, n = scene_consistency(pred, heldout)
         losses = dict(mv=mv)
@@ -116,7 +126,7 @@ def training_objective(net, item, rng, generator):
     h, w = min(h0, opts['max_image_side']), min(w0, opts['max_image_side'])
     pred, x, _ = resized_prediction(pred, x, truth_geometry, (h, w))
     K = x['K'][0]
-    vis = visible_surfels(pred, x)
+    vis = (fixed_visible_surfels if fixed else visible_surfels)(pred, x)
     counts = {k: int(v) for k, v in counts.items()}
     focus = spec['focus'] if spec else 1.4
     center = K.new_zeros((1, 2))
@@ -177,28 +187,41 @@ def check():
     save_json(OUT/'P1/optical-batch-verified.json', dict(passed=True, rows=rows))
 
 
-def train():
+def train(*, output=OUT, profile=None, monitor=None):
+    fixed = profile is not None
     probabilities = CONFIG['batch_probability']
     for path in ('P1/prefix.json', 'P1/card-audit/result.json', 'P1/optical-batch-verified.json'):
         if not read(OUT/path)['passed']:
             raise RuntimeError(f'P1 failed: {path}')
+    if fixed and not read(output/'Q1/check.json')['passed']:
+        raise RuntimeError('Q1 fixed-primitive check failed')
     pool = data.inventory('train')
     pool['R'] = list(real_inventory())
     if not all(pool[t] for t in probabilities):
         raise RuntimeError(f'1b required tier missing: {[t for t in probabilities if not pool[t]]}')
     torch.manual_seed(CONFIG['seed'])
     net = load_model()
+    retained_normal = []
+    if fixed:
+        net.footprint.requires_grad_(False)
+        # Normal channels share the geometry tensor with the depth heads.
+        # Preserve their checkpoint values across optimizer weight decay.
+        for parameter in (net.geometry.weight, net.geometry.bias):
+            retained_normal.append((parameter, parameter[2:5].detach().clone()))
     opt = torch.optim.AdamW((p for p in net.parameters() if p.requires_grad), lr=CONFIG['learning_rate'])
     rng = np.random.default_rng(CONFIG['seed'])
     g = torch.Generator(device='cuda').manual_seed(CONFIG['seed'])
     ema = shadow(net)
     counts, active, curve, joins = Counter(), Counter(), [], []
     start_at = 1
-    checkpoints = OUT/'checkpoints'
+    checkpoints = output/'checkpoints'
     checkpoints.mkdir(exist_ok=True)
     existing = sorted(checkpoints.glob('step-*.pt'))
+    elapsed_offset = 0.
     if existing:
         ck = torch.load(existing[-1], weights_only=True, map_location='cpu')
+        if ck.get('profile') != profile:
+            raise RuntimeError('Resume checkpoint differs from configured primitive and gate')
         net.load_state_dict(ck['model'], strict=False)
         opt.load_state_dict(ck['optimizer'])
         for k, p in ema.items():
@@ -206,7 +229,8 @@ def train():
         start_at = ck['step']+1
         rng.bit_generator.state = ck['sampling_rng']
         g.set_state(ck['pixel_rng'])
-        history = read(OUT/'validation'/f'step-{ck["step"]:06d}-state.json')
+        history = read(output/'validation'/f'step-{ck["step"]:06d}-state.json')
+        elapsed_offset = history.get('seconds', 0.)
         counts.update(history['counts'])
         active.update(history['active'])
         curve, joins = history['curve'], history['joins']
@@ -225,10 +249,13 @@ def train():
         item = items[int(rng.integers(len(items)))]
         net.train()
         opt.zero_grad(set_to_none=True)
-        loss, detail, stats, hidden = training_objective(net, item, rng, g)
+        loss, detail, stats, hidden = training_objective(net, item, rng, g, fixed=fixed)
         loss.backward()
         norm = torch.nn.utils.clip_grad_norm_(net.parameters(), 5., error_if_nonfinite=True)
         opt.step()
+        with torch.no_grad():
+            for parameter, frozen in retained_normal:
+                parameter[2:5].copy_(frozen)
         ema_update(net, ema)
         counts[tier] += 1
         active.update(occ=int(stats.get('occ_reveal', 0) + stats.get('occ_block', 0) > 0),
@@ -239,35 +266,44 @@ def train():
                           hidden=hidden))
         if i == 1 or i % 100 == 0:
             report = dict(step=i, counts=counts, active=active, joins=joins, latest=curve[-1],
-                          seconds=time.monotonic()-start)
-            save_json(OUT/'progress.json', report)
-            print('OVG_1B', i, dict(counts), dict(active), flush=True)
+                          seconds=elapsed_offset+time.monotonic()-start,
+                          peak_MiB=torch.cuda.max_memory_allocated()/2**20)
+            save_json(output/'progress.json', report)
+            print('OVG_1B_PRIME' if fixed else 'OVG_1B', i, dict(counts), dict(active), flush=True)
         if i in CONFIG['eval_steps']:
             raw = state(net)
             terminal = i == CONFIG['steps']
-            val_raw = evaluate(net, i)
+            kwargs = dict(fixed=fixed, compare_gate_off=fixed and terminal, output=output)
+            val_raw = evaluate(net, i, **kwargs)
+            if monitor is not None:
+                val_raw['zero_aperture'] = monitor(net)
             net.load_state_dict(ema, strict=False)
-            val_ema = evaluate(net, i, terminal)
+            val_ema = evaluate(net, i, terminal, **kwargs)
+            if monitor is not None:
+                val_ema['zero_aperture'] = monitor(net)
             net.load_state_dict(raw, strict=False)
-            save_json(OUT/'validation'/f'step-{i:06d}.json', dict(raw=val_raw, EMA=val_ema))
-            save_json(OUT/'validation'/f'step-{i:06d}-state.json',
-                      dict(step=i, curve=curve, joins=joins, counts=counts, active=active))
+            save_json(output/'validation'/f'step-{i:06d}.json', dict(raw=val_raw, EMA=val_ema))
+            save_json(output/'validation'/f'step-{i:06d}-state.json',
+                      dict(step=i, curve=curve, joins=joins, counts=counts, active=active,
+                           seconds=elapsed_offset+time.monotonic()-start))
             path = checkpoints/f'step-{i:06d}.pt'
             tmp = path.with_suffix('.part')
             state_ema = dict(raw, **{k: p.cpu() for k,p in ema.items()})
             torch.save(dict(step=i, model=raw, ema=state_ema, optimizer=opt.state_dict(),
-                            sampling_rng=rng.bit_generator.state, pixel_rng=g.get_state(), config=CONFIG), tmp)
+                            sampling_rng=rng.bit_generator.state, pixel_rng=g.get_state(),
+                            config=CONFIG, profile=profile), tmp)
             tmp.replace(path)
     fractions = lambda collection: {k: v / CONFIG['steps'] for k,v in collection.items()}
-    save_json(OUT/'training.json', dict(steps=CONFIG['steps'], counts=counts, active=active, joins=joins,
+    save_json(output/'training.json', dict(steps=CONFIG['steps'], counts=counts, active=active, joins=joins,
               sampled_fractions=fractions(counts), active_fractions=fractions(active),
-              curve=curve, seconds=time.monotonic()-start, peak_MiB=torch.cuda.max_memory_allocated()/2**20,
+              curve=curve, seconds=elapsed_offset+time.monotonic()-start,
+              peak_MiB=torch.cuda.max_memory_allocated()/2**20, profile=profile,
               initialization='1a round 2 fixed 30k model parameters; reset AdamW for the changed objective',
               GT_warmup=False, terminal_only=True))
-    plot_training(curve)
+    plot_training(curve, output=output)
 
 
-def plot_training(curve):
+def plot_training(curve, *, output=OUT):
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
@@ -282,7 +318,7 @@ def plot_training(curve):
     for weights in ('EMA', 'raw'):
         points = []
         for step in CONFIG['eval_steps']:
-            table = read(OUT/'validation'/f'step-{step:06d}.json')[weights]['rows']
+            table = read(output/'validation'/f'step-{step:06d}.json')[weights]['rows']
             r = next(r for r in table if r['scene'] == 'pooled' and r['focus_m'] == 1.4 and
                      r['subset'] == 'any_prior' and r['method'] == 'OVG-Net')
             points.append((step, r['boundary_front_CoC_mae_px']))
@@ -293,7 +329,7 @@ def plot_training(curve):
         ax.legend()
         ax.grid(alpha=.2)
     fig.tight_layout()
-    fig.savefig(OUT/'training-curves.png', dpi=150)
+    fig.savefig(output/'training-curves.png', dpi=150)
     plt.close(fig)
 
 
