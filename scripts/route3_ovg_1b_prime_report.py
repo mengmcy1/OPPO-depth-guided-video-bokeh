@@ -9,7 +9,7 @@ import torch
 
 from route3_ovg_1b_common import CONFIG, REC, ROOT, SOURCE, read
 from route3_ovg_1b_prime import OUT, PROFILE
-from route3_ovg_1b_prime_evaluate import A
+from route3_ovg_1b_prime_evaluate import A, DEPTHSPLAT, OLD, OLD_FIXED, ORIGINAL, PRIME_EMA
 from route3_ovg_subpixel import save_json
 
 PREFIX = 'route3-ovg-1b-prime-2026-11-18'
@@ -104,12 +104,43 @@ def summarize():
             sharp=next(r for r in view if r['visible']==A)['psnr']
             actual={r['visible']:r['psnr']-sharp for r in view if r['hidden']=='Query'}
             direction.append(dict(focus_m=focus,fstop=fstop,A_psnr=sharp,Query_minus_A_db=actual))
+
+    floors={'zero_visible_full_image':50.,'zero_full_image':60.}
+    optical_rows=[]
+    for row in optical['pooled']:
+        floor=floors.get(row['region']) if row['visible']!=A else None
+        optical_rows.append(dict(row,zero_floor_db=floor,
+                                 below_zero_floor=row['psnr']<floor if floor is not None else None))
+    guardrail=defaultdict(Counter)
+    for row in optical['rows']:
+        if row['region'] in floors and row['visible']!=A:
+            result=guardrail[row['protocol'],row['hidden'],row['visible'],row['region']]
+            result.update(cases=1,below_floor=int(row['psnr']<floors[row['region']]))
+    guardrail_rows=[dict(zip(('protocol','hidden','visible','region'),key),
+                         floor_db=floors[key[-1]],**counts)
+                    for key,counts in sorted(guardrail.items())]
+
+    primary_index={(r['nominal_focus_m'],r['hidden'],r['visible'],r['region']):r['psnr'] for r in main_rows}
+    near=[]
+    for branch in ('GT','Query'):
+        value=lambda method:primary_index[1.4,branch,method,'in_focus']
+        gap=value(ORIGINAL)-value(OLD)
+        gain=value(PRIME_EMA)-value(OLD)
+        near.append(dict(hidden=branch,primitive_gain_db=value(OLD_FIXED)-value(OLD),
+                         change_after_fixed_primitive_db=value(PRIME_EMA)-value(OLD_FIXED),
+                         initial_gap_db=gap,combined_gain_db=gain,
+                         residual_gap_db=gap-gain,gap_recovered_fraction=gain/gap if gap>0 else None))
+    far=lambda method:primary_index[5.,'Query',method,'recoverable']
+    far_query=dict(PSNR_db=far(PRIME_EMA),minus_fixed_original_db=far(PRIME_EMA)-far(ORIGINAL),
+                   minus_fixed_DepthSplat_db=far(PRIME_EMA)-far(DEPTHSPLAT),
+                   minus_A_db=far(PRIME_EMA)-primary_index[5.,'standalone',A,'recoverable'])
     data={
         'zero_monitor':table('Q2-zero-monitor',monitors),
         'geometry_curve':table('Q2-checkpoint-geometry',geom_curves),
-        'optical_pooled':table('Q3-optical',optical['pooled']),
+        'optical_pooled':table('Q3-optical',optical_rows),
         'paired_differences':table('Q3-paired',optical['paired']),
         'high_conf_boundary':table('Q3-high-confidence',high_conf),
+        'optical_guardrails':table('Q3-zero-guardrails',guardrail_rows),
     }
     import matplotlib
     matplotlib.use('Agg')
@@ -140,8 +171,9 @@ def summarize():
                 terminal_checkpoint=str(checkpoint.relative_to(ROOT)),
                 completed_utc=datetime.fromtimestamp(train_path.stat().st_mtime,timezone.utc).isoformat()),
         Q3=dict(K=optical['K'],cases=72,scenario_count=3,rows=len(optical['rows']),
-                EMA_primary_pooled=main_rows,primary_pairs=primary,
+                primary_pooled=main_rows,primary_pairs=primary,
                 high_confidence=geometry_comparison,direction_relative_to_A=direction,
+                near_focus_gap=near,far_focus_actual_Query=far_query,
                 terminal_seconds=optical['seconds'],terminal_peak_allocated_MiB=optical['peak_allocated_MiB'],
                 paired_reference_seconds=read(OUT/'Q3/reference/results.json')['seconds'],
                 scope='three synthetic development scenes; not an independent generalization score',
