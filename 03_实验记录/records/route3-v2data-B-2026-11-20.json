@@ -8,17 +8,33 @@
       "3D-FUTURE",
       "textures"
     ],
-    "status": "待 Google Drive 授权",
-    "reason": "已收到批准链接。服务器尚无经申请账号授权的 rclone 远端，且未收到授权条款原文。",
+    "status": "正在下载",
+    "reason": "已确认授权目录含场景、家具与纹理三个归档。",
     "authorization_expires_at": "2026-12-20T12:20:00+08:00",
-    "authorization_terms_original": null,
-    "post_expiry_use_restrictions": null,
+    "post_expiry_use_restrictions": "邮件确认过期后账号无法通过该链接继续访问，需要续办。邮件未规定本地已下载副本的期满处理，使用继续受适用的数据协议约束。",
     "downloaded_files": [],
     "sha256_verified": false,
-    "channel": "Google Drive / shared with me"
+    "channel": "Google Drive / shared with me",
+    "expected_bytes": 34104574074,
+    "free_bytes_at_download_start": 3728010956800,
+    "license_agreements": {
+      "3D-FRONT": "https://gw.alicdn.com/bao/uploaded/TB1ZJUfK.z1gK0jSZLeXXb9kVXa.pdf",
+      "3D-FUTURE": "https://terms.aliyun.com/legal-agreement/terms/suit_bu1_ali_cloud/suit_bu1_ali_cloud202004171628_60052.html"
+    },
+    "license_terms_version": {
+      "3D-FRONT": "2020-06-18",
+      "3D-FUTURE": "2020-03-28"
+    },
+    "study_use_conditions": [
+      "科学研究与内部使用。原始数据和私有入口不得再分发。",
+      "禁止将数据、派生物或研究结果用于商业化或外部服务。",
+      "披露研究结果应注明来源。提供派生物时按协议保留许可、版权声明及署名。"
+    ],
+    "authorization_terms_recorded": true,
+    "status_record_sha256": "87dc6a7608ab340ac62947f1d357a03f7ced6b845f5df5352e2dba3aa7e09102"
   },
   "manifest": "data/processed/route3-v2data-2026-11-20/B/manifest.json",
-  "manifest_sha256": "fa2dd51059342c5319e5a21028993626f426a4d44d431c9364a7517cafae8140",
+  "manifest_sha256": "34c3cf47e456c6cec181343f521fdfdb1a335e46131f9c6708f0d69f71e42621",
   "completed": {
     "train_geometry": 0,
     "development": 0,
@@ -33,7 +49,7 @@
   },
   "quota_plan": {
     "path": "configs/route3-v2data-B-2026-11-20.json",
-    "sha256": "6839f05194cc0790ce03a612343935f15b05b171a75391b1913ebf101d7c1566",
+    "sha256": "f2d3c359a4e6b8ee90b4c573e5c2b224f45ed0381fb34e4d7aa4b99df43ab94b",
     "cells": 54,
     "planned_scenes": 300
   },
@@ -41,5 +57,219 @@
   "retired_test_manifest": {
     "path": "03_实验记录/records/route3-ovg-1a-2026-11-18-independent-test.json",
     "sha256": "6d4ca869c1c19d46402b9103977264a2f0b8aca09cc9ed7f2336c84fa88a6643"
+  },
+  "provisional_material_registry": {
+    "sha256": "bb48fb97023b0937476f07b1aa21738c18cbfafe8a9cc78ac32345dfcd5ae70d",
+    "usable": 367,
+    "pending": 0,
+    "excluded": 287,
+    "counts_by_source_category_pool": {
+      "Poly Haven": {
+        "mesh/test": 1,
+        "mesh/dev": 1,
+        "hdri/test": 7,
+        "hdri/dev": 7,
+        "hdri/train": 24,
+        "material/train": 20,
+        "mesh/train": 5,
+        "material/test": 3
+      },
+      "ambientCG": {
+        "material/train": 20,
+        "material/dev": 1,
+        "material/test": 3
+      },
+      "Blender Studio Human Base Meshes": {
+        "mesh/train": 8,
+        "mesh/dev": 3
+      },
+      "Blendkit": {
+        "mesh/test": 1,
+        "mesh/train": 2
+      },
+      "Google Scanned Objects": {
+        "mesh/train": 17,
+        "mesh/test": 2,
+        "mesh/dev": 2
+      },
+      "Procedural Geometry Nodes": {
+        "procedural_structure/train": 191,
+        "procedural_structure/dev": 22,
+        "procedural_structure/test": 27
+      }
+    },
+    "counts_by_license": {
+      "CC0-1.0": 106,
+      "CC-BY-4.0": 21,
+      "project-owned": 240
+    },
+    "credential_pending": [
+      "Objaverse",
+      "Sketchfab"
+    ],
+    "excluded_reasons": {
+      "non-manifold mesh after welding duplicated seam vertices": 39,
+      "potential alpha card or transmission: Alpha": 5,
+      "cross-source asset duplicate": 1,
+      "no visible mesh": 23,
+      "FileNotFoundError": 1,
+      "image texture is missing": 1,
+      "transparent, refractive, or volumetric shader: BSDF_TRANSPARENT": 1,
+      "unevaluated hair or curve geometry": 1,
+      "缺少可信 Blendkit 文件下载入口": 4,
+      "external image texture is missing": 1,
+      "未找到适用的下载文件": 210
+    }
+  },
+  "provisional_determinism_check": {
+    "counts": {
+      "training": 300,
+      "development": 15,
+      "test_unseen_assets": 15,
+      "test_unseen_occlusions": 15
+    },
+    "status": "passed_in_memory_provisional"
+  },
+  "target_gap": {
+    "train_geometry": 300,
+    "development": 15,
+    "test": 30,
+    "train_optical": 80
+  },
+  "generator_status": "candidate_checks_in_progress",
+  "pilot": {
+    "built_scenes": 10,
+    "initial_thin_scene": {
+      "rgb_frames": 60,
+      "pinhole_label_frames": 13,
+      "pinhole_alpha_check_pass": 13,
+      "pinhole_seconds": 77.06293042376637,
+      "profile_K16_one_focus_seconds": 9.156699638813734,
+      "profile_K16_one_focus_file_bytes": 10795308,
+      "profile_Cycles_seconds": 93.64422116056085,
+      "profile_peak_vram_MiB": 3494,
+      "profile_peak_RSS_KiB": 704992,
+      "composition_checked_frames": 13,
+      "composition_pass_frames": 7,
+      "initial_composition_failed_frames": [
+        6,
+        11,
+        16,
+        45,
+        50,
+        55
+      ]
+    },
+    "pinhole_checks": [
+      {
+        "scene": "thin",
+        "frames": 13,
+        "grid": 8,
+        "seconds": 77.06293042376637,
+        "alpha_checks_passed": 13
+      },
+      {
+        "scene": "case-01-curved_self_occlusion",
+        "frames": 13,
+        "grid": 8,
+        "seconds": 83.97289321944118,
+        "alpha_checks_passed": 13
+      },
+      {
+        "scene": "case-02-curved_self_occlusion",
+        "frames": 13,
+        "grid": 8,
+        "seconds": 75.01545186713338,
+        "alpha_checks_passed": 13
+      },
+      {
+        "scene": "case-03-thin_structure",
+        "frames": 13,
+        "grid": 8,
+        "seconds": 130.44623290002346,
+        "alpha_checks_passed": 13
+      },
+      {
+        "scene": "case-04-multiple_layers",
+        "frames": 13,
+        "grid": 8,
+        "seconds": 71.46774186193943,
+        "alpha_checks_passed": 13
+      },
+      {
+        "scene": "case-05-multiple_layers",
+        "frames": 13,
+        "grid": 8,
+        "seconds": 73.9396910071373,
+        "alpha_checks_passed": 13
+      },
+      {
+        "scene": "case-06-large_foreground",
+        "frames": 13,
+        "grid": 8,
+        "seconds": 75.35313214361668,
+        "alpha_checks_passed": 13
+      },
+      {
+        "scene": "case-07-large_foreground",
+        "frames": 13,
+        "grid": 8,
+        "seconds": 72.08406408131123,
+        "alpha_checks_passed": 13
+      },
+      {
+        "scene": "case-08-weak_texture",
+        "frames": 13,
+        "grid": 8,
+        "seconds": 72.81817376241088,
+        "alpha_checks_passed": 13
+      },
+      {
+        "scene": "case-09-complex_layout",
+        "frames": 13,
+        "grid": 8,
+        "seconds": 75.11099806427956,
+        "alpha_checks_passed": 13
+      }
+    ],
+    "thin_reviewed": {
+      "rgb_frames": 60,
+      "compositing_checks_passed": 13,
+      "compositing_check_count": 13,
+      "composed_display_MAE_max": 0.004781445022672415,
+      "same_seed_complement_linear_MAE_max": 1.8414164060231997e-07,
+      "elapsed_seconds": 106.18859281018376,
+      "thin_texture_phase": {
+        "frame": 30,
+        "pure_interior_pixels": 0,
+        "status": "not_applicable"
+      },
+      "pilot_geometry_and_color_bytes_before_full_K16": 101580243
+    }
+  },
+  "known_unfinished": [
+    "3D-FRONT archives and per-asset integration",
+    "Infinigen scene cost and approval",
+    "formal material pool v1",
+    "full pilot K16 and optical checks",
+    "sealed test group lists",
+    "formal B unit generation"
+  ],
+  "preliminary_reference_contract": {
+    "legacy_reference": "configs/route3-g3-r13-2026-11-18.json and route3_ldr_u1r.py",
+    "image_size": [
+      512,
+      512
+    ],
+    "pinhole_samples": 256,
+    "K16_geometry_labels": 16,
+    "optical_aperture_samples": 64,
+    "reference_samples_per_subview": 1024,
+    "fstops": [
+      1.4,
+      2.0
+    ],
+    "exposure_ev": 0,
+    "color_space": "scene-linear RGB"
   }
 }
