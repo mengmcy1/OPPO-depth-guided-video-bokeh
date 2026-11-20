@@ -1,0 +1,660 @@
+{
+  "passed": false,
+  "failures": [
+    "1a/B: completed 0 of 21",
+    "1b/B: completed 0 of 70",
+    "1b/B: no optical batch"
+  ],
+  "input_split": "train",
+  "optimizer_steps": 0,
+  "model_state_unchanged": true,
+  "checkpoint": "outputs/route3-ovg-1a-r2-2026-11-18-01/checkpoints/step-030000.pt",
+  "seed": 20261118,
+  "planned_mixes_percent": {
+    "1a": {
+      "G": 60,
+      "C": 25,
+      "B": 15
+    },
+    "1b": {
+      "C": 40,
+      "B": 35,
+      "G": 15,
+      "R": 10
+    }
+  },
+  "candidate_weight_for_dryrun_only": 1.0,
+  "pool_sizes": {
+    "A": 817,
+    "B": 0,
+    "C": 36000,
+    "G": 15304,
+    "R": 1880
+  },
+  "b_excluded": {
+    "training-000-2c3ab6e8683fec54": "curved self-occlusion awaits p2",
+    "training-001-7a9b2de81e9aa875": "curved self-occlusion awaits p2"
+  },
+  "b_production_counts": {
+    "train_geometry": 2,
+    "train_optical": 0,
+    "development": 4
+  },
+  "g_production_frames": 17432,
+  "g_target_frames": 20000,
+  "gpu_lock": "/root/autodl-tmp/route3-cache/gpu-data.lock",
+  "gpu_peak_reserved_bytes": 4236247040,
+  "batch_devices": {
+    "cpu": 139,
+    "cuda": 130
+  },
+  "phases": {
+    "1a": {
+      "planned": {
+        "B": 21,
+        "C": 35,
+        "G": 84
+      },
+      "completed": {
+        "B": 0,
+        "C": 35,
+        "G": 84
+      },
+      "optical_batches": 0,
+      "optical_fraction": 0.0,
+      "optical_fraction_of_planned": 0.0,
+      "by_tier": {
+        "B": {
+          "batches": 0,
+          "optical_batches": 0,
+          "optical_fraction": null,
+          "losses": {},
+          "supervision": {}
+        },
+        "C": {
+          "batches": 35,
+          "optical_batches": 0,
+          "optical_fraction": 0.0,
+          "losses": {
+            "disp": {
+              "batches": 35,
+              "mean": 1.7413029330117362,
+              "grad_norm_mean": 14.687257078715733,
+              "grad_norm_max": 50.688724517822266,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 60268,
+              "zero_supervision_batches": 0
+            },
+            "bimodal": {
+              "batches": 35,
+              "mean": 12.905091387884957,
+              "grad_norm_mean": 110.65714013235909,
+              "grad_norm_max": 489.9925231933594,
+              "all_finite": true,
+              "gradient_tensors_min": 78,
+              "supervision": 30019,
+              "zero_supervision_batches": 0
+            },
+            "alpha": {
+              "batches": 35,
+              "mean": 0.8757597872189113,
+              "grad_norm_mean": 3.9095679487500874,
+              "grad_norm_max": 15.19249439239502,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 60144,
+              "zero_supervision_batches": 0
+            },
+            "normal": {
+              "batches": 35,
+              "mean": 0.015558610457394805,
+              "grad_norm_mean": 0.5571202916758401,
+              "grad_norm_max": 1.560171365737915,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 2293760,
+              "zero_supervision_batches": 0
+            },
+            "mv": {
+              "batches": 35,
+              "mean": 0.011621353429343019,
+              "grad_norm_mean": 0.11143937629375224,
+              "grad_norm_max": 0.6537876725196838,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 59628,
+              "zero_supervision_batches": 0
+            },
+            "same_surface": {
+              "batches": 35,
+              "mean": 0.012305307441524097,
+              "grad_norm_mean": 0.17836117728480272,
+              "grad_norm_max": 2.0787715911865234,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 1199268,
+              "zero_supervision_batches": 0
+            },
+            "total_base": {
+              "batches": 35,
+              "mean": 5.408370549338205,
+              "grad_norm_mean": 41.74859210423061,
+              "grad_norm_max": 172.23318481445312,
+              "all_finite": true,
+              "gradient_tensors_min": 78,
+              "supervision": null,
+              "zero_supervision_batches": null
+            },
+            "total_candidate": {
+              "batches": 35,
+              "mean": 5.420675839696612,
+              "grad_norm_mean": 41.64814543042864,
+              "grad_norm_max": 170.2161865234375,
+              "all_finite": true,
+              "gradient_tensors_min": 78,
+              "supervision": null,
+              "zero_supervision_batches": null
+            }
+          },
+          "supervision": {
+            "disp": 60268,
+            "bimodal": 30019,
+            "alpha": 60144,
+            "mv": 59628,
+            "normal": 2293760,
+            "same_surface": 1199268,
+            "pair_right": 596377,
+            "pair_excluded_crossing_right": 22431,
+            "pair_down": 602891,
+            "pair_excluded_crossing_down": 11506
+          }
+        },
+        "G": {
+          "batches": 84,
+          "optical_batches": 0,
+          "optical_fraction": 0.0,
+          "losses": {
+            "disp": {
+              "batches": 84,
+              "mean": 0.3231492000853732,
+              "grad_norm_mean": 3.2524360613453958,
+              "grad_norm_max": 18.883907318115234,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 1278506,
+              "zero_supervision_batches": 0
+            },
+            "normal": {
+              "batches": 84,
+              "mean": 0.23693961366301491,
+              "grad_norm_mean": 2.0739568805410746,
+              "grad_norm_max": 9.98112964630127,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 3766114,
+              "zero_supervision_batches": 0
+            },
+            "mv": {
+              "batches": 84,
+              "mean": 0.02413327641070715,
+              "grad_norm_mean": 0.7222584640050107,
+              "grad_norm_max": 30.346914291381836,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 90026,
+              "zero_supervision_batches": 0
+            },
+            "total_base": {
+              "batches": 84,
+              "mean": 0.3598968094835679,
+              "grad_norm_mean": 3.297750260858309,
+              "grad_norm_max": 19.003141403198242,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": null,
+              "zero_supervision_batches": null
+            }
+          },
+          "supervision": {
+            "disp": 1278506,
+            "mv": 90026,
+            "normal": 3766114
+          }
+        }
+      }
+    },
+    "1b": {
+      "planned": {
+        "B": 70,
+        "C": 80,
+        "G": 30,
+        "R": 20
+      },
+      "completed": {
+        "B": 0,
+        "C": 80,
+        "G": 30,
+        "R": 20
+      },
+      "optical_batches": 13,
+      "optical_fraction": 0.1,
+      "optical_fraction_of_planned": 0.065,
+      "by_tier": {
+        "B": {
+          "batches": 0,
+          "optical_batches": 0,
+          "optical_fraction": null,
+          "losses": {},
+          "supervision": {}
+        },
+        "C": {
+          "batches": 80,
+          "optical_batches": 13,
+          "optical_fraction": 0.1625,
+          "losses": {
+            "disp": {
+              "batches": 80,
+              "mean": 1.7552576411515475,
+              "grad_norm_mean": 13.201749241352081,
+              "grad_norm_max": 33.82198715209961,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 141262,
+              "zero_supervision_batches": 0
+            },
+            "bimodal": {
+              "batches": 80,
+              "mean": 11.925135987997056,
+              "grad_norm_mean": 87.20086371898651,
+              "grad_norm_max": 214.54872131347656,
+              "all_finite": true,
+              "gradient_tensors_min": 78,
+              "supervision": 70304,
+              "zero_supervision_batches": 0
+            },
+            "alpha": {
+              "batches": 80,
+              "mean": 1.8014857590198516,
+              "grad_norm_mean": 9.045725597441196,
+              "grad_norm_max": 88.02204132080078,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 5242689,
+              "zero_supervision_batches": 0
+            },
+            "mv": {
+              "batches": 80,
+              "mean": 0.013663952639217315,
+              "grad_norm_mean": 0.19343323958892142,
+              "grad_norm_max": 3.4253408908843994,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 119499,
+              "zero_supervision_batches": 1
+            },
+            "same_surface": {
+              "batches": 80,
+              "mean": 0.012379661488012061,
+              "grad_norm_mean": 0.11262759743258358,
+              "grad_norm_max": 0.3685392141342163,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 2784123,
+              "zero_supervision_batches": 0
+            },
+            "occ": {
+              "batches": 13,
+              "mean": 1.7826948624390822,
+              "grad_norm_mean": 1.3489420413970947,
+              "grad_norm_max": 6.3420610427856445,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 1158833,
+              "zero_supervision_batches": 0
+            },
+            "zero": {
+              "batches": 80,
+              "mean": 0.00111064636039373,
+              "grad_norm_mean": 2.1091361377401085e-07,
+              "grad_norm_max": 1.458129531783925e-06,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 5242880,
+              "zero_supervision_batches": 0
+            },
+            "bokeh": {
+              "batches": 13,
+              "mean": 0.0005889544297063437,
+              "grad_norm_mean": 0.0060125535551028755,
+              "grad_norm_max": 0.03208892419934273,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 851968,
+              "zero_supervision_batches": 0
+            },
+            "total_base": {
+              "batches": 80,
+              "mean": 5.668051925301552,
+              "grad_norm_mean": 35.42313729524612,
+              "grad_norm_max": 97.22023010253906,
+              "all_finite": true,
+              "gradient_tensors_min": 78,
+              "supervision": null,
+              "zero_supervision_batches": null
+            },
+            "total_candidate": {
+              "batches": 80,
+              "mean": 5.6804315656423565,
+              "grad_norm_mean": 35.396083533763885,
+              "grad_norm_max": 97.18579864501953,
+              "all_finite": true,
+              "gradient_tensors_min": 78,
+              "supervision": null,
+              "zero_supervision_batches": null
+            }
+          },
+          "supervision": {
+            "disp": 141262,
+            "bimodal": 70304,
+            "alpha": 5242689,
+            "mv": 119499,
+            "same_surface": 2784123,
+            "pair_right": 1383149,
+            "pair_excluded_crossing_right": 56689,
+            "pair_down": 1400974,
+            "pair_excluded_crossing_down": 26142,
+            "occ_reveal": 24493,
+            "occ_block": 1134340,
+            "occ": 1158833,
+            "hidden_eligible": 33258,
+            "hidden_placed": 30769,
+            "zero": 5242880,
+            "bokeh": 851968,
+            "bokeh_rays": 13631488
+          }
+        },
+        "G": {
+          "batches": 30,
+          "optical_batches": 0,
+          "optical_fraction": 0.0,
+          "losses": {
+            "disp": {
+              "batches": 30,
+              "mean": 0.2996781627337138,
+              "grad_norm_mean": 3.085568596919378,
+              "grad_norm_max": 14.020458221435547,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 434600,
+              "zero_supervision_batches": 0
+            },
+            "mv": {
+              "batches": 30,
+              "mean": 0.02500317743785369,
+              "grad_norm_mean": 0.28220247332938014,
+              "grad_norm_max": 1.0390431880950928,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 28015,
+              "zero_supervision_batches": 0
+            },
+            "zero": {
+              "batches": 30,
+              "mean": 0.0015405043147742011,
+              "grad_norm_mean": 3.568731791100029e-08,
+              "grad_norm_max": 1.235011950484477e-07,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 1966080,
+              "zero_supervision_batches": 0
+            },
+            "total_base": {
+              "batches": 30,
+              "mean": 0.3024688223997752,
+              "grad_norm_mean": 3.093704026937485,
+              "grad_norm_max": 14.048041343688965,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": null,
+              "zero_supervision_batches": null
+            }
+          },
+          "supervision": {
+            "disp": 434600,
+            "mv": 28015,
+            "zero": 1966080
+          }
+        },
+        "R": {
+          "batches": 20,
+          "optical_batches": 0,
+          "optical_fraction": 0.0,
+          "losses": {
+            "mv": {
+              "batches": 20,
+              "mean": 0.009307762258686125,
+              "grad_norm_mean": 0.06826843316521262,
+              "grad_norm_max": 0.15544848144054413,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 29237,
+              "zero_supervision_batches": 0
+            },
+            "zero": {
+              "batches": 20,
+              "mean": 0.001831164539908059,
+              "grad_norm_mean": 1.4030414585697315e-08,
+              "grad_norm_max": 5.2503445147067396e-08,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 710404,
+              "zero_supervision_batches": 0
+            },
+            "total_base": {
+              "batches": 20,
+              "mean": 0.002296552661573514,
+              "grad_norm_mean": 0.0034134559446101775,
+              "grad_norm_max": 0.007773141842335463,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": null,
+              "zero_supervision_batches": null
+            }
+          },
+          "supervision": {
+            "mv": 29237,
+            "zero": 710404
+          }
+        }
+      }
+    },
+    "A-appearance": {
+      "planned": {
+        "A": 20
+      },
+      "completed": {
+        "A": 20
+      },
+      "optical_batches": 0,
+      "optical_fraction": 0.0,
+      "optical_fraction_of_planned": 0.0,
+      "by_tier": {
+        "A": {
+          "batches": 20,
+          "optical_batches": 0,
+          "optical_fraction": 0.0,
+          "losses": {
+            "foreground": {
+              "batches": 20,
+              "mean": 0.1118336223065853,
+              "grad_norm_mean": 0.44638205543160436,
+              "grad_norm_max": 1.0661638975143433,
+              "all_finite": true,
+              "gradient_tensors_min": 10,
+              "supervision": 54959,
+              "zero_supervision_batches": 0
+            },
+            "comp": {
+              "batches": 20,
+              "mean": 0.019941921811550856,
+              "grad_norm_mean": 0.24832184556871653,
+              "grad_norm_max": 0.58249431848526,
+              "all_finite": true,
+              "gradient_tensors_min": 10,
+              "supervision": 54959,
+              "zero_supervision_batches": 0
+            },
+            "total_base": {
+              "batches": 20,
+              "mean": 0.13177554458379745,
+              "grad_norm_mean": 0.6890455171465873,
+              "grad_norm_max": 1.6485211849212646,
+              "all_finite": true,
+              "gradient_tensors_min": 10,
+              "supervision": null,
+              "zero_supervision_batches": null
+            }
+          },
+          "supervision": {
+            "foreground": 54959,
+            "comp": 54959
+          }
+        }
+      }
+    }
+  },
+  "legacy_regression": {
+    "checkpoint": "outputs/route3-ovg-1c-2026-11-19-01/train/aligned/checkpoints/step-005000.pt",
+    "reference": "outputs/route3-ovg-1c-2026-11-19-01/train/aligned/validation/step-005000.json",
+    "device": "cpu",
+    "passed": true,
+    "scenes": 3,
+    "frames": 39,
+    "matched_rows": 160,
+    "max_absolute_differences": {
+      "front_inverse_mae": 2.6057233079607167e-05,
+      "front_CoC_mae_px": 0.00034314880950914173,
+      "boundary_front_inverse_mae": 3.685141509435219e-05,
+      "boundary_front_CoC_mae_px": 0.0004851838250243823
+    },
+    "tolerances": {
+      "front_inverse_mae": 0.0001,
+      "front_CoC_mae_px": 0.002,
+      "boundary_front_inverse_mae": 0.0001,
+      "boundary_front_CoC_mae_px": 0.002
+    },
+    "key_rows": [
+      {
+        "scene": "metric-scene-122104-broad",
+        "metric": "boundary_front_CoC_mae_px",
+        "original": 1.4820036094999474,
+        "rerun": 1.4818751726246844,
+        "abs_difference": 0.00012843687526298275
+      },
+      {
+        "scene": "metric-scene-122105-multilayer",
+        "metric": "boundary_front_CoC_mae_px",
+        "original": 3.3577532994723893,
+        "rerun": 3.3573107780435034,
+        "abs_difference": 0.0004425214288859003
+      },
+      {
+        "scene": "metric-scene-122107-broad",
+        "metric": "boundary_front_CoC_mae_px",
+        "original": 1.4644077147791241,
+        "rerun": 1.4642186879591026,
+        "abs_difference": 0.0001890268200215317
+      },
+      {
+        "scene": "pooled",
+        "metric": "boundary_front_CoC_mae_px",
+        "original": 2.1912368646745235,
+        "rerun": 2.190969835708314,
+        "abs_difference": 0.00026702896620944827
+      }
+    ]
+  },
+  "audit_reference": {
+    "file": "route3-v2data-readiness-2026-11-20-review.json",
+    "sha256": "39f67ab4232c281042320b3aaea7beeca925fc11e4b37dd18de35c502d36933c"
+  },
+  "pool_sizes_at_each_run_start": {
+    "CPU": {
+      "A": 817,
+      "B": 0,
+      "C": 36000,
+      "G": 14656,
+      "R": 1880
+    },
+    "GPU": {
+      "A": 817,
+      "B": 0,
+      "C": 36000,
+      "G": 14712,
+      "R": 1880
+    }
+  },
+  "checks": {
+    "B_optical_grid_fixture": {
+      "cases": 12,
+      "frames": [
+        1,
+        30,
+        60
+      ],
+      "focuses": 2,
+      "fstops": [
+        1.4,
+        2.0
+      ],
+      "rejects_stale_geometry_digest": true,
+      "formal_batches": 0
+    },
+    "B_noncurved_train_geometry_control": {
+      "scene": "training-176-cca99b530d21a96d",
+      "category": "large_foreground",
+      "geometry_pairs": {
+        "right": {
+          "continuous": 158965,
+          "crossing": 341
+        },
+        "down": {
+          "continuous": 158794,
+          "crossing": 1052
+        }
+      },
+      "K16_f2_known": 4184070,
+      "K16_f2_hidden": 14195,
+      "formal_batches": 0
+    },
+    "G_dedicated_reader_example_nonzero_pixels": {
+      "SHARP": 65536,
+      "DepthSplat": 9162,
+      "triangulation": 30745
+    },
+    "C_labels_dtype_on_load": "float32",
+    "C_middle_frame_references_read": 2,
+    "C_optical_witness_and_fixed_placement": "both references verified on a train card",
+    "same_id_discontinuity_control": {
+      "excluded_right": 3,
+      "kept_right": 3,
+      "kept_down": 6
+    },
+    "C_1b_optical_cases_by_focus": {
+      "near": 9,
+      "far": 4
+    }
+  },
+  "details": {
+    "mixtures": "Exact planned ratios. Unavailable tiers retain their planned positions.",
+    "A": "A has no 1a/1b weight. 20 separate Stage 2a train appearance dry batches.",
+    "same_surface": "Unweighted per-loss measurements. Candidate total uses weight 1 solely for differentiation acceptance. Native right/down pairs use the legacy ID and GT discontinuity test.",
+    "B": "Real B model batches require an admitted non-curved train unit or a released curved unit rebuilt with p2 or later. B 1b optical batches additionally require a geometry-matched 12-case release.",
+    "B_render_background": "B v2 optical adapter uses an observed-prior raster fallback. Native cache of legacy SHARP and LaMa F2 fields is unavailable in the new B units.",
+    "G": "All three prior channels come from the dedicated v2 G reader.",
+    "R": "Held-out views within training windows are used only for supervision.",
+    "GPU": "flock held only during short CUDA chunks, up to 12 batches or about 15 seconds before yielding.",
+    "loss_support": "Effective sampled pixel counts for balanced losses, actual valid-view pixels for mv, valid rays for occ, image pixels and pupil rays for bokeh, and native adjacent pixel pairs for same_surface."
+  }
+}

@@ -1,4 +1,4 @@
-"""Diagnostic edge statistics. Labels and counts never enter a training loss."""
+"""Diagnostic edge statistics and shared ground-truth adjacency masks."""
 from collections import defaultdict
 
 import numpy as np
@@ -17,26 +17,33 @@ def distance_bands(boundary):
     return np.where(distance <= 2, 1, np.where(distance <= 8, 2, 3)).astype(np.uint8)
 
 
-def adjacent_residuals(prediction, gt, object_id, foreground, valid, boundary, support, jump=.03):
-    """Native right/down pairs. Distance is the nearer endpoint's distance."""
-    assert all(x.shape == gt.shape for x in (prediction, object_id, valid, boundary, support))
-    gt, prediction = gt.astype(np.float64, copy=False), prediction.astype(np.float64, copy=False)
-    foreground = np.isin(object_id, foreground)
+def adjacent_surface_pairs(gt, object_id, foreground, valid, boundary, jump=.03):
+    """Right/down GT pairs shared by diagnostics and the stage 1 objective."""
+    inside = np.isin(object_id, foreground)
     valid = valid & np.isfinite(gt) & (gt > 0)
-    comparable = valid & support & np.isfinite(prediction) & (prediction > 0)
-    inv_error = (np.divide(1., prediction, out=np.zeros_like(gt, dtype=np.float64), where=comparable)
-                 - np.divide(1., gt, out=np.zeros_like(gt, dtype=np.float64), where=comparable))
-    bands = distance_bands(boundary)
     for direction, p, q in (
         ('right', np.s_[:, :-1], np.s_[:, 1:]),
         ('down', np.s_[:-1, :], np.s_[1:, :]),
     ):
         same = object_id[p] == object_id[q]
-        # A jump within one mesh must also have a GT subpixel boundary.
+        # ID alone cannot distinguish two visible sheets of a self-occluding mesh.
         depth_jump = (np.abs(gt[q]-gt[p]) > jump*np.minimum(gt[p],gt[q])) & (boundary[p] | boundary[q])
-        paired = comparable[p] & comparable[q]
-        continuous = paired & foreground[p] & foreground[q] & same & ~depth_jump
-        crossing = paired & (foreground[p] | foreground[q]) & (~same | depth_jump)
+        paired = valid[p] & valid[q]
+        continuous = paired & inside[p] & inside[q] & same & ~depth_jump
+        crossing = paired & (inside[p] | inside[q]) & (~same | depth_jump)
+        yield direction, p, q, continuous, crossing
+
+
+def adjacent_residuals(prediction, gt, object_id, foreground, valid, boundary, support, jump=.03):
+    """Native right/down pairs. Distance is the nearer endpoint's distance."""
+    assert all(x.shape == gt.shape for x in (prediction, object_id, valid, boundary, support))
+    gt, prediction = gt.astype(np.float64, copy=False), prediction.astype(np.float64, copy=False)
+    comparable = valid & support & np.isfinite(gt) & (gt > 0) & np.isfinite(prediction) & (prediction > 0)
+    inv_error = (np.divide(1., prediction, out=np.zeros_like(gt, dtype=np.float64), where=comparable)
+                 - np.divide(1., gt, out=np.zeros_like(gt, dtype=np.float64), where=comparable))
+    bands = distance_bands(boundary)
+    for direction, p, q, continuous, crossing in adjacent_surface_pairs(
+            gt, object_id, foreground, comparable, boundary, jump):
         residual = inv_error[q]-inv_error[p]
         bucket = np.minimum(bands[p],bands[q])
         for code, band in BANDS[:2]:
