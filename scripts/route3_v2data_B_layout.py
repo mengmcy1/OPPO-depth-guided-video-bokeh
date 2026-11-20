@@ -254,10 +254,11 @@ def render_room(root):
     bpy.ops.render.render(write_still=True)
 
 
-def review_layout(source, destination):
+def review_layout(source, destination, *, mesh_audit=None):
     import bpy
     from route3_v2data_B_mesh_check import Rejected, audit_mesh, check_materials
 
+    mesh_audit = mesh_audit or audit_mesh
     destination.mkdir(parents=True, exist_ok=False)
     bpy.ops.wm.open_mainfile(filepath=str(source.resolve()))
     scene = bpy.context.scene
@@ -275,7 +276,7 @@ def review_layout(source, destination):
             check_materials([copy])
             if not mesh.polygons or not mesh.materials:
                 raise Rejected("mesh has no renderable material or polygons")
-            audit_mesh(copy)
+            mesh_audit(copy)
         except (Rejected, ValueError, KeyError, RuntimeError) as exc:
             excluded.append(dict(object=obj.name,reason=str(exc)))
             bpy.data.objects.remove(copy,do_unlink=True)
@@ -330,12 +331,16 @@ if __name__ == "__main__":
     parser.add_argument("destination",type=Path)
     parser.add_argument("--skip",type=int,default=0,help="Skip an independently invalid room candidate")
     parser.add_argument("--source",type=Path)
+    parser.add_argument("--allow-open",action="store_true",help="Apply the B v2 open-mesh audit")
     args = parser.parse_args(sys.argv[sys.argv.index("--")+1:] if "--" in sys.argv else None)
     if args.mode == "extract":
         extract_room(args.destination,args.skip)
     elif args.mode == "review":
         if not args.source:
             parser.error("review requires --source")
-        review_layout(args.source,args.destination)
+        mesh_audit = None
+        if args.allow_open:
+            from route3_v2data_B_topology import audit_mesh as mesh_audit
+        review_layout(args.source,args.destination,mesh_audit=mesh_audit)
     else:
         {"build":build_room,"render":render_room}[args.mode](args.destination)

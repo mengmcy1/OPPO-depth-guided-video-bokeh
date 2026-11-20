@@ -118,7 +118,7 @@ def audit_mesh(ob):
         mesh.free()
 
 
-def audit_asset(objects, source, dest):
+def audit_asset(objects, source, dest, *, mesh_audit=audit_mesh):
     if any(ob.type in {"CURVES", "CURVE", "SURFACE"} for ob in objects):
         raise Rejected("unevaluated hair or curve geometry")
     meshes = [ob for ob in objects if ob.type == "MESH" and not ob.hide_render]
@@ -128,6 +128,7 @@ def audit_asset(objects, source, dest):
     bpy.context.view_layer.update()
     dependency = bpy.context.evaluated_depsgraph_get()
     output_objects, coords, faces = [], [], 0
+    open_components = 0
     for ob in meshes:
         evaluated = ob.evaluated_get(dependency)
         mesh = bpy.data.meshes.new_from_object(evaluated, preserve_all_data_layers=True, depsgraph=dependency)
@@ -139,7 +140,7 @@ def audit_asset(objects, source, dest):
             modifier = normalized.modifiers.new("Route 3 scan decimation", "DECIMATE")
             modifier.ratio = 30000 / len(mesh.polygons)
             bpy.ops.object.modifier_apply(modifier=modifier.name)
-        audit_mesh(normalized)
+        open_components += bool(mesh_audit(normalized))
         faces += len(normalized.data.polygons)
         coords.extend(normalized.matrix_world @ vertex.co for vertex in normalized.data.vertices)
         output_objects.append(normalized)
@@ -155,14 +156,15 @@ def audit_asset(objects, source, dest):
     bpy.ops.file.pack_all()
     bpy.context.preferences.filepaths.save_version = 0
     bpy.ops.wm.save_as_mainfile(filepath=str(dest))
-    return dict(scale_m=size.tolist(), face_count=faces, geometry_sha256=hashlib.sha256(canonical.tobytes()).hexdigest())
+    return dict(scale_m=size.tolist(), face_count=faces, open_mesh_objects=open_components,
+                geometry_sha256=hashlib.sha256(canonical.tobytes()).hexdigest())
 
 
 def reset_scene():
     bpy.ops.wm.read_factory_settings(use_empty=True)
 
 
-def run(row, base):
+def run(row, base, *, mesh_audit=audit_mesh):
     files = [base / item["path"] for item in row["files"]]
     work = files[0].parent
     paths = unwrap(files, work)
@@ -187,14 +189,14 @@ def run(row, base):
             bpy.context.scene.collection.objects.link(ob)
             dest = work / f"accepted-{index:03d}.blend"
             entry = dict(row, asset_id=name, category="mesh", bundle=row["asset_id"])
-            yield inspect(entry, [ob], dest, base)
+            yield inspect(entry, [ob], dest, base, mesh_audit=mesh_audit)
     else:
-        yield inspect(row, objects, work / "accepted.blend", base)
+        yield inspect(row, objects, work / "accepted.blend", base, mesh_audit=mesh_audit)
 
 
-def inspect(row, objects, path, base):
+def inspect(row, objects, path, base, *, mesh_audit=audit_mesh):
     try:
-        result = audit_asset(objects, row, path)
+        result = audit_asset(objects, row, path, mesh_audit=mesh_audit)
     except (Rejected, RuntimeError, ValueError) as exc:
         return dict(row, status="excluded", reason=str(exc))
     digest = hashlib.sha256()
@@ -209,7 +211,11 @@ def main():
     parser.add_argument("--base", type=Path, required=True)
     parser.add_argument("--candidates", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--allow-open", action="store_true", help="Apply the B v2 open-mesh audit")
     args = parser.parse_args(sys.argv[sys.argv.index("--") + 1:])
+    mesh_audit = audit_mesh
+    if args.allow_open:
+        from route3_v2data_B_topology import audit_mesh as mesh_audit
     rows = json.loads(args.candidates.read_text())["candidates"]
     output = []
     for row in rows:
@@ -217,7 +223,7 @@ def main():
             output.append(row)
             continue
         try:
-            output.extend(run(row, args.base.resolve()))
+            output.extend(run(row, args.base.resolve(), mesh_audit=mesh_audit))
         except (Rejected, RuntimeError, ValueError, OSError) as exc:
             output.append(dict(row, status="excluded", reason=str(exc)))
     temp = args.output.with_suffix(".part")

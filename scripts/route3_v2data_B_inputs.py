@@ -11,6 +11,7 @@ from route3_v2data_B_front import DATA, ROOT
 from route3_ovg_subpixel import TRAIN_FRAMES, save_json, save_npz
 
 
+FORMAL_DATA = DATA/"v2"
 PARTITIONS = ("training", "development", "test_unseen_assets", "test_unseen_occlusions")
 
 
@@ -19,7 +20,7 @@ def formal_unit(name):
         return None
     role = name.split("-", 1)[0]
     if role in PARTITIONS:
-        path = DATA/"units"/role/name
+        path = FORMAL_DATA/"units"/role/name
         if (path/"manifest.json").is_file():
             return path
     return None
@@ -66,7 +67,7 @@ def supervision(unit, frame, keys):
 
 def library_unit_paths(role):
     partition = {"train": "training", "dev": "development"}[role]
-    return sorted(path.parent for path in (DATA/"units"/partition).glob("*/manifest.json"))
+    return sorted(path.parent for path in (FORMAL_DATA/"units"/partition).glob("*/manifest.json"))
 
 
 def to_srgb8(linear):

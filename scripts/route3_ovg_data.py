@@ -42,11 +42,9 @@ def b_folder(name):
 def b_foreground_reference(name, frame):
     """Read GT identity from labels only, outside input construction."""
     unit = formal_unit(name)
-    expanded = (unit/'labels' if unit else
-                ROOT/'data/processed/route3-v2data-2026-11-20/B/units/development'/name/'labels')
-    current = expanded/f'f{frame:03d}-pinhole.npz'
-    if current.is_file():
-        root, center = expanded, current
+    if unit:
+        root = unit/'labels'
+        center = root/f'f{frame:03d}-pinhole.npz'
     else:
         truth = PREVIOUS/'truth'/name
         root, center = truth, truth/'geometry'/f'f{frame:03d}-center.npz'

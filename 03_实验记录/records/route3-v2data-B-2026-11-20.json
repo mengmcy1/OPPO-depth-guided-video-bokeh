@@ -727,7 +727,7 @@
     "train_optical": 0
   },
   "v2": {
-    "status": "rules_committed_before_intake",
+    "status": "awaiting_external_download_approval",
     "v1_retirement": {
       "generator_version": "B-v1-50dd699ef589",
       "archive_manifest_sha256": "241e811e9420fe02ef2cb84bd78dcb6387b968ceab3d47a0e406a2e7012ff173",
@@ -823,6 +823,42 @@
       },
       "disk_reserve_bytes": 64424509440
     },
-    "rules_sha256": "2fd5541b62bccad35a2bfeb881e786a25606ce9900a29fece2db25c14e8b2475"
+    "rules_sha256": "2fd5541b62bccad35a2bfeb881e786a25606ce9900a29fece2db25c14e8b2475",
+    "external_asset_download_started": false,
+    "existing_sources": {
+      "3d_future_furniture": {
+        "model_folders": 16563,
+        "missing_source_files": 1,
+        "inventory": "v2/source-inventory/3d-future-model-folders.json",
+        "sha256": "1481fc31ce7509c01a580537a0fb98a7a427ff7b656e6cfe83ad831293df6251"
+      },
+      "3d_front_layouts": {
+        "source_layouts": 6813,
+        "inventory": "v2/source-inventory/3d-front-layouts.json",
+        "sha256": "33e9094e7021775ee778f401b3d33261891e7954e0b629ed9cbf69397ec98dae"
+      }
+    },
+    "open_mesh_check": {
+      "status": "topology_passed_label_audit_requires_review",
+      "topology_fixture_passed": 10,
+      "recovered_layout_components": 26,
+      "excluded_components": {
+        "vertex has an ambiguous boundary fan": 3,
+        "edge has an ambiguous face incidence or inconsistent winding": 4,
+        "potential alpha card or transmission: Alpha": 8
+      },
+      "layout_audit": "v2/qualification/3d-front-open-room/mesh-review.json",
+      "label_audit": "v2/qualification/open-room-labels/validation.json",
+      "label_audit_sha256": "6f190c36f6c6daf7969cb606acf1f26fdf8c8198008f62fa88a48239255d23e6",
+      "two_layer_and_coverage_frames": [
+        1,
+        30,
+        60
+      ],
+      "independent_k16_matches": 1151,
+      "independent_k16_mismatches": 1,
+      "mismatch_cause": "K16 accepted a ray just outside a triangle edge (barycentric coordinate -3.26e-6). Independent Blender trace reached the wall behind that triangle.",
+      "local_candidate_eligible_for_frozen_pool": false
+    }
   }
 }
