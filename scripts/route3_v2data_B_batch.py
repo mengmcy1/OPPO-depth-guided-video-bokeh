@@ -14,6 +14,7 @@ import psutil
 
 from route3_v2data_B_front import DATA, RECORD, RESERVE_BYTES, ROOT, write_json
 from route3_v2data_B_inputs import FORMAL_DATA, observation, supervision
+from route3_v2data_B_presence import require_presence
 from route3_v2data_B_release import OPTICAL_FRAMES, load_production_plan
 from route3_ovg_subpixel import TRAIN_FRAMES
 
@@ -152,6 +153,7 @@ def verified_unit(unit, spec, generator, optical):
                 or any(value.shape != (512,512) for key,value in target.items() if key != "normal")
                 or not all(np.isfinite(value).all() for value in (*inputs.values(),*target.values()))):
             raise ValueError(f"B training loader returned invalid tensors in frame {frame}")
+    presence = require_presence(unit,spec)
     if optical:
         verify_optical(labels,radiance["optical"])
     files = sorted(p for p in unit.rglob("*") if p.is_file() and p.suffix not in {".log",".part"})
@@ -161,6 +163,7 @@ def verified_unit(unit, spec, generator, optical):
     result = dict(
         **identity,generator_version=generator,assets=assets,files=output_files,
         bytes=sum(row["bytes"] for row in output_files),observations="observations/",labels="labels/",
+        foreground_presence=dict(passed=presence["passed"],path="labels/foreground-presence.json"),
         scene_supervision=geometry["rows"],radiance_audit=radiance["audits"],depth_bands=spec["depth_bands"],
     )
     return result
@@ -177,6 +180,7 @@ def prepare_geometry(unit, spec, estimate, *, execute=run):
         [sys.executable,str(SCRIPTS/"route3_v2data_B_labels.py"),"--scene",str(unit),"--focus",
          str(near),str(near*spec["depth_ratio"])], unit/"geometry.log",
     )
+    require_presence(unit,spec)
 
 
 def finish_unit(unit, spec, generator, *, execute=run):

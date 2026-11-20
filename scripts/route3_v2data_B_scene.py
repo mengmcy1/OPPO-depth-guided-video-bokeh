@@ -171,6 +171,7 @@ def populate(spec, layout_rng, foreground_rng, mat_rng):
             anchor = Vector((x,distance,1.16))
             placed = add_mesh_asset(asset["path"],f"foreground_import_{index:02d}",anchor,extent)
             if category == "curved_self_occlusion":
+                bpy.context.view_layer.update()
                 angle = foreground_rng.uniform(.24,.52)
                 turn = Matrix.Translation(anchor) @ Matrix.Rotation(angle,4,"Z") @ Matrix.Translation(-anchor)
                 for ob in placed:

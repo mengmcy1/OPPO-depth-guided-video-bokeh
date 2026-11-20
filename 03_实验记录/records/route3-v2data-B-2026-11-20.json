@@ -1661,6 +1661,54 @@
       "benchmark_sha256": "842a4b5544f99c6cdacead302e589992a83ad290a01b4bc9d2fdd3415895c63b",
       "reason": "No GPU idle time attributable to waiting for B labels after pipeline startup",
       "continuation": "single B dispatcher with the shared GPU lock"
+    },
+    "generator_patch_p2": {
+      "version": "B-v2-31aa7f9a4325-p2",
+      "base_version": "B-v2-31aa7f9a4325-p1",
+      "status": "candidate_before_validation",
+      "changed_files": {
+        "route3_v2data_B_batch.py": {
+          "before": "7c0962b38cb4cf0257ff040631dd4ab63547dbea4a1cc64f691a6bca1cf8fe40",
+          "after": "823cc6a9f366dd8ea4ff8246c1f4a6f911dbcf960bb98b8ba201aa45986a421c"
+        },
+        "route3_v2data_B_scene.py": {
+          "before": "7191dd1bd1d3ad7d9c6ee5c8a4c0840bd0d0c876e0b1b7b3de7690fcde362177",
+          "after": "5eb47a3b42d63465b378657a57bed0462c5da8ae5ceaa39457aad047914d8e81"
+        },
+        "route3_v2data_B_presence.py": {
+          "before": null,
+          "after": "d5911de142c12132dab173e9bc43c6b7f4a4510d8f68937cec93a5a6e42dbe07"
+        }
+      },
+      "previous_generator_code_sha256": "e05ceea5195c9ec3b71cd552e91ef5ad464e6a019cf2d247c68b14aa5adfa903",
+      "generator_code_sha256": "877d1d9c329c35ec5ac06ac61a230050a8fefbd80b8334cb71fb99257c1839c9",
+      "presence_code_sha256": "d5911de142c12132dab173e9bc43c6b7f4a4510d8f68937cec93a5a6e42dbe07",
+      "scope": [
+        "Refresh Blender view-layer transforms before the curved imported foreground rotation",
+        "Audit designated foreground identities in every existing label frame",
+        "Reject missing foreground before GPU work and at formal acceptance"
+      ],
+      "sealed_scene_plan_sha256": {
+        "training": "3687df48d64d82dd2dfd620c1a1ee6b32f2305186063d0df89c2e6f99a5986d8",
+        "development": "78f5ef2aa6625bba938028efb71ad1bf2da3142810d8453d6a387452728c0d85",
+        "test_unseen_assets": "694a0a17f9b9b09410ea909a73fe49d5222394530496ac5fcc3216b3b85e91b1",
+        "test_unseen_occlusions": "7dfbf1bb9caa574fd85c3bad00bad3d60ba19769e742fcf0ec02153c41df8816"
+      }
+    },
+    "foreground_presence_policy_p2": {
+      "minimum_center_hits_per_designated_foreground_per_label_frame": 1,
+      "light_structure_extra_pixel_floor": null,
+      "pixel_count": "valid pinhole label pixels with a first_hit_object identity belonging to the designated foreground",
+      "center_hit_count": "center_visible pinhole rays with object_id belonging to the designated foreground",
+      "designated_foreground": [
+        "each imported actor (union of its named mesh parts)",
+        "procedural thin structure",
+        "procedurally placed foreground middle layers",
+        "procedural main or curved foreground"
+      ],
+      "threshold_basis": "user-specified positive center hits, checked on the isolated repaired training qualification at f030 (83,376 center hits)",
+      "qualification_frame": 30,
+      "supplementary_shape": "background and supplemental aperture-configuration window bars are outside the list of specified main foreground objects"
     }
   }
 }
