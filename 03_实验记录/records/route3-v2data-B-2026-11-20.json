@@ -746,7 +746,7 @@
     "formal_counts": {
       "train_geometry": 2,
       "development": 0,
-      "test": 0,
+      "test": 6,
       "train_optical": 0
     },
     "rules": {
@@ -1306,7 +1306,7 @@
       "reserve_bytes": 64424509440
     },
     "generator_version": "B-v2-31aa7f9a4325",
-    "manifest_sha256": "7458fc95fd849b37cc184a97e8f44d6273cd123e509bf91200abaa778688e1f0",
+    "manifest_sha256": "d3af69e907328d10a4fbbe43a57e5e6b4596972b1fe003475b76ca2521a3aaed",
     "scene_plan_sha256": {
       "training": "3687df48d64d82dd2dfd620c1a1ee6b32f2305186063d0df89c2e6f99a5986d8",
       "development": "78f5ef2aa6625bba938028efb71ad1bf2da3142810d8453d6a387452728c0d85",
@@ -1391,11 +1391,16 @@
     "target_gap": {
       "train_geometry": 298,
       "development": 15,
-      "test": 30,
+      "test": 24,
       "train_optical": 80
     },
-    "verified_geometry_and_optical_bytes": 954112083,
+    "verified_geometry_and_optical_bytes": 4377452110,
     "failures": {
+      "test_unseen_assets": {
+        "path": "units/test_unseen_assets/failures.json",
+        "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "count": 0
+      },
       "training": {
         "path": "units/training/failures.json",
         "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
@@ -1501,6 +1506,109 @@
       "3D-FRONT / 3D-FUTURE Data Sets Use License Agreements": 84,
       "3D-FUTURE Data Sets Use License Agreement": 22,
       "project-owned": 242
+    },
+    "generator_patch": {
+      "base_version": "B-v2-31aa7f9a4325",
+      "patch_version": "B-v2-31aa7f9a4325-p1",
+      "generator_code_sha256": "e05ceea5195c9ec3b71cd552e91ef5ad464e6a019cf2d247c68b14aa5adfa903",
+      "base_generator_code_sha256": "ceef363e42dd319d1d7a264eabb7dedafbef4a7ef993cbb0155330c72c9a3d94",
+      "changes": {
+        "route3_v2data_B_batch.py": {
+          "before": "76b0812bd84fd0fbd2402290e3adc17ec810aa41eaf641a0d08d4c8831a0f54d",
+          "after": "7c0962b38cb4cf0257ff040631dd4ab63547dbea4a1cc64f691a6bca1cf8fe40"
+        },
+        "route3_v2data_B_render.py": {
+          "before": "83d494386360bb4e2dc33c31192f412cc9595d4eebe35a53085a3ffb6a053593",
+          "after": "08e1516ddab45a2d23fd996f79b73781b11c01206ab2143b165bcb222260124e"
+        }
+      },
+      "dispatch_code": {
+        "route3_v2data_B_dispatch.py": "7b869a046e68f92d2a9fc5fdbfc62837a9805487c3a8cd412089f88e9e7f21ab",
+        "route3_v2data_B_release.py": "93d7884daa7cc3b03a87f75a2e7659ef55cb03f8759efb71285bda747461ee1b"
+      },
+      "optical_frames": [
+        1,
+        30,
+        60
+      ],
+      "previous_optical_frame_count": 13,
+      "scope": "optical reference frames only in generated data; two-slot dispatch is operational",
+      "sealed_plan_sha256": {
+        "training": "3687df48d64d82dd2dfd620c1a1ee6b32f2305186063d0df89c2e6f99a5986d8",
+        "development": "78f5ef2aa6625bba938028efb71ad1bf2da3142810d8453d6a387452728c0d85",
+        "test_unseen_assets": "694a0a17f9b9b09410ea909a73fe49d5222394530496ac5fcc3216b3b85e91b1",
+        "test_unseen_occlusions": "7dfbf1bb9caa574fd85c3bad00bad3d60ba19769e742fcf0ec02153c41df8816"
+      },
+      "preserved_unit_counts": {
+        "train_geometry": 2,
+        "development": 0,
+        "test": 6,
+        "train_optical": 0
+      },
+      "sha256": "cc66891568fdbbe09e0384bc23309de3d25b832fc1e8c3328cd3942eb7522c68"
+    },
+    "optical_frame_patch_estimates": {
+      "basis": "qualification/optical-imported-f030/labels/optical-audit.json",
+      "basis_sha256": "fefcbea2c981b05ad43da98b9ef41dd3a4bd54ee36aa1264db5a28ccc7ccf949",
+      "measured_four_references_seconds": 654.7199203595519,
+      "cycles_samples_per_subview": 1024,
+      "subviews": 64,
+      "old_frames_per_scene": 13,
+      "new_frames": [
+        1,
+        30,
+        60
+      ],
+      "old_references_per_scene": 52,
+      "new_references_per_scene": 12,
+      "engine_time_only": true,
+      "development_15": {
+        "before_hours": 35.4639956861424,
+        "after_hours": 8.1839990044944
+      },
+      "training_optical_80": {
+        "before_hours": 189.14131032609276,
+        "after_hours": 43.64799469063679
+      }
+    },
+    "known_limitations": {
+      "source_skew": {
+        "training_imported_mesh_uses_by_source": {
+          "Google Scanned Objects": 240,
+          "Poly Haven": 29,
+          "Objaverse": 4,
+          "Blender Studio Human Base Meshes": 4,
+          "Sketchfab": 4,
+          "3D-FUTURE": 3,
+          "Blendkit": 10
+        },
+        "training_imported_mesh_uses": 294,
+        "large_foreground_scenes": 60,
+        "large_foreground_imported_mesh_uses_by_source": {
+          "Google Scanned Objects": 42,
+          "Blendkit": 5,
+          "Poly Haven": 8,
+          "3D-FUTURE": 2,
+          "Sketchfab": 1,
+          "Blender Studio Human Base Meshes": 2
+        },
+        "development_followup": {
+          "status": "waiting_for_development_P1_P2_results",
+          "group_by": "occlusion_category",
+          "report": "per-scene P1 and P2 results for large foreground",
+          "large_foreground_scene_ids": [
+            "development-009-082e653bca2a3be9",
+            "development-010-41701db7e3333e89",
+            "development-011-d0fd8daa5ce0ec59"
+          ]
+        }
+      }
+    },
+    "sequential_production_baseline": {
+      "partition": "test_unseen_assets",
+      "units": 6,
+      "elapsed_seconds": 3849.333718776703,
+      "accepted_per_hour": 5.611360712800022
     }
   }
 }

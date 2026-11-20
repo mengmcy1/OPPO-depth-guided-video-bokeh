@@ -269,7 +269,7 @@ def reference_views(scene, camera, root, frames, source, seed, spp):
     return metadata
 
 
-def run(root, frames, references, samples, scene_seed, cpu, reference_samples, optical_only):
+def run(root, frames, references, samples, scene_seed, cpu, reference_samples, optical_only, *, optical_frames=None):
     estimated = 2 * 2**30
     if shutil.disk_usage(root).free < 60 * 2**30 + estimated:
         raise RuntimeError("Disk reserve would be exceeded for this render batch")
@@ -283,10 +283,13 @@ def run(root, frames, references, samples, scene_seed, cpu, reference_samples, o
     source = json.loads((root/"scene-spec.json").read_text())
     start = time.monotonic()
     accepted = [frame for frame in frames if (root/"labels"/f"f{frame:03d}-pinhole.npz").is_file()]
+    reference_frames = accepted if optical_frames is None else optical_frames
+    if (references or optical_only) and not set(reference_frames) <= set(accepted):
+        raise ValueError("Optical references require validated labels at every requested frame")
     if optical_only:
-        if not accepted:
+        if not reference_frames:
             raise ValueError("No validated geometry frames for the optical reference")
-        rows = reference_views(scene,camera,root,accepted,source,scene_seed,reference_samples)
+        rows = reference_views(scene,camera,root,reference_frames,source,scene_seed,reference_samples)
         save_json(root/"labels/optical-audit.json", dict(optical=rows,exposure_ev=0,
             color_space="scene-linear RGB",subviews=SUBVIEWS,cycles_samples_per_subview=reference_samples,
             seconds=time.monotonic()-start))
@@ -299,7 +302,7 @@ def run(root, frames, references, samples, scene_seed, cpu, reference_samples, o
         save_npz(root/"observations"/f"f{frame:03d}.npz", rgb_linear=np.clip(rgb, 0, LDR_LIMIT).astype(np.float16))
         if frame in accepted:
             observations[frame] = rgb
-    render_meta = reference_views(scene,camera,root,accepted,source,scene_seed,reference_samples) if references else []
+    render_meta = reference_views(scene,camera,root,reference_frames,source,scene_seed,reference_samples) if references else []
     texture_phase = thin_texture_check(root, scene, camera, accepted, source, workfile, scene_seed, samples)
     cutter = bpy.data.images.new("B axial depth cutter", SIZE, SIZE, alpha=True, float_buffer=True)
     cutter.colorspace_settings.name = "Non-Color"
@@ -352,13 +355,15 @@ def main():
     parser.add_argument("--scene", type=Path, required=True)
     parser.add_argument("--frames", nargs="+", type=int, default=list(range(1,61)))
     parser.add_argument("--optical", action="store_true")
+    parser.add_argument("--optical-frames", nargs="+", type=int)
     parser.add_argument("--optical-only", action="store_true")
     parser.add_argument("--cpu", action="store_true", help="Use CPU Cycles for a diagnostic render")
     parser.add_argument("--samples", type=int, default=256)
     parser.add_argument("--reference-samples", type=int, default=1024)
     parser.add_argument("--seed", type=int, default=20261120)
     args = parser.parse_args(sys.argv[sys.argv.index("--")+1:])
-    run(args.scene.resolve(), args.frames, args.optical, args.samples, args.seed, args.cpu, args.reference_samples, args.optical_only)
+    run(args.scene.resolve(), args.frames, args.optical, args.samples, args.seed, args.cpu,
+        args.reference_samples, args.optical_only, optical_frames=args.optical_frames)
 
 
 if __name__ == "__main__":

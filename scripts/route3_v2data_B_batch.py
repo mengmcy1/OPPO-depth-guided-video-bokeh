@@ -1,5 +1,4 @@
 """Generate sealed B units and summarize counts without rerendering sealed tests."""
-import argparse
 from collections import Counter, defaultdict
 import hashlib
 import json
@@ -15,7 +14,7 @@ import psutil
 
 from route3_v2data_B_front import DATA, RECORD, RESERVE_BYTES, ROOT, write_json
 from route3_v2data_B_inputs import FORMAL_DATA, observation, supervision
-from route3_v2data_B_plan import generator_code
+from route3_v2data_B_release import OPTICAL_FRAMES, load_production_plan
 from route3_ovg_subpixel import TRAIN_FRAMES
 
 
@@ -48,7 +47,7 @@ def reserve(directory, bytes_for_job):
         raise RuntimeError("insufficient disk space for the batch plus the 60 GiB reserve")
 
 
-def run(command, log, *, uses_gpu=False, cpu_limit_bytes=28*GIB, timeout_seconds=None):
+def run(command, log, *, uses_gpu=False, cpu_limit_bytes=28*GIB, timeout_seconds=None, abort=None):
     environment = dict(os.environ, CUDA_VISIBLE_DEVICES="0" if uses_gpu else "",
                        OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1")
     if uses_gpu:
@@ -77,14 +76,19 @@ def run(command, log, *, uses_gpu=False, cpu_limit_bytes=28*GIB, timeout_seconds
                     if pid.strip().isdigit() and int(pid) in by_pid and mib.strip().isdigit():
                         peak_device = max(peak_device,int(mib)*2**20)
             timeout = timeout_seconds is not None and time.monotonic()-start > timeout_seconds
-            if peak_rss > cpu_limit_bytes or peak_device > 24*GIB or timeout:
+            stopped = abort is not None and abort.is_set()
+            if peak_rss > cpu_limit_bytes or peak_device > 24*GIB or timeout or stopped:
                 for child in reversed(children):
                     try:
                         child.terminate()
                     except psutil.NoSuchProcess:
                         pass
-                problem = (f"asset topology audit exceeded {timeout_seconds} seconds" if timeout
-                           else "scene exceeded the allowed CPU or GPU resident memory")
+                if timeout:
+                    problem = f"asset topology audit exceeded {timeout_seconds} seconds"
+                elif stopped:
+                    problem = "B dispatch stopped after reaching the combined resource limit"
+                else:
+                    problem = "scene exceeded the allowed CPU or GPU resident memory"
                 break
             time.sleep(.5)
         exit_code = job.wait()
@@ -96,7 +100,7 @@ def run(command, log, *, uses_gpu=False, cpu_limit_bytes=28*GIB, timeout_seconds
     return usage
 
 
-def verify_optical(labels, rows, frames=TRAIN_FRAMES):
+def verify_optical(labels, rows, frames=OPTICAL_FRAMES):
     expected = {f"f{frame:03d}-focus{focus}-N{aperture:g}"
                 for frame in frames for focus in (0,1) for aperture in (1.4,2.)}
     if len(rows) != len(expected) or {row["id"] for row in rows} != expected:
@@ -134,7 +138,7 @@ def verified_unit(unit, spec, generator, optical):
         "layer_colors": (len(list(labels.glob("*-colors.npz"))), expected_labels),
         "radiance_audits": (len({row["frame"] for row in radiance["audits"]}), expected_labels),
         "K16": (len(list(labels.glob("*-K16.npz"))), expected_labels*2),
-        "optical_pairs": (len(radiance["optical"]), expected_labels*4 if optical else 0),
+        "optical_pairs": (len(radiance["optical"]), len(OPTICAL_FRAMES)*4 if optical else 0),
         "observed_priors": (len(list((unit/"observations/priors").glob("f*.npz"))), expected_labels),
     }
     bad = [name for name, (found, required) in need.items() if found != required]
@@ -162,23 +166,31 @@ def verified_unit(unit, spec, generator, optical):
     return result
 
 
-def produce(unit, spec, generator, estimate):
-    optical = spec["partition"] == "development"
+def prepare_geometry(unit, spec, estimate, *, execute=run):
     reserve(unit.parent, estimate)
     unit.mkdir(parents=True, exist_ok=False)
     description = unit/"scene-spec.json"
     write_json(description,spec)
-    run(blender("route3_v2data_B_scene.py","--spec",description,"--output",unit),unit/"build.log")
+    execute(blender("route3_v2data_B_scene.py","--spec",description,"--output",unit),unit/"build.log")
     near = spec["near_anchor_m"]
-    run(
+    execute(
         [sys.executable,str(SCRIPTS/"route3_v2data_B_labels.py"),"--scene",str(unit),"--focus",
          str(near),str(near*spec["depth_ratio"])], unit/"geometry.log",
     )
-    opts = ["--optical"] if optical else []
-    run(blender("route3_v2data_B_render.py","--scene",unit,*opts),unit/"render.log",uses_gpu=True)
-    run([sys.executable,str(SCRIPTS/"route3_v2data_B_inputs.py"),"--scene",str(unit)],
-        unit/"input-priors.log",uses_gpu=True)
-    status = verified_unit(unit,spec,generator,optical)
+
+
+def finish_unit(unit, spec, generator, *, execute=run):
+    optical = spec["partition"] == "development"
+    opts = ["--optical","--optical-frames",*OPTICAL_FRAMES] if optical else []
+    execute(blender("route3_v2data_B_render.py","--scene",unit,*opts),unit/"render.log",uses_gpu=True)
+    execute([sys.executable,str(SCRIPTS/"route3_v2data_B_inputs.py"),"--scene",str(unit)],
+            unit/"input-priors.log",uses_gpu=True)
+    return verified_unit(unit,spec,generator,optical)
+
+
+def produce(unit, spec, generator, estimate):
+    prepare_geometry(unit,spec,estimate)
+    status = finish_unit(unit,spec,generator)
     write_json(unit/"manifest.json",status)
     return status
 
@@ -244,55 +256,9 @@ def optical_selection(units, count=80):
 
 
 def batch(plan_path, checked_archive_bytes, max_new_scenes=None):
-    base = json.loads(plan_path.read_text())
-    folder = plan_path.parent
-    if folder.resolve() != (FORMAL_DATA/"sealed-scene-plans").resolve():
-        raise ValueError("only the v2 production plans can be dispatched")
-    expected = json.loads((folder/"sha256.json").read_text())
-    if expected[plan_path.stem] != sha256(plan_path):
-        raise ValueError("sealed plan checksum was changed")
-    if base.get("generator_code") and base["generator_code"] != generator_code():
-        raise ValueError("generator source differs from the sealed plan")
-    mode = plan_path.stem
-    if mode not in PRODUCTION_MODES:
-        raise ValueError("not a production B partition")
-    state = json.loads((FORMAL_DATA/"manifest.json").read_text())
-    if not state.get("eligible_for_formal_use") or state.get("generator_version") != base["generator_version"]:
-        raise ValueError("production requires the same formally accepted generator version as the sealed plan")
-    units = FORMAL_DATA/"units"/mode
-    units.mkdir(parents=True, exist_ok=True)
-    failures_path = units/"failures.json"
-    failures = json.loads(failures_path.read_text()) if failures_path.is_file() else []
-    counts = Counter(row["category"] for row in failures if row.get("counts_toward_pause",True))
-    noted={row["scene_id"] for row in failures}
-    attempted = 0
-    for spec in base["scenes"]:
-        if (FORMAL_DATA/"stop-after-current").is_file():
-            return
-        unit = units/spec["scene_id"]
-        if (unit/"manifest.json").is_file() or spec["scene_id"] in noted:
-            continue
-        if counts[spec["category"]] >= 2:
-            failures.append(dict(scene_id=spec["scene_id"],category=spec["category"],
-                                 reason="two failed scenes in category",counts_toward_pause=False))
-            continue
-        if max_new_scenes is not None and attempted >= max_new_scenes:
-            break
-        attempted += 1
-        try:
-            if unit.exists():
-                raise RuntimeError("prior incomplete attempt was preserved")
-            produce(unit,spec,base["generator_version"],checked_archive_bytes)
-        except (RuntimeError,ValueError,OSError) as exc:
-            metadata = dict(scene_id=spec["scene_id"],category=spec["category"],reason=str(exc))
-            failures.append(metadata)
-            if "insufficient disk space" in str(exc):
-                write_json(failures_path,failures)
-                raise
-            counts[spec["category"]] += 1
-        write_json(failures_path,failures)
-        archive_status()
-    write_json(failures_path,failures)
+    from route3_v2data_B_dispatch import dispatch
+
+    return dispatch([plan_path],checked_archive_bytes,max_new_scenes)
 
 
 def archive_status():
@@ -343,13 +309,8 @@ def archive_status():
     return units
 
 
-def produce_optical(estimate):
-    frozen = FORMAL_DATA/"sealed-scene-plans/training.json"
-    state = json.loads((FORMAL_DATA/"manifest.json").read_text())
-    plan = json.loads(frozen.read_text())
-    if (plan["generator_code"] != generator_code()
-            or state["scene_plan_sha256"]["training"] != sha256(frozen)):
-        raise ValueError("optical generation requires the sealed v2 generator")
+def produce_optical(estimate, *, execute=run):
+    plan = load_production_plan(FORMAL_DATA/"sealed-scene-plans/training.json")
     files = sorted((FORMAL_DATA/"units/training").glob("*/manifest.json"))
     candidates={file.parent.name:json.loads(file.read_text()) for file in files}
     target = FORMAL_DATA/"optical"
@@ -388,15 +349,15 @@ def produce_optical(estimate):
                 (unit/name).symlink_to(source/name)
             for frame in (source/"labels").glob("*-pinhole.npz"):
                 (labels/frame.name).symlink_to(frame)
-            run(blender("route3_v2data_B_render.py","--scene",unit,"--optical-only"),
-                unit/"render.log",uses_gpu=True)
+            execute(blender("route3_v2data_B_render.py","--scene",unit,"--optical-only","--frames",*OPTICAL_FRAMES),
+                    unit/"render.log",uses_gpu=True)
             audit = json.loads((labels/"optical-audit.json").read_text())
             verify_optical(labels,audit["optical"])
             products = sorted(p for p in labels.glob("*.npz") if not p.is_symlink())
             outputs = [dict(path=str(p.relative_to(FORMAL_DATA)),bytes=p.stat().st_size,sha256=sha256(p))
                        for p in products]
             write_json(unit/"manifest.json",dict(
-                **item,generator_version=candidates[scene_id]["generator_version"],
+                **item,generator_version=plan["effective_generator_version"],optical_frames=list(OPTICAL_FRAMES),
                 partition="training",geometry_manifest_sha256=sha256(source/"manifest.json"),
                 selection_sha256=sha256(selection),bytes=sum(file["bytes"] for file in outputs),files=outputs,
             ))
@@ -408,28 +369,7 @@ def produce_optical(estimate):
     archive_status()
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    mode = parser.add_mutually_exclusive_group(required=True)
-    mode.add_argument("--sealed-plan", type=Path)
-    mode.add_argument("--optical", action="store_true")
-    mode.add_argument("--summarize", action="store_true")
-    parser.add_argument("--measured-peak-unit-bytes", type=int)
-    parser.add_argument("--max-new-scenes", type=int, help="Limit this launch to the first measured production batch")
-    args = parser.parse_args()
-    if args.summarize:
-        archive_status()
-        return
-    if not args.measured_peak_unit_bytes or args.measured_peak_unit_bytes <= 0:
-        parser.error("a measured positive unit size from the pilot is required")
-    if args.max_new_scenes is not None and (args.sealed_plan is None or args.max_new_scenes <= 0):
-        parser.error("--max-new-scenes requires --sealed-plan and a positive limit")
-    if args.optical:
-        produce_optical(args.measured_peak_unit_bytes)
-    else:
-        batch(args.sealed_plan,args.measured_peak_unit_bytes,args.max_new_scenes)
-        archive_status()
-
-
 if __name__ == "__main__":
+    from route3_v2data_B_dispatch import main
+
     main()
