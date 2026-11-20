@@ -1,0 +1,502 @@
+{
+  "revision": "B-quota-1",
+  "seed": 20261120,
+  "geometry": {
+    "resolution_px": [
+      512,
+      512
+    ],
+    "camera_trajectory_frames": 60,
+    "labeled_frames": [
+      1,
+      6,
+      11,
+      16,
+      21,
+      26,
+      30,
+      35,
+      40,
+      45,
+      50,
+      55,
+      60
+    ],
+    "distance_bins": {
+      "quantity": "background anchor axial depth / nearest occluder anchor axial depth at the middle camera",
+      "left_closed_right_open_except_final_upper": true,
+      "small": [
+        1.15,
+        1.65
+      ],
+      "medium": [
+        1.65,
+        3.0
+      ],
+      "large": [
+        3.0,
+        7.0
+      ]
+    },
+    "motion": {
+      "baseline_quantity": "maximum camera center distance over the full trajectory in m",
+      "small_translation": {
+        "baseline_m": [
+          0.025,
+          0.09
+        ],
+        "rotation_span_deg": [
+          0,
+          5
+        ]
+      },
+      "medium_translation": {
+        "baseline_m": [
+          0.09,
+          0.25
+        ],
+        "rotation_span_deg": [
+          0,
+          12
+        ]
+      },
+      "grazing_or_orbit": {
+        "baseline_m": [
+          0.14,
+          0.45
+        ],
+        "rotation_span_deg": [
+          12,
+          32
+        ]
+      }
+    },
+    "category_requirements": {
+      "curved_self_occlusion": "A curved or obliquely sloped foreground surface has continuous within-object axial depth variation and self-occlusion. Include both surface types in every distance bin.",
+      "thin_structure": "Include physical rods, wires, branches, fences or mesh, plus at least one thin and one wider parameter band in every distance bin.",
+      "multiple_layers": "Three configured depth bands including the background, with overlapping near and intermediate foregrounds.",
+      "large_foreground": "Target 30–65% foreground coverage in the middle camera and include the nearest distance bin for the 122107-like case.",
+      "weak_texture": "Use weak contrast on the occluder and background, without removing depth discontinuities.",
+      "complex_layout": "Use independent layout objects and include both interior and exterior layouts."
+    },
+    "priority": {
+      "large_foreground_122107_like": "All 22 large-foreground/small-distance slots target large near-focus coverage.",
+      "scale_122105_like": {
+        "min_training_scenes_per_occlusion_type": 2,
+        "eligible_cell": {
+          "distance": "small",
+          "motion": "small_translation"
+        },
+        "foreground_to_background_full_asset_scale_ratio_min": 3,
+        "median_absolute_disparity_shift_px_at_512_max": 3,
+        "description": "Choose generation parameters using projected asset scales and parallax from the configured camera baseline and anchor depths."
+      },
+      "highlights": "Plan at least 16 geometry slots with visible opaque emitters or HDR highlights across categories, including foreground and partially occluded sources."
+    },
+    "quota_cells": [
+      {
+        "occlusion": "curved_self_occlusion",
+        "distance": "small",
+        "motion": "small_translation",
+        "training_scenes": 9
+      },
+      {
+        "occlusion": "curved_self_occlusion",
+        "distance": "small",
+        "motion": "medium_translation",
+        "training_scenes": 7
+      },
+      {
+        "occlusion": "curved_self_occlusion",
+        "distance": "small",
+        "motion": "grazing_or_orbit",
+        "training_scenes": 7
+      },
+      {
+        "occlusion": "curved_self_occlusion",
+        "distance": "medium",
+        "motion": "small_translation",
+        "training_scenes": 8
+      },
+      {
+        "occlusion": "curved_self_occlusion",
+        "distance": "medium",
+        "motion": "medium_translation",
+        "training_scenes": 6
+      },
+      {
+        "occlusion": "curved_self_occlusion",
+        "distance": "medium",
+        "motion": "grazing_or_orbit",
+        "training_scenes": 6
+      },
+      {
+        "occlusion": "curved_self_occlusion",
+        "distance": "large",
+        "motion": "small_translation",
+        "training_scenes": 6
+      },
+      {
+        "occlusion": "curved_self_occlusion",
+        "distance": "large",
+        "motion": "medium_translation",
+        "training_scenes": 5
+      },
+      {
+        "occlusion": "curved_self_occlusion",
+        "distance": "large",
+        "motion": "grazing_or_orbit",
+        "training_scenes": 6
+      },
+      {
+        "occlusion": "thin_structure",
+        "distance": "small",
+        "motion": "small_translation",
+        "training_scenes": 9
+      },
+      {
+        "occlusion": "thin_structure",
+        "distance": "small",
+        "motion": "medium_translation",
+        "training_scenes": 7
+      },
+      {
+        "occlusion": "thin_structure",
+        "distance": "small",
+        "motion": "grazing_or_orbit",
+        "training_scenes": 6
+      },
+      {
+        "occlusion": "thin_structure",
+        "distance": "medium",
+        "motion": "small_translation",
+        "training_scenes": 8
+      },
+      {
+        "occlusion": "thin_structure",
+        "distance": "medium",
+        "motion": "medium_translation",
+        "training_scenes": 6
+      },
+      {
+        "occlusion": "thin_structure",
+        "distance": "medium",
+        "motion": "grazing_or_orbit",
+        "training_scenes": 7
+      },
+      {
+        "occlusion": "thin_structure",
+        "distance": "large",
+        "motion": "small_translation",
+        "training_scenes": 6
+      },
+      {
+        "occlusion": "thin_structure",
+        "distance": "large",
+        "motion": "medium_translation",
+        "training_scenes": 5
+      },
+      {
+        "occlusion": "thin_structure",
+        "distance": "large",
+        "motion": "grazing_or_orbit",
+        "training_scenes": 6
+      },
+      {
+        "occlusion": "multiple_layers",
+        "distance": "small",
+        "motion": "small_translation",
+        "training_scenes": 5
+      },
+      {
+        "occlusion": "multiple_layers",
+        "distance": "small",
+        "motion": "medium_translation",
+        "training_scenes": 4
+      },
+      {
+        "occlusion": "multiple_layers",
+        "distance": "small",
+        "motion": "grazing_or_orbit",
+        "training_scenes": 5
+      },
+      {
+        "occlusion": "multiple_layers",
+        "distance": "medium",
+        "motion": "small_translation",
+        "training_scenes": 7
+      },
+      {
+        "occlusion": "multiple_layers",
+        "distance": "medium",
+        "motion": "medium_translation",
+        "training_scenes": 6
+      },
+      {
+        "occlusion": "multiple_layers",
+        "distance": "medium",
+        "motion": "grazing_or_orbit",
+        "training_scenes": 6
+      },
+      {
+        "occlusion": "multiple_layers",
+        "distance": "large",
+        "motion": "small_translation",
+        "training_scenes": 8
+      },
+      {
+        "occlusion": "multiple_layers",
+        "distance": "large",
+        "motion": "medium_translation",
+        "training_scenes": 6
+      },
+      {
+        "occlusion": "multiple_layers",
+        "distance": "large",
+        "motion": "grazing_or_orbit",
+        "training_scenes": 7
+      },
+      {
+        "occlusion": "large_foreground",
+        "distance": "small",
+        "motion": "small_translation",
+        "training_scenes": 10
+      },
+      {
+        "occlusion": "large_foreground",
+        "distance": "small",
+        "motion": "medium_translation",
+        "training_scenes": 6
+      },
+      {
+        "occlusion": "large_foreground",
+        "distance": "small",
+        "motion": "grazing_or_orbit",
+        "training_scenes": 6
+      },
+      {
+        "occlusion": "large_foreground",
+        "distance": "medium",
+        "motion": "small_translation",
+        "training_scenes": 9
+      },
+      {
+        "occlusion": "large_foreground",
+        "distance": "medium",
+        "motion": "medium_translation",
+        "training_scenes": 6
+      },
+      {
+        "occlusion": "large_foreground",
+        "distance": "medium",
+        "motion": "grazing_or_orbit",
+        "training_scenes": 7
+      },
+      {
+        "occlusion": "large_foreground",
+        "distance": "large",
+        "motion": "small_translation",
+        "training_scenes": 6
+      },
+      {
+        "occlusion": "large_foreground",
+        "distance": "large",
+        "motion": "medium_translation",
+        "training_scenes": 4
+      },
+      {
+        "occlusion": "large_foreground",
+        "distance": "large",
+        "motion": "grazing_or_orbit",
+        "training_scenes": 6
+      },
+      {
+        "occlusion": "weak_texture",
+        "distance": "small",
+        "motion": "small_translation",
+        "training_scenes": 5
+      },
+      {
+        "occlusion": "weak_texture",
+        "distance": "small",
+        "motion": "medium_translation",
+        "training_scenes": 4
+      },
+      {
+        "occlusion": "weak_texture",
+        "distance": "small",
+        "motion": "grazing_or_orbit",
+        "training_scenes": 4
+      },
+      {
+        "occlusion": "weak_texture",
+        "distance": "medium",
+        "motion": "small_translation",
+        "training_scenes": 5
+      },
+      {
+        "occlusion": "weak_texture",
+        "distance": "medium",
+        "motion": "medium_translation",
+        "training_scenes": 3
+      },
+      {
+        "occlusion": "weak_texture",
+        "distance": "medium",
+        "motion": "grazing_or_orbit",
+        "training_scenes": 4
+      },
+      {
+        "occlusion": "weak_texture",
+        "distance": "large",
+        "motion": "small_translation",
+        "training_scenes": 4
+      },
+      {
+        "occlusion": "weak_texture",
+        "distance": "large",
+        "motion": "medium_translation",
+        "training_scenes": 3
+      },
+      {
+        "occlusion": "weak_texture",
+        "distance": "large",
+        "motion": "grazing_or_orbit",
+        "training_scenes": 4
+      },
+      {
+        "occlusion": "complex_layout",
+        "distance": "small",
+        "motion": "small_translation",
+        "training_scenes": 4
+      },
+      {
+        "occlusion": "complex_layout",
+        "distance": "small",
+        "motion": "medium_translation",
+        "training_scenes": 3
+      },
+      {
+        "occlusion": "complex_layout",
+        "distance": "small",
+        "motion": "grazing_or_orbit",
+        "training_scenes": 4
+      },
+      {
+        "occlusion": "complex_layout",
+        "distance": "medium",
+        "motion": "small_translation",
+        "training_scenes": 4
+      },
+      {
+        "occlusion": "complex_layout",
+        "distance": "medium",
+        "motion": "medium_translation",
+        "training_scenes": 3
+      },
+      {
+        "occlusion": "complex_layout",
+        "distance": "medium",
+        "motion": "grazing_or_orbit",
+        "training_scenes": 3
+      },
+      {
+        "occlusion": "complex_layout",
+        "distance": "large",
+        "motion": "small_translation",
+        "training_scenes": 3
+      },
+      {
+        "occlusion": "complex_layout",
+        "distance": "large",
+        "motion": "medium_translation",
+        "training_scenes": 3
+      },
+      {
+        "occlusion": "complex_layout",
+        "distance": "large",
+        "motion": "grazing_or_orbit",
+        "training_scenes": 3
+      }
+    ]
+  },
+  "reserved_configuration": {
+    "matching": "any listed condition, and the entire seen-material test group must match at least one",
+    "layer_quantity": "configured depth bands including layout background, excluding coincidence within a single object",
+    "configured_depth_bands_min": 4,
+    "background_to_near_anchor_ratio_gt": 7.0,
+    "hole_area_fraction_gt": 0.35,
+    "hole_area_quantity": "open area divided by projected outer frame area of the designated perforated occluder, or zero for scenes without one",
+    "camera_baseline_m_gt": 0.45,
+    "excluded_from": [
+      "training",
+      "development",
+      "test_unseen_assets"
+    ]
+  },
+  "material_pools": {
+    "canonical_key": "<source>:<asset_id>",
+    "sha256_prefix_hex_digits": 8,
+    "modulus": 1000,
+    "train_upper_exclusive": 800,
+    "development_upper_exclusive": 900,
+    "deduplicate_before_split": true
+  },
+  "development": {
+    "count_by_occlusion": {
+      "curved_self_occlusion": 3,
+      "thin_structure": 3,
+      "multiple_layers": 3,
+      "large_foreground": 3,
+      "weak_texture": 2,
+      "complex_layout": 1
+    },
+    "pool": "development",
+    "references": "P1/P2, near/far focus, two apertures",
+    "legacy_comparison_ids": [
+      "122104",
+      "122105",
+      "122107"
+    ]
+  },
+  "test": {
+    "groups": {
+      "unseen_assets": {
+        "count": 15,
+        "pool": "test",
+        "configuration": "covered"
+      },
+      "unseen_occlusions": {
+        "count": 15,
+        "pool": "training",
+        "configuration": "reserved"
+      }
+    },
+    "selection": "none after sealing",
+    "retired_manifest": {
+      "path": "03_实验记录/records/route3-ovg-1a-2026-11-18-independent-test.json",
+      "sha256": "6d4ca869c1c19d46402b9103977264a2f0b8aca09cc9ed7f2336c84fa88a6643"
+    }
+  },
+  "optical": {
+    "training_scenes": 80,
+    "selection": "deterministic coverage of difficulty labels from training geometry scenes",
+    "difficulty": [
+      "foreground_focus",
+      "background_focus_with_disocclusion",
+      "thin_and_complex_edge_transmission",
+      "multiple_layers_and_local_occlusion",
+      "highlight_and_bokeh"
+    ],
+    "focuses": [
+      "foreground",
+      "background"
+    ],
+    "fstops": [
+      1.4,
+      2.8
+    ],
+    "aperture_samples": 16,
+    "clipping_threshold_linear": 1.0
+  }
+}
