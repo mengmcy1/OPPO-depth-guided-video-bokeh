@@ -9,7 +9,6 @@ from threading import Event
 import time
 
 import numpy as np
-import psutil
 
 from route3_v2data_B_batch import (
     FORMAL_DATA, RECORD, finish_unit, prepare_geometry, reserve, sha256, write_json,
@@ -58,7 +57,7 @@ def final_smoke(unit, spec, version, execute):
     policy = placement.get("layers", [])
     rear_layers = policy[1:]
     in_range = all(.3 <= row["middle_overlap"] <= .7 for row in rear_layers)
-    if spec["category"] == "multiple_layers" and (len(rear_layers) < 1 or not in_range):
+    if (spec["category"] == "multiple_layers" or spec["depth_bands"] > 2) and (not rear_layers or not in_range):
         raise ValueError("multilayer smoke qualification needs every midpoint overlap in [0.3, 0.7]")
     return dict(
         scene_id=spec["scene_id"], category=spec["category"], passed=True, manifest_sha256=digest,
@@ -70,16 +69,19 @@ def final_smoke(unit, spec, version, execute):
 
 def previous_placement_controls(path, version, code, config, specs):
     previous = load(path)
-    if previous["status"] not in {"passed", "failed"} or previous["version"] != version or previous["policy"] != config:
-        raise ValueError("previous isolated run must be complete and use the same qualification scenes")
+    base_policy = {key:value for key,value in config.items() if key != "synthetic_multilayer_curve"}
+    if previous["status"] not in {"passed", "failed", "retired_by_user"} or previous["version"] != version or previous["policy"] != base_policy:
+        raise ValueError("previous isolated results must use the same sealed qualification scenes")
     changed = {name for name in code if previous["generation_code"][name] != code[name]}
-    permitted = {"route3_v2data_B_placement.py", "route3_v2data_B_batch.py", "route3_v2data_B_render.py"}
-    if "route3_v2data_B_placement.py" not in changed or not changed <= permitted:
-        raise ValueError("cannot reuse controls after changes outside multilayer placement or held-out test acceptance")
-    unaffected = [key for key in config["smoke_training_scene_ids"] if specs[key]["category"] != "multiple_layers"]
-    if not set(unaffected) <= set(previous["smoke"]) or set(previous["invariance"]) != set(config["invariance_scene_ids"]):
-        raise ValueError("the previous run lacks one or more of the unchanged categories")
-    smoke = {key:previous["smoke"][key] for key in unaffected}
+    permitted = {"route3_v2data_B_placement.py", "route3_v2data_B_scene.py"}
+    if not changed or not changed <= permitted:
+        raise ValueError("cannot reuse controls after changes outside multilayer placement and scene construction")
+    unaffected = [key for key in config["smoke_training_scene_ids"]
+                  if specs[key]["category"] not in {"multiple_layers", "curved_self_occlusion"} and specs[key]["depth_bands"] == 2]
+    if set(previous["invariance"]) != set(config["invariance_scene_ids"]):
+        raise ValueError("the previous run lacks one or more of the unchanged structure controls")
+    smoke = {key:previous["smoke"][key] for key in unaffected
+             if previous["smoke"].get(key, {}).get("passed")}
     for key, row in smoke.items():
         if row["passed"] and sha256(path.parent/"smoke"/key/"manifest.json") != row["manifest_sha256"]:
             raise ValueError(f"the prior training smoke manifest was changed: {key}")
@@ -87,13 +89,22 @@ def previous_placement_controls(path, version, code, config, specs):
 
 
 def qualify(dest, estimate, previous_placement_proof=None):
-    config = load(RECORD)["v2"]["p2_qualification_policy"]
+    from route3_v2data_B_preflight import planned_scenes
     from route3_v2data_B_release import p2_generation_code
+    tracked = load(RECORD)["v2"]
+    config = tracked["p2_qualification_policy"]
     code = p2_generation_code()
+    preflight_path = FORMAL_DATA/tracked["p2_preflight"]["path"]
+    preflight = load(preflight_path)
+    if preflight.get("status") != "passed" or preflight["generation_code"] != code:
+        raise ValueError("the same candidate must pass geometry preflight before rendering qualification cases")
+    _, synthetic = planned_scenes()
+    synthetic_id = synthetic["scene_id"]
     specs = {}
     for mode in ("training", "development", "test_unseen_assets", "test_unseen_occlusions"):
         plan, _ = sealed_plan(PLAN_DIR/(mode+".json"))
         specs.update((row["scene_id"], row) for row in plan["scenes"])
+    specs[synthetic_id] = synthetic
     dest.mkdir(parents=True)
     (dest/"smoke").mkdir()
     (dest/"invariance").mkdir()
@@ -114,7 +125,9 @@ def qualify(dest, estimate, previous_placement_proof=None):
 
     def publish(status):
         proof = dict(status=status, version=version, generation_code=code, policy=config,
-                     smoke=smoke, invariance=checks, seconds=time.monotonic()-start,
+                     smoke={key:value for key,value in smoke.items() if key!=synthetic_id},
+                     synthetic_curve=smoke.get(synthetic_id),
+                     preflight_sha256=sha256(preflight_path), invariance=checks, seconds=time.monotonic()-start,
                      unchanged_category_proof=source)
         write_json(dest/"proof.json", proof)
 
@@ -123,7 +136,7 @@ def qualify(dest, estimate, previous_placement_proof=None):
             raise ValueError("qualification requires the formal dispatcher to remain drained")
         if source:
             record = load(RECORD)
-            record["v2"]["p2_dispatch"].update(status="running_grounded_multilayer_qualification")
+            record["v2"]["p2_dispatch"].update(status="running_single_p2_qualification")
             write_json(RECORD, record)
         allocation = assigned_cpus()
         abort = Event()
@@ -131,7 +144,7 @@ def qualify(dest, estimate, previous_placement_proof=None):
         cpu_exec = partial(execute_on, allocation[1], 8, abort)
         gpu_exec = partial(execute_on, allocation[2], 18, abort)
         placement_ids = [scene_id for scene_id in test_ids if specs[scene_id]["category"] == "multiple_layers"]
-        review = iter([(scene_id, "smoke") for scene_id in placement_ids]
+        review = iter([(scene_id, "smoke") for scene_id in [synthetic_id, *placement_ids]]
                       + [(scene_id, "invariance") for scene_id in controls if scene_id not in checks]
                       + [(scene_id, "smoke") for scene_id in test_ids if scene_id not in placement_ids
                          and scene_id not in smoke])
@@ -189,7 +202,7 @@ def qualify(dest, estimate, previous_placement_proof=None):
                     pending = None
                     ready.clear()
                 time.sleep(.5)
-    passed = len(smoke) == len(test_ids) and len(checks) == len(controls) and all(
+    passed = len(smoke) == len(test_ids)+1 and len(checks) == len(controls) and all(
         row["passed"] for row in (*smoke.values(), *checks.values())
     ) and not abort.is_set()
     publish("passed" if passed else "failed")
@@ -201,17 +214,8 @@ if __name__ == "__main__":
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--measured-peak-unit-bytes", type=int, required=True)
     parser.add_argument("--previous-placement-proof", type=Path)
-    parser.add_argument("--wait-for-pid", type=int, nargs="+", default=[])
     args = parser.parse_args()
     if args.measured_peak_unit_bytes <= 0:
         parser.error("the unit size must be positive")
-    for pid in args.wait_for_pid:
-        while True:
-            try:
-                if psutil.Process(pid).status() == psutil.STATUS_ZOMBIE:
-                    break
-            except psutil.NoSuchProcess:
-                break
-            time.sleep(5)
     raise SystemExit(0 if qualify(args.output.resolve(), args.measured_peak_unit_bytes,
                                  args.previous_placement_proof) else 1)

@@ -2,6 +2,7 @@
 import argparse
 from collections import Counter
 from pathlib import Path
+from datetime import datetime, timezone
 import time
 
 import psutil
@@ -43,6 +44,7 @@ def qualification_summary(proof_path, proof):
         invariance_passed=sum(row["passed"] for row in controls.values()),
         fallback_count=sum(row.get("fallback_count", 0) for row in proof["smoke"].values()),
         unchanged_category_proof=proof.get("unchanged_category_proof"),
+        synthetic_curve=proof.get("synthetic_curve"),
     )
 
 
@@ -103,6 +105,17 @@ def install(proof_path):
         if not proof:
             raise ValueError("the isolated p2 qualification has not produced a report")
         summary = qualification_summary(proof_path, proof)
+        preflight_ref = record["p2_preflight"]
+        preflight_path = FORMAL_DATA/preflight_ref["path"]
+        preflight = load(preflight_path)
+        if (
+            preflight.get("status") != "passed" or preflight["generation_code"] != p2_generation_code()
+            or preflight["sealed_plan_sha256"] != state["scene_plan_sha256"]
+            or proof.get("preflight_sha256") != sha256(preflight_path)
+            or not (proof.get("synthetic_curve") or {}).get("passed")
+            or (proof["synthetic_curve"]["scene_id"] != preregistered["synthetic_multilayer_curve"]["scene_id"])
+        ):
+            raise ValueError("p2 requires matching geometry preflight and the synthetic deep curve smoke")
         if (
             proof["status"] != "passed" or proof["version"] != version
             or proof["generation_code"] != p2_generation_code() or proof["policy"] != preregistered
@@ -128,6 +141,8 @@ def install(proof_path):
             changes=p2_changes(parent_code, current), dispatch_code=dispatch_code(p2=True),
             sealed_plan_sha256=state["scene_plan_sha256"], optical_frames=list(OPTICAL_FRAMES),
             qualification={key:summary[key] for key in ("path", "sha256")},
+            preflight=dict(path=preflight_ref["path"], sha256=proof["preflight_sha256"]),
+            installed_at_utc=datetime.now(timezone.utc).isoformat(),
             foreground_presence_policy=record["foreground_presence_policy_p2"],
             rebuilt_test_acceptance_policy=record["p2_test_acceptance"],
             multilayer_placement_policy=record["multilayer_placement_policy_p2"],
@@ -154,7 +169,7 @@ def install(proof_path):
         record["p2_invariance"] = dict(status="passed", scenes=summary["invariance"])
         record["p2_rebuild"] = dict(status="archived_awaiting_dispatch", archive=receipt["archive"],
                                     archived_units=rows, affected_test_pending=12)
-        record["p2_dispatch"].update(status="installed_queue_drained")
+        record["p2_dispatch"].update(status="installed_queue_drained", installed_at_utc=receipt["installed_at_utc"])
         write_json(RECORD, tracked)
         archive_status()
         return version

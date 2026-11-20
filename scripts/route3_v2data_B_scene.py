@@ -13,7 +13,8 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from route3_blender_b1 import cube, material
 from route3_ovg_subpixel import TRAIN_FRAMES, save_json, save_npz
-from route3_v2data_B_placement import place_layers
+from route3_v2data_B_placement import audit_layers, place_layers
+from route3_v2data_B_presence import designated_foreground
 
 
 WIDTH = 512
@@ -246,30 +247,86 @@ def camera_path(scene, spec):
     return np.stack(cameras)
 
 
-def place_multilayer_foreground(scene, spec, cameras, rng, dest):
+def foreground_layer_groups(scene, spec):
+    shapes = {ob.name:ob for ob in scene.objects if ob.type == "MESH" and ob.name.startswith("foreground_")}
+    return [(name, [shapes[part] for part in parts if part in shapes])
+            for name, parts in designated_foreground(spec, shapes).items()]
+
+
+def foreground_layer_bounds(groups, near, gap):
     bpy.context.view_layer.update()
-    groups, bounds = [], []
-    near = spec["near_anchor_m"]
-    gap = near * (spec["depth_ratio"] - 1) / (spec["depth_bands"] - 1)
-    for index, _ in enumerate(spec["occluder_assets"]):
-        name = f"foreground_import_{index:02d}"
-        group = [ob for ob in scene.objects if ob.type == "MESH" and ob.name.startswith(name+"_")]
+    bounds = []
+    for index, (name, group) in enumerate(groups):
         if not group:
             raise ValueError(f"missing specified foreground layer {name}")
         points = np.array([ob.matrix_world @ Vector(corner) for ob in group for corner in ob.bound_box])
         lower, upper = points.min(axis=0), points.max(axis=0)
         anchor = np.array((0., near + gap * index, 1.16))
-        groups.append((group, Vector((lower + upper) / 2)))
         bounds.append((name, lower, upper, anchor))
-    if len(groups) < 2:
-        raise ValueError("multiple_layers requires at least two sealed foreground actors")
+    return bounds
+
+
+def place_multilayer_foreground(groups, spec, cameras, rng):
+    near = spec["near_anchor_m"]
+    gap = near * (spec["depth_ratio"] - 1) / (spec["depth_bands"] - 1)
+    bounds = foreground_layer_bounds(groups, near, gap)
     poses, report = place_layers(bounds, cameras, tuple(TRAIN_FRAMES), FOCAL, WIDTH, gap, rng)
-    for (group, old_center), (center, scale) in zip(groups, poses):
+    for (_, group), (_, lower, upper, _), (center, scale) in zip(groups, bounds, poses):
+        old_center = Vector((lower + upper) / 2)
         move = Matrix.Translation(Vector(center)) @ Matrix.Scale(scale, 4) @ Matrix.Translation(-old_center)
         for ob in group:
             ob.matrix_world = move @ ob.matrix_world
+    dilation = report["depth_anchor_multiplier"]
+    if dilation != 1.:
+        for ob in bpy.context.scene.objects:
+            if ob.type == "MESH" and ob.name.startswith("background_"):
+                ob.location.y *= dilation
     bpy.context.view_layer.update()
-    save_json(dest / "labels/multilayer-placement.json", report)
+    return report
+
+
+def preflight_scene(spec):
+    bpy.ops.wm.read_factory_settings(use_empty=True)
+    scene = bpy.context.scene
+    rngs = [np.random.default_rng(seed) for seed in np.random.SeedSequence(spec["seed"]).spawn(4)]
+    populate(spec, *rngs[:3])
+    cameras = camera_path(scene, spec)
+    groups = foreground_layer_groups(scene, spec)
+    near = spec["near_anchor_m"]
+    gap = near * (spec["depth_ratio"] - 1) / (spec["depth_bands"] - 1)
+    if len(groups) < 2:
+        raise ValueError("preflight scene has fewer than two designated layers")
+    result = dict(scene_id=spec["scene_id"], partition=spec["partition"],
+                  category=spec["category"], depth_bands=spec["depth_bands"])
+    for stage in ("before", "after"):
+        if stage == "after":
+            try:
+                placement = place_multilayer_foreground(groups, spec, cameras, rngs[1])
+            except ValueError as error:
+                return dict(result, passed=False, failure=str(error))
+            result["fallback_count"] = placement["fallback_count"]
+            result["depth_anchor_multiplier"] = placement["depth_anchor_multiplier"]
+            result["depth_shift_m"] = placement["depth_shift_m"]
+            result["scene_fallback"] = placement["scene_fallback"]
+            result["fallback_by_layer"] = {layer["name"]:layer["fallback"] for layer in placement["layers"]}
+        result[stage] = audit_layers(foreground_layer_bounds(groups, near, gap), cameras, TRAIN_FRAMES,
+                                     FOCAL, WIDTH, gap)
+    result["passed"] = not any(any(layer["flags"].values()) for layer in result["after"])
+    return result
+
+
+def preflight_scenes(source, output):
+    results = []
+    for spec in json.loads(source.read_text()):
+        try:
+            result = preflight_scene(spec)
+        except (RuntimeError, ValueError, KeyError, OSError) as error:
+            result = dict(scene_id=spec["scene_id"], partition=spec["partition"],
+                          category=spec["category"], depth_bands=spec["depth_bands"],
+                          passed=False, failure=str(error))
+        results.append(result)
+        save_json(output, results)
+        print("B_PREFLIGHT", result["scene_id"], result["passed"], flush=True)
 
 
 def export_labels(scene, cameras, dest):
@@ -330,8 +387,11 @@ def build(spec, dest):
     width = populate(spec, *rngs[:3])
     world(scene, spec, rngs[3])
     cameras = camera_path(scene, spec)
-    if spec["category"] == "multiple_layers":
-        place_multilayer_foreground(scene, spec, cameras, rngs[1], dest)
+    if spec["depth_bands"] > 2:
+        groups = foreground_layer_groups(scene, spec)
+        if len(groups) > 1:
+            placement = place_multilayer_foreground(groups, spec, cameras, rngs[1])
+            save_json(dest / "labels/multilayer-placement.json", placement)
     objects, faces = export_labels(scene, cameras, dest)
     scene.frame_set(1)
     bpy.ops.file.pack_all()
@@ -391,8 +451,10 @@ def validate_structures(candidates, output):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--spec", type=Path)
-    parser.add_argument("--validate-structures", type=Path)
+    mode = parser.add_mutually_exclusive_group(required=True)
+    mode.add_argument("--spec", type=Path)
+    mode.add_argument("--validate-structures", type=Path)
+    mode.add_argument("--preflight", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args(sys.argv[sys.argv.index("--")+1:])
     if args.validate_structures:
@@ -400,7 +462,7 @@ def main():
     elif args.spec:
         build(json.loads(args.spec.read_text()), args.output)
     else:
-        parser.error("Use --spec or --validate-structures")
+        preflight_scenes(args.preflight, args.output)
 
 
 if __name__ == "__main__":
