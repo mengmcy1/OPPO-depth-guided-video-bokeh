@@ -127,6 +127,28 @@ class AirLabZip(DirectZip):
     def refresh(self):
         self.direct = self.url
 
+    def read_at(self, start, end):
+        if not hasattr(self.thread, 'session'):
+            self.thread.session = requests.Session()
+        session = self.thread.session
+        expected = f'bytes {start}-{end-1}/{self.size}'
+        url = f'{self.url}?route3-range={start}-{end-1}'
+        headers = {'Range': f'bytes={start}-{end-1}', 'Accept-Encoding': 'identity'}
+        for attempt in range(4):
+            session.trust_env = attempt % 2 == 1
+            try:
+                with session.get(url, headers=headers, timeout=(8, 30), stream=True) as response:
+                    if response.status_code != 206 or response.headers.get('Content-Range') != expected:
+                        continue
+                    data = response.content
+                if len(data) == end-start:
+                    with self.lock:
+                        self.bytes_received += len(data)
+                    return data
+            except requests.RequestException:
+                time.sleep(1 + attempt)
+        raise OSError(f'AirLab range failed for {start}-{end-1} of {self.url}')
+
 
 def open_archive(stack, entry):
     name = entry['rfilename']

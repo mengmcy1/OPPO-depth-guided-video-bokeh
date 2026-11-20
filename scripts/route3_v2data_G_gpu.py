@@ -17,8 +17,12 @@ def ready_g():
     root = DATA / 'G'
     found = defaultdict(list)
     done = Counter()
+    acquired = [read(path) for path in (root/'acquisition').glob('*.json')]
+    selected = {row['environment']: set(row['windows']) for row in acquired if row.get('complete')}
     for path in sorted((root / 'windows').glob('*/manifest.json')):
         environment = path.parent.name.split('-Data_', 1)[0]
+        if environment in selected and path.parent.name not in selected[environment]:
+            continue
         if (path.parent/'prior/summary.json').exists():
             done[environment] += 1
         elif not (path.parent/'prior-error.json').exists():

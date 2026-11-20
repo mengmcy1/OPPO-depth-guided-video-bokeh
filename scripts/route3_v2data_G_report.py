@@ -67,7 +67,14 @@ def summarize_g():
     quotas = plan.get('quotas', {})
     windows = {}
     failures, exclusions = [], []
+    receipts = {row['environment']: row for row in (read(path) for path in (root/'acquisition').glob('*.json'))}
+    selected_by_env = {env: set(row['windows']) for env, row in receipts.items() if row.get('complete')}
     for path in sorted((root/'windows').glob('*/manifest.json')):
+        env = path.parent.name.split('-Data_', 1)[0]
+        if env in selected_by_env and path.parent.name not in selected_by_env[env]:
+            exclusions.append(dict(window=path.parent.name, environment=env,
+                                   reason='Partially staged from the alternate difficulty before recovery'))
+            continue
         done = path.parent/'prior/summary.json'
         if done.exists():
             meta = read(path)
@@ -78,14 +85,17 @@ def summarize_g():
     split_counts = {role: dict(environments=0, complete_environments=0, frames=0) for role in SPLITS}
     per_environment = {}
     initial = optional(root/'initial-storage.json')
+    raw_environment_count = raw_frame_count = 0
     for env, source in sources.items():
         quota = quotas.get(env, 0)*WINDOW
-        receipt = optional(root/'acquisition'/f'{env}.json')
+        receipt = receipts.get(env)
         selected = windows.get(env, [])
         if receipt:
             failures.extend(dict(environment=env, recovered=bool(receipt.get('complete')), **error)
                             for error in receipt.get('errors', []))
             if receipt.get('complete'):
+                raw_environment_count += 1
+                raw_frame_count += receipt['frames']
                 allowed = set(receipt['windows'])
                 selected = [(p, m) for p, m in selected if m['scene'] in allowed]
         if not source['archives']:
@@ -123,7 +133,11 @@ def summarize_g():
         per_environment[env] = {key: row[key] for key in ('frames','target_frames','split','environment_type','complete','bytes','allocated_bytes')}
     frames = sum(unit['frames'] for unit in units)
     manifest, summary = standard_report('G', units, split_counts, failures, exclusions, G_TARGET, frames, G_SOURCE)
+    raw_check = root/'raw-verification.json'
+    raw_check_sha256 = sha256(raw_check.read_bytes()).hexdigest() if raw_check.exists() else None
     extra = dict(official_environment_count=len(sources), per_environment=per_environment,
+                 downloaded_environment_count=raw_environment_count, downloaded_frames=raw_frame_count,
+                 raw_verification_sha256=raw_check_sha256,
                  official_environment_type_distribution=distribution(list(sources.values()), 'environment_type'),
                  verified_environment_type_distribution=distribution(units, 'environment_type'),
                  frame_storage=sizes([v['bytes']/v['frames'] for v in units]) if frames else sizes([]),
