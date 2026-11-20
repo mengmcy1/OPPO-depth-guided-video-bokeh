@@ -2,7 +2,7 @@
   "archive": "B",
   "status": "in_progress",
   "3d_front": {
-    "status": "正在下载，部分归档已校验",
+    "status": "下载完成并校验",
     "reason": "已按 Google Drive 提供的 SHA-256 核验完成的原始归档。",
     "authorization_expires_at": "2026-12-20T12:20:00+08:00",
     "post_expiry_use_restrictions": "邮件确认过期后账号无法通过该链接继续访问，需要续办。邮件未规定本地已下载副本的期满处理，使用继续受适用的数据协议约束。",
@@ -22,9 +22,16 @@
         "sha256": "0ac966492630311f75e02753dd5ab502fd1aed17a681d849a54c5af9c561915f",
         "drive_sha256": "0ac966492630311f75e02753dd5ab502fd1aed17a681d849a54c5af9c561915f",
         "verified": true
+      },
+      {
+        "file": "3D-FUTURE-model.zip",
+        "bytes": 30169254527,
+        "sha256": "001d23180b0e75f579137af20ee7a31f3b7a712fdb16e18ec849295b840d6790",
+        "drive_sha256": "001d23180b0e75f579137af20ee7a31f3b7a712fdb16e18ec849295b840d6790",
+        "verified": true
       }
     ],
-    "sha256_verified": false,
+    "sha256_verified": true,
     "license_agreements": {
       "3D-FRONT": "https://gw.alicdn.com/bao/uploaded/TB1ZJUfK.z1gK0jSZLeXXb9kVXa.pdf",
       "3D-FUTURE": "https://terms.aliyun.com/legal-agreement/terms/suit_bu1_ali_cloud/suit_bu1_ali_cloud202004171628_60052.html"
@@ -46,12 +53,34 @@
       "excluded": 25
     },
     "authorization_terms_recorded": true,
-    "status_record_sha256": "e10bb10ea814270b65c6b6279a36e995f287df5b4cd91b986a7ed3254ca5b5b9"
+    "status_record_sha256": "82eeb818bd3f29f1d708936e7057991658567a87b0acfcd9c345f47dec8aa7ff",
+    "room_validation": {
+      "path": "finalization-validation/3d-front-room-validation.json",
+      "sha256": "6b680770f79129908c1fa7bb756a20d248cb27c4a7b15a9af8eeaf102c0d2952",
+      "passed": true,
+      "preview": "finalization-validation/3d-front-room-1/room-preview.png",
+      "receipt": "finalization-validation/3d-front-room-1/room-load.json",
+      "room_type": "DiningRoom",
+      "floor_extent_m": [
+        3.6770999431610107,
+        2.8235998153686523,
+        0.0
+      ],
+      "architecture_components": 33,
+      "furniture_instances": 8,
+      "unique_furniture_models": 3,
+      "mesh_review": "finalization-validation/3d-front-opaque-room/mesh-review.json",
+      "training_mesh_disposition": "excluded",
+      "excluded_component_reasons": {
+        "non-manifold mesh after welding duplicated seam vertices": 33,
+        "potential alpha card or transmission: Alpha": 8
+      }
+    }
   },
   "manifest": "data/processed/route3-v2data-2026-11-20/B/manifest.json",
-  "manifest_sha256": "39598887addb5c06cb1de352e6f59b903ff9f19fc2558c4ac419794b2e6ea702",
+  "manifest_sha256": "a8b1738f451ab906bca6b0f0f81619f648c7af6238877f8ed5c53bbddcd8e27e",
   "completed": {
-    "train_geometry": 0,
+    "train_geometry": 2,
     "development": 0,
     "test": 0,
     "train_optical": 0
@@ -74,10 +103,10 @@
     "sha256": "6d4ca869c1c19d46402b9103977264a2f0b8aca09cc9ed7f2336c84fa88a6643"
   },
   "provisional_material_registry": {
-    "sha256": "62334f009de98a4ba802d2b06a14af5a249b30bbc1a1c766f4e3296c3cf78d1d",
+    "sha256": "78bb23d749491681ee6efecd0fb8cab32f799abebd0c4d5ce2af16c919da06de",
     "usable": 378,
     "pending": 0,
-    "excluded": 338,
+    "excluded": 339,
     "counts_by_source_category_pool": {
       "Poly Haven": {
         "mesh/test": 1,
@@ -147,6 +176,7 @@
       "模型详情无法核验 (SSLError)": 1,
       "模型详情无法核验 (HTTP 404)": 1,
       "模型当前不可下载": 1,
+      "no individual opaque mesh passed material and topology checks": 1,
       "image texture is missing": 1,
       "unevaluated hair or curve geometry": 1,
       "缺少可信 Blendkit 文件下载入口": 4,
@@ -164,12 +194,12 @@
     "status": "passed_in_memory_provisional"
   },
   "target_gap": {
-    "train_geometry": 300,
+    "train_geometry": 298,
     "development": 15,
     "test": 30,
     "train_optical": 80
   },
-  "generator_status": "candidate_qualification_running",
+  "generator_status": "formally_released",
   "pilot": {
     "built_scenes": 10,
     "initial_thin_scene": {
@@ -337,11 +367,10 @@
     "thin_repair_commit": "1aee26e"
   },
   "known_unfinished": [
-    "3D-FUTURE archive SHA-256",
-    "3D-FRONT room dependency and load preview",
-    "3D-FRONT layout mesh admission decision",
-    "freeze material pool and seal the disjoint test groups",
-    "admit the first formal B batch"
+    "train_geometry",
+    "development",
+    "test",
+    "train_optical"
   ],
   "preliminary_reference_contract": {
     "legacy_reference": "configs/route3-g3-r13-2026-11-18.json and route3_ldr_u1r.py",
@@ -377,17 +406,33 @@
     "project_loader_faces": 488297
   },
   "archive_allocated_bytes_at_checkpoint": 13660327936,
-  "generator_version": null,
+  "generator_version": "B-v1-50dd699ef589",
   "formal_units": {
     "counts": {
-      "train_geometry": 0,
+      "train_geometry": 2,
       "development": 0,
       "test": 0,
       "train_optical": 0
     },
-    "verified_bytes": 0,
-    "first_training": [],
-    "scene_plan_sha256": {}
+    "verified_bytes": 1256147654,
+    "first_training": [
+      {
+        "scene_id": "training-000-ad64a36cae8a0697",
+        "bytes": 496422542,
+        "manifest_sha256": "57d5f1c2910495c9d40efc071ce7c6d24825c1cda53c25a47bb8c6d60d2d1c96"
+      },
+      {
+        "scene_id": "training-001-e8b0011608e04a8d",
+        "bytes": 759725112,
+        "manifest_sha256": "7455e64da756c637a547deb7ea67154acbc579d3e46a8a8421f58cb8de2b51dc"
+      }
+    ],
+    "scene_plan_sha256": {
+      "training": "e4eca6dc44639034ce8587f6d342a9eb5ad8dfd0c72ebb3e1b92f91adf592faa",
+      "development": "01274976a31fd820099af86ad49d280b2a442c11a914551ef57d3d982e030f7b",
+      "test_unseen_assets": "5ba5b4ca1f2be89514631b1390e1a2f190348073546d5f42bfbe8338d25a1a16",
+      "test_unseen_occlusions": "34d62e5f861f0cad05495659434f5de79d7300a9e04ab35bba196f5c70178fa5"
+    }
   },
   "formal_input_validation": {
     "path": "finalization-validation/formal-input-contract/validation.json",
@@ -452,5 +497,222 @@
     "path": "finalization-validation/layout-smoke-manifest.json",
     "sha256": "24af1ead7e5f913b7403ad5e9e358ea65f4272ed8a4421c9ad5860d1684ce964",
     "partition": "qualification"
-  }
+  },
+  "frozen_material_registry": {
+    "path": "asset-registry-v1.json",
+    "sha256": "59a71ff7bff496d8984615403d08abe21d27d65cd58cd243a5f2154d38b3d352",
+    "status": "frozen-v1",
+    "attributions": "asset-attribution-v1.json",
+    "usable": 378,
+    "counts_by_source_category_pool": {
+      "Poly Haven": {
+        "mesh/test": 1,
+        "mesh/dev": 1,
+        "hdri/test": 7,
+        "hdri/dev": 7,
+        "hdri/train": 24,
+        "material/train": 20,
+        "mesh/train": 5,
+        "material/test": 3
+      },
+      "ambientCG": {
+        "material/train": 20,
+        "material/dev": 1,
+        "material/test": 3
+      },
+      "Sketchfab": {
+        "mesh/test": 1,
+        "mesh/dev": 1
+      },
+      "Objaverse": {
+        "mesh/train": 5,
+        "mesh/dev": 1,
+        "mesh/test": 1
+      },
+      "Blender Studio Human Base Meshes": {
+        "mesh/train": 8,
+        "mesh/dev": 3
+      },
+      "Blendkit": {
+        "mesh/test": 1,
+        "mesh/train": 2
+      },
+      "Google Scanned Objects": {
+        "mesh/train": 17,
+        "mesh/test": 2,
+        "mesh/dev": 2
+      },
+      "Infinigen Indoors": {
+        "layout/train": 1
+      },
+      "Infinigen Nature": {
+        "layout/train": 1
+      },
+      "Procedural Geometry Nodes": {
+        "procedural_structure/train": 191,
+        "procedural_structure/dev": 22,
+        "procedural_structure/test": 27
+      }
+    },
+    "counts_by_license": {
+      "CC0-1.0": 106,
+      "CC-BY-4.0": 30,
+      "project-owned": 242
+    }
+  },
+  "sealed_plan_validation": {
+    "path": "finalization-validation/sealed-plan-validation.json",
+    "sha256": "3673463e94f41085a96f6b3f0d7ec9b574047b69d1183c2a999f95fc0ffcdf88",
+    "passed": true,
+    "generator_version": "B-v1-50dd699ef589",
+    "counts": {
+      "training": 300,
+      "development": 15,
+      "test_unseen_assets": 15,
+      "test_unseen_occlusions": 15
+    },
+    "quota_cells": 54,
+    "sealed_plan_sha256": {
+      "training": "e4eca6dc44639034ce8587f6d342a9eb5ad8dfd0c72ebb3e1b92f91adf592faa",
+      "development": "01274976a31fd820099af86ad49d280b2a442c11a914551ef57d3d982e030f7b",
+      "test_unseen_assets": "5ba5b4ca1f2be89514631b1390e1a2f190348073546d5f42bfbe8338d25a1a16",
+      "test_unseen_occlusions": "34d62e5f861f0cad05495659434f5de79d7300a9e04ab35bba196f5c70178fa5"
+    },
+    "reserve_configuration": {
+      "matching": "any listed condition, and the entire seen-material test group must match at least one",
+      "layer_quantity": "configured depth bands including layout background, excluding coincidence within a single object",
+      "configured_depth_bands_min": 4,
+      "background_to_near_anchor_ratio_gt": 7.0,
+      "hole_area_fraction_gt": 0.35,
+      "hole_area_quantity": "open area divided by projected outer frame area of the designated perforated occluder, or zero for scenes without one",
+      "camera_baseline_m_gt": 0.45,
+      "excluded_from": [
+        "training",
+        "development",
+        "test_unseen_assets"
+      ]
+    },
+    "free_at_planning_bytes": 3578959851520,
+    "conservative_geometry_unit_bytes": 1073741824,
+    "estimated_optical_unit_bytes": 83693051,
+    "estimated_all_geometry_and_optics_bytes": 378391769125
+  },
+  "verified_geometry_and_optical_bytes": 1256147654,
+  "failures": {
+    "training": {
+      "path": "units/training/failures.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "count": 0
+    }
+  },
+  "optical_difficulty_counts": {},
+  "formal_loader_validation": {
+    "path": "finalization-validation/first-formal-loader.json",
+    "sha256": "77f2246a2fecd70c8bf112ecebdb5beeb2a9c36bf48b2481909eab6436fd8f6c",
+    "passed": true,
+    "generator_version": "B-v1-50dd699ef589",
+    "scenes": [
+      {
+        "scene_id": "training-000-ad64a36cae8a0697",
+        "bytes": 496422542,
+        "frames": 13,
+        "manifest_sha256": "57d5f1c2910495c9d40efc071ce7c6d24825c1cda53c25a47bb8c6d60d2d1c96"
+      },
+      {
+        "scene_id": "training-001-e8b0011608e04a8d",
+        "bytes": 759725112,
+        "frames": 13,
+        "manifest_sha256": "7455e64da756c637a547deb7ea67154acbc579d3e46a8a8421f58cb8de2b51dc"
+      }
+    ]
+  },
+  "first_formal_batch": {
+    "generator_version": "B-v1-50dd699ef589",
+    "counts_at_handoff": {
+      "train_geometry": 2,
+      "development": 0,
+      "test": 0,
+      "train_optical": 0
+    },
+    "scenes": [
+      {
+        "scene_id": "training-000-ad64a36cae8a0697",
+        "bytes": 496422542,
+        "frames": 13,
+        "manifest_sha256": "57d5f1c2910495c9d40efc071ce7c6d24825c1cda53c25a47bb8c6d60d2d1c96"
+      },
+      {
+        "scene_id": "training-001-e8b0011608e04a8d",
+        "bytes": 759725112,
+        "frames": 13,
+        "manifest_sha256": "7455e64da756c637a547deb7ea67154acbc579d3e46a8a8421f58cb8de2b51dc"
+      }
+    ],
+    "file_bytes": 1256147654,
+    "allocated_bytes": 1258651648,
+    "stages": {
+      "training-000-ad64a36cae8a0697": {
+        "build": {
+          "seconds": 1.0053707994520664,
+          "peak_rss_bytes": 262320128,
+          "peak_vram_bytes": 0,
+          "exit_code": 0
+        },
+        "geometry": {
+          "seconds": 228.3328673914075,
+          "peak_rss_bytes": 444043264,
+          "peak_vram_bytes": 0,
+          "exit_code": 0
+        },
+        "render": {
+          "seconds": 163.51446728408337,
+          "peak_rss_bytes": 1105907712,
+          "peak_vram_bytes": 3745513472,
+          "exit_code": 0
+        },
+        "input-priors": {
+          "seconds": 158.86562505364418,
+          "peak_rss_bytes": 7745372160,
+          "peak_vram_bytes": 12111052800,
+          "exit_code": 0
+        }
+      },
+      "training-001-e8b0011608e04a8d": {
+        "build": {
+          "seconds": 1.0058470517396927,
+          "peak_rss_bytes": 264658944,
+          "peak_vram_bytes": 0,
+          "exit_code": 0
+        },
+        "geometry": {
+          "seconds": 249.96200808510184,
+          "peak_rss_bytes": 441823232,
+          "peak_vram_bytes": 0,
+          "exit_code": 0
+        },
+        "render": {
+          "seconds": 165.2984086126089,
+          "peak_rss_bytes": 1093120000,
+          "peak_vram_bytes": 3745513472,
+          "exit_code": 0
+        },
+        "input-priors": {
+          "seconds": 158.22817361354828,
+          "peak_rss_bytes": 7747321856,
+          "peak_vram_bytes": 12111052800,
+          "exit_code": 0
+        }
+      }
+    },
+    "filled_training_quota_cells": 1,
+    "quota_activity_and_effective_supervision": "manifest.json#/quota_actual"
+  },
+  "continuation_order": [
+    "test_unseen_assets",
+    "test_unseen_occlusions",
+    "development",
+    "training",
+    "train_optical"
+  ],
+  "stage_1_status": "waiting_for_expanded_data"
 }
