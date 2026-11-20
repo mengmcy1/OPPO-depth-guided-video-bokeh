@@ -1871,13 +1871,39 @@
       ]
     },
     "p2_invariance": {
-      "status": "preregistered",
-      "scenes": [
-        "development-003-8c92e9e93c0ff003",
-        "test_unseen_assets-011-8efb9c29177b1590",
-        "test_unseen_assets-003-b96e1f4041a3c5eb",
-        "test_unseen_assets-004-53629464b870257f"
-      ]
+      "status": "passed",
+      "path": "p2-review/visibility-invariance-accepted.json",
+      "sha256": "ecbd5355632834d3fe8bd7619785a9f2e649c609c3f08e55d7f17297b74a7528",
+      "scenes": {
+        "development-003-8c92e9e93c0ff003": {
+          "category": "thin_structure",
+          "partition": "development",
+          "structure_equal": true,
+          "geometry_label_files": 53,
+          "differences": 0
+        },
+        "test_unseen_assets-011-8efb9c29177b1590": {
+          "category": "large_foreground",
+          "partition": "test_unseen_assets",
+          "structure_equal": true,
+          "geometry_label_files": 53,
+          "differences": 0
+        },
+        "test_unseen_assets-003-b96e1f4041a3c5eb": {
+          "category": "weak_texture",
+          "partition": "test_unseen_assets",
+          "structure_equal": true,
+          "geometry_label_files": 53,
+          "differences": 0
+        },
+        "test_unseen_assets-004-53629464b870257f": {
+          "category": "complex_layout",
+          "partition": "test_unseen_assets",
+          "structure_equal": true,
+          "geometry_label_files": 53,
+          "differences": 0
+        }
+      }
     },
     "p2_rebuild": {
       "status": "drained_pending_qualification",
