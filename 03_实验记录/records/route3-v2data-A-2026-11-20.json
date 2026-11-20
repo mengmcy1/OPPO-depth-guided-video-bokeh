@@ -1,0 +1,96 @@
+{
+  "generator": "route3-v2data-a/1.0",
+  "manifest": "data/processed/route3-v2data-2026-11-20/A/manifest.json",
+  "manifest_sha256": "d7d973f1383a136241feafe359a3cda260eaab432e1365d4df4241ccaf4dd03c",
+  "target": 1000,
+  "completed": 1000,
+  "shortfall": 0,
+  "units_by_split": {
+    "train": 817,
+    "dev": 91,
+    "test": 92
+  },
+  "backgrounds_by_split": {
+    "train": 16042,
+    "dev": 1964,
+    "test": 1992
+  },
+  "foreground_files_bytes": 524416000,
+  "output_bytes": 543891113,
+  "background_source_bytes": 14122246259,
+  "background_source_bytes_per_asset": [
+    34072,
+    2795231
+  ],
+  "foreground_by_source": {
+    "VideoMatte240K_HEVC": 100,
+    "AM-2k": 900
+  },
+  "foreground_bytes_per_unit": [
+    524416,
+    524416
+  ],
+  "disk": {
+    "first_batch_units": 50,
+    "first_batch_bytes": 26220800,
+    "first_batch_max_unit_bytes": 524416,
+    "projected_1000_foreground_bytes": 524416000,
+    "reserve_bytes": 64424509440
+  },
+  "checks": {
+    "max_composition_error": 1.1920928955078125e-07,
+    "same_seed_bitwise": true,
+    "alpha_hat_gradient": false,
+    "preview": "sample-visualization.png",
+    "test_visualizations_used_for_selection": false
+  },
+  "category": {
+    "person": {
+      "units": 100,
+      "split": {
+        "train": 100
+      },
+      "soft_alpha_fraction": 0.02282379150390625
+    },
+    "animal": {
+      "units": 900,
+      "split": {
+        "train": 717,
+        "dev": 91,
+        "test": 92
+      },
+      "soft_alpha_fraction": 0.036074184841579864
+    },
+    "object": {
+      "units": 0,
+      "split": {},
+      "soft_alpha_fraction": 0.0
+    },
+    "hair": {
+      "units": 0,
+      "split": {},
+      "soft_alpha_fraction": 0.0
+    }
+  },
+  "category_note": "hair counts distinct hair-only sources, not hair visible on animals or people",
+  "soft_alpha_fraction": 0.0347491455078125,
+  "license_foregrounds": {
+    "UW Background Matting V2 dataset terms": 100,
+    "MIT": 900
+  },
+  "license_backgrounds": {
+    "MIT": 19998
+  },
+  "exclusions_by_reason": {
+    "paired estimated foreground / alpha absent": 200,
+    "duplicate source bytes": 2
+  },
+  "pending_credentials": [],
+  "optional_sources": [
+    {
+      "source": "P3M-10k",
+      "status": "optional_not_acquired",
+      "terms": "https://jizhizili.github.io/files/p3m_dataset_agreement/P3M-10k_Dataset_Release_Agreement.pdf"
+    }
+  ]
+}
