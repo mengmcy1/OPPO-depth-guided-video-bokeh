@@ -1,0 +1,223 @@
+{
+  "generator": "route3-v2data-c/1.0",
+  "status": "complete",
+  "target_main": 5000,
+  "target_by_group": {
+    "static": {
+      "train": 4500,
+      "dev": 500,
+      "test": 1
+    },
+    "stage4-motion": {
+      "train": 90,
+      "dev": 10
+    }
+  },
+  "target_static_train_dev_shortfall": 0,
+  "groups": {
+    "static": {
+      "units": {
+        "train": 4500,
+        "dev": 500,
+        "test": 1
+      },
+      "bytes": 72655003820,
+      "frames": 40013,
+      "bytes_per_unit": [
+        6709946,
+        16491232
+      ],
+      "widths_m": [
+        0.040014748889201104,
+        0.08653225543382545,
+        0.23953424018380048,
+        0.464625776010369,
+        0.6999572203278083
+      ],
+      "camera_spans_m": [
+        0.0651503467994912,
+        0.08224863596569501,
+        0.19496968544842105,
+        0.43660277574347117,
+        0.6570326457861759
+      ],
+      "dimensions": {
+        "front_layers": {
+          "1": 1668,
+          "2": 1667,
+          "3": 1666
+        },
+        "back_layers": {
+          "1": 2502,
+          "2": 2499
+        },
+        "width_bucket": {
+          "thin": 1669,
+          "medium": 1668,
+          "broad": 1664
+        },
+        "motion_bucket": {
+          "small": 1689,
+          "medium": 1656,
+          "large": 1656
+        },
+        "negative_design": {
+          "True": 1297,
+          "False": 3704
+        },
+        "perforated": {
+          "False": 2517,
+          "True": 2484
+        }
+      },
+      "negative_clip_fraction": 0.8832233553289343,
+      "never_seen_of_hidden": 0.07642348949026467,
+      "never_seen_of_aperture": 0.0007806424974465556
+    },
+    "stage4-motion": {
+      "units": {
+        "train": 90,
+        "dev": 10,
+        "test": 0
+      },
+      "bytes": 1454218711,
+      "frames": 800,
+      "bytes_per_unit": [
+        8690156,
+        15862745
+      ],
+      "widths_m": [
+        0.04141430830304468,
+        0.08120791554375045,
+        0.2174244270947958,
+        0.42788773766612764,
+        0.6968355835488259
+      ],
+      "camera_spans_m": [
+        0.06521385648173565,
+        0.08126695813086658,
+        0.14994905066364922,
+        0.22135226111089293,
+        0.6517103202635751
+      ],
+      "dimensions": {
+        "front_layers": {
+          "1": 34,
+          "2": 33,
+          "3": 33
+        },
+        "back_layers": {
+          "1": 51,
+          "2": 49
+        },
+        "width_bucket": {
+          "thin": 36,
+          "medium": 34,
+          "broad": 30
+        },
+        "motion_bucket": {
+          "small": 46,
+          "medium": 36,
+          "large": 18
+        },
+        "negative_design": {
+          "True": 64,
+          "False": 36
+        },
+        "perforated": {
+          "False": 64,
+          "True": 36
+        }
+      },
+      "negative_clip_fraction": 0.86,
+      "never_seen_of_hidden": 0.07070394636752632,
+      "never_seen_of_aperture": 0.00066925048828125
+    }
+  },
+  "manifest": "data/processed/route3-v2data-2026-11-20/C/manifest.json",
+  "manifest_sha256": "65693464ddbfa943638244d5e8edc4c4beb74c5749ee38bfc2c75e8946d03b42",
+  "disk": {
+    "units": 300,
+    "bytes": 4365908651,
+    "mean_unit_bytes": 14553028.836666666,
+    "min_unit_bytes": 8444526,
+    "max_unit_bytes": 15934559,
+    "estimated_all_bytes": 74235000095,
+    "available_bytes": 3681654054912,
+    "reserve_bytes": 64424509440
+  },
+  "resources": {
+    "cgroup_memory_bytes": 96636764160,
+    "peak_rss_bytes": 3064242176,
+    "torch_peak_reserved_bytes": 6385827840,
+    "nvidia_smi_process_bytes": 7017070592,
+    "seconds_waiting_for_lock": 3167.43,
+    "seconds_under_lock": 971.819,
+    "cpu_processes": 1,
+    "writer_threads": 4,
+    "gpu": "RTX 5090",
+    "lock": "/root/autodl-tmp/route3-cache/gpu-data.lock"
+  },
+  "data_bytes": 74109222531,
+  "texture_bytes": 12367890,
+  "output_bytes": 74149169900,
+  "licenses": {
+    "CC0-1.0": 110
+  },
+  "source_split_assets": {
+    "Poly Haven": {
+      "train": 46,
+      "test": 5,
+      "dev": 4
+    },
+    "ambientCG": {
+      "test": 6,
+      "train": 45,
+      "dev": 4
+    }
+  },
+  "attribution_count": 0,
+  "pending_credentials": [],
+  "excluded_assets": 0,
+  "failed_clips": 0,
+  "planned_clips": 5101,
+  "static_train_dev_distribution": {
+    "front_layers": {
+      "1": 1667,
+      "2": 1667,
+      "3": 1666
+    },
+    "back_layers": {
+      "1": 2501,
+      "2": 2499
+    },
+    "width_bucket": {
+      "thin": 1668,
+      "medium": 1668,
+      "broad": 1664
+    },
+    "motion_bucket": {
+      "small": 1688,
+      "medium": 1656,
+      "large": 1656
+    },
+    "negative_design": {
+      "True": 1296,
+      "False": 3704
+    },
+    "perforated": {
+      "False": 2516,
+      "True": 2484
+    }
+  },
+  "static_train_dev_never_seen_fraction_of_hidden": 0.07641070442764657,
+  "static_train_dev_never_seen_fraction_of_aperture": 0.0007805961608886719,
+  "verification": {
+    "all_units_verified": 5101,
+    "nested_files_sha256_verified": 158146,
+    "texture_files_sha256_verified": 110,
+    "all_split_membership_verified": true,
+    "all_clip_frames_and_priors_verified": true,
+    "bytes_sha256_verified": 74109222531
+  }
+}
