@@ -9,7 +9,7 @@ import re
 import resource
 import struct
 import time
-from zipfile import ZIP_DEFLATED, ZIP_STORED, ZipFile
+from zipfile import BadZipFile, ZIP_DEFLATED, ZIP_STORED, ZipFile
 import zlib
 
 import cv2
@@ -27,6 +27,8 @@ TERMS = 'https://tartanair.org/index.html#license'
 ATTRIBUTION = dict(source=SOURCE, author='TartanAir Team, Carnegie Mellon University AirLab',
                    license='CC BY 4.0', terms=TERMS, terms_version='4.0 International',
                    channel=tartan.HOST, revision=tartan.REVISION)
+AIRLAB = ('https://airlab-cloud.andrew.cmu.edu:8080/swift/v1/'
+          'AUTH_ac8533a83cff4d48bc8c608ad222d330/tartanair_v2')
 TARGET = 20_000
 WINDOW = 8
 OLD = ROOT / 'outputs/route3-ovg-1b-2026-11-18-01/G/windows'
@@ -119,6 +121,13 @@ def ranges(reader, archive, names):
     return values
 
 
+class AirLabZip(DirectZip):
+    """Public AirLab archive carrying the same publisher path and byte length."""
+
+    def refresh(self):
+        self.direct = self.url
+
+
 def open_archive(stack, entry):
     name = entry['rfilename']
     size = entry.get('size')
@@ -126,9 +135,14 @@ def open_archive(stack, entry):
         parent = str(PurePosixPath(name).parent)
         tree = get_json(f'https://huggingface.co/api/datasets/{tartan.REPO}/tree/{tartan.REVISION}/{parent}')
         size = next(x['size'] for x in tree if x['path'] == name)
-    reader = stack.enter_context(DirectZip(f'{tartan.HOST}/resolve/{tartan.REVISION}/{name}', size))
-    archive = stack.enter_context(ZipFile(reader))
-    return reader, archive
+    for adapter, base in ((DirectZip, f'{tartan.HOST}/resolve/{tartan.REVISION}'), (AirLabZip, AIRLAB)):
+        try:
+            reader = stack.enter_context(adapter(f'{base}/{name}', size))
+            archive = stack.enter_context(ZipFile(reader))
+            return reader, archive
+        except (OSError, ValueError, BadZipFile) as error:
+            failure = type(error).__name__
+    raise OSError(f'Both official archive channels failed for {name} ({failure})')
 
 
 def enumerate_windows(image, depth):
@@ -192,6 +206,7 @@ def acquire_window(env, difficulty, item, image, depth, rgb, labels, poses, pose
                              depth_format='OpenCV axial metres; little-endian float32 PNG bytes',
                              pose_format='NED source, OpenCV camera-to-world',
                              source_archives=[entry['rfilename'] for entry in entries.values()],
+                             archive_channels=[arc[0].url for arc in (image, depth)],
                              pose_member=pose_index[trajectory][1].filename, **split(SOURCE, env)))
     return name
 
@@ -199,9 +214,10 @@ def acquire_window(env, difficulty, item, image, depth, rgb, labels, poses, pose
 def acquire_environment(source, quota):
     env = source['asset_id']
     receipt = OUT / 'acquisition' / f'{env}.json'
-    if receipt.exists() and read(receipt).get('complete'):
-        return read(receipt)
-    result = dict(environment=env, target_frames=quota * WINDOW, windows=[], errors=[])
+    previous = read(receipt) if receipt.exists() else {}
+    if previous.get('complete'):
+        return previous
+    result = dict(environment=env, target_frames=quota * WINDOW, windows=[], errors=previous.get('errors', []))
     # Try easy trajectories first for continuity with the previous sampler.
     for difficulty, entries in sorted(source['archives'].items()):
         result['windows'] = []
@@ -225,11 +241,12 @@ def acquire_environment(source, quota):
                             env, difficulty, item, image, depth, rgb, labels, poses, pose_index, entries), batch)
                         result['windows'].extend(ready)
                 result.update(complete=True, difficulty=difficulty, frames=quota*WINDOW,
-                              downloaded_bytes=image[0].bytes_received+depth[0].bytes_received)
+                              downloaded_bytes=image[0].bytes_received+depth[0].bytes_received,
+                              archive_channels=[arc[0].url for arc in (image, depth)])
                 break
         except SpaceError:
             raise
-        except (OSError, ValueError, KeyError, IndexError, RuntimeError) as error:
+        except (OSError, ValueError, KeyError, IndexError, RuntimeError, BadZipFile, zlib.error) as error:
             # Network exceptions may contain signed delivery URLs.
             message = type(error).__name__ if isinstance(error, requests.RequestException) else str(error)
             result['errors'].append(dict(difficulty=difficulty, reason=message))
@@ -254,10 +271,13 @@ def main():
                                           peak_rss_limit_bytes=28*2**30))
     historical = {read(path)['environment'] for path in OLD.glob('*/manifest.json')}
     ordered = sorted(sources.values(), key=lambda row: (row['asset_id'] not in historical, row['asset_id']))
-    with ThreadPoolExecutor(max_workers=2) as group:
+    with ThreadPoolExecutor(max_workers=4) as group:
         def run(row):
             return acquire_environment(row, quotas.get(row['asset_id'], 0))
-        for _ in group.map(run, ordered[:args.limit_environments]):
+        results = list(group.map(run, ordered[:args.limit_environments]))
+        pending = [sources[row['environment']] for row in results
+                   if not row.get('complete') and sources[row['environment']]['archives']]
+        for _ in group.map(run, pending):
             pass
     rss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
     if args.limit_environments is None:

@@ -8,7 +8,9 @@ import sys
 import time
 
 from route3_v2data_G_common import DATA, DATE, RECORDS, ROOT, read, write
+from route3_v2data_G_gpu import ready_g, ready_r
 from route3_v2data_G_report import summarize_g, summarize_r
+from route3_v2data_R_acquire import TARGET as R_TARGET
 
 
 LOG = ROOT/'logs'/f'route3-v2data-{DATE}'
@@ -47,19 +49,20 @@ def acquisition_done(tier):
 
 
 def verified_snapshot():
-    summarize_g()
-    summarize_r()
+    for tier, summarize in (('G', summarize_g), ('R', summarize_r)):
+        if not (DATA/tier/'release-git.json').exists():
+            summarize()
     counts = {tier: read(DATA/tier/'manifest.json')['achieved'] for tier in 'GR'}
     print('RELEASE_VERIFIED', counts, flush=True)
     return counts
 
 
-def git_publish(worktree, message):
+def git_publish(worktree, message, tiers='GR'):
     def git(*args):
         return subprocess.run(['git', *args], cwd=worktree, check=True)
     git('pull', '--rebase', 'origin', 'main')
     sources = [ROOT/'scripts'/f'route3_v2data_{name}.py' for name in SOURCES]
-    records = [RECORDS/f'route3-v2data-{tier}-{DATE}.json' for tier in 'GR']
+    records = [RECORDS/f'route3-v2data-{tier}-{DATE}.json' for tier in tiers]
     files = [str(path.relative_to(ROOT)) for path in sources + records]
     for path, relative in zip(sources + records, files):
         shutil.copyfile(path, worktree/relative)
@@ -72,9 +75,22 @@ def git_publish(worktree, message):
     for attempt in range(3):
         git('pull', '--rebase', 'origin', 'main')
         if subprocess.run(['git', 'push', 'origin', 'HEAD:main'], cwd=worktree).returncode == 0:
-            return
+            return subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True, cwd=worktree).strip()
         time.sleep((attempt+1)*5)
     raise RuntimeError('Could not push the G/R release commit after three attempts')
+
+
+def publish_finished(worktree, counts, gpu_running):
+    if not worktree:
+        return
+    outstanding_r, _ = ready_r()
+    states = dict(G=acquisition_done('G') and (not ready_g() or not gpu_running),
+                  R=counts['R'] >= R_TARGET or (acquisition_done('R') and (not outstanding_r or not gpu_running)))
+    for tier, finished in states.items():
+        receipt = DATA/tier/'release-git.json'
+        if finished and not receipt.exists():
+            commit = git_publish(worktree, f'记录路线三 {tier} 档扩充验收与实际差额', tier)
+            write(receipt, dict(commit=commit, verified_units=counts[tier]))
 
 
 def main():
@@ -117,15 +133,15 @@ def main():
             children[name] = start_worker(name)
             pids[name] = children[name].pid
             attempts[name] += 1
+        gpu_running = pid_running(pids['gpu'], WORKERS['gpu'][0])
         if time.monotonic() - previous_report >= 120:
-            verified_snapshot()
+            counts = verified_snapshot()
+            publish_finished(args.git_worktree, counts, gpu_running)
             previous_report = time.monotonic()
-        if all(acquisition_done(tier) for tier in 'GR') and not pid_running(pids['gpu'], WORKERS['gpu'][0]):
+        if all(acquisition_done(tier) for tier in 'GR') and not gpu_running:
             break
         time.sleep(20)
-    verified_snapshot()
-    if args.git_worktree:
-        git_publish(args.git_worktree, '记录路线三 G/R 扩充数据验收与实际差额')
+    publish_finished(args.git_worktree, verified_snapshot(), False)
 
 
 if __name__ == '__main__':

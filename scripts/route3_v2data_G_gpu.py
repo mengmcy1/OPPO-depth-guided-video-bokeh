@@ -1,5 +1,6 @@
 """Run G and R preprocessing under the shared GPU data lock."""
 import argparse
+from collections import Counter, defaultdict
 import resource
 import time
 
@@ -14,11 +15,17 @@ from route3_v2data_R_acquire import TARGET as R_TARGET
 
 def ready_g():
     root = DATA / 'G'
-    found = []
+    found = defaultdict(list)
+    done = Counter()
     for path in sorted((root / 'windows').glob('*/manifest.json')):
-        if not (path.parent/'prior/summary.json').exists() and not (path.parent/'prior-error.json').exists():
-            found.append(path)
-    return found
+        environment = path.parent.name.split('-Data_', 1)[0]
+        if (path.parent/'prior/summary.json').exists():
+            done[environment] += 1
+        elif not (path.parent/'prior-error.json').exists():
+            found[environment].append(path)
+    order = sorted((done[environment] + i, environment, path)
+                   for environment, paths in found.items() for i, path in enumerate(paths))
+    return [path for _, _, path in order]
 
 
 def ready_r():
@@ -72,7 +79,7 @@ def main():
                 active.discard(tier)
             if tier == 'R' and (root/'access.json').exists() and read(root/'access.json')['status'] != 'authorized':
                 active.discard('R')
-        jobs = [('R', path) for path in r_paths[:16]] + [('G', path) for path in g_paths[:6]]
+        jobs = [('R', path) for path in r_paths[:64]] + [('G', path) for path in g_paths[:8]]
         if not jobs:
             if not args.watch or not active:
                 break

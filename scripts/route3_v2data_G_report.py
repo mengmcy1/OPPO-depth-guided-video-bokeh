@@ -83,7 +83,8 @@ def summarize_g():
         receipt = optional(root/'acquisition'/f'{env}.json')
         selected = windows.get(env, [])
         if receipt:
-            failures.extend(dict(environment=env, **error) for error in receipt.get('errors', []))
+            failures.extend(dict(environment=env, recovered=bool(receipt.get('complete')), **error)
+                            for error in receipt.get('errors', []))
             if receipt.get('complete'):
                 allowed = set(receipt['windows'])
                 selected = [(p, m) for p, m in selected if m['scene'] in allowed]
@@ -112,6 +113,7 @@ def summarize_g():
                    environment_type=source['environment_type'], frames=frames, target_frames=quota,
                    complete=complete, windows=paths, checksums=files, bytes=total_bytes,
                    allocated_bytes=allocated, sha256=sha256(json.dumps(files, sort_keys=True).encode()).hexdigest(),
+                   archive_channels=sorted({url for _, window in selected for url in window.get('archive_channels', [])}),
                    attribution={key: source[key] for key in ('source','asset_id','author','license','terms','terms_version','channel','revision')})
         units.append(row)
         count = split_counts[source['split']]
