@@ -30,7 +30,8 @@ B_SOURCE = {
     '2b': 'cached frozen z1/z2+q establish zeros; remaining unknown without saved learned alpha',
     'fixed-original': 'fixed visible geometry has no first-pass split',
 }
-FIELDS = ('cls', 'sse', 'x_mm', 'y_mm', 'edge_px', 'delta_inv', 'b', 'reason', 'closed')
+FIELDS = ('cls', 'sse', 'x_mm', 'y_mm', 'edge_px', 'delta_inv', 'delta_gt_inv',
+          'delta_inv_residual', 'b', 'reason', 'closed')
 
 
 def npz(path, *keys):
@@ -103,8 +104,13 @@ def ray_attrs(archive, maps, gt, edge, foreground_ids, label, focus, state):
     delta = np.full(len(k), np.nan, np.float64)
     d_ok = valid_pp & valid_p
     delta[d_ok] = 1/zpp[d_ok]-1/zp[d_ok]
+    zp_gt, zpp_gt = gt['depth_axial_m'][p_y, p_x], gt['depth_axial_m'][cy, cx]
+    gt_ok = crack & np.isfinite(zp_gt) & np.isfinite(zpp_gt) & (zp_gt > 0) & (zpp_gt > 0)
+    delta_gt = np.full(len(k), np.nan, np.float64)
+    delta_gt[gt_ok] = 1/zpp_gt[gt_ok].astype(np.float64)-1/zp_gt[gt_ok].astype(np.float64)
     return dict(cls=cls, sse=effect[k, j], x_mm=lens[:, 0]*1000, y_mm=lens[:, 1]*1000,
-                edge_px=edge[p_y, p_x], delta_inv=delta, b=np.where(valid_pp, bmap[cy, cx], -1),
+                edge_px=edge[p_y, p_x], delta_inv=delta, delta_gt_inv=delta_gt,
+                delta_inv_residual=delta-delta_gt, b=np.where(valid_pp, bmap[cy, cx], -1),
                 reason=reason, closed=archive['closed'][k, j] if state == 'on' else np.zeros(len(k), bool))
 
 
@@ -146,6 +152,8 @@ def write_stats(stage, focus, state, scope, parts, domain):
         distribution('gt_subpixel_edge_distance_px', d)
         bucket('gt_edge_px', [('0_to_2', d <= 2), ('2_to_8', (d > 2) & (d <= 8)), ('above_8', d > 8)])
         distribution('pred_inverse_depth_pprime_minus_p_m_inv', m['delta_inv'])
+        distribution('gt_inverse_depth_pprime_minus_p_m_inv', m['delta_gt_inv'])
+        distribution('pred_minus_GT_inverse_depth_difference_m_inv', m['delta_inv_residual'])
         bucket('pprime_b', [('0', m['b'] == 0), ('1', m['b'] == 1), ('unknown', m['b'] == -1)])
         for j, k in enumerate(('invalid_query_depth', 'outside_image', 'invalid_cached_depth',
                                'earlier_depth_different_or_invalid_GT_object'), start=1):
@@ -167,7 +175,7 @@ def main():
         fg = npz(TRUTH/scene/'scene-geometry.npz', 'foreground_object_ids')['foreground_object_ids']
         for frame in (1, 30, 60):
             f = f'f{frame:03d}'
-            gt = npz(geom/f'{f}-center.npz', 'object_id', 'center_visible')
+            gt = npz(geom/f'{f}-center.npz', 'object_id', 'center_visible', 'depth_axial_m')
             boundary = npz(B_LABELS/scene/'pinhole-subpixels'/f'{f}.npz', 'depth_boundary')['depth_boundary']
             if not boundary.any():
                 raise ValueError(f'No saved GT subpixel boundary in {scene}/{f}')
@@ -206,7 +214,7 @@ def main():
                     assert np.isclose(sum(r['positive_SSE'] for r in result), sse, atol=1e-9, rtol=1e-10), key
                     rows.extend(result)
 
-    out = REC/'route3-ovg-stage2-2026-11-20-gap-attribution.csv'
+    out = REC/'route3-ovg-stage2-2026-11-20-tilt-b0-gap-attribution.csv'
     temporary = out.with_suffix('.part')
     with temporary.open('w', newline='') as f:
         writer = csv.DictWriter(f, list(rows[0]), lineterminator='\n')
