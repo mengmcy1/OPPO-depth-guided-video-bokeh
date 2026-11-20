@@ -151,7 +151,7 @@ def check_plan(specs, config):
 
 
 def evidence():
-    labels=V2/"qualification/open-room-labels-world-meters/validation.json"
+    labels=V2/"qualification/open-layout-architecture/validation.json"
     sources={}
     unfinished=[]
     for slug in TERMINAL_SOURCES:
@@ -161,7 +161,8 @@ def evidence():
             unfinished.append(slug)
         if row:
             sources[slug]={"status":row["status"],"sha256":digest(path),"catalog_count":row.get("catalog_count"),
-                           "reason":row.get("reason")}
+                           "reason":row.get("reason"),"retry_status":row.get("retry_status"),
+                           "account":row.get("account")}
     return labels,sources,unfinished
 
 
