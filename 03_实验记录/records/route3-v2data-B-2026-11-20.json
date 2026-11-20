@@ -1,6 +1,6 @@
 {
   "archive": "B",
-  "status": "in_progress",
+  "status": "archived_v1",
   "3d_front": {
     "status": "下载完成并校验",
     "reason": "已按 Google Drive 提供的 SHA-256 核验完成的原始归档。",
@@ -78,9 +78,9 @@
     }
   },
   "manifest": "data/processed/route3-v2data-2026-11-20/B/manifest.json",
-  "manifest_sha256": "a8b1738f451ab906bca6b0f0f81619f648c7af6238877f8ed5c53bbddcd8e27e",
+  "manifest_sha256": "241e811e9420fe02ef2cb84bd78dcb6387b968ceab3d47a0e406a2e7012ff173",
   "completed": {
-    "train_geometry": 2,
+    "train_geometry": 0,
     "development": 0,
     "test": 0,
     "train_optical": 0
@@ -194,7 +194,7 @@
     "status": "passed_in_memory_provisional"
   },
   "target_gap": {
-    "train_geometry": 298,
+    "train_geometry": 300,
     "development": 15,
     "test": 30,
     "train_optical": 80
@@ -597,8 +597,13 @@
     "estimated_optical_unit_bytes": 83693051,
     "estimated_all_geometry_and_optics_bytes": 378391769125
   },
-  "verified_geometry_and_optical_bytes": 1256147654,
+  "verified_geometry_and_optical_bytes": 2286660458,
   "failures": {
+    "test_unseen_assets": {
+      "path": "units/test_unseen_assets/failures.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "count": 0
+    },
     "training": {
       "path": "units/training/failures.json",
       "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
@@ -714,5 +719,110 @@
     "training",
     "train_optical"
   ],
-  "stage_1_status": "waiting_for_expanded_data"
+  "stage_1_status": "waiting_for_expanded_data",
+  "archived_counts": {
+    "train_geometry": 2,
+    "development": 0,
+    "test": 2,
+    "train_optical": 0
+  },
+  "v2": {
+    "status": "rules_committed_before_intake",
+    "v1_retirement": {
+      "generator_version": "B-v1-50dd699ef589",
+      "archive_manifest_sha256": "241e811e9420fe02ef2cb84bd78dcb6387b968ceab3d47a0e406a2e7012ff173",
+      "archived_counts": {
+        "train_geometry": 2,
+        "development": 0,
+        "test": 2,
+        "train_optical": 0
+      },
+      "previously_admitted_test_units": 1,
+      "drained_unit": "test_unseen_assets-001-ec9b0172432e3d93",
+      "drained_stage": "observation priors",
+      "sealed_plans_preserved": true,
+      "formal_use": false
+    },
+    "formal_counts": {
+      "train_geometry": 0,
+      "train_optical": 0,
+      "development": 0,
+      "test": 0
+    },
+    "rules": {
+      "basis": {
+        "revision_commit": "dd004fc",
+        "sections": [
+          "13.15.2",
+          "13.15.4",
+          "13.15.7",
+          "13.16.5"
+        ],
+        "v1_imported_pool": {
+          "training": 37,
+          "development": 8,
+          "test": 6
+        },
+        "v1_training_plan": {
+          "count": 300,
+          "imported_mesh_scenes": 30,
+          "unique_imported_meshes": 19,
+          "imported_layout_scenes": 15,
+          "unique_imported_layouts": 2
+        }
+      },
+      "archive_path": "data/processed/route3-v2data-2026-11-20/B/v2/",
+      "topology": {
+        "allow": "接受可确定法向与光线命中的单面开口网格。共边三角形方向连续，每个边界顶点的相邻面构成一条连通面扇。封闭连通分量要求朝外。",
+        "check": "使用 Blender 求值后的几何三角化，在世界坐标按 max(1e-8 m, 物体最大尺寸 × 1e-6) 检查重复接缝。对潜在相交的三角对做窄相测试，包括不同组件在同一物体中的情况。",
+        "exclude": [
+          "无效尺度、缺失面、有限数值或法向不合法、零面积面",
+          "同一条边有超过两个面或边界面扇断开",
+          "相邻面绕序冲突或封闭分量内翻",
+          "自相交与共面重叠，包括反向重叠的双面片",
+          "未求值毛发、透明／折射／体积、贴图缺失或许可不可核验"
+        ],
+        "open_mesh_validation": "在开发用的非测试候选上复用针孔两层深度顺序、真实覆盖率重算与 K16 命中检查。保存具体资产键、标签对应帧及检查结果。扫描模型沿用先减面后验收。"
+      },
+      "sampling": {
+        "primary_occluders": {
+          "curved_self_occlusion": "导入曲面网格",
+          "large_foreground": "导入网格并按大面积前景的画幅与距离布置",
+          "multiple_layers": "导入多件网格，按已有深度层放置",
+          "weak_texture": "导入网格，使用低纹理材质控制遮挡",
+          "complex_layout": "导入布局与导入前景网格",
+          "thin_structure": "程序细结构，沿用宽度档"
+        },
+        "assignment": "先在同池且适配指定遮挡类别的素材中优先选此前在该划分及类别使用较少的素材，用冻结种子确定同频次的顺序。程序形状用于补充。不同素材的深度层放置独立。",
+        "quota_and_reserved": "沿用 v1 的 54 个格子、逐格配额和预留配置区域。",
+        "test": "未见素材组使用测试池且落在训练配置范围内。未见遮挡关系组使用训练池且落在预留配置区。各 15 个。生成前封存，封存后各渲染一次。",
+        "preseal_statistics": [
+          "按训练／开发／测试及遮挡类别统计实际场景引用的不同导入网格数和布局数",
+          "按同一维度统计单网格和单布局最大场景重复次数",
+          "合并两组测试时同时保留分组统计，零使用类别也列出"
+        ]
+      },
+      "sources": {
+        "Google Scanned Objects": "遍历官方目录全部分页并逐个核验。",
+        "3D-FUTURE and 3D-FRONT": "从已校验归档建立完整家具目录。复查家具和布局建筑组件，分批筛查并保留所有已审查候选的处置状态。",
+        "Sketchfab and Objaverse": "扩大目录。按模型 ID 查询 Sketchfab 当前状态，只使用官方 Download API，排除 NoAI，跨目录去重。",
+        "Smithsonian": "接入可核验的 Open Access 模型，逐项记录许可。",
+        "Poly Haven": "扩大 CC0 模型覆盖。",
+        "Blendkit": "扩大 CC0 模型覆盖。"
+      },
+      "preparation_target": {
+        "imported_meshes": 1000,
+        "enforced_as_minimum": false
+      },
+      "pool_rule": "跨来源去重后，以 来源:素材ID 为规范键。SHA-256 前八位取整数 mod 1000，<800 训练、800–899 开发、≥900 测试。",
+      "generation_targets": {
+        "train_geometry": 300,
+        "train_optical": 80,
+        "development": 15,
+        "test": 30
+      },
+      "disk_reserve_bytes": 64424509440
+    },
+    "rules_sha256": "2fd5541b62bccad35a2bfeb881e786a25606ce9900a29fece2db25c14e8b2475"
+  }
 }
