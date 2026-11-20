@@ -37,6 +37,29 @@ def b_folder(name):
     return PREVIOUS/'geometry'/'original'/name
 
 
+@functools.lru_cache(maxsize=8)
+def b_foreground_reference(name, frame):
+    """Read GT identity from labels only, outside input construction."""
+    expanded = ROOT/'data/processed/route3-v2data-2026-11-20/B/units/development'/name/'labels'
+    current = expanded/f'f{frame:03d}-pinhole.npz'
+    if current.is_file():
+        root, center = expanded, current
+    else:
+        truth = PREVIOUS/'truth'/name
+        root, center = truth, truth/'geometry'/f'f{frame:03d}-center.npz'
+    row = load(center, ('depth_axial_m','object_id','center_visible'))
+    return dict(gt=row['depth_axial_m'],object_id=row['object_id'],valid=row['center_visible'],
+                foreground=load(root/'scene-geometry.npz',('foreground_object_ids',))['foreground_object_ids'])
+
+
+def b_edge_reference(item, target):
+    _, name, index = item
+    frame = TRAIN_FRAMES[index]
+    row = b_foreground_reference(name,frame)
+    return dict(row, valid=row['valid'] & target['valid'][0].cpu().numpy(),
+                boundary=target['depth_boundary'][0].cpu().numpy())
+
+
 @functools.lru_cache(maxsize=48)
 def b_input(name, frame):
     root=b_folder(name)

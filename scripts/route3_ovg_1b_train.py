@@ -3,6 +3,7 @@ import argparse
 import hashlib
 from collections import Counter, defaultdict
 import os
+from pathlib import Path
 import subprocess
 import time
 
@@ -22,12 +23,13 @@ import route3_ovg_train as base
 from route3_ovg_r2_train import groups_G, model
 from route3_ovg_subpixel import save_json
 from src.layered_aperture import merge_layers
+from src.ovg_edge_statistics import EdgeStatistics, occupancy_distance_counts
 from src.ovg_net import geometry_loss, masked_mean, scene_consistency
 from src.ovg_optics import fixed_visible_surfels, occlusion_loss, raster, resized_prediction, stratified_pupil, visible_surfels
 
 
-def load_model(path=SOURCE/'checkpoints/step-030000.pt', key='model'):
-    net = model()
+def load_model(path=SOURCE/'checkpoints/step-030000.pt', key='model', *, device='cuda'):
+    net = model(device)
     checkpoint = torch.load(path, weights_only=True, map_location='cpu')
     missing, extra = net.load_state_dict(checkpoint[key], strict=False)
     if extra or any(not p.startswith('encoder.') for p in missing):
@@ -50,14 +52,17 @@ def ema_update(net, ema):
             ema[name].lerp_(p, 1. - CONFIG['ema_decay'])
 
 
-def evaluate(net, step, store_predictions=False, *, fixed=False, compare_gate_off=False, output=OUT, sample=data.sample):
+def evaluate(net, step, store_predictions=False, *, fixed=False, compare_gate_off=False, output=OUT,
+             sample=data.sample, dev_items=None, device='cuda'):
     """Compare fusion, refinement and best hard prior on identical pixels."""
     net.eval()
     totals = defaultdict(Counter)
     rows = []
+    edge_stats = EdgeStatistics()
+    items = data.inventory('dev')['B'] if dev_items is None else dev_items
     with torch.inference_mode():
-        for item in data.inventory('dev')['B']:
-            x, y = sample(item, 'cuda')
+        for item in items:
+            x, y = sample(item, device)
             pred = net(x, protect_residual=fixed, render_heads=not fixed)
             available = x['prior_conf'] > 0
             gt_inverse = y['depth1'].clamp_min(.05).reciprocal()
@@ -83,6 +88,10 @@ def evaluate(net, step, store_predictions=False, *, fixed=False, compare_gate_of
                 unprotected = net(x, render_heads=False)
                 methods.append(('OVG-Net-gate-off', unprotected['depth1'],
                                 unprotected['alpha'], unprotected['depth2']))
+            reference = data.b_edge_reference(item, y)
+            for label, depth, _, _ in methods:
+                support = available.any(1)[0] if label in ('selected-prior-base','best-single-prior-Oracle') else y['valid'][0]
+                edge_stats.add(item[1], label, depth[0].cpu().numpy(), reference, support.cpu().numpy())
             for subset, mask in masks.items():
                 for label, depth, alpha, back in methods:
                     for focus in (1.4, 5.):
@@ -98,7 +107,9 @@ def evaluate(net, step, store_predictions=False, *, fixed=False, compare_gate_of
     for (name, subset, label, focus), values in sorted(totals.items()):
         rows.append(dict(scene=name, subset=subset, method=label, focus_m=focus, **base.reduce_metrics(values)))
     return dict(step=step, rows=rows, high_conf_threshold=.6,
-                alpha_back_for_single_depth='undefined; null', data_split='39 development frames')
+                alpha_back_for_single_depth='undefined; null', development_frames=len(items),
+                data_split=f'{len(items)} development frames',
+                edge_inverse_depth=list(edge_stats.rows()))
 
 
 def training_objective(net, item, rng, generator, *, fixed=False, sample=data.sample):
@@ -137,6 +148,7 @@ def training_objective(net, item, rng, generator, *, fixed=False, sample=data.sa
         offsets, cutoff, reveal, block = occupancy_labels(spec, h, w, truth_geometry, generator)
         losses['occ'] = occlusion_loss(vis, K, focus, offsets, cutoff, reveal, block)
         counts.update(occ_reveal=int(reveal.sum()), occ_block=int(block.sum()))
+        counts.update(occupancy_distance_counts(truth_geometry['depth_boundary'][0], reveal, block))
         hidden, stats = hidden_substitute(spec, pred['depth1'][0], K)
     combined = merge_layers(vis, hidden)
     zero = raster(combined, K, focus, center, h, w, background_samples(spec, K, focus, center, (h, w)))[0]
@@ -195,7 +207,7 @@ def training_pool():
 
 
 def train(*, output=OUT, profile=None, monitor=None, sample=data.sample, initialization=None,
-          steps=None, eval_steps=None, fixed_pool=None):
+          steps=None, eval_steps=None, fixed_pool=None, dev_items=None):
     steps = steps or CONFIG['steps']
     eval_steps = eval_steps or CONFIG['eval_steps']
     run_config = dict(CONFIG, steps=steps, eval_steps=list(eval_steps))
@@ -231,6 +243,7 @@ def train(*, output=OUT, profile=None, monitor=None, sample=data.sample, initial
         initialization_note = str(initialization.relative_to(data.ROOT)) + ' (raw, AdamW and EMA)'
     batch_digest = hashlib.sha256()
     counts, active, curve, joins = Counter(), Counter(), [], []
+    occ_support = defaultdict(Counter)
     start_at = 1
     checkpoints = output/'checkpoints'
     checkpoints.mkdir(exist_ok=True)
@@ -252,6 +265,8 @@ def train(*, output=OUT, profile=None, monitor=None, sample=data.sample, initial
         counts.update(history['counts'])
         active.update(history['active'])
         curve, joins = history['curve'], history['joins']
+        for tier, values in history.get('occlusion_edge_rays', {}).items():
+            occ_support[tier].update(values)
     start = time.monotonic()
     for i in range(start_at, steps+1):
         if i == start_at or i % 100 == 1:
@@ -277,6 +292,7 @@ def train(*, output=OUT, profile=None, monitor=None, sample=data.sample, initial
                 parameter[2:5].copy_(frozen)
         ema_update(net, ema)
         counts[tier] += 1
+        occ_support[tier].update({k:v for k,v in stats.items() if k.startswith('occ_')})
         active.update(occ=int(stats.get('occ_reveal', 0) + stats.get('occ_block', 0) > 0),
                       bokeh=int(stats.get('bokeh_pixels', 0) > 0),
                       zero=int(stats.get('zero_pixels', 0) > 0))
@@ -285,6 +301,7 @@ def train(*, output=OUT, profile=None, monitor=None, sample=data.sample, initial
                           hidden=hidden))
         if i == 1 or i % 100 == 0:
             report = dict(step=i, counts=counts, active=active, joins=joins, latest=curve[-1],
+                          occlusion_edge_rays=occ_support,
                           seconds=elapsed_offset+time.monotonic()-start,
                           peak_MiB=torch.cuda.max_memory_allocated()/2**20)
             save_json(output/'progress.json', report)
@@ -292,7 +309,8 @@ def train(*, output=OUT, profile=None, monitor=None, sample=data.sample, initial
         if i in eval_steps:
             raw = state(net)
             terminal = i == steps
-            kwargs = dict(fixed=fixed, compare_gate_off=fixed and terminal, output=output, sample=sample)
+            kwargs = dict(fixed=fixed, compare_gate_off=fixed and terminal, output=output, sample=sample,
+                          dev_items=dev_items)
             val_raw = evaluate(net, i, **kwargs)
             if monitor is not None:
                 val_raw['zero_aperture'] = monitor(net)
@@ -304,6 +322,7 @@ def train(*, output=OUT, profile=None, monitor=None, sample=data.sample, initial
             save_json(output/'validation'/f'step-{i:06d}.json', dict(raw=val_raw, EMA=val_ema))
             save_json(output/'validation'/f'step-{i:06d}-state.json',
                       dict(step=i, curve=curve, joins=joins, counts=counts, active=active,
+                           occlusion_edge_rays=occ_support,
                            seconds=elapsed_offset+time.monotonic()-start))
             path = checkpoints/f'step-{i:06d}.pt'
             tmp = path.with_suffix('.part')
@@ -314,6 +333,7 @@ def train(*, output=OUT, profile=None, monitor=None, sample=data.sample, initial
             tmp.replace(path)
     fractions = lambda collection: {k: v / steps for k,v in collection.items()}
     save_json(output/'training.json', dict(steps=steps, counts=counts, active=active, joins=joins,
+              occlusion_edge_rays=occ_support,
               sampled_fractions=fractions(counts), active_fractions=fractions(active),
               curve=curve, seconds=elapsed_offset+time.monotonic()-start,
               peak_MiB=torch.cuda.max_memory_allocated()/2**20, profile=profile,
@@ -353,10 +373,54 @@ def plot_training(curve, *, output=OUT, eval_steps=CONFIG['eval_steps']):
     plt.close(fig)
 
 
+def evaluate_checkpoint(checkpoint, output, frames, device):
+    from route3_ovg_1c import aligned_sample
+
+    data.OUT = OUT
+    items = [item for item in data.inventory('dev')['B']
+             if not frames or data.TRAIN_FRAMES[item[2]] in frames]
+    if not items:
+        raise ValueError('No development frames selected')
+    output.mkdir(parents=True, exist_ok=False)
+    weights = torch.load(checkpoint, map_location='cpu', weights_only=True)
+    net = load_model(checkpoint, 'ema', device=device)
+    result = evaluate(net, weights['step'], fixed=True, compare_gate_off=True,
+                      sample=aligned_sample, dev_items=items, device=device)
+    counts = []
+    rng = torch.Generator(device=device).manual_seed(CONFIG['seed'])
+    for item in items:
+        _, y = aligned_sample(item, device)
+        shape = [min(n, CONFIG['optical_train']['max_image_side']) for n in y['alpha'].shape[-2:]]
+        for spec in synthetic_optical(item):
+            _, _, reveal, block = occupancy_labels(spec, *shape, y, rng)
+            by_band = occupancy_distance_counts(y['depth_boundary'][0], reveal, block)
+            for tag, mask in (('block', block), ('reveal', reveal)):
+                assert sum(v for k,v in by_band.items() if k.endswith('_'+tag)) == int(mask.sum())
+            counts.append(dict(scene=item[1], frame=data.TRAIN_FRAMES[item[2]], focus_m=spec['focus'],
+                               render_shape=shape, rays=int(reveal.shape[0]), **by_band))
+    save_json(output/'geometry.json', dict(result, checkpoint=checkpoint.name, weights='EMA',
+                                          occupancy_label_check=counts))
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('job', choices=['check', 'train'])
+    parser.add_argument('job', choices=['check', 'train', 'evaluate-checkpoint'])
+    parser.add_argument('--checkpoint', type=Path)
+    parser.add_argument('--output', type=Path)
+    parser.add_argument('--frames', nargs='+', type=int)
+    parser.add_argument('--device', choices=['cuda','cpu'], default='cuda')
     cfg = parser.parse_args()
+    if cfg.job == 'evaluate-checkpoint':
+        if cfg.checkpoint is None or cfg.output is None:
+            parser.error('evaluate-checkpoint requires --checkpoint and --output')
+        torch.set_num_threads(3)
+        if cfg.device == 'cuda':
+            from route3_ovg_refocus import gpu_setup
+            gpu_setup()
+        else:
+            os.environ['XFORMERS_DISABLED'] = '1'
+        evaluate_checkpoint(cfg.checkpoint, cfg.output, cfg.frames, cfg.device)
+        raise SystemExit(0)
     guard()
     setup()
     subprocess.run(['nvidia-smi'], check=True)

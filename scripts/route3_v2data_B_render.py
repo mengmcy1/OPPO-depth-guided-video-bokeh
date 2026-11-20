@@ -18,6 +18,7 @@ from route3_ovg_phase2_blender import gate_materials
 SIZE = 512
 LDR_LIMIT = 1.0
 SUBVIEWS = 64
+LAYER_PROTOCOL = "same-seed complementary camera-ray holdouts"
 TOLERANCE = dict(
     composed_display_MAE=.025, composed_display_p95=.10, rendered_vs_mesh_coverage_MAE=.075,
     same_seed_complement_linear_MAE=.002,
@@ -153,6 +154,17 @@ def layer_labels(scene, gate, controls, background_switch, observed, path, filen
         rendered_vs_mesh_coverage_MAE=float(cover_error.mean()) if cover_error.size else None,
     )
     audit["passed"] = all(audit[key] is None or audit[key] <= limit for key, limit in TOLERANCE.items())
+    audit["composition_status"] = (
+        "not_evaluable" if not valid_comp.any() else
+        "passed" if all(audit[k] <= TOLERANCE[k] for k in (
+            "composed_display_MAE", "composed_display_p95", "same_seed_complement_linear_MAE"
+        )) else "failed"
+    )
+    audit["coverage_status"] = (
+        "not_evaluable" if not boundary.any() else
+        "passed" if audit["rendered_vs_mesh_coverage_MAE"] <= TOLERANCE["rendered_vs_mesh_coverage_MAE"]
+        else "failed"
+    )
     save_npz(
         path.with_name(path.name.replace("-pinhole", "-colors")),
         foreground_rgb=F.astype(np.float16), complementary_background_rgb=B.astype(np.float16),
@@ -280,10 +292,13 @@ def run(root, frames, references, samples, scene_seed, cpu, reference_samples, o
             seconds=time.monotonic()-start))
         return
     # Passes are inserted after RGB/optical rendering, never into the observation stream.
+    observations = {}
     for frame in frames:
         scene.frame_set(frame)
         rgb = render_image(scene, workfile, scene_seed+frame, samples, transparent=False)[..., :3]
         save_npz(root/"observations"/f"f{frame:03d}.npz", rgb_linear=np.clip(rgb, 0, LDR_LIMIT).astype(np.float16))
+        if frame in accepted:
+            observations[frame] = rgb
     render_meta = reference_views(scene,camera,root,accepted,source,scene_seed,reference_samples) if references else []
     texture_phase = thin_texture_check(root, scene, camera, accepted, source, workfile, scene_seed, samples)
     cutter = bpy.data.images.new("B axial depth cutter", SIZE, SIZE, alpha=True, float_buffer=True)
@@ -306,12 +321,9 @@ def run(root, frames, references, samples, scene_seed, cpu, reference_samples, o
     for frame in accepted:
         scene.frame_set(frame)
         for switch in switches:
-            switch.default_value = 0.
-        rgb = render_image(scene, workfile, scene_seed+frame, samples, transparent=False)[..., :3]
-        for switch in switches:
             switch.default_value = 1.
         stats = layer_labels(
-            scene, cutter, controls, switches, rgb, root/"labels"/f"f{frame:03d}-pinhole.npz",
+            scene, cutter, controls, switches, observations.pop(frame), root/"labels"/f"f{frame:03d}-pinhole.npz",
             workfile, scene_seed+frame, samples,
         )
         hidden = [ob for ob in scene.objects if ob.name.startswith("foreground_")]
@@ -326,7 +338,8 @@ def run(root, frames, references, samples, scene_seed, cpu, reference_samples, o
         audits.append(dict(frame=frame, **stats))
     save_json(root/"labels/radiance-audit.json", dict(
         frames=frames, elapsed_seconds=time.monotonic()-start, audits=audits, optical=render_meta,
-        thin_texture_phase=texture_phase,
+        thin_texture_phase=texture_phase, layer_protocol=LAYER_PROTOCOL, sampling_seed_base=scene_seed,
+        observed_reference="same raw render used for the saved input",
         exposure_ev=0, color_space="scene-linear RGB", render_filter="BOX 1.0",
         pinhole_samples=samples, optical_samples_per_subview=reference_samples, clipping_threshold_linear=LDR_LIMIT,
     ))

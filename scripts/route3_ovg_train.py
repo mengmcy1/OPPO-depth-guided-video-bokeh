@@ -13,9 +13,10 @@ import time
 import numpy as np
 import torch
 
-from route3_ovg_data import CONFIG, OUT, ROOT, TRAIN_FRAMES, PRIORS, inventory, sample
+from route3_ovg_data import CONFIG, OUT, ROOT, TRAIN_FRAMES, PRIORS, b_edge_reference, inventory, sample
 from route3_ovg_subpixel import save_json, save_npz
 from src.ovg_net import OVGNet, geometry_loss
+from src.ovg_edge_statistics import EdgeStatistics
 
 DINO=ROOT.parent/'dinov2-depthsplat-r13'
 WEIGHT=ROOT/'models/OVG-Net/dinov2_vits14_pretrain.pth'
@@ -126,13 +127,14 @@ def reduce_metrics(v):
 
 
 @torch.no_grad()
-def evaluate(net,step,device,save_images):
+def evaluate(net,step,device,save_images,*,dev_items=None,sample_item=sample):
     net.eval()
-    entries=inventory('dev')['B']
+    entries=inventory('dev')['B'] if dev_items is None else dev_items
+    edge_stats=EdgeStatistics()
     results=[]
     selection=defaultdict(Counter)
     for item in entries:
-        x,y=sample(item,device)
+        x,y=sample_item(item,device)
         out=net(x)
         if not all(torch.isfinite(v).all().item() for v in [out['depth1'],out['depth2'],out['alpha'],out['normal']]):
             raise FloatingPointError(f'Nonfinite validation geometry {item}')
@@ -167,6 +169,9 @@ def evaluate(net,step,device,save_images):
         for name,(z,a,back,m,domain) in methods.items():
             r=measure(z,a,back,y,m,factor,edge,interior)
             results.append(dict(scene=item[1],frame=frame,method=name,domain=domain,**r))
+        reference=b_edge_reference(item,y)
+        for name,(z,_,_,m,_) in methods.items():
+            edge_stats.add(item[1],name,z[0].cpu().numpy(),reference,m[0].cpu().numpy())
         if save_images:
             outpath=OUT/'dev-predictions'/item[1]/f'f{frame:03d}.npz'
             save_npz(outpath,**{k:val[0].cpu().numpy().astype(np.float16)
@@ -190,6 +195,7 @@ def evaluate(net,step,device,save_images):
                 delta_boundary_front_CoC_px=(b['boundary_front_CoC_mae_px']-a['boundary_front_CoC_mae_px'])
                 if a['edge_front_n'] else None))
     record=dict(step=step,frames=len(entries),pooled=pooled,paired=paired,per_frame=results,
+        edge_inverse_depth=list(edge_stats.rows()),
         coverage_definition='geometry coverage, only valid labels; false semi-transparent: predicted alpha < .95 on solid GT interior',
         prior_coverage_and_second_layer='single-depth prior has neither explicit quantity; blank',
         paired_definition='each raw prior and model use exactly that prior confidence>0 and GT-valid pixels; negative delta improves',

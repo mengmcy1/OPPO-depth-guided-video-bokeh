@@ -95,6 +95,9 @@ def verified_unit(unit, spec, generator, optical):
     labels = unit/"labels"
     geometry = json.loads((labels/"scene-supervision.json").read_text())
     radiance = json.loads((labels/"radiance-audit.json").read_text())
+    if (radiance.get("layer_protocol") != "same-seed complementary camera-ray holdouts"
+            or radiance.get("observed_reference") != "same raw render used for the saved input"):
+        raise ValueError("B radiance labels must audit the saved observation and its same-seed complements")
     expected_rgb = 60
     expected_labels = 13
     need = {
@@ -103,6 +106,7 @@ def verified_unit(unit, spec, generator, optical):
         "peeled_geometry": (len(list(labels.glob("*-peeled.npz"))), expected_labels),
         "peeled_color": (len(list(labels.glob("*-peeled-color.npz"))), expected_labels),
         "layer_colors": (len(list(labels.glob("*-colors.npz"))), expected_labels),
+        "radiance_audits": (len({row["frame"] for row in radiance["audits"]}), expected_labels),
         "K16": (len(list(labels.glob("*-K16.npz"))), expected_labels*2),
         "optical_pairs": (len(radiance["optical"]), expected_labels*4 if optical else 0),
     }
@@ -200,7 +204,7 @@ def optical_selection(units, count=80):
     return chosen
 
 
-def batch(plan_path, checked_archive_bytes):
+def batch(plan_path, checked_archive_bytes, max_new_scenes=None):
     base = json.loads(plan_path.read_text())
     folder = plan_path.parent
     expected = json.loads((folder/"sha256.json").read_text())
@@ -218,6 +222,7 @@ def batch(plan_path, checked_archive_bytes):
     failures = json.loads(failures_path.read_text()) if failures_path.is_file() else []
     counts = Counter(row["category"] for row in failures if row.get("counts_toward_pause",True))
     noted={row["scene_id"] for row in failures}
+    attempted = 0
     for spec in base["scenes"]:
         unit = units/spec["scene_id"]
         if (unit/"manifest.json").is_file() or spec["scene_id"] in noted:
@@ -226,6 +231,9 @@ def batch(plan_path, checked_archive_bytes):
             failures.append(dict(scene_id=spec["scene_id"],category=spec["category"],
                                  reason="two failed scenes in category",counts_toward_pause=False))
             continue
+        if max_new_scenes is not None and attempted >= max_new_scenes:
+            break
+        attempted += 1
         try:
             if unit.exists():
                 raise RuntimeError("prior incomplete attempt was preserved")
@@ -330,16 +338,19 @@ def main():
     mode.add_argument("--optical", action="store_true")
     mode.add_argument("--summarize", action="store_true")
     parser.add_argument("--measured-peak-unit-bytes", type=int)
+    parser.add_argument("--max-new-scenes", type=int, help="Limit this launch to the first measured production batch")
     args = parser.parse_args()
     if args.summarize:
         archive_status()
         return
     if not args.measured_peak_unit_bytes or args.measured_peak_unit_bytes <= 0:
         parser.error("a measured positive unit size from the pilot is required")
+    if args.max_new_scenes is not None and (args.sealed_plan is None or args.max_new_scenes <= 0):
+        parser.error("--max-new-scenes requires --sealed-plan and a positive limit")
     if args.optical:
         produce_optical(args.measured_peak_unit_bytes)
     else:
-        batch(args.sealed_plan,args.measured_peak_unit_bytes)
+        batch(args.sealed_plan,args.measured_peak_unit_bytes,args.max_new_scenes)
         archive_status()
 
 

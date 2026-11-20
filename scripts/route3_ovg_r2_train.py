@@ -25,9 +25,9 @@ def setup_data():
     base.OUT=data.OUT=OUT
 
 
-def model():
+def model(device='cuda'):
     first=base.make('cpu')
-    net=OVGNet(first.encoder,learned_prior_selection=True).cuda()
+    net=OVGNet(first.encoder,learned_prior_selection=True).to(device)
     return net
 
 
