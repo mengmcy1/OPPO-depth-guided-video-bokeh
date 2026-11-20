@@ -1,4 +1,4 @@
-"""Check sealed B v2 plans and the explicitly recorded optical frame patch."""
+"""Validate B v2 sealed plans and their explicit generator patch chain."""
 import hashlib
 import json
 
@@ -10,6 +10,8 @@ from route3_v2data_B_plan import MODES, digest, generator_code, load
 OPTICAL_FRAMES = (1, 30, 60)
 PATCHABLE = {"route3_v2data_B_batch.py", "route3_v2data_B_render.py"}
 DISPATCH_CODE = ("route3_v2data_B_dispatch.py", "route3_v2data_B_release.py")
+P2_DISPATCH_CODE = (*DISPATCH_CODE, "route3_v2data_B_deploy_p2.py", "route3_v2data_B_optical_pair.py")
+P2_CHANGED_FILES = {"route3_v2data_B_scene.py", "route3_v2data_B_batch.py"}
 PLAN_DIR = FORMAL_DATA/"sealed-scene-plans"
 P2_ADDITIONAL_GENERATION_FILES = ("route3_v2data_B_placement.py", "route3_v2data_B_presence.py")
 
@@ -31,8 +33,8 @@ def patched_code(base, current):
     return changes
 
 
-def dispatch_code():
-    return {name:digest(ROOT/"scripts"/name) for name in DISPATCH_CODE}
+def dispatch_code(*, p2=False):
+    return {name:digest(ROOT/"scripts"/name) for name in (P2_DISPATCH_CODE if p2 else DISPATCH_CODE)}
 
 
 def sealed_plan(path):
@@ -48,6 +50,56 @@ def sealed_plan(path):
     return plan,state
 
 
+def parent_p1_code(plan, state, release):
+    parent_path = FORMAL_DATA / "generator-patch-p1.json"
+    parent = load(parent_path)
+    base = plan["generator_code"]
+    code = {**base, **{name: change["after"] for name, change in parent["changes"].items()}}
+    if (
+        release["path"] != parent_path.name or digest(parent_path) != release["sha256"]
+        or parent["base_version"] != plan["generator_version"]
+        or release["version"] != parent["patch_version"]
+        or parent["base_generator_code_sha256"] != code_hash(base)
+        or parent["generator_code_sha256"] != code_hash(code)
+        or parent["changes"] != patched_code(base, code)
+        or parent["sealed_plan_sha256"] != state["scene_plan_sha256"]
+        or parent["optical_frames"] != list(OPTICAL_FRAMES)
+    ):
+        raise ValueError("the parent B p1 release no longer matches the sealed plans")
+    return code
+
+
+def p2_changes(parent, current):
+    if set(current) - set(parent) != set(P2_ADDITIONAL_GENERATION_FILES) or set(parent) - set(current):
+        raise ValueError("unexpected generator dependency change in p2")
+    changes = {name:dict(before=parent.get(name), after=value)
+               for name, value in current.items() if parent.get(name) != value}
+    if set(changes) != P2_CHANGED_FILES | set(P2_ADDITIONAL_GENERATION_FILES):
+        raise ValueError(f"unexpected B p2 code changes: {sorted(changes)}")
+    return changes
+
+
+def validate_p2(plan, state, receipt):
+    current = p2_generation_code()
+    parent = parent_p1_code(plan, state, receipt["parent_patch"])
+    archive = receipt.get("archive")
+    if archive and digest(FORMAL_DATA / archive["path"]) != archive["sha256"]:
+        raise ValueError("the p2 archive inventory checksum has changed")
+    if (
+        receipt["base_version"] != plan["generator_version"]
+        or receipt["patch_version"] != plan["generator_version"] + "-p2"
+        or receipt["base_generator_code_sha256"] != code_hash(plan["generator_code"])
+        or receipt["parent_generator_code_sha256"] != code_hash(parent)
+        or receipt["generator_code_sha256"] != code_hash(current)
+        or receipt["changes"] != p2_changes(parent, current)
+        or receipt["sealed_plan_sha256"] != state["scene_plan_sha256"]
+        or receipt["dispatch_code"] != dispatch_code(p2=True)
+        or receipt["optical_frames"] != list(OPTICAL_FRAMES)
+        or digest(FORMAL_DATA / receipt["qualification"]["path"]) != receipt["qualification"]["sha256"]
+    ):
+        raise ValueError("the installed B p2 release differs from the qualified code or sealed plans")
+
+
 def load_production_plan(path):
     plan,state = sealed_plan(path)
     base,current = plan["generator_code"],generator_code()
@@ -55,6 +107,11 @@ def load_production_plan(path):
     if state.get("generator_patch"):
         release = state["generator_patch"]
         record = load(FORMAL_DATA/release["path"])
+        if release["version"] == effective + "-p2":
+            if digest(FORMAL_DATA/release["path"]) != release["sha256"]:
+                raise ValueError("B p2 release checksum has changed")
+            validate_p2(plan, state, record)
+            return dict(plan, effective_generator_version=record["patch_version"])
         if (
             digest(FORMAL_DATA/release["path"])!=release["sha256"]
             or record["base_version"]!=effective

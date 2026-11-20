@@ -1876,27 +1876,27 @@
     },
     "p2_rebuild": {
       "status": "drained_pending_qualification",
-      "intended_archive_count": 17
-    },
-    "p2_optical_parallel_trial": {
-      "status": "not_run_after_stop",
-      "planned_acceptance": {
-        "max_parallel_wall_time_ratio": 0.85,
-        "failed_scenes": 0,
-        "max_aggregate_rss_gib": 28,
-        "max_aggregate_vram_gib": 24,
-        "pixel_difference": "within Cycles noise"
+      "intended_archive_count": 17,
+      "archive_path": "archived-p1/",
+      "archive_plan_by_partition": {
+        "training": 2,
+        "development": 3,
+        "test_unseen_assets": 6,
+        "test_unseen_occlusions": 6
       }
     },
+    "p2_optical_parallel_trial": {
+      "status": "preregistered_for_after_training_geometry"
+    },
     "p2_finish_eta": {
-      "status": "unavailable_while_paused",
-      "reason": "Two non-curved multi-layer units fail the preregistered foreground acceptance"
+      "status": "awaiting_resumed_production_measurements"
     },
     "p2_dispatch": {
       "stop_after_current": true,
       "original_dispatch_drained": true,
-      "status": "drained_pending_qualification",
-      "affected_inflight": "development-003-8c92e9e93c0ff003"
+      "status": "running_isolated_qualification",
+      "affected_inflight": "development-003-8c92e9e93c0ff003",
+      "qualification_output": "p2-review/visibility-qualification/proof.json"
     },
     "multilayer_placement_policy_p2": {
       "middle_frame": 30,
@@ -1976,6 +1976,30 @@
       "minimum_center_hits_per_foreground_per_frame": 1,
       "minimum_surface_pixels": null,
       "images_or_scores_from_test_reviewed": false
+    },
+    "p2_optical_parallel_policy": {
+      "scene_ids": [
+        "training-120-2db3c2fe6b5336e7",
+        "training-174-cfd3d2e7961ffbc1"
+      ],
+      "frames": [
+        1,
+        30,
+        60
+      ],
+      "focus_count": 2,
+      "apertures": [
+        1.4,
+        2.0
+      ],
+      "subviews": 64,
+      "samples": 1024,
+      "seed": 20261120,
+      "max_ratio": 0.85,
+      "rss_limit_bytes": 30064771072,
+      "vram_limit_bytes": 25769803776,
+      "timing": "from acquired shared lock through the acceptance of both scenes, with queue time reported separately",
+      "noise": "An exact match passes. Otherwise, independently render f030 with seed+1 at the same sample count, and require each LDR/HDR product's MAE and maximum absolute difference to stay below the corresponding peak independent-seed discrepancy for that scene and representation."
     }
   }
 }

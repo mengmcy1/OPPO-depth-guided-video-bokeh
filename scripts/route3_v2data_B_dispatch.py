@@ -3,6 +3,7 @@ import argparse
 from collections import Counter, deque
 from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
 from contextlib import contextmanager
+from datetime import datetime, timedelta, timezone
 from functools import partial
 import fcntl
 import os
@@ -131,13 +132,65 @@ class RunMeter:
                     combined_memory_limit_hit=self.abort.is_set())
 
 
+def update_p2_eta(v2):
+    dispatch = v2["p2_dispatch"]
+    rows = dispatch["production_measurements"]
+    geometry = rows.get("training")
+    if not geometry or not geometry["accepted_scenes"]:
+        snapshots = [rows[mode] for mode in PARTITIONS[:2] if mode in rows and rows[mode]["accepted_scenes"]]
+        if not snapshots:
+            return
+        geometry = dict(accepted_scenes=sum(row["accepted_scenes"] for row in snapshots),
+                        seconds=sum(row["seconds"] for row in snapshots))
+        basis = "resumed p2 test geometry"
+    else:
+        basis = "resumed p2 training geometry"
+    geometry_h = geometry["seconds"] / (3600 * geometry["accepted_scenes"])
+    optical_h = v2["optical_frame_patch_estimates"]["measured_four_references_seconds"] * 3 / 3600
+    trial = v2["p2_optical_parallel_trial"]
+    needs_trial = "parallel_to_serial_ratio" not in trial
+    parallel_ratio = trial.get("parallel_to_serial_ratio", 1.) if trial.get("adopted") else 1.
+    dev = rows.get("development")
+    dev_h = dev["seconds"] / (3600 * dev["accepted_scenes"]) if dev and dev["accepted_scenes"] else (
+        geometry_h + optical_h
+    )
+    counts = v2["target_gap"]
+    hours = dict(
+        tests=counts["test"] * geometry_h, development=counts["development"] * dev_h,
+        training_geometry=counts["train_geometry"] * geometry_h,
+        training_optical=counts["train_optical"] * optical_h * parallel_ratio,
+        optical_parallel_trial=4 * optical_h if needs_trial and counts["train_optical"] else 0.,
+    )
+    now = datetime.now(timezone.utc)
+    v2["p2_finish_eta"] = dict(
+        status="conditional_on_sealed_scenes_passing", measured_at_utc=now.isoformat(),
+        estimated_hours=sum(hours.values()), estimated_finish_utc=(now + timedelta(hours=sum(hours.values()))).isoformat(),
+        remaining_hours_by_stage=hours, geometry_basis=basis, geometry_per_hour=1 / geometry_h,
+        development_basis="resumed development" if dev and dev["accepted_scenes"] else "measured geometry plus pilot optics",
+        training_optical_basis="qualification optical engine time scaled by the adopted pair ratio",
+        includes_sampled_geometry_queue=True, includes_unknown_future_gpu_queue_for_optics=False,
+        known_exclusions=v2["failures"],
+    )
+
+
 def publish_measurement(report, benchmark):
     path = FORMAL_DATA/"production-runs"/f"{time.time_ns()}-{report['partition']}.json"
     path.parent.mkdir(exist_ok=True)
     value = dict(report,path=str(path.relative_to(FORMAL_DATA)),sha256=write_json(path,report))
     record = load(RECORD)
     key = "two_scene_benchmark" if benchmark else "last_two_scene_production_run"
-    record["v2"][key] = value
+    v2 = record["v2"]
+    v2[key] = value
+    if report.get("generator_version", "").endswith("-p2"):
+        dispatch = v2["p2_dispatch"]
+        measurements = dispatch.setdefault("production_measurements", {})
+        if report["attempted_scenes"] or report["partition"] not in measurements:
+            measurements[report["partition"]] = value
+        update_p2_eta(v2)
+        if report["partition"] in PARTITIONS[:2]:
+            rebuild = v2["p2_rebuild"]
+            rebuild["affected_test_pending"] = v2["target_gap"]["test"]
+            rebuild["status"] = "rebuilding" if rebuild["affected_test_pending"] else "affected_test_rebuilt"
     write_json(RECORD,record)
     print("B dispatch",report["partition"],report["accepted_scenes"],"accepted",
           f"{report['accepted_per_hour']:.2f}/hour",
@@ -163,6 +216,15 @@ def run_partition(path, estimate, limit, allocation):
     gpu_exec = partial(execute_on,allocation[2],18,abort)
     attempted = accepted = 0
     disk_failure = None
+    p2 = plan["effective_generator_version"].endswith("-p2")
+    fallback_by_scene = {}
+
+    def summarize(completed):
+        return publish_measurement(dict(
+            meter.report(mode, attempted, accepted),
+            generator_version=plan["effective_generator_version"], partition_dispatch_finished=completed,
+            placement_fallback_count=sum(fallback_by_scene.values()), placement_fallback_by_scene=fallback_by_scene,
+        ), benchmark=limit is not None)
 
     def failure(spec, reason, *, count=True):
         failures.append(dict(scene_id=spec["scene_id"],category=spec["category"],
@@ -215,6 +277,10 @@ def run_partition(path, estimate, limit, allocation):
                 if job is None or job[0] not in done:
                     continue
                 task,spec,unit=job
+                if p2 and stage == "cpu":
+                    placement = load(unit/"labels/multilayer-placement.json")
+                    if placement.get("fallback_count", 0):
+                        fallback_by_scene[spec["scene_id"]] = placement["fallback_count"]
                 try:
                     result=task.result()
                     if stage=="cpu":
@@ -230,11 +296,13 @@ def run_partition(path, estimate, limit, allocation):
                 if stage=="gpu":
                     gpu=None
                     archive_status()
+                    if p2 and accepted and accepted % 4 == 0:
+                        summarize(False)
                 else:
                     cpu=None
     write_json(failure_path,failures)
     archive_status()
-    report=publish_measurement(meter.report(mode,attempted,accepted),benchmark=limit is not None)
+    report=summarize(True)
     if abort.is_set():
         raise RuntimeError("B production paused after hitting its combined resident memory limit")
     if disk_failure:
@@ -242,8 +310,17 @@ def run_partition(path, estimate, limit, allocation):
     return report
 
 
-def dispatch(plans, estimate, max_new_scenes=None, *, optics=False):
+def dispatch(plans, estimate, max_new_scenes=None, *, optics=False, resume_p2=False):
     with production_lock():
+        if resume_p2:
+            for path in plans:
+                if not load_production_plan(path)["effective_generator_version"].endswith("-p2"):
+                    raise ValueError("resume requires the qualified B p2 release")
+            if STOP.is_file():
+                STOP.rename(FORMAL_DATA/"p2-review"/f"drained-stop-{time.time_ns()}")
+            raw = load(RECORD)
+            raw["v2"]["p2_dispatch"].update(status="running", stop_after_current=False)
+            write_json(RECORD, raw)
         allocation = assigned_cpus()
         reports=[]
         for path in plans:
@@ -251,9 +328,11 @@ def dispatch(plans, estimate, max_new_scenes=None, *, optics=False):
                 return reports
             reports.append(run_partition(path,estimate,max_new_scenes,allocation))
         if optics and not STOP.is_file():
-            abort=Event()
-            execute=partial(execute_on,allocation[2],18,abort)
-            produce_optical(estimate,execute=execute)
+            from route3_v2data_B_optical_pair import try_p2_pairs
+            if not try_p2_pairs(estimate, allocation):
+                abort = Event()
+                execute = partial(execute_on, allocation[2], 18, abort)
+                produce_optical(estimate, execute=execute)
         return reports
 
 
@@ -267,7 +346,10 @@ def main():
     mode.add_argument("--install-optical-frame-patch",action="store_true")
     parser.add_argument("--measured-peak-unit-bytes",type=int)
     parser.add_argument("--max-new-scenes",type=int)
+    parser.add_argument("--resume-p2", action="store_true")
     args=parser.parse_args()
+    if args.resume_p2 and not args.all:
+        parser.error("--resume-p2 requires --all")
     if args.summarize or args.install_optical_frame_patch:
         with production_lock():
             if args.summarize:
@@ -281,7 +363,7 @@ def main():
     if args.max_new_scenes is not None and (not args.sealed_plan or args.max_new_scenes<=0):
         parser.error("--max-new-scenes requires --sealed-plan and a positive limit")
     paths=([PLAN_DIR/(p+".json") for p in PARTITIONS] if args.all else [args.sealed_plan] if args.sealed_plan else [])
-    dispatch(paths,budget,args.max_new_scenes,optics=args.all or args.optical)
+    dispatch(paths, budget, args.max_new_scenes, optics=args.all or args.optical, resume_p2=args.resume_p2)
 
 
 if __name__=="__main__":
