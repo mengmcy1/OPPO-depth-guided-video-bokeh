@@ -96,15 +96,6 @@ def freeze_registry():
         registry.update(status="frozen-v1",provisional_sha256=digest(source),qualification=evidence)
         plan(load(QUOTA),registry)
         write_json(frozen,registry)
-    attribution = [
-        {key: row[key] for key in ("key","source","asset_id","author","license","page","terms")}
-        for row in registry["usable"] if row["license"].startswith("CC-BY-")
-    ]
-    authors = DATA/"asset-attribution-v1.json"
-    if not authors.is_file():
-        write_json(authors,attribution)
-    elif load(authors) != attribution:
-        raise ValueError("frozen v1 attribution does not match its material snapshot")
     return frozen
 
 
@@ -234,6 +225,15 @@ def main():
     registry = load(path)
     if registry.get("status") != "frozen-v1":
         raise ValueError("Formal plans require the reviewed material pool v1")
+    attribution = [
+        {key: row[key] for key in ("key","source","asset_id","author","license","page","terms")}
+        for row in registry["usable"] if row["license"].startswith("CC-BY-")
+    ]
+    authors = DATA/"asset-attribution-v1.json"
+    if not authors.is_file():
+        write_json(authors,attribution)
+    elif load(authors) != attribution:
+        raise ValueError("frozen v1 attribution does not match its material snapshot")
     config = json.loads(QUOTA.read_text())
     specs = plan(config,registry)
     code = generator_code()
@@ -265,7 +265,7 @@ def main():
     state = load(manifest_path)
     state.update(generator_version=version,material_registry=dict(path=str(path.resolve().relative_to(DATA.resolve())),
         sha256=registry_sha,status="frozen-v1",attributions="asset-attribution-v1.json"),scene_plan_sha256=sha256,
-        asset_attribution_sha256=digest(DATA/"asset-attribution-v1.json"))
+        asset_attribution_sha256=digest(authors))
     write_json(manifest_path,state)
     print(version,sha256,flush=True)
 

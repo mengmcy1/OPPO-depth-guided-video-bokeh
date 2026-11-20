@@ -122,6 +122,11 @@ def load_material(name, color, image_path=None, normal_path=None):
         image = nodes.new("ShaderNodeTexImage")
         image.image = bpy.data.images.load(str(image_path.resolve()),check_existing=True)
         links.new(image.outputs["Color"],shader.inputs["Base Color"])
+        if image.image.channels == 4:
+            rgba_pixels = np.empty(len(image.image.pixels),np.float32)
+            image.image.pixels.foreach_get(rgba_pixels)
+            if np.any(rgba_pixels[3::4] < .999):
+                links.new(image.outputs["Alpha"],shader.inputs["Alpha"])
     if normal_path:
         image = nodes.new("ShaderNodeTexImage")
         image.image = bpy.data.images.load(str(normal_path.resolve()),check_existing=True)
@@ -140,6 +145,7 @@ def build_room(root):
     scene = bpy.context.scene
     spec = json.loads((root/"room.json").read_text())
     baked_materials = {}
+    dataset_to_blender = Matrix.Rotation(np.pi/2,4,"X")
     for uid, mat in spec["materials"].items():
         maps = []
         for slot in ("texture","normaltexture"):
@@ -151,11 +157,11 @@ def build_room(root):
 
     floor = []
     for row in spec["architecture"]:
-        verts = np.asarray(row["xyz"],dtype=np.float32).reshape(-1,3)[:,[0,2,1]]
+        verts = np.asarray(row["xyz"],dtype=np.float32).reshape(-1,3)[:,[0,2,1]] * np.array([1,-1,1],np.float32)
         faces = np.asarray(row["faces"],dtype=np.int32).reshape(-1,3)
         if not np.isfinite(verts).all() or faces.min()<0 or faces.max()>=len(verts):
             raise ValueError("invalid architecture geometry indices")
-        normals = np.asarray(row["normal"],dtype=np.float32).reshape(-1,3)[:,[0,2,1]]
+        normals = np.asarray(row["normal"],dtype=np.float32).reshape(-1,3)[:,[0,2,1]] * np.array([1,-1,1],np.float32)
         direction = np.cross(verts[faces[:,1]]-verts[faces[:,0]],verts[faces[:,2]]-verts[faces[:,0]])
         if len(normals)==len(verts) and np.median(np.sum(direction*normals[faces].mean(1),axis=1))<0:
             faces = faces[:,::-1]
@@ -171,6 +177,9 @@ def build_room(root):
         if uv.size==len(verts)*2 and np.isfinite(uv).all():
             layer = mesh.uv_layers.new(name="UVMap")
             uv = uv.reshape(-1,2)
+            transform = spec["materials"].get(row.get("material"),{}).get("UVTransform")
+            if transform is not None:
+                uv = uv @ np.asarray(transform,dtype=np.float32).reshape(3,3)[:2,:2].T
             layer.data.foreach_set("uv",uv[faces].ravel())
         if row["type"].casefold()=="floor":
             floor.extend(verts)
@@ -180,15 +189,20 @@ def build_room(root):
         model_dir = root/"models"/row["jid"]
         instance = row["instance"]
         before = set(scene.objects)
-        bpy.ops.wm.obj_import(filepath=str((model_dir/"raw_model.obj").resolve()))
+        bpy.ops.wm.obj_import(filepath=str((model_dir/"raw_model.obj").resolve()),
+                              forward_axis="Y",up_axis="Z")
         parts = [ob for ob in scene.objects if ob not in before and ob.type == "MESH"]
         if not parts:
             raise ValueError(f"3D-FUTURE model has no meshes: {row['jid']}")
         pos, scale, rotation = [np.asarray(instance[key],dtype=float) for key in ("pos","scale","rot")]
-        if not all(np.isfinite(arr).all() for arr in (pos,scale,rotation)) or np.any(scale==0):
+        if (not all(np.isfinite(arr).all() for arr in (pos,scale,rotation))
+                or np.any(scale==0) or np.linalg.norm(rotation)<1e-6):
             raise ValueError("invalid furniture transformation")
-        matrix = (Matrix.Translation(Vector(pos[[0,2,1]])) @ Matrix.Rotation(-np.pi/2,4,"X")
-                  @ Quaternion(rotation).to_matrix().to_4x4() @ Matrix.Diagonal((*scale,1)))
+        # The dataset toolbox applies scale and its XYZW rotation in Y-up coordinates.
+        position = dataset_to_blender @ Vector(pos)
+        orientation = Quaternion(rotation[[3,0,1,2]]).normalized().to_matrix().to_4x4()
+        matrix = (Matrix.Translation(position) @ dataset_to_blender
+                  @ orientation @ Matrix.Diagonal((*scale,1)))
         mat = load_material(row["jid"],[180,180,180],model_dir/"texture.png")
         for ob in parts:
             if not ob.data.uv_layers or not ob.data.polygons:
@@ -196,7 +210,9 @@ def build_room(root):
             ob.matrix_world = matrix
             ob.data.materials.clear()
             ob.data.materials.append(mat)
-        furniture.append(dict(jid=row["jid"],objects=len(parts),scale=scale.tolist(),position_m=pos.tolist()))
+        furniture.append(dict(jid=row["jid"],objects=len(parts),scale=scale.tolist(),
+                              source_position_m=pos.tolist(),source_rotation_xyzw=rotation.tolist(),
+                              blender_position_m=list(position)))
 
     extent = np.ptp(floor,axis=0)
     lower, upper = np.min(floor,axis=0),np.max(floor,axis=0)
@@ -289,8 +305,9 @@ def register_room(source, review):
                author="3D-FRONT and 3D-FUTURE dataset authors",
                license="3D-FRONT / 3D-FUTURE Data Sets Use License Agreements",
                page="https://tianchi.aliyun.com/specials/promotion/alibaba-3d-scene-dataset",
-               terms=TERMS["3D-FRONT"],terms_version="2020-06-18",
-               channel="authorized dataset archives",can_redistribute=False,
+               terms=TERMS["3D-FRONT"],furniture_terms=TERMS["3D-FUTURE"],
+               license_terms_version={"3D-FRONT":"2020-06-18","3D-FUTURE":"2020-03-28"},
+               download_channel="authorized dataset archives",can_redistribute=False,
                archive_sha256=room["source_sha256"],floor_extent_m=loaded["floor_extent_m"],
                mesh_review=str((review/"mesh-review.json").resolve().relative_to(DATA.resolve())))
     if row["status"] == "passed":
