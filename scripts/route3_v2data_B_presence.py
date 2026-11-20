@@ -61,7 +61,22 @@ def foreground_presence(unit, spec, frames=TRAIN_FRAMES):
             if hit_count<MIN_CENTER_HITS:
                 failures.append(dict(frame=frame,foreground=name,center_hits=hit_count))
         by_frame.append(dict(frame=frame,foreground=actors))
+    summary = {
+        name: {f"minimum_{key}": min(row["foreground"][name][key] for row in by_frame)
+               for key in ("surface_pixels", "center_hits")}
+        for name in groups
+    }
+    placement = labels/"multilayer-placement.json"
+    if placement.is_file():
+        report = json.loads(placement.read_text())
+        for layer in report["layers"]:
+            summary[layer["name"]].update(
+                midpoint_projected_overlap=layer["middle_overlap"],
+                minimum_projected_overlap=min(row["overlap"] for row in layer["frames"]),
+                maximum_projected_overlap=max(row["overlap"] for row in layer["frames"]),
+            )
     return dict(scene_id=spec["scene_id"],partition=spec["partition"],category=spec["category"],
+                foreground_minima=summary,
                 minimum_center_hits=MIN_CENTER_HITS,foreground_surface_ids=own_ids,
                 frames=by_frame,failed_checks=failures,passed=not failures)
 

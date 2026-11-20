@@ -11,6 +11,11 @@ OPTICAL_FRAMES = (1, 30, 60)
 PATCHABLE = {"route3_v2data_B_batch.py", "route3_v2data_B_render.py"}
 DISPATCH_CODE = ("route3_v2data_B_dispatch.py", "route3_v2data_B_release.py")
 PLAN_DIR = FORMAL_DATA/"sealed-scene-plans"
+P2_ADDITIONAL_GENERATION_FILES = ("route3_v2data_B_placement.py", "route3_v2data_B_presence.py")
+
+
+def p2_generation_code():
+    return {**generator_code(), **{name:digest(ROOT/"scripts"/name) for name in P2_ADDITIONAL_GENERATION_FILES}}
 
 
 def code_hash(code):
