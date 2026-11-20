@@ -9,7 +9,7 @@ from zipfile import ZipFile
 
 import bmesh
 import bpy
-from mathutils import Vector
+from mathutils import Matrix, Vector
 import numpy as np
 
 
@@ -176,6 +176,16 @@ def run(row, base, *, mesh_audit=audit_mesh):
             relative_texture.hardlink_to(texture)
     reset_scene()
     objects = import_objects(main)
+    if row["source"] == "3D-FUTURE":
+        # The archive exporter writes the same Tf on every material. The
+        # original opacity declarations were checked before staging.
+        for material in bpy.data.materials:
+            for node in material_nodes(material.node_tree,set()):
+                if node.type == "BSDF_PRINCIPLED":
+                    node.inputs["Transmission Weight"].default_value = 0
+        for ob in objects:
+            if ob.type == "MESH":
+                ob.matrix_world = Matrix.Rotation(np.pi/2,4,"X") @ ob.matrix_world
     if row["category"] == "mesh_bundle":
         assets = [ob for ob in objects if ob.asset_data and ob.type == "MESH"]
         if not assets:
@@ -215,6 +225,7 @@ def main():
     args = parser.parse_args(sys.argv[sys.argv.index("--") + 1:])
     mesh_audit = audit_mesh
     if args.allow_open:
+        sys.path.insert(0,str(Path(__file__).resolve().parent))
         from route3_v2data_B_topology import audit_mesh as mesh_audit
     rows = json.loads(args.candidates.read_text())["candidates"]
     output = []

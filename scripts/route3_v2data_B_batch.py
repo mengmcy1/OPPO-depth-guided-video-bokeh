@@ -14,7 +14,7 @@ import numpy as np
 import psutil
 
 from route3_v2data_B_front import DATA, RECORD, RESERVE_BYTES, ROOT, write_json
-from route3_v2data_B_inputs import observation, supervision
+from route3_v2data_B_inputs import FORMAL_DATA, observation, supervision
 from route3_v2data_B_plan import generator_code
 from route3_ovg_subpixel import TRAIN_FRAMES
 
@@ -38,8 +38,8 @@ def sha256(path):
     return digest.hexdigest()
 
 
-def blender(script, *args):
-    return [str(BLENDER), "--background", "--disable-autoexec", "--threads", "6",
+def blender(script, *args, threads=6):
+    return [str(BLENDER), "--background", "--disable-autoexec", "--threads", str(threads),
             "--python-exit-code", "1", "--python", str(SCRIPTS/script), "--", *map(str,args)]
 
 
@@ -48,7 +48,7 @@ def reserve(directory, bytes_for_job):
         raise RuntimeError("insufficient disk space for the batch plus the 60 GiB reserve")
 
 
-def run(command, log, *, uses_gpu=False):
+def run(command, log, *, uses_gpu=False, cpu_limit_bytes=28*GIB):
     environment = dict(os.environ, CUDA_VISIBLE_DEVICES="0" if uses_gpu else "",
                        OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1")
     if uses_gpu:
@@ -76,7 +76,7 @@ def run(command, log, *, uses_gpu=False):
                     pid, _, mib = line.partition(",")
                     if pid.strip().isdigit() and int(pid) in by_pid and mib.strip().isdigit():
                         peak_device = max(peak_device,int(mib)*2**20)
-            if peak_rss > 28*GIB or peak_device > 24*GIB:
+            if peak_rss > cpu_limit_bytes or peak_device > 24*GIB:
                 for child in reversed(children):
                     try:
                         child.terminate()
@@ -140,7 +140,7 @@ def verified_unit(unit, spec, generator, optical):
 
 def produce(unit, spec, generator, estimate):
     optical = spec["partition"] == "development"
-    reserve(DATA, estimate)
+    reserve(unit.parent, estimate)
     unit.mkdir(parents=True, exist_ok=False)
     description = unit/"scene-spec.json"
     write_json(description,spec)
@@ -222,6 +222,8 @@ def optical_selection(units, count=80):
 def batch(plan_path, checked_archive_bytes, max_new_scenes=None):
     base = json.loads(plan_path.read_text())
     folder = plan_path.parent
+    if folder.resolve() != (FORMAL_DATA/"sealed-scene-plans").resolve():
+        raise ValueError("only the v2 production plans can be dispatched")
     expected = json.loads((folder/"sha256.json").read_text())
     if expected[plan_path.stem] != sha256(plan_path):
         raise ValueError("sealed plan checksum was changed")
@@ -230,10 +232,10 @@ def batch(plan_path, checked_archive_bytes, max_new_scenes=None):
     mode = plan_path.stem
     if mode not in PRODUCTION_MODES:
         raise ValueError("not a production B partition")
-    state = json.loads((DATA/"manifest.json").read_text())
-    if state.get("generator_version") != base["generator_version"]:
+    state = json.loads((FORMAL_DATA/"manifest.json").read_text())
+    if not state.get("eligible_for_formal_use") or state.get("generator_version") != base["generator_version"]:
         raise ValueError("production requires the same formally accepted generator version as the sealed plan")
-    units = DATA/"units"/mode
+    units = FORMAL_DATA/"units"/mode
     units.mkdir(parents=True, exist_ok=True)
     failures_path = units/"failures.json"
     failures = json.loads(failures_path.read_text()) if failures_path.is_file() else []
@@ -241,6 +243,8 @@ def batch(plan_path, checked_archive_bytes, max_new_scenes=None):
     noted={row["scene_id"] for row in failures}
     attempted = 0
     for spec in base["scenes"]:
+        if (FORMAL_DATA/"stop-after-current").is_file():
+            return
         unit = units/spec["scene_id"]
         if (unit/"manifest.json").is_file() or spec["scene_id"] in noted:
             continue
@@ -269,16 +273,16 @@ def batch(plan_path, checked_archive_bytes, max_new_scenes=None):
 
 def archive_status():
     units = []
-    for file in sorted((DATA/"units").glob("*/*/manifest.json")):
+    for file in sorted((FORMAL_DATA/"units").glob("*/*/manifest.json")):
         unit = json.loads(file.read_text())
-        unit.update(manifest=str(file.relative_to(DATA)), manifest_sha256=sha256(file))
+        unit.update(manifest=str(file.relative_to(FORMAL_DATA)), manifest_sha256=sha256(file))
         units.append(unit)
     optics = []
-    for file in sorted((DATA/"optical").glob("*/manifest.json")):
+    for file in sorted((FORMAL_DATA/"optical").glob("*/manifest.json")):
         item = json.loads(file.read_text())
-        item.update(manifest=str(file.relative_to(DATA)), manifest_sha256=sha256(file))
+        item.update(manifest=str(file.relative_to(FORMAL_DATA)), manifest_sha256=sha256(file))
         optics.append(item)
-    state_path = DATA/"manifest.json"
+    state_path = FORMAL_DATA/"manifest.json"
     state = json.loads(state_path.read_text())
     counts = Counter(item["partition"] for item in units)
     state["counts"] = dict(
@@ -293,26 +297,34 @@ def archive_status():
     state["quota_actual"] = combine_geometry(units)
     state["verified_geometry_and_optical_bytes"] = sum(item["bytes"] for item in [*units,*optics])
     split_failures = {}
-    for path in sorted((DATA/"units").glob("*/failures.json")):
-        split_failures[path.parent.name] = dict(path=str(path.relative_to(DATA)),sha256=sha256(path),
+    for path in sorted((FORMAL_DATA/"units").glob("*/failures.json")):
+        split_failures[path.parent.name] = dict(path=str(path.relative_to(FORMAL_DATA)),sha256=sha256(path),
                                                count=len(json.loads(path.read_text())))
     state["generation_failures"] = split_failures
     manifest_digest = write_json(state_path,state)
     record = json.loads(RECORD.read_text())
-    record["manifest_sha256"] = manifest_digest
-    record["completed"] = state["counts"]
-    record["target_gap"] = {mode:record["targets"][mode]-count for mode,count in state["counts"].items()}
-    record["verified_geometry_and_optical_bytes"] = state["verified_geometry_and_optical_bytes"]
-    record["failures"] = split_failures
-    record["optical_difficulty_counts"] = dict(Counter(tag for item in optics for tag in item["difficulties"]))
+    current = record["v2"]
+    current["manifest_sha256"] = manifest_digest
+    current["formal_counts"] = state["counts"]
+    targets = current["rules"]["generation_targets"]
+    current["target_gap"] = {mode:targets[mode]-count for mode,count in state["counts"].items()}
+    current["verified_geometry_and_optical_bytes"] = state["verified_geometry_and_optical_bytes"]
+    current["failures"] = split_failures
+    current["optical_difficulty_counts"] = dict(Counter(tag for item in optics for tag in item["difficulties"]))
     write_json(RECORD,record)
     return units
 
 
 def produce_optical(estimate):
-    files = sorted((DATA/"units/training").glob("*/manifest.json"))
+    frozen = FORMAL_DATA/"sealed-scene-plans/training.json"
+    state = json.loads((FORMAL_DATA/"manifest.json").read_text())
+    plan = json.loads(frozen.read_text())
+    if (plan["generator_code"] != generator_code()
+            or state["scene_plan_sha256"]["training"] != sha256(frozen)):
+        raise ValueError("optical generation requires the sealed v2 generator")
+    files = sorted((FORMAL_DATA/"units/training").glob("*/manifest.json"))
     candidates={file.parent.name:json.loads(file.read_text()) for file in files}
-    target = DATA/"optical"
+    target = FORMAL_DATA/"optical"
     target.mkdir(exist_ok=True)
     selection = target/"selection.json"
     if not selection.is_file():
@@ -320,14 +332,16 @@ def produce_optical(estimate):
         write_json(selection,chosen)
     chosen = json.loads(selection.read_text())
     for item in chosen:
+        if (FORMAL_DATA/"stop-after-current").is_file():
+            return
         scene_id = item["scene_id"]
         unit = target/scene_id
         if (unit/"manifest.json").is_file():
             continue
         if unit.exists():
             raise RuntimeError(f"optical attempt requires review after failure: {scene_id}")
-        reserve(DATA,estimate)
-        source = DATA/"units/training"/scene_id
+        reserve(FORMAL_DATA,estimate)
+        source = FORMAL_DATA/"units/training"/scene_id
         unit.mkdir()
         labels = unit/"labels"
         labels.mkdir()
@@ -340,7 +354,7 @@ def produce_optical(estimate):
         if len(audit["optical"]) != 52:
             raise ValueError(f"incomplete optical configurations: {scene_id}")
         render_products = sorted(p for p in labels.glob("*.npz") if not p.is_symlink())
-        outputs = [dict(path=str(p.relative_to(DATA)),bytes=p.stat().st_size,sha256=sha256(p)) for p in render_products]
+        outputs = [dict(path=str(p.relative_to(FORMAL_DATA)),bytes=p.stat().st_size,sha256=sha256(p)) for p in render_products]
         write_json(unit/"manifest.json",dict(
             **item, generator_version=candidates[scene_id]["generator_version"],
             partition="training",geometry_manifest_sha256=sha256(source/"manifest.json"),

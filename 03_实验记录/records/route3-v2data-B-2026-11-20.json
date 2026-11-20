@@ -727,7 +727,7 @@
     "train_optical": 0
   },
   "v2": {
-    "status": "awaiting_external_download_approval",
+    "status": "acquiring_and_qualifying_v2",
     "v1_retirement": {
       "generator_version": "B-v1-50dd699ef589",
       "archive_manifest_sha256": "241e811e9420fe02ef2cb84bd78dcb6387b968ceab3d47a0e406a2e7012ff173",
@@ -824,7 +824,7 @@
       "disk_reserve_bytes": 64424509440
     },
     "rules_sha256": "2fd5541b62bccad35a2bfeb881e786a25606ce9900a29fece2db25c14e8b2475",
-    "external_asset_download_started": false,
+    "external_asset_download_started": true,
     "existing_sources": {
       "3d_future_furniture": {
         "model_folders": 16563,
@@ -839,7 +839,7 @@
       }
     },
     "open_mesh_check": {
-      "status": "topology_passed_label_audit_requires_review",
+      "status": "passed_world_meter_recheck",
       "topology_fixture_passed": 10,
       "recovered_layout_components": 26,
       "excluded_components": {
@@ -858,7 +858,117 @@
       "independent_k16_matches": 1151,
       "independent_k16_mismatches": 1,
       "mismatch_cause": "K16 accepted a ray just outside a triangle edge (barycentric coordinate -3.26e-6). Independent Blender trace reached the wall behind that triangle.",
-      "local_candidate_eligible_for_frozen_pool": false
+      "local_candidate_eligible_for_frozen_pool": false,
+      "previous_edge_mismatch_retained": true,
+      "validation": "qualification/open-room-labels-world-meters/validation.json",
+      "validation_sha256": "bfae4b88d59e97df5041a55e62c3a1ed641fffb9bdf7b1607d1248364b0470ef",
+      "recheck_frames": [
+        1,
+        30,
+        60
+      ],
+      "recheck_matched_rays": 1152,
+      "recheck_mismatches": 0
+    },
+    "intake_checkpoint": {
+      "3d-front": {
+        "status": "reviewing",
+        "catalog": null,
+        "candidate_counts": {
+          "passed": 14
+        },
+        "audit_counts": {},
+        "listed_download_bytes": null
+      },
+      "3d-future": {
+        "status": "complete",
+        "catalog": 16563,
+        "candidate_counts": {
+          "pending_mesh_checks": 478,
+          "excluded": 2
+        },
+        "audit_counts": {
+          "excluded": 466,
+          "passed": 12
+        },
+        "listed_download_bytes": null
+      },
+      "gso": {
+        "status": "downloading",
+        "catalog": 1033,
+        "candidate_counts": {
+          "pending_mesh_checks": 485,
+          "excluded": 31
+        },
+        "audit_counts": {
+          "excluded": 161,
+          "passed": 324
+        },
+        "listed_download_bytes": 8696489995
+      },
+      "objaverse": {
+        "status": "downloading",
+        "catalog": 240,
+        "candidate_counts": {
+          "excluded": 46,
+          "pending_mesh_checks": 98
+        },
+        "audit_counts": {
+          "passed": 15,
+          "excluded": 83
+        },
+        "listed_download_bytes": 0
+      },
+      "poly-haven": {
+        "status": "downloading",
+        "catalog": 522,
+        "candidate_counts": {
+          "pending_mesh_checks": 135,
+          "excluded": 45
+        },
+        "audit_counts": {
+          "excluded": 109,
+          "passed": 26
+        },
+        "listed_download_bytes": 0
+      },
+      "reused-v1-meshes": {
+        "status": "complete",
+        "catalog": 11,
+        "candidate_counts": {
+          "pending_mesh_checks": 11
+        },
+        "audit_counts": {
+          "passed": 7,
+          "excluded": 4
+        },
+        "listed_download_bytes": null
+      },
+      "sketchfab": {
+        "status": "downloading",
+        "catalog": 167,
+        "candidate_counts": {
+          "pending_mesh_checks": 43,
+          "excluded": 29
+        },
+        "audit_counts": {
+          "excluded": 36,
+          "passed": 7
+        },
+        "listed_download_bytes": 0
+      },
+      "smithsonian": {
+        "status": "downloading",
+        "catalog": 708,
+        "candidate_counts": {
+          "pending_mesh_checks": 123,
+          "excluded": 249
+        },
+        "audit_counts": {
+          "excluded": 123
+        },
+        "listed_download_bytes": 1289458938
+      }
     }
   }
 }

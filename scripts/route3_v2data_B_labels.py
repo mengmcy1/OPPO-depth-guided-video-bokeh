@@ -5,6 +5,7 @@ import shutil
 import time
 
 import numpy as np
+from trimesh.ray.ray_pyembree import RayMeshIntersector
 
 from route3_blender_b2_geometry import World
 from route3_ovg_subpixel import (
@@ -18,8 +19,13 @@ CHECK_FRAMES = [1, 30, 60]
 
 class StaticWorld(World):
     def geometry(self, frame, background=False):
-        # v2 B scenes use rigid background and foreground meshes.
-        return super().geometry(1, background)
+        key = (1,background)
+        if key not in self.cache:
+            ray,triangles = super().geometry(1,background)
+            # Use world meters. The Embree scaling conversion moved grazing
+            # rays across an open triangle edge on the audited 3D-FRONT layout.
+            self.cache[key] = RayMeshIntersector(ray.mesh,scale_to_box=False),triangles
+        return self.cache[key]
 
 
 def compressed_fields(data):

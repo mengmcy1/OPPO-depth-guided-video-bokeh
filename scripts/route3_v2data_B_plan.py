@@ -1,6 +1,7 @@
 """Plan B geometry scenes deterministically from a frozen registry and quota plan."""
 import argparse
 from collections import Counter
+from functools import partial
 import hashlib
 import json
 from pathlib import Path
@@ -20,7 +21,7 @@ MODES = {
     "test_unseen_occlusions": ("train", True),
 }
 GENERATION_CODE = (
-    "route3_v2data_B_plan.py", "route3_v2data_B_batch.py", "route3_v2data_B_scene.py",
+    "route3_v2data_B_plan.py", "route3_v2data_B_v2plan.py", "route3_v2data_B_topology.py", "route3_v2data_B_batch.py", "route3_v2data_B_scene.py",
     "route3_v2data_B_labels.py", "route3_v2data_B_render.py", "route3_v2data_B_inputs.py",
     "route3_v2data_B_layout.py", "route3_ovg_1c.py", "route3_ovg_data.py",
     "route3_ovg_subpixel.py", "route3_ovg_phase2_blender.py", "route3_blender_b2_geometry.py",
@@ -124,7 +125,7 @@ def draw_asset(rows, kind, pool, rng):
     return selected
 
 
-def scene_spec(config, registry, mode, cell, index, *, special=None):
+def scene_spec(config, registry, mode, cell, index, *, special=None, archive=DATA, legacy_placement=True):
     quota = config["geometry"]
     pool, held_out = MODES[mode]
     category, distance, motion = (cell[key] for key in ("occlusion","distance","motion"))
@@ -161,8 +162,8 @@ def scene_spec(config, registry, mode, cell, index, *, special=None):
     rows = registry["usable"]
     hdr = draw_asset(rows,"hdri",pool,layout)
     tex = draw_asset(rows,"material",pool,materials)
-    result["hdri_path"] = str((DATA/hdr["render_path"]).resolve())
-    result["texture_path"] = str((DATA/tex["render_path"]).resolve())
+    result["hdri_path"] = str((archive/hdr["render_path"]).resolve())
+    result["texture_path"] = str((archive/tex["render_path"]).resolve())
     assets = [hdr,tex]
     if category == "thin_structure":
         structure = draw_asset(rows,"procedural_structure",pool,objects)
@@ -170,13 +171,13 @@ def scene_spec(config, registry, mode, cell, index, *, special=None):
             name: structure[name] for name in ("shape","width_px_at_512","parameter_segment")
         }
         assets.append(structure)
-    if category == "complex_layout":
+    if legacy_placement and category == "complex_layout":
         mesh = draw_asset(rows,"mesh",pool,objects)
-        result["model_path"] = str((DATA/mesh["mesh_path"]).resolve())
+        result["model_path"] = str((archive/mesh["mesh_path"]).resolve())
         assets.append(mesh)
         if any(row["category"] == "layout" and row["pool"] == pool for row in rows) and index % 2 == 0:
             backdrop = draw_asset(rows,"layout",pool,layout)
-            result["layout_path"] = str((DATA/backdrop["mesh_path"]).resolve())
+            result["layout_path"] = str((archive/backdrop["mesh_path"]).resolve())
             assets.append(backdrop)
     result["assets"] = [row["key"] for row in assets]
     if is_reserved(result, config["reserved_configuration"]) != held_out:
@@ -184,7 +185,8 @@ def scene_spec(config, registry, mode, cell, index, *, special=None):
     return result
 
 
-def plan(config, registry):
+def plan(config, registry, *, archive=DATA, legacy_placement=True):
+    make = partial(scene_spec,config,registry,archive=archive,legacy_placement=legacy_placement)
     quota = config["geometry"]["quota_cells"]
     assert len(quota) == 54 and sum(row["training_scenes"] for row in quota) == 300
     specs = {mode: [] for mode in MODES}
@@ -193,17 +195,17 @@ def plan(config, registry):
             priority = None
             if cell["distance"] == "small" and cell["motion"] == "small_translation" and index < 2:
                 priority = "large_scale_small_disparity"
-            spec = scene_spec(config,registry,"training",cell,len(specs["training"]),special=priority)
+            spec = make("training",cell,len(specs["training"]),special=priority)
             specs["training"].append(spec)
     for category, count in config["development"]["count_by_occlusion"].items():
         cells = [cell for cell in quota if cell["occlusion"] == category]
         for offset in range(count):
-            draft = scene_spec(config,registry,"development",cells[3*offset+offset],len(specs["development"]))
+            draft = make("development",cells[3*offset+offset],len(specs["development"]))
             specs["development"].append(draft)
     for mode, case in (("test_unseen_assets","unseen_assets"),("test_unseen_occlusions","unseen_occlusions")):
         for index in range(config["test"]["groups"][case]["count"]):
             cell = quota[(index*13 + (7 if case == "unseen_occlusions" else 0)) % len(quota)]
-            specs[mode].append(scene_spec(config,registry,mode,cell,index))
+            specs[mode].append(make(mode,cell,index))
     identifiers = Counter(item["scene_id"] for rows in specs.values() for item in rows)
     if any(count != 1 for count in identifiers.values()):
         raise ValueError("Scene identity collision")
@@ -221,6 +223,8 @@ def main():
     if args.preflight:
         print(json.dumps(qualification(),ensure_ascii=False,indent=2),flush=True)
         return
+    if load(DATA/"manifest.json").get("status") == "archived_v1":
+        parser.error("v1 is archived. Use route3_v2data_B_v2plan.py to seal the v2 archive.")
     path = freeze_registry() if args.freeze else args.registry
     registry = load(path)
     if registry.get("status") != "frozen-v1":

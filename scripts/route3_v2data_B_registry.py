@@ -11,38 +11,38 @@ import numpy as np
 from route3_v2data_B_sources import DATA, canonical_pool, write_json
 
 
-AUDITS = DATA / "source-audits"
-CANDIDATES = DATA / "source-candidates"
 PRIORITY = {"Poly Haven": 0, "ambientCG": 1, "Sketchfab": 2, "Objaverse": 3}
 
 
-def absorb_sources():
+def absorb_sources(data_root):
+    audits=data_root/"source-audits"
+    candidates_dir=data_root/"source-candidates"
     failures, candidates = [], []
-    for path in sorted(CANDIDATES.glob("*.json")):
-        if (CANDIDATES/(path.stem+"-review.json")).exists():
+    for path in sorted(candidates_dir.glob("*.json")):
+        if (candidates_dir/(path.stem+"-review.json")).exists():
             continue
         source = json.loads(path.read_text())
-        if source.get("status"):
+        if source.get("reason"):
             failures.append(dict(source=source["source"], status=source["status"], reason=source["reason"]))
-        reviewed_path = AUDITS / path.name
-        if path.stem == "gso" and (AUDITS/"gso-reviewed.json").is_file():
-            reviewed_path = AUDITS/"gso-reviewed.json"
-        reviewed = json.loads(reviewed_path.read_text()) if reviewed_path.is_file() else None
-        for row in source["candidates"]:
-            if reviewed is None or row["category"] not in {"mesh","mesh_bundle","procedural_structure"}:
-                candidates.append(row)
-        if reviewed is not None:
-            candidates.extend(row for row in reviewed if row["category"] in {"mesh","mesh_bundle","procedural_structure"})
+        reviewed_path = audits / path.name
+        if path.stem == "gso" and (audits/"gso-reviewed.json").is_file():
+            reviewed_path = audits/"gso-reviewed.json"
+        reviewed = json.loads(reviewed_path.read_text()) if reviewed_path.is_file() else []
+        keys = {(r["asset_id"],r["category"]) for r in reviewed}
+        bundles = {r["bundle"] for r in reviewed if "bundle" in r}
+        candidates.extend(row for row in source["candidates"]
+                          if (row["asset_id"],row["category"]) not in keys and row["asset_id"] not in bundles)
+        candidates.extend(reviewed)
     return failures, candidates
 
 
-def file_fingerprint(row):
+def file_fingerprint(row, data_root):
     files = row["files"]
     if row["category"] == "hdri":
         return files[0]["sha256"], None, files[0]["path"]
     path = next(
-        (DATA/file["path"] for file in files if Path(file["path"]).name in {"diffuse.jpg", "diff.jpg"}),
-        DATA/files[0]["path"],
+        (data_root/file["path"] for file in files if Path(file["path"]).name in {"diffuse.jpg", "diff.jpg"}),
+        data_root/files[0]["path"],
     )
     if path.suffix.lower() == ".zip":
         with ZipFile(path) as archive:
@@ -60,12 +60,13 @@ def file_fingerprint(row):
     if image is None:
         raise ValueError("diffuse image cannot be decoded")
     small = cv2.resize(image,(32,32),interpolation=cv2.INTER_AREA).astype(np.int16)
-    return hashlib.sha256(raw).hexdigest(), small, str(path.relative_to(DATA))
+    return hashlib.sha256(raw).hexdigest(), small, str(path.relative_to(data_root))
 
 
-def register():
+def register(data_root=DATA, inherited=()):
     cv2.setNumThreads(1)
-    source_failures, candidates = absorb_sources()
+    source_failures, candidates = absorb_sources(data_root)
+    candidates.extend(inherited)
     order = sorted(candidates, key=lambda row: (PRIORITY.get(row["source"], 4), row["source"], row["asset_id"]))
     usable, exclusions, waiting, images = [], [], [], []
     seen = {}
@@ -85,7 +86,7 @@ def register():
             signature = row["geometry_sha256"]
         else:
             try:
-                signature, image, render_path = file_fingerprint(row)
+                signature, image, render_path = file_fingerprint(row,data_root)
             except (ValueError, StopIteration, OSError) as exc:
                 exclusions.append(dict(row, key=key, reason=f"material validation: {type(exc).__name__}"))
                 continue
@@ -117,8 +118,8 @@ def register():
         source_failures=source_failures, counts_by_source_category_pool=dict(by_source),
         counts_by_license=dict(stats),
     )
-    write_json(DATA/"asset-registry-provisional.json", registered)
-    write_json(DATA/"asset-attribution-provisional.json", attribution)
+    write_json(data_root/"asset-registry-provisional.json", registered)
+    write_json(data_root/"asset-attribution-provisional.json", attribution)
     return registered
 
 

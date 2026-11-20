@@ -109,8 +109,9 @@ def asset(source, asset_id, author, license_id, category, channel, terms, **kwar
     )
 
 
-def poly_catalog(limit):
-    for catalog, category in (("models", "mesh"), ("textures", "material"), ("hdris", "hdri")):
+def poly_catalog(limit, *, categories=("models","textures","hdris")):
+    for catalog in categories:
+        category = {"models":"mesh","textures":"material","hdris":"hdri"}[catalog]
         rows = metadata(f"{POLY}/assets", params={"t": catalog})
         for key in stable_limit(rows, limit, lambda item: f"Poly Haven:{item}"):
             meta = rows[key]
@@ -151,8 +152,18 @@ def human_catalog(_limit):
     )
 
 
-def gso_catalog(limit):
-    rows = metadata(FUEL, params={"page": 1, "per_page": 100})
+def gso_catalog(limit, *, full=False):
+    rows = []
+    seen = set()
+    for page in itertools.count(1):
+        result = metadata(FUEL, params={"page":page,"per_page":100})
+        names = {row["name"] for row in result}
+        if len(names) != len(result) or names.intersection(seen):
+            raise SourceError("Google Scanned Objects catalog repeated model IDs")
+        seen.update(names)
+        rows.extend(result)
+        if not full or len(result) < 100:
+            break
     for meta in stable_limit(rows, limit, lambda row: f"Google Scanned Objects:{row['name']}"):
         key = meta["name"]
         escaped = quote(key, safe="")
@@ -166,12 +177,12 @@ def gso_catalog(limit):
         )
 
 
-def smithsonian_catalog(limit):
+def smithsonian_catalog(limit, *, start=0):
     rows = metadata(
         SMITHSONIAN, params={
             "api_key": token("smithsonian"),
             "q": 'online_media_type:"3D Models"',
-            "rows": max(50, limit),
+            "rows": max(50, limit), "start": start,
         },
     )["response"]["rows"]
     items = {}
@@ -213,10 +224,10 @@ def smithsonian_catalog(limit):
     yield from unavailable
 
 
-def blendkit_catalog(limit):
+def blendkit_catalog(limit, *, term="chair"):
     auth = ("blendkit", token("blendkit"))
     search = metadata(
-        BLENDKIT, params={"query": "chair+asset_type:model+license:cc_zero",
+        BLENDKIT, params={"query": f"{term}+asset_type:model+license:cc_zero",
                           "page_size": min(50, max(24, limit))}, auth=auth,
     )
     for meta in stable_limit(search["results"], limit, lambda row: row["assetBaseId"]):
@@ -388,7 +399,7 @@ def poly_files(row):
     return files
 
 
-def save_file(base, file):
+def save_file(base, file, *, data_root=DATA):
     name = PurePosixPath(file["name"])
     if name.is_absolute() or ".." in name.parts or not name.name:
         raise SourceError("无效的资源路径")
@@ -397,6 +408,10 @@ def save_file(base, file):
     sha = hashlib.sha256()
     md5 = hashlib.md5(usedforsecurity=False)
     temp = dest.with_suffix(dest.suffix + ".part")
+    if not dest.exists() and data_root != DATA:
+        cached = DATA/dest.relative_to(data_root)
+        if cached.is_file() and (not file.get("size") or cached.stat().st_size==file["size"]):
+            dest.hardlink_to(cached)
     if not dest.exists():
         with request(file["url"], stream=True) as response:
             expected_size = file.get("size") or int(response.headers.get("Content-Length") or 0)
@@ -405,6 +420,8 @@ def save_file(base, file):
             with temp.open("wb") as stream:
                 for block in response.iter_content(2**20):
                     stream.write(block)
+            if expected_size and temp.stat().st_size != expected_size:
+                raise SourceError("源文件大小不匹配")
             temp.replace(dest)
     with dest.open("rb") as stream:
         while block := stream.read(2**20):
@@ -414,10 +431,10 @@ def save_file(base, file):
         raise SourceError("源 MD5 不匹配")
     if file.get("size") and dest.stat().st_size != file["size"]:
         raise SourceError("源文件大小不匹配")
-    return dict(path=str(dest.relative_to(DATA)), bytes=dest.stat().st_size, sha256=sha.hexdigest())
+    return dict(path=str(dest.relative_to(data_root)), bytes=dest.stat().st_size, sha256=sha.hexdigest())
 
 
-def prepare(row):
+def prepare(row, *, data_root=DATA):
     result = {k: v for k, v in row.items() if k not in {"files", "file_api", "exclusion"}}
     if row.get("exclusion") or not row["license"] or not row["author"]:
         return dict(result, status="excluded", reason=row.get("exclusion") or "许可证或作者不可核实")
@@ -433,8 +450,8 @@ def prepare(row):
         if not files:
             raise SourceError("未找到适用的下载文件")
         key = hashlib.sha256(f'{row["source"]}:{row["asset_id"]}'.encode()).hexdigest()[:20]
-        local = DATA / "source-files" / key
-        stored = [save_file(local, file) for file in files]
+        local = data_root / "source-files" / key
+        stored = [save_file(local, file, data_root=data_root) for file in files]
         status = "pending_mesh_checks" if row["category"].startswith("mesh") else "downloaded"
         return dict(result, status=status, files=stored)
     except (SourceError, KeyError, ValueError, OSError, requests.RequestException) as exc:

@@ -6,7 +6,7 @@ from pathlib import Path
 import sys
 
 import bpy
-from mathutils import Vector
+from mathutils import Matrix, Vector
 from mathutils.bvhtree import BVHTree
 import numpy as np
 
@@ -131,6 +131,7 @@ def add_mesh_asset(path, name, position, extent):
         ob.name = f"{name}_{ix:03d}"
         ob.location = Vector(position) + (ob.location-center)*scale
         ob.scale *= scale
+    return assets
 
 
 def populate(spec, layout_rng, foreground_rng, mat_rng):
@@ -158,6 +159,26 @@ def populate(spec, layout_rng, foreground_rng, mat_rng):
     width = None
     if category == "thin_structure":
         width = make_structure(spec, near, near_mat, foreground_rng)
+    elif spec.get("occluder_assets"):
+        gap = (far-near)/(spec["depth_bands"]-1)
+        for index, asset in enumerate(spec["occluder_assets"]):
+            distance = near+gap*index
+            extent = distance*(.81 if category=="large_foreground" else .64)
+            if len(spec["occluder_assets"])>1:
+                axes = asset["scale_m"]
+                extent = min(extent,.82*gap*max(axes)/max(axes[1],.0005))
+            x = 0 if index==0 else (-1)**index*.12*distance
+            anchor = Vector((x,distance,1.16))
+            placed = add_mesh_asset(asset["path"],f"foreground_import_{index:02d}",anchor,extent)
+            if category == "curved_self_occlusion":
+                angle = foreground_rng.uniform(.24,.52)
+                turn = Matrix.Translation(anchor) @ Matrix.Rotation(angle,4,"Z") @ Matrix.Translation(-anchor)
+                for ob in placed:
+                    ob.matrix_world = turn @ ob.matrix_world
+            if weak:
+                for ob in placed:
+                    ob.data.materials.clear()
+                    ob.data.materials.append(near_mat)
     elif category == "curved_self_occlusion":
         if spec.get("sloped_surface"):
             ob = cube("foreground_sloped", (0, near, 1.15), (near*.52, near*.18, near*.65), near_mat)
@@ -175,7 +196,7 @@ def populate(spec, layout_rng, foreground_rng, mat_rng):
         dims = (near*.48, near*.13, near*.46) if category == "large_foreground" else (near*.29, near*.10, near*.45)
         offset = foreground_rng.uniform(-.09, .09)
         cube("foreground_main", (offset, near, 1.15), dims, near_mat)
-    for layer in range(2, spec["depth_bands"]):
+    for layer in range(max(2,1+len(spec.get("occluder_assets",[]))), spec["depth_bands"]):
         fraction = (layer-1)/(spec["depth_bands"]-1)
         distance = near + (far-near)*fraction
         cube(f"foreground_middle_{layer}", (.09*near, distance, 1.05), (.30*distance, .06, .44), mid_mat)
