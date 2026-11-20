@@ -144,7 +144,8 @@ def populate(spec, layout_rng, foreground_rng, mat_rng):
     floor = surface("Ground diffuse", mat_rng, weak=weak)
     near_mat = surface("Foreground diffuse", mat_rng, weak=weak)
     mid_mat = surface("Middle diffuse", mat_rng, weak=weak)
-    cube("background_wall", position, (max(6, far), .08, max(3, far)), wall)
+    wall_at = far*1.2 if spec.get("layout_path") else position[1]
+    cube("background_wall", (position[0],wall_at,position[2]), (max(6, far), .08, max(3, far)), wall)
     cube("background_floor", (0, far/2, -.055), (max(6, far), far+4, .1), floor)
     for k in range(5 if category == "complex_layout" else 3):
         x, z = layout_rng.uniform(-.5, .5), layout_rng.uniform(.35, 1.8)
@@ -152,6 +153,8 @@ def populate(spec, layout_rng, foreground_rng, mat_rng):
         if spec.get("priority") == "large_scale_small_disparity":
             size = (near*.065, near*.036, near*.07)
         cube(f"background_layout_{k}", (x*far, far-.05, z), size, floor)
+    if spec.get("layout_path"):
+        add_mesh_asset(spec["layout_path"], "background_import", (0, far, 1.15), far*.26)
     width = None
     if category == "thin_structure":
         width = make_structure(spec, near, near_mat, foreground_rng)

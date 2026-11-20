@@ -10,9 +10,13 @@ import subprocess
 import sys
 import time
 
+import numpy as np
 import psutil
 
 from route3_v2data_B_front import DATA, RECORD, RESERVE_BYTES, ROOT, write_json
+from route3_v2data_B_inputs import observation, supervision
+from route3_v2data_B_plan import generator_code
+from route3_ovg_subpixel import TRAIN_FRAMES
 
 
 BLENDER = ROOT.parent/"tools/blender-4.5.13-linux-x64/blender"
@@ -109,10 +113,19 @@ def verified_unit(unit, spec, generator, optical):
         "radiance_audits": (len({row["frame"] for row in radiance["audits"]}), expected_labels),
         "K16": (len(list(labels.glob("*-K16.npz"))), expected_labels*2),
         "optical_pairs": (len(radiance["optical"]), expected_labels*4 if optical else 0),
+        "observed_priors": (len(list((unit/"observations/priors").glob("f*.npz"))), expected_labels),
     }
     bad = [name for name, (found, required) in need.items() if found != required]
     if bad or not all(row["passed"] for row in radiance["audits"]):
         raise ValueError(f"fixed B label/observation check failed: {bad}")
+    for frame in TRAIN_FRAMES:
+        inputs = observation(unit,frame,aligned=True)
+        target = supervision(unit,frame,("depth1","alpha","normal","valid"))
+        if (any(value.shape != (512,512,3) for value in (inputs["rgb"],target["normal"]))
+                or any(value.shape != (3,512,512) for value in (inputs["depth"],inputs["confidence"]))
+                or any(value.shape != (512,512) for key,value in target.items() if key != "normal")
+                or not all(np.isfinite(value).all() for value in (*inputs.values(),*target.values()))):
+            raise ValueError(f"B training loader returned invalid tensors in frame {frame}")
     files = sorted(p for p in unit.rglob("*") if p.is_file() and p.suffix not in {".log",".part"})
     assets = spec["assets"]
     identity = {key: spec[key] for key in ("scene_id","seed","partition","category","distance","motion","camera_trajectory")}
@@ -139,6 +152,8 @@ def produce(unit, spec, generator, estimate):
     )
     opts = ["--optical"] if optical else []
     run(blender("route3_v2data_B_render.py","--scene",unit,*opts),unit/"render.log",uses_gpu=True)
+    run([sys.executable,str(SCRIPTS/"route3_v2data_B_inputs.py"),"--scene",str(unit)],
+        unit/"input-priors.log",uses_gpu=True)
     status = verified_unit(unit,spec,generator,optical)
     write_json(unit/"manifest.json",status)
     return status
@@ -210,6 +225,8 @@ def batch(plan_path, checked_archive_bytes, max_new_scenes=None):
     expected = json.loads((folder/"sha256.json").read_text())
     if expected[plan_path.stem] != sha256(plan_path):
         raise ValueError("sealed plan checksum was changed")
+    if base.get("generator_code") and base["generator_code"] != generator_code():
+        raise ValueError("generator source differs from the sealed plan")
     mode = plan_path.stem
     if mode not in PRODUCTION_MODES:
         raise ValueError("not a production B partition")
@@ -246,6 +263,7 @@ def batch(plan_path, checked_archive_bytes, max_new_scenes=None):
                 raise
             counts[spec["category"]] += 1
         write_json(failures_path,failures)
+        archive_status()
     write_json(failures_path,failures)
 
 

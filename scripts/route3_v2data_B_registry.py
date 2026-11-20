@@ -81,7 +81,7 @@ def register():
         category = row["category"]
         image = None
         render_path = row.get("mesh_path")
-        if category in {"mesh","procedural_structure"}:
+        if category in {"mesh","procedural_structure","layout"}:
             signature = row["geometry_sha256"]
         else:
             try:

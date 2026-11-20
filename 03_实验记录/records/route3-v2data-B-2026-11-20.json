@@ -2,12 +2,6 @@
   "archive": "B",
   "status": "in_progress",
   "3d_front": {
-    "source": "3D-FRONT",
-    "includes": [
-      "3D-FRONT",
-      "3D-FUTURE",
-      "textures"
-    ],
     "status": "正在下载，部分归档已校验",
     "reason": "已按 Google Drive 提供的 SHA-256 核验完成的原始归档。",
     "authorization_expires_at": "2026-12-20T12:20:00+08:00",
@@ -31,9 +25,6 @@
       }
     ],
     "sha256_verified": false,
-    "channel": "Google Drive / shared with me",
-    "expected_bytes": 34104574074,
-    "free_bytes_at_download_start": 3728010956800,
     "license_agreements": {
       "3D-FRONT": "https://gw.alicdn.com/bao/uploaded/TB1ZJUfK.z1gK0jSZLeXXb9kVXa.pdf",
       "3D-FUTURE": "https://terms.aliyun.com/legal-agreement/terms/suit_bu1_ali_cloud/suit_bu1_ali_cloud202004171628_60052.html"
@@ -42,11 +33,6 @@
       "3D-FRONT": "2020-06-18",
       "3D-FUTURE": "2020-03-28"
     },
-    "study_use_conditions": [
-      "科学研究与内部使用。原始数据和私有入口不得再分发。",
-      "禁止将数据、派生物或研究结果用于商业化或外部服务。",
-      "披露研究结果应注明来源。提供派生物时按协议保留许可、版权声明及署名。"
-    ],
     "layout_index": {
       "path": "3d-front-layout-index.json",
       "sha256": "2667ef839febf79a6757a13f300f6d2f35fb102a6fb6aea8ebf8833e304c103f",
@@ -63,7 +49,7 @@
     "status_record_sha256": "e10bb10ea814270b65c6b6279a36e995f287df5b4cd91b986a7ed3254ca5b5b9"
   },
   "manifest": "data/processed/route3-v2data-2026-11-20/B/manifest.json",
-  "manifest_sha256": "844668fa756af5854aac0c54c6fb3210bfa87182326505509dfa0bf4b086255a",
+  "manifest_sha256": "663187cb9fb42545d092205689a6e3e2f4af56c8ba458566c9b0f54317b93140",
   "completed": {
     "train_geometry": 0,
     "development": 0,
@@ -88,10 +74,10 @@
     "sha256": "6d4ca869c1c19d46402b9103977264a2f0b8aca09cc9ed7f2336c84fa88a6643"
   },
   "provisional_material_registry": {
-    "sha256": "bb48fb97023b0937476f07b1aa21738c18cbfafe8a9cc78ac32345dfcd5ae70d",
-    "usable": 367,
+    "sha256": "ac84f61966e7ec1ba8972b8bcad5ee9fa556fb879cacaafaa1a0bf1db13af37f",
+    "usable": 378,
     "pending": 0,
-    "excluded": 287,
+    "excluded": 338,
     "counts_by_source_category_pool": {
       "Poly Haven": {
         "mesh/test": 1,
@@ -108,6 +94,15 @@
         "material/dev": 1,
         "material/test": 3
       },
+      "Sketchfab": {
+        "mesh/test": 1,
+        "mesh/dev": 1
+      },
+      "Objaverse": {
+        "mesh/train": 5,
+        "mesh/dev": 1,
+        "mesh/test": 1
+      },
       "Blender Studio Human Base Meshes": {
         "mesh/train": 8,
         "mesh/dev": 3
@@ -121,6 +116,12 @@
         "mesh/test": 2,
         "mesh/dev": 2
       },
+      "Infinigen Indoors": {
+        "layout/train": 1
+      },
+      "Infinigen Nature": {
+        "layout/train": 1
+      },
       "Procedural Geometry Nodes": {
         "procedural_structure/train": 191,
         "procedural_structure/dev": 22,
@@ -129,21 +130,24 @@
     },
     "counts_by_license": {
       "CC0-1.0": 106,
-      "CC-BY-4.0": 21,
-      "project-owned": 240
+      "CC-BY-4.0": 30,
+      "project-owned": 242
     },
-    "credential_pending": [
-      "Objaverse",
-      "Sketchfab"
-    ],
+    "credential_pending": [],
     "excluded_reasons": {
-      "non-manifold mesh after welding duplicated seam vertices": 39,
-      "potential alpha card or transmission: Alpha": 5,
+      "non-manifold mesh after welding duplicated seam vertices": 68,
+      "potential alpha card or transmission: Alpha": 8,
       "cross-source asset duplicate": 1,
       "no visible mesh": 23,
       "FileNotFoundError": 1,
+      "当前许可不在受理范围或无法核验": 10,
+      "NoAI": 3,
+      "官方 Download API 无法发放下载地址 (SSLError)": 1,
+      "transparent, refractive, or volumetric shader: BSDF_TRANSPARENT": 3,
+      "模型详情无法核验 (SSLError)": 1,
+      "模型详情无法核验 (HTTP 404)": 1,
+      "模型当前不可下载": 1,
       "image texture is missing": 1,
-      "transparent, refractive, or volumetric shader: BSDF_TRANSPARENT": 1,
       "unevaluated hair or curve geometry": 1,
       "缺少可信 Blendkit 文件下载入口": 4,
       "external image texture is missing": 1,
@@ -165,7 +169,7 @@
     "test": 30,
     "train_optical": 80
   },
-  "generator_status": "candidate_checks_in_progress",
+  "generator_status": "candidate_qualification_running",
   "pilot": {
     "built_scenes": 10,
     "initial_thin_scene": {
@@ -323,15 +327,21 @@
         "max_clipping_order_difference": 0.53271484375
       }
     ],
-    "radiance_checks_completed_scenes": 2
+    "radiance_checks_completed_scenes": 2,
+    "geometry_and_k16_passed": 10,
+    "radiance_complete": 10,
+    "radiance_passed": 10,
+    "radiance_failures": 0,
+    "radiance_not_evaluable_frames": 0,
+    "radiance_audit": "pilot/radiance-scenes.json",
+    "thin_repair_commit": "1aee26e"
   },
   "known_unfinished": [
-    "3D-FUTURE model archive and 3D-FRONT mesh/material admission",
-    "Infinigen source generation and renderer timing checks",
-    "formal material pool v1",
-    "remaining pilot appearance runs",
-    "sealed test group lists",
-    "formal B unit generation"
+    "3D-FUTURE archive SHA-256",
+    "3D-FRONT room dependency and load preview",
+    "3D-FRONT layout mesh admission decision",
+    "freeze material pool and seal the disjoint test groups",
+    "admit the first formal B batch"
   ],
   "preliminary_reference_contract": {
     "legacy_reference": "configs/route3-g3-r13-2026-11-18.json and route3_ldr_u1r.py",
@@ -356,7 +366,83 @@
     "generation_seconds": 101.53317564725876,
     "generation_peak_rss_bytes": 1183948800,
     "blend_bytes": 71921762,
-    "render_cost_status": "in_progress"
+    "render_cost_status": "measured",
+    "native_render_cost": "sources/infinigen-indoor-cost-0/native-45-render/cost.json",
+    "native_render_cost_sha256": "fccc2877c490cdf5f0a0f1ac65c189330381e16045bf4689c5637f3d0408c636",
+    "native_render_seconds": 42.69,
+    "native_render_including_gpu_queue_seconds": 773.9128622561693,
+    "native_render_exit_code": 0,
+    "native_render_image": "sources/infinigen-indoor-cost-0/native-45-render/frame-001.png",
+    "project_loader_mesh_objects": 73,
+    "project_loader_faces": 488297
   },
-  "archive_allocated_bytes_at_checkpoint": 13660327936
+  "archive_allocated_bytes_at_checkpoint": 13660327936,
+  "generator_version": null,
+  "formal_units": {
+    "counts": {
+      "train_geometry": 0,
+      "development": 0,
+      "test": 0,
+      "train_optical": 0
+    },
+    "verified_bytes": 0,
+    "first_training": [],
+    "scene_plan_sha256": {}
+  },
+  "formal_input_validation": {
+    "path": "finalization-validation/formal-input-contract/validation.json",
+    "sha256": "f91f2b8c3064bc6676dbf86bec1f6b290a0db2bbd996f61916daf2a1ea0da3ce",
+    "passed": true,
+    "frames": 13,
+    "profile": {
+      "seconds": 234.94390120357275,
+      "peak_rss_bytes": 7722573824,
+      "peak_vram_bytes": 12111052800,
+      "exit_code": 0
+    }
+  },
+  "source_authentication": {
+    "Sketchfab": {
+      "account": {
+        "status": "verified",
+        "endpoint": "/v3/me",
+        "scheme": "Token",
+        "http_status": 200
+      },
+      "catalog_count": 24,
+      "usable": 2,
+      "excluded_reasons": {
+        "non-manifold mesh after welding duplicated seam vertices": 17,
+        "当前许可不在受理范围或无法核验": 4,
+        "NoAI": 1
+      },
+      "mesh_audit": "source-audits/sketchfab.json"
+    },
+    "Objaverse": {
+      "account": {
+        "status": "verified",
+        "endpoint": "/v3/me",
+        "scheme": "Token",
+        "http_status": 200
+      },
+      "catalog_count": 36,
+      "usable": 7,
+      "excluded_reasons": {
+        "当前许可不在受理范围或无法核验": 6,
+        "官方 Download API 无法发放下载地址 (SSLError)": 1,
+        "transparent, refractive, or volumetric shader: BSDF_TRANSPARENT": 2,
+        "non-manifold mesh after welding duplicated seam vertices": 12,
+        "potential alpha card or transmission: Alpha": 3,
+        "模型详情无法核验 (SSLError)": 1,
+        "NoAI": 2,
+        "模型详情无法核验 (HTTP 404)": 1,
+        "模型当前不可下载": 1
+      },
+      "mesh_audit": "source-audits/objaverse.json"
+    }
+  },
+  "disk_preflight": {
+    "minimum_free_reserve_bytes": 64424509440,
+    "largest_measured_pilot_bytes": 786532671
+  }
 }

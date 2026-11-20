@@ -14,6 +14,7 @@ from route3_ovg_1b_train import train, training_pool
 from route3_ovg_refocus import gpu_setup
 from route3_ovg_subpixel import save_json, save_npz
 from route3_sharp_s1b_calibrate import fit_inverse, inverse_stats
+from route3_v2data_B_inputs import formal_unit, observation
 
 OUT = data.ROOT/'outputs/route3-ovg-1c-2026-11-19-01'
 INITIAL = PRIME/'checkpoints/step-030000.pt'
@@ -22,12 +23,12 @@ HIGH = .6
 CONSISTENT = .03
 
 
-def fit(name, frame, row):
+def fit(name, frame, row, *, scene_seed=None):
     sharp, ds = row['depth'][:2]
     valid = (row['confidence'][0] > 0) & np.isfinite(sharp) & (sharp > 0)
     common = valid & (row['confidence'][1] >= HIGH) & np.isfinite(ds) & (ds > 0)
     pixels = np.flatnonzero(common)
-    rng = np.random.default_rng([SEED, int(name.split('-')[2]), frame])
+    rng = np.random.default_rng([SEED, int(name.split('-')[2]) if scene_seed is None else scene_seed, frame])
     pixels = rng.permutation(pixels)
     n_validation = len(pixels) // 5
     heldout, train_pixels = pixels[:n_validation], pixels[n_validation:]
@@ -80,6 +81,9 @@ def aligned_path(name, frame):
 
 @lru_cache(maxsize=48)
 def aligned_input(name, frame):
+    unit = formal_unit(name)
+    if unit:
+        return observation(unit, frame, aligned=True)
     row = data.b_input(name, frame)
     depth = row['depth'].copy()
     depth[0] = data.load(aligned_path(name, frame), ('sharp',))['sharp']

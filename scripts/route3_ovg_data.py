@@ -10,6 +10,7 @@ import torch
 
 from route3_ovg_subpixel import CONFIG, OUT, PREVIOUS, ROOT, TRAIN_FRAMES
 from route3_ovg_tartan import depth_from_png
+from route3_v2data_B_inputs import formal_unit, library_unit_paths, observation, supervision
 
 sys.path.insert(0,str(ROOT))
 PRIORS=('SHARP','DepthSplat','triangulation')
@@ -40,7 +41,9 @@ def b_folder(name):
 @functools.lru_cache(maxsize=8)
 def b_foreground_reference(name, frame):
     """Read GT identity from labels only, outside input construction."""
-    expanded = ROOT/'data/processed/route3-v2data-2026-11-20/B/units/development'/name/'labels'
+    unit = formal_unit(name)
+    expanded = (unit/'labels' if unit else
+                ROOT/'data/processed/route3-v2data-2026-11-20/B/units/development'/name/'labels')
     current = expanded/f'f{frame:03d}-pinhole.npz'
     if current.is_file():
         root, center = expanded, current
@@ -62,6 +65,9 @@ def b_edge_reference(item, target):
 
 @functools.lru_cache(maxsize=48)
 def b_input(name, frame):
+    unit = formal_unit(name)
+    if unit:
+        return observation(unit, frame)
     root=b_folder(name)
     f=f'f{frame:03d}'
     calibrated=root/'models/calibration'
@@ -166,7 +172,9 @@ def sample(item, device, *, b_loader=b_input):
         current=b_loader(key,frame)
         other=[b_loader(key,TRAIN_FRAMES[j]) for j in neighbors(index,len(TRAIN_FRAMES))]
         inputs=input_record(current,other)
-        target=load(OUT/'B'/key/'pinhole-subpixels'/f'f{frame:03d}.npz',LABELS)
+        unit=formal_unit(key)
+        target=(supervision(unit,frame,LABELS) if unit else
+                load(OUT/'B'/key/'pinhole-subpixels'/f'f{frame:03d}.npz',LABELS))
     else:
         filename=Path(key)
         m=read(filename); rows=m['rows']
@@ -188,11 +196,14 @@ def sample(item, device, *, b_loader=b_input):
     return tensor_map(inputs),tensor_map(target)
 
 
-def inventory(role):
+def inventory(role, *, expanded_b=False):
     split=read(PREVIOUS/'split.json')
     names=split['train' if role=='train' else 'heldout']
     data={'B':[('B',s,j) for s in names for j,f in enumerate(TRAIN_FRAMES)
                if (OUT/'B'/s/'pinhole-subpixels'/f'f{f:03d}.npz').exists()]}
+    if expanded_b:
+        data['B']=[('B',unit.name,j) for unit in library_unit_paths(role)
+                   for j in range(len(TRAIN_FRAMES))]
     if role!='train':
         return data
     sealed=read(ROOT/'03_实验记录/records/route3-ovg-1a-2026-11-18-independent-test.json')['forbidden_train']

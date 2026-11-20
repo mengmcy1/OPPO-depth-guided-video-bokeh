@@ -8,6 +8,7 @@ import json
 from pathlib import Path, PurePosixPath
 import re
 import shutil
+import time
 from urllib.parse import quote, urljoin, urlsplit
 from uuid import NAMESPACE_URL, uuid5
 
@@ -30,27 +31,48 @@ HUMAN_BUNDLE = (
     "https://mirror.blender.org/demo/asset-bundles/human-base-meshes/"
     "human-base-meshes-bundle-v1.4.1.zip"
 )
+AUTH_ORIGINS = {
+    "sketchfab": ("Token", {"api.sketchfab.com"}, "/v3/"),
+    "blendkit": ("Bearer", {"www.blenderkit.com", "www.blendkit.com"}, "/api/"),
+}
 
 
 class SourceError(RuntimeError):
     """An error whose message is safe to record."""
 
+    def __init__(self, message, status_code=None, retry_after=None):
+        super().__init__(message)
+        self.status_code = status_code
+        self.retry_after = retry_after
+
 
 def request(url, *, params=None, auth=None, stream=False):
     headers = {"User-Agent": "OPPO-Bokeh-Research/2.0"}
     if auth:
-        headers["Authorization"] = f"Bearer {auth}"
-    try:
-        response = requests.get(url, params=params, headers=headers, stream=stream, timeout=(12, 45))
-        if response.status_code in (401, 403) and (auth or "api_key" in (params or {})):
-            response.close()
-            raise SourceError(f"待凭据或访问授权 (HTTP {response.status_code})")
-        if response.status_code != 200:
-            response.close()
-            raise SourceError(f"HTTP {response.status_code}")
-        return response
-    except requests.RequestException as exc:
-        raise SourceError(type(exc).__name__) from None
+        service, secret = auth
+        scheme, hosts, prefix = AUTH_ORIGINS[service]
+        target = urlsplit(url)
+        if (target.scheme != "https" or target.netloc not in hosts
+                or not target.path.startswith(prefix)):
+            raise SourceError("拒绝向非对应官方 API 发送认证凭据")
+        headers["Authorization"] = f"{scheme} {secret}"
+    authenticated = bool(auth or "api_key" in (params or {}))
+    for attempt in range(3):
+        try:
+            response = requests.get(url, params=params, headers=headers, stream=stream,
+                                    timeout=(12, 45), allow_redirects=not authenticated)
+            if response.status_code != 200:
+                status = response.status_code
+                retry_after = response.headers.get("Retry-After", "")
+                response.close()
+                raise SourceError(f"HTTP {status}", status, int(retry_after) if retry_after.isdecimal() else None)
+            return response
+        except (requests.ConnectionError, requests.Timeout) as exc:
+            if attempt == 2:
+                raise SourceError(type(exc).__name__) from None
+            time.sleep(attempt + 1)
+        except requests.RequestException as exc:
+            raise SourceError(type(exc).__name__) from None
 
 
 def metadata(url, **kwargs):
@@ -192,7 +214,7 @@ def smithsonian_catalog(limit):
 
 
 def blendkit_catalog(limit):
-    auth = token("blendkit")
+    auth = ("blendkit", token("blendkit"))
     search = metadata(
         BLENDKIT, params={"query": "chair+asset_type:model+license:cc_zero",
                           "page_size": min(50, max(24, limit))}, auth=auth,
@@ -212,13 +234,13 @@ def blendkit_catalog(limit):
 
 
 def sketchfab_auth():
-    auth = token("sketchfab")
+    auth = ("sketchfab", token("sketchfab"))
     metadata(f"{SKETCHFAB}/me", auth=auth)
     return auth
 
 
-def sketchfab_catalog(limit):
-    auth = sketchfab_auth()
+def sketchfab_catalog(limit, auth=None):
+    auth = auth or sketchfab_auth()
     response = metadata(
         f"{SKETCHFAB}/search",
         params={"type": "models", "downloadable": "true", "q": "household furniture"},
@@ -228,8 +250,8 @@ def sketchfab_catalog(limit):
         yield sketchfab_model(item["uid"], auth, "Sketchfab")
 
 
-def objaverse_catalog(limit):
-    auth = sketchfab_auth()
+def objaverse_catalog(limit, auth=None):
+    auth = auth or sketchfab_auth()
     with request(OBJAVERSE_PATHS) as response:
         catalog = json.loads(gzip.decompress(response.content))
     for uid in stable_limit(catalog, limit, lambda item: item):
@@ -244,30 +266,43 @@ def sketchfab_model(uid, auth, source):
         model = metadata(model_api, auth=auth)
     except SourceError as exc:
         return asset(source, uid, None, None, "mesh", model_api, "https://sketchfab.com/terms",
-                     exclusion=str(exc))
+                     platform_model_id=uid, model_detail_http_status=exc.status_code,
+                     exclusion=f"模型详情无法核验 ({exc})")
     tags = model.get("tags")
-    tagged = tags is not None and any(
-        str(tag.get(name, "")).lower().replace("-", "") == "noai"
-        for tag in tags for name in ("name", "slug")
+    tagged = isinstance(tags, list) and any(
+        re.sub(r"[^a-z0-9]", "", str(tag.get(name, "")).lower()) == "noai"
+        for tag in tags if isinstance(tag, dict) for name in ("name", "slug")
     )
     blocked = tagged or model.get("isAIRestricted", False)
     license_info = model.get("license") or {}
-    url = license_info.get("url") or ""
-    kind = url.rstrip("/").split("/")
+    url = license_info.get("url", "") if isinstance(license_info, dict) else license_info
+    license_url = urlsplit(url or "")
+    kind = license_url.path.strip("/").split("/")
     license_id = None
-    if tags is not None and not blocked and model.get("isDownloadable"):
-        if "creativecommons.org/publicdomain/zero/1.0" in url:
+    if license_url.hostname == "creativecommons.org":
+        if kind == ["publicdomain", "zero", "1.0"]:
             license_id = CC0
-        elif "creativecommons.org/licenses/by/" in url and kind[-1] in {"2.0", "2.5", "3.0", "4.0"}:
+        elif len(kind) == 3 and kind[:2] == ["licenses", "by"] and kind[2] in {"2.0", "2.5", "3.0", "4.0"}:
             license_id = "CC-BY-" + kind[-1]
     author = model.get("user") or {}
+    exclusion = None
+    if blocked:
+        exclusion = "NoAI"
+    elif not isinstance(tags, list):
+        exclusion = "NoAI 状态无法核验"
+    elif not model.get("isDownloadable"):
+        exclusion = "模型当前不可下载"
+    elif not license_id:
+        exclusion = "当前许可不在受理范围或无法核验"
+    elif not (author.get("displayName") or author.get("username")):
+        exclusion = "作者无法核验"
     return asset(
         source, uid, author.get("displayName") or author.get("username"),
         license_id, "mesh", f"{model_api}/download", url or "https://sketchfab.com/terms",
-        platform_model_id=uid, current_status_url=model_api,
+        platform_model_id=uid, current_status_url=model_api, model_detail_http_status=200,
         source_face_count=model.get("faceCount"), page=model.get("viewerUrl"),
         platform_terms_version="2026-10-27",
-        exclusion="NoAI" if blocked else "当前标签、下载资格或许可不可核实或不适用",
+        exclusion=exclusion,
     )
 
 
@@ -277,12 +312,15 @@ def protected_files(row):
         if not endpoint or urlsplit(endpoint).hostname not in {"www.blenderkit.com", "www.blendkit.com"}:
             raise SourceError("缺少可信 Blendkit 文件下载入口")
         info = metadata(
-            endpoint, auth=token("blendkit"),
+            endpoint, auth=("blendkit", token("blendkit")),
             params={"scene_uuid": str(uuid5(NAMESPACE_URL, "oppo-bokeh/" + row["asset_id"]))},
         )
         url, name = info["filePath"], row["asset_id"] + ".blend"
     else:
-        info = metadata(row["download_channel"], auth=token("sketchfab"))
+        try:
+            info = metadata(row["download_channel"], auth=("sketchfab", token("sketchfab")))
+        except SourceError as exc:
+            raise SourceError(f"官方 Download API 无法发放下载地址 ({exc})", exc.status_code, exc.retry_after) from None
         file = info.get("glb") or info.get("gltf")
         if not file:
             raise SourceError("官方 Download API 未提供 glb 或 glTF")
@@ -381,8 +419,8 @@ def save_file(base, file):
 
 def prepare(row):
     result = {k: v for k, v in row.items() if k not in {"files", "file_api", "exclusion"}}
-    if not row["license"] or not row["author"]:
-        return dict(result, status="excluded", reason=row.get("exclusion", "许可证或作者不可核实"))
+    if row.get("exclusion") or not row["license"] or not row["author"]:
+        return dict(result, status="excluded", reason=row.get("exclusion") or "许可证或作者不可核实")
     if row["category"] == "procedural_structure":
         return dict(result, status="parameter_segment_pending_geometry_nodes")
     try:
@@ -399,9 +437,12 @@ def prepare(row):
         stored = [save_file(local, file) for file in files]
         status = "pending_mesh_checks" if row["category"].startswith("mesh") else "downloaded"
         return dict(result, status=status, files=stored)
-    except (SourceError, KeyError, ValueError, OSError) as exc:
+    except (SourceError, KeyError, ValueError, OSError, requests.RequestException) as exc:
         reason = str(exc) if isinstance(exc, SourceError) else type(exc).__name__
-        return dict(result, status="excluded", reason=reason)
+        result.update(status="excluded", reason=reason)
+        if isinstance(exc, SourceError) and exc.status_code == 429:
+            result.update(status="download_deferred", http_status=429, retry_after_seconds=exc.retry_after)
+        return result
 
 
 CATALOGS = {
@@ -423,6 +464,7 @@ def main():
     parser.add_argument("sources", nargs="+", choices=CATALOGS)
     parser.add_argument("--limit", type=int, default=36, help="Maximum candidate records per external category")
     parser.add_argument("--workers", type=int, default=6, choices=range(1, 9))
+    parser.add_argument("--refresh", action="store_true", help="Refresh only the explicitly selected source catalogs")
     args = parser.parse_args()
     output = DATA / "source-candidates"
     output.mkdir(parents=True, exist_ok=True)
@@ -430,16 +472,28 @@ def main():
         for slug in args.sources:
             name, catalog = CATALOGS[slug]
             path = output / (slug + ".json")
-            if path.exists():
+            if path.exists() and not args.refresh:
                 continue
+            account = None
             try:
-                rows = list(catalog(args.limit))
+                if slug in {"sketchfab", "objaverse"}:
+                    account = dict(status="unverified", endpoint="/v3/me", scheme="Token")
+                    auth = sketchfab_auth()
+                    account.update(status="verified", http_status=200)
+                    rows = list(catalog(args.limit, auth=auth))
+                else:
+                    rows = list(catalog(args.limit))
                 values = list(pool.map(prepare, rows))
                 result = dict(source=name, candidates=values, catalog_count=len(rows))
             except (SourceError, KeyError, ValueError, OSError) as exc:
                 reason = str(exc) if isinstance(exc, SourceError) else type(exc).__name__
-                status = "待凭据" if "待凭据" in reason else "catalog_unavailable"
+                if account and account["status"] == "unverified" and isinstance(exc, SourceError):
+                    account["http_status"] = exc.status_code
+                auth_failed = (account is not None and account.get("http_status") in {401, 403})
+                status = "待凭据" if auth_failed or "待凭据" in reason else "catalog_unavailable"
                 result = dict(source=name, candidates=[], status=status, reason=reason)
+            if account is not None:
+                result["account_verification"] = account
             write_json(path, result)
             print(slug, len(result["candidates"]), result.get("status", "catalogued"), flush=True)
 
