@@ -656,5 +656,59 @@
     "R": "Held-out views within training windows are used only for supervision.",
     "GPU": "flock held only during short CUDA chunks, up to 12 batches or about 15 seconds before yielding.",
     "loss_support": "Effective sampled pixel counts for balanced losses, actual valid-view pixels for mv, valid rays for occ, image pixels and pupil rays for bokeh, and native adjacent pixel pairs for same_surface."
+  },
+  "b_p2_followup": {
+    "status": "scheduled_on_p2_admission",
+    "original_results_preserved": [
+      "A",
+      "C",
+      "G",
+      "R"
+    ],
+    "supervision": {
+      "L_occ_and_hidden_substitute": "native K16 labels at one available focus; use the matching native K16 focus when an optical target is present",
+      "L_bokeh": "an available optical RGB reference at the same frame, focus and aperture",
+      "B_label_frames": 13,
+      "C_uses_K16_availability": true,
+      "prior_coupling": "the old B 1b corpus supplied optical references on all of its supervised frames, so coupled availability did not expose this problem",
+      "B_1b_zero_effective_L_occ": "fail each such batch",
+      "recipe_and_weights": "unchanged; the full K16 support count is reported independently from the configured four-ray training draw"
+    },
+    "F2_policy": {
+      "cache_tree": "B/v2/derived-f2",
+      "source": "observed RGB, 1c SHARP and DepthSplat estimates, LaMa, frozen SHARP and old A-color",
+      "train_optical_frames": [
+        1,
+        30,
+        60
+      ],
+      "target_scenes": 80,
+      "target_frames": 240,
+      "sealed_generator_dependency": false,
+      "missing_cache": "error on optical batches",
+      "paired_ablation": false
+    },
+    "F2_pilot": {
+      "path": "p2-review/f2-smoke/training-120-2db3c2fe6b5336e7/f030/manifest.json",
+      "sha256": "24f7c4b8d9b9eb149a72bf33f1133c56d5e7adc93a4dacddb580fbbf80dba645",
+      "scene_id": "training-120-2db3c2fe6b5336e7",
+      "frame": 30,
+      "cache_peak_vram_bytes": 11551113216,
+      "processing_seconds_including_GPU_wait": 61.86743883788586,
+      "product_sha256": {
+        "background.npz": "7cfe1d5a6c1c98bd6d52dc479452e06fb5f1396930b4c971b3f5acbc29a2543b",
+        "a-color.pt": "607e7f205f25e840a26921d19779c7ab98b9f26eeaab1a426bcbd3288523e996"
+      },
+      "status": "derived_cache_built_on_isolated_training_unit"
+    },
+    "geometry": {
+      "status": "awaiting_two_formal_p2_units_per_category",
+      "batches_1a": 21,
+      "batches_1b": 70
+    },
+    "optical": {
+      "status": "awaiting_first_formal_optical_release_and_F2",
+      "comparison": "C on its existing training optical cases"
+    }
   }
 }

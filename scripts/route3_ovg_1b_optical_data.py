@@ -213,12 +213,16 @@ def background_samples(spec, K, focus, offsets, size):
     directory = data.PREVIOUS / 'geometry/original' / e['scene']
     A = scene(directory / 'visible' / f'f{e["frame"]:03d}.pt')
     p = data.load(e['input_npz'], ('background_depth',))
-    h, w = size
-    bg = cv2.resize(p['background_depth'], (w, h), interpolation=cv2.INTER_NEAREST_EXACT)
     image = data.load(e['fill'], ('fill_rgb_linear',))['fill_rgb_linear']
-    image = cv2.resize(image, (w, h), interpolation=cv2.INTER_AREA)
-    ten = lambda a: torch.tensor(a, device=K.device, dtype=K.dtype)
-    bg, image = ten(bg), ten(image)
+    return render_f2(A, p['background_depth'], image, K, focus, offsets, size)
+
+
+def render_f2(scene, background_depth, fill_rgb_linear, K, focus, offsets, size):
+    """Evaluate the legacy A-color and LaMa F2 lookup on the requested rays."""
+    h, w = size
+    bg = cv2.resize(background_depth, (w, h), interpolation=cv2.INTER_NEAREST_EXACT)
+    image = cv2.resize(fill_rgb_linear, (w, h), interpolation=cv2.INTER_AREA)
+    bg, image = (torch.as_tensor(x, device=K.device, dtype=K.dtype) for x in (bg,image))
     bg = torch.where(torch.isfinite(bg) & (bg > 0), bg, 1e4)
     y, x = torch.meshgrid(torch.arange(h, device=K.device)+.5, torch.arange(w, device=K.device)+.5,
                           indexing='ij')
@@ -228,4 +232,4 @@ def background_samples(spec, K, focus, offsets, size):
     src = image.permute(2, 0, 1)[None].expand(len(offsets), -1, -1, -1)
     fill = torch.nn.functional.grid_sample(src, grid, padding_mode='border', align_corners=False).permute(0, 2, 3, 1)
     with torch.no_grad():
-        return raster(A, K, focus, offsets, h, w, fill)
+        return raster(scene, K, focus, offsets, h, w, fill)

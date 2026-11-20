@@ -47,8 +47,8 @@ def subcamera(K, focus, offset):
     return intr, view
 
 
-def raster(scene, K, focus, offsets, height, width, background=None):
-    images = []
+def raster(scene, K, focus, offsets, height, width, background=None, *, return_alpha=False):
+    images, coverage = [], []
     for j, offset in enumerate(offsets):
         J, view = subcamera(K, focus, offset)
         rgb, a, _ = rasterization(scene.means, scene.quats, scene.scales, scene.opacities, scene.colors,
@@ -58,7 +58,10 @@ def raster(scene, K, focus, offsets, height, width, background=None):
         if background is not None:
             image = image + (1 - a[0]) * background[j]
         images.append(image)
-    return torch.stack(images)
+        if return_alpha:
+            coverage.append(a[0,...,0].detach())
+    result = torch.stack(images)
+    return (result, torch.stack(coverage)) if return_alpha else result
 
 
 def occlusion_loss(visible, K, focus, offsets, cutoff, reveal, block):

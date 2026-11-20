@@ -108,6 +108,14 @@ class TrainingData:
         x, y = legacy.sample(item, device)
         return x, {k: v.float() if v.is_floating_point() else v for k, v in y.items()}
 
+    def k16_specs(self, item):
+        tier, key, index = item
+        if tier == 'C':
+            return [row for row in c_optical_specs(key, index) if row['label'].is_file()]
+        if tier == 'B' and key in self.b:
+            return b_k16_cases(self.b[key], legacy.TRAIN_FRAMES[index])
+        return []
+
     def optical_specs(self, item):
         tier, key, index = item
         if tier == 'C':
@@ -137,6 +145,20 @@ class TrainingData:
         return dict(gt=geometry_depth[np.maximum(ids, 1)-1], object_id=ids, valid=valid,
                     foreground=np.arange(1, recipe['front_layers']+1),
                     boundary=target['depth_boundary'][0].cpu().numpy())
+
+
+def b_k16_cases(unit, frame):
+    labels = unit/'labels'
+    index = next((row for row in read(labels/'scene-supervision.json')['rows'] if row['frame'] == frame), None)
+    if index is None:
+        return []
+    cases = []
+    for focus, metadata in enumerate(index['K16']):
+        label = labels/f'f{frame:03d}-focus{focus}-K16.npz'
+        if label.is_file():
+            cases.append(dict(tiers='B', frame=frame, focus=metadata['focus_m'],
+                              fstop=metadata['fstop'], label=label, unit=unit))
+    return cases
 
 
 def b_optical_cases(unit):

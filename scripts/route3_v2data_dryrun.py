@@ -43,8 +43,8 @@ def balanced_count(valid, boundary, cap):
     return min(edge, common)+min(inner, common)
 
 
-def stage_objective(net, inventory, item, stage, generator, *, spec=None):
-    """The 1a/1b recipe. Pass an optical spec from the same eligible frame."""
+def stage_objective(net, inventory, item, stage, generator, *, spec=None, audit_k16=False, audit_transmission=False):
+    """Use native K16 for occlusion and an optional optical target for Bokeh."""
     tier = item[0]
     device = next(net.parameters()).device
     batch = inventory.load(item, device)
@@ -90,16 +90,30 @@ def stage_objective(net, inventory, item, stage, generator, *, spec=None):
     K = x['K'][0]
     visible = fixed_visible_surfels(pred,x)
     hidden = None
-    focus = spec['focus'] if spec else 1.4
+    labels = inventory.k16_specs(item)
+    occupancy_spec = None
+    if labels:
+        if spec is None:
+            choice = int(torch.randint(len(labels), (), generator=generator, device=device))
+            occupancy_spec = labels[choice]
+        else:
+            occupancy_spec = next((row for row in labels if np.isclose(row['focus'], spec['focus'])), None)
+            if occupancy_spec is None:
+                raise ValueError("No K16 labels for the optical reference's focus")
+    focus = occupancy_spec['focus'] if occupancy_spec else spec['focus'] if spec else 1.4
     center = K.new_zeros((1,2))
-    if spec:
-        rays = ray_fields(spec)
+    if occupancy_spec:
+        rays = ray_fields(occupancy_spec)
         offsets, cutoff, reveal, block = occupancy(rays,batch[1],shape,generator,opts['occ_ray_count'])
         terms['occ'] = occlusion_loss(visible,K,focus,offsets,cutoff,reveal,block)
         counts.update(occ_reveal=int(reveal.sum()),occ_block=int(block.sum()))
         counts['occ'] = counts['occ_reveal']+counts['occ_block']
-        hidden, placed = hidden_substitute(spec,rays,reference,pred['depth1'][0],K)
+        hidden, placed = hidden_substitute(occupancy_spec,rays,reference,pred['depth1'][0],K)
         counts.update(hidden_eligible=placed['eligible'],hidden_placed=placed['placed'])
+        if audit_k16:
+            audit_rng = torch.Generator(device=device).manual_seed(8)
+            _, _, full_reveal, full_block = occupancy(rays,batch[1],shape,audit_rng,len(rays['depth']))
+            counts.update(all_K16_occ_block=int(full_block.sum()),all_K16_occ_reveal=int(full_reveal.sum()))
     combined = merge_layers(visible,hidden)
     zero = raster(combined,K,focus,center,*shape,observed_background(spec,x,focus,center))[0]
     if common.shape != shape:
@@ -118,11 +132,21 @@ def stage_objective(net, inventory, item, stage, generator, *, spec=None):
             # keeping the original two independent pupil subsets.
             def ray(means, scales, aperture, fill):
                 scene = replace(combined,means=means,scales=scales)
-                return raster(scene,K,focus,aperture,*shape,fill)[0]
-            images = [checkpoint(ray,combined.means,combined.scales,offsets[j:j+1],
+                value = raster(scene,K,focus,aperture,*shape,fill,return_alpha=audit_transmission)
+                return (value[0][0],value[1][0]) if audit_transmission else value[0]
+            values = [checkpoint(ray,combined.means,combined.scales,offsets[j:j+1],
                                  None if background is None else background[j:j+1],use_reentrant=False)
                       for j in range(len(offsets))]
-            means.append(torch.stack(images).mean(0))
+            if audit_transmission:
+                images, alpha = zip(*values)
+                a = torch.stack(alpha)
+                transmission = (1-a).clamp(0,1)
+                counts['uncovered_rays'] = counts.get('uncovered_rays',0)+int((a==0).sum())
+                counts['rays_T_ge_0p1'] = counts.get('rays_T_ge_0p1',0)+int((transmission>=.1).sum())
+                counts['residual_transmittance_sum'] = counts.get('residual_transmittance_sum',0.)+float(transmission.sum())
+            else:
+                images = values
+            means.append(torch.stack(tuple(images)).mean(0))
         terms['bokeh'] = ((means[0]-target)*(means[1]-target)).mean()
         counts.update(bokeh=shape[0]*shape[1], bokeh_rays=shape[0]*shape[1]*sum(map(len,groups)))
     return terms, counts, weights
@@ -273,6 +297,8 @@ def make_report(inventory, plan, rows, unchanged, peak, candidate_weight):
             if stage=='1b' and tier in ('B','C') and not block['optical_batches']:
                 failures.append(f'{stage}/{tier}: no optical batch')
     for row in rows:
+        if row['stage']=='1b' and row['tier']=='B' and not row['support'].get('occ'):
+            failures.append(f'1b/B/{row["index"]}: no effective K16 occlusion rays')
         if row['optical'] and (not {'occ','bokeh'}<=row['losses'].keys() or row['support']['occ']==0
                               or row['support']['bokeh']==0):
             failures.append(f'{row["stage"]}/{row["tier"]}/{row["index"]}: missing effective optical term')

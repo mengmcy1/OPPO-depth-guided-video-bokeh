@@ -1,16 +1,17 @@
 """Expanded B/C optical labels, with GT confined to render supervision."""
 from functools import lru_cache
+import hashlib
 
 import cv2
 import numpy as np
 import torch
 from torch.nn import functional as F
 
-from route3_ovg_1b_optical_data import place
+from route3_ovg_1b_optical_data import place, render_f2
 from route3_ovg_card import lens_offsets
 from route3_v2data_B_inputs import cameras, observed_rgb
-from route3_v2data_loader import ROOT, legacy, read
-from src.ovg_optics import fixed_visible_surfels, raster
+from route3_v2data_loader import FORMAL_DATA, ROOT, legacy, read
+from src.aperture_renderer import GaussianScene
 
 
 def linear_reference(spec):
@@ -128,15 +129,32 @@ def hidden_substitute(spec, rays, reference, visible_z, K):
     return place(parents, reference['gt'], background, visible_z, K, w)
 
 
+def f2_entry(unit, frame, directory=None):
+    root = directory if directory is not None else FORMAL_DATA/'derived-f2'
+    return root/unit.name/f'f{frame:03d}'
+
+
+@lru_cache(maxsize=4)
+def read_f2(entry, unit):
+    if not (entry/'manifest.json').is_file():
+        raise FileNotFoundError(f"B optical frame has no derived LaMa F2 cache: {entry.name}")
+    record = read(entry/'manifest.json')
+    geometry_sha = hashlib.sha256((unit/'manifest.json').read_bytes()).hexdigest()
+    if record['geometry_manifest_sha256'] != geometry_sha:
+        raise ValueError(f"derived LaMa F2 cache points to a different geometry release: {unit.name}")
+    fields = legacy.load(entry/'background.npz', ('background_depth','fill_rgb_linear'))
+    cloud = torch.load(entry/'a-color.pt', map_location='cpu', weights_only=True)
+    return fields, cloud
+
+
 @torch.no_grad()
 def observed_background(spec, inputs, focus, offsets):
-    """Observed SHARP-depth F2 fallback for B v2, whose archive has no legacy F2 cache."""
+    """Use the fixed derived legacy F2 lookup for B optical training only."""
     if not spec or spec['tiers'] != 'B':
         return None
-    h,w = inputs['rgb'].shape[-2:]
-    z = torch.where(inputs['prior_conf'][:,0] > 0, inputs['prior_depth'][:,0],
-                    torch.where(inputs['prior_conf'][:,1] > 0, inputs['prior_depth'][:,1], 1e4))
-    if z.shape[-2:] != (h,w):
-        z = F.interpolate(z[:,None],size=(h,w),mode='nearest-exact')[:,0]
-    vis = fixed_visible_surfels(dict(depth1=z),inputs)
-    return raster(vis, inputs['K'][0], focus, offsets,h,w)
+    entry = f2_entry(spec['unit'], spec['frame'], spec.get('f2_root'))
+    fields, cloud = read_f2(entry, spec['unit'])
+    K = inputs['K'][0]
+    scene = GaussianScene(**{key:value.to(K.device) for key,value in cloud.items()})
+    return render_f2(scene, fields['background_depth'], fields['fill_rgb_linear'],
+                     K, focus, offsets, tuple(inputs['rgb'].shape[-2:]))
