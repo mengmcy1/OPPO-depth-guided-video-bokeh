@@ -709,6 +709,88 @@
     "optical": {
       "status": "awaiting_first_formal_optical_release_and_F2",
       "comparison": "C on its existing training optical cases"
+    },
+    "isolation_checks": {
+      "geometry-probes": {
+        "path": "p2-review/supervision-probes/geometry-probes.json",
+        "sha256": "5192406cd3d3d233b927c0353222d6f34244d9ffe31219a076d192de419334dd",
+        "passed": true,
+        "failures": [],
+        "model_state_unchanged": true,
+        "C_geometry_probe_reference_withheld": true,
+        "batches": [
+          {
+            "tier": "B",
+            "frame": 6,
+            "scene": "training-120-2db3c2fe6b5336e7",
+            "terms": [
+              "disp",
+              "bimodal",
+              "alpha",
+              "mv",
+              "same_surface",
+              "occ",
+              "zero",
+              "total_base",
+              "total_candidate"
+            ],
+            "support": {
+              "disp": 1338,
+              "bimodal": 652,
+              "alpha": 262132,
+              "mv": 3596,
+              "same_surface": 22402,
+              "pair_right": 11175,
+              "pair_excluded_crossing_right": 455,
+              "pair_down": 11227,
+              "pair_excluded_crossing_down": 411,
+              "occ_reveal": 0,
+              "occ_block": 10641,
+              "occ": 10641,
+              "hidden_eligible": 78,
+              "hidden_placed": 75,
+              "all_K16_occ_block": 42567,
+              "all_K16_occ_reveal": 0,
+              "zero": 65536
+            }
+          },
+          {
+            "tier": "C",
+            "frame": 4,
+            "scene": "card-v2-static-train-00000",
+            "terms": [
+              "disp",
+              "bimodal",
+              "alpha",
+              "mv",
+              "same_surface",
+              "occ",
+              "zero",
+              "total_base",
+              "total_candidate"
+            ],
+            "support": {
+              "disp": 448,
+              "bimodal": 224,
+              "alpha": 65536,
+              "mv": 2690,
+              "same_surface": 8261,
+              "pair_right": 4040,
+              "pair_excluded_crossing_right": 404,
+              "pair_down": 4221,
+              "pair_excluded_crossing_down": 42,
+              "occ_reveal": 908,
+              "occ_block": 16726,
+              "occ": 17634,
+              "hidden_eligible": 720,
+              "hidden_placed": 720,
+              "all_K16_occ_block": 67198,
+              "all_K16_occ_reveal": 4095,
+              "zero": 65536
+            }
+          }
+        ]
+      }
     }
   }
 }
