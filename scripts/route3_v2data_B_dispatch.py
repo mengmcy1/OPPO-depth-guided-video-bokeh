@@ -149,7 +149,10 @@ def update_p2_eta(v2):
     optical_h = v2["optical_frame_patch_estimates"]["measured_four_references_seconds"] * 3 / 3600
     trial = v2["p2_optical_parallel_trial"]
     needs_trial = "parallel_to_serial_ratio" not in trial
-    parallel_ratio = trial.get("parallel_to_serial_ratio", 1.) if trial.get("adopted") else 1.
+    optical_mode = "parallel" if trial.get("adopted") else "serial"
+    optical_measurement = trial.get(optical_mode)
+    measured_optical = optical_measurement and all(row["passed"] for row in optical_measurement["scenes"].values())
+    training_optical_h = optical_measurement["seconds"] / (2 * 3600) if measured_optical else optical_h
     dev = rows.get("development")
     dev_h = dev["seconds"] / (3600 * dev["accepted_scenes"]) if dev and dev["accepted_scenes"] else (
         geometry_h + optical_h
@@ -158,7 +161,7 @@ def update_p2_eta(v2):
     hours = dict(
         tests=counts["test"] * geometry_h, development=counts["development"] * dev_h,
         training_geometry=counts["train_geometry"] * geometry_h,
-        training_optical=counts["train_optical"] * optical_h * parallel_ratio,
+        training_optical=counts["train_optical"] * training_optical_h,
         optical_parallel_trial=4 * optical_h if needs_trial and counts["train_optical"] else 0.,
     )
     now = datetime.now(timezone.utc)
@@ -167,7 +170,7 @@ def update_p2_eta(v2):
         estimated_hours=sum(hours.values()), estimated_finish_utc=(now + timedelta(hours=sum(hours.values()))).isoformat(),
         remaining_hours_by_stage=hours, geometry_basis=basis, geometry_per_hour=1 / geometry_h,
         development_basis="resumed development" if dev and dev["accepted_scenes"] else "measured geometry plus pilot optics",
-        training_optical_basis="qualification optical engine time scaled by the adopted pair ratio",
+        training_optical_basis=f"paired trial {optical_mode}" if measured_optical else "qualification optical engine time",
         includes_sampled_geometry_queue=True, includes_unknown_future_gpu_queue_for_optics=False,
         known_exclusions=v2["failures"],
     )
@@ -333,6 +336,19 @@ def dispatch(plans, estimate, max_new_scenes=None, *, optics=False, resume_p2=Fa
                 abort = Event()
                 execute = partial(execute_on, allocation[2], 18, abort)
                 produce_optical(estimate, execute=execute)
+            if resume_p2:
+                raw = load(RECORD)
+                v2 = raw["v2"]
+                if STOP.is_file():
+                    status = "drained_after_stop"
+                elif any(v2["target_gap"].values()):
+                    status = "queue_exhausted_with_shortfalls"
+                else:
+                    status = "completed"
+                v2["p2_dispatch"].update(status=status, stop_after_current=STOP.is_file())
+                v2["p2_finish_eta"] = dict(status=status, remaining_units=v2["target_gap"],
+                                          measured_at_utc=datetime.now(timezone.utc).isoformat())
+                write_json(RECORD, raw)
         return reports
 
 
