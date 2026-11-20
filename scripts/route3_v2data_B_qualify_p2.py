@@ -1,7 +1,9 @@
 """Run the preregistered B p2 qualification in an isolated sibling directory."""
 import argparse
+from collections import deque
 from concurrent.futures import ThreadPoolExecutor
 from functools import partial
+import hashlib
 from pathlib import Path
 from threading import Event
 import time
@@ -28,7 +30,6 @@ def label_files():
 def structure_checksums(unit):
     path = unit/"labels/scene-geometry.npz"
     names = ("object_names", "object_ids", "object_world_matrices")
-    import hashlib
     with np.load(path) as data:
         meshes = sorted(name for name in data.files if name.endswith(("_vertices", "_faces")))
         return {name: hashlib.sha256(data[name].tobytes()).hexdigest() for name in (*names, *meshes)}
@@ -98,18 +99,20 @@ def qualify(dest, estimate):
         meter = RunMeter(allocation, abort)
         cpu_exec = partial(execute_on, allocation[1], 8, abort)
         gpu_exec = partial(execute_on, allocation[2], 18, abort)
-        review = iter([(scene_id, "smoke") for scene_id in test_ids]
-                      + [(scene_id, "invariance") for scene_id in controls])
-        cpu = gpu = ready = None
+        placement_ids = [scene_id for scene_id in test_ids if specs[scene_id]["category"] == "multiple_layers"]
+        review = iter([(scene_id, "smoke") for scene_id in placement_ids]
+                      + [(scene_id, "invariance") for scene_id in controls]
+                      + [(scene_id, "smoke") for scene_id in test_ids if scene_id not in placement_ids])
+        ready = deque()
+        cpu = gpu = None
         pending = next(review, None)
         publish("running")
         with ThreadPoolExecutor(max_workers=2) as pool:
             while cpu or gpu or ready or pending:
                 if ready and gpu is None:
-                    unit, spec = ready
+                    unit, spec = ready.popleft()
                     gpu = (pool.submit(final_smoke, unit, spec, version, gpu_exec), spec)
-                    ready = None
-                if pending and not cpu and not ready:
+                if pending and not cpu:
                     scene_id, kind = pending
                     spec = specs[scene_id]
                     unit = dest/kind/scene_id
@@ -129,7 +132,7 @@ def qualify(dest, estimate):
                     try:
                         result = work.result()
                         if kind == "smoke":
-                            ready = (unit, spec)
+                            ready.append((unit, spec))
                         else:
                             checks[scene_id] = result
                     except (RuntimeError, ValueError, OSError) as exc:
@@ -151,7 +154,8 @@ def qualify(dest, estimate):
                     gpu = None
                     publish("running")
                 if abort.is_set():
-                    pending = ready = None
+                    pending = None
+                    ready.clear()
                 time.sleep(.5)
     passed = len(smoke) == len(test_ids) and len(checks) == len(controls) and all(
         row["passed"] for row in (*smoke.values(), *checks.values())
