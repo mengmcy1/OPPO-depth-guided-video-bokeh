@@ -14,6 +14,7 @@ from route3_v2data_B_batch import (
     reserve, sha256, verify_optical, write_json,
 )
 from route3_v2data_B_plan import load
+from route3_v2data_B_presence import attach_optical_visibility
 from route3_v2data_B_release import OPTICAL_FRAMES, PLAN_DIR, load_production_plan
 
 
@@ -304,6 +305,7 @@ def produce_pairs(estimate, allocation, version):
                 failure(unit.name, item["primary_difficulty"], row["failure"])
                 continue
             labels = unit/"labels"
+            attach_optical_visibility(labels/"optical-audit.json", source/"labels/foreground-presence.json")
             products = sorted(path for path in labels.glob("*.npz") if not path.is_symlink())
             outputs = [dict(path=str(path.relative_to(FORMAL_DATA)), bytes=path.stat().st_size, sha256=sha256(path))
                        for path in products]
@@ -325,3 +327,13 @@ def try_p2_pairs(estimate, allocation):
     if report["adopted"]:
         produce_pairs(estimate, allocation, version)
     return report["adopted"]
+
+
+
+def execute_serial_optical(execute, command, log, *, uses_gpu=False):
+    usage = execute(command, log, uses_gpu=uses_gpu)
+    if "--optical-only" in command:
+        unit = log.parent
+        origin = FORMAL_DATA/"units/training"/unit.name/"labels/foreground-presence.json"
+        attach_optical_visibility(unit/"labels/optical-audit.json", origin)
+    return usage

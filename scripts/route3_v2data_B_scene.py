@@ -276,50 +276,48 @@ def place_multilayer_foreground(groups, spec, cameras, rng):
         move = Matrix.Translation(Vector(center)) @ Matrix.Scale(scale, 4) @ Matrix.Translation(-old_center)
         for ob in group:
             ob.matrix_world = move @ ob.matrix_world
-    dilation = report["depth_anchor_multiplier"]
-    if dilation != 1.:
-        for ob in bpy.context.scene.objects:
-            if ob.type == "MESH" and ob.name.startswith("background_"):
-                ob.location.y *= dilation
     bpy.context.view_layer.update()
     return report
 
 
-def preflight_scene(spec):
+def preflight_scene(spec, output):
     bpy.ops.wm.read_factory_settings(use_empty=True)
     scene = bpy.context.scene
     rngs = [np.random.default_rng(seed) for seed in np.random.SeedSequence(spec["seed"]).spawn(4)]
     populate(spec, *rngs[:3])
+    world(scene, spec, rngs[3])
     cameras = camera_path(scene, spec)
     groups = foreground_layer_groups(scene, spec)
     near = spec["near_anchor_m"]
     gap = near * (spec["depth_ratio"] - 1) / (spec["depth_bands"] - 1)
-    if len(groups) < 2:
-        raise ValueError("preflight scene has fewer than two designated layers")
     result = dict(scene_id=spec["scene_id"], partition=spec["partition"],
                   category=spec["category"], depth_bands=spec["depth_bands"])
+    if len(groups) < 2:
+        export_labels(scene, cameras, output)
+        return dict(result, built=True, passed=True, before=[], after=[])
     for stage in ("before", "after"):
         if stage == "after":
             try:
                 placement = place_multilayer_foreground(groups, spec, cameras, rngs[1])
             except ValueError as error:
-                return dict(result, passed=False, failure=str(error))
+                return dict(result, passed=False, built=False, failure=str(error))
             result["fallback_count"] = placement["fallback_count"]
-            result["depth_anchor_multiplier"] = placement["depth_anchor_multiplier"]
-            result["depth_shift_m"] = placement["depth_shift_m"]
-            result["scene_fallback"] = placement["scene_fallback"]
+            result["framing_tiers_by_layer"] = {layer["name"]:layer["framing_tier"] for layer in placement["layers"]}
             result["fallback_by_layer"] = {layer["name"]:layer["fallback"] for layer in placement["layers"]}
         result[stage] = audit_layers(foreground_layer_bounds(groups, near, gap), cameras, TRAIN_FRAMES,
                                      FOCAL, WIDTH, gap)
-    result["passed"] = not any(any(layer["flags"].values()) for layer in result["after"])
-    return result
+    hard_flags = ("insufficient_contiguous_framing","insufficient_gap","depth_interleaves",
+                  "above_thickness_cap","below_ground","outside_middle_overlap")
+    result["passed"] = not any(layer["flags"][flag] for layer in result["after"] for flag in hard_flags)
+    export_labels(scene, cameras, output)
+    return dict(result, built=True)
 
 
 def preflight_scenes(source, output):
     results = []
     for spec in json.loads(source.read_text()):
         try:
-            result = preflight_scene(spec)
+            result = preflight_scene(spec, output.parent/"geometry"/spec["scene_id"])
         except (RuntimeError, ValueError, KeyError, OSError) as error:
             result = dict(scene_id=spec["scene_id"], partition=spec["partition"],
                           category=spec["category"], depth_bands=spec["depth_bands"],

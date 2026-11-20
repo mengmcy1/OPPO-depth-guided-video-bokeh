@@ -67,28 +67,7 @@ def final_smoke(unit, spec, version, execute):
     )
 
 
-def previous_placement_controls(path, version, code, config, specs):
-    previous = load(path)
-    base_policy = {key:value for key,value in config.items() if key != "synthetic_multilayer_curve"}
-    if previous["status"] not in {"passed", "failed", "retired_by_user"} or previous["version"] != version or previous["policy"] != base_policy:
-        raise ValueError("previous isolated results must use the same sealed qualification scenes")
-    changed = {name for name in code if previous["generation_code"][name] != code[name]}
-    permitted = {"route3_v2data_B_placement.py", "route3_v2data_B_scene.py"}
-    if not changed or not changed <= permitted:
-        raise ValueError("cannot reuse controls after changes outside multilayer placement and scene construction")
-    unaffected = [key for key in config["smoke_training_scene_ids"]
-                  if specs[key]["category"] not in {"multiple_layers", "curved_self_occlusion"} and specs[key]["depth_bands"] == 2]
-    if set(previous["invariance"]) != set(config["invariance_scene_ids"]):
-        raise ValueError("the previous run lacks one or more of the unchanged structure controls")
-    smoke = {key:previous["smoke"][key] for key in unaffected
-             if previous["smoke"].get(key, {}).get("passed")}
-    for key, row in smoke.items():
-        if row["passed"] and sha256(path.parent/"smoke"/key/"manifest.json") != row["manifest_sha256"]:
-            raise ValueError(f"the prior training smoke manifest was changed: {key}")
-    return smoke, previous["invariance"]
-
-
-def qualify(dest, estimate, previous_placement_proof=None):
+def qualify(dest, estimate):
     from route3_v2data_B_preflight import planned_scenes
     from route3_v2data_B_release import p2_generation_code
     tracked = load(RECORD)["v2"]
@@ -108,18 +87,10 @@ def qualify(dest, estimate, previous_placement_proof=None):
     dest.mkdir(parents=True)
     (dest/"smoke").mkdir()
     (dest/"invariance").mkdir()
-    reserve(dest, estimate * len(config["smoke_training_scene_ids"]))
-    (dest/"proof.json").touch()
-    smoke, checks = ({}, {}) if previous_placement_proof is None else previous_placement_controls(
-        previous_placement_proof, config["version"], code, config, specs
-    )
-    source = None if previous_placement_proof is None else dict(
-        path=str(previous_placement_proof.resolve().relative_to(FORMAL_DATA.resolve())),
-        sha256=sha256(previous_placement_proof),
-        unchanged_smoke_ids=list(smoke), unchanged_invariance_ids=list(checks),
-    )
+    test_ids = [*config["smoke_training_scene_ids"], *config["additional_training_scene_ids"]]
+    reserve(dest, estimate * (len(test_ids)+1))
+    smoke, checks = {}, {}
     start = time.monotonic()
-    test_ids = config["smoke_training_scene_ids"]
     controls = config["invariance_scene_ids"]
     version = config["version"]
 
@@ -127,17 +98,15 @@ def qualify(dest, estimate, previous_placement_proof=None):
         proof = dict(status=status, version=version, generation_code=code, policy=config,
                      smoke={key:value for key,value in smoke.items() if key!=synthetic_id},
                      synthetic_curve=smoke.get(synthetic_id),
-                     preflight_sha256=sha256(preflight_path), invariance=checks, seconds=time.monotonic()-start,
-                     unchanged_category_proof=source)
+                     preflight_sha256=sha256(preflight_path), invariance=checks, seconds=time.monotonic()-start)
         write_json(dest/"proof.json", proof)
 
     with production_lock():
         if not (FORMAL_DATA/"stop-after-current").is_file():
             raise ValueError("qualification requires the formal dispatcher to remain drained")
-        if source:
-            record = load(RECORD)
-            record["v2"]["p2_dispatch"].update(status="running_single_p2_qualification")
-            write_json(RECORD, record)
+        record = load(RECORD)
+        record["v2"]["p2_dispatch"].update(status="running_single_p2_qualification")
+        write_json(RECORD, record)
         allocation = assigned_cpus()
         abort = Event()
         meter = RunMeter(allocation, abort)
@@ -213,9 +182,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--measured-peak-unit-bytes", type=int, required=True)
-    parser.add_argument("--previous-placement-proof", type=Path)
     args = parser.parse_args()
     if args.measured_peak_unit_bytes <= 0:
         parser.error("the unit size must be positive")
-    raise SystemExit(0 if qualify(args.output.resolve(), args.measured_peak_unit_bytes,
-                                 args.previous_placement_proof) else 1)
+    raise SystemExit(0 if qualify(args.output.resolve(), args.measured_peak_unit_bytes) else 1)

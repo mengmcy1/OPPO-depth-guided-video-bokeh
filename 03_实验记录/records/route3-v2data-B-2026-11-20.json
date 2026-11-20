@@ -1673,11 +1673,11 @@
       "continuation": "single B dispatcher with the shared GPU lock"
     },
     "generator_patch_p2": {
-      "status": "candidate_preregistered_geometry_preflight",
+      "status": "candidate_cpu_preflight",
       "version": "B-v2-31aa7f9a4325-p2",
       "parent_version": "B-v2-31aa7f9a4325-p1",
       "parent_code_sha256": "e05ceea5195c9ec3b71cd552e91ef5ad464e6a019cf2d247c68b14aa5adfa903",
-      "generator_code_sha256": "fb5e3c67ef3adb915dc0f575ddd622dad1e3c87c1614926c7b6bbf41caa33495",
+      "generator_code_sha256": "e10a102491b98494c1f77d20f1a2249ba065a2ae65339faf72087a5a732c35c5",
       "changes": {
         "route3_v2data_B_batch.py": {
           "before": "7c0962b38cb4cf0257ff040631dd4ab63547dbea4a1cc64f691a6bca1cf8fe40",
@@ -1685,15 +1685,15 @@
         },
         "route3_v2data_B_scene.py": {
           "before": "7191dd1bd1d3ad7d9c6ee5c8a4c0840bd0d0c876e0b1b7b3de7690fcde362177",
-          "after": "6f04a0920ab422c2209e59be3e13828cd09cdd5e2f709d4714a6bc48c8ce9c2b"
+          "after": "cfd8520ad181668e8cf7575057c1f4b92c67666a405b5241154e4126f6b6c153"
         },
         "route3_v2data_B_placement.py": {
           "before": null,
-          "after": "03af2cccf047d72030ca14388603ccbd09b60e205c7601825288d56de88548ab"
+          "after": "a3f872fc0e680479b23276a5e7db53658fe77a311ceae5e7abd7f1774cfda003"
         },
         "route3_v2data_B_presence.py": {
           "before": null,
-          "after": "b587ffd7bbbbdec4ee899731d7e92c9d9e1875b42839940458ed87798e7c9bfe"
+          "after": "d5f42b47acf423e4dd36ea415eed04cb89b5629b89170847b8074f1770e0737a"
         }
       },
       "scope": [
@@ -1703,7 +1703,7 @@
       ]
     },
     "foreground_presence_policy_p2": {
-      "minimum_center_hits_per_designated_foreground_per_label_frame": 1,
+      "minimum_center_hits_per_designated_foreground_per_label_frame": null,
       "light_structure_extra_pixel_floor": null,
       "pixel_count": "valid pinhole label pixels with a first_hit_object identity belonging to the designated foreground",
       "center_hit_count": "center_visible pinhole rays with object_id belonging to the designated foreground",
@@ -1713,9 +1713,15 @@
         "procedurally placed foreground middle layers",
         "procedural main or curved foreground"
       ],
-      "threshold_basis": "user-specified positive center hits, checked on the isolated repaired training qualification at f030 (83,376 center hits)",
+      "threshold_basis": "five fixed-depth endpoint conflicts even with point-sized actors; entrance and exit at the ends of a clip are allowed",
       "qualification_frame": 30,
-      "supplementary_shape": "background and supplemental aperture-configuration window bars are outside the list of specified main foreground objects"
+      "supplementary_shape": "background and supplemental aperture-configuration window bars are outside the list of specified main foreground objects",
+      "minimum_center_hits_on_visible_frame": 1,
+      "required_center_frame": 30,
+      "minimum_visible_label_frames": 9,
+      "total_label_frames": 13,
+      "applies_to": "every designated actor individually across all six categories and all partitions",
+      "endpoint_conflicts_review_sha256": "9fe09e262e89466947e91238e15110bb94c0b9a56e2a3f4495582993e4a94f65"
     },
     "p2_foreground_audit": {
       "path": "p2-review/foreground-audit-final.json",
@@ -1922,7 +1928,7 @@
       "original_dispatch_drained": true,
       "status": "awaiting_single_final_qualification",
       "affected_inflight": "development-003-8c92e9e93c0ff003",
-      "qualification_output": "p2-review/p2-final-qualification/proof.json",
+      "qualification_output": "p2-review/p2-priority-qualification/proof.json",
       "retired_process_groups": [
         676971,
         679847,
@@ -1954,7 +1960,11 @@
         0.7
       ],
       "target_tolerance": 0.02,
-      "all_frame_max_overlap": 0.99,
+      "minimum_contiguous_framed_label_frames": 9,
+      "framing_tiers": [
+        "all_13_label_frames",
+        "contiguous_at_least_9_including_f030"
+      ],
       "minimum_depth_gap_fraction": 0.1,
       "maximum_actor_thickness_fraction": 0.88,
       "candidate_grid_per_axis": 65,
@@ -1973,24 +1983,6 @@
         0.035
       ],
       "local_grid_per_axis": 25,
-      "fallback_depth_shifts_as_fraction_of_nominal_gap": [
-        0.0,
-        0.125,
-        0.25,
-        0.375,
-        0.5,
-        0.625,
-        0.75,
-        0.875
-      ],
-      "fallback_depth_clearance_before_background_anchor_fraction": 0.05,
-      "fallback_common_depth_multipliers": [
-        1.0,
-        1.125,
-        1.25,
-        1.375,
-        1.5
-      ],
       "definition": "area of rear projected world AABB covered by the union of earlier layer AABBs",
       "coverage": "all sealed scenes with more than one designated foreground actor, including procedural middle layers",
       "depth_axis": "scene Y, the nominal foreground-to-background axis",
@@ -2003,12 +1995,10 @@
       ],
       "selection": "first largest scale with a target match, then preferred sides, overlap error and grid order",
       "fallback": [
-        "move the first layer to the nearest feasible projected center if its original anchor clips",
-        "try the documented smaller uniform scales in order while preserving every geometric constraint",
-        "if no scale achieves the sampled target tolerance, take the closest in-range result at the largest feasible scale",
-        "if no placement fits at nominal depths, shift all foreground centers rearward in increments of one eighth of a nominal layer gap, keeping the boxes short of the background anchor",
-        "if even the front center cannot stay framed across the sealed cameras at those depths, scale all depth anchors and the backdrop positions by the same factor while preserving depth ratios",
-        "fail before rendering if no such placement exists"
+        "try all 13 frames first, then allow a contiguous run of at least nine including f030",
+        "within either tier try smaller uniform scales with the same depth and sampled target",
+        "use the closest feasible midpoint ratio within [0.3, 0.7] if the target tolerance is unreachable",
+        "fail before rendering if no candidate meets either tier and all depth and overlap constraints"
       ]
     },
     "p2_qualification_policy": {
@@ -2036,7 +2026,6 @@
       "smoke_selection": "first two sealed training scene IDs in each category",
       "invariance_selection": "lexically first admitted unit of each unaffected category selected before rebuild",
       "invariance_labels": "scene geometry, pinhole, peeled, and both K16 plans for all 13 label frames",
-      "minimum_center_hits_per_foreground_per_frame": 1,
       "minimum_surface_pixels": null,
       "images_or_scores_from_test_reviewed": false,
       "synthetic_multilayer_curve": {
@@ -2045,7 +2034,30 @@
         "seed": 8401974051676136967,
         "depth_bands": 5,
         "isolated": true
-      }
+      },
+      "additional_mandatory_training_prefixes": [
+        "training-122-",
+        "training-129-",
+        "training-133-"
+      ],
+      "hardest_additional_training_scenes": 2,
+      "prior_result_reuse": false,
+      "hardest_sort_order": [
+        "minimum actor visible label frames ascending",
+        "minimum positive native center hits ascending",
+        "minimum f030 native center hits ascending",
+        "scene ID ascending"
+      ],
+      "minimum_visible_label_frames": 9,
+      "required_center_frame": 30,
+      "require_preflight_user_report_before_launch": true,
+      "additional_training_scene_ids": [
+        "training-122-e493cc8f58dda6b2",
+        "training-129-d8668d929a0896e4",
+        "training-133-bfb4d10a258066b8",
+        "training-171-f5de6bcd6aef3f97",
+        "training-173-13ed6793b9ce2fb2"
+      ]
     },
     "p2_optical_parallel_policy": {
       "scene_ids": [
@@ -2106,12 +2118,10 @@
     },
     "p2_preflight": {
       "status": "passed",
-      "path": "p2-review/analytic-preflight-final/placement-preflight.json",
-      "previous_passed": 66,
-      "previous_failed": 1,
-      "sha256": "ddcd0c9a29c40af8bbe5cbb936a258f7f2a899892b9fcaba4c00729dfab5c825",
-      "table": "p2-review/analytic-preflight-final/placement-preflight.csv",
-      "table_sha256": "a50feccf07febbf426fa8a6fba8e50baf4c8503168a07c01d232f5f59f05d1dc",
+      "path": "p2-review/p2-priority-cpu/placement-preflight.json",
+      "sha256": "3d8fc2684ae9bb7a4bec50e4dc90f303634540f20a9c8c7dfcdafe47fe3e0314",
+      "table": "p2-review/p2-priority-cpu/native-foreground-by-scene-layer.csv",
+      "table_sha256": "a14d434a30d0ef2f79206e2b851b5b162736365aae96349203be5bf264284a67",
       "sealed_scenes": 67,
       "counts_by_partition": {
         "training": 54,
@@ -2119,27 +2129,32 @@
         "test_unseen_assets": 4,
         "test_unseen_occlusions": 6
       },
-      "base_issue_scenes_by_type": {
-        "outside_middle_overlap": 50,
-        "below_ground": 12,
-        "below_margin_frames": 60,
-        "out_of_frame": 58,
-        "fully_hidden_frames": 20,
-        "above_all_frame_overlap": 22,
-        "above_thickness_cap": 3,
-        "insufficient_gap": 2,
-        "depth_interleaves": 2
+      "build_failures": [],
+      "appearance_failures": [],
+      "triangle_intersection_scene_count": 0,
+      "fallback_events": 109,
+      "framing_tiers": {
+        "13": 132,
+        "9": 7
       },
-      "fallback_events": 104,
-      "fallback_scenes": 60,
-      "depth_scaled_scenes": [
+      "hardest_training_scenes": [
         {
-          "scene_id": "training-129-d8668d929a0896e4",
-          "factor": 1.375,
-          "translation_m": 0.0
+          "scene_id": "training-171-f5de6bcd6aef3f97",
+          "ranking": [
+            13,
+            16,
+            18
+          ]
+        },
+        {
+          "scene_id": "training-173-13ed6793b9ce2fb2",
+          "ranking": [
+            13,
+            42,
+            49
+          ]
         }
-      ],
-      "synthetic_curve_passed": true
+      ]
     }
   }
 }

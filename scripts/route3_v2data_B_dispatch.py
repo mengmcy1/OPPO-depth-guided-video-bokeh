@@ -331,11 +331,12 @@ def dispatch(plans, estimate, max_new_scenes=None, *, optics=False, resume_p2=Fa
                 return reports
             reports.append(run_partition(path,estimate,max_new_scenes,allocation))
         if optics and not STOP.is_file():
-            from route3_v2data_B_optical_pair import try_p2_pairs
+            from route3_v2data_B_optical_pair import execute_serial_optical, try_p2_pairs
             if not try_p2_pairs(estimate, allocation):
                 abort = Event()
                 execute = partial(execute_on, allocation[2], 18, abort)
-                produce_optical(estimate, execute=execute)
+                producer = partial(execute_serial_optical, execute) if resume_p2 else execute
+                produce_optical(estimate, execute=producer)
             if resume_p2:
                 raw = load(RECORD)
                 v2 = raw["v2"]

@@ -116,15 +116,16 @@ def install(proof_path):
             or (proof["synthetic_curve"]["scene_id"] != preregistered["synthetic_multilayer_curve"]["scene_id"])
         ):
             raise ValueError("p2 requires matching geometry preflight and the synthetic deep curve smoke")
+        required_smoke = set(preregistered["smoke_training_scene_ids"]) | set(preregistered["additional_training_scene_ids"])
         if (
             proof["status"] != "passed" or proof["version"] != version
             or proof["generation_code"] != p2_generation_code() or proof["policy"] != preregistered
             or record["multilayer_placement_policy_p2"] != policy(TRAIN_FRAMES)
-            or set(proof["smoke"]) != set(preregistered["smoke_training_scene_ids"])
+            or set(proof["smoke"]) != required_smoke
             or set(proof["invariance"]) != set(preregistered["invariance_scene_ids"])
-            or summary["smoke_passed"] != 12 or summary["invariance_passed"] != 4
+            or summary["smoke_passed"] != len(required_smoke) or summary["invariance_passed"] != 4
         ):
-            raise ValueError("p2 requires all 12 smoke scenes and four unchanged controls")
+            raise ValueError("p2 requires all registered smoke scenes and four unchanged controls")
         specs = {}
         for mode in MODES:
             other, _ = sealed_plan(PLAN_DIR/(mode+".json"))
@@ -182,7 +183,7 @@ def wait_for_proof(path, pid):
         if status == "passed":
             return
         try:
-            alive = psutil.Process(pid).status() != psutil.STATUS_ZOMBIE
+            alive = pid > 0 and psutil.Process(pid).status() != psutil.STATUS_ZOMBIE
         except psutil.NoSuchProcess:
             alive = False
         if status == "failed" or not alive:
@@ -206,14 +207,14 @@ def wait_for_proof(path, pid):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--proof", type=Path, required=True)
-    parser.add_argument("--qualification-pid", type=int)
+    parser.add_argument("--qualification-ended", action="store_true")
     parser.add_argument("--resume-with-unit-byte-budget", type=int)
     args = parser.parse_args()
     estimate = args.resume_with_unit_byte_budget
     if estimate is not None and estimate <= 0:
         parser.error("the measured per-unit budget must be positive")
-    if args.qualification_pid is not None:
-        wait_for_proof(args.proof, args.qualification_pid)
+    if args.qualification_ended:
+        wait_for_proof(args.proof, -1)
     print(install(args.proof), flush=True)
     if estimate is not None:
         paths = [PLAN_DIR/(partition+".json") for partition in PARTITIONS]

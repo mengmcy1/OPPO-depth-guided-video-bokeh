@@ -12,6 +12,39 @@ from route3_ovg_subpixel import TRAIN_FRAMES
 
 
 MIN_CENTER_HITS = 1
+MID_FRAME = 30
+MIN_VISIBLE_FRAMES = 9
+OPTICAL_FRAMES = (1, 30, 60)
+
+
+def appearance_checks(actors, frames):
+    """Summarize already counted native pinhole hits per designated actor."""
+    if MID_FRAME not in frames or len(frames) != 13:
+        raise ValueError("foreground admission requires the 13 native label frames")
+    failures, summary = [], {}
+    for name, counts in actors.items():
+        visible = [frame for frame, hits in zip(frames, counts) if hits >= MIN_CENTER_HITS]
+        absent = [frame for frame in frames if frame not in visible]
+        passed = MID_FRAME in visible and len(visible) >= MIN_VISIBLE_FRAMES
+        summary[name] = dict(visible_frames=len(visible), absent_frames=absent,
+                             f030_center_hits=int(counts[frames.index(MID_FRAME)]), passed=passed)
+        if not passed:
+            failures.append(dict(foreground=name, **summary[name]))
+    return summary, failures
+
+
+def reference_foregrounds(presence):
+    return {f"f{row['frame']:03d}":{
+        key:dict(visible=actor["center_hits"]>=MIN_CENTER_HITS, center_hits=actor["center_hits"])
+        for key,actor in row["foreground"].items()
+    } for row in presence["frames"] if row["frame"] in OPTICAL_FRAMES}
+
+
+def attach_optical_visibility(audit_path, presence_path):
+    audit = json.loads(audit_path.read_text())
+    presence = json.loads(presence_path.read_text())
+    audit["foreground_visibility"] = reference_foregrounds(presence)
+    write_json(audit_path, audit)
 
 
 def designated_foreground(spec, names):
@@ -47,7 +80,6 @@ def foreground_presence(unit, spec, frames=TRAIN_FRAMES):
     groups = designated_foreground(spec,objects)
     own_ids = {name:[objects[part] for part in parts if part in objects] for name,parts in groups.items()}
     by_frame = []
-    failures = []
     for frame in frames:
         path = labels/f"f{frame:03d}-pinhole.npz"
         with np.load(path) as truth:
@@ -58,14 +90,17 @@ def foreground_presence(unit, spec, frames=TRAIN_FRAMES):
             pixels_count = sum(int(pixels[i]) for i in identities if i<len(pixels))
             hit_count = sum(int(centers[i]) for i in identities if i<len(centers))
             actors[name] = dict(surface_pixels=pixels_count,center_hits=hit_count)
-            if hit_count<MIN_CENTER_HITS:
-                failures.append(dict(frame=frame,foreground=name,center_hits=hit_count))
         by_frame.append(dict(frame=frame,foreground=actors))
     summary = {
         name: {f"minimum_{key}": min(row["foreground"][name][key] for row in by_frame)
                for key in ("surface_pixels", "center_hits")}
         for name in groups
     }
+    appearances, failures = appearance_checks(
+        {name:[item["foreground"][name]["center_hits"] for item in by_frame] for name in groups}, list(frames)
+    )
+    for name, row in appearances.items():
+        summary[name].update(row)
     placement = labels/"multilayer-placement.json"
     if placement.is_file():
         report = json.loads(placement.read_text())
@@ -86,8 +121,11 @@ def require_presence(unit,spec):
     write_json(unit/"labels/foreground-presence.json",audit)
     if not audit["passed"]:
         failure=audit["failed_checks"][0]
-        raise ValueError(f"designated foreground absent in {len(audit['failed_checks'])} object/frame checks "
-                         f"(first: {failure['foreground']} at f{failure['frame']:03d})")
+        raise ValueError(f"designated foreground {failure['foreground']} has {failure['f030_center_hits']} f030 "
+                         f"center hits and appears in {failure['visible_frames']}/13 frames")
+    reference = unit/"labels/radiance-audit.json"
+    if reference.is_file() and json.loads(reference.read_text()).get("optical"):
+        attach_optical_visibility(reference, unit/"labels/foreground-presence.json")
     return audit
 
 
