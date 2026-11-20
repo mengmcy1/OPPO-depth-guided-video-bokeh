@@ -54,18 +54,18 @@ def raster(cloud,K,mode='antialiased',eps=.0015):
     return image[0,...,:3],image[0,...,3],alpha[0,...,0]
 
 
-def inference(c):
+def inference(c, *, frames=FRAMES, output=OUT, publish=True):
     from sharp.models import create_predictor,PredictorParams
     from sharp.cli.predict import predict_image
     from sharp.utils.gaussians import Gaussians3D
     from sharp.utils.gsplat import GSplatRenderer
-    (OUT/'gaussians').mkdir(parents=True,exist_ok=False);(OUT/'depth').mkdir()
+    (output/'gaussians').mkdir(parents=True,exist_ok=False);(output/'depth').mkdir()
     start=time.monotonic();state=torch.load(WEIGHT,map_location='cpu',weights_only=True)
     model=create_predictor(PredictorParams());model.load_state_dict(state,strict=True);del state
     model.eval().to('cuda');torch.cuda.synchronize();load_seconds=time.monotonic()-start
     pin=BASE/'inputs/B2-high/pinhole';timing={r['frame']:r for r in json.loads((pin/'timings.json').read_text())}
     K=torch.tensor([[512*50/36,0,256],[0,512*50/36,256],[0,0,1]],device='cuda',dtype=torch.float32);rows=[]
-    for frame in FRAMES:
+    for frame in frames:
         source=pin/(timing[frame]['key']+'.exr');raw=np.clip(exr(source),0,1).astype(np.float32);rgb=display(raw)
         torch.cuda.reset_peak_memory_stats();torch.cuda.synchronize();started=time.monotonic()
         cloud=predict_image(model,rgb*255.,float(K[0,0]),torch.device('cuda'));torch.cuda.synchronize();elapsed=time.monotonic()-started
@@ -74,7 +74,7 @@ def inference(c):
         for value in cloud:assert bool(torch.isfinite(value).all())
         values=dict(means=cloud.mean_vectors[0],quats=cloud.quaternions[0],scales=cloud.singular_values[0],
             opacities=cloud.opacities[0].reshape(-1),colors=cloud.colors[0],source_frames=torch.arange(2,device='cuda').repeat_interleave(half))
-        if frame in [1,30,60]:torch.save({k:v.detach().cpu() for k,v in values.items()},OUT/'gaussians'/f'f{frame:03d}.pt')
+        if frame in [1,30,60]:torch.save({k:v.detach().cpu() for k,v in values.items()},output/'gaussians'/f'f{frame:03d}.pt')
         front=GaussianScene(**{k:v[:half] for k,v in values.items()})
         with torch.inference_mode():
             color,depth,alpha=raster(front,K)
@@ -83,7 +83,7 @@ def inference(c):
         filled=depth.copy()
         if not valid.all():
             index=distance_transform_edt(~valid,return_distances=False,return_indices=True);filled[~valid]=depth[tuple(index[:,~valid])]
-        path=OUT/'depth'/f'f{frame:03d}.npz';np.savez_compressed(path,depth=filled,raw_depth=depth,valid=valid,alpha=a,rgb_srgb=rgb,rgb_linear=raw,K=K.cpu().numpy())
+        path=output/'depth'/f'f{frame:03d}.npz';np.savez_compressed(path,depth=filled,raw_depth=depth,valid=valid,alpha=a,rgb_srgb=rgb,rgb_linear=raw,K=K.cpu().numpy())
         agreement=None
         if frame in [1,30,60]:
             # Match both renderers' parameters to isolate coordinate/export,
@@ -99,11 +99,12 @@ def inference(c):
             Gaussian_count=count,front_count=half,filled_depth_pixels=int((~valid).sum()),
             block1_not_behind_paired_block0_fraction=float((values['means'][half:,2]<=values['means'][:half,2]).float().mean()),
             official_export_agreement=agreement,gaussians_saved=frame in [1,30,60]))
-        write(OUT/'inference-progress.json',dict(completed=False,rows=rows));print('SHARP_INFER',frame,elapsed,rows[-1]['peak_allocated_MiB'],flush=True)
+        write(output/'inference-progress.json',dict(completed=False,rows=rows));print('SHARP_INFER',frame,elapsed,rows[-1]['peak_allocated_MiB'],flush=True)
         del cloud,values,front;torch.cuda.empty_cache()
     record=dict(completed=True,rows=rows,model_loading_seconds=load_seconds,strict_load=True,model_or_architecture_modified=False,
         code_revision=subprocess.check_output(['git','rev-parse','HEAD'],cwd=OFFICIAL,text=True).strip(),input_f_px=512*50/36,inference_resolution=[1536,1536],original_resolution=[512,512])
-    write(OUT/'inference.json',record);write(RECORDS/(PREFIX+'-inference.json'),record)
+    write(output/'inference.json',record)
+    if publish:write(RECORDS/(PREFIX+'-inference.json'),record)
 
 
 def prepare(c):

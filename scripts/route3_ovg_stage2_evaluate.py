@@ -236,7 +236,7 @@ def method_row(rows,method):
 
 
 @torch.no_grad()
-def toy_leakage_check():
+def toy_leakage_check(output=None):
     """Three separated pixels in one frame: covered behind, in front, gap."""
     guard(gpu=True)
     size=48
@@ -271,7 +271,7 @@ def toy_leakage_check():
                            dominant_visible_weight=float(wv[i]),T_at_query_depth=float(T[i]),
                            SSE_increase=float(effect[0,i]))
                       for i,(s,c) in enumerate(zip(('covered_query_behind','covered_query_in_front','foreground_hole'),codes))])
-    save_json(DIAGNOSTICS/'toy.json',audit)
+    save_json(output or DIAGNOSTICS/'toy.json',audit)
 
 
 def zero_subsets(prediction,combined,pinhole,split,regions,edge,metric):
