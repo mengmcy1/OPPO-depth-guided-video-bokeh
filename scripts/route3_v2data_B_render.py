@@ -79,9 +79,21 @@ def integration_offsets(fstop):
 
 
 def optical(scene, camera, base_transform, out, case_id, focus, fstop, seed, spp):
+    target = out/"labels"/f"{case_id}-optics.npz"
+    hdr_path = out/"labels"/f"{case_id}-hdr.npz"
+    offsets = integration_offsets(fstop)
+    metadata = dict(id=case_id, focus_m=focus, fstop=fstop, subviews=SUBVIEWS,
+                    hdr_sha_excluded_from_input=True)
+    if target.is_file() and hdr_path.is_file():
+        with np.load(target) as saved, np.load(hdr_path) as raw:
+            if np.array_equal(saved["aperture_xy"],offsets) and all(
+                file["rgb_linear"].shape == (SIZE,SIZE,3) and np.isfinite(file["rgb_linear"]).all()
+                for file in (saved,raw)
+            ):
+                return metadata
+        raise ValueError(f"Saved optical pair does not match the requested configuration: {case_id}")
     hdr = np.zeros((SIZE,SIZE,3), np.float64)
     ldr = np.zeros_like(hdr)
-    offsets = integration_offsets(fstop)
     for index, (ax, ay) in enumerate(offsets):
         camera.matrix_world = base_transform @ Matrix.Translation((ax, -ay, 0))
         camera.data.shift_x = -ax / (.036*focus/.05)
@@ -92,14 +104,12 @@ def optical(scene, camera, base_transform, out, case_id, focus, fstop, seed, spp
         ldr += np.clip(rgb, 0, LDR_LIMIT)
     camera.matrix_world = base_transform
     camera.data.shift_x = camera.data.shift_y = 0
-    target = out/"labels"/f"{case_id}-optics.npz"
     save_npz(target, rgb_linear=(ldr/SUBVIEWS).astype(np.float16), aperture_xy=offsets)
     hdr = hdr / SUBVIEWS
     if abs(hdr).max() > np.finfo(np.float16).max:
         raise ValueError("HDR overflows float16 across the integrated reference")
-    save_npz(out/"labels"/f"{case_id}-hdr.npz", rgb_linear=hdr.astype(np.float16))
-    return dict(id=case_id, focus_m=focus, fstop=fstop, subviews=SUBVIEWS,
-                hdr_sha_excluded_from_input=True)
+    save_npz(hdr_path, rgb_linear=hdr.astype(np.float16))
+    return metadata
 
 
 def straight(premultiplied):

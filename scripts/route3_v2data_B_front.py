@@ -1,12 +1,14 @@
 """Download the three authorized 3D-FRONT archives and verify Drive SHA-256."""
 import argparse
 from concurrent.futures import ThreadPoolExecutor
+from collections import Counter
 import hashlib
 import json
 from pathlib import Path
 import shutil
 import subprocess
 import time
+from zipfile import ZipFile
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -213,13 +215,70 @@ def download_ranges(remote, folder, names):
         print("SHA256_OK",name,size,flush=True)
 
 
+def index_layouts():
+    """Index verified layouts while the separate model and texture dependencies download."""
+    name = "3D-FRONT.zip"
+    raw = DATA/"sources"/"3d-front"/name
+    status = json.loads((DATA/"3d-front-status.json").read_text())
+    verified = next((row for row in status["downloaded_files"] if row["file"]==name and row["verified"]),None)
+    if verified is None or raw.stat().st_size!=verified["bytes"]:
+        raise ValueError("layout archive must have a verified remote SHA-256")
+    seen = {}
+    rows, excluded = [], []
+    room_counts=Counter()
+    with ZipFile(raw) as source:
+        for member in sorted(source.namelist()):
+            if not member.lower().endswith(".json"):
+                continue
+            try:
+                payload=source.read(member)
+                layout=json.loads(payload)
+                rooms=layout["scene"]["room"]
+                if not rooms or any(not isinstance(room.get("children"),list) for room in rooms):
+                    raise ValueError("missing layout rooms or placement rows")
+                room_types=Counter(room.get("type","unknown") for room in rooms)
+                refs = {child.get("ref") for room in rooms for child in room["children"]}
+                furniture = sorted({
+                    item["jid"] for item in layout["furniture"] if item.get("jid") and item["uid"] in refs
+                })
+            except (KeyError,TypeError,ValueError) as exc:
+                excluded.append(dict(member=member,reason=type(exc).__name__))
+                continue
+            digest=hashlib.sha256(payload).hexdigest()
+            if digest in seen:
+                excluded.append(dict(member=member,reason="exact duplicate layout",canonical_id=seen[digest]))
+                continue
+            asset_id=Path(member).stem
+            seen[digest]=asset_id
+            room_counts.update(room_types)
+            rows.append(dict(
+                source="3D-FRONT",asset_id=asset_id,author="3D-FRONT dataset authors and Alibaba",
+                category="layout",source_version=layout.get("version"),member=member,sha256=digest,
+                license="3D-FRONT Data Sets Use License Agreement",terms=TERMS["3D-FRONT"],
+                terms_version="2020-06-18",can_redistribute=False,
+                download_channel="approved Google Drive folder / rclone",
+                room_counts=dict(room_types),furniture_ids=furniture,
+                mesh_count=len(layout.get("mesh",[])),material_count=len(layout.get("material",[])),
+                status="pending_furniture_texture_and_geometry_review",
+            ))
+    index=DATA/"3d-front-layout-index.json"
+    digest=write_json(index,dict(archive_sha256=verified["sha256"],rows=rows,exclusions=excluded,
+                                room_counts=dict(room_counts)))
+    record_status(status["status"],layout_index=dict(path=index.name,sha256=digest,
+                    candidate_layouts=len(rows),excluded=len(excluded)))
+    print("LAYOUT_INDEX",len(rows),len(excluded),flush=True)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--remote", default="3dfront", help="Name of the configured read-only Drive remote")
     parser.add_argument("--folder", default="3D-FRONT", help="Verified name of the shared folder")
     parser.add_argument("--ranges", nargs="+", choices=ARCHIVES, help="Recover specified archives using durable byte ranges")
+    parser.add_argument("--index-layouts", action="store_true")
     args = parser.parse_args()
-    if args.ranges:
+    if args.index_layouts:
+        index_layouts()
+    elif args.ranges:
         download_ranges(args.remote.removesuffix(":"),args.folder,args.ranges)
     else:
         download(args.remote.removesuffix(":"),args.folder)

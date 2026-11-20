@@ -8,11 +8,28 @@
       "3D-FUTURE",
       "textures"
     ],
-    "status": "正在下载",
-    "reason": "已确认授权目录含场景、家具与纹理三个归档。",
+    "status": "正在下载，部分归档已校验",
+    "reason": "已按 Google Drive 提供的 SHA-256 核验完成的原始归档。",
     "authorization_expires_at": "2026-12-20T12:20:00+08:00",
     "post_expiry_use_restrictions": "邮件确认过期后账号无法通过该链接继续访问，需要续办。邮件未规定本地已下载副本的期满处理，使用继续受适用的数据协议约束。",
-    "downloaded_files": [],
+    "downloaded_files": [
+      {
+        "file": "3D-FRONT.zip",
+        "bytes": 2100136523,
+        "sha256": "56513b1d5b2ef9f91805ac1f6b15672eadfda6d1ac5d572636df600b475af6a8",
+        "drive_sha256": "56513b1d5b2ef9f91805ac1f6b15672eadfda6d1ac5d572636df600b475af6a8",
+        "verified": true,
+        "members": 6814,
+        "json_members": 6813
+      },
+      {
+        "file": "3D-FRONT-texture.zip",
+        "bytes": 1835183024,
+        "sha256": "0ac966492630311f75e02753dd5ab502fd1aed17a681d849a54c5af9c561915f",
+        "drive_sha256": "0ac966492630311f75e02753dd5ab502fd1aed17a681d849a54c5af9c561915f",
+        "verified": true
+      }
+    ],
     "sha256_verified": false,
     "channel": "Google Drive / shared with me",
     "expected_bytes": 34104574074,
@@ -30,11 +47,17 @@
       "禁止将数据、派生物或研究结果用于商业化或外部服务。",
       "披露研究结果应注明来源。提供派生物时按协议保留许可、版权声明及署名。"
     ],
+    "layout_index": {
+      "path": "3d-front-layout-index.json",
+      "sha256": "2667ef839febf79a6757a13f300f6d2f35fb102a6fb6aea8ebf8833e304c103f",
+      "candidate_layouts": 6813,
+      "excluded": 0
+    },
     "authorization_terms_recorded": true,
-    "status_record_sha256": "87dc6a7608ab340ac62947f1d357a03f7ced6b845f5df5352e2dba3aa7e09102"
+    "status_record_sha256": "c15736869848312b5ffe7b6f1cab7f48aafe6fff888e2003c215cb9eeffc0137"
   },
   "manifest": "data/processed/route3-v2data-2026-11-20/B/manifest.json",
-  "manifest_sha256": "34c3cf47e456c6cec181343f521fdfdb1a335e46131f9c6708f0d69f71e42621",
+  "manifest_sha256": "493922ff529438d0c0e64a05c70dca3ce2fd2556e7926609209d9351d3f56234",
   "completed": {
     "train_geometry": 0,
     "development": 0,
@@ -244,8 +267,18 @@
         "pure_interior_pixels": 0,
         "status": "not_applicable"
       },
-      "pilot_geometry_and_color_bytes_before_full_K16": 101580243
-    }
+      "pilot_geometry_and_color_bytes_before_full_K16": 101580243,
+      "full_scene_measured_bytes": 497270374,
+      "K16_files": 26
+    },
+    "full_K16_scenes": 9,
+    "first_unit_capacity_projection": {
+      "sample": "thin first pilot with 60 RGB frames, 13 pinhole label frames and 26 K16 files",
+      "measured_bytes": 497270374,
+      "345_geometry_units_projected_bytes": 171558279030,
+      "scope": "first-unit projection; full cohort and optical sizes pending"
+    },
+    "matched_optical_pairs_at_frame_30": 3
   },
   "known_unfinished": [
     "3D-FRONT archives and per-asset integration",
@@ -271,5 +304,13 @@
     ],
     "exposure_ev": 0,
     "color_space": "scene-linear RGB"
+  },
+  "infinigen_indoor_pilot": {
+    "code_version": "53033dd",
+    "generator": "Infinigen Indoors room_livingroom_rand seed 0",
+    "generation_seconds": 101.53317564725876,
+    "generation_peak_rss_bytes": 1183948800,
+    "blend_bytes": 71921762,
+    "render_cost_status": "in_progress"
   }
 }
