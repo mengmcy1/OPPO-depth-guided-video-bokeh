@@ -118,7 +118,7 @@ def straight(premultiplied):
     return np.divide(premultiplied[..., :3], alpha, out=np.zeros_like(premultiplied[..., :3]), where=alpha>1e-7)
 
 
-def layer_labels(scene, gate, controls, background_switch, observed, path, filename, seed, spp):
+def layer_labels(scene, gate, controls, background_switch, observed, path, filename, seed, spp, *, score=True):
     with np.load(path) as file:
         cut = file["cutoff_m"]
         alpha = file["alpha"].astype(np.float32)
@@ -142,29 +142,30 @@ def layer_labels(scene, gate, controls, background_switch, observed, path, filen
     valid_F = reliable & (alpha > 0) & ((values[0][...,3] > 0) | interior) & ~saturated
     valid_B = reliable & (alpha < 1) & (values[1][...,3] > 0) & ~saturated
     valid_comp = boundary & valid_F & valid_B
-    mixed = alpha[...,None]*F + (1-alpha[...,None])*B
-    color_error = np.abs(srgb(mixed)-srgb(I))[valid_comp]
-    cover_error = np.abs(alpha-values[0][...,3])[boundary]
-    complement_error = np.abs(values[0][...,:3] + values[1][...,:3] - observed)[valid_comp]
-    audit = dict(
-        same_seed_complement_linear_MAE=float(complement_error.mean()) if complement_error.size else None,
-        valid_boundary=int(valid_comp.sum()), saturated_boundary=int(saturated.sum()),
-        composed_display_MAE=float(color_error.mean()) if color_error.size else None,
-        composed_display_p95=float(np.quantile(color_error,.95)) if color_error.size else None,
-        rendered_vs_mesh_coverage_MAE=float(cover_error.mean()) if cover_error.size else None,
-    )
-    audit["passed"] = all(audit[key] is None or audit[key] <= limit for key, limit in TOLERANCE.items())
-    audit["composition_status"] = (
-        "not_evaluable" if not valid_comp.any() else
-        "passed" if all(audit[k] <= TOLERANCE[k] for k in (
-            "composed_display_MAE", "composed_display_p95", "same_seed_complement_linear_MAE"
-        )) else "failed"
-    )
-    audit["coverage_status"] = (
-        "not_evaluable" if not boundary.any() else
-        "passed" if audit["rendered_vs_mesh_coverage_MAE"] <= TOLERANCE["rendered_vs_mesh_coverage_MAE"]
-        else "failed"
-    )
+    audit = dict(valid_boundary=int(valid_comp.sum()), saturated_boundary=int(saturated.sum()))
+    if score:
+        mixed = alpha[...,None]*F + (1-alpha[...,None])*B
+        color_error = np.abs(srgb(mixed)-srgb(I))[valid_comp]
+        cover_error = np.abs(alpha-values[0][...,3])[boundary]
+        complement_error = np.abs(values[0][...,:3] + values[1][...,:3] - observed)[valid_comp]
+        audit.update(
+            same_seed_complement_linear_MAE=float(complement_error.mean()) if complement_error.size else None,
+            composed_display_MAE=float(color_error.mean()) if color_error.size else None,
+            composed_display_p95=float(np.quantile(color_error,.95)) if color_error.size else None,
+            rendered_vs_mesh_coverage_MAE=float(cover_error.mean()) if cover_error.size else None,
+        )
+        audit["passed"] = all(audit[key] is None or audit[key] <= limit for key, limit in TOLERANCE.items())
+        audit["composition_status"] = (
+            "not_evaluable" if not valid_comp.any() else
+            "passed" if all(audit[k] <= TOLERANCE[k] for k in (
+                "composed_display_MAE", "composed_display_p95", "same_seed_complement_linear_MAE"
+            )) else "failed"
+        )
+        audit["coverage_status"] = (
+            "not_evaluable" if not boundary.any() else
+            "passed" if audit["rendered_vs_mesh_coverage_MAE"] <= TOLERANCE["rendered_vs_mesh_coverage_MAE"]
+            else "failed"
+        )
     save_npz(
         path.with_name(path.name.replace("-pinhole", "-colors")),
         foreground_rgb=F.astype(np.float16), complementary_background_rgb=B.astype(np.float16),
@@ -269,7 +270,8 @@ def reference_views(scene, camera, root, frames, source, seed, spp):
     return metadata
 
 
-def run(root, frames, references, samples, scene_seed, cpu, reference_samples, optical_only, *, optical_frames=None):
+def run(root, frames, references, samples, scene_seed, cpu, reference_samples, optical_only, *,
+        optical_frames=None, structure_only=False):
     estimated = 2 * 2**30
     if shutil.disk_usage(root).free < 60 * 2**30 + estimated:
         raise RuntimeError("Disk reserve would be exceeded for this render batch")
@@ -303,7 +305,9 @@ def run(root, frames, references, samples, scene_seed, cpu, reference_samples, o
         if frame in accepted:
             observations[frame] = rgb
     render_meta = reference_views(scene,camera,root,reference_frames,source,scene_seed,reference_samples) if references else []
-    texture_phase = thin_texture_check(root, scene, camera, accepted, source, workfile, scene_seed, samples)
+    texture_phase = None if structure_only else thin_texture_check(
+        root, scene, camera, accepted, source, workfile, scene_seed, samples
+    )
     cutter = bpy.data.images.new("B axial depth cutter", SIZE, SIZE, alpha=True, float_buffer=True)
     cutter.colorspace_settings.name = "Non-Color"
     cutter.alpha_mode = "CHANNEL_PACKED"
@@ -327,7 +331,7 @@ def run(root, frames, references, samples, scene_seed, cpu, reference_samples, o
             switch.default_value = 1.
         stats = layer_labels(
             scene, cutter, controls, switches, observations.pop(frame), root/"labels"/f"f{frame:03d}-pinhole.npz",
-            workfile, scene_seed+frame, samples,
+            workfile, scene_seed+frame, samples, score=not structure_only,
         )
         hidden = [ob for ob in scene.objects if ob.name.startswith("foreground_")]
         previous = [ob.visible_camera for ob in hidden]
@@ -339,14 +343,15 @@ def run(root, frames, references, samples, scene_seed, cpu, reference_samples, o
         save_npz(root/"labels"/f"f{frame:03d}-peeled-color.npz",
                  rgb_linear=np.clip(peeled,0,LDR_LIMIT).astype(np.float16))
         audits.append(dict(frame=frame, **stats))
+    metadata = dict(audit_mode="structure_and_presence") if structure_only else {}
     save_json(root/"labels/radiance-audit.json", dict(
-        frames=frames, elapsed_seconds=time.monotonic()-start, audits=audits, optical=render_meta,
+        **metadata, frames=frames, elapsed_seconds=time.monotonic()-start, audits=audits, optical=render_meta,
         thin_texture_phase=texture_phase, layer_protocol=LAYER_PROTOCOL, sampling_seed_base=scene_seed,
         observed_reference="same raw render used for the saved input",
         exposure_ev=0, color_space="scene-linear RGB", render_filter="BOX 1.0",
         pinhole_samples=samples, optical_samples_per_subview=reference_samples, clipping_threshold_linear=LDR_LIMIT,
     ))
-    if not all(row["passed"] for row in audits):
+    if not structure_only and not all(row["passed"] for row in audits):
         raise ValueError("Fixed B layer composition check failed")
 
 
@@ -357,13 +362,15 @@ def main():
     parser.add_argument("--optical", action="store_true")
     parser.add_argument("--optical-frames", nargs="+", type=int)
     parser.add_argument("--optical-only", action="store_true")
+    parser.add_argument("--structure-only", action="store_true")
     parser.add_argument("--cpu", action="store_true", help="Use CPU Cycles for a diagnostic render")
     parser.add_argument("--samples", type=int, default=256)
     parser.add_argument("--reference-samples", type=int, default=1024)
     parser.add_argument("--seed", type=int, default=20261120)
     args = parser.parse_args(sys.argv[sys.argv.index("--")+1:])
     run(args.scene.resolve(), args.frames, args.optical, args.samples, args.seed, args.cpu,
-        args.reference_samples, args.optical_only, optical_frames=args.optical_frames)
+        args.reference_samples, args.optical_only, optical_frames=args.optical_frames,
+        structure_only=args.structure_only)
 
 
 if __name__ == "__main__":

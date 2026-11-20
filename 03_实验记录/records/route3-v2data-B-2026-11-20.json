@@ -1677,15 +1677,19 @@
       "version": "B-v2-31aa7f9a4325-p2",
       "parent_version": "B-v2-31aa7f9a4325-p1",
       "parent_code_sha256": "e05ceea5195c9ec3b71cd552e91ef5ad464e6a019cf2d247c68b14aa5adfa903",
-      "generator_code_sha256": "9245dff69a4412fa77693ef43de66d79b7ee982525f883f17b0948c8106804f6",
+      "generator_code_sha256": "ea1711f11ab9cd55e4dee7c60b0f024c768baa464cb692767c22973b2264ff25",
       "changes": {
         "route3_v2data_B_batch.py": {
           "before": "7c0962b38cb4cf0257ff040631dd4ab63547dbea4a1cc64f691a6bca1cf8fe40",
-          "after": "823cc6a9f366dd8ea4ff8246c1f4a6f911dbcf960bb98b8ba201aa45986a421c"
+          "after": "1f52bb8a58ec99a2d39cb48228ec2ed79889fae5d59653f7beb633a522d71f15"
         },
         "route3_v2data_B_scene.py": {
           "before": "7191dd1bd1d3ad7d9c6ee5c8a4c0840bd0d0c876e0b1b7b3de7690fcde362177",
           "after": "4b5bb5a0a8a1d6e5facf00f84f37aa4cf67b9b14c43184b260fce5bd70e69b2d"
+        },
+        "route3_v2data_B_render.py": {
+          "before": "08e1516ddab45a2d23fd996f79b73781b11c01206ab2143b165bcb222260124e",
+          "after": "f78b6959111e412aeda3b3c5f6fc55ebab1c374af11c8abe993d43d6d13a3488"
         },
         "route3_v2data_B_placement.py": {
           "before": null,
@@ -1699,7 +1703,8 @@
       "scope": [
         "refresh the curved foreground world transform before rotation",
         "deterministic all-frame analytic placement for multiple_layers",
-        "label-only designated foreground acceptance and observational layer minima"
+        "label-only designated foreground acceptance and observational layer minima",
+        "held-out rebuild accepts file and tensor structure plus label-only foreground presence, with no rendered-image scores"
       ]
     },
     "foreground_presence_policy_p2": {
@@ -1896,7 +1901,7 @@
       "original_dispatch_drained": true,
       "status": "isolated_qualification_ground_fix_pending",
       "affected_inflight": "development-003-8c92e9e93c0ff003",
-      "qualification_output": "p2-review/visibility-qualification-grounded/proof.json"
+      "qualification_output": "p2-review/visibility-qualification-final/proof.json"
     },
     "multilayer_placement_policy_p2": {
       "middle_frame": 30,
@@ -2025,6 +2030,15 @@
           7220
         ]
       }
+    },
+    "p2_test_acceptance": {
+      "admission": "existing label and observation structure/loader checks plus designated foreground presence",
+      "rendered_image_scores_calculated": false,
+      "retained_radiance_fields": [
+        "frame",
+        "valid_boundary",
+        "saturated_boundary"
+      ]
     }
   }
 }

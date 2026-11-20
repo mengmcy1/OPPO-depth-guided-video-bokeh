@@ -129,6 +129,7 @@ def install(proof_path):
             sealed_plan_sha256=state["scene_plan_sha256"], optical_frames=list(OPTICAL_FRAMES),
             qualification={key:summary[key] for key in ("path", "sha256")},
             foreground_presence_policy=record["foreground_presence_policy_p2"],
+            rebuilt_test_acceptance_policy=record["p2_test_acceptance"],
             multilayer_placement_policy=record["multilayer_placement_policy_p2"],
         )
         validate_p2(plan, state, receipt)

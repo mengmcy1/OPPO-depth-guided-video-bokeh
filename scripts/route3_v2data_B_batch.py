@@ -121,6 +121,10 @@ def verify_optical(labels, rows, frames=OPTICAL_FRAMES):
 
 
 
+def structure_only_test(spec, generator):
+    return generator.endswith("-p2") and spec["partition"].startswith("test_")
+
+
 def verified_unit(unit, spec, generator, optical):
     observations = sorted((unit/"observations").glob("*.npz"))
     labels = unit/"labels"
@@ -143,7 +147,13 @@ def verified_unit(unit, spec, generator, optical):
         "observed_priors": (len(list((unit/"observations/priors").glob("f*.npz"))), expected_labels),
     }
     bad = [name for name, (found, required) in need.items() if found != required]
-    if bad or not all(row["passed"] for row in radiance["audits"]):
+    if structure_only_test(spec, generator):
+        radiance_ok = radiance.get("audit_mode") == "structure_and_presence" and all(
+            set(row) == {"frame", "valid_boundary", "saturated_boundary"} for row in radiance["audits"]
+        )
+    else:
+        radiance_ok = all(row["passed"] for row in radiance["audits"])
+    if bad or not radiance_ok:
         raise ValueError(f"fixed B label/observation check failed: {bad}")
     for frame in TRAIN_FRAMES:
         inputs = observation(unit,frame,aligned=True)
@@ -186,6 +196,8 @@ def prepare_geometry(unit, spec, estimate, *, execute=run):
 def finish_unit(unit, spec, generator, *, execute=run):
     optical = spec["partition"] == "development"
     opts = ["--optical","--optical-frames",*OPTICAL_FRAMES] if optical else []
+    if structure_only_test(spec, generator):
+        opts.append("--structure-only")
     execute(blender("route3_v2data_B_render.py","--scene",unit,*opts),unit/"render.log",uses_gpu=True)
     execute([sys.executable,str(SCRIPTS/"route3_v2data_B_inputs.py"),"--scene",str(unit)],
             unit/"input-priors.log",uses_gpu=True)

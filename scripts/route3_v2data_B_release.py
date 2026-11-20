@@ -11,7 +11,7 @@ OPTICAL_FRAMES = (1, 30, 60)
 PATCHABLE = {"route3_v2data_B_batch.py", "route3_v2data_B_render.py"}
 DISPATCH_CODE = ("route3_v2data_B_dispatch.py", "route3_v2data_B_release.py")
 P2_DISPATCH_CODE = (*DISPATCH_CODE, "route3_v2data_B_deploy_p2.py", "route3_v2data_B_optical_pair.py")
-P2_CHANGED_FILES = {"route3_v2data_B_scene.py", "route3_v2data_B_batch.py"}
+P2_CHANGED_FILES = {"route3_v2data_B_scene.py", "route3_v2data_B_batch.py", "route3_v2data_B_render.py"}
 PLAN_DIR = FORMAL_DATA/"sealed-scene-plans"
 P2_ADDITIONAL_GENERATION_FILES = ("route3_v2data_B_placement.py", "route3_v2data_B_presence.py")
 

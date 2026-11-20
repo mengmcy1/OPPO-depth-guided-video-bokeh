@@ -73,8 +73,9 @@ def previous_placement_controls(path, version, code, config, specs):
     if previous["status"] not in {"passed", "failed"} or previous["version"] != version or previous["policy"] != config:
         raise ValueError("previous isolated run must be complete and use the same qualification scenes")
     changed = {name for name in code if previous["generation_code"][name] != code[name]}
-    if changed != {"route3_v2data_B_placement.py"}:
-        raise ValueError("only the multiple_layers solver may differ when carrying forward the other categories")
+    permitted = {"route3_v2data_B_placement.py", "route3_v2data_B_batch.py", "route3_v2data_B_render.py"}
+    if "route3_v2data_B_placement.py" not in changed or not changed <= permitted:
+        raise ValueError("cannot reuse controls after changes outside multilayer placement or held-out test acceptance")
     unaffected = [key for key in config["smoke_training_scene_ids"] if specs[key]["category"] != "multiple_layers"]
     if not set(unaffected) <= set(previous["smoke"]) or set(previous["invariance"]) != set(config["invariance_scene_ids"]):
         raise ValueError("the previous run lacks one or more of the unchanged categories")
