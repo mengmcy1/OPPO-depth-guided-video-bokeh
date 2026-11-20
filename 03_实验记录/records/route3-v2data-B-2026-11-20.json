@@ -53,11 +53,17 @@
       "candidate_layouts": 6813,
       "excluded": 0
     },
+    "texture_index": {
+      "path": "3d-front-texture-index.json",
+      "sha256": "41722543c14717a59b39361adbfbfa3a0cde7b955a41a321b1d18dd35b8a2e7a",
+      "candidate_textures": 1400,
+      "excluded": 25
+    },
     "authorization_terms_recorded": true,
-    "status_record_sha256": "c15736869848312b5ffe7b6f1cab7f48aafe6fff888e2003c215cb9eeffc0137"
+    "status_record_sha256": "e10bb10ea814270b65c6b6279a36e995f287df5b4cd91b986a7ed3254ca5b5b9"
   },
   "manifest": "data/processed/route3-v2data-2026-11-20/B/manifest.json",
-  "manifest_sha256": "493922ff529438d0c0e64a05c70dca3ce2fd2556e7926609209d9351d3f56234",
+  "manifest_sha256": "844668fa756af5854aac0c54c6fb3210bfa87182326505509dfa0bf4b086255a",
   "completed": {
     "train_geometry": 0,
     "development": 0,
@@ -271,20 +277,59 @@
       "full_scene_measured_bytes": 497270374,
       "K16_files": 26
     },
-    "full_K16_scenes": 9,
+    "full_K16_scenes": 10,
     "first_unit_capacity_projection": {
       "sample": "thin first pilot with 60 RGB frames, 13 pinhole label frames and 26 K16 files",
       "measured_bytes": 497270374,
       "345_geometry_units_projected_bytes": 171558279030,
-      "scope": "first-unit projection; full cohort and optical sizes pending"
+      "scope": "first measured unit, excluding optical and remaining pilot appearance outputs"
     },
-    "matched_optical_pairs_at_frame_30": 3
+    "matched_optical_pairs_at_frame_30": 4,
+    "full_K16_file_count": 260,
+    "geometry_seconds_min_median_max": [
+      228.76474425569177,
+      310.7958242241293,
+      380.94856053963304
+    ],
+    "geometry_peak_RSS_bytes": 456736768,
+    "first_optical_audit_sha256": "23eb4709e6b291bdd40a8436d2bf05a91d9304530e514bf3840440905e1bdda4",
+    "first_optical_reference_validation": [
+      {
+        "id": "f030-focus0-N1.4",
+        "fstop": 1.4,
+        "focus_m": 1.5,
+        "hdr_max": 13.4453125,
+        "max_clipping_order_difference": 0.610595703125
+      },
+      {
+        "id": "f030-focus0-N2",
+        "fstop": 2.0,
+        "focus_m": 1.5,
+        "hdr_max": 13.5625,
+        "max_clipping_order_difference": 0.585205078125
+      },
+      {
+        "id": "f030-focus1-N1.4",
+        "fstop": 1.4,
+        "focus_m": 4.199999999999999,
+        "hdr_max": 13.7890625,
+        "max_clipping_order_difference": 0.48828125
+      },
+      {
+        "id": "f030-focus1-N2",
+        "fstop": 2.0,
+        "focus_m": 4.199999999999999,
+        "hdr_max": 13.7890625,
+        "max_clipping_order_difference": 0.53271484375
+      }
+    ],
+    "radiance_checks_completed_scenes": 2
   },
   "known_unfinished": [
-    "3D-FRONT archives and per-asset integration",
-    "Infinigen scene cost and approval",
+    "3D-FUTURE model archive and 3D-FRONT mesh/material admission",
+    "Infinigen source generation and renderer timing checks",
     "formal material pool v1",
-    "full pilot K16 and optical checks",
+    "remaining pilot appearance runs",
     "sealed test group lists",
     "formal B unit generation"
   ],
@@ -312,5 +357,6 @@
     "generation_peak_rss_bytes": 1183948800,
     "blend_bytes": 71921762,
     "render_cost_status": "in_progress"
-  }
+  },
+  "archive_allocated_bytes_at_checkpoint": 13660327936
 }
