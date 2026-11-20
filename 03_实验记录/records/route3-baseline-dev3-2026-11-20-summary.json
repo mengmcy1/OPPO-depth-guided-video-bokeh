@@ -1,0 +1,1276 @@
+{
+  "scope": "Original three development scenes, positioning only",
+  "training_run": false,
+  "scenes": [
+    "metric-scene-122104-broad",
+    "metric-scene-122105-multilayer",
+    "metric-scene-122107-broad"
+  ],
+  "frames": [
+    1,
+    30,
+    60
+  ],
+  "fstop": [
+    1.4,
+    5.0
+  ],
+  "focus_targets_m": [
+    1.4,
+    5.0
+  ],
+  "reference_count": 36,
+  "reference_target": 36,
+  "reference_blender": "4.5.13, OptiX on RTX 5090",
+  "reference_cache_check": "Persistent Cycles geometry validated on 8 paired original subviews. Maximum linear RGB delta 4.18e-7.",
+  "historical_apertures": [
+    1.4,
+    2.0
+  ],
+  "reference_deviation": "Render both stops again under 13.15.5, extending the historical sweep with f/5",
+  "split_counts": {
+    "train": 0,
+    "development": 3,
+    "test": 0
+  },
+  "case_coverage": [
+    {
+      "method": "1c-query-f2",
+      "arm": "native",
+      "completed": 72,
+      "expected": 72,
+      "missing": 0,
+      "negative_p1_fit_cases": 0,
+      "saturated_aperture_cases": 0,
+      "maximum_drbokeh_omitted_radial_mass": null
+    },
+    {
+      "method": "1c-visible-f2",
+      "arm": "native",
+      "completed": 72,
+      "expected": 72,
+      "missing": 0,
+      "negative_p1_fit_cases": 0,
+      "saturated_aperture_cases": 0,
+      "maximum_drbokeh_omitted_radial_mass": null
+    },
+    {
+      "method": "A-color",
+      "arm": "native",
+      "completed": 72,
+      "expected": 72,
+      "missing": 0,
+      "negative_p1_fit_cases": 0,
+      "saturated_aperture_cases": 0,
+      "maximum_drbokeh_omitted_radial_mass": null
+    },
+    {
+      "method": "bokehme",
+      "arm": "native",
+      "completed": 36,
+      "expected": 36,
+      "missing": 0,
+      "negative_p1_fit_cases": 0,
+      "saturated_aperture_cases": 0,
+      "maximum_drbokeh_omitted_radial_mass": null
+    },
+    {
+      "method": "bokehme",
+      "arm": "1c-depth",
+      "completed": 36,
+      "expected": 36,
+      "missing": 0,
+      "negative_p1_fit_cases": 0,
+      "saturated_aperture_cases": 0,
+      "maximum_drbokeh_omitted_radial_mass": null
+    },
+    {
+      "method": "mpib",
+      "arm": "native",
+      "completed": 36,
+      "expected": 36,
+      "missing": 0,
+      "negative_p1_fit_cases": 12,
+      "saturated_aperture_cases": 0,
+      "maximum_drbokeh_omitted_radial_mass": null
+    },
+    {
+      "method": "mpib",
+      "arm": "1c-depth",
+      "completed": 36,
+      "expected": 36,
+      "missing": 0,
+      "negative_p1_fit_cases": 0,
+      "saturated_aperture_cases": 0,
+      "maximum_drbokeh_omitted_radial_mass": null
+    },
+    {
+      "method": "drbokeh",
+      "arm": "native",
+      "completed": 36,
+      "expected": 36,
+      "missing": 0,
+      "negative_p1_fit_cases": 12,
+      "saturated_aperture_cases": 0,
+      "maximum_drbokeh_omitted_radial_mass": 2.3322066709150317e-07
+    },
+    {
+      "method": "drbokeh",
+      "arm": "1c-depth",
+      "completed": 36,
+      "expected": 36,
+      "missing": 0,
+      "negative_p1_fit_cases": 0,
+      "saturated_aperture_cases": 0,
+      "maximum_drbokeh_omitted_radial_mass": 3.882532077566729e-10
+    },
+    {
+      "method": "any2bokeh",
+      "arm": "native",
+      "completed": 0,
+      "expected": 36,
+      "missing": 36,
+      "negative_p1_fit_cases": 0,
+      "saturated_aperture_cases": 0,
+      "maximum_drbokeh_omitted_radial_mass": null
+    },
+    {
+      "method": "magicbokeh",
+      "arm": "native",
+      "completed": 36,
+      "expected": 36,
+      "missing": 0,
+      "negative_p1_fit_cases": 0,
+      "saturated_aperture_cases": 0,
+      "maximum_drbokeh_omitted_radial_mass": null
+    },
+    {
+      "method": "bokehdiff",
+      "arm": "native",
+      "completed": 36,
+      "expected": 36,
+      "missing": 0,
+      "negative_p1_fit_cases": 0,
+      "saturated_aperture_cases": 0,
+      "maximum_drbokeh_omitted_radial_mass": null
+    },
+    {
+      "method": "deeplens",
+      "arm": "native",
+      "completed": 36,
+      "expected": 36,
+      "missing": 0,
+      "negative_p1_fit_cases": 24,
+      "saturated_aperture_cases": 14,
+      "maximum_drbokeh_omitted_radial_mass": null
+    }
+  ],
+  "scene_output_bytes": {
+    "metric-scene-122104-broad": 365101915,
+    "metric-scene-122105-multilayer": 432756284,
+    "metric-scene-122107-broad": 382457063
+  },
+  "committed_data_assets": 0,
+  "credentials_required": [],
+  "additional_public_weights": [
+    {
+      "id": "MiDaS v2.1 midas_v21_384.pt",
+      "authors": "René Ranftl et al.",
+      "source": "https://github.com/isl-org/MiDaS/releases/tag/v2_1",
+      "checkout": "94afff70fe0873c3af70355e5388e4d482bfc807",
+      "source_license": "MIT",
+      "sha256": "f6b980704cfd7259c7cc2b058c2f160159c55e84b3b6c08331b4156a84629f70"
+    },
+    {
+      "id": "Depth-Anything-V2-Base-hf",
+      "authors": "Lihe Yang et al.",
+      "source": "https://huggingface.co/depth-anything/Depth-Anything-V2-Base-hf",
+      "checkout": "b1958afc87fb45a9e3746cb387596094de553ed8",
+      "model_license": "CC BY-NC 4.0",
+      "sha256": "9996d15c334d264cfcc29f4318d7d3789a006ecc444782c2fb82f7eaa1acb8bf"
+    }
+  ],
+  "gpu_lock": "route3-cache/gpu-data.lock",
+  "gpu_limit_gib": 24,
+  "timing_scope": "Render call with frozen inputs. Mean depth separately. Any-to-Bokeh clip render normalized by all emitted frames. DeepLens native CPU graph repeats DepthNet inside render.",
+  "memory_scope": "PyTorch allocated and reserved peaks plus sampled driver VRAM where available",
+  "formal_followup": {
+    "development": 15,
+    "independent_test": 30
+  },
+  "ground_truth_role": "Evaluator-only P1 background fit, target selection, metrics, and fixed masks",
+  "p2_scope": "Metric native depth only. Relative baseline and DeepLens DepthNet have no P2 row.",
+  "radius_mapping": "K_x * 0.05/(2N) * focus/(focus-0.05) / abs(P1 slope); scale to adapter canvas",
+  "patch_lpips": "Historical AlexNet LPIPS, 64px grid, pixel-support-weighted pooling",
+  "aggregation": "Sum RGB SSE and support before PSNR. Full and boundary pool both focus targets.",
+  "precision": "Float16 saved predictions, cast to float32 for scoring, float32 LDR/HDR references",
+  "output_bytes": 1247080080,
+  "negative_p1_fit_cases": 48,
+  "reference": "Cycles 64x64 spp, clip each linear RGB subview to [0,1] before averaging, then sRGB",
+  "configurations": [
+    {
+      "method": "1c-query-f2",
+      "configuration": "Route 3 §13.13, 1c C3 / §13.12 R2",
+      "smoke": false,
+      "checkpoint": "outputs/route3-ovg-1c-2026-11-19-01/train/aligned/checkpoints/step-005000.pt",
+      "deviations": [
+        "Extended existing 1c optical aperture sweep with f/5",
+        "Render timing starts at frozen input cache, excludes SHARP and other cached preprocessing"
+      ]
+    },
+    {
+      "method": "1c-visible-f2",
+      "configuration": "Route 3 §13.13, 1c C3 / §13.12 R2",
+      "smoke": false,
+      "checkpoint": "outputs/route3-ovg-1c-2026-11-19-01/train/aligned/checkpoints/step-005000.pt",
+      "deviations": [
+        "Extended existing 1c optical aperture sweep with f/5",
+        "Render timing starts at frozen input cache, excludes SHARP and other cached preprocessing"
+      ]
+    },
+    {
+      "method": "A-color",
+      "configuration": "Route 3 §13.13, 1c C3 / §13.12 R2",
+      "smoke": false,
+      "checkpoint": "existing SHARP and A-color",
+      "deviations": [
+        "Extended existing 1c optical aperture sweep with f/5",
+        "Render timing starts at frozen input cache, excludes SHARP and other cached preprocessing"
+      ]
+    },
+    {
+      "method": "any2bokeh",
+      "arm": "native",
+      "stage": "full",
+      "completed": 0,
+      "status": "deferred",
+      "reason": "User permitted deferral. Frozen 8-frame and 6-frame attempts exceeded the memory budget during VAE encoding. The 4-frame smoke reached decoding, where the short clip triggered the native two-group terminal-window shape constraint. The corrected retry was queued behind the higher-priority data job.",
+      "original_configuration": "configs/davis-baselines.json, any2bokeh",
+      "seed": 0,
+      "device": "RTX 5090",
+      "predicted_cases": 0,
+      "required_cases": 36
+    },
+    {
+      "method": "any2bokeh",
+      "arm": "native",
+      "author_commit": "f7a16959dd219080fb8eec0d32bb9602d8970c22",
+      "stage": "smoke",
+      "config": "configs/davis-baselines.json",
+      "config_sha256": "57268156b6ec07e804bf8a45ee025413ace97b2c097ac5c9aa9a60cd3f3c6e6c",
+      "group_frames": 4,
+      "overlap_frames": 2,
+      "decode_chunk_size": 4,
+      "seed": 0,
+      "device": "RTX 5090",
+      "deviations": [
+        "Existing 13 RGB keyframes plus missing contiguous AIF frames regenerated from the same frozen scene",
+        "Square scaled to 576px and mirror-padded to frozen 1024x576",
+        "P1 controls interpolated between the three evaluated frames for temporal context",
+        "Reduced frozen temporal configuration for RTX 5090 memory budget"
+      ],
+      "status": "failed",
+      "error_type": "RuntimeError",
+      "reason": "shape '[-1, 6, 3, 576, 1024]' is invalid for input of size 7077888"
+    },
+    {
+      "method": "any2bokeh",
+      "arm": "native",
+      "author_commit": "f7a16959dd219080fb8eec0d32bb9602d8970c22",
+      "stage": "smoke",
+      "config": "configs/davis-baselines.json",
+      "config_sha256": "57268156b6ec07e804bf8a45ee025413ace97b2c097ac5c9aa9a60cd3f3c6e6c",
+      "group_frames": 6,
+      "overlap_frames": 3,
+      "decode_chunk_size": 3,
+      "seed": 0,
+      "device": "RTX 5090",
+      "deviations": [
+        "Existing 13 RGB keyframes plus missing contiguous AIF frames regenerated from the same frozen scene",
+        "Square scaled to 576px and mirror-padded to frozen 1024x576",
+        "P1 controls interpolated between the three evaluated frames for temporal context",
+        "Reduced frozen temporal configuration for RTX 5090 memory budget"
+      ],
+      "status": "failed",
+      "error_type": "OutOfMemoryError",
+      "reason": "CUDA out of memory. Tried to allocate 3.38 GiB. GPU 0 has a total capacity of 31.36 GiB of which 7.49 GiB is free. Including non-PyTorch memory, this process has 23.86 GiB memory in use. 23.50 GiB allowed; Of the allocated memory 20.24 GiB is allocated by PyTorch, and 3.03 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)"
+    },
+    {
+      "method": "any2bokeh",
+      "arm": "native",
+      "author_commit": "f7a16959dd219080fb8eec0d32bb9602d8970c22",
+      "stage": "smoke",
+      "config": "configs/davis-baselines.json",
+      "config_sha256": "57268156b6ec07e804bf8a45ee025413ace97b2c097ac5c9aa9a60cd3f3c6e6c",
+      "group_frames": 6,
+      "overlap_frames": 3,
+      "decode_chunk_size": 6,
+      "seed": 0,
+      "device": "RTX 5090",
+      "deviations": [
+        "Existing 13 RGB keyframes plus missing contiguous AIF frames regenerated from the same frozen scene",
+        "Square scaled to 576px and mirror-padded to frozen 1024x576",
+        "P1 controls interpolated between the three evaluated frames for temporal context",
+        "Reduced frozen temporal configuration for RTX 5090 memory budget"
+      ],
+      "status": "failed",
+      "error_type": "OutOfMemoryError",
+      "reason": "CUDA out of memory. Tried to allocate 3.38 GiB. GPU 0 has a total capacity of 31.36 GiB of which 7.50 GiB is free. Including non-PyTorch memory, this process has 23.85 GiB memory in use. 23.50 GiB allowed; Of the allocated memory 20.24 GiB is allocated by PyTorch, and 3.02 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)"
+    },
+    {
+      "method": "any2bokeh",
+      "arm": "native",
+      "author_commit": "f7a16959dd219080fb8eec0d32bb9602d8970c22",
+      "stage": "smoke",
+      "config": "configs/davis-baselines.json",
+      "config_sha256": "57268156b6ec07e804bf8a45ee025413ace97b2c097ac5c9aa9a60cd3f3c6e6c",
+      "group_frames": 8,
+      "overlap_frames": 4,
+      "decode_chunk_size": 4,
+      "seed": 0,
+      "device": "RTX 5090",
+      "deviations": [
+        "Existing 13 RGB keyframes plus missing contiguous AIF frames regenerated from the same frozen scene",
+        "Square scaled to 576px and mirror-padded to frozen 1024x576",
+        "P1 controls interpolated between the three evaluated frames for temporal context",
+        "Reduced frozen temporal configuration for RTX 5090 memory budget",
+        "Skip the exact division by 1 only inside the VAE encoder residual blocks"
+      ],
+      "status": "failed",
+      "error_type": "OutOfMemoryError",
+      "reason": "CUDA out of memory. Tried to allocate 4.50 GiB. GPU 0 has a total capacity of 31.36 GiB of which 11.62 GiB is free. Including non-PyTorch memory, this process has 19.73 GiB memory in use. 23.50 GiB allowed; Of the allocated memory 18.82 GiB is allocated by PyTorch, and 329.64 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)"
+    },
+    {
+      "method": "any2bokeh",
+      "arm": "native",
+      "author_commit": "f7a16959dd219080fb8eec0d32bb9602d8970c22",
+      "stage": "smoke",
+      "config": "configs/davis-baselines.json",
+      "config_sha256": "57268156b6ec07e804bf8a45ee025413ace97b2c097ac5c9aa9a60cd3f3c6e6c",
+      "group_frames": 8,
+      "overlap_frames": 4,
+      "decode_chunk_size": 8,
+      "seed": 0,
+      "device": "RTX 5090",
+      "deviations": [
+        "Existing 13 RGB keyframes plus missing contiguous AIF frames regenerated from the same frozen scene",
+        "Square scaled to 576px and mirror-padded to frozen 1024x576",
+        "P1 controls interpolated between the three evaluated frames for temporal context",
+        "Skip the exact division by 1 only inside the VAE encoder residual blocks"
+      ],
+      "status": "failed",
+      "error_type": "OutOfMemoryError",
+      "reason": "CUDA out of memory. Tried to allocate 4.50 GiB. GPU 0 has a total capacity of 31.36 GiB of which 11.71 GiB is free. Including non-PyTorch memory, this process has 19.64 GiB memory in use. 23.50 GiB allowed; Of the allocated memory 18.82 GiB is allocated by PyTorch, and 241.29 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)"
+    },
+    {
+      "method": "any2bokeh",
+      "arm": "native",
+      "author_commit": "f7a16959dd219080fb8eec0d32bb9602d8970c22",
+      "stage": "smoke",
+      "config": "configs/davis-baselines.json",
+      "config_sha256": "57268156b6ec07e804bf8a45ee025413ace97b2c097ac5c9aa9a60cd3f3c6e6c",
+      "group_frames": 8,
+      "overlap_frames": 4,
+      "decode_chunk_size": 8,
+      "seed": 0,
+      "device": "RTX 5090",
+      "deviations": [
+        "Existing 13 RGB keyframes plus missing contiguous AIF frames regenerated from the same frozen scene",
+        "Square scaled to 576px and mirror-padded to frozen 1024x576",
+        "P1 controls interpolated between the three evaluated frames for temporal context"
+      ],
+      "status": "failed",
+      "error_type": "OutOfMemoryError",
+      "reason": "CUDA out of memory. Tried to allocate 4.50 GiB. GPU 0 has a total capacity of 31.36 GiB of which 11.71 GiB is free. Including non-PyTorch memory, this process has 19.64 GiB memory in use. 23.50 GiB allowed; Of the allocated memory 18.82 GiB is allocated by PyTorch, and 240.54 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)"
+    },
+    {
+      "method": "bokehdiff",
+      "arm": "native",
+      "author_commit": "38ff9372ab146ab20468832a0424fa0b2888dffd",
+      "config": "configs/bokehdiff-adapter-recovery.json",
+      "config_sha256": "9e2e94732a1d19d6c3cfd364d7e0e25b5f4bd882a50495cf2657fd50c3bed3e5",
+      "depth": "Official Depth-Anything-V2-Base-hf",
+      "deviations": [
+        "Scale the square field to 576px, reflect-pad left/right to frozen 1024x576 and crop for scoring",
+        "Use official DAv2 inverse disparity in the frozen Synthetic near-is-large direction"
+      ],
+      "device": "RTX 5090",
+      "calibration": {
+        "scene": "independent two-plane edge",
+        "rows": [
+          {
+            "strength": 4.0,
+            "radius_px": 0.5943816869026214,
+            "ringing": 0.07201568921599343,
+            "K": 4.0,
+            "focus_used": 0.75,
+            "seed": 42
+          },
+          {
+            "strength": 8.0,
+            "radius_px": 0.596785079007017,
+            "ringing": 0.07186250624687095,
+            "K": 8.0,
+            "focus_used": 0.75,
+            "seed": 42
+          },
+          {
+            "strength": 16.0,
+            "radius_px": 4.5725988085203335,
+            "ringing": 0.0064080331632332885,
+            "K": 16.0,
+            "focus_used": 0.75,
+            "seed": 42
+          },
+          {
+            "strength": 32.0,
+            "radius_px": 20.228061446571584,
+            "ringing": 0.0018076230983245017,
+            "K": 32.0,
+            "focus_used": 0.75,
+            "seed": 42
+          }
+        ],
+        "radius_per_native_strength": 1.0700166979504155,
+        "monotonic": true,
+        "rmse_px": 3.2215843247805154
+      },
+      "stage": "full",
+      "completed": 36,
+      "failures": []
+    },
+    {
+      "method": "bokehme",
+      "arm": "1c-depth",
+      "author_commit": "8b3ed556dc146207c9bb39fccd078a113f8d1bd8",
+      "config": "configs/bokehme-track-a-frozen.json",
+      "config_sha256": "4e22a50d891265bab713d539da72aef7014a47cf0ea242fedf9a69d44ba45dc0",
+      "depth": "1c aligned 5k EMA visible inverse depth",
+      "deviations": [
+        "Scale the square field to 576px, reflect-pad left/right to frozen 1024x576 and crop for scoring",
+        "Officially documented estimator family with an available pinned checkpoint variant"
+      ],
+      "device": "RTX 5090",
+      "stage": "full",
+      "completed": 36,
+      "failures": []
+    },
+    {
+      "method": "bokehme",
+      "arm": "native",
+      "author_commit": "8b3ed556dc146207c9bb39fccd078a113f8d1bd8",
+      "config": "configs/bokehme-track-a-frozen.json",
+      "config_sha256": "4e22a50d891265bab713d539da72aef7014a47cf0ea242fedf9a69d44ba45dc0",
+      "depth": "MiDaS v2.1 384",
+      "deviations": [
+        "Scale the square field to 576px, reflect-pad left/right to frozen 1024x576 and crop for scoring",
+        "Officially documented estimator family with an available pinned checkpoint variant"
+      ],
+      "device": "RTX 5090",
+      "stage": "full",
+      "completed": 36,
+      "failures": []
+    },
+    {
+      "method": "deeplens",
+      "arm": "native",
+      "author_commit": "3dbc1b04ba082b3b6b1dc0d944b3d18fa542ae2c",
+      "config": "configs/deeplens-track-a-frozen.json",
+      "config_sha256": "716bafef59772952d2bd8889671f1bed2b9755e4cdfc06f65ced99257ec2561c",
+      "depth": "Official DeepLens DepthNet",
+      "deviations": [
+        "Scale the square field to 576px, reflect-pad left/right to frozen 1024x576 and crop for scoring",
+        "Official DepthNet replaces the historical external disparity, with single SR and frozen saturation",
+        "Native click is the target pixel closest to the fitted P1 disparity"
+      ],
+      "device": "CPU (TF1)",
+      "stage": "full",
+      "completed": 36,
+      "failures": []
+    },
+    {
+      "method": "drbokeh",
+      "arm": "1c-depth",
+      "author_commit": "24d96e4fb76a698494e86835c84a7c45ae2ebc10",
+      "config": "configs/drbokeh-track-a-frozen.json",
+      "config_sha256": "39d318a4fa69ce444a09a5643ba8441dc60020c95b8ee0ee6e0a5369375e9b8b",
+      "depth": "1c aligned 5k EMA visible inverse depth",
+      "deviations": [
+        "Scale the square field to 576px, reflect-pad left/right to frozen 1024x576 and crop for scoring",
+        "Official RGB-only LDF alpha in place of the historical Synthetic GT-alpha branch",
+        "CUDA 12.8 sm_120 build of the frozen grid2d extension"
+      ],
+      "device": "RTX 5090",
+      "stage": "full",
+      "completed": 36,
+      "failures": []
+    },
+    {
+      "method": "drbokeh",
+      "arm": "native",
+      "author_commit": "24d96e4fb76a698494e86835c84a7c45ae2ebc10",
+      "config": "configs/drbokeh-track-a-frozen.json",
+      "config_sha256": "39d318a4fa69ce444a09a5643ba8441dc60020c95b8ee0ee6e0a5369375e9b8b",
+      "depth": "Author DPT-Large and LDF alpha",
+      "deviations": [
+        "Scale the square field to 576px, reflect-pad left/right to frozen 1024x576 and crop for scoring",
+        "Official RGB-only LDF alpha in place of the historical Synthetic GT-alpha branch",
+        "CUDA 12.8 sm_120 build of the frozen grid2d extension"
+      ],
+      "device": "RTX 5090",
+      "stage": "full",
+      "completed": 36,
+      "failures": []
+    },
+    {
+      "method": "magicbokeh",
+      "arm": "native",
+      "author_commit": "c672e630be350148131c119f8e8c2d669ac197b5",
+      "config": "configs/magicbokeh-track-a-frozen.json",
+      "config_sha256": "cb6c741c7bc682f025f7300c5f27c4f09a0a27814d6e1eb661d7df3f0e0aa30e",
+      "depth": "Official DAdepth ViT-L",
+      "deviations": [
+        "Scale the square field to 576px, reflect-pad left/right to frozen 1024x576 and crop for scoring",
+        "Native click is the target pixel closest to the fitted P1 disparity"
+      ],
+      "device": "RTX 5090",
+      "calibration": {
+        "scene": "independent two-plane edge",
+        "rows": [
+          {
+            "strength": 4.0,
+            "radius_px": 2.6836940505711904,
+            "ringing": 0.014322981572873329,
+            "K": 4.0,
+            "focus_xy": [
+              250,
+              26
+            ],
+            "focus_used": 0.7490196078431373,
+            "seed": 42
+          },
+          {
+            "strength": 8.0,
+            "radius_px": 6.025877728810809,
+            "ringing": 0.017035832825308482,
+            "K": 8.0,
+            "focus_xy": [
+              250,
+              26
+            ],
+            "focus_used": 0.7490196078431373,
+            "seed": 42
+          },
+          {
+            "strength": 16.0,
+            "radius_px": 9.398019133889408,
+            "ringing": 0.016296722354395575,
+            "K": 16.0,
+            "focus_xy": [
+              250,
+              26
+            ],
+            "focus_used": 0.7490196078431373,
+            "seed": 42
+          },
+          {
+            "strength": 32.0,
+            "radius_px": 15.685892087300196,
+            "ringing": 0.007976272265704666,
+            "K": 32.0,
+            "focus_xy": [
+              250,
+              26
+            ],
+            "focus_used": 0.7490196078431373,
+            "seed": 42
+          }
+        ],
+        "radius_per_native_strength": 1.0459686043656,
+        "monotonic": true,
+        "rmse_px": 1.2151420829197752
+      },
+      "stage": "full",
+      "completed": 36,
+      "failures": []
+    },
+    {
+      "method": "mpib",
+      "arm": "1c-depth",
+      "author_commit": "d77d93dd29b9ae75bcd18b3b70d89d715c1b56f8",
+      "config": "configs/mpib-track-a-frozen.json",
+      "config_sha256": "7928200ccb6c2dd5463729252258068776bfb4f2ac1f3c3c055b21e45a263337",
+      "depth": "1c aligned 5k EMA visible inverse depth",
+      "deviations": [
+        "Scale the square field to 576px, reflect-pad left/right to frozen 1024x576 and crop for scoring",
+        "Officially documented estimator family with an available pinned checkpoint variant"
+      ],
+      "device": "RTX 5090",
+      "stage": "full",
+      "completed": 36,
+      "failures": []
+    },
+    {
+      "method": "mpib",
+      "arm": "native",
+      "author_commit": "d77d93dd29b9ae75bcd18b3b70d89d715c1b56f8",
+      "config": "configs/mpib-track-a-frozen.json",
+      "config_sha256": "7928200ccb6c2dd5463729252258068776bfb4f2ac1f3c3c055b21e45a263337",
+      "depth": "DPT-Large MiDaS checkpoint",
+      "deviations": [
+        "Scale the square field to 576px, reflect-pad left/right to frozen 1024x576 and crop for scoring",
+        "Officially documented estimator family with an available pinned checkpoint variant"
+      ],
+      "device": "RTX 5090",
+      "stage": "full",
+      "completed": 36,
+      "failures": []
+    }
+  ],
+  "runtime": [
+    {
+      "method": "1c-query-f2",
+      "arm": "native",
+      "device": "RTX 5090",
+      "timed_render_cases": 72,
+      "render_mean_s": 0.8556800350132916,
+      "timed_depth_frames": 9,
+      "depth_mean_s": 0.0734103988442156,
+      "peak_allocated_gib": 2.3017020225524902,
+      "peak_reserved_gib": 3.25390625,
+      "sampled_vram_mib": null,
+      "sampled_peak_RSS_GiB": null
+    },
+    {
+      "method": "1c-visible-f2",
+      "arm": "native",
+      "device": "RTX 5090",
+      "timed_render_cases": 72,
+      "render_mean_s": 0.3684166644492911,
+      "timed_depth_frames": 9,
+      "depth_mean_s": 0.0734103988442156,
+      "peak_allocated_gib": 2.0208678245544434,
+      "peak_reserved_gib": 3.25390625,
+      "sampled_vram_mib": null,
+      "sampled_peak_RSS_GiB": null
+    },
+    {
+      "method": "A-color",
+      "arm": "native",
+      "device": "RTX 5090",
+      "timed_render_cases": 72,
+      "render_mean_s": 0.12363427582507332,
+      "timed_depth_frames": 0,
+      "depth_mean_s": null,
+      "peak_allocated_gib": 2.0231504440307617,
+      "peak_reserved_gib": 3.25390625,
+      "sampled_vram_mib": null,
+      "sampled_peak_RSS_GiB": null
+    },
+    {
+      "method": "bokehme",
+      "arm": "native",
+      "device": "RTX 5090",
+      "timed_render_cases": 36,
+      "render_mean_s": 0.03460461739450693,
+      "timed_depth_frames": 9,
+      "depth_mean_s": 0.044705499791436724,
+      "peak_allocated_gib": 0.7102141380310059,
+      "peak_reserved_gib": 0.79296875,
+      "sampled_vram_mib": 1404,
+      "sampled_peak_RSS_GiB": 1.5594024658203125
+    },
+    {
+      "method": "bokehme",
+      "arm": "1c-depth",
+      "device": "RTX 5090",
+      "timed_render_cases": 36,
+      "render_mean_s": 0.04621315882023838,
+      "timed_depth_frames": 0,
+      "depth_mean_s": null,
+      "peak_allocated_gib": 0.31250429153442383,
+      "peak_reserved_gib": 0.60546875,
+      "sampled_vram_mib": 1212,
+      "sampled_peak_RSS_GiB": 1.3579902648925781
+    },
+    {
+      "method": "mpib",
+      "arm": "native",
+      "device": "RTX 5090",
+      "timed_render_cases": 36,
+      "render_mean_s": 0.47738097194168305,
+      "timed_depth_frames": 9,
+      "depth_mean_s": 0.14375729279385674,
+      "peak_allocated_gib": 19.929466247558594,
+      "peak_reserved_gib": 20.037109375,
+      "sampled_vram_mib": 8198,
+      "sampled_peak_RSS_GiB": 3.469066619873047
+    },
+    {
+      "method": "mpib",
+      "arm": "1c-depth",
+      "device": "RTX 5090",
+      "timed_render_cases": 36,
+      "render_mean_s": 0.5051529191227423,
+      "timed_depth_frames": 0,
+      "depth_mean_s": null,
+      "peak_allocated_gib": 1.1084823608398438,
+      "peak_reserved_gib": 1.763671875,
+      "sampled_vram_mib": 2406,
+      "sampled_peak_RSS_GiB": 1.7162971496582031
+    },
+    {
+      "method": "drbokeh",
+      "arm": "native",
+      "device": "RTX 5090",
+      "timed_render_cases": 36,
+      "render_mean_s": 1.141299755519463,
+      "timed_depth_frames": 9,
+      "depth_mean_s": 0.06901254753271739,
+      "peak_allocated_gib": 1.9633588790893555,
+      "peak_reserved_gib": 2.333984375,
+      "sampled_vram_mib": 2998,
+      "sampled_peak_RSS_GiB": 3.7182388305664062
+    },
+    {
+      "method": "drbokeh",
+      "arm": "1c-depth",
+      "device": "RTX 5090",
+      "timed_render_cases": 36,
+      "render_mean_s": 1.1485776678762503,
+      "timed_depth_frames": 0,
+      "depth_mean_s": null,
+      "peak_allocated_gib": 1.9380254745483398,
+      "peak_reserved_gib": 2.21484375,
+      "sampled_vram_mib": 2868,
+      "sampled_peak_RSS_GiB": 3.715892791748047
+    },
+    {
+      "method": "any2bokeh",
+      "arm": "native",
+      "device": "RTX 5090",
+      "timed_render_cases": 0,
+      "render_mean_s": null,
+      "timed_depth_frames": 0,
+      "depth_mean_s": null,
+      "peak_allocated_gib": null,
+      "peak_reserved_gib": null,
+      "sampled_vram_mib": null,
+      "sampled_peak_RSS_GiB": null
+    },
+    {
+      "method": "magicbokeh",
+      "arm": "native",
+      "device": "RTX 5090",
+      "timed_render_cases": 36,
+      "render_mean_s": 1.449699307481448,
+      "timed_depth_frames": 9,
+      "depth_mean_s": 0.12502885651257303,
+      "peak_allocated_gib": 5.139299392700195,
+      "peak_reserved_gib": 5.966796875,
+      "sampled_vram_mib": 6714,
+      "sampled_peak_RSS_GiB": 5.788867950439453
+    },
+    {
+      "method": "bokehdiff",
+      "arm": "native",
+      "device": "RTX 5090",
+      "timed_render_cases": 36,
+      "render_mean_s": 1.100496226714717,
+      "timed_depth_frames": 9,
+      "depth_mean_s": 0.09957462259464794,
+      "peak_allocated_gib": 15.23660659790039,
+      "peak_reserved_gib": 18.58203125,
+      "sampled_vram_mib": 19630,
+      "sampled_peak_RSS_GiB": 10.268924713134766
+    },
+    {
+      "method": "deeplens",
+      "arm": "native",
+      "device": "TF1 CPU on RTX 5090 host",
+      "timed_render_cases": 36,
+      "render_mean_s": 2.5209864566309585,
+      "timed_depth_frames": 9,
+      "depth_mean_s": 0.3991740979254246,
+      "peak_allocated_gib": null,
+      "peak_reserved_gib": null,
+      "sampled_vram_mib": null,
+      "sampled_peak_RSS_GiB": null
+    }
+  ],
+  "job_resource_samples": {
+    "drbokeh-native-full": {
+      "sampled_gpu_MiB": 2998,
+      "process_peak_RSS_KiB": 3898856
+    },
+    "reference-122104-f030": {
+      "sampled_gpu_MiB": 3496,
+      "process_peak_RSS_KiB": 699644
+    },
+    "video-metric-scene-122104-broad-jobs": {
+      "sampled_gpu_MiB": 3496,
+      "process_peak_RSS_KiB": 693244
+    },
+    "any2bokeh-vda-smoke": {
+      "sampled_gpu_MiB": 7812,
+      "process_peak_RSS_KiB": 3824132
+    },
+    "drbokeh-1c-depth-smoke": {
+      "sampled_gpu_MiB": 2868,
+      "process_peak_RSS_KiB": 3895772
+    },
+    "reference-122104-f060": {
+      "sampled_gpu_MiB": 3496,
+      "process_peak_RSS_KiB": 706776
+    },
+    "reference-persistent-check": {
+      "sampled_gpu_MiB": 3496,
+      "process_peak_RSS_KiB": 705280
+    },
+    "video-metric-scene-122105-multilayer-jobs": {
+      "sampled_gpu_MiB": 3496,
+      "process_peak_RSS_KiB": 704744
+    },
+    "any2bokeh-w8-d8-smoke": {
+      "sampled_gpu_MiB": 20222,
+      "process_peak_RSS_KiB": 15470292
+    },
+    "drbokeh-1c-depth-full": {
+      "sampled_gpu_MiB": 2868,
+      "process_peak_RSS_KiB": 3896396
+    },
+    "video-metric-scene-122107-broad-jobs": {
+      "sampled_gpu_MiB": 3496,
+      "process_peak_RSS_KiB": 694804
+    },
+    "reference-122105-f001": {
+      "sampled_gpu_MiB": 3496,
+      "process_peak_RSS_KiB": 713268
+    },
+    "mpib-native-smoke": {
+      "sampled_gpu_MiB": 10612,
+      "process_peak_RSS_KiB": 3644264
+    },
+    "any2bokeh-w8-d8-scale-one-smoke": {
+      "sampled_gpu_MiB": 20222,
+      "process_peak_RSS_KiB": 15470192
+    },
+    "reference-122105-f030": {
+      "sampled_gpu_MiB": 3496,
+      "process_peak_RSS_KiB": 709576
+    },
+    "mpib-1c-depth-smoke": {
+      "sampled_gpu_MiB": 2406,
+      "process_peak_RSS_KiB": 1729464
+    },
+    "any2bokeh-w8-d4-scale-one-smoke": {
+      "sampled_gpu_MiB": 20202,
+      "process_peak_RSS_KiB": 15471564
+    },
+    "mpib-native-smoke-retry": {
+      "sampled_gpu_MiB": 11744,
+      "process_peak_RSS_KiB": 3643780
+    },
+    "mpib-1c-depth-full": {
+      "sampled_gpu_MiB": 2406,
+      "process_peak_RSS_KiB": 1799668
+    },
+    "reference-122105-f060": {
+      "sampled_gpu_MiB": 3496,
+      "process_peak_RSS_KiB": 706748
+    },
+    "any2bokeh-w6-d6-smoke": {
+      "sampled_gpu_MiB": 24418,
+      "process_peak_RSS_KiB": 15469940
+    },
+    "mpib-native-full": {
+      "sampled_gpu_MiB": 8198,
+      "process_peak_RSS_KiB": 3637580
+    },
+    "bokehme-native-smoke": {
+      "sampled_gpu_MiB": 1260,
+      "process_peak_RSS_KiB": 1634980
+    },
+    "reference-122107-f001": {
+      "sampled_gpu_MiB": 3496,
+      "process_peak_RSS_KiB": 697984
+    },
+    "any2bokeh-w6-d3-smoke": {
+      "sampled_gpu_MiB": 24432,
+      "process_peak_RSS_KiB": 15470432
+    },
+    "bokehme-native-full": {
+      "sampled_gpu_MiB": 1404,
+      "process_peak_RSS_KiB": 1635152
+    },
+    "reference-122107-f030": {
+      "sampled_gpu_MiB": 3496,
+      "process_peak_RSS_KiB": 703592
+    },
+    "any2bokeh-w4-d4-smoke": {
+      "sampled_gpu_MiB": 22412,
+      "process_peak_RSS_KiB": 15470616
+    },
+    "bokehme-1c-depth-smoke": {
+      "sampled_gpu_MiB": 924,
+      "process_peak_RSS_KiB": 1488224
+    },
+    "reference-122107-f060": {
+      "sampled_gpu_MiB": 3496,
+      "process_peak_RSS_KiB": 698020
+    },
+    "bokehme-1c-depth-full": {
+      "sampled_gpu_MiB": 1212,
+      "process_peak_RSS_KiB": 1423956
+    },
+    "magicbokeh-native-smoke": {
+      "sampled_gpu_MiB": 6608,
+      "process_peak_RSS_KiB": 6069928
+    },
+    "bokehdiff-native-smoke": {
+      "sampled_gpu_MiB": 19120,
+      "process_peak_RSS_KiB": 10766216
+    },
+    "magicbokeh-native-full": {
+      "sampled_gpu_MiB": 6714,
+      "process_peak_RSS_KiB": 6070068
+    },
+    "bokehdiff-native-full": {
+      "sampled_gpu_MiB": 19630,
+      "process_peak_RSS_KiB": 10767748
+    }
+  },
+  "missing_predictions": [
+    {
+      "scene": "metric-scene-122104-broad",
+      "frame": 1,
+      "aperture": 1.4,
+      "nominal_focus_m": 1.4,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122104-broad",
+      "frame": 1,
+      "aperture": 1.4,
+      "nominal_focus_m": 5.0,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122104-broad",
+      "frame": 1,
+      "aperture": 5.0,
+      "nominal_focus_m": 1.4,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122104-broad",
+      "frame": 1,
+      "aperture": 5.0,
+      "nominal_focus_m": 5.0,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122104-broad",
+      "frame": 30,
+      "aperture": 1.4,
+      "nominal_focus_m": 1.4,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122104-broad",
+      "frame": 30,
+      "aperture": 1.4,
+      "nominal_focus_m": 5.0,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122104-broad",
+      "frame": 30,
+      "aperture": 5.0,
+      "nominal_focus_m": 1.4,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122104-broad",
+      "frame": 30,
+      "aperture": 5.0,
+      "nominal_focus_m": 5.0,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122104-broad",
+      "frame": 60,
+      "aperture": 1.4,
+      "nominal_focus_m": 1.4,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122104-broad",
+      "frame": 60,
+      "aperture": 1.4,
+      "nominal_focus_m": 5.0,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122104-broad",
+      "frame": 60,
+      "aperture": 5.0,
+      "nominal_focus_m": 1.4,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122104-broad",
+      "frame": 60,
+      "aperture": 5.0,
+      "nominal_focus_m": 5.0,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "frame": 1,
+      "aperture": 1.4,
+      "nominal_focus_m": 1.4,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "frame": 1,
+      "aperture": 1.4,
+      "nominal_focus_m": 5.0,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "frame": 1,
+      "aperture": 5.0,
+      "nominal_focus_m": 1.4,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "frame": 1,
+      "aperture": 5.0,
+      "nominal_focus_m": 5.0,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "frame": 30,
+      "aperture": 1.4,
+      "nominal_focus_m": 1.4,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "frame": 30,
+      "aperture": 1.4,
+      "nominal_focus_m": 5.0,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "frame": 30,
+      "aperture": 5.0,
+      "nominal_focus_m": 1.4,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "frame": 30,
+      "aperture": 5.0,
+      "nominal_focus_m": 5.0,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "frame": 60,
+      "aperture": 1.4,
+      "nominal_focus_m": 1.4,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "frame": 60,
+      "aperture": 1.4,
+      "nominal_focus_m": 5.0,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "frame": 60,
+      "aperture": 5.0,
+      "nominal_focus_m": 1.4,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122105-multilayer",
+      "frame": 60,
+      "aperture": 5.0,
+      "nominal_focus_m": 5.0,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "frame": 1,
+      "aperture": 1.4,
+      "nominal_focus_m": 1.4,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "frame": 1,
+      "aperture": 1.4,
+      "nominal_focus_m": 5.0,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "frame": 1,
+      "aperture": 5.0,
+      "nominal_focus_m": 1.4,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "frame": 1,
+      "aperture": 5.0,
+      "nominal_focus_m": 5.0,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "frame": 30,
+      "aperture": 1.4,
+      "nominal_focus_m": 1.4,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "frame": 30,
+      "aperture": 1.4,
+      "nominal_focus_m": 5.0,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "frame": 30,
+      "aperture": 5.0,
+      "nominal_focus_m": 1.4,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "frame": 30,
+      "aperture": 5.0,
+      "nominal_focus_m": 5.0,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "frame": 60,
+      "aperture": 1.4,
+      "nominal_focus_m": 1.4,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "frame": 60,
+      "aperture": 1.4,
+      "nominal_focus_m": 5.0,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "frame": 60,
+      "aperture": 5.0,
+      "nominal_focus_m": 1.4,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    },
+    {
+      "scene": "metric-scene-122107-broad",
+      "frame": 60,
+      "aperture": 5.0,
+      "nominal_focus_m": 5.0,
+      "method": "any2bokeh",
+      "arm": "native",
+      "protocol": "P1"
+    }
+  ],
+  "completed_prediction_cases": 540,
+  "scored_region_rows": 1890,
+  "exclusions": {
+    "DoF-GS": "Defocused multiview input and per-scene optimization",
+    "DoF-Gaussian": "Defocused multiview input and per-scene optimization",
+    "2b": "Out of scope"
+  }
+}
