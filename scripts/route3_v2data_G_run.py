@@ -80,12 +80,13 @@ def git_publish(worktree, message, tiers='GR'):
     raise RuntimeError('Could not push the G/R release commit after three attempts')
 
 
-def publish_finished(worktree, counts, gpu_running):
+def publish_finished(worktree, counts):
     if not worktree:
         return
     outstanding_r, _ = ready_r()
-    states = dict(G=acquisition_done('G') and (not ready_g() or not gpu_running),
-                  R=counts['R'] >= R_TARGET or (acquisition_done('R') and (not outstanding_r or not gpu_running)))
+    states = dict(G=acquisition_done('G') and (not ready_g() or (DATA/'G/gpu-stop.json').exists()),
+                  R=counts['R'] >= R_TARGET or (acquisition_done('R') and
+                                               (not outstanding_r or (DATA/'R/gpu-stop.json').exists())))
     for tier, finished in states.items():
         receipt = DATA/tier/'release-git.json'
         if finished and not receipt.exists():
@@ -110,17 +111,24 @@ def main():
     pids = {name: getattr(args, f'{name}_pid') for name in WORKERS}
     attempts = {name: 0 for name in WORKERS}
     previous_report = 0.
+
+    def running(name):
+        child = children.get(name)
+        if child is not None:
+            return child.poll() is None
+        return pid_running(pids[name], WORKERS[name][0])
+
     # A coordinator plus three worker processes. Download threads are I/O bound.
     while True:
         cpu_done = {name: acquisition_done(name.upper()) for name in ('g', 'r')}
         for name, (script, _, _) in WORKERS.items():
             if name in cpu_done and cpu_done[name]:
                 continue
-            if pid_running(pids[name], script):
+            if running(name):
                 continue
             child = children.get(name)
             status = child.poll() if child is not None else None
-            if name == 'gpu' and all(cpu_done.values()) and (status == 0 or attempts[name] >= 2):
+            if name == 'gpu' and all(cpu_done.values()) and status == 0:
                 break
             if attempts[name] >= 2:
                 if name == 'gpu':
@@ -133,15 +141,14 @@ def main():
             children[name] = start_worker(name)
             pids[name] = children[name].pid
             attempts[name] += 1
-        gpu_running = pid_running(pids['gpu'], WORKERS['gpu'][0])
         if time.monotonic() - previous_report >= 120:
             counts = verified_snapshot()
-            publish_finished(args.git_worktree, counts, gpu_running)
+            publish_finished(args.git_worktree, counts)
             previous_report = time.monotonic()
-        if all(acquisition_done(tier) for tier in 'GR') and not gpu_running:
+        if all(acquisition_done(tier) for tier in 'GR') and not running('gpu'):
             break
         time.sleep(20)
-    publish_finished(args.git_worktree, verified_snapshot(), False)
+    publish_finished(args.git_worktree, verified_snapshot())
 
 
 if __name__ == '__main__':
