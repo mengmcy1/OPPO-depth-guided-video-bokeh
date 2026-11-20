@@ -2,14 +2,18 @@
 import argparse
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
+import fcntl
 import gzip
+from itertools import count
 import json
 import shutil
 import time
 
+import requests
+
 from route3_v2data_B_front import DATA, RESERVE_BYTES, write_json
 from route3_v2data_B_sources import (
-    CATALOGS, OBJAVERSE_PATHS, SKETCHFAB, SourceError, blendkit_catalog, gso_catalog,
+    CATALOGS, FUEL, OBJAVERSE_PATHS, SKETCHFAB, SourceError, blendkit_catalog, gso_asset,
     metadata, poly_catalog, prepare, request, sketchfab_auth, sketchfab_model, smithsonian_catalog,
     stable_limit,
 )
@@ -20,9 +24,50 @@ SEARCHES = ("household furniture","stone sculpture","household appliance","ceram
             "plant pot","office furniture","curved chair")
 
 
+def fuel_page(page):
+    params={"page":page,"per_page":100}
+    # A temporary transport failure must not invalidate earlier official pages.
+    for attempt in range(8):
+        with requests.Session() as client:
+            client.trust_env=bool(attempt%2)
+            try:
+                with client.get(FUEL,params=params,timeout=(6,14)) as response:
+                    if response.status_code==200:
+                        rows=response.json()
+                        if isinstance(rows,list):
+                            return rows
+                    if response.status_code==404:
+                        return []
+                    retry = response.headers.get("Retry-After","")
+                    delay = int(retry) if retry.isdecimal() else min(12,1+attempt)
+            except (requests.RequestException,ValueError):
+                delay = min(12,1+attempt)
+        time.sleep(delay)
+    raise SourceError(f"official Fuel catalog page {page} is temporarily unavailable")
+
+
+def fuel_catalog():
+    cache=V2/"source-inventory"/"gso-fuel-pages"
+    cache.mkdir(parents=True,exist_ok=True)
+    names=set()
+    for page in count(1):
+        path=cache/f"{page:04d}.json"
+        rows=json.loads(path.read_text()) if path.is_file() else fuel_page(page)
+        ids={row["name"] for row in rows}
+        if len(ids)!=len(rows) or ids.intersection(names):
+            raise SourceError("official Fuel pages repeated model IDs")
+        if not path.exists():
+            write_json(path,rows)
+            print("gso catalog page",page,len(rows),flush=True)
+        names.update(ids)
+        yield from (gso_asset(row) for row in rows)
+        if len(rows)<100:
+            break
+
+
 def unchecked_catalog(source, limit):
     if source == "gso":
-        yield from gso_catalog(None,full=True)
+        yield from fuel_catalog()
     elif source == "poly-haven":
         yield from poly_catalog(None,categories=("models",))
     elif source == "blendkit":
@@ -85,10 +130,14 @@ def fetch(source, limit, workers, retry=False):
     try:
         if source in {"sketchfab","objaverse"}:
             auth = sketchfab_auth()
-            catalog = {uid:uid for uid in sketchfab_ids(source,limit,auth)}
+            uids = ([row["asset_id"] for row in status["candidates"]]
+                    if retry and status.get("catalog_complete") else sketchfab_ids(source,limit,auth))
+            catalog = {uid:uid for uid in uids}
             status["account"] = "verified"
         else:
             catalog = {row["asset_id"]:row for row in unchecked_catalog(source,limit)}
+        if source=="gso" and len(catalog)<status.get("catalog_count",0):
+            raise SourceError("official Fuel listing is shorter than its previous full snapshot")
         sizes = sum(sum(file.get("size") or 0 for file in row.get("files",[]))
                     for row in catalog.values() if isinstance(row,dict))
         if shutil.disk_usage(output).free < RESERVE_BYTES+sizes:
@@ -107,7 +156,9 @@ def fetch(source, limit, workers, retry=False):
 
     todo = [key for key in catalog if key not in previous or (
         retry and previous[key]["status"]=="excluded" and
-        any(term in previous[key]["reason"] for term in ("HTTP 5","HTTP 429","SSLError","Timeout","ConnectionError","rate limited","ChunkedEncodingError")))]
+        (any(term in previous[key]["reason"] for term in
+             ("HTTP 5","HTTP 429","SSLError","Timeout","ConnectionError","rate limited","ChunkedEncodingError"))
+         or (source=="poly-haven" and previous[key]["reason"]=="KeyError")))]
     checkpoint = dict(source=name,status="downloading",catalog_count=len(catalog),estimated_source_bytes=sizes,
                       account=status.get("account"))
     with ThreadPoolExecutor(max_workers=workers) as pool:
@@ -129,7 +180,15 @@ def main():
     parser.add_argument("--workers",type=int,choices=range(1,7),default=4)
     parser.add_argument("--retry",action="store_true")
     args = parser.parse_args()
-    fetch(args.source,args.limit,args.workers,args.retry)
+    locks = V2/"source-candidates"
+    locks.mkdir(parents=True,exist_ok=True)
+    with (locks/f".{args.source}.lock").open("a") as lock:
+        try:
+            fcntl.flock(lock,fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            print(args.source,"another acquisition is active",flush=True)
+            return
+        fetch(args.source,args.limit,args.workers,args.retry)
 
 
 if __name__ == "__main__":

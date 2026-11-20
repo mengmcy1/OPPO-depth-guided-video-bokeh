@@ -165,16 +165,19 @@ def gso_catalog(limit, *, full=False):
         if not full or len(result) < 100:
             break
     for meta in stable_limit(rows, limit, lambda row: f"Google Scanned Objects:{row['name']}"):
-        key = meta["name"]
-        escaped = quote(key, safe="")
-        uri = f"{FUEL}/{escaped}/1/{escaped}.zip"
-        cc_by = meta["license_url"].rstrip("/").endswith("creativecommons.org/licenses/by/4.0")
-        yield asset(
-            "Google Scanned Objects", key, meta["owner"], CC_BY if cc_by else None, "mesh",
-            uri, meta["license_url"], page=f"https://app.gazebosim.org/GoogleResearch/fuel/models/{escaped}",
-            files=[dict(url=uri, name=key + ".zip", size=meta["filesize"])],
-            decimate=True,
-        )
+        yield gso_asset(meta)
+
+
+def gso_asset(meta):
+    key = meta["name"]
+    escaped = quote(key, safe="")
+    uri = f"{FUEL}/{escaped}/1/{escaped}.zip"
+    cc_by = meta["license_url"].rstrip("/").endswith("creativecommons.org/licenses/by/4.0")
+    return asset(
+        "Google Scanned Objects",key,meta["owner"],CC_BY if cc_by else None,"mesh",
+        uri,meta["license_url"],page=f"https://app.gazebosim.org/GoogleResearch/fuel/models/{escaped}",
+        files=[dict(url=uri,name=key+".zip",size=meta["filesize"])],decimate=True,
+    )
 
 
 def smithsonian_catalog(limit, *, start=0):
@@ -383,9 +386,17 @@ def poly_files(row):
     raw = metadata(row["download_channel"])
     kind = row["category"]
     if kind == "mesh":
-        main = raw["gltf"]["1k"]["gltf"]
-        relative = PurePosixPath(urlsplit(main["url"]).path).name
-        return [dict(main, name=relative)] + [dict(data, name=name) for name, data in main.get("include", {}).items()]
+        for kind in ("gltf","blend"):
+            sizes = raw.get(kind,{})
+            order = sorted(sizes,key=lambda size:(size!="1k",size))
+            for size in order:
+                main = sizes[size].get(kind)
+                if main and main.get("url"):
+                    relative = PurePosixPath(urlsplit(main["url"]).path).name
+                    return [dict(main,name=relative)] + [
+                        dict(data,name=name) for name,data in main.get("include",{}).items()
+                    ]
+        raise SourceError("official files API has no supported glTF or Blender mesh")
     if kind == "hdri":
         main = raw["hdri"]["1k"]["hdr"]
         return [dict(main, name=row["asset_id"] + ".hdr")]

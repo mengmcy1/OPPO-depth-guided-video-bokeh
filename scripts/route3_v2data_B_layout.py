@@ -1,6 +1,8 @@
 """Extract one complete 3D-FRONT room from the verified archives and load it in Blender."""
 import argparse
 from collections import defaultdict
+from contextlib import closing
+from itertools import islice
 import json
 from pathlib import Path, PurePosixPath
 import re
@@ -31,80 +33,97 @@ def group_files(archive, suffixes):
     return grouped
 
 
-def selected_room(layout, models, textures):
+def selected_room(layout, models, textures, *, partial=False):
     shapes = {row["uid"]:row for row in layout["mesh"]}
     furniture = {row["uid"]:row for row in layout["furniture"]}
     materials = {row["uid"]:row for row in layout["material"]}
     for room in layout["scene"]["room"]:
         if room.get("type") not in {"Bedroom", "LivingRoom", "LivingDiningRoom", "DiningRoom"}:
             continue
-        if any("furniture" in x.get("instanceid", "") and x["ref"] not in furniture for x in room["children"]):
+        if not partial and any("furniture" in x.get("instanceid","") and x["ref"] not in furniture
+                               for x in room["children"]):
             continue
         architecture = [(shapes[x["ref"]],x) for x in room["children"] if x["ref"] in shapes]
-        placed = [(furniture[x["ref"]],x) for x in room["children"] if x["ref"] in furniture]
-        if not placed or any(
-            row["jid"] not in models or "raw_model.obj" not in models[row["jid"]]
-            or "texture.png" not in models[row["jid"]] for row,_ in placed
-        ):
+        linked = [(furniture[x["ref"]],x) for x in room["children"] if x["ref"] in furniture]
+        placed = [(row,x) for row,x in linked if row["jid"] in models and
+                  {"raw_model.obj","texture.png"} <= models[row["jid"]].keys()]
+        if not placed or (not partial and len(placed)!=len(linked)):
             continue
+
+        def references(uid):
+            material = materials.get(uid,{})
+            return {texture_id(material[slot]) for slot in ("texture","normaltexture") if material.get(slot)}
+
+        if partial:
+            architecture = [(row,x) for row,x in architecture
+                            if references(row.get("material")) <= textures.keys()]
         kinds = {str(row["type"]).casefold() for row,_ in architecture}
         if not ("floor" in kinds and any("wall" in name for name in kinds)):
             continue
-        material_ids = {row["material"] for row,_ in architecture if "material" in row}
-        relevant = {key:materials[key] for key in material_ids if key in materials}
-        required = {
-            texture_id(mat[slot]) for mat in relevant.values()
-            for slot in ("texture","normaltexture") if mat.get(slot)
-        }
+        material_ids = {row["material"] for row,_ in architecture if row.get("material") in materials}
+        relevant = {key:materials[key] for key in material_ids}
+        required = set().union(*(references(key) for key in relevant))
         if required <= textures.keys():
             return room,architecture,placed,relevant,required
     return None
 
 
-def extract_room(destination, skip=0):
-    archives = DATA/"sources/3d-front"
+def room_candidates(*, partial=False):
+    root = DATA/"sources/3d-front"
     status = json.loads((DATA/"3d-front-status.json").read_text())
-    confirmed = {row["file"]:row for row in status.get("downloaded_files",[]) if row.get("verified")}
-    if set(confirmed) != set(ARCHIVES):
+    verified = {row["file"]:row for row in status.get("downloaded_files",[]) if row.get("verified")}
+    if set(verified) != set(ARCHIVES):
         raise ValueError("all three 3D-FRONT source archives need verified Drive hashes")
-    for name,row in confirmed.items():
-        if (archives/name).stat().st_size != row["bytes"]:
+    for name,row in verified.items():
+        if (root/name).stat().st_size != row["bytes"]:
             raise ValueError(f"3D-FRONT source archive size changed: {name}")
-    destination.mkdir(parents=True, exist_ok=False)
-    with ZipFile(archives/ARCHIVES[0]) as layouts, ZipFile(archives/ARCHIVES[1]) as tex, ZipFile(archives/ARCHIVES[2]) as geo:
-        textures = group_files(tex, {".png",".jpg",".jpeg"})
-        models = group_files(geo, {".obj",".mtl",".png",".jpg",".jpeg"})
-        members = sorted(name for name in layouts.namelist() if name.endswith(".json"))
-        for member in members:
-            layout = json.loads(layouts.read(member))
+    hashes = {name:row["sha256"] for name,row in verified.items()}
+    with ZipFile(root/ARCHIVES[0]) as layouts, ZipFile(root/ARCHIVES[1]) as tex, ZipFile(root/ARCHIVES[2]) as geo:
+        textures = group_files(tex,{".png",".jpg",".jpeg"})
+        models = group_files(geo,{".obj",".mtl",".png",".jpg",".jpeg"})
+        for name in sorted(n for n in layouts.namelist() if n.endswith(".json")):
+            layout = json.loads(layouts.read(name))
             try:
-                chosen = selected_room(layout, models, textures)
+                chosen = selected_room(layout,models,textures,partial=partial)
             except (KeyError,TypeError,IndexError):
                 continue
-            if chosen and skip == 0:
-                break
-            skip -= chosen is not None
-        else:
-            raise ValueError("no room could resolve all referenced furniture, textures and architecture")
-        room, architecture, placed, materials, required = chosen
-        fetch = [(geo,member,destination/"models"/jid/name)
-                 for jid in sorted({row["jid"] for row,_ in placed})
-                 for name,member in models[jid].items()]
-        fetch += [(tex,member,destination/"textures"/key/name)
-                  for key in sorted(required) for name,member in textures[key].items()]
-        if shutil.disk_usage(destination).free < RESERVE_BYTES+sum(entry.file_size for _,entry,_ in fetch):
-            raise RuntimeError("not enough disk for the room dependencies and 60 GiB reserve")
-        for archive, entry, path in fetch:
-            path.parent.mkdir(parents=True,exist_ok=True)
-            with archive.open(entry) as src, path.open("xb") as dst:
-                shutil.copyfileobj(src,dst)
-    spec = dict(layout_member=member,
-                layout_id=layout["uid"], room_id=room["instanceid"], room_type=room["type"],
+            if chosen:
+                yield name,layout["uid"],chosen,hashes,geo,tex,models,textures
+
+
+def extract_candidate(destination, candidate):
+    name,uid,chosen,hashes,geo,tex,models,textures = candidate
+    room,architecture,placed,materials,required = chosen
+    destination.mkdir(parents=True,exist_ok=False)
+    fetch = [(geo,member,destination/"models"/jid/name)
+             for jid in sorted({row["jid"] for row,_ in placed})
+             for name,member in models[jid].items()]
+    fetch += [(tex,member,destination/"textures"/key/name)
+              for key in sorted(required) for name,member in textures[key].items()]
+    if shutil.disk_usage(destination).free < RESERVE_BYTES+sum(entry.file_size for _,entry,_ in fetch):
+        raise RuntimeError("not enough disk for the room dependencies and 60 GiB reserve")
+    for archive, entry, path in fetch:
+        path.parent.mkdir(parents=True,exist_ok=True)
+        with archive.open(entry) as src,path.open("xb") as dst:
+            shutil.copyfileobj(src,dst)
+    represented = {x["ref"] for _,x in architecture+placed}
+    omitted = [x["ref"] for x in room["children"]
+               if x["ref"] not in represented and any(k in x.get("instanceid","") for k in ("mesh","furniture"))]
+    spec = dict(layout_member=name,layout_id=uid,room_id=room["instanceid"],room_type=room["type"],
+                omitted_unresolved_references=omitted,
                 architecture=[row for row,_ in architecture],
-                furniture=[{"jid":row["jid"],"instance":x} for row,x in placed], materials=materials,
-                texture_ids=sorted(required), source_sha256={k:v["sha256"] for k,v in confirmed.items()})
+                furniture=[{"jid":row["jid"],"instance":x} for row,x in placed],materials=materials,
+                texture_ids=sorted(required),source_sha256=hashes)
     write_json(destination/"room.json",spec)
     print("3D-FRONT room resolved",spec["room_type"],len(architecture),len(placed),len(required),flush=True)
+
+
+def extract_room(destination, skip=0):
+    with closing(room_candidates()) as candidates:
+        candidate = next(islice(candidates,skip,None),None)
+        if candidate is None:
+            raise ValueError("no room could resolve all referenced furniture, textures and architecture")
+        extract_candidate(destination,candidate)
 
 
 def load_material(name, color, image_path=None, normal_path=None):
@@ -254,7 +273,7 @@ def render_room(root):
     bpy.ops.render.render(write_still=True)
 
 
-def review_layout(source, destination, *, mesh_audit=None):
+def review_layout(source, destination, *, mesh_audit=None, architecture_meshes=None):
     import bpy
     from route3_v2data_B_mesh_check import Rejected, audit_mesh, check_materials
 
@@ -267,6 +286,9 @@ def review_layout(source, destination, *, mesh_audit=None):
     accepted, excluded = [], []
     for obj in originals:
         if obj.type != "MESH" or obj.hide_render:
+            continue
+        if architecture_meshes is not None and obj.data.name.partition(".")[0] not in architecture_meshes:
+            excluded.append(dict(object=obj.name,reason="furniture is pooled by its individual model ID"))
             continue
         evaluated = obj.evaluated_get(graph)
         mesh = bpy.data.meshes.new_from_object(evaluated,preserve_all_data_layers=True,depsgraph=graph)

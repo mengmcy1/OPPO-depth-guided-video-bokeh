@@ -48,7 +48,7 @@ def reserve(directory, bytes_for_job):
         raise RuntimeError("insufficient disk space for the batch plus the 60 GiB reserve")
 
 
-def run(command, log, *, uses_gpu=False, cpu_limit_bytes=28*GIB):
+def run(command, log, *, uses_gpu=False, cpu_limit_bytes=28*GIB, timeout_seconds=None):
     environment = dict(os.environ, CUDA_VISIBLE_DEVICES="0" if uses_gpu else "",
                        OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1")
     if uses_gpu:
@@ -76,13 +76,15 @@ def run(command, log, *, uses_gpu=False, cpu_limit_bytes=28*GIB):
                     pid, _, mib = line.partition(",")
                     if pid.strip().isdigit() and int(pid) in by_pid and mib.strip().isdigit():
                         peak_device = max(peak_device,int(mib)*2**20)
-            if peak_rss > cpu_limit_bytes or peak_device > 24*GIB:
+            timeout = timeout_seconds is not None and time.monotonic()-start > timeout_seconds
+            if peak_rss > cpu_limit_bytes or peak_device > 24*GIB or timeout:
                 for child in reversed(children):
                     try:
                         child.terminate()
                     except psutil.NoSuchProcess:
                         pass
-                problem = "scene exceeded the allowed CPU or GPU resident memory"
+                problem = (f"asset topology audit exceeded {timeout_seconds} seconds" if timeout
+                           else "scene exceeded the allowed CPU or GPU resident memory")
                 break
             time.sleep(.5)
         exit_code = job.wait()
@@ -92,6 +94,26 @@ def run(command, log, *, uses_gpu=False, cpu_limit_bytes=28*GIB):
     if problem or exit_code:
         raise RuntimeError(problem or f"scene process returned {exit_code}: {log.name}")
     return usage
+
+
+def verify_optical(labels, rows, frames=TRAIN_FRAMES):
+    expected = {f"f{frame:03d}-focus{focus}-N{aperture:g}"
+                for frame in frames for focus in (0,1) for aperture in (1.4,2.)}
+    if len(rows) != len(expected) or {row["id"] for row in rows} != expected:
+        raise ValueError("optical cases do not cover every frame, focus and aperture exactly once")
+    for row in rows:
+        case = row["id"]
+        with np.load(labels/f"{case}-optics.npz") as ldr, np.load(labels/f"{case}-hdr.npz") as hdr:
+            if any(file["rgb_linear"].shape!=(512,512,3)
+                   or file["rgb_linear"].dtype!=np.float16
+                   or not np.isfinite(file["rgb_linear"]).all() for file in (ldr,hdr)):
+                raise ValueError(f"invalid optical RGB products: {case}")
+            if ldr["aperture_xy"].shape != (row["subviews"],2):
+                raise ValueError(f"optical pupil samples do not match the recorded count: {case}")
+            rgb = ldr["rgb_linear"]
+            if rgb.min()<0 or rgb.max()>1:
+                raise ValueError(f"LDR consistency exceeded the linear sensor range: {case}")
+
 
 
 def verified_unit(unit, spec, generator, optical):
@@ -126,6 +148,8 @@ def verified_unit(unit, spec, generator, optical):
                 or any(value.shape != (512,512) for key,value in target.items() if key != "normal")
                 or not all(np.isfinite(value).all() for value in (*inputs.values(),*target.values()))):
             raise ValueError(f"B training loader returned invalid tensors in frame {frame}")
+    if optical:
+        verify_optical(labels,radiance["optical"])
     files = sorted(p for p in unit.rglob("*") if p.is_file() and p.suffix not in {".log",".part"})
     assets = spec["assets"]
     identity = {key: spec[key] for key in ("scene_id","seed","partition","category","distance","motion","camera_trajectory")}
@@ -300,6 +324,10 @@ def archive_status():
     for path in sorted((FORMAL_DATA/"units").glob("*/failures.json")):
         split_failures[path.parent.name] = dict(path=str(path.relative_to(FORMAL_DATA)),sha256=sha256(path),
                                                count=len(json.loads(path.read_text())))
+    optical_failures = FORMAL_DATA/"optical/failures.json"
+    if optical_failures.is_file():
+        split_failures["train_optical"] = dict(path=str(optical_failures.relative_to(FORMAL_DATA)),
+            sha256=sha256(optical_failures),count=len(json.loads(optical_failures.read_text())))
     state["generation_failures"] = split_failures
     manifest_digest = write_json(state_path,state)
     record = json.loads(RECORD.read_text())
@@ -331,36 +359,53 @@ def produce_optical(estimate):
         chosen = optical_selection(list(candidates.values()))
         write_json(selection,chosen)
     chosen = json.loads(selection.read_text())
+    fails = target/"failures.json"
+    failures = json.loads(fails.read_text()) if fails.is_file() else []
+    noted = {row["scene_id"] for row in failures}
+    counts = Counter(row["category"] for row in failures if row.get("counts_toward_pause",True))
     for item in chosen:
         if (FORMAL_DATA/"stop-after-current").is_file():
             return
         scene_id = item["scene_id"]
         unit = target/scene_id
-        if (unit/"manifest.json").is_file():
+        if (unit/"manifest.json").is_file() or scene_id in noted:
             continue
-        if unit.exists():
-            raise RuntimeError(f"optical attempt requires review after failure: {scene_id}")
+        category = item["primary_difficulty"]
+        if counts[category] >= 2:
+            failures.append(dict(scene_id=scene_id,category=category,
+                                 reason="two failed optical scenes for this difficulty",counts_toward_pause=False))
+            write_json(fails,failures)
+            continue
         reserve(FORMAL_DATA,estimate)
         source = FORMAL_DATA/"units/training"/scene_id
-        unit.mkdir()
-        labels = unit/"labels"
-        labels.mkdir()
-        for name in ("scene.blend","scene-spec.json"):
-            (unit/name).symlink_to(source/name)
-        for frame in (source/"labels").glob("*-pinhole.npz"):
-            (labels/frame.name).symlink_to(frame)
-        run(blender("route3_v2data_B_render.py","--scene",unit,"--optical-only"),unit/"render.log",uses_gpu=True)
-        audit = json.loads((labels/"optical-audit.json").read_text())
-        if len(audit["optical"]) != 52:
-            raise ValueError(f"incomplete optical configurations: {scene_id}")
-        render_products = sorted(p for p in labels.glob("*.npz") if not p.is_symlink())
-        outputs = [dict(path=str(p.relative_to(FORMAL_DATA)),bytes=p.stat().st_size,sha256=sha256(p)) for p in render_products]
-        write_json(unit/"manifest.json",dict(
-            **item, generator_version=candidates[scene_id]["generator_version"],
-            partition="training",geometry_manifest_sha256=sha256(source/"manifest.json"),
-            selection_sha256=sha256(selection),bytes=sum(file["bytes"] for file in outputs),files=outputs,
-        ))
+        try:
+            if unit.exists():
+                raise RuntimeError("prior incomplete optical attempt was preserved")
+            unit.mkdir()
+            labels = unit/"labels"
+            labels.mkdir()
+            for name in ("scene.blend","scene-spec.json"):
+                (unit/name).symlink_to(source/name)
+            for frame in (source/"labels").glob("*-pinhole.npz"):
+                (labels/frame.name).symlink_to(frame)
+            run(blender("route3_v2data_B_render.py","--scene",unit,"--optical-only"),
+                unit/"render.log",uses_gpu=True)
+            audit = json.loads((labels/"optical-audit.json").read_text())
+            verify_optical(labels,audit["optical"])
+            products = sorted(p for p in labels.glob("*.npz") if not p.is_symlink())
+            outputs = [dict(path=str(p.relative_to(FORMAL_DATA)),bytes=p.stat().st_size,sha256=sha256(p))
+                       for p in products]
+            write_json(unit/"manifest.json",dict(
+                **item,generator_version=candidates[scene_id]["generator_version"],
+                partition="training",geometry_manifest_sha256=sha256(source/"manifest.json"),
+                selection_sha256=sha256(selection),bytes=sum(file["bytes"] for file in outputs),files=outputs,
+            ))
+        except (RuntimeError,ValueError,OSError) as exc:
+            counts[category] += 1
+            failures.append(dict(scene_id=scene_id,category=category,reason=str(exc)))
+            write_json(fails,failures)
         archive_status()
+    archive_status()
 
 
 def main():

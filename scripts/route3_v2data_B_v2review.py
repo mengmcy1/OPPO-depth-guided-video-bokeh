@@ -1,9 +1,8 @@
 """Review staged B v2 meshes concurrently, with a resumable audit per source."""
 import argparse
 from collections import Counter
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
 import hashlib
-from itertools import islice
 import json
 import time
 
@@ -27,7 +26,7 @@ def review(source, rows):
     try:
         run(blender("route3_v2data_B_mesh_check.py","--base",V2,"--candidates",inputs,
                     "--output",output,"--allow-open",threads=2),
-            directory/"audit.log",cpu_limit_bytes=4*GIB)
+            directory/"audit.log",cpu_limit_bytes=4*GIB,timeout_seconds=240)
     except RuntimeError as exc:
         if len(rows)>1:
             pivot=len(rows)//2
@@ -48,30 +47,48 @@ def watch(sources, workers, retry_worker_errors):
             if not (retry_worker_errors and row.get("reason","").startswith("scene process returned "))
         }
     with ThreadPoolExecutor(max_workers=workers) as pool:
+        running = {}
+        next_source = 0
         while True:
-            shards = []
-            complete = set()
+            snapshots = {}
+            inflight = {(source,row["asset_id"]) for source,rows in running.values() for row in rows}
+            todo = {}
             for source in sources:
                 path = V2/"source-candidates"/(source+".json")
                 if not path.is_file():
                     continue
-                snapshot=json.loads(path.read_text())
-                todo = [row for row in snapshot["candidates"] if row["status"]=="pending_mesh_checks"
-                        and row["asset_id"] not in cache[source]]
-                if not todo and (snapshot.get("catalog_complete") or snapshot["status"] in {
-                    "待凭据","catalog_unavailable","complete",
-                }):
-                    complete.add(source)
+                snapshot = json.loads(path.read_text())
+                snapshots[source] = snapshot
+                todo[source] = [row for row in snapshot["candidates"] if row["status"]=="pending_mesh_checks"
+                                and row["asset_id"] not in cache[source] and (source,row["asset_id"]) not in inflight]
+            for offset in range(len(sources)):
+                if len(running) == workers:
+                    break
+                source = sources[(next_source+offset)%len(sources)]
+                waiting = todo.get(source,[])
+                if not waiting:
                     continue
-                for offset in range(0,min(len(todo),24),6):
-                    shards.append((source,todo[offset:offset+6]))
-            if len(complete)==len(sources):
-                break
-            if not shards:
+                if (waiting[0].get("source_face_count") or 0) > 250000:
+                    shard = waiting[:1]
+                else:
+                    boundary = next((i for i,r in enumerate(waiting[:6])
+                                     if (r.get("source_face_count") or 0)>250000),6)
+                    shard = waiting[:boundary]
+                task = pool.submit(review,source,shard)
+                running[task] = (source,shard)
+            next_source = (next_source+1)%len(sources)
+            if not running:
+                if all(source in snapshots and not todo[source] and
+                       (snapshots[source].get("catalog_complete") or snapshots[source]["status"] in {
+                           "待凭据","catalog_unavailable","complete",
+                       }) for source in sources):
+                    return
                 time.sleep(12)
                 continue
-            for source, rows in zip((source for source, _ in shards),pool.map(lambda job:review(*job),shards)):
-                cache[source].update((row["asset_id"],row) for row in rows)
+            done,_ = wait(running,timeout=12,return_when=FIRST_COMPLETED)
+            for task in done:
+                source,_ = running.pop(task)
+                cache[source].update((row["asset_id"],row) for row in task.result())
                 write_json(audits/(source+".json"),list(cache[source].values()))
                 print(source,"reviewed",len(cache[source]),dict(Counter(
                     row["status"] for row in cache[source].values())),flush=True)

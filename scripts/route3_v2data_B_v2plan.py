@@ -3,6 +3,7 @@ import argparse
 from collections import Counter, defaultdict
 import hashlib
 import json
+import shutil
 from pathlib import Path
 from tempfile import mkdtemp
 
@@ -170,13 +171,40 @@ def freeze(registry, specs, coverage, labels, sources):
     rules=json.dumps(row["rules"],sort_keys=True,ensure_ascii=False,separators=(",",":")).encode()
     if hashlib.sha256(rules).hexdigest()!=row["rules_sha256"]:
         raise ValueError("the pre-registered v2 rules digest changed")
-    if (V2/"sealed-scene-plans").exists():
-        raise FileExistsError("v2 is already sealed")
-    row.update(status="coverage_written_before_seal",preseal_coverage=coverage,source_dispositions=sources)
+    sealed = V2/"sealed-scene-plans"
+    if (V2/"manifest.json").is_file():
+        manifest = load(V2/"manifest.json")
+        hashes = load(sealed/"sha256.json")
+        if manifest["scene_plan_sha256"] != hashes or any(
+            digest(sealed/(mode+".json"))!=expected for mode,expected in hashes.items()
+        ):
+            raise ValueError("the existing sealed v2 plans have changed")
+        if next(iter(hashes),None) and load(sealed/"training.json")["generator_code"]!=generator_code():
+            raise ValueError("the current code differs from the sealed v2 generator")
+        print(manifest["generator_version"],hashes,flush=True)
+        return
+    proofs = {
+        "open_layout_rays":labels,
+        "imported_occluder":V2/"qualification/imported-foreground-world-meters/manifest.json",
+        "multilayer_imports":V2/"qualification/multilayer-imports/validation.json",
+        "optical_reference":V2/"qualification/optical-imported-f030/validation.json",
+    }
+    row.update(status="coverage_written_before_seal",preseal_coverage=coverage,source_dispositions=sources,
+               qualification_evidence={name:dict(path=str(path.relative_to(V2)),sha256=digest(path))
+                                       for name,path in proofs.items()})
+    optics=load(proofs["optical_reference"])
+    row["disk_preflight"] = dict(measured_geometry_trial_bytes=load(proofs["imported_occluder"])["bytes"],
+         estimated_optical_per_unit_bytes=optics["estimated_full_unit_bytes"],
+         geometry_unit_budget_bytes=2**30,free_before_seal_bytes=shutil.disk_usage(V2).free,
+         reserve_bytes=row["rules"]["disk_reserve_bytes"])
+    if row["disk_preflight"]["free_before_seal_bytes"] < row["rules"]["disk_reserve_bytes"]+2**30:
+        raise ValueError("insufficient disk for the first v2 unit and 60 GiB reserve")
     write_json(RECORD,record)
 
     registry=dict(registry,status="frozen-v2",open_mesh_audit_sha256=digest(labels),sources=sources)
     registry_path=V2/"asset-registry-v2.json"
+    if sealed.is_dir() and load(registry_path)!=registry:
+        raise ValueError("material snapshot no longer matches the interrupted v2 seal")
     checksum=write_json(registry_path,registry)
     authors=V2/"asset-attribution-v2.json"
     attributions=load(V2/"asset-attribution-provisional.json")
@@ -184,13 +212,22 @@ def freeze(registry, specs, coverage, labels, sources):
     code=generator_code()
     release_bytes=json.dumps([code,checksum,row["rules_sha256"]],sort_keys=True).encode()
     version="B-v2-"+hashlib.sha256(release_bytes).hexdigest()[:12]
-    stage=Path(mkdtemp(dir=V2,prefix=".sealing-"))
-    hashes={}
-    for mode, scenes in specs.items():
-        hashes[mode]=write_json(stage/(mode+".json"),dict(generator_version=version, generator_code=code,
-                quota_sha256=digest(QUOTA),registry_sha256=checksum, rules_sha256=row["rules_sha256"],scenes=scenes))
-    write_json(stage/"sha256.json",hashes)
-    stage.rename(V2/"sealed-scene-plans")
+    if sealed.is_dir():
+        hashes=load(sealed/"sha256.json")
+        for mode in specs:
+            path=sealed/(mode+".json")
+            saved=load(path)
+            if (digest(path)!=hashes.get(mode) or saved["generator_version"]!=version
+                    or saved["generator_code"]!=code or saved["registry_sha256"]!=checksum):
+                raise ValueError(f"interrupted seal for {mode} does not match this release")
+    else:
+        stage=Path(mkdtemp(dir=V2,prefix=".sealing-"))
+        hashes={}
+        for mode, scenes in specs.items():
+            hashes[mode]=write_json(stage/(mode+".json"),dict(generator_version=version, generator_code=code,
+                    quota_sha256=digest(QUOTA),registry_sha256=checksum, rules_sha256=row["rules_sha256"],scenes=scenes))
+        write_json(stage/"sha256.json",hashes)
+        stage.rename(sealed)
     manifest=V2/"manifest.json"
     target=row["rules"]["generation_targets"]
     manifest_sha=write_json(manifest,dict(archive="B/v2",status="in_progress",data_version="v2",
@@ -226,6 +263,16 @@ def main():
     coverage=usage(specs,sorted({row["occlusion"] for row in config["geometry"]["quota_cells"]}))
     write_json(V2/"preseal-coverage.json",coverage)
     if args.freeze:
+        if any(row["source"]=="3D-FRONT" and row.get("asset_role")!="architectural_layout"
+               for row in registry["usable"]):
+            raise ValueError("an unisolated room has furniture dependencies that cross material pools")
+        for path in ("qualification/multilayer-imports/validation.json",
+                     "qualification/optical-imported-f030/validation.json"):
+            if not load(V2/path).get("passed"):
+                raise ValueError(f"v2 trial is incomplete: {path}")
+        trial=load(V2/"qualification/imported-foreground-world-meters/manifest.json")
+        if not trial or len(trial.get("scene_supervision",[]))!=13:
+            raise ValueError("the v2 imported-occluder trial has not completed its normal entry checks")
         freeze(registry,specs,coverage,labels,sources)
 
 
