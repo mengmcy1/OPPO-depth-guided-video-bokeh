@@ -5,6 +5,7 @@ import numpy as np
 
 
 MARGIN_PX = 8
+MIN_WORLD_HEIGHT_M = 0.
 MID_FRAME = 30
 TARGET_RANGE = (.3, .7)
 TARGET_TOLERANCE = .02
@@ -18,6 +19,7 @@ FRAMING_SCALES = (1., .9, .8, .65, .5, .35)
 def policy(frames):
     return dict(
         middle_frame=MID_FRAME, label_frames=list(frames), margin_px=MARGIN_PX,
+        minimum_actor_bbox_height_m=MIN_WORLD_HEIGHT_M,
         middle_overlap_target_range=list(TARGET_RANGE), target_tolerance=TARGET_TOLERANCE,
         all_frame_max_overlap=MAX_FRAME_OCCLUSION, minimum_depth_gap_fraction=MIN_GAP_FRACTION,
         maximum_actor_thickness_fraction=MAX_THICKNESS_FRACTION,
@@ -91,9 +93,10 @@ def place_layers(bounds, trajectory, frames, focal, width, nominal_gap, rng):
         for relative_scale in FRAMING_SCALES:
             scale = relative_scale * thickness_scale
             projected = projected_bounds(centers, offsets * scale, cameras, focal, width)
+            above_floor = centers[:, 2] - size[2] * scale / 2 >= MIN_WORLD_HEIGHT_M
             inside = ((projected[..., :2] >= MARGIN_PX).all(axis=(0, 2))
                       & (projected[..., 2:4] <= width - MARGIN_PX).all(axis=(0, 2))
-                      & (projected[..., 4] >= .003).all(axis=0))
+                      & (projected[..., 4] >= .003).all(axis=0) & above_floor)
             if not index:
                 valid = np.flatnonzero(inside)
                 if len(valid):
@@ -141,6 +144,7 @@ def place_layers(bounds, trajectory, frames, focal, width, nominal_gap, rng):
             fallback.append("closest_in_range")
         audits.append(dict(
             name=name, center_m=center.tolist(), scale=scale, thickness_scale=thickness_scale,
+            minimum_world_height_m=float(center[2] - size[2] * scale / 2),
             depth_range_m=list(depth_range), gap_to_previous_m=gap, target_overlap=target,
             middle_overlap=float(ratios[mid]), fallback=fallback,
             frames=[dict(frame=frame, projected_xyxy=box[:4].tolist(), overlap=float(fraction))

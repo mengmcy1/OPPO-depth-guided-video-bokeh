@@ -9,6 +9,7 @@ from threading import Event
 import time
 
 import numpy as np
+import psutil
 
 from route3_v2data_B_batch import (
     FORMAL_DATA, RECORD, finish_unit, prepare_geometry, reserve, sha256, write_json,
@@ -67,7 +68,24 @@ def final_smoke(unit, spec, version, execute):
     )
 
 
-def qualify(dest, estimate):
+def previous_placement_controls(path, version, code, config, specs):
+    previous = load(path)
+    if previous["status"] not in {"passed", "failed"} or previous["version"] != version or previous["policy"] != config:
+        raise ValueError("previous isolated run must be complete and use the same qualification scenes")
+    changed = {name for name in code if previous["generation_code"][name] != code[name]}
+    if changed != {"route3_v2data_B_placement.py"}:
+        raise ValueError("only the multiple_layers solver may differ when carrying forward the other categories")
+    unaffected = [key for key in config["smoke_training_scene_ids"] if specs[key]["category"] != "multiple_layers"]
+    if not set(unaffected) <= set(previous["smoke"]) or set(previous["invariance"]) != set(config["invariance_scene_ids"]):
+        raise ValueError("the previous run lacks one or more of the unchanged categories")
+    smoke = {key:previous["smoke"][key] for key in unaffected}
+    for key, row in smoke.items():
+        if row["passed"] and sha256(path.parent/"smoke"/key/"manifest.json") != row["manifest_sha256"]:
+            raise ValueError(f"the prior training smoke manifest was changed: {key}")
+    return smoke, previous["invariance"]
+
+
+def qualify(dest, estimate, previous_placement_proof=None):
     config = load(RECORD)["v2"]["p2_qualification_policy"]
     from route3_v2data_B_release import p2_generation_code
     code = p2_generation_code()
@@ -80,7 +98,14 @@ def qualify(dest, estimate):
     (dest/"invariance").mkdir()
     reserve(dest, estimate * len(config["smoke_training_scene_ids"]))
     (dest/"proof.json").touch()
-    smoke, checks = {}, {}
+    smoke, checks = ({}, {}) if previous_placement_proof is None else previous_placement_controls(
+        previous_placement_proof, config["version"], code, config, specs
+    )
+    source = None if previous_placement_proof is None else dict(
+        path=str(previous_placement_proof.resolve().relative_to(FORMAL_DATA.resolve())),
+        sha256=sha256(previous_placement_proof),
+        unchanged_smoke_ids=list(smoke), unchanged_invariance_ids=list(checks),
+    )
     start = time.monotonic()
     test_ids = config["smoke_training_scene_ids"]
     controls = config["invariance_scene_ids"]
@@ -88,12 +113,17 @@ def qualify(dest, estimate):
 
     def publish(status):
         proof = dict(status=status, version=version, generation_code=code, policy=config,
-                     smoke=smoke, invariance=checks, seconds=time.monotonic()-start)
+                     smoke=smoke, invariance=checks, seconds=time.monotonic()-start,
+                     unchanged_category_proof=source)
         write_json(dest/"proof.json", proof)
 
     with production_lock():
         if not (FORMAL_DATA/"stop-after-current").is_file():
             raise ValueError("qualification requires the formal dispatcher to remain drained")
+        if source:
+            record = load(RECORD)
+            record["v2"]["p2_dispatch"].update(status="running_grounded_multilayer_qualification")
+            write_json(RECORD, record)
         allocation = assigned_cpus()
         abort = Event()
         meter = RunMeter(allocation, abort)
@@ -101,8 +131,9 @@ def qualify(dest, estimate):
         gpu_exec = partial(execute_on, allocation[2], 18, abort)
         placement_ids = [scene_id for scene_id in test_ids if specs[scene_id]["category"] == "multiple_layers"]
         review = iter([(scene_id, "smoke") for scene_id in placement_ids]
-                      + [(scene_id, "invariance") for scene_id in controls]
-                      + [(scene_id, "smoke") for scene_id in test_ids if scene_id not in placement_ids])
+                      + [(scene_id, "invariance") for scene_id in controls if scene_id not in checks]
+                      + [(scene_id, "smoke") for scene_id in test_ids if scene_id not in placement_ids
+                         and scene_id not in smoke])
         ready = deque()
         cpu = gpu = None
         pending = next(review, None)
@@ -168,7 +199,18 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--measured-peak-unit-bytes", type=int, required=True)
+    parser.add_argument("--previous-placement-proof", type=Path)
+    parser.add_argument("--wait-for-pid", type=int, nargs="+", default=[])
     args = parser.parse_args()
     if args.measured_peak_unit_bytes <= 0:
         parser.error("the unit size must be positive")
-    raise SystemExit(0 if qualify(args.output.resolve(), args.measured_peak_unit_bytes) else 1)
+    for pid in args.wait_for_pid:
+        while True:
+            try:
+                if psutil.Process(pid).status() == psutil.STATUS_ZOMBIE:
+                    break
+            except psutil.NoSuchProcess:
+                break
+            time.sleep(5)
+    raise SystemExit(0 if qualify(args.output.resolve(), args.measured_peak_unit_bytes,
+                                 args.previous_placement_proof) else 1)

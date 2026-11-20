@@ -42,6 +42,7 @@ def qualification_summary(proof_path, proof):
         invariance=controls, smoke_passed=sum(row["passed"] for row in proof["smoke"].values()),
         invariance_passed=sum(row["passed"] for row in controls.values()),
         fallback_count=sum(row.get("fallback_count", 0) for row in proof["smoke"].values()),
+        unchanged_category_proof=proof.get("unchanged_category_proof"),
     )
 
 
@@ -171,11 +172,14 @@ def wait_for_proof(path, pid):
         if status == "failed" or not alive:
             with production_lock():
                 record = load(RECORD)["v2"]
-                if proof:
-                    record["p2_qualification"] = qualification_summary(path, proof)
-                record["p2_dispatch"].update(status="paused_qualification_failed", stop_after_current=True)
-                record["p2_rebuild"]["status"] = "blocked_before_archival"
-                record["p2_finish_eta"] = dict(status="blocked_by_qualification", reason=status or "no final proof")
+                if proof and proof["generation_code"] != p2_generation_code():
+                    record["p2_previous_qualification"] = qualification_summary(path, proof)
+                else:
+                    if proof:
+                        record["p2_qualification"] = qualification_summary(path, proof)
+                    record["p2_dispatch"].update(status="paused_qualification_failed", stop_after_current=True)
+                    record["p2_rebuild"]["status"] = "blocked_before_archival"
+                    record["p2_finish_eta"] = dict(status="blocked_by_qualification", reason=status or "no final proof")
                 all_records = load(RECORD)
                 all_records["v2"] = record
                 write_json(RECORD, all_records)

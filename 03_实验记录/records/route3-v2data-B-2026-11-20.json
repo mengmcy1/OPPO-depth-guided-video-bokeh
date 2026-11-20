@@ -1673,11 +1673,11 @@
       "continuation": "single B dispatcher with the shared GPU lock"
     },
     "generator_patch_p2": {
-      "status": "candidate_preregistered",
+      "status": "candidate_preregistered_after_ground_fix",
       "version": "B-v2-31aa7f9a4325-p2",
       "parent_version": "B-v2-31aa7f9a4325-p1",
       "parent_code_sha256": "e05ceea5195c9ec3b71cd552e91ef5ad464e6a019cf2d247c68b14aa5adfa903",
-      "generator_code_sha256": "1a9525c7ba0bbac61fdf196f76c32febaffa730e65d4023c5a5ce2619a23485f",
+      "generator_code_sha256": "9245dff69a4412fa77693ef43de66d79b7ee982525f883f17b0948c8106804f6",
       "changes": {
         "route3_v2data_B_batch.py": {
           "before": "7c0962b38cb4cf0257ff040631dd4ab63547dbea4a1cc64f691a6bca1cf8fe40",
@@ -1689,7 +1689,7 @@
         },
         "route3_v2data_B_placement.py": {
           "before": null,
-          "after": "90dbe3334d2c19b68920c3ec7c4846d7d779c4591cb6c796b3fca86e3867cc86"
+          "after": "e5e85c0d8a807eab1b5e8c250c4eab649d420822769cfd3401fa0fab167cd36e"
         },
         "route3_v2data_B_presence.py": {
           "before": null,
@@ -1894,9 +1894,9 @@
     "p2_dispatch": {
       "stop_after_current": true,
       "original_dispatch_drained": true,
-      "status": "running_isolated_qualification",
+      "status": "isolated_qualification_ground_fix_pending",
       "affected_inflight": "development-003-8c92e9e93c0ff003",
-      "qualification_output": "p2-review/visibility-qualification/proof.json"
+      "qualification_output": "p2-review/visibility-qualification-grounded/proof.json"
     },
     "multilayer_placement_policy_p2": {
       "middle_frame": 30,
@@ -1916,6 +1916,7 @@
         60
       ],
       "margin_px": 8,
+      "minimum_actor_bbox_height_m": 0.0,
       "middle_overlap_target_range": [
         0.3,
         0.7
@@ -2000,6 +2001,30 @@
       "vram_limit_bytes": 25769803776,
       "timing": "from acquired shared lock through the acceptance of both scenes, with queue time reported separately",
       "noise": "An exact match passes. Otherwise, independently render f030 with seed+1 at the same sample count, and require each LDR/HDR product's MAE and maximum absolute difference to stay below the corresponding peak independent-seed discrepancy for that scene and representation."
+    },
+    "p2_placement_candidate_rejection": {
+      "generator_code_sha256": "1a9525c7ba0bbac61fdf196f76c32febaffa730e65d4023c5a5ce2619a23485f",
+      "scope": "isolated training smoke only",
+      "scene_id": "training-121-15d84d54e54aae7e",
+      "layer": "foreground_import_01",
+      "label_frames_with_zero_center_hits": 13,
+      "midpoint_projected_overlap": 0.4323817871193911,
+      "rear_layer_world_height_m": [
+        -0.8423,
+        -0.4111
+      ],
+      "background_floor_top_m": -0.005,
+      "change": "reject box placements below z=0, a 5 mm clearance above the existing floor",
+      "corrected_analytical_replay": {
+        "minimum_rear_height_m": 2.474,
+        "midpoint_projected_overlap": 0.43453,
+        "proof": "p2-review/ground-height-geometry-diagnostic/center-hits.json",
+        "sha256": "0b4bdfe8a9591ed0e2405bbdd1f1193c3ec034a68fcef1ec1581d0f4b2120c0f",
+        "minimum_center_hits": [
+          85478,
+          7220
+        ]
+      }
     }
   }
 }

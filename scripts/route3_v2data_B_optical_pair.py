@@ -176,12 +176,21 @@ def paired_trial(estimate, allocation, version):
     report = dict(generator_version=version, policy=config, adopted=False,
                   products=str(path.relative_to(FORMAL_DATA)))
     sources = {key:FORMAL_DATA/"units/training"/key for key in ids}
-    fallback_root = FORMAL_DATA/"p2-review/visibility-qualification/smoke"
+    release = load(FORMAL_DATA/"generator-patch-p2.json")
+    proof_path = FORMAL_DATA/release["qualification"]["path"]
+    proof = load(proof_path)
     source_origin = {}
     for scene_id, source in sources.items():
         if load(source/"manifest.json").get("generator_version") != version:
-            sources[scene_id] = fallback_root/scene_id
-            source_origin[scene_id] = "preregistered isolated training qualification"
+            fallback_path = proof_path
+            previous = proof.get("unchanged_category_proof")
+            if previous and scene_id in previous["unchanged_smoke_ids"]:
+                fallback_path = FORMAL_DATA/previous["path"]
+            source = fallback_path.parent/"smoke"/scene_id
+            manifest = source/"manifest.json"
+            if manifest.is_file() and sha256(manifest) == proof["smoke"][scene_id]["manifest_sha256"]:
+                sources[scene_id] = source
+                source_origin[scene_id] = "preregistered isolated training qualification"
         else:
             source_origin[scene_id] = "formally admitted training unit"
     report["training_scene_sources"] = source_origin
