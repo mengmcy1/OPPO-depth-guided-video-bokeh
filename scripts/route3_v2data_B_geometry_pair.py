@@ -1,8 +1,7 @@
 """Isolated B geometry GPU qualification against admitted training artifacts."""
 import argparse
-from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
-from contextlib import contextmanager
+from contextlib import contextmanager, nullcontext
 from datetime import datetime, timezone
 import fcntl
 from functools import partial
@@ -64,12 +63,13 @@ def gpu_lease():
 class GeometryGPU:
     """Track both slots under the caller's one GPU lease."""
 
-    def __init__(self):
+    def __init__(self, abort=None):
         self.guard = Lock()
         self.active = {}
         self.phases = {}
         self.peak_rss = self.peak_vram = 0
         self.error = None
+        self.abort = abort
 
     def execute(self, cpus, command, log, *, uses_gpu=False):
         if not uses_gpu or log.stem not in PHASES:
@@ -97,7 +97,9 @@ class GeometryGPU:
                         else:
                             self.peak_rss = max(self.peak_rss, rss)
                             self.peak_vram = max(self.peak_vram, vram)
-                            if rss > RSS_CAP or vram > GPU_CAP:
+                            if self.abort is not None and self.abort.is_set():
+                                self.error = "dispatch exceeded the combined RSS cap"
+                            elif rss > RSS_CAP or vram > GPU_CAP:
                                 self.error = "geometry exceeded the combined RSS or VRAM cap"
                         if self.error:
                             stop_children(self.active.values())
@@ -121,23 +123,28 @@ class GeometryGPU:
                     peak_combined_vram_bytes=self.peak_vram, resource_error=self.error)
 
 
-def rerun(units, version, affinity):
-    meter = GeometryGPU()
-    errors = {}
+def finish_group(units, version, affinity, *, abort=None, monitor=None):
+    meter = GeometryGPU(abort)
+    results, errors = {}, {}
     before_lock = time.monotonic()
     with gpu_lease(), ThreadPoolExecutor(max_workers=len(units)) as pool:
         wait = time.monotonic() - before_lock
-        jobs = {
-            pool.submit(finish_unit, unit, load(unit/"scene-spec.json"), version,
-                        execute=partial(meter.execute, cpus)): unit
-            for unit, cpus in zip(units, affinity, strict=True)
-        }
-        for task, unit in jobs.items():
-            try:
-                task.result()
-            except (OSError, RuntimeError, ValueError, KeyError) as error:
-                errors[unit.name] = str(error)
-    return dict(**meter.report(), gpu_queue_seconds=wait, failures=errors)
+        with (monitor() if monitor else nullcontext()):
+            jobs = {
+                pool.submit(finish_unit, unit, load(unit/"scene-spec.json"), version,
+                            execute=partial(meter.execute, cpus)): unit
+                for unit, cpus in zip(units, affinity, strict=True)
+            }
+            for task, unit in jobs.items():
+                try:
+                    results[unit.name] = task.result()
+                except (OSError, RuntimeError, ValueError, KeyError) as error:
+                    errors[unit.name] = str(error)
+    return results, dict(**meter.report(), gpu_queue_seconds=wait, failures=errors)
+
+
+def rerun(units, version, affinity):
+    return finish_group(units, version, affinity)[1]
 
 
 def ordinal(array):
@@ -255,43 +262,7 @@ def trial():
     return receipt
 
 
-def guard_pending_optics():
-    """Let the legacy dispatcher finish geometry, then hold optics if a sealed unit failed."""
-    from route3_v2data_B_release import sealed_plan
-    plan, _ = sealed_plan(PLAN_DIR/"training.json")
-    stop = FORMAL_DATA/"stop-after-current"
-    specs = plan["scenes"]
-    failures_path = TRAINING/"failures.json"
-    evidence = REVIEW/"optical-geometry-gate.json"
-    while True:
-        failures = load(failures_path) or []
-        failed = {row["scene_id"] for row in failures}
-        blocked = Counter(row["category"] for row in failures if row.get("counts_toward_pause", True))
-        outstanding = [
-            spec for spec in specs if spec["scene_id"] not in failed and blocked[spec["category"]]<2
-            and not (TRAINING/spec["scene_id"]/"manifest.json").is_file()
-        ]
-        if not failures and not outstanding:
-            return
-        if failures and len(outstanding)<=1 and not stop.exists():
-            active = outstanding[0]["scene_id"] if outstanding else None
-            if active is None or (TRAINING/active/"render.log").exists():
-                try:
-                    with stop.open("x") as stream:
-                        stream.write("training optics requires admission of all sealed geometry scenes\n")
-                except FileExistsError:
-                    continue
-                write_json(evidence,dict(required=len(specs), remaining_active_geometry=active, failures=failures,
-                                         requested_at_utc=datetime.now(timezone.utc).isoformat()))
-                return
-        time.sleep(1 if len(outstanding)<5 else 20)
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--guard-pending-optics", action="store_true")
-    args = parser.parse_args()
-    if args.guard_pending_optics:
-        guard_pending_optics()
-    else:
-        print(trial()["adopted"], flush=True)
+    parser.parse_args()
+    print(trial()["adopted"], flush=True)

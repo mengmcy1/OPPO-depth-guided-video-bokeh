@@ -1,4 +1,4 @@
-"""Prepare B training geometry with three CPU workers and a single GPU lane."""
+"""Prepare B training geometry with a bounded CPU queue and qualified GPU slots."""
 import argparse
 from collections import Counter, defaultdict, deque
 from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
@@ -21,6 +21,11 @@ from route3_v2data_B_batch import (
     reserve, sha256, write_json,
 )
 from route3_v2data_B_dispatch import STOP, RunMeter, execute_on, production_lock, publish_measurement
+from route3_v2data_B_geometry_pair import PAIR_CPUS, finish_group
+from route3_v2data_B_geometry_slots import (
+    EXTRA_CPU, NOISE_RESULT, PAIR_HANDOFF, QUEUE_MIN, SURVEY_UNITS, Survey, install_gpu_dispatch,
+    optical_gate, preserve_for_retry, process_gpu_samples, update_slot_eta,
+)
 from route3_v2data_B_optical_pair import execute_serial_optical, paired_trial, produce_pairs, record_trial
 from route3_v2data_B_plan import load
 from route3_v2data_B_release import (
@@ -223,7 +228,7 @@ def save_first_thirty(telemetry, accepted, trial):
     return result
 
 
-def dispatch_training(plan, estimate, allocation, publish_worktree=None):
+def dispatch_training(plan, estimate, allocation, publish_worktree=None, *, gpu_patch=None, extra_cores=()):
     coordinator, geometry, gpu = allocation
     version=plan["effective_generator_version"]
     TRAINING.mkdir(parents=True,exist_ok=True)
@@ -247,6 +252,33 @@ def dispatch_training(plan, estimate, allocation, publish_worktree=None):
     devices=deque(geometry)
     attempted=accepted=0
     peak_ready=len(ready)
+    live = load(RECORD)["v2"]
+    switch = live.get("geometry_pair_fallback")
+    survey = Survey()
+    pair_enabled = bool(gpu_patch and gpu_patch["adopted"] and not switch)
+    survey_done = bool(live.get("geometry_pair_first_30"))
+    if live.get("geometry_pair_extra_worker") and extra_cores:
+        survey.added_cpu = live["geometry_pair_extra_worker"]
+
+    def enable_extra_worker():
+        devices.append(extra_cores)
+        meter.allocation = (coordinator, [*meter.allocation[1],*extra_cores], gpu)
+
+    if survey.added_cpu:
+        enable_extra_worker()
+
+    def save_pair_record(**values):
+        record = load(RECORD)
+        record["v2"].update(values)
+        write_json(RECORD,record)
+
+    def complete_pair_survey():
+        nonlocal survey_done
+        if survey.started is not None and not survey_done:
+            survey_done = True
+            save_pair_record(geometry_pair_first_30=survey.report(meter, fallback=switch))
+            summarize()
+            report_snapshot(publish_worktree,run_dir/"publish-geometry-pair-first30.log")
     failed_disk=False
     trial_result=None
     telemetry=None
@@ -264,19 +296,28 @@ def dispatch_training(plan, estimate, allocation, publish_worktree=None):
         snapshot=meter.report("training",attempted,accepted)
         snapshot.update(scene_slots=CPU_WORKERS+1,seconds=elapsed,accepted_per_hour=accepted*3600/elapsed,
                         generator_version=version,partition_dispatch_finished=completed,
-                        cpu_workers=CPU_WORKERS,ready_queue_limit=READY_LIMIT,peak_ready_queue=peak_ready)
+                        cpu_workers=CPU_WORKERS+bool(survey.added_cpu),ready_queue_limit=READY_LIMIT,
+                        peak_ready_queue=peak_ready,gpu_geometry_slots=2 if pair_enabled else 1)
         publish_measurement(snapshot,False)
         record=load(RECORD)
         record["v2"]["dispatch_cpu_workers"].update(
             ready_queue_peak=peak_ready,peak_combined_rss_bytes=meter.peak_rss,
             sampled_peak_cpu_equivalents=meter.peak_cpu_equivalents,
         )
+        if gpu_patch:
+            update_slot_eta(record["v2"],failures)
         write_json(RECORD,record)
 
-    with (run_dir/"gpu-utilization-first30.csv").open("x",newline="") as samples, ThreadPoolExecutor(max_workers=4) as pool:
+    with (run_dir/"gpu-utilization-first30.csv").open("x",newline="") as samples, ThreadPoolExecutor(max_workers=6) as pool:
         prepared_jobs={}
         active=None
-        trial=pool.submit(exclusive_trial,estimate,(coordinator,[],gpu),version,abort)
+        if gpu_patch:
+            trial_result = load(FORMAL_DATA/"p2-review/paired-optical-result.json")
+            start_geometry = time.monotonic()
+            trial = None
+        else:
+            trial=pool.submit(exclusive_trial,estimate,(coordinator,[],gpu),version,abort)
+        retries = set()
         while pending or ready or prepared_jobs or active or trial:
             if trial and trial.done():
                 trial_result=trial.result()
@@ -290,17 +331,41 @@ def dispatch_training(plan, estimate, allocation, publish_worktree=None):
                 summarize()
                 report_snapshot(publish_worktree,run_dir/"publish-training-first30.log")
             running_allowed=not STOP.is_file() and not abort.is_set()
+            if pair_enabled and not survey_done:
+                survey.ready(len(ready))
+                if len(ready)<QUEUE_MIN and not survey.added_cpu and extra_cores and pending and running_allowed:
+                    enable_extra_worker()
+                    survey.added_cpu = dict(cpu_ids=extra_cores,ready_at_activation=len(ready),
+                                            activated_at_utc=datetime.now(timezone.utc).isoformat())
+                    save_pair_record(geometry_pair_extra_worker=survey.added_cpu)
             if trial is None and active is None and ready and running_allowed:
                 if telemetry and first_thirty is None:
                     telemetry.ready_at_gpu_dispatch.append(len(ready))
-                spec,unit=ready.popleft()
-                if blocked[spec["category"]]>=2:
-                    fail(spec,"two failed scenes in category",False)
-                else:
-                    execute=partial(execute_gpu,gpu,abort,run_dir)
-                    active=(pool.submit(finish_unit,unit,spec,version,execute=execute),spec,unit)
+                width=2 if pair_enabled else 1
+                group=[]
+                while len(group)<width and ready:
+                    spec,unit=ready.popleft()
+                    if blocked[spec["category"]]>=2 and unit.name not in retries:
+                        fail(spec,"two failed scenes in category",False)
+                    else:
+                        group.append((spec,unit))
+                if group:
+                    if pair_enabled:
+                        if not survey_done:
+                            survey.ready(len(ready))
+                        trace = run_dir/f"{group[0][1].name}-pmon.txt" if not survey_done else None
+                        if survey.started is None:
+                            survey.started=time.monotonic()
+                        units=[unit for _,unit in group]
+                        future=pool.submit(finish_group,units,version,PAIR_CPUS[:len(units)],abort=abort,
+                                           monitor=partial(process_gpu_samples,trace) if trace else None)
+                        active=(future,group,trace)
+                    else:
+                        spec,unit=group[0]
+                        execute=partial(execute_gpu,gpu,abort,run_dir)
+                        active=(pool.submit(finish_unit,unit,spec,version,execute=execute),group,None)
             while devices and pending and running_allowed and not failed_disk and len(ready)+len(prepared_jobs)<READY_LIMIT:
-                budget_slots=len(ready)+len(prepared_jobs)+int(active is not None)+1
+                budget_slots=len(ready)+len(prepared_jobs)+(len(active[1]) if active else 0)+1
                 free=shutil.disk_usage(FORMAL_DATA).free
                 if free < RESERVE_BYTES+estimate*budget_slots:
                     failed_disk = free<RESERVE_BYTES+estimate
@@ -324,7 +389,7 @@ def dispatch_training(plan, estimate, allocation, publish_worktree=None):
                 futures.append(trial)
             meter.sample(labels_busy=bool(prepared_jobs),gpu_busy=bool(active or trial))
             if telemetry and first_thirty is None:
-                telemetry.sample(active[2] if active else None,len(ready))
+                telemetry.sample(active[1][0][1] if active else None,len(ready))
             if not futures:
                 if running_allowed and ready:
                     continue
@@ -342,20 +407,47 @@ def dispatch_training(plan, estimate, allocation, publish_worktree=None):
                     ready.append((spec,unit))
                     peak_ready=max(peak_ready,len(ready))
             if active and active[0] in done:
-                task,spec,unit=active
+                task,group,trace=active
+                report=None
                 try:
-                    result=task.result()
-                    write_json(unit/"manifest.json",result)
-                    accepted+=1
-                    if telemetry and first_thirty is None:
-                        telemetry.complete(unit)
-                except (OSError,RuntimeError,ValueError) as error:
-                    fail(spec,error)
+                    if pair_enabled:
+                        results,report=task.result()
+                        errors=report["failures"]
+                    else:
+                        results={group[0][1].name:task.result()}
+                        errors={}
+                except (OSError,RuntimeError,ValueError,KeyError,subprocess.SubprocessError) as error:
+                    results,errors={},dict.fromkeys((unit.name for _,unit in group),str(error))
+                dual = pair_enabled
+                if dual and errors:
+                    pair_enabled=False
+                    switch=dict(at_utc=datetime.now(timezone.utc).isoformat(), failures=errors, archived_attempts={})
+                for spec,unit in group:
+                    if unit.name in results:
+                        write_json(unit/"manifest.json",results[unit.name])
+                        accepted+=1
+                        if telemetry and first_thirty is None:
+                            telemetry.complete(unit)
+                    elif dual:
+                        switch["archived_attempts"][unit.name]=preserve_for_retry(unit,run_dir)
+                        write_json(PREPARED/f"{unit.name}.json",prepared_receipt(unit,version))
+                        retries.add(unit.name)
+                        ready.appendleft((spec,unit))
+                    else:
+                        fail(spec,errors[unit.name])
+                if dual and errors:
+                    save_pair_record(geometry_pair_fallback=switch)
+                if dual and trace and report:
+                    survey.track(report,trace,len(ready),len(results))
                 active=None
                 archive_status()
-                if accepted and accepted%4==0:
+                if accepted and (dual or accepted%4==0):
                     summarize()
+                if dual and (not pair_enabled or survey.accepted>=SURVEY_UNITS):
+                    complete_pair_survey()
     archive_status()
+    if gpu_patch:
+        complete_pair_survey()
     if start_geometry is not None:
         if telemetry and first_thirty is None and telemetry.samples:
             # Partial evidence remains available if a genuine production stop occurs.
@@ -388,13 +480,25 @@ def publish_snapshot(checkout):
     v2=live["v2"]
     tracked=load(checkout/record_path)
     for key in ("p2_qualification","p2_invariance","p2_dispatch","p2_rebuild","formal_counts","manifest_sha256",
-                "target_gap","failures","dispatch_cpu_workers","optical_parallel_trial","p2_optical_parallel_trial","p2_finish_eta"):
+                "target_gap","failures","dispatch_cpu_workers","optical_parallel_trial","p2_optical_parallel_trial",
+                "p2_finish_eta","dispatch_gpu_slots","geometry_parallel_trial","geometry_pair_first_30",
+                "geometry_pair_extra_worker","geometry_pair_fallback","optical_slot_decision","optical_geometry_gate",
+                "geometry_pair_noise_policy","geometry_pair_noise_trial","depth_prior_repeatability",
+                "target_gap_details"):
         if key in v2:
             tracked["v2"][key]=v2[key]
     write_json(checkout/record_path,tracked)
     first=v2["dispatch_cpu_workers"].get("training_first_30")
     trial=v2.get("optical_parallel_trial",{})
-    note="**B v2 p2 正式派单**。开发集结束后启动三个 CPU 几何工人，GPU 几何保持单槽。"
+    pair = v2.get("dispatch_gpu_slots", {})
+    mode = "双槽" if pair.get("adopted") and not v2.get("geometry_pair_fallback") else "单槽"
+    note=f"**B v2 p2 正式派单**。开发集结束后启动三个 CPU 几何工人，GPU 几何使用{mode}。"
+    if v2.get("geometry_pair_noise_trial"):
+        state = "通过" if pair.get("adopted") else "未通过"
+        note+=f"按场景补测的深度一致性判据{state}。"
+    if "geometry_pair_first_30" in v2:
+        measured = v2["geometry_pair_first_30"]
+        note+=f"几何双槽实测 {measured['accepted']} 场，入列速度为 {measured['accepted_per_hour']:.2f} 场/小时。"
     if "parallel_to_serial_ratio" in trial:
         mode="双场并行" if trial["adopted"] else "串行"
         note+=f"双场光学实测并行用时为串行的 {trial['parallel_to_serial_ratio']:.3f} 倍，训练光学采用{mode}。"
@@ -415,40 +519,134 @@ def publish_snapshot(checkout):
         ["git","diff","--check"],
         ["git","add","--",str(record_path),str(progress)],
         ["git","diff","--cached","--check"],
-        ["git","commit","-m","记录 B v2 p2 并行光学实测与训练派单性能"],
+        ["git","commit","-m","记录 B v2 p2 训练派单实测",
+         "-m","Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"],
         ["git","pull","--rebase","origin","main"],
         ["git","push","origin","HEAD:main"],
     ):
         subprocess.run(command,cwd=checkout,check=True)
 
 
-def run(estimate, publish_worktree=None):
+def try_publish_snapshot(checkout):
+    try:
+        publish_snapshot(checkout)
+    except subprocess.CalledProcessError as error:
+        print("B production snapshot could not be pushed",error,flush=True)
+
+
+def run(estimate, publish_worktree=None, *, gpu_dispatch=False):
     with production_lock():
         plan,state=sealed_plan(PLAN_DIR/"training.json")
-        if STOP.is_file() and STOP.read_text().strip()!=HANDOFF:
+        gpu_dispatch = gpu_dispatch or bool(state.get("dispatch_gpu_slots"))
+        expected_stop = PAIR_HANDOFF if gpu_dispatch else HANDOFF
+        if STOP.is_file() and STOP.read_text().strip()!=expected_stop:
             raise RuntimeError("a different dispatch stop is still in effect")
+        available = os.sched_getaffinity(0)
+        extra = EXTRA_CPU if set(EXTRA_CPU).issubset(available) else ()
         allocation=affinity()
-        setup_receipt(plan,state,allocation)
+        gpu_patch = None
+        if gpu_dispatch:
+            if tuple(allocation[2]) != PAIR_CPUS[0]+PAIR_CPUS[1] or not extra:
+                raise RuntimeError("the geometry and optical slot CPU layout is unavailable")
+            gpu_patch = install_gpu_dispatch(plan,state)
+        else:
+            setup_receipt(plan,state,allocation)
         if STOP.is_file():
-            STOP.rename(FORMAL_DATA/"p2-review"/f"cpu-workers-handoff-{time.time_ns()}")
+            STOP.rename(FORMAL_DATA/"p2-review"/f"dispatch-handoff-{time.time_ns()}")
         plan=load_production_plan(PLAN_DIR/"training.json")
-        trial=dispatch_training(plan,estimate,allocation,publish_worktree)
+        if gpu_patch:
+            record=load(RECORD)
+            update_slot_eta(record["v2"],load(TRAINING/"failures.json") or [])
+            write_json(RECORD,record)
+            print("B geometry dispatcher",gpu_patch["dispatch_code_sha256"],
+                  "dual" if gpu_patch["adopted"] else "single",
+                  gpu_patch["switched_at_utc"],flush=True)
+        trial=dispatch_training(plan,estimate,allocation,publish_worktree,gpu_patch=gpu_patch,extra_cores=extra)
         if STOP.is_file():
             return
         coordinator,_,gpu=allocation
+        if gpu_patch:
+            archive=load(FORMAL_DATA/"manifest.json")
+            failed=load(TRAINING/"failures.json") or []
+            decision=optical_gate(plan["scenes"],archive["units"],failed)
+            record=load(RECORD)
+            v2=record["v2"]
+            decision["status"]="starting_optical_selection" if decision["allowed"] else "blocked"
+            decision["checked_at_utc"]=datetime.now(timezone.utc).isoformat()
+            v2["optical_geometry_gate"]=decision
+            v2["p2_dispatch"].update(status="starting_training_optical" if decision["allowed"]
+                                     else "training_optical_blocked_by_geometry_gate", stop_after_current=False)
+            if not decision["allowed"]:
+                v2["p2_finish_eta"].update(status="training_optical_blocked_by_geometry_gate")
+            write_json(RECORD,record)
+            if publish_worktree:
+                try_publish_snapshot(publish_worktree)
+            if not decision["allowed"]:
+                print("B training optical gate blocked",decision,flush=True)
+                return
         if trial.get("adopted"):
-            produce_pairs(estimate,(coordinator,[],gpu),plan["effective_generator_version"])
+            def progress():
+                record=load(RECORD)
+                update_slot_eta(record["v2"],load(TRAINING/"failures.json") or [])
+                write_json(RECORD,record)
+                if publish_worktree:
+                    try_publish_snapshot(publish_worktree)
+
+            produce_pairs(estimate,allocation,plan["effective_generator_version"],
+                          survey_slots=bool(gpu_patch),on_policy_decision=progress if gpu_patch else None)
+        elif gpu_patch:
+            raise RuntimeError("the adopted two-slot optical qualification is required")
         else:
             execute=partial(execute_on,gpu,46,Event())
             produce_optical(estimate,execute=partial(execute_serial_optical,execute))
         record=load(RECORD)
         v2=record["v2"]
+        gap = v2["target_gap"]
+        accepted_gaps = v2.get("target_gap_details", {}).get("train_geometry", {}).get("accepted", [])
+        remaining = dict(gap,train_geometry=max(0,gap["train_geometry"]-len(accepted_gaps)))
         status=("drained_after_stop" if STOP.is_file() else
-                "queue_exhausted_with_shortfalls" if any(v2["target_gap"].values()) else "completed")
+                "queue_exhausted_with_shortfalls" if any(remaining.values()) else
+                "completed_with_accepted_geometry_gap" if accepted_gaps else "completed")
         v2["p2_dispatch"].update(status=status,stop_after_current=STOP.is_file())
         v2["p2_finish_eta"]=dict(status=status,remaining_units=v2["target_gap"],
                                  measured_at_utc=datetime.now(timezone.utc).isoformat())
         write_json(RECORD,record)
+        if gpu_patch and publish_worktree:
+            try_publish_snapshot(publish_worktree)
+
+
+def handoff_geometry(old_checkout, commit, estimate, publisher):
+    if not commit:
+        raise ValueError("the GPU handoff requires a committed production entry")
+    training = load(PLAN_DIR/"training.json")["scenes"]
+    version = load(FORMAL_DATA/"generator-patch-p2.json")["patch_version"]
+    if not load(NOISE_RESULT):
+        raise ValueError("the geometry noise qualification report is required before takeover")
+    old_head = subprocess.check_output(["git","rev-parse","HEAD"],cwd=old_checkout,text=True).strip()
+    subprocess.run(["git","merge-base","--is-ancestor",old_head,commit],cwd=old_checkout,check=True)
+    while True:
+        if STOP.is_file() and STOP.read_text().strip()!=PAIR_HANDOFF:
+            raise RuntimeError("a different dispatch stop is active")
+        try:
+            with production_lock():
+                subprocess.run(["git","merge","--ff-only",commit],cwd=old_checkout,check=True)
+            os.chdir(old_checkout)
+            script=old_checkout/"scripts"/Path(__file__).name
+            os.execv(sys.executable,[sys.executable,str(script),"--gpu-dispatch",
+                                     "--measured-peak-unit-bytes",str(estimate),
+                                     "--publish-worktree",str(publisher)])
+        except RuntimeError as error:
+            if str(error)!="another B production dispatcher owns the archive":
+                raise
+        if not STOP.is_file():
+            excluded={row["scene_id"] for row in load(TRAINING/"failures.json") or []}
+            ready=sum(already_prepared(TRAINING/spec["scene_id"],spec,version) for spec in training
+                      if spec["scene_id"] not in excluded)
+            if ready>=READY_LIMIT:
+                with STOP.open("x") as stream:
+                    stream.write(PAIR_HANDOFF+"\n")
+                print(f"B geometry takeover requested with {ready} prepared scenes",flush=True)
+        time.sleep(2)
 
 
 def completed_development():
@@ -497,6 +695,7 @@ if __name__=="__main__":
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--measured-peak-unit-bytes",type=int)
     parser.add_argument("--publish-snapshot",action="store_true")
+    parser.add_argument("--gpu-dispatch",action="store_true")
     parser.add_argument("--publish-worktree",type=Path)
     parser.add_argument("--old-checkout",type=Path)
     parser.add_argument("--handoff-commit")
@@ -509,6 +708,12 @@ if __name__=="__main__":
     if not args.measured_peak_unit_bytes or args.measured_peak_unit_bytes<=0:
         parser.error("the disk estimate must be positive")
     if args.old_checkout:
-        handoff(args.old_checkout.resolve(),args.handoff_commit,args.measured_peak_unit_bytes)
+        if args.gpu_dispatch:
+            if not args.publish_worktree:
+                parser.error("a GPU handoff needs an isolated snapshot worktree")
+            handoff_geometry(args.old_checkout.resolve(),args.handoff_commit,args.measured_peak_unit_bytes,
+                             args.publish_worktree.resolve())
+        else:
+            handoff(args.old_checkout.resolve(),args.handoff_commit,args.measured_peak_unit_bytes)
     else:
-        run(args.measured_peak_unit_bytes,args.publish_worktree)
+        run(args.measured_peak_unit_bytes,args.publish_worktree,gpu_dispatch=args.gpu_dispatch)

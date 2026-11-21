@@ -92,12 +92,16 @@ def stop_children(processes):
 
 
 def render_group(units, allocation, *, parallel, frames=OPTICAL_FRAMES, seed=SEED,
-                 held_lock=None, abort=None):
-    workers = [*allocation[1], *allocation[2]]
-    half = min(6, len(workers)//2)
-    if half < 1:
-        raise RuntimeError("paired optical qualification requires two disjoint worker CPU sets")
-    affinity = (workers[:half], workers[half:2*half])
+                 held_lock=None, abort=None, slot_cpus=None, sample_gpu=False, vram_cap=VRAM_CAP):
+    if slot_cpus is None:
+        workers = [*allocation[1], *allocation[2]]
+        half = min(6, len(workers)//2)
+        if half < 1:
+            raise RuntimeError("paired optical qualification requires two disjoint worker CPU sets")
+        slot_cpus = (workers[:half], workers[half:2*half])
+    if parallel and len(units)>len(slot_cpus):
+        raise ValueError("optical units exceed the configured GPU slot CPUs")
+    gpu_samples = []
     environment = dict(os.environ, CUDA_VISIBLE_DEVICES="0", OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1")
     peak_rss = peak_vram = 0
     result = {unit.name:dict(passed=False) for unit in units}
@@ -112,7 +116,7 @@ def render_group(units, allocation, *, parallel, frames=OPTICAL_FRAMES, seed=SEE
             with ExitStack() as streams:
                 try:
                     for index, unit in enumerate(group):
-                        cpus = affinity[index]
+                        cpus = slot_cpus[index]
                         command = blender(
                             "route3_v2data_B_render.py", "--scene", unit, "--optical-only", "--frames", *frames,
                             "--seed", seed, "--reference-samples", SAMPLES, threads=len(cpus),
@@ -123,14 +127,22 @@ def render_group(units, allocation, *, parallel, frames=OPTICAL_FRAMES, seed=SEE
                             stdout=stream, stderr=subprocess.STDOUT, env=environment,
                         )
                         processes.append(process)
+                    next_sample = time.monotonic()
                     while any(process.poll() is None for process in processes):
                         rss, vram = resources(processes)
                         peak_rss, peak_vram = max(peak_rss, rss), max(peak_vram, vram)
                         if abort is not None and abort.is_set():
                             raise RuntimeError("combined dispatch resource limit")
-                        if rss > RSS_CAP or vram > VRAM_CAP:
-                            raise RuntimeError("paired optical render exceeded its combined RSS or VRAM cap")
-                        time.sleep(1)
+                        if rss > RSS_CAP or vram > vram_cap:
+                            raise RuntimeError("optical render exceeded its combined RSS or VRAM cap")
+                        if sample_gpu:
+                            utilization = subprocess.check_output(
+                                ["nvidia-smi", "-i", "0", "--query-gpu=utilization.gpu",
+                                 "--format=csv,noheader,nounits"], text=True,
+                            )
+                            gpu_samples.append(int(utilization.strip()))
+                        next_sample += 1
+                        time.sleep(max(0,next_sample-time.monotonic()))
                 except (OSError, RuntimeError, psutil.Error, subprocess.SubprocessError) as error:
                     for unit in group:
                         result[unit.name]["failure"] = str(error)
@@ -152,7 +164,8 @@ def render_group(units, allocation, *, parallel, frames=OPTICAL_FRAMES, seed=SEE
         elapsed = time.monotonic() - started
     return dict(
         seconds=elapsed, gpu_queue_seconds=started-before_lock, peak_combined_rss_bytes=peak_rss,
-        peak_combined_vram_bytes=peak_vram, scenes=result, worker_cpu_counts=[len(mask) for mask in affinity],
+        peak_combined_vram_bytes=peak_vram, scenes=result, worker_cpu_counts=[len(mask) for mask in slot_cpus],
+        gpu_utilization_percent=gpu_samples,
     )
 
 
@@ -269,7 +282,43 @@ def record_trial(report):
     write_json(RECORD, record)
 
 
-def produce_pairs(estimate, allocation, version):
+def optical_slot_probe(group, allocation, tri_cpus, baseline, estimate, run):
+    from route3_v2data_B_geometry_pair import array_differences
+
+    report = dict(probe=run, adopted=False, equivalence_passed=False)
+    if len(group)!=3 or not all(row["passed"] for row in run["scenes"].values()):
+        report["reason"] = "expected three successful optical renders"
+        return report
+    _, witness, source = group[0]
+    reserve(FORMAL_DATA, estimate)
+    repeat = FORMAL_DATA/"p2-review"/f"optical-third-slot-{time.time_ns()}"/witness.name
+    repeat.parent.mkdir(parents=True)
+    stage_optical(source, repeat)
+    serial = render_group([repeat], allocation, parallel=False, frames=(30,), slot_cpus=(tri_cpus[0],))
+    report.update(serial=serial, witness=witness.name, serial_directory=str(repeat.relative_to(FORMAL_DATA)))
+    if all(row["passed"] for row in serial["scenes"].values()):
+        diffs = {}
+        files = sorted(p.name for p in (repeat/"labels").glob("f030-*.npz")
+                       if p.stem.endswith(("-optics", "-hdr")))
+        if len(files)!=8:
+            raise ValueError("f030 comparison must include four LDR and four HDR products")
+        for suffix in ("optics", "hdr"):
+            selected = [name for name in files if name.endswith(f"-{suffix}.npz")]
+            diffs[suffix] = array_differences(repeat/"labels", witness/"labels", selected, ("rgb_linear",),
+                                              half_ulp=True)["rgb_linear"]
+        report["differences"] = diffs
+        report["equivalence_passed"] = all(row["max_half_ulp"]<=1 for row in diffs.values())
+    trial_seconds = run["seconds"]/3
+    baseline_seconds = sum(row["seconds"] for row in baseline)/4
+    report.update(per_scene_seconds=trial_seconds, baseline_per_scene_seconds=baseline_seconds,
+                  time_ratio=trial_seconds/baseline_seconds,
+                  speed_passed=trial_seconds<=.9*baseline_seconds,
+                  resources_passed=run["peak_combined_vram_bytes"]<=28*GIB and run["peak_combined_rss_bytes"]<=RSS_CAP)
+    report["adopted"] = all(report[key] for key in ("equivalence_passed","speed_passed","resources_passed"))
+    return report
+
+
+def produce_pairs(estimate, allocation, version, *, survey_slots=False, on_policy_decision=None):
     target = FORMAL_DATA / "optical"
     target.mkdir(exist_ok=True)
     selection = target/"selection.json"
@@ -282,6 +331,21 @@ def produce_pairs(estimate, allocation, version):
     excluded = {row["scene_id"] for row in failures}
     counts = Counter(row["category"] for row in failures if row.get("counts_toward_pause", True))
     pending = iter(load(selection))
+    slots_path = target/"slot-decision.json"
+    policy = load(slots_path) or dict(baseline=[],baseline_accepted=0,slots=2)
+    coordinator, geometry, gpu = allocation
+    workers = gpu if survey_slots else [*geometry,*gpu]
+    half = min(6,len(workers)//2)
+    double_cpus = (workers[:half],workers[half:2*half])
+    tri_cpus = (tuple(cpu for mask in geometry for cpu in mask), *double_cpus) if survey_slots else ()
+    if survey_slots and any(len(cpus)!=6 for cpus in tri_cpus):
+        raise ValueError("optical slot qualification requires three groups of six CPU cores")
+
+    def save_policy():
+        write_json(slots_path, policy)
+        record=load(RECORD)
+        record["v2"]["optical_slot_decision"] = policy
+        write_json(RECORD,record)
 
     def failure(scene_id, category, reason, count=True):
         failures.append(dict(scene_id=scene_id, category=category, reason=reason, counts_toward_pause=count))
@@ -290,7 +354,11 @@ def produce_pairs(estimate, allocation, version):
 
     while not (FORMAL_DATA/"stop-after-current").is_file():
         group = []
-        reserve(FORMAL_DATA, estimate * 2)
+        baseline_pending = survey_slots and policy["baseline_accepted"]<4
+        probe_pending = survey_slots and policy.get("two_slot_mean_gpu_percent",100)<75 and "probe" not in policy
+        width = (min(2,4-policy["baseline_accepted"]) if baseline_pending
+                 else 3 if probe_pending else policy["slots"])
+        reserve(FORMAL_DATA, estimate * width)
         for item in pending:
             scene_id = item["scene_id"]
             unit = target/scene_id
@@ -307,13 +375,45 @@ def produce_pairs(estimate, allocation, version):
                 failure(scene_id, category, str(error))
                 continue
             group.append((item, unit, source))
-            if len(group) == 2:
+            if len(group) == width:
                 break
         if not group:
             break
-        run = render_group([unit for _, unit, _ in group], allocation, parallel=True)
+        is_triple = width==3 and len(group)==3
+        run = render_group([unit for _, unit, _ in group], (coordinator,[],gpu), parallel=True,
+                           slot_cpus=tri_cpus if is_triple else double_cpus, sample_gpu=baseline_pending,
+                           vram_cap=28*GIB if is_triple else VRAM_CAP)
+        fallback = False
+        if probe_pending:
+            try:
+                policy["probe"] = optical_slot_probe(group, allocation, tri_cpus, policy["baseline"], estimate, run)
+            except (OSError, RuntimeError, ValueError, KeyError) as error:
+                policy["probe"] = dict(probe=run, adopted=False, equivalence_passed=False, reason=str(error))
+            policy["slots"] = 3 if policy["probe"]["adopted"] else 2
+            fallback = not policy["probe"]["equivalence_passed"]
+            save_policy()
+        elif is_triple and not all(row["passed"] for row in run["scenes"].values()):
+            policy["slots"] = 2
+            policy["production_fallback"] = run
+            fallback = True
+            save_policy()
+        if fallback:
+            archive=FORMAL_DATA/"p2-review"/f"optical-slot-probe-attempt-{time.time_ns()}"
+            archive.mkdir(parents=True)
+            retry_results = {}
+            for index in range(0,len(group),2):
+                retry=group[index:index+2]
+                for _, unit, source in retry:
+                    unit.rename(archive/unit.name)
+                    stage_optical(source,unit)
+                report=render_group([unit for _, unit, _ in retry],allocation,parallel=True,slot_cpus=double_cpus)
+                retry_results.update(report["scenes"])
+            policy["archived_attempt"] = str(archive.relative_to(FORMAL_DATA))
+            save_policy()
+        else:
+            retry_results = run["scenes"]
         for item, unit, source in group:
-            row = run["scenes"][unit.name]
+            row = retry_results[unit.name]
             if not row["passed"]:
                 failure(unit.name, item["primary_difficulty"], row["failure"])
                 continue
@@ -327,7 +427,19 @@ def produce_pairs(estimate, allocation, version):
                 geometry_manifest_sha256=sha256(source/"manifest.json"), selection_sha256=selection_sha,
                 bytes=sum(row["bytes"] for row in outputs), files=outputs,
             ))
+        if baseline_pending:
+            accepted = sum(row["passed"] for row in run["scenes"].values())
+            if accepted:
+                policy["baseline"].append(run)
+                policy["baseline_accepted"] += accepted
+                samples = [usage for batch in policy["baseline"] for usage in batch["gpu_utilization_percent"]]
+                if policy["baseline_accepted"]==4 and samples:
+                    policy["two_slot_mean_gpu_percent"] = sum(samples)/len(samples)
+                save_policy()
         archive_status()
+        if on_policy_decision and (probe_pending or fallback or
+                                   baseline_pending and policy.get("two_slot_mean_gpu_percent",0)>=75):
+            on_policy_decision()
     archive_status()
 
 

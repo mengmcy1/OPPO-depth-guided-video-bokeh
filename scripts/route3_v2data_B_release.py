@@ -13,6 +13,9 @@ DISPATCH_CODE = ("route3_v2data_B_dispatch.py", "route3_v2data_B_release.py")
 P2_DISPATCH_CODE = (*DISPATCH_CODE, "route3_v2data_B_deploy_p2.py", "route3_v2data_B_optical_pair.py")
 WORKER_DISPATCH_FILE = "route3_v2data_B_dispatch_workers.py"
 DISPATCH_PATCH_VERSION = "p2-cpu-workers-3"
+GPU_DISPATCH_VERSION = "p2-training-gpu-slots-optical-gate"
+GPU_DISPATCH_FILES = ("route3_v2data_B_geometry_pair.py", "route3_v2data_B_geometry_slots.py")
+GPU_DISPATCH_RECEIPT = FORMAL_DATA/"dispatch-gpu-slots-p2.json"
 P2_CHANGED_FILES = {"route3_v2data_B_scene.py", "route3_v2data_B_batch.py"}
 PLAN_DIR = FORMAL_DATA/"sealed-scene-plans"
 P2_ADDITIONAL_GENERATION_FILES = ("route3_v2data_B_placement.py", "route3_v2data_B_presence.py")
@@ -43,17 +46,40 @@ def cpu_worker_dispatch_code():
     return {**dispatch_code(p2=True), WORKER_DISPATCH_FILE:digest(ROOT/"scripts"/WORKER_DISPATCH_FILE)}
 
 
+def gpu_dispatch_code():
+    return {**cpu_worker_dispatch_code(),
+            **{name:digest(ROOT/"scripts"/name) for name in GPU_DISPATCH_FILES}}
+
+
 def verifies_dispatch(state, receipt):
     ref = state.get("dispatch_cpu_workers")
     if not ref:
         return receipt["dispatch_code"] == dispatch_code(p2=True)
     path = FORMAL_DATA/ref["path"]
     patch = load(path)
-    return (ref["version"] == DISPATCH_PATCH_VERSION and digest(path) == ref["sha256"]
-            and patch["version"] == ref["version"] and patch["base_dispatch_code"] == receipt["dispatch_code"]
-            and patch["generation_release_sha256"] == state["generator_patch"]["sha256"]
-            and patch["generator_code_sha256"] == receipt["generator_code_sha256"]
-            and patch["dispatch_code"] == cpu_worker_dispatch_code())
+    valid_base = (
+        patch and ref["version"] == DISPATCH_PATCH_VERSION and digest(path) == ref["sha256"]
+        and patch["version"] == ref["version"] and patch["base_dispatch_code"] == receipt["dispatch_code"]
+        and patch["generation_release_sha256"] == state["generator_patch"]["sha256"]
+        and patch["generator_code_sha256"] == receipt["generator_code_sha256"]
+        and patch["dispatch_code_sha256"] == code_hash(patch["dispatch_code"])
+    )
+    gpu_ref = state.get("dispatch_gpu_slots")
+    if not gpu_ref:
+        return valid_base and patch["dispatch_code"] == cpu_worker_dispatch_code()
+    gpu = load(GPU_DISPATCH_RECEIPT)
+    if not gpu:
+        return False
+    qualification = gpu["qualification"]
+    return (valid_base and gpu_ref["version"] == GPU_DISPATCH_VERSION
+            and gpu_ref["path"] == GPU_DISPATCH_RECEIPT.name
+            and digest(GPU_DISPATCH_RECEIPT) == gpu_ref["sha256"]
+            and gpu["version"] == gpu_ref["version"] and gpu["parent"] == ref
+            and gpu["generation_release_sha256"] == state["generator_patch"]["sha256"]
+            and gpu["generator_code_sha256"] == receipt["generator_code_sha256"]
+            and gpu["dispatch_code"] == gpu_dispatch_code()
+            and digest(FORMAL_DATA/qualification["path"]) == qualification["sha256"]
+            and gpu["dispatch_code_sha256"] == code_hash(gpu["dispatch_code"]))
 
 
 def sealed_plan(path):
