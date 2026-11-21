@@ -745,7 +745,7 @@
     },
     "formal_counts": {
       "train_geometry": 0,
-      "development": 12,
+      "development": 15,
       "test": 30,
       "train_optical": 0
     },
@@ -1306,7 +1306,7 @@
       "reserve_bytes": 64424509440
     },
     "generator_version": "B-v2-31aa7f9a4325",
-    "manifest_sha256": "903cafd617e0f6891532fd9cab5289886e9c6eaf4d72bb818cc7300339dd9eae",
+    "manifest_sha256": "ba830ee24a9cd0c3d212d132112e05057be2c90b3ebafe3af75a949f7541ff3b",
     "scene_plan_sha256": {
       "training": "3687df48d64d82dd2dfd620c1a1ee6b32f2305186063d0df89c2e6f99a5986d8",
       "development": "78f5ef2aa6625bba938028efb71ad1bf2da3142810d8453d6a387452728c0d85",
@@ -1390,7 +1390,7 @@
     },
     "target_gap": {
       "train_geometry": 300,
-      "development": 3,
+      "development": 0,
       "test": 0,
       "train_optical": 80
     },
@@ -2220,24 +2220,116 @@
       "affected_test_pending": 0
     },
     "p2_optical_parallel_trial": {
-      "status": "preregistered_for_after_training_geometry"
+      "generator_version": "B-v2-31aa7f9a4325-p2",
+      "policy": {
+        "scene_ids": [
+          "training-120-2db3c2fe6b5336e7",
+          "training-174-cfd3d2e7961ffbc1"
+        ],
+        "frames": [
+          1,
+          30,
+          60
+        ],
+        "focus_count": 2,
+        "apertures": [
+          1.4,
+          2.0
+        ],
+        "subviews": 64,
+        "samples": 1024,
+        "seed": 20261120,
+        "max_ratio": 0.85,
+        "rss_limit_bytes": 30064771072,
+        "vram_limit_bytes": 25769803776,
+        "timing": "from acquired shared lock through the acceptance of both scenes, with queue time reported separately",
+        "noise": "An exact match passes. Otherwise, independently render f030 with seed+1 at the same sample count, and require each LDR/HDR product's MAE and maximum absolute difference to stay below the corresponding peak independent-seed discrepancy for that scene and representation."
+      },
+      "adopted": true,
+      "products": "p2-review/paired-optical-1795237170838891065",
+      "training_scene_sources": {
+        "training-120-2db3c2fe6b5336e7": "preregistered isolated training qualification",
+        "training-174-cfd3d2e7961ffbc1": "preregistered isolated training qualification"
+      },
+      "geometry_manifest_sha256": {
+        "training-120-2db3c2fe6b5336e7": "d08f4f266004c3171d6137305cc0c277a3b9579243af59f62975c469f4373097",
+        "training-174-cfd3d2e7961ffbc1": "b4ce8fa13f6fb670df656b5f546f5bb4fab025276cf00d1d4bdefcee17f8c5ba"
+      },
+      "serial": {
+        "seconds": 3913.1692278422415,
+        "gpu_queue_seconds": 5.304813385009766e-06,
+        "peak_combined_rss_bytes": 1234620416,
+        "peak_combined_vram_bytes": 3823108096,
+        "scenes": {
+          "training-120-2db3c2fe6b5336e7": {
+            "passed": true,
+            "exit_code": 0
+          },
+          "training-174-cfd3d2e7961ffbc1": {
+            "passed": true,
+            "exit_code": 0
+          }
+        },
+        "worker_cpu_counts": [
+          6,
+          6
+        ]
+      },
+      "parallel": {
+        "seconds": 2780.7518040798604,
+        "gpu_queue_seconds": 6.034970283508301e-06,
+        "peak_combined_rss_bytes": 2090631168,
+        "peak_combined_vram_bytes": 7633633280,
+        "scenes": {
+          "training-120-2db3c2fe6b5336e7": {
+            "passed": true,
+            "exit_code": 0
+          },
+          "training-174-cfd3d2e7961ffbc1": {
+            "passed": true,
+            "exit_code": 0
+          }
+        },
+        "worker_cpu_counts": [
+          6,
+          6
+        ]
+      },
+      "parallel_to_serial_ratio": 0.7106137358677925,
+      "within_cycles_noise": {
+        "training-120-2db3c2fe6b5336e7": true,
+        "training-174-cfd3d2e7961ffbc1": true
+      },
+      "exclusive_gpu_lock_wait_seconds": 0.0002505853772163391,
+      "path": "p2-review/paired-optical-result.json",
+      "sha256": "be4567fb856ba805dbc7c30a16b7d9efbb88fc6abe946594fdf64e5c9dcbf0b0",
+      "worst_pixel_difference": {
+        "training-120-2db3c2fe6b5336e7": {
+          "mae": 1.3154931366443634e-08,
+          "maximum_absolute_difference": 0.0009765625
+        },
+        "training-174-cfd3d2e7961ffbc1": {
+          "mae": 4.202593117952347e-08,
+          "maximum_absolute_difference": 0.0009765625
+        }
+      }
     },
     "p2_finish_eta": {
       "status": "conditional_on_sealed_scenes_passing",
-      "measured_at_utc": "2026-11-21T01:29:34.642935+00:00",
-      "estimated_hours": 74.20669234331386,
-      "estimated_finish_utc": "2026-11-24T03:41:58.735371+00:00",
+      "measured_at_utc": "2026-11-21T07:12:37.481915+00:00",
+      "estimated_hours": 55.69029927526911,
+      "estimated_finish_utc": "2026-11-23T14:54:02.559306+00:00",
       "remaining_hours_by_stage": {
         "tests": 0.0,
-        "development": 3.5832409104301286,
+        "development": 0.0,
         "training_geometry": 24.793057007715106,
-        "training_optical": 43.64799469063679,
-        "optical_parallel_trial": 2.1823997345318396
+        "training_optical": 30.897242267554006,
+        "optical_parallel_trial": 0.0
       },
       "geometry_basis": "resumed p2 test geometry",
       "geometry_per_hour": 12.10016174716357,
       "development_basis": "resumed development",
-      "training_optical_basis": "qualification optical engine time",
+      "training_optical_basis": "paired trial parallel",
       "includes_sampled_geometry_queue": true,
       "includes_unknown_future_gpu_queue_for_optics": false,
       "known_exclusions": {
@@ -2266,7 +2358,7 @@
     "p2_dispatch": {
       "stop_after_current": false,
       "original_dispatch_drained": true,
-      "status": "running",
+      "status": "running_cpu_worker_dispatch",
       "affected_inflight": "development-003-8c92e9e93c0ff003",
       "qualification_output": "p2-review/p2-priority-qualification/proof.json",
       "retired_process_groups": [
@@ -2390,10 +2482,10 @@
         "development": {
           "partition": "development",
           "scene_slots": 2,
-          "attempted_scenes": 9,
-          "accepted_scenes": 8,
-          "seconds": 17199.556370064616,
-          "accepted_per_hour": 1.6744617931033183,
+          "attempted_scenes": 14,
+          "accepted_scenes": 14,
+          "seconds": 29793.56136989221,
+          "accepted_per_hour": 1.6916406660578538,
           "cpu_affinity": {
             "dispatcher": [
               0
@@ -2419,7 +2511,7 @@
           "max_compute_threads": 14,
           "sampled_peak_cpu_equivalents": 5.251110305796034,
           "peak_combined_rss_bytes": 8242282496,
-          "label_and_gpu_lane_overlap_seconds": 2173.48042107746,
+          "label_and_gpu_lane_overlap_seconds": 3501.0869551189244,
           "gpu_idle_for_b_labels_seconds": {
             "startup": 249.55942308530211,
             "steady": 0
@@ -2430,15 +2522,15 @@
           },
           "combined_memory_limit_hit": false,
           "generator_version": "B-v2-31aa7f9a4325-p2",
-          "partition_dispatch_finished": false,
+          "partition_dispatch_finished": true,
           "placement_fallback_count": 5,
           "placement_fallback_by_scene": {
             "development-006-cfa2a67575eca884": 1,
             "development-007-7f68b7245eb4f8a2": 1,
             "development-008-6feda700c49fc611": 3
           },
-          "path": "production-runs/1795224574641695651-development.json",
-          "sha256": "472190456d62beec8abf672e959ac3b95ff6209ed12c8fdcdd5cfc3e4137488f"
+          "path": "production-runs/1795237168646672978-development.json",
+          "sha256": "c42b81f2ac650022aa34fb3f36da7cea2de590bc1ba02e1e2db45e17f2d6c065"
         }
       }
     },
@@ -3259,8 +3351,15 @@
       }
     },
     "dispatch_cpu_workers": {
-      "status": "handoff_armed_waiting_for_existing_development",
-      "dispatch_code_sha256": "aa541bd3aec13e5d0af4050066cf57ef57fd93c13b90b24948002f4364154e85",
+      "version": "p2-cpu-workers-3",
+      "generation_release_sha256": "9969624ce86f04b54cb5bf4b56a1f6a4e73e3b66c9e97485a35bf6866861b7de",
+      "generator_code_sha256": "e10a102491b98494c1f77d20f1a2249ba065a2ae65339faf72087a5a732c35c5",
+      "base_dispatch_code": {
+        "route3_v2data_B_dispatch.py": "e39187038d47d278b400917c913c06b8f67a94e16f56b17fd908521cbb4a19e1",
+        "route3_v2data_B_release.py": "3ddf74b30babc3b2f43bcf9bfc0666adfcb4a0b06920d200286f77b127d97a51",
+        "route3_v2data_B_deploy_p2.py": "3f6d25b8cd128709a5495846ea58b513c8b83b6c6cfa2d2d4d70baeecc9bf99b",
+        "route3_v2data_B_optical_pair.py": "71604ad2b95ffa941936e8ab37d2bd685bdcb10eff926d0a21ff603b0892e4f1"
+      },
       "dispatch_code": {
         "route3_v2data_B_dispatch.py": "c197dc4b6b0d211beffe86ab7dbc06ffb29ef1e4177a058638178845ba0566bc",
         "route3_v2data_B_release.py": "c9d18bd1355efff8328df08cf60e97b6cb03af9616b873cf8b111941520bcd31",
@@ -3268,21 +3367,53 @@
         "route3_v2data_B_optical_pair.py": "5c71d71a76f8f8bec9023e8fb0f61c2e04a7fafce78fb648264fc432651d4dc0",
         "route3_v2data_B_dispatch_workers.py": "d0d0e3f46c08d75763d7ff17a846b23f20d2287ed8366ef892ffa0a97580e76b"
       },
-      "generator_code_sha256": "e10a102491b98494c1f77d20f1a2249ba065a2ae65339faf72087a5a732c35c5",
       "workers": 3,
-      "cores_each": 2,
       "maximum_ready_units": 30,
       "max_compute_threads": 23,
-      "configured_compute_cores": 19,
       "peak_rss_limit_bytes": 75161927680,
-      "gpu_geometry_slots": 1,
-      "remaining_disk_reserve_bytes": 64424509440,
-      "peak_combined_rss_bytes": null,
-      "training_first_30": null
+      "cpu_affinity": {
+        "coordinator": [
+          0
+        ],
+        "geometry": [
+          [
+            1,
+            2
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            5,
+            6
+          ]
+        ],
+        "gpu": [
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18
+        ]
+      },
+      "optical_trial_before_geometry_gpu": true,
+      "dispatch_code_sha256": "aa541bd3aec13e5d0af4050066cf57ef57fd93c13b90b24948002f4364154e85",
+      "receipt": {
+        "version": "p2-cpu-workers-3",
+        "path": "dispatch-cpu-workers-p2.json",
+        "sha256": "413694bedcf6c71c9d851c5f9e73403e70d336cef61e7977fc09aef69a401640"
+      }
     },
     "optical_parallel_trial": {
-      "status": "awaiting_development_drain",
-      "sources": "the two preregistered p2 training qualification units",
+      "generator_version": "B-v2-31aa7f9a4325-p2",
       "policy": {
         "scene_ids": [
           "training-120-2db3c2fe6b5336e7",
@@ -3307,7 +3438,74 @@
         "timing": "from acquired shared lock through the acceptance of both scenes, with queue time reported separately",
         "noise": "An exact match passes. Otherwise, independently render f030 with seed+1 at the same sample count, and require each LDR/HDR product's MAE and maximum absolute difference to stay below the corresponding peak independent-seed discrepancy for that scene and representation."
       },
-      "gpu_lock_continuously_held": true
+      "adopted": true,
+      "products": "p2-review/paired-optical-1795237170838891065",
+      "training_scene_sources": {
+        "training-120-2db3c2fe6b5336e7": "preregistered isolated training qualification",
+        "training-174-cfd3d2e7961ffbc1": "preregistered isolated training qualification"
+      },
+      "geometry_manifest_sha256": {
+        "training-120-2db3c2fe6b5336e7": "d08f4f266004c3171d6137305cc0c277a3b9579243af59f62975c469f4373097",
+        "training-174-cfd3d2e7961ffbc1": "b4ce8fa13f6fb670df656b5f546f5bb4fab025276cf00d1d4bdefcee17f8c5ba"
+      },
+      "serial": {
+        "seconds": 3913.1692278422415,
+        "gpu_queue_seconds": 5.304813385009766e-06,
+        "peak_combined_rss_bytes": 1234620416,
+        "peak_combined_vram_bytes": 3823108096,
+        "scenes": {
+          "training-120-2db3c2fe6b5336e7": {
+            "passed": true,
+            "exit_code": 0
+          },
+          "training-174-cfd3d2e7961ffbc1": {
+            "passed": true,
+            "exit_code": 0
+          }
+        },
+        "worker_cpu_counts": [
+          6,
+          6
+        ]
+      },
+      "parallel": {
+        "seconds": 2780.7518040798604,
+        "gpu_queue_seconds": 6.034970283508301e-06,
+        "peak_combined_rss_bytes": 2090631168,
+        "peak_combined_vram_bytes": 7633633280,
+        "scenes": {
+          "training-120-2db3c2fe6b5336e7": {
+            "passed": true,
+            "exit_code": 0
+          },
+          "training-174-cfd3d2e7961ffbc1": {
+            "passed": true,
+            "exit_code": 0
+          }
+        },
+        "worker_cpu_counts": [
+          6,
+          6
+        ]
+      },
+      "parallel_to_serial_ratio": 0.7106137358677925,
+      "within_cycles_noise": {
+        "training-120-2db3c2fe6b5336e7": true,
+        "training-174-cfd3d2e7961ffbc1": true
+      },
+      "exclusive_gpu_lock_wait_seconds": 0.0002505853772163391,
+      "path": "p2-review/paired-optical-result.json",
+      "sha256": "be4567fb856ba805dbc7c30a16b7d9efbb88fc6abe946594fdf64e5c9dcbf0b0",
+      "worst_pixel_difference": {
+        "training-120-2db3c2fe6b5336e7": {
+          "mae": 1.3154931366443634e-08,
+          "maximum_absolute_difference": 0.0009765625
+        },
+        "training-174-cfd3d2e7961ffbc1": {
+          "mae": 4.202593117952347e-08,
+          "maximum_absolute_difference": 0.0009765625
+        }
+      }
     }
   }
 }
