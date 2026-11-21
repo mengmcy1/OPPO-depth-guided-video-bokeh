@@ -4835,6 +4835,80 @@
           }
         ]
       }
+    },
+    "geometry_pair_planner_override": {
+      "approved_at_utc": "2026-11-21T14:30:33.169571+00:00",
+      "authority": "规划方经用户同意",
+      "decision": "enable_dual_geometry",
+      "qualification": {
+        "path": "p2-review/geometry-pair-noise-result.json",
+        "sha256": "136a6b41ea33a58932952640377a5623ca0caab76aca3d4ac52718ead66e0b78",
+        "adopted": false
+      },
+      "rationale": [
+        "几何双槽补测中，training-061 的三角化深度平均差是串行波动上界的 1.258 倍，超过预登记的 1.25 倍，其余各项全部通过。",
+        "这个判据是工程等价检查，只用于决定提速方式，不影响任何实验结论。",
+        "超出部分的绝对值为 0.0007，比同一场景 DepthSplat 深度本身的串行波动（0.011–0.014）小约 20 倍。下游的 aligned_sharp 和 confidence 都在串行波动范围内。",
+        "061 在串行复跑中同样出现了逐帧比例偏移，说明深度先验本来就不能精确复现。",
+        "规划方经用户同意，接受双槽产出与单槽等价，切换双槽。"
+      ],
+      "exceeded_metric": {
+        "scene_id": "training-061-ff0a4ff42915123f",
+        "field": "depth_tri",
+        "metric": "mae",
+        "serial_maximum": 0.0005415422985186944,
+        "parallel_vs_admitted": 0.0006812409712718084,
+        "registered_factor": 1.25,
+        "observed_factor": 1.2579644713538318,
+        "registered_absolute_limit": 0.000676927873148368,
+        "absolute_excess_above_registered_limit": 4.313098123440401e-06
+      },
+      "receipt": {
+        "path": "p2-review/geometry-pair-planner-override.json",
+        "sha256": "7a84e97f5568bb29c87acb3cc723dd00a253a91995276f5d0594b208c534035f"
+      }
+    },
+    "geometry_gpu_slot_postcheck": {
+      "status": "预登记，待执行",
+      "registered_at_utc": "2026-11-21T14:30:33.169571+00:00",
+      "start_condition": "B 训练光学全部入列之后、新阶段 1 开始之前",
+      "gpu_lock": "/root/autodl-tmp/route3-cache/gpu-data.lock",
+      "estimated_minutes": [
+        30,
+        40
+      ],
+      "sampling": "训练几何双槽组每个类别 1 个，共 6 个，选择本类别场景编号最小的双槽单元。",
+      "recompute": "每个抽中的单元在隔离目录用单槽串行重算两次输入深度先验，仅重算深度先验，不重新渲染。",
+      "reference": "原入列版、串行版 1、串行版 2 三者两两比较，按字段逐项取最大值。",
+      "fields": [
+        "depth_sharp",
+        "depth_ds",
+        "depth_tri",
+        "confidence",
+        "aligned_sharp",
+        "aligned_sharp 逐帧相对差中位数在 13 帧里的最大值"
+      ],
+      "pass_rule": "原入列双槽版与串行版的差异逐项不超过该单元波动参照的 1.5 倍。",
+      "descriptive_comparison": {
+        "split": "单槽和双槽组",
+        "statistics": [
+          "中位数",
+          "第一四分位数",
+          "第三四分位数"
+        ],
+        "per_unit_metrics": [
+          "深度先验有效像素比例",
+          "平均置信度",
+          "对齐拟合报告的尺度",
+          "对齐拟合报告的残差"
+        ],
+        "decision_threshold": null
+      },
+      "result_handling": {
+        "all_pass": "记录为“单双槽产出等价，已复核”，数据不动。",
+        "any_failure": "停下汇报并附超限数值，不自动重算。由规划方决定是否用单槽重算全部双槽单元的深度先验。"
+      },
+      "execution_note": "预登记的波动参照已包含被判定的原入列版和串行版差异。按字面定义，该差异总不超过其自身所在集合的最大值，因此 1.5 倍规则无法检出超限。"
     }
   }
 }
