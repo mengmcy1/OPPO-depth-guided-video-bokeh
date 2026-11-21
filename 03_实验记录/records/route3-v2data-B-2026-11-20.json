@@ -744,7 +744,7 @@
       "formal_use": false
     },
     "formal_counts": {
-      "train_geometry": 130,
+      "train_geometry": 142,
       "development": 15,
       "test": 30,
       "train_optical": 0
@@ -1306,7 +1306,7 @@
       "reserve_bytes": 64424509440
     },
     "generator_version": "B-v2-31aa7f9a4325",
-    "manifest_sha256": "bb248a79f160ed98fb75ab277cd29cf6beeddd66347ee5a4aa94b582f3813d4d",
+    "manifest_sha256": "c5de731299e21c058a2b76660dfb8e5cd47b2243b4b577458c4b4aee7a281285",
     "scene_plan_sha256": {
       "training": "3687df48d64d82dd2dfd620c1a1ee6b32f2305186063d0df89c2e6f99a5986d8",
       "development": "78f5ef2aa6625bba938028efb71ad1bf2da3142810d8453d6a387452728c0d85",
@@ -1389,7 +1389,7 @@
       }
     },
     "target_gap": {
-      "train_geometry": 170,
+      "train_geometry": 158,
       "development": 0,
       "test": 0,
       "train_optical": 80
@@ -2316,16 +2316,16 @@
     },
     "p2_finish_eta": {
       "status": "conditional_on_optical_gate_and_future_acceptance",
-      "measured_at_utc": "2026-11-21T15:30:12.119209+00:00",
-      "estimated_hours": 37.457540499418975,
-      "estimated_finish_utc": "2026-11-23T04:57:39.265007+00:00",
+      "measured_at_utc": "2026-11-21T15:58:17.202764+00:00",
+      "estimated_hours": 37.13536821179547,
+      "estimated_finish_utc": "2026-11-23T05:06:24.528326+00:00",
       "remaining_hours_by_stage": {
-        "training_geometry": 6.560298231864969,
+        "training_geometry": 6.238125944241467,
         "training_optical": 30.897242267554006
       },
-      "geometry_basis": "isolated paired qualification, before first 30 production units",
-      "geometry_per_hour": 25.60859187528747,
-      "training_geometry_remaining_runnable": 168,
+      "geometry_basis": "first 30 production geometry units with two GPU slots",
+      "geometry_per_hour": 25.00751049183394,
+      "training_geometry_remaining_runnable": 156,
       "training_geometry_failed": 2,
       "training_optical_basis": "qualified two-slot optical wall time"
     },
@@ -2509,10 +2509,10 @@
         "training": {
           "partition": "training",
           "scene_slots": 4,
-          "attempted_scenes": 21,
-          "accepted_scenes": 20,
-          "seconds": 3069.8773851171136,
-          "accepted_per_hour": 23.45370546363149,
+          "attempted_scenes": 12,
+          "accepted_scenes": 12,
+          "seconds": 1685.0514042191207,
+          "accepted_per_hour": 25.637200082937266,
           "cpu_affinity": {
             "dispatcher": [
               0
@@ -2541,12 +2541,12 @@
             ]
           },
           "max_compute_threads": 19,
-          "sampled_peak_cpu_equivalents": 9.371202367086918,
-          "peak_combined_rss_bytes": 16165355520,
-          "label_and_gpu_lane_overlap_seconds": 2825.5373619049788,
+          "sampled_peak_cpu_equivalents": 8.497838105548775,
+          "peak_combined_rss_bytes": 16692719616,
+          "label_and_gpu_lane_overlap_seconds": 1533.1034916900098,
           "gpu_idle_for_b_labels_seconds": {
             "startup": 0,
-            "steady": 10.704811539500952
+            "steady": 0
           },
           "shared_lock_busy_while_b_labels_pending_seconds": {
             "startup": 0,
@@ -2558,9 +2558,9 @@
           "cpu_workers": 3,
           "ready_queue_limit": 30,
           "peak_ready_queue": 30,
-          "gpu_geometry_slots": 1,
-          "path": "production-runs/1795275010437177410-training.json",
-          "sha256": "21cbd42dc0d156a1b51138e4fcde76ea03fee2b05995d0e7290157444f4b4b3f"
+          "gpu_geometry_slots": 2,
+          "path": "production-runs/1795276697192456607-training.json",
+          "sha256": "866d2221b6cd74b0288a7ee1bab869321e44d767345b20d7d842e6b84e24276e"
         }
       }
     },
@@ -3442,8 +3442,8 @@
         "sha256": "413694bedcf6c71c9d851c5f9e73403e70d336cef61e7977fc09aef69a401640"
       },
       "ready_queue_peak": 30,
-      "peak_combined_rss_bytes": 16165355520,
-      "sampled_peak_cpu_equivalents": 9.371202367086918,
+      "peak_combined_rss_bytes": 16692719616,
+      "sampled_peak_cpu_equivalents": 8.497838105548775,
       "training_first_30": {
         "accepted_scenes": 30,
         "sampling_seconds": 7346.629680991173,
@@ -5057,37 +5057,50 @@
         "training-127-f793218e172f7a27": "dual",
         "training-128-308d33775b95ae11": "dual",
         "training-129-d8668d929a0896e4": "dual",
-        "training-131-0a6f6184692eee91": "single"
+        "training-131-0a6f6184692eee91": "single",
+        "training-132-0a15641e6123d4ff": "dual",
+        "training-133-bfb4d10a258066b8": "dual",
+        "training-134-d94144815efa92fe": "dual",
+        "training-135-cc4cdd521717bb2e": "dual",
+        "training-136-073bbcbb83cece0e": "dual",
+        "training-137-ddbd64a306f037b2": "dual",
+        "training-138-9681693dbd32371d": "dual",
+        "training-139-a6fdfc32f252dada": "dual",
+        "training-140-05fad3fd2dd65434": "dual",
+        "training-141-a8405e071e053fc3": "dual",
+        "training-142-c3720b66550a6835": "dual",
+        "training-143-aa999d0bbdfd59a8": "dual"
       }
     },
     "geometry_pair_first_30": {
-      "accepted": 19,
-      "seconds": 2633.6592427305877,
-      "accepted_per_hour": 25.971469235740088,
+      "accepted": 30,
+      "total_admitted_in_measured_pairs": 31,
+      "seconds": 4318.702576782554,
+      "accepted_per_hour": 25.00751049183394,
       "gpu_utilization_per_slot_and_phase": {
         "7-8-9-10-11-12": {
           "render": {
-            "samples": 1408,
-            "mean_gpu_sm_percent": 20.1171875
+            "samples": 2354,
+            "mean_gpu_sm_percent": 19.317757009345794
           },
           "input-priors": {
-            "samples": 585,
-            "mean_gpu_sm_percent": 22.254700854700854
+            "samples": 909,
+            "mean_gpu_sm_percent": 22.937293729372936
           }
         },
         "13-14-15-16-17-18": {
           "render": {
-            "samples": 1476,
-            "mean_gpu_sm_percent": 19.953929539295395
+            "samples": 2443,
+            "mean_gpu_sm_percent": 19.175603765861645
           },
           "input-priors": {
-            "samples": 561,
-            "mean_gpu_sm_percent": 20.80392156862745
+            "samples": 947,
+            "mean_gpu_sm_percent": 20.427666314677932
           }
         }
       },
       "measurement": "nvidia-smi pmon process SM percentage, 1 second",
-      "peak_rss_bytes": 16165355520,
+      "peak_rss_bytes": 16692719616,
       "peak_combined_vram_bytes": 24222105600,
       "ready_queue_minimum": 26,
       "added_cpu_worker": null,
@@ -5838,6 +5851,462 @@
           "failures": {
             "training-130-e288403a7bbaa3e3": "geometry render returned 1"
           }
+        },
+        {
+          "path": "production-runs/1795275012124929895-cpu-workers/training-132-0a15641e6123d4ff-pmon.txt",
+          "sha256": "cadede20effa975ee7ed05f2d80183bb5989f1e0d44c84816383b82ee5480779",
+          "seconds": 274.52959499135613,
+          "phases": {
+            "training-132-0a15641e6123d4ff": {
+              "render": {
+                "start_monotonic": 27502065.13824459,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 275496,
+                "end_monotonic": 27502253.97590298,
+                "seconds": 188.8376583866775,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27502253.977201667,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 278519,
+                "end_monotonic": 27502337.37469358,
+                "seconds": 83.39749191328883,
+                "exit_code": 0
+              }
+            },
+            "training-133-bfb4d10a258066b8": {
+              "render": {
+                "start_monotonic": 27502065.140671007,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 275503,
+                "end_monotonic": 27502255.046798818,
+                "seconds": 189.9061278104782,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27502255.047722116,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 278527,
+                "end_monotonic": 27502339.667839583,
+                "seconds": 84.62011746689677,
+                "exit_code": 0
+              }
+            }
+          },
+          "peak_combined_rss_bytes": 13110251520,
+          "peak_combined_vram_bytes": 24222105600,
+          "resource_error": null,
+          "gpu_queue_seconds": 0.00015795603394508362,
+          "failures": {}
+        },
+        {
+          "path": "production-runs/1795275012124929895-cpu-workers/training-134-d94144815efa92fe-pmon.txt",
+          "sha256": "37c35f4ec57b47b5bc358c0e682ee78b00ab533603e1628e6ac2074d541a1a7e",
+          "seconds": 269.9639845825732,
+          "phases": {
+            "training-134-d94144815efa92fe": {
+              "render": {
+                "start_monotonic": 27502341.20991734,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 279628,
+                "end_monotonic": 27502525.009014376,
+                "seconds": 183.7990970350802,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27502525.01051694,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 282522,
+                "end_monotonic": 27502609.92816841,
+                "seconds": 84.91765146702528,
+                "exit_code": 0
+              }
+            },
+            "training-135-cc4cdd521717bb2e": {
+              "render": {
+                "start_monotonic": 27502341.212141026,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 279632,
+                "end_monotonic": 27502525.646783233,
+                "seconds": 184.43464220687747,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27502525.647304095,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 282530,
+                "end_monotonic": 27502611.173901923,
+                "seconds": 85.52659782767296,
+                "exit_code": 0
+              }
+            }
+          },
+          "peak_combined_rss_bytes": 13945192448,
+          "peak_combined_vram_bytes": 24222105600,
+          "resource_error": null,
+          "gpu_queue_seconds": 5.23589551448822e-05,
+          "failures": {}
+        },
+        {
+          "path": "production-runs/1795275012124929895-cpu-workers/training-136-073bbcbb83cece0e-pmon.txt",
+          "sha256": "8b36bad1a59a7b212f93b1b22e5c86a268ac226434207c01c1ae2cd0652f25a5",
+          "seconds": 280.0741221681237,
+          "phases": {
+            "training-136-073bbcbb83cece0e": {
+              "render": {
+                "start_monotonic": 27502613.23543225,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 283639,
+                "end_monotonic": 27502799.463879295,
+                "seconds": 186.2284470461309,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27502799.464415923,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 286546,
+                "end_monotonic": 27502892.808999192,
+                "seconds": 93.34458326920867,
+                "exit_code": 0
+              }
+            },
+            "training-137-ddbd64a306f037b2": {
+              "render": {
+                "start_monotonic": 27502613.23629021,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 283645,
+                "end_monotonic": 27502799.395398907,
+                "seconds": 186.15910869836807,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27502799.39684399,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 286543,
+                "end_monotonic": 27502893.309554417,
+                "seconds": 93.91271042823792,
+                "exit_code": 0
+              }
+            }
+          },
+          "peak_combined_rss_bytes": 15914782720,
+          "peak_combined_vram_bytes": 24222105600,
+          "resource_error": null,
+          "gpu_queue_seconds": 6.96815550327301e-05,
+          "failures": {}
+        },
+        {
+          "path": "production-runs/1795275012124929895-cpu-workers/training-138-9681693dbd32371d-pmon.txt",
+          "sha256": "21dfa0dff068a19e991a69cecd54c6de966dcdc54983957fb7128b0b707eea5f",
+          "seconds": 274.4242009855807,
+          "phases": {
+            "training-138-9681693dbd32371d": {
+              "render": {
+                "start_monotonic": 27502896.21508378,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 287726,
+                "end_monotonic": 27503085.551108673,
+                "seconds": 189.3360248915851,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27503085.551651973,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 290680,
+                "end_monotonic": 27503170.639284767,
+                "seconds": 85.08763279393315,
+                "exit_code": 0
+              }
+            },
+            "training-139-a6fdfc32f252dada": {
+              "render": {
+                "start_monotonic": 27502896.215822473,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 287730,
+                "end_monotonic": 27503084.26422876,
+                "seconds": 188.04840628802776,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27503084.265643984,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 290669,
+                "end_monotonic": 27503169.04250742,
+                "seconds": 84.77686343714595,
+                "exit_code": 0
+              }
+            }
+          },
+          "peak_combined_rss_bytes": 13731581952,
+          "peak_combined_vram_bytes": 24222105600,
+          "resource_error": null,
+          "gpu_queue_seconds": 6.0245394706726074e-05,
+          "failures": {}
+        },
+        {
+          "path": "production-runs/1795275012124929895-cpu-workers/training-140-05fad3fd2dd65434-pmon.txt",
+          "sha256": "bf7f608f4bb46e0f2455553f4bd95278d52ecd5c5ba05cd47d2907ee0a7ec209",
+          "seconds": 269.7090251855552,
+          "phases": {
+            "training-140-05fad3fd2dd65434": {
+              "render": {
+                "start_monotonic": 27503172.361594748,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 291776,
+                "end_monotonic": 27503357.25158349,
+                "seconds": 184.88998874276876,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27503357.25285513,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 294693,
+                "end_monotonic": 27503441.0061697,
+                "seconds": 83.75331456959248,
+                "exit_code": 0
+              }
+            },
+            "training-141-a8405e071e053fc3": {
+              "render": {
+                "start_monotonic": 27503172.362311337,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 291780,
+                "end_monotonic": 27503358.639150616,
+                "seconds": 186.27683927863836,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27503358.639693327,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 294706,
+                "end_monotonic": 27503442.070619933,
+                "seconds": 83.43092660605907,
+                "exit_code": 0
+              }
+            }
+          },
+          "peak_combined_rss_bytes": 13798891520,
+          "peak_combined_vram_bytes": 24222105600,
+          "resource_error": null,
+          "gpu_queue_seconds": 6.132945418357849e-05,
+          "failures": {}
+        },
+        {
+          "path": "production-runs/1795275012124929895-cpu-workers/training-142-c3720b66550a6835-pmon.txt",
+          "sha256": "c97766cee1af8bd3078a25f932fdc2877cd508ec8ce81650c764490b4fc7e9c0",
+          "seconds": 304.0939298607409,
+          "phases": {
+            "training-142-c3720b66550a6835": {
+              "render": {
+                "start_monotonic": 27503443.86784864,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 295799,
+                "end_monotonic": 27503631.46552978,
+                "seconds": 187.59768114238977,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27503631.466938,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 298678,
+                "end_monotonic": 27503716.683594637,
+                "seconds": 85.21665663644671,
+                "exit_code": 0
+              }
+            },
+            "training-143-aa999d0bbdfd59a8": {
+              "render": {
+                "start_monotonic": 27503443.872254256,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 295803,
+                "end_monotonic": 27503663.38116096,
+                "seconds": 219.50890670344234,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27503663.381826777,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 299186,
+                "end_monotonic": 27503747.9617785,
+                "seconds": 84.57995172217488,
+                "exit_code": 0
+              }
+            }
+          },
+          "peak_combined_rss_bytes": 11639156736,
+          "peak_combined_vram_bytes": 24222105600,
+          "resource_error": null,
+          "gpu_queue_seconds": 5.459785461425781e-05,
+          "failures": {}
         }
       ],
       "fallback": {
@@ -5848,6 +6317,82 @@
         "archived_attempts": {
           "training-130-e288403a7bbaa3e3": "production-runs/1795271940548044214-cpu-workers/failed-pair-attempts/training-130-e288403a7bbaa3e3"
         }
+      },
+      "recovery": {
+        "decided_at_utc": "2026-11-21T15:26:49.994537+00:00",
+        "fallback_at_utc": "2026-11-21T15:22:54.055036+00:00",
+        "scene_id": "training-130-e288403a7bbaa3e3",
+        "decision": "resume_dual_after_same_single_slot_scene_failure",
+        "original_fallback": {
+          "at_utc": "2026-11-21T15:22:54.055036+00:00",
+          "failures": {
+            "training-130-e288403a7bbaa3e3": "geometry render returned 1"
+          },
+          "archived_attempts": {
+            "training-130-e288403a7bbaa3e3": "production-runs/1795271940548044214-cpu-workers/failed-pair-attempts/training-130-e288403a7bbaa3e3"
+          }
+        },
+        "outcomes": {
+          "dual": "excluded after complementary render and coverage validation failure",
+          "single_retry": "same complementary render and coverage validation failure"
+        },
+        "audits": {
+          "dual": {
+            "path": "production-runs/1795271940548044214-cpu-workers/failed-pair-attempts/training-130-e288403a7bbaa3e3/labels/radiance-audit.json",
+            "sha256": "0ea1c4406d81896965bf8a67a7295ec4d5e7639bd4201a827451b20bcad2996a"
+          },
+          "single_retry": {
+            "path": "units/training/training-130-e288403a7bbaa3e3/labels/radiance-audit.json",
+            "sha256": "cab214f26f8eecb602df3ecd556d4613c7bafdd99f86201811c3c89335c64107"
+          }
+        },
+        "failed_composition_frames": [
+          1,
+          6,
+          11,
+          16,
+          21,
+          26,
+          30,
+          35,
+          40,
+          45,
+          50,
+          55,
+          60
+        ],
+        "failed_coverage_frames": [
+          6,
+          16,
+          21,
+          26,
+          30,
+          35,
+          40,
+          50,
+          55
+        ],
+        "max_abs_difference_between_attempts": {
+          "same_seed_complement_linear_MAE": 5.587935447692871e-09,
+          "rendered_vs_mesh_coverage_MAE": 0.0
+        },
+        "complement_mae_ranges": {
+          "dual": [
+            0.014352073892951012,
+            0.03895796462893486
+          ],
+          "single_retry": [
+            0.01435207761824131,
+            0.03895796462893486
+          ]
+        },
+        "reason": "同一场景在单槽按护栏重放后复现相同的合成与覆盖验收失败，排除该场景。继续使用双槽，其他单元的原验收及显存护栏照旧。",
+        "receipt": {
+          "path": "p2-review/geometry-slot-fallback-recovery-130.json",
+          "sha256": "9ea839688f7c61626798b3507df032aec64fb84c434b94e6cd8fdb925ab2f890"
+        },
+        "resumed_at_utc": "2026-11-21T15:30:12.095236+00:00",
+        "single_slot_interruption_seconds": 438.0402
       }
     },
     "geometry_pair_fallback": {
