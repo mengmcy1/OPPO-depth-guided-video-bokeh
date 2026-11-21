@@ -744,7 +744,7 @@
       "formal_use": false
     },
     "formal_counts": {
-      "train_geometry": 129,
+      "train_geometry": 130,
       "development": 15,
       "test": 30,
       "train_optical": 0
@@ -1306,7 +1306,7 @@
       "reserve_bytes": 64424509440
     },
     "generator_version": "B-v2-31aa7f9a4325",
-    "manifest_sha256": "8cc3e695df16cceebacd5ed4d71fc385b6b3b8d90a47d38515ef598601980571",
+    "manifest_sha256": "bb248a79f160ed98fb75ab277cd29cf6beeddd66347ee5a4aa94b582f3813d4d",
     "scene_plan_sha256": {
       "training": "3687df48d64d82dd2dfd620c1a1ee6b32f2305186063d0df89c2e6f99a5986d8",
       "development": "78f5ef2aa6625bba938028efb71ad1bf2da3142810d8453d6a387452728c0d85",
@@ -1389,7 +1389,7 @@
       }
     },
     "target_gap": {
-      "train_geometry": 171,
+      "train_geometry": 170,
       "development": 0,
       "test": 0,
       "train_optical": 80
@@ -1413,8 +1413,8 @@
       },
       "training": {
         "path": "units/training/failures.json",
-        "sha256": "8b3e81c8480bc4c8f90c69013a472a134f0b30aa37726a58dd14a6b486194709",
-        "count": 1
+        "sha256": "dfbd0cf2bfbc4f2d74947c6552309cb10c7908db1737b3b2ea245128916e2ff2",
+        "count": 2
       }
     },
     "optical_difficulty_counts": {},
@@ -2316,17 +2316,17 @@
     },
     "p2_finish_eta": {
       "status": "conditional_on_optical_gate_and_future_acceptance",
-      "measured_at_utc": "2026-11-21T15:22:54.236242+00:00",
-      "estimated_hours": 42.46138158022529,
-      "estimated_finish_utc": "2026-11-23T09:50:35.209931+00:00",
+      "measured_at_utc": "2026-11-21T15:30:12.119209+00:00",
+      "estimated_hours": 37.457540499418975,
+      "estimated_finish_utc": "2026-11-23T04:57:39.265007+00:00",
       "remaining_hours_by_stage": {
-        "training_geometry": 11.56413931267129,
+        "training_geometry": 6.560298231864969,
         "training_optical": 30.897242267554006
       },
-      "geometry_basis": "first 30 production geometry units with one GPU slot",
-      "geometry_per_hour": 14.700618472636714,
-      "training_geometry_remaining_runnable": 170,
-      "training_geometry_failed": 1,
+      "geometry_basis": "isolated paired qualification, before first 30 production units",
+      "geometry_per_hour": 25.60859187528747,
+      "training_geometry_remaining_runnable": 168,
+      "training_geometry_failed": 2,
       "training_optical_basis": "qualified two-slot optical wall time"
     },
     "p2_dispatch": {
@@ -2509,10 +2509,10 @@
         "training": {
           "partition": "training",
           "scene_slots": 4,
-          "attempted_scenes": 20,
-          "accepted_scenes": 19,
-          "seconds": 2633.6663188152015,
-          "accepted_per_hour": 25.971399456090122,
+          "attempted_scenes": 21,
+          "accepted_scenes": 20,
+          "seconds": 3069.8773851171136,
+          "accepted_per_hour": 23.45370546363149,
           "cpu_affinity": {
             "dispatcher": [
               0
@@ -2543,10 +2543,10 @@
           "max_compute_threads": 19,
           "sampled_peak_cpu_equivalents": 9.371202367086918,
           "peak_combined_rss_bytes": 16165355520,
-          "label_and_gpu_lane_overlap_seconds": 2535.583256520331,
+          "label_and_gpu_lane_overlap_seconds": 2825.5373619049788,
           "gpu_idle_for_b_labels_seconds": {
             "startup": 0,
-            "steady": 0
+            "steady": 10.704811539500952
           },
           "shared_lock_busy_while_b_labels_pending_seconds": {
             "startup": 0,
@@ -2559,8 +2559,8 @@
           "ready_queue_limit": 30,
           "peak_ready_queue": 30,
           "gpu_geometry_slots": 1,
-          "path": "production-runs/1795274574226887794-training.json",
-          "sha256": "b58fbe43f5333170e601775919320d59fd2b5dc921d8c6499e689bbf0dea7f87"
+          "path": "production-runs/1795275010437177410-training.json",
+          "sha256": "21cbd42dc0d156a1b51138e4fcde76ea03fee2b05995d0e7290157444f4b4b3f"
         }
       }
     },
@@ -4056,7 +4056,7 @@
       "registered_at": "2026-11-21T13:45:37.001776+00:00"
     },
     "dispatch_gpu_slots": {
-      "version": "p2-training-gpu-slots-planner-decision",
+      "version": "p2-training-gpu-slots-scene-failure-recovery",
       "parent": {
         "version": "p2-cpu-workers-3",
         "path": "dispatch-cpu-workers-p2.json",
@@ -4066,14 +4066,14 @@
       "generator_code_sha256": "e10a102491b98494c1f77d20f1a2249ba065a2ae65339faf72087a5a732c35c5",
       "dispatch_code": {
         "route3_v2data_B_dispatch.py": "c197dc4b6b0d211beffe86ab7dbc06ffb29ef1e4177a058638178845ba0566bc",
-        "route3_v2data_B_release.py": "4d223b6b79613751f9c579587609169debbb75ed7fb6148009691896582e3861",
+        "route3_v2data_B_release.py": "a93b6732a4bc8487c01e7754d2eea7cb1c6d3ba672bf933832f348eff706ee52",
         "route3_v2data_B_deploy_p2.py": "3f6d25b8cd128709a5495846ea58b513c8b83b6c6cfa2d2d4d70baeecc9bf99b",
         "route3_v2data_B_optical_pair.py": "b947177d165338b9d797e1de704e2412a4904e405912575ef3c2905527153e96",
-        "route3_v2data_B_dispatch_workers.py": "642d078d275a3d87ba9e3396f3845c32ebe8307a49f0746b2661cfb75a9e1928",
+        "route3_v2data_B_dispatch_workers.py": "fdfc3cb263f8040bd6e2f0f42a81ff5bf6c87e8ac32804275d6eecb0ac89cb2e",
         "route3_v2data_B_geometry_pair.py": "45fb3791a10ce24a475dc71119f08f1133a12cd3e9e55f5f6a516ec012e8793f",
-        "route3_v2data_B_geometry_slots.py": "26a7b60f249b1d08d54013f090b228297ac1e465da0b2c0dcedc504ab8bc046a"
+        "route3_v2data_B_geometry_slots.py": "8be0e2cdbcb166fdcbe5e0e8602649b60b5eefec322d2f12cb61ae3e327f4d1f"
       },
-      "dispatch_code_sha256": "8cdc7b573e23b0b9ea056ac0553a0dbb81f4a5ecf82b924de3bb800a6d19e956",
+      "dispatch_code_sha256": "d709b806622269c8df2ca985f546ad8a0fc14434b8e0ada38d710d285df0eeaa",
       "qualification": {
         "path": "p2-review/geometry-pair-noise-result.json",
         "sha256": "136a6b41ea33a58932952640377a5623ca0caab76aca3d4ac52718ead66e0b78"
@@ -4084,9 +4084,13 @@
         "sha256": "7a84e97f5568bb29c87acb3cc723dd00a253a91995276f5d0594b208c534035f"
       },
       "previous_gpu_dispatch": {
-        "version": "p2-training-gpu-slots-optical-gate",
-        "path": "dispatch-gpu-slots-p2.json",
-        "sha256": "5b16f4c8bf38df866409a1cecffdd0aa7821c270011a6113f85a5bef4352f7e5"
+        "version": "p2-training-gpu-slots-planner-decision",
+        "path": "dispatch-gpu-slots-planner-p2.json",
+        "sha256": "66640b16d4aba886e711844c34588d5c47b0cd85d5fe514f94ac774ff308ee2a"
+      },
+      "fallback_recovery": {
+        "path": "p2-review/geometry-slot-fallback-recovery-130.json",
+        "sha256": "9ea839688f7c61626798b3507df032aec64fb84c434b94e6cd8fdb925ab2f890"
       },
       "adopted": true,
       "optical_gate_policy": {
@@ -4121,7 +4125,7 @@
         22
       ],
       "extra_worker_ready_queue_threshold": 5,
-      "switched_at_utc": "2026-11-21T14:39:00.517405+00:00"
+      "switched_at_utc": "2026-11-21T15:30:12.095236+00:00"
     },
     "geometry_pair_noise_trial": {
       "version": "B-v2-31aa7f9a4325-p2",
@@ -5052,7 +5056,8 @@
         "training-126-627fc10d62778eaf": "dual",
         "training-127-f793218e172f7a27": "dual",
         "training-128-308d33775b95ae11": "dual",
-        "training-129-d8668d929a0896e4": "dual"
+        "training-129-d8668d929a0896e4": "dual",
+        "training-131-0a6f6184692eee91": "single"
       }
     },
     "geometry_pair_first_30": {
@@ -5926,7 +5931,9 @@
       "receipt": {
         "path": "p2-review/geometry-slot-fallback-recovery-130.json",
         "sha256": "9ea839688f7c61626798b3507df032aec64fb84c434b94e6cd8fdb925ab2f890"
-      }
+      },
+      "resumed_at_utc": "2026-11-21T15:30:12.095236+00:00",
+      "single_slot_interruption_seconds": 438.0402
     }
   }
 }
