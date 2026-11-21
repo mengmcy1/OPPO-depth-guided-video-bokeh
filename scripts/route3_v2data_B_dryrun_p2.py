@@ -28,21 +28,23 @@ from src.ovg_appearance import AppearanceHeads
 
 class QualificationData(TrainingData):
     """Use an isolated training qualification without registering it for production."""
-    def __init__(self, unit):
+    def __init__(self, *units):
         super().__init__()
-        self.unit = unit
-        self.b[unit.name] = unit
+        self.qualification = {unit.name:unit for unit in units}
+        self.b.update(self.qualification)
 
     def load(self, item, device):
-        if item[:2] != ('B', self.unit.name):
+        unit = self.qualification.get(item[1]) if item[0]=='B' else None
+        if unit is None:
             return super().load(item, device)
-        with patch.object(legacy, 'formal_unit', lambda name:self.unit if name==self.unit.name else None):
-            return legacy.sample(item, device, b_loader=lambda _,frame:observation(self.unit,frame,aligned=True))
+        with patch.object(legacy, 'formal_unit', lambda name:unit if name==unit.name else None):
+            return legacy.sample(item, device, b_loader=lambda _,frame:observation(unit,frame,aligned=True))
 
     def pair_reference(self, item, target):
-        if item[:2] != ('B', self.unit.name):
+        unit = self.qualification.get(item[1]) if item[0]=='B' else None
+        if unit is None:
             return super().pair_reference(item, target)
-        with patch.object(legacy, 'formal_unit', lambda name:self.unit if name==self.unit.name else None):
+        with patch.object(legacy, 'formal_unit', lambda name:unit if name==unit.name else None):
             legacy.b_foreground_reference.cache_clear()
             return super().pair_reference(item, target)
 
@@ -89,7 +91,9 @@ def run_batches(inventory, plan, *, validate_support=True):
             failures.append(f"{row['scene']}/{row['input_frame']} used bokeh without an optical reference")
         if any(not s['finite'] or not s['gradient_tensors'] for s in row['losses'].values()):
             failures.append(f"{row['scene']}/{row['input_frame']} nonfinite or disconnected gradient")
-        if row['stage']=='1b' and (row['tier']=='B' or row['optical']) and not row['support'].get('occ'):
+        if row['stage']=='1b' and (row['tier']=='B' or row['optical']) and not (
+            row['support'].get('occ_reveal',0)+row['support'].get('occ_block',0)
+        ):
             failures.append(f"{row['scene']}/{row['input_frame']} no effective K16 occlusion rays")
         if row['optical'] and not row['support']['bokeh']:
             failures.append(f"{row['scene']}/{row['input_frame']} no effective optical supervision")
@@ -232,7 +236,7 @@ def publish(values, checkout):
         changed.check_returncode()
 
 
-def monitor(output, checkout):
+def monitor(output, checkout, production_record=RECORD):
     output.mkdir(parents=True,exist_ok=True)
     created, failed = set(), {}
     first_optical = []
@@ -269,7 +273,7 @@ def monitor(output, checkout):
                 publish({'optical':dict(path=str((output/'optical.json').relative_to(FORMAL_DATA)),
                                          sha256=sha256(output/'optical.json'),passed=result['passed'],
                                          failures=result['failures'], transmission=result['transmission'])},checkout)
-            dispatch = load(RECORD)["v2"]["p2_dispatch"]["status"]
+            dispatch = load(production_record)["v2"]["p2_dispatch"]["status"]
             if len(created)==80 or (dispatch in {'completed','queue_exhausted_with_shortfalls'}
                                       and len(created)+len(failed)==len(available)):
                 publish({'F2':dict(ready_scenes=len(created),ready_frames=3*len(created),
@@ -285,6 +289,7 @@ if __name__=='__main__':
     parser.add_argument('--f2-root',type=Path)
     parser.add_argument('--geometry-probes',action='store_true')
     parser.add_argument('--publish-worktree',type=Path)
+    parser.add_argument('--production-record',type=Path,default=RECORD)
     args = parser.parse_args()
     if os.environ.get('CUDA_VISIBLE_DEVICES')!='0':
         parser.error('assign the shared CUDA device explicitly')
@@ -304,4 +309,4 @@ if __name__=='__main__':
         raise SystemExit(0 if result['passed'] else 1)
     if not args.publish_worktree:
         parser.error('monitor mode needs its own worktree to publish records')
-    monitor(args.output.resolve(),args.publish_worktree.resolve())
+    monitor(args.output.resolve(),args.publish_worktree.resolve(),args.production_record.resolve())

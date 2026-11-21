@@ -791,6 +791,179 @@
           }
         ]
       }
+    },
+    "native_resolution_L_occ": {
+      "status": "passed_and_selected_native_512",
+      "definition": "L_occ uses the same hard front-depth prefix and equal per-branch averaging, on the original B label/prediction grid",
+      "policy": "B uses the full native prediction and intrinsics and keeps the configured four K16 pupil offsets; L_bokeh, zero aperture and C occlusion preserve their existing grids",
+      "historical_continuity": "Legacy 1b and 1c B used 2×2 mask unanimity. It made B reveal supervision largely absent. Interpret the three continuity controls with that historical implementation.",
+      "formal_gate": "every B 1b batch has occ_reveal + occ_block > 0; record each branch and leave reveal as diagnostic",
+      "gpu": "RTX 5090",
+      "train_batch_count": 70,
+      "model_state_unchanged": true,
+      "optimizer_steps": 0,
+      "timing_boundary": "preloaded inputs and K16, CUDA-synchronized objective plus one full backward; no weight updates",
+      "paired_median_step_ratio": 1.0880045276903703,
+      "thresholds": {
+        "allowed_step_ratio": 1.3,
+        "allowed_peak_reserved_bytes": 30064771072
+      },
+      "before": {
+        "timing": {
+          "step_median_seconds": 0.5366562083363533,
+          "step_p95_seconds": 0.8459228919818997,
+          "forward_median_seconds": 0.5029156841337681,
+          "backward_median_seconds": 0.03809579089283943,
+          "peak_reserved_bytes": 2009071616,
+          "peak_allocated_bytes": 1503624192,
+          "all_finite": true
+        },
+        "branch_count": {
+          "block_only": 61,
+          "neither": 6,
+          "both": 3
+        },
+        "reveal_nonzero_batches": 3,
+        "block_nonzero_batches": 64,
+        "reveal_possible_both_focuses_and_all_pupils": 8
+      },
+      "after": {
+        "timing": {
+          "step_median_seconds": 0.583884384483099,
+          "step_p95_seconds": 0.8877761887386442,
+          "forward_median_seconds": 0.529444370418787,
+          "backward_median_seconds": 0.053098658099770546,
+          "peak_reserved_bytes": 3755999232,
+          "peak_allocated_bytes": 2917364224,
+          "all_finite": true
+        },
+        "branch_count": {
+          "both": 69,
+          "block_only": 1
+        },
+        "reveal_nonzero_batches": 69,
+        "block_nonzero_batches": 70,
+        "reveal_possible_both_focuses_and_all_pupils": 70
+      },
+      "targeted_f040_both_focuses": [
+        {
+          "scene_id": "training-060-6d5047674c33e827",
+          "frame": 40,
+          "focus_index": 0,
+          "focus_m": 4.971821826926223,
+          "pupil_ids": [
+            3,
+            11,
+            14,
+            1
+          ],
+          "old_reveal": 0,
+          "old_block": 0,
+          "native_reveal": 27,
+          "native_block": 1500,
+          "all_pupils": {
+            "reveal": 192,
+            "block": 6000
+          },
+          "expected_uniform_draw": {
+            "reveal": 48.0,
+            "block": 1500.0
+          },
+          "draw_standard_deviation": {
+            "reveal": 37.22902093797257,
+            "block": 0.0
+          }
+        },
+        {
+          "scene_id": "training-060-6d5047674c33e827",
+          "frame": 40,
+          "focus_index": 1,
+          "focus_m": 6.526634281832626,
+          "pupil_ids": [
+            10,
+            12,
+            3,
+            8
+          ],
+          "old_reveal": 0,
+          "old_block": 0,
+          "native_reveal": 42,
+          "native_block": 1439,
+          "all_pupils": {
+            "reveal": 181,
+            "block": 5948
+          },
+          "expected_uniform_draw": {
+            "reveal": 45.25,
+            "block": 1487.0
+          },
+          "draw_standard_deviation": {
+            "reveal": 31.910617355356823,
+            "block": 22.675978479439426
+          }
+        }
+      ],
+      "zero_branches": [
+        {
+          "scene_id": "training-060-6d5047674c33e827",
+          "frame": 60,
+          "branch": "reveal",
+          "focus_m": 6.526634281832626,
+          "pupil_ids": [
+            4,
+            12,
+            5,
+            9
+          ],
+          "source_rays": 93,
+          "reason": "sampled four offsets contain no eligible rays"
+        }
+      ],
+      "optical_crosscheck": {
+        "scene_id": "training-120-2db3c2fe6b5336e7",
+        "frame": 30,
+        "outcomes": {
+          "pooled": {
+            "occ": {
+              "reveal": 0,
+              "block": 10750
+            },
+            "zero": 2.4150567696779035e-05,
+            "bokeh": 0.0009395053493790329,
+            "timing_seconds": 0.6743620373308659,
+            "peak_reserved_bytes": 2199912448,
+            "finite": true
+          },
+          "native": {
+            "occ": {
+              "reveal": 2,
+              "block": 44578
+            },
+            "zero": 2.4150567696779035e-05,
+            "bokeh": 0.0009395053493790329,
+            "timing_seconds": 0.57081313803792,
+            "peak_reserved_bytes": 3793747968,
+            "finite": true
+          }
+        }
+      },
+      "prefix_equivalence": {
+        "active_rays": 147,
+        "max_forward_difference": 0.0,
+        "max_gradient_difference": 2.384185791015625e-07
+      },
+      "replay": {
+        "path": "p2-review/occ-resolution-reviewed-2026-11-21/occ-resolution-replay.json",
+        "sha256": "43cf91e7d36070787e95013bb670ce741e7577886d23ac0fa8efb050a3ffd6cc"
+      },
+      "paired_counts_csv": {
+        "path": "p2-review/occ-resolution-reviewed-2026-11-21/occ-counts-by-batch.csv",
+        "sha256": "c5947ea27e48d4f18ed47c0d3fc276c3b243fa5e579bf8955566e175bd584ea3"
+      },
+      "independent_label_counts": {
+        "path": "p2-review/occ-resolution-cpu-label-replay.json",
+        "sha256": "85d93fe95111bbd758b6f7aa49de2206b086f9a9e94cbb9cad6b068d94b069f3"
+      }
     }
   }
 }

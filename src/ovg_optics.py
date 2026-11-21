@@ -64,10 +64,14 @@ def raster(scene, K, focus, offsets, height, width, background=None, *, return_a
     return (result, torch.stack(coverage)) if return_alpha else result
 
 
-def occlusion_loss(visible, K, focus, offsets, cutoff, reveal, block):
+def occlusion_loss(visible, K, focus, offsets, cutoff, reveal, block, *, sparse=False, sample_scale=1):
     """Balanced, two-sided clipped-depth error on labeled non-mixed rays."""
-    T = torch.stack([differentiable_prefix_transmittance(visible, *subcamera(K, focus, xy), z.contiguous())
-                    for xy, z in zip(offsets, cutoff)])
+    active = reveal | block if sparse else (None,)*len(cutoff)
+    T = torch.stack([
+        differentiable_prefix_transmittance(visible, *subcamera(K, focus, xy), z.contiguous(),
+                                            active=mask, sample_scale=sample_scale)
+        for xy, z, mask in zip(offsets, cutoff, active)
+    ])
     return masked_mean(1 - T, reveal) + masked_mean(T, block)
 
 

@@ -33,6 +33,7 @@ REPORT = ROOT/'03_实验记录/records/route3-v2data-loader-dryrun-2026-11-21.js
 REVIEW = ROOT/'03_实验记录/records/route3-v2data-readiness-2026-11-20-review.json'
 LOCK = Path('/root/autodl-tmp/route3-cache/gpu-data.lock')
 START = SOURCE/'checkpoints/step-030000.pt'
+B_OCC_MODE = 'native'
 SEED = CONFIG['seed']
 
 
@@ -43,7 +44,8 @@ def balanced_count(valid, boundary, cap):
     return min(edge, common)+min(inner, common)
 
 
-def stage_objective(net, inventory, item, stage, generator, *, spec=None, audit_k16=False, audit_transmission=False):
+def stage_objective(net, inventory, item, stage, generator, *, spec=None, audit_k16=False,
+                    audit_transmission=False, b_occ_mode=B_OCC_MODE):
     """Use native K16 for occlusion and an optional optical target for Bokeh."""
     tier = item[0]
     device = next(net.parameters()).device
@@ -85,7 +87,8 @@ def stage_objective(net, inventory, item, stage, generator, *, spec=None, audit_
             counts.update({f'pair_{k}':v for k,v in pairs.items()})
     if stage == '1a':
         return terms, counts, weights
-    shape = tuple(min(n,opts['max_image_side']) for n in x['rgb'].shape[-2:])
+    native_pred, native_input = pred, x
+    shape = tuple(min(n, opts['max_image_side']) for n in x['rgb'].shape[-2:])
     pred, x, _ = resized_prediction(pred, x, None, shape)
     K = x['K'][0]
     visible = fixed_visible_surfels(pred,x)
@@ -104,15 +107,34 @@ def stage_objective(net, inventory, item, stage, generator, *, spec=None, audit_
     center = K.new_zeros((1,2))
     if occupancy_spec:
         rays = ray_fields(occupancy_spec)
-        offsets, cutoff, reveal, block = occupancy(rays,batch[1],shape,generator,opts['occ_ray_count'])
-        terms['occ'] = occlusion_loss(visible,K,focus,offsets,cutoff,reveal,block)
+        occ_shape, occ_visible, occ_K = shape, visible, K
+        sparse, sample_scale = False, 1
+        if tier == 'B':
+            if b_occ_mode not in ('pooled', 'native', 'subpixel'):
+                raise ValueError(f'Unknown B occlusion mode: {b_occ_mode}')
+            if b_occ_mode != 'pooled':
+                occ_shape = native_input['rgb'].shape[-2:]
+                sparse = True
+                if b_occ_mode == 'native':
+                    occ_K = native_input['K'][0]
+                    if occ_shape != shape:
+                        occ_visible = fixed_visible_surfels(native_pred, native_input)
+                else:
+                    # The 256 surfel grid and intrinsics stay in coarse units.
+                    # Evaluate the native ray at its individual subpixel center.
+                    sample_scale = occ_shape[0]//shape[0]
+                    if tuple(n*sample_scale for n in shape) != occ_shape:
+                        raise ValueError('B subpixel rays need a uniform sensor scale')
+        offsets, cutoff, reveal, block = occupancy(rays,batch[1],occ_shape,generator,opts['occ_ray_count'])
+        terms['occ'] = occlusion_loss(occ_visible,occ_K,focus,offsets,cutoff,reveal,block,
+                                      sparse=sparse,sample_scale=sample_scale)
         counts.update(occ_reveal=int(reveal.sum()),occ_block=int(block.sum()))
         counts['occ'] = counts['occ_reveal']+counts['occ_block']
         hidden, placed = hidden_substitute(occupancy_spec,rays,reference,pred['depth1'][0],K)
         counts.update(hidden_eligible=placed['eligible'],hidden_placed=placed['placed'])
         if audit_k16:
             audit_rng = torch.Generator(device=device).manual_seed(8)
-            _, _, full_reveal, full_block = occupancy(rays,batch[1],shape,audit_rng,len(rays['depth']))
+            _, _, full_reveal, full_block = occupancy(rays,batch[1],occ_shape,audit_rng,len(rays['depth']))
             counts.update(all_K16_occ_block=int(full_block.sum()),all_K16_occ_reveal=int(full_reveal.sum()))
     combined = merge_layers(visible,hidden)
     zero = raster(combined,K,focus,center,*shape,observed_background(spec,x,focus,center))[0]
@@ -297,7 +319,9 @@ def make_report(inventory, plan, rows, unchanged, peak, candidate_weight):
             if stage=='1b' and tier in ('B','C') and not block['optical_batches']:
                 failures.append(f'{stage}/{tier}: no optical batch')
     for row in rows:
-        if row['stage']=='1b' and row['tier']=='B' and not row['support'].get('occ'):
+        if row['stage']=='1b' and row['tier']=='B' and not (
+            row['support'].get('occ_reveal',0)+row['support'].get('occ_block',0)
+        ):
             failures.append(f'1b/B/{row["index"]}: no effective K16 occlusion rays')
         if row['optical'] and (not {'occ','bokeh'}<=row['losses'].keys() or row['support']['occ']==0
                               or row['support']['bokeh']==0):
