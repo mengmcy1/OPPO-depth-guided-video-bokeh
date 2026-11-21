@@ -744,7 +744,7 @@
       "formal_use": false
     },
     "formal_counts": {
-      "train_geometry": 0,
+      "train_geometry": 30,
       "development": 15,
       "test": 30,
       "train_optical": 0
@@ -1306,7 +1306,7 @@
       "reserve_bytes": 64424509440
     },
     "generator_version": "B-v2-31aa7f9a4325",
-    "manifest_sha256": "ba830ee24a9cd0c3d212d132112e05057be2c90b3ebafe3af75a949f7541ff3b",
+    "manifest_sha256": "51cc776509a193df8932260975baf94c22db0dd2713d8b29a4c8f9c08df3e3dc",
     "scene_plan_sha256": {
       "training": "3687df48d64d82dd2dfd620c1a1ee6b32f2305186063d0df89c2e6f99a5986d8",
       "development": "78f5ef2aa6625bba938028efb71ad1bf2da3142810d8453d6a387452728c0d85",
@@ -1389,7 +1389,7 @@
       }
     },
     "target_gap": {
-      "train_geometry": 300,
+      "train_geometry": 270,
       "development": 0,
       "test": 0,
       "train_optical": 80
@@ -2316,18 +2316,18 @@
     },
     "p2_finish_eta": {
       "status": "conditional_on_sealed_scenes_passing",
-      "measured_at_utc": "2026-11-21T07:12:37.481915+00:00",
-      "estimated_hours": 55.69029927526911,
-      "estimated_finish_utc": "2026-11-23T14:54:02.559306+00:00",
+      "measured_at_utc": "2026-11-21T09:15:04.125014+00:00",
+      "estimated_hours": 49.26383079118406,
+      "estimated_finish_utc": "2026-11-23T10:30:53.915862+00:00",
       "remaining_hours_by_stage": {
         "tests": 0.0,
         "development": 0.0,
-        "training_geometry": 24.793057007715106,
+        "training_geometry": 18.366588523630053,
         "training_optical": 30.897242267554006,
         "optical_parallel_trial": 0.0
       },
-      "geometry_basis": "resumed p2 test geometry",
-      "geometry_per_hour": 12.10016174716357,
+      "geometry_basis": "resumed p2 training geometry",
+      "geometry_per_hour": 14.700607009985761,
       "development_basis": "resumed development",
       "training_optical_basis": "paired trial parallel",
       "includes_sampled_geometry_queue": true,
@@ -2531,6 +2531,61 @@
           },
           "path": "production-runs/1795237168646672978-development.json",
           "sha256": "c42b81f2ac650022aa34fb3f36da7cea2de590bc1ba02e1e2db45e17f2d6c065"
+        },
+        "training": {
+          "partition": "training",
+          "scene_slots": 4,
+          "attempted_scenes": 60,
+          "accepted_scenes": 30,
+          "seconds": 7346.635409452021,
+          "accepted_per_hour": 14.700607009985761,
+          "cpu_affinity": {
+            "dispatcher": [
+              0
+            ],
+            "geometry": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "gpu": [
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18
+            ]
+          },
+          "max_compute_threads": 19,
+          "sampled_peak_cpu_equivalents": 5.3417116148954795,
+          "peak_combined_rss_bytes": 9022066688,
+          "label_and_gpu_lane_overlap_seconds": 9907.484456039965,
+          "gpu_idle_for_b_labels_seconds": {
+            "startup": 0,
+            "steady": 0
+          },
+          "shared_lock_busy_while_b_labels_pending_seconds": {
+            "startup": 0,
+            "steady": 0
+          },
+          "combined_memory_limit_hit": false,
+          "generator_version": "B-v2-31aa7f9a4325-p2",
+          "partition_dispatch_finished": false,
+          "cpu_workers": 3,
+          "ready_queue_limit": 30,
+          "peak_ready_queue": 30,
+          "path": "production-runs/1795252504123629055-training.json",
+          "sha256": "807dad50e845bb1f0e576d9b7c937c2b3b9def0e810eeee45943d771d6c78988"
         }
       }
     },
@@ -3410,6 +3465,162 @@
         "version": "p2-cpu-workers-3",
         "path": "dispatch-cpu-workers-p2.json",
         "sha256": "413694bedcf6c71c9d851c5f9e73403e70d336cef61e7977fc09aef69a401640"
+      },
+      "ready_queue_peak": 30,
+      "peak_combined_rss_bytes": 9022066688,
+      "sampled_peak_cpu_equivalents": 5.3417116148954795,
+      "training_first_30": {
+        "accepted_scenes": 30,
+        "sampling_seconds": 7346.629680991173,
+        "sample_interval_seconds": 1,
+        "samples": 7347,
+        "per_stage": {
+          "waiting_or_acceptance": {
+            "samples": 54,
+            "mean_utilization_percent": 0.4074074074074074
+          },
+          "render": {
+            "samples": 4786,
+            "mean_utilization_percent": 18.417258671124113
+          },
+          "input-priors": {
+            "samples": 2507,
+            "mean_utilization_percent": 16.03948942959713
+          }
+        },
+        "per_scene_gpu_seconds": {
+          "training-001-7a9b2de81e9aa875": {
+            "render": 166.029181896,
+            "input-priors": 86.156656077
+          },
+          "training-002-c49d9ad7c4e92e63": {
+            "render": 168.061344299,
+            "input-priors": 82.908688108
+          },
+          "training-000-2c3ab6e8683fec54": {
+            "render": 169.317138863,
+            "input-priors": 84.030830291
+          },
+          "training-004-33797c8abc6f9233": {
+            "render": 164.442393844,
+            "input-priors": 85.875446633
+          },
+          "training-003-84a292bddc71820b": {
+            "render": 162.539366004,
+            "input-priors": 82.215843431
+          },
+          "training-005-36de5f3bced635fa": {
+            "render": 146.679934823,
+            "input-priors": 82.400060458
+          },
+          "training-006-b485f55b834928b2": {
+            "render": 162.672279932,
+            "input-priors": 82.776207677
+          },
+          "training-007-a282550a5861bdc0": {
+            "render": 165.064515626,
+            "input-priors": 84.04830388
+          },
+          "training-008-6ba6f641b9d7a029": {
+            "render": 162.620649169,
+            "input-priors": 84.144361082
+          },
+          "training-009-0a88c292b2eff27b": {
+            "render": 128.780578957,
+            "input-priors": 83.144387527
+          },
+          "training-010-3fe02ef73c064f8c": {
+            "render": 163.45278671,
+            "input-priors": 83.260410839
+          },
+          "training-011-190575e8b94be27b": {
+            "render": 161.857839996,
+            "input-priors": 84.014789202
+          },
+          "training-012-5975a19d5c87d923": {
+            "render": 161.148824998,
+            "input-priors": 84.022153947
+          },
+          "training-013-592dc61274e516fc": {
+            "render": 154.567458314,
+            "input-priors": 84.761674707
+          },
+          "training-014-21a8471fdaf738d6": {
+            "render": 165.534919295,
+            "input-priors": 83.677335153
+          },
+          "training-015-a4dd5b2a31751d13": {
+            "render": 159.778346385,
+            "input-priors": 83.657143854
+          },
+          "training-016-408d2e210a5f6e96": {
+            "render": 156.102013228,
+            "input-priors": 84.817041034
+          },
+          "training-017-560dd88c379662d5": {
+            "render": 158.10986326,
+            "input-priors": 84.128958677
+          },
+          "training-018-d5299e63a8e2771b": {
+            "render": 166.12584134,
+            "input-priors": 84.504915733
+          },
+          "training-019-95de7e7b7a62e27b": {
+            "render": 162.783769584,
+            "input-priors": 85.036256116
+          },
+          "training-020-2f33904b712ea967": {
+            "render": 129.462241875,
+            "input-priors": 82.706808153
+          },
+          "training-021-f914af69080224a7": {
+            "render": 165.607534392,
+            "input-priors": 84.980450585
+          },
+          "training-022-6b85c6367c0e2cd0": {
+            "render": 158.822483712,
+            "input-priors": 83.873555317
+          },
+          "training-023-e977af57cf78a85b": {
+            "render": 157.620087992,
+            "input-priors": 82.954226612
+          },
+          "training-024-bb5d3336889f345e": {
+            "render": 165.156924094,
+            "input-priors": 84.118618316
+          },
+          "training-025-854c464a666a96ad": {
+            "render": 160.91762567,
+            "input-priors": 82.742888747
+          },
+          "training-026-f3242e982385bafd": {
+            "render": 163.086298422,
+            "input-priors": 80.679787354
+          },
+          "training-028-cd666dc4c87e0dee": {
+            "render": 159.498253818,
+            "input-priors": 82.669174383
+          },
+          "training-029-da107fbc33c0296f": {
+            "render": 159.552064629,
+            "input-priors": 84.706707949
+          },
+          "training-027-d3456b23a462c6de": {
+            "render": 164.231337274,
+            "input-priors": 85.152167467
+          }
+        },
+        "active_gpu_mean_utilization_percent": 17.599890305772657,
+        "accepted_per_hour": 14.700618472636714,
+        "serial_gpu_upper_bound_per_hour": 14.786844053645149,
+        "ready_queue_always_nonempty": true,
+        "ready_queue_floor": 28,
+        "ready_queue_floor_before_dispatch": 29,
+        "path": "production-runs/1795237170831460380-cpu-workers/gpu-utilization-first30.csv",
+        "sha256": "dd0b5b5fa5df665c8fb6cf314e2c0350cef9f6f6fa25280ac36752664fa90fa7",
+        "paired_optical_passed_equivalence": true,
+        "paired_optical_adopted": true,
+        "eligible_to_propose_geometry_pair": true
       }
     },
     "optical_parallel_trial": {
