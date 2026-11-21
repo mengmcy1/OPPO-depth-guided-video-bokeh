@@ -744,7 +744,7 @@
       "formal_use": false
     },
     "formal_counts": {
-      "train_geometry": 100,
+      "train_geometry": 110,
       "development": 15,
       "test": 30,
       "train_optical": 0
@@ -1306,7 +1306,7 @@
       "reserve_bytes": 64424509440
     },
     "generator_version": "B-v2-31aa7f9a4325",
-    "manifest_sha256": "b74a87fd17017470c5fe269a2055db4dac9b67ce06cc042aff01e970d4341713",
+    "manifest_sha256": "f61c01b97033e7bed5c9a117776c430ec73e638f024a35954224f04279f29fef",
     "scene_plan_sha256": {
       "training": "3687df48d64d82dd2dfd620c1a1ee6b32f2305186063d0df89c2e6f99a5986d8",
       "development": "78f5ef2aa6625bba938028efb71ad1bf2da3142810d8453d6a387452728c0d85",
@@ -1389,7 +1389,7 @@
       }
     },
     "target_gap": {
-      "train_geometry": 200,
+      "train_geometry": 190,
       "development": 0,
       "test": 0,
       "train_optical": 80
@@ -2316,16 +2316,16 @@
     },
     "p2_finish_eta": {
       "status": "conditional_on_optical_gate_and_future_acceptance",
-      "measured_at_utc": "2026-11-21T14:02:20.587072+00:00",
-      "estimated_hours": 44.434087698269224,
-      "estimated_finish_utc": "2026-11-23T10:28:23.302786+00:00",
+      "measured_at_utc": "2026-11-21T14:39:00.543143+00:00",
+      "estimated_hours": 38.2775777784021,
+      "estimated_finish_utc": "2026-11-23T04:55:39.823145+00:00",
       "remaining_hours_by_stage": {
-        "training_geometry": 13.536845430715216,
+        "training_geometry": 7.380335510848091,
         "training_optical": 30.897242267554006
       },
-      "geometry_basis": "first 30 production geometry units with one GPU slot",
-      "geometry_per_hour": 14.700618472636714,
-      "training_geometry_remaining_runnable": 199,
+      "geometry_basis": "isolated paired qualification, before first 30 production units",
+      "geometry_per_hour": 25.60859187528747,
+      "training_geometry_remaining_runnable": 189,
       "training_geometry_failed": 1,
       "training_optical_basis": "qualified two-slot optical wall time"
     },
@@ -2509,10 +2509,10 @@
         "training": {
           "partition": "training",
           "scene_slots": 4,
-          "attempted_scenes": 131,
-          "accepted_scenes": 100,
-          "seconds": 24582.03451562673,
-          "accepted_per_hour": 14.64484153136914,
+          "attempted_scenes": 10,
+          "accepted_scenes": 10,
+          "seconds": 2198.2292081937194,
+          "accepted_per_hour": 16.376818152453325,
           "cpu_affinity": {
             "dispatcher": [
               0
@@ -2541,12 +2541,12 @@
             ]
           },
           "max_compute_threads": 19,
-          "sampled_peak_cpu_equivalents": 6.174400946676143,
-          "peak_combined_rss_bytes": 9642061824,
-          "label_and_gpu_lane_overlap_seconds": 25925.492823183537,
+          "sampled_peak_cpu_equivalents": 4.331219564379112,
+          "peak_combined_rss_bytes": 8663449600,
+          "label_and_gpu_lane_overlap_seconds": 2144.2751241885126,
           "gpu_idle_for_b_labels_seconds": {
             "startup": 0,
-            "steady": 0
+            "steady": 53.80831881612539
           },
           "shared_lock_busy_while_b_labels_pending_seconds": {
             "startup": 0,
@@ -2558,8 +2558,9 @@
           "cpu_workers": 3,
           "ready_queue_limit": 30,
           "peak_ready_queue": 30,
-          "path": "production-runs/1795269739522182600-training.json",
-          "sha256": "ff555241e30e55bc3bfb1409745dbb213ffda6638fce4e25139107ad6ac77ddd"
+          "gpu_geometry_slots": 1,
+          "path": "production-runs/1795271938840643055-training.json",
+          "sha256": "94ad502781311ea8d7510593e1c85e462ee8f208a84e91eba82dfb08b2f1442a"
         }
       }
     },
@@ -3441,8 +3442,8 @@
         "sha256": "413694bedcf6c71c9d851c5f9e73403e70d336cef61e7977fc09aef69a401640"
       },
       "ready_queue_peak": 30,
-      "peak_combined_rss_bytes": 9642061824,
-      "sampled_peak_cpu_equivalents": 6.174400946676143,
+      "peak_combined_rss_bytes": 8663449600,
+      "sampled_peak_cpu_equivalents": 4.331219564379112,
       "training_first_30": {
         "accepted_scenes": 30,
         "sampling_seconds": 7346.629680991173,
@@ -4055,7 +4056,7 @@
       "registered_at": "2026-11-21T13:45:37.001776+00:00"
     },
     "dispatch_gpu_slots": {
-      "version": "p2-training-gpu-slots-optical-gate",
+      "version": "p2-training-gpu-slots-planner-decision",
       "parent": {
         "version": "p2-cpu-workers-3",
         "path": "dispatch-cpu-workers-p2.json",
@@ -4065,19 +4066,29 @@
       "generator_code_sha256": "e10a102491b98494c1f77d20f1a2249ba065a2ae65339faf72087a5a732c35c5",
       "dispatch_code": {
         "route3_v2data_B_dispatch.py": "c197dc4b6b0d211beffe86ab7dbc06ffb29ef1e4177a058638178845ba0566bc",
-        "route3_v2data_B_release.py": "a831593671856df5acc1202c292d59cd18488195f37e60424d839ad0b462e501",
+        "route3_v2data_B_release.py": "4d223b6b79613751f9c579587609169debbb75ed7fb6148009691896582e3861",
         "route3_v2data_B_deploy_p2.py": "3f6d25b8cd128709a5495846ea58b513c8b83b6c6cfa2d2d4d70baeecc9bf99b",
         "route3_v2data_B_optical_pair.py": "b947177d165338b9d797e1de704e2412a4904e405912575ef3c2905527153e96",
-        "route3_v2data_B_dispatch_workers.py": "c6335e81cdae6685a97596890c098e5f89213812775469f1bfde730e1a3a08aa",
+        "route3_v2data_B_dispatch_workers.py": "642d078d275a3d87ba9e3396f3845c32ebe8307a49f0746b2661cfb75a9e1928",
         "route3_v2data_B_geometry_pair.py": "45fb3791a10ce24a475dc71119f08f1133a12cd3e9e55f5f6a516ec012e8793f",
-        "route3_v2data_B_geometry_slots.py": "62abf7cdafbcef60906e3ae872072273fadb75c56f8785741d8b4d8732aab55e"
+        "route3_v2data_B_geometry_slots.py": "26a7b60f249b1d08d54013f090b228297ac1e465da0b2c0dcedc504ab8bc046a"
       },
-      "dispatch_code_sha256": "5eafe3077a50a054577695527bc5c0442300075dd13817a73df5d0ec46d9d307",
+      "dispatch_code_sha256": "8cdc7b573e23b0b9ea056ac0553a0dbb81f4a5ecf82b924de3bb800a6d19e956",
       "qualification": {
         "path": "p2-review/geometry-pair-noise-result.json",
         "sha256": "136a6b41ea33a58932952640377a5623ca0caab76aca3d4ac52718ead66e0b78"
       },
-      "adopted": false,
+      "qualification_adopted": false,
+      "planner_override": {
+        "path": "p2-review/geometry-pair-planner-override.json",
+        "sha256": "7a84e97f5568bb29c87acb3cc723dd00a253a91995276f5d0594b208c534035f"
+      },
+      "previous_gpu_dispatch": {
+        "version": "p2-training-gpu-slots-optical-gate",
+        "path": "dispatch-gpu-slots-p2.json",
+        "sha256": "5b16f4c8bf38df866409a1cecffdd0aa7821c270011a6113f85a5bef4352f7e5"
+      },
+      "adopted": true,
       "optical_gate_policy": {
         "maximum_training_failures": 3,
         "category_pause_at": 2,
@@ -4110,7 +4121,7 @@
         22
       ],
       "extra_worker_ready_queue_threshold": 5,
-      "switched_at_utc": "2026-11-21T14:02:20.561667+00:00"
+      "switched_at_utc": "2026-11-21T14:39:00.517405+00:00"
     },
     "geometry_pair_noise_trial": {
       "version": "B-v2-31aa7f9a4325-p2",
@@ -4909,6 +4920,121 @@
         "any_failure": "停下汇报并附超限数值，不自动重算。由规划方决定是否用单槽重算全部双槽单元的深度先验。"
       },
       "execution_note": "预登记的波动参照已包含被判定的原入列版和串行版差异。按字面定义，该差异总不超过其自身所在集合的最大值，因此 1.5 倍规则无法检出超限。"
+    },
+    "geometry_gpu_slot_provenance": {
+      "backfilled_at_utc": "2026-11-21T14:39:00.517405+00:00",
+      "per_scene": {
+        "training-000-2c3ab6e8683fec54": "single",
+        "training-001-7a9b2de81e9aa875": "single",
+        "training-002-c49d9ad7c4e92e63": "single",
+        "training-003-84a292bddc71820b": "single",
+        "training-004-33797c8abc6f9233": "single",
+        "training-005-36de5f3bced635fa": "single",
+        "training-006-b485f55b834928b2": "single",
+        "training-007-a282550a5861bdc0": "single",
+        "training-008-6ba6f641b9d7a029": "single",
+        "training-009-0a88c292b2eff27b": "single",
+        "training-010-3fe02ef73c064f8c": "single",
+        "training-011-190575e8b94be27b": "single",
+        "training-012-5975a19d5c87d923": "single",
+        "training-013-592dc61274e516fc": "single",
+        "training-014-21a8471fdaf738d6": "single",
+        "training-015-a4dd5b2a31751d13": "single",
+        "training-016-408d2e210a5f6e96": "single",
+        "training-017-560dd88c379662d5": "single",
+        "training-018-d5299e63a8e2771b": "single",
+        "training-019-95de7e7b7a62e27b": "single",
+        "training-020-2f33904b712ea967": "single",
+        "training-021-f914af69080224a7": "single",
+        "training-022-6b85c6367c0e2cd0": "single",
+        "training-023-e977af57cf78a85b": "single",
+        "training-024-bb5d3336889f345e": "single",
+        "training-025-854c464a666a96ad": "single",
+        "training-026-f3242e982385bafd": "single",
+        "training-027-d3456b23a462c6de": "single",
+        "training-028-cd666dc4c87e0dee": "single",
+        "training-029-da107fbc33c0296f": "single",
+        "training-030-03518d765a0d0265": "single",
+        "training-031-eeb819d68fc1c2ca": "single",
+        "training-032-44cfcc63d35bb0e4": "single",
+        "training-033-458f598222b9f805": "single",
+        "training-034-ffc602da96ebfe1c": "single",
+        "training-035-27b506b478b32e78": "single",
+        "training-036-f25994aab81aae06": "single",
+        "training-037-131d1181d32bc66c": "single",
+        "training-039-ae7b08806c2f3975": "single",
+        "training-040-e9713fc8460641ae": "single",
+        "training-041-f0cded361b343fe5": "single",
+        "training-042-ebb047414331b501": "single",
+        "training-043-e47d6a94f6f92243": "single",
+        "training-044-5a97108f5a9086dc": "single",
+        "training-045-c64fd671f8773920": "single",
+        "training-046-4f78e7fdc9b0d0bd": "single",
+        "training-047-0c5e9af4f62e7903": "single",
+        "training-048-0128c1d6a20edcf4": "single",
+        "training-049-511ade82c4ec19b2": "single",
+        "training-050-fc6d4fdf5f491ff1": "single",
+        "training-051-f088d4f362514c33": "single",
+        "training-052-508775efac3e456d": "single",
+        "training-053-f272d322f73e299b": "single",
+        "training-054-0329be55c7c2abdd": "single",
+        "training-055-7eacb5c0a36ff4f8": "single",
+        "training-056-ca01ff092ab41638": "single",
+        "training-057-8aa0498878e6a9a6": "single",
+        "training-058-58d4e98741dded1a": "single",
+        "training-059-66b8ae4282e15f27": "single",
+        "training-060-6d5047674c33e827": "single",
+        "training-061-ff0a4ff42915123f": "single",
+        "training-062-e1afe20c6ff0e3f1": "single",
+        "training-063-2194134e4b0c7105": "single",
+        "training-064-086730c4acaff4f2": "single",
+        "training-065-e80e056e921c89cb": "single",
+        "training-066-4a9c7b3a1f110559": "single",
+        "training-067-b04aa536b482f2e0": "single",
+        "training-068-845212140fd82b21": "single",
+        "training-069-0ad3a696375884bf": "single",
+        "training-070-918f36e7e62f3576": "single",
+        "training-071-2345d368c9e2cc12": "single",
+        "training-072-31b286ff6377ae60": "single",
+        "training-073-c77c508538ed6eae": "single",
+        "training-074-e757bee971cb318d": "single",
+        "training-075-81cd9c5a8c2122bc": "single",
+        "training-076-d7015b328ddc7df3": "single",
+        "training-077-e0dbd60c4b4a5517": "single",
+        "training-078-8a67e2e69ec63c65": "single",
+        "training-079-3e07c2ea841832f9": "single",
+        "training-080-43386b8b8e99e758": "single",
+        "training-081-ffffcf59dc7e4350": "single",
+        "training-082-f9818b8f27ce561a": "single",
+        "training-083-37304d8947489c3d": "single",
+        "training-084-737c52cb48b4fede": "single",
+        "training-085-4314e53b136c7e2d": "single",
+        "training-086-bbb38d49f9a712d4": "single",
+        "training-087-e246dd843f332a4c": "single",
+        "training-088-c5cb153915d4606f": "single",
+        "training-089-b2a3e0ca0003160b": "single",
+        "training-090-ff8f0f360c455b3a": "single",
+        "training-091-7138fd6acad9772b": "single",
+        "training-092-72f2b5c082b70b73": "single",
+        "training-093-d8f72e54a64ce79f": "single",
+        "training-094-ca97b4045515c692": "single",
+        "training-095-b148ae741d51098e": "single",
+        "training-096-783b05ff5b65d107": "single",
+        "training-097-bc0d8b3ce29a5f4c": "single",
+        "training-098-34084be1d5f9c679": "single",
+        "training-099-91618e3e936d8bbb": "single",
+        "training-100-8c522772a040c259": "single",
+        "training-101-2f2c19e48b042cbc": "single",
+        "training-102-8d47472c5dbcc0c8": "single",
+        "training-103-fe83df7a6c79a980": "single",
+        "training-104-ed959c9469c17608": "single",
+        "training-105-726c72c20bf403b4": "single",
+        "training-106-7f73fdeb23c9db2e": "single",
+        "training-107-4b99cc301efd6064": "single",
+        "training-108-50a8b0000171e4cc": "single",
+        "training-109-156fc340568d4b6a": "single",
+        "training-110-5dd8c29db3f73ffc": "single"
+      }
     }
   }
 }
