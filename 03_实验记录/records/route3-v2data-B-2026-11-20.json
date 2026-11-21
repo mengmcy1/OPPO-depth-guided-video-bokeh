@@ -744,7 +744,7 @@
       "formal_use": false
     },
     "formal_counts": {
-      "train_geometry": 110,
+      "train_geometry": 129,
       "development": 15,
       "test": 30,
       "train_optical": 0
@@ -1306,7 +1306,7 @@
       "reserve_bytes": 64424509440
     },
     "generator_version": "B-v2-31aa7f9a4325",
-    "manifest_sha256": "f61c01b97033e7bed5c9a117776c430ec73e638f024a35954224f04279f29fef",
+    "manifest_sha256": "8cc3e695df16cceebacd5ed4d71fc385b6b3b8d90a47d38515ef598601980571",
     "scene_plan_sha256": {
       "training": "3687df48d64d82dd2dfd620c1a1ee6b32f2305186063d0df89c2e6f99a5986d8",
       "development": "78f5ef2aa6625bba938028efb71ad1bf2da3142810d8453d6a387452728c0d85",
@@ -1389,7 +1389,7 @@
       }
     },
     "target_gap": {
-      "train_geometry": 190,
+      "train_geometry": 171,
       "development": 0,
       "test": 0,
       "train_optical": 80
@@ -2316,16 +2316,16 @@
     },
     "p2_finish_eta": {
       "status": "conditional_on_optical_gate_and_future_acceptance",
-      "measured_at_utc": "2026-11-21T14:39:00.543143+00:00",
-      "estimated_hours": 38.2775777784021,
-      "estimated_finish_utc": "2026-11-23T04:55:39.823145+00:00",
+      "measured_at_utc": "2026-11-21T15:22:54.236242+00:00",
+      "estimated_hours": 42.46138158022529,
+      "estimated_finish_utc": "2026-11-23T09:50:35.209931+00:00",
       "remaining_hours_by_stage": {
-        "training_geometry": 7.380335510848091,
+        "training_geometry": 11.56413931267129,
         "training_optical": 30.897242267554006
       },
-      "geometry_basis": "isolated paired qualification, before first 30 production units",
-      "geometry_per_hour": 25.60859187528747,
-      "training_geometry_remaining_runnable": 189,
+      "geometry_basis": "first 30 production geometry units with one GPU slot",
+      "geometry_per_hour": 14.700618472636714,
+      "training_geometry_remaining_runnable": 170,
       "training_geometry_failed": 1,
       "training_optical_basis": "qualified two-slot optical wall time"
     },
@@ -2509,10 +2509,10 @@
         "training": {
           "partition": "training",
           "scene_slots": 4,
-          "attempted_scenes": 10,
-          "accepted_scenes": 10,
-          "seconds": 2198.2292081937194,
-          "accepted_per_hour": 16.376818152453325,
+          "attempted_scenes": 20,
+          "accepted_scenes": 19,
+          "seconds": 2633.6663188152015,
+          "accepted_per_hour": 25.971399456090122,
           "cpu_affinity": {
             "dispatcher": [
               0
@@ -2541,12 +2541,12 @@
             ]
           },
           "max_compute_threads": 19,
-          "sampled_peak_cpu_equivalents": 4.331219564379112,
-          "peak_combined_rss_bytes": 8663449600,
-          "label_and_gpu_lane_overlap_seconds": 2144.2751241885126,
+          "sampled_peak_cpu_equivalents": 9.371202367086918,
+          "peak_combined_rss_bytes": 16165355520,
+          "label_and_gpu_lane_overlap_seconds": 2535.583256520331,
           "gpu_idle_for_b_labels_seconds": {
             "startup": 0,
-            "steady": 53.80831881612539
+            "steady": 0
           },
           "shared_lock_busy_while_b_labels_pending_seconds": {
             "startup": 0,
@@ -2559,8 +2559,8 @@
           "ready_queue_limit": 30,
           "peak_ready_queue": 30,
           "gpu_geometry_slots": 1,
-          "path": "production-runs/1795271938840643055-training.json",
-          "sha256": "94ad502781311ea8d7510593e1c85e462ee8f208a84e91eba82dfb08b2f1442a"
+          "path": "production-runs/1795274574226887794-training.json",
+          "sha256": "b58fbe43f5333170e601775919320d59fd2b5dc921d8c6499e689bbf0dea7f87"
         }
       }
     },
@@ -3442,8 +3442,8 @@
         "sha256": "413694bedcf6c71c9d851c5f9e73403e70d336cef61e7977fc09aef69a401640"
       },
       "ready_queue_peak": 30,
-      "peak_combined_rss_bytes": 8663449600,
-      "sampled_peak_cpu_equivalents": 4.331219564379112,
+      "peak_combined_rss_bytes": 16165355520,
+      "sampled_peak_cpu_equivalents": 9.371202367086918,
       "training_first_30": {
         "accepted_scenes": 30,
         "sampling_seconds": 7346.629680991173,
@@ -5033,7 +5033,825 @@
         "training-107-4b99cc301efd6064": "single",
         "training-108-50a8b0000171e4cc": "single",
         "training-109-156fc340568d4b6a": "single",
-        "training-110-5dd8c29db3f73ffc": "single"
+        "training-110-5dd8c29db3f73ffc": "single",
+        "training-111-d7e217467bd2475e": "dual",
+        "training-112-428cfa39403fbda7": "dual",
+        "training-113-b053d03fffaca202": "dual",
+        "training-114-b3b91a86e4999313": "dual",
+        "training-115-78e9d36f81ad938e": "dual",
+        "training-116-d4f05620c2b2e016": "dual",
+        "training-117-8923afa9b74ab6dc": "dual",
+        "training-118-639913dcc4d777e6": "dual",
+        "training-119-4208e017665514b8": "dual",
+        "training-120-2db3c2fe6b5336e7": "dual",
+        "training-121-15d84d54e54aae7e": "dual",
+        "training-122-e493cc8f58dda6b2": "dual",
+        "training-123-bb3b63aa641990b6": "dual",
+        "training-124-7621bd7e50def34f": "dual",
+        "training-125-6d704b13c345a337": "dual",
+        "training-126-627fc10d62778eaf": "dual",
+        "training-127-f793218e172f7a27": "dual",
+        "training-128-308d33775b95ae11": "dual",
+        "training-129-d8668d929a0896e4": "dual"
+      }
+    },
+    "geometry_pair_first_30": {
+      "accepted": 19,
+      "seconds": 2633.6592427305877,
+      "accepted_per_hour": 25.971469235740088,
+      "gpu_utilization_per_slot_and_phase": {
+        "7-8-9-10-11-12": {
+          "render": {
+            "samples": 1408,
+            "mean_gpu_sm_percent": 20.1171875
+          },
+          "input-priors": {
+            "samples": 585,
+            "mean_gpu_sm_percent": 22.254700854700854
+          }
+        },
+        "13-14-15-16-17-18": {
+          "render": {
+            "samples": 1476,
+            "mean_gpu_sm_percent": 19.953929539295395
+          },
+          "input-priors": {
+            "samples": 561,
+            "mean_gpu_sm_percent": 20.80392156862745
+          }
+        }
+      },
+      "measurement": "nvidia-smi pmon process SM percentage, 1 second",
+      "peak_rss_bytes": 16165355520,
+      "peak_combined_vram_bytes": 24222105600,
+      "ready_queue_minimum": 26,
+      "added_cpu_worker": null,
+      "groups": [
+        {
+          "path": "production-runs/1795271940548044214-cpu-workers/training-111-d7e217467bd2475e-pmon.txt",
+          "sha256": "5d2b20b48420613e156a12e9a6ba48e36e8a57afaee7cebfdc76a34265947c40",
+          "seconds": 232.80698489397764,
+          "phases": {
+            "training-111-d7e217467bd2475e": {
+              "render": {
+                "start_monotonic": 27498993.557931487,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 233099,
+                "end_monotonic": 27499141.726646215,
+                "seconds": 148.1687147282064,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27499141.72941094,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 235813,
+                "end_monotonic": 27499225.0601831,
+                "seconds": 83.33077216148376,
+                "exit_code": 0
+              }
+            },
+            "training-112-428cfa39403fbda7": {
+              "render": {
+                "start_monotonic": 27498993.56026408,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 233105,
+                "end_monotonic": 27499144.13842494,
+                "seconds": 150.5781608596444,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27499144.138946775,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 236046,
+                "end_monotonic": 27499226.36491638,
+                "seconds": 82.22596960514784,
+                "exit_code": 0
+              }
+            }
+          },
+          "peak_combined_rss_bytes": 12503392256,
+          "peak_combined_vram_bytes": 24222105600,
+          "resource_error": null,
+          "gpu_queue_seconds": 0.00017328187823295593,
+          "failures": {}
+        },
+        {
+          "path": "production-runs/1795271940548044214-cpu-workers/training-113-b053d03fffaca202-pmon.txt",
+          "sha256": "60d1835c9d9d09d221127f2475f4205f7cfeaa0cff3780ade31c57d232f17091",
+          "seconds": 239.22866297513247,
+          "phases": {
+            "training-113-b053d03fffaca202": {
+              "render": {
+                "start_monotonic": 27499227.763544466,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 236912,
+                "end_monotonic": 27499378.985321067,
+                "seconds": 151.22177660092711,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27499378.986390136,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 239554,
+                "end_monotonic": 27499465.1172997,
+                "seconds": 86.1309095621109,
+                "exit_code": 0
+              }
+            },
+            "training-114-b3b91a86e4999313": {
+              "render": {
+                "start_monotonic": 27499227.76600947,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 236918,
+                "end_monotonic": 27499382.044697758,
+                "seconds": 154.2786882892251,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27499382.04518477,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 239795,
+                "end_monotonic": 27499466.99220744,
+                "seconds": 84.9470226727426,
+                "exit_code": 0
+              }
+            }
+          },
+          "peak_combined_rss_bytes": 12811022336,
+          "peak_combined_vram_bytes": 24222105600,
+          "resource_error": null,
+          "gpu_queue_seconds": 7.247552275657654e-05,
+          "failures": {}
+        },
+        {
+          "path": "production-runs/1795271940548044214-cpu-workers/training-115-78e9d36f81ad938e-pmon.txt",
+          "sha256": "aded93905f1eca3bfcedfd5448fb9e58d0521b674182c110325937941fb7771a",
+          "seconds": 238.80057860538363,
+          "phases": {
+            "training-115-78e9d36f81ad938e": {
+              "render": {
+                "start_monotonic": 27499468.96264701,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 240677,
+                "end_monotonic": 27499618.668148857,
+                "seconds": 149.70550184696913,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27499618.66878714,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 243298,
+                "end_monotonic": 27499707.763225615,
+                "seconds": 89.09443847462535,
+                "exit_code": 0
+              }
+            },
+            "training-116-d4f05620c2b2e016": {
+              "render": {
+                "start_monotonic": 27499468.96351018,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 240683,
+                "end_monotonic": 27499618.177048065,
+                "seconds": 149.2135378830135,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27499618.177692633,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 243295,
+                "end_monotonic": 27499706.66401452,
+                "seconds": 88.48632188513875,
+                "exit_code": 0
+              }
+            }
+          },
+          "peak_combined_rss_bytes": 15379410944,
+          "peak_combined_vram_bytes": 24222105600,
+          "resource_error": null,
+          "gpu_queue_seconds": 9.150803089141846e-05,
+          "failures": {}
+        },
+        {
+          "path": "production-runs/1795271940548044214-cpu-workers/training-117-8923afa9b74ab6dc-pmon.txt",
+          "sha256": "967251ff7ded480aa2af302622164198206468e382728a5553d35a0468b8adf2",
+          "seconds": 238.7537531144917,
+          "phases": {
+            "training-117-8923afa9b74ab6dc": {
+              "render": {
+                "start_monotonic": 27499709.599223305,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 244423,
+                "end_monotonic": 27499860.889708627,
+                "seconds": 151.29048532247543,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27499860.890462328,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 247044,
+                "end_monotonic": 27499945.44509063,
+                "seconds": 84.55462830141187,
+                "exit_code": 0
+              }
+            },
+            "training-118-639913dcc4d777e6": {
+              "render": {
+                "start_monotonic": 27499709.59994566,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 244426,
+                "end_monotonic": 27499863.648421142,
+                "seconds": 154.04847548156977,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27499863.649343535,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 247277,
+                "end_monotonic": 27499948.35297642,
+                "seconds": 84.70363288372755,
+                "exit_code": 0
+              }
+            }
+          },
+          "peak_combined_rss_bytes": 12731744256,
+          "peak_combined_vram_bytes": 24222105600,
+          "resource_error": null,
+          "gpu_queue_seconds": 7.664412260055542e-05,
+          "failures": {}
+        },
+        {
+          "path": "production-runs/1795271940548044214-cpu-workers/training-119-4208e017665514b8-pmon.txt",
+          "sha256": "adb7532fbc7f9d3a66d80a0113c8e3251664cddc9abaf4c43c101ec96197220d",
+          "seconds": 279.07037949189544,
+          "phases": {
+            "training-119-4208e017665514b8": {
+              "render": {
+                "start_monotonic": 27499950.9074924,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 248163,
+                "end_monotonic": 27500100.307810035,
+                "seconds": 149.40031763538718,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27500100.309142657,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 250726,
+                "end_monotonic": 27500189.80978626,
+                "seconds": 89.5006436035037,
+                "exit_code": 0
+              }
+            },
+            "training-120-2db3c2fe6b5336e7": {
+              "render": {
+                "start_monotonic": 27499950.90833092,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 248169,
+                "end_monotonic": 27500140.28018081,
+                "seconds": 189.37184988707304,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27500140.281298175,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 251324,
+                "end_monotonic": 27500229.97787189,
+                "seconds": 89.696573715657,
+                "exit_code": 0
+              }
+            }
+          },
+          "peak_combined_rss_bytes": 11622813696,
+          "peak_combined_vram_bytes": 24222105600,
+          "resource_error": null,
+          "gpu_queue_seconds": 8.431077003479004e-05,
+          "failures": {}
+        },
+        {
+          "path": "production-runs/1795271940548044214-cpu-workers/training-121-15d84d54e54aae7e-pmon.txt",
+          "sha256": "859b5b3c7e90c2b84ac6232652468b98fd522ecae809b732ee3920bbcd4db7c6",
+          "seconds": 276.1559639722109,
+          "phases": {
+            "training-121-15d84d54e54aae7e": {
+              "render": {
+                "start_monotonic": 27500232.10912151,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 252104,
+                "end_monotonic": 27500421.18976636,
+                "seconds": 189.08064484968781,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27500421.19054973,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 255033,
+                "end_monotonic": 27500506.058005355,
+                "seconds": 84.86745562404394,
+                "exit_code": 0
+              }
+            },
+            "training-122-e493cc8f58dda6b2": {
+              "render": {
+                "start_monotonic": 27500232.111565832,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 252110,
+                "end_monotonic": 27500424.607671216,
+                "seconds": 192.4961053840816,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27500424.608616088,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 255274,
+                "end_monotonic": 27500508.26508548,
+                "seconds": 83.65646939352155,
+                "exit_code": 0
+              }
+            }
+          },
+          "peak_combined_rss_bytes": 12580728832,
+          "peak_combined_vram_bytes": 24222105600,
+          "resource_error": null,
+          "gpu_queue_seconds": 6.865337491035461e-05,
+          "failures": {}
+        },
+        {
+          "path": "production-runs/1795271940548044214-cpu-workers/training-123-bb3b63aa641990b6-pmon.txt",
+          "sha256": "ccd5a0329f9cd13be208d4e09e98912dc9d30d0661a3690556511d5dede8ea25",
+          "seconds": 276.370717830956,
+          "phases": {
+            "training-123-bb3b63aa641990b6": {
+              "render": {
+                "start_monotonic": 27500510.16256946,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 256148,
+                "end_monotonic": 27500699.535561237,
+                "seconds": 189.37299177795649,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27500699.5363474,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 259086,
+                "end_monotonic": 27500785.419210825,
+                "seconds": 85.88286342471838,
+                "exit_code": 0
+              }
+            },
+            "training-124-7621bd7e50def34f": {
+              "render": {
+                "start_monotonic": 27500510.163306568,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 256155,
+                "end_monotonic": 27500700.029199008,
+                "seconds": 189.86589244008064,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27500700.030183107,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 259089,
+                "end_monotonic": 27500786.53328729,
+                "seconds": 86.50310418382287,
+                "exit_code": 0
+              }
+            }
+          },
+          "peak_combined_rss_bytes": 14203572224,
+          "peak_combined_vram_bytes": 24222105600,
+          "resource_error": null,
+          "gpu_queue_seconds": 7.417052984237671e-05,
+          "failures": {}
+        },
+        {
+          "path": "production-runs/1795271940548044214-cpu-workers/training-125-6d704b13c345a337-pmon.txt",
+          "sha256": "39f828f56b85460aac1ee110641559af937fda255bd1bafcd04b7bf49943de82",
+          "seconds": 273.5347681231797,
+          "phases": {
+            "training-125-6d704b13c345a337": {
+              "render": {
+                "start_monotonic": 27500788.73021763,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 260198,
+                "end_monotonic": 27500976.091499414,
+                "seconds": 187.36128178611398,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27500976.093108643,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 263112,
+                "end_monotonic": 27501061.49882685,
+                "seconds": 85.40571820735931,
+                "exit_code": 0
+              }
+            },
+            "training-126-627fc10d62778eaf": {
+              "render": {
+                "start_monotonic": 27500788.730981793,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 260205,
+                "end_monotonic": 27500977.368130527,
+                "seconds": 188.63714873418212,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27500977.3692316,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 263123,
+                "end_monotonic": 27501062.26498575,
+                "seconds": 84.89575415104628,
+                "exit_code": 0
+              }
+            }
+          },
+          "peak_combined_rss_bytes": 13916590080,
+          "peak_combined_vram_bytes": 24222105600,
+          "resource_error": null,
+          "gpu_queue_seconds": 7.592886686325073e-05,
+          "failures": {}
+        },
+        {
+          "path": "production-runs/1795271940548044214-cpu-workers/training-127-f793218e172f7a27-pmon.txt",
+          "sha256": "6efebdcdf2aeb40ffc57279fe088520757e08218f078beb8f9709fa11862e275",
+          "seconds": 292.2172599174082,
+          "phases": {
+            "training-127-f793218e172f7a27": {
+              "render": {
+                "start_monotonic": 27501065.135590464,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 264221,
+                "end_monotonic": 27501254.302838694,
+                "seconds": 189.1672482304275,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27501254.30428348,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 267144,
+                "end_monotonic": 27501339.790297035,
+                "seconds": 85.48601355403662,
+                "exit_code": 0
+              }
+            },
+            "training-128-308d33775b95ae11": {
+              "render": {
+                "start_monotonic": 27501065.136342015,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 264228,
+                "end_monotonic": 27501271.365073964,
+                "seconds": 206.22873194888234,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27501271.36556959,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 267514,
+                "end_monotonic": 27501357.35285038,
+                "seconds": 85.98728078976274,
+                "exit_code": 0
+              }
+            }
+          },
+          "peak_combined_rss_bytes": 11301023744,
+          "peak_combined_vram_bytes": 24222105600,
+          "resource_error": null,
+          "gpu_queue_seconds": 5.6371092796325684e-05,
+          "failures": {}
+        },
+        {
+          "path": "production-runs/1795271940548044214-cpu-workers/training-129-d8668d929a0896e4-pmon.txt",
+          "sha256": "e1e17a3615cba571d786be1f32be19e32fb50e1e4560f15a36ec52356a780a6d",
+          "seconds": 265.81936340779066,
+          "phases": {
+            "training-129-d8668d929a0896e4": {
+              "render": {
+                "start_monotonic": 27501359.778789744,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 268351,
+                "end_monotonic": 27501542.06018302,
+                "seconds": 182.28139327466488,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27501542.061272904,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12
+                ],
+                "pid": 271218,
+                "end_monotonic": 27501625.59815315,
+                "seconds": 83.5368802472949,
+                "exit_code": 0
+              }
+            },
+            "training-130-e288403a7bbaa3e3": {
+              "render": {
+                "start_monotonic": 27501359.779526394,
+                "cpu_ids": [
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 268358,
+                "end_monotonic": 27501539.2552929,
+                "seconds": 179.47576650604606,
+                "exit_code": 1
+              }
+            }
+          },
+          "peak_combined_rss_bytes": 8375672832,
+          "peak_combined_vram_bytes": 12111052800,
+          "resource_error": null,
+          "gpu_queue_seconds": 7.342547178268433e-05,
+          "failures": {
+            "training-130-e288403a7bbaa3e3": "geometry render returned 1"
+          }
+        }
+      ],
+      "fallback": {
+        "at_utc": "2026-11-21T15:22:54.055036+00:00",
+        "failures": {
+          "training-130-e288403a7bbaa3e3": "geometry render returned 1"
+        },
+        "archived_attempts": {
+          "training-130-e288403a7bbaa3e3": "production-runs/1795271940548044214-cpu-workers/failed-pair-attempts/training-130-e288403a7bbaa3e3"
+        }
+      }
+    },
+    "geometry_pair_fallback": {
+      "at_utc": "2026-11-21T15:22:54.055036+00:00",
+      "failures": {
+        "training-130-e288403a7bbaa3e3": "geometry render returned 1"
+      },
+      "archived_attempts": {
+        "training-130-e288403a7bbaa3e3": "production-runs/1795271940548044214-cpu-workers/failed-pair-attempts/training-130-e288403a7bbaa3e3"
       }
     }
   }
