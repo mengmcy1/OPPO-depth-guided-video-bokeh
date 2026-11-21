@@ -4028,6 +4028,64 @@
       "conditional_total_hours_excluding_resolution_and_optical_probe": 44.706185093861485,
       "projected_full_finish_utc": null,
       "measured_at_utc": "2026-11-21T13:39:07.867454+00:00"
+    },
+    "geometry_pair_noise_policy": {
+      "policy": {
+        "factor": 1.25,
+        "scene_ids": [
+          "training-001-7a9b2de81e9aa875",
+          "training-061-ff0a4ff42915123f"
+        ],
+        "frames": [
+          1,
+          6,
+          11,
+          16,
+          21,
+          26,
+          30,
+          35,
+          40,
+          45,
+          50,
+          55,
+          60
+        ],
+        "serial_repeats_per_scene": 2,
+        "additional_serial_order": [
+          "training-061-ff0a4ff42915123f",
+          "training-061-ff0a4ff42915123f",
+          "training-001-7a9b2de81e9aa875"
+        ],
+        "comparison": "original admission, serial 1 and serial 2, all three unordered pairs, per-scene maxima",
+        "absolute_metrics": {
+          "depth_sharp": [
+            "mae",
+            "maximum_absolute_difference"
+          ],
+          "depth_ds": [
+            "mae",
+            "maximum_absolute_difference"
+          ],
+          "depth_tri": [
+            "mae",
+            "maximum_absolute_difference"
+          ],
+          "confidence": [
+            "mae",
+            "maximum_absolute_difference"
+          ],
+          "aligned_sharp": [
+            "mae",
+            "maximum_absolute_difference"
+          ]
+        },
+        "relative_metric": "maximum over 13 frames of the pixel median of 2*abs(a-b)/(abs(a)+abs(b)) for aligned_sharp, both zero maps to zero",
+        "zero_bound": "a zero serial maximum requires an exact match for that metric",
+        "parallel_source": "reuse original geometry pair qualification outputs",
+        "calibration_holds_global_gpu_lock": true
+      },
+      "registered_at": "2026-11-21T13:45:37.001776+00:00"
     }
   }
 }
