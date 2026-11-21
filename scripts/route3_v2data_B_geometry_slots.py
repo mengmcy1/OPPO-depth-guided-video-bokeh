@@ -9,9 +9,8 @@ from route3_v2data_B_batch import FORMAL_DATA, RECORD, sha256, write_json
 from route3_v2data_B_geometry_pair import GPU_CAP, PAIR_CPUS, REVIEW, TRIAL, stage_geometry
 from route3_v2data_B_plan import load
 from route3_v2data_B_release import (
-    GPU_DISPATCH_RECEIPT, GPU_DISPATCH_VERSION, PLANNER_OVERRIDE, PREVIOUS_GPU_DISPATCH_RECEIPT,
-    PREVIOUS_GPU_DISPATCH_VERSION, approved_geometry_override, code_hash, gpu_dispatch_code,
-    gpu_dispatch_receipt, validate_p2,
+    FALLBACK_RECOVERY, GPU_DISPATCH_RECEIPT, GPU_DISPATCH_VERSION, PLANNER_OVERRIDE,
+    approved_geometry_override, code_hash, gpu_dispatch_code, previous_gpu_dispatch, validate_p2,
 )
 
 
@@ -50,19 +49,29 @@ def install_gpu_dispatch(plan, state):
         raise ValueError("the preceding CPU dispatcher receipt is required")
     qualification = dict(path=str(NOISE_RESULT.relative_to(FORMAL_DATA)),sha256=sha256(NOISE_RESULT))
     if previous_ref:
-        previous = gpu_dispatch_receipt(previous_ref,state,generator,PREVIOUS_GPU_DISPATCH_RECEIPT,
-                                        PREVIOUS_GPU_DISPATCH_VERSION)
+        previous = previous_gpu_dispatch(previous_ref,state,generator)
         if not previous or previous["qualification"]!=qualification:
             raise ValueError("the preceding GPU dispatch receipt or its qualification changed")
     approval = approved_geometry_override(qualification,result)
     approval_ref = dict(path=str(PLANNER_OVERRIDE.relative_to(FORMAL_DATA)),
                         sha256=sha256(PLANNER_OVERRIDE)) if approval else None
+    record = load(RECORD)
+    recovery = load(FALLBACK_RECOVERY)
+    recovery_ref = None
+    if recovery:
+        fallback = record["v2"].get("geometry_pair_fallback")
+        if not fallback or fallback!=recovery["original_fallback"]:
+            raise ValueError("the scene failure recovery does not match the recorded fallback")
+        if any(sha256(FORMAL_DATA/ref["path"])!=ref["sha256"] for ref in recovery["audits"].values()):
+            raise ValueError("the dual and single retry radiance audits changed")
+        recovery_ref = dict(path=str(FALLBACK_RECOVERY.relative_to(FORMAL_DATA)),sha256=sha256(FALLBACK_RECOVERY))
     code = gpu_dispatch_code()
     patch = dict(version=GPU_DISPATCH_VERSION, parent=state["dispatch_cpu_workers"],
                  generation_release_sha256=release["sha256"], generator_code_sha256=result["generator_code_sha256"],
                  dispatch_code=code, dispatch_code_sha256=code_hash(code),
                  qualification=qualification, qualification_adopted=result["adopted"], planner_override=approval_ref,
-                 previous_gpu_dispatch=previous_ref, adopted=bool(result["adopted"] or approval),
+                 previous_gpu_dispatch=previous_ref, fallback_recovery=recovery_ref,
+                 adopted=bool(result["adopted"] or approval),
                  optical_gate_policy=OPTICAL_GATE_POLICY, maximum_vram_bytes=GPU_CAP,
                  gpu_slot_cpus=PAIR_CPUS,
                  extra_cpu_worker_cores=EXTRA_CPU, extra_worker_ready_queue_threshold=QUEUE_MIN,
@@ -71,7 +80,6 @@ def install_gpu_dispatch(plan, state):
                                      sha256=write_json(GPU_DISPATCH_RECEIPT, patch))
     validate_p2(plan, state, generator)
     manifest = write_json(FORMAL_DATA/"manifest.json", state)
-    record = load(RECORD)
     record["v2"].update(
         dispatch_gpu_slots=patch, geometry_pair_noise_policy=result["policy"],
         geometry_pair_noise_trial=dict(result, receipt=patch["qualification"]), manifest_sha256=manifest,
@@ -83,6 +91,13 @@ def install_gpu_dispatch(plan, state):
     )
     if approval:
         record["v2"]["geometry_pair_planner_override"] = dict(approval,receipt=approval_ref)
+    if recovery:
+        resumed = datetime.fromisoformat(patch["switched_at_utc"])
+        stopped = datetime.fromisoformat(recovery["fallback_at_utc"])
+        record["v2"]["geometry_pair_fallback_recovery"] = dict(
+            recovery, receipt=recovery_ref, resumed_at_utc=patch["switched_at_utc"],
+            single_slot_interruption_seconds=(resumed-stopped).total_seconds(),
+        )
     postcheck = load(POSTCHECK_PREREGISTRATION)
     if postcheck:
         record["v2"]["geometry_gpu_slot_postcheck"] = postcheck
@@ -127,11 +142,18 @@ def optical_gate(specs, units, failures):
     )
 
 
+def active_geometry_fallback(v2):
+    fallback = v2.get("geometry_pair_fallback")
+    recovery = v2.get("geometry_pair_fallback_recovery", {})
+    resolved = recovery.get("resumed_at_utc") and fallback and fallback["at_utc"]==recovery["fallback_at_utc"]
+    return fallback if not resolved else None
+
+
 def update_slot_eta(v2, training_failures):
     counts = v2["target_gap"]
     terminal_failures = len({row["scene_id"] for row in training_failures})
     geometry_remaining = max(0,counts["train_geometry"]-terminal_failures)
-    dual = v2["dispatch_gpu_slots"]["adopted"] and not v2.get("geometry_pair_fallback")
+    dual = v2["dispatch_gpu_slots"]["adopted"] and not active_geometry_fallback(v2)
     single_rate = v2["dispatch_cpu_workers"]["training_first_30"]["accepted_per_hour"]
     survey = v2.get("geometry_pair_first_30", {})
     if dual and survey.get("accepted",0)>=SURVEY_UNITS:
@@ -200,14 +222,26 @@ def gather_slot_samples(path, phases):
 
 
 class Survey:
-    def __init__(self):
+    def __init__(self, previous=None):
         self.started = None
-        self.accepted = 0
-        self.queue_floor = None
-        self.vram = 0
+        previous = previous or {}
+        self.accepted = previous.get("total_admitted_in_measured_pairs",previous.get("accepted",0))
+        self.elapsed_before = previous.get("seconds",0)
+        self.queue_floor = previous.get("ready_queue_minimum")
+        self.vram = previous.get("peak_combined_vram_bytes",0)
+        self.rss_before = previous.get("peak_rss_bytes",0)
         self.samples = defaultdict(list)
-        self.groups = []
-        self.added_cpu = None
+        self.groups = list(previous.get("groups",[]))
+        self.added_cpu = previous.get("added_cpu_worker")
+        for group in self.groups:
+            path = FORMAL_DATA/group["path"]
+            if sha256(path)!=group["sha256"]:
+                raise ValueError("the first dual-slot survey trace has changed")
+            self.include_samples(path,group["phases"])
+
+    def include_samples(self,path,phases):
+        for key, readings in gather_slot_samples(path,phases).items():
+            self.samples[key].extend(readings)
 
     def ready(self, ready_count):
         self.queue_floor = ready_count if self.queue_floor is None else min(self.queue_floor, ready_count)
@@ -216,12 +250,12 @@ class Survey:
         self.ready(ready_count)
         self.accepted += accepted
         self.vram = max(self.vram, report["peak_combined_vram_bytes"])
-        for key, readings in gather_slot_samples(path, report["phases"]).items():
-            self.samples[key].extend(readings)
+        self.include_samples(path,report["phases"])
         self.groups.append(dict(path=str(path.relative_to(FORMAL_DATA)), sha256=sha256(path), **report))
 
-    def report(self, meter, *, fallback):
-        elapsed = time.monotonic() - self.started
+    def report(self, meter, *, fallback, recovery=None):
+        elapsed = self.elapsed_before+time.monotonic()-self.started
+        measured = min(self.accepted,SURVEY_UNITS)
         slots = {
             "-".join(map(str, cpus)): {
                 phase:dict(samples=len(values), mean_gpu_sm_percent=sum(values)/len(values))
@@ -229,8 +263,10 @@ class Survey:
             } for cpus in PAIR_CPUS
         }
         return dict(
-            accepted=self.accepted, seconds=elapsed, accepted_per_hour=3600*self.accepted/elapsed,
+            accepted=measured, total_admitted_in_measured_pairs=self.accepted,
+            seconds=elapsed, accepted_per_hour=3600*measured/elapsed,
             gpu_utilization_per_slot_and_phase=slots, measurement="nvidia-smi pmon process SM percentage, 1 second",
-            peak_rss_bytes=meter.peak_rss, peak_combined_vram_bytes=self.vram, ready_queue_minimum=self.queue_floor,
-            added_cpu_worker=self.added_cpu, groups=self.groups, fallback=fallback,
+            peak_rss_bytes=max(self.rss_before,meter.peak_rss), peak_combined_vram_bytes=self.vram,
+            ready_queue_minimum=self.queue_floor, added_cpu_worker=self.added_cpu, groups=self.groups,
+            fallback=fallback, recovery=recovery,
         )

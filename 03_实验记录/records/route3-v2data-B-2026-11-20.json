@@ -5853,6 +5853,80 @@
       "archived_attempts": {
         "training-130-e288403a7bbaa3e3": "production-runs/1795271940548044214-cpu-workers/failed-pair-attempts/training-130-e288403a7bbaa3e3"
       }
+    },
+    "geometry_pair_fallback_recovery": {
+      "decided_at_utc": "2026-11-21T15:26:49.994537+00:00",
+      "fallback_at_utc": "2026-11-21T15:22:54.055036+00:00",
+      "scene_id": "training-130-e288403a7bbaa3e3",
+      "decision": "resume_dual_after_same_single_slot_scene_failure",
+      "original_fallback": {
+        "at_utc": "2026-11-21T15:22:54.055036+00:00",
+        "failures": {
+          "training-130-e288403a7bbaa3e3": "geometry render returned 1"
+        },
+        "archived_attempts": {
+          "training-130-e288403a7bbaa3e3": "production-runs/1795271940548044214-cpu-workers/failed-pair-attempts/training-130-e288403a7bbaa3e3"
+        }
+      },
+      "outcomes": {
+        "dual": "excluded after complementary render and coverage validation failure",
+        "single_retry": "same complementary render and coverage validation failure"
+      },
+      "audits": {
+        "dual": {
+          "path": "production-runs/1795271940548044214-cpu-workers/failed-pair-attempts/training-130-e288403a7bbaa3e3/labels/radiance-audit.json",
+          "sha256": "0ea1c4406d81896965bf8a67a7295ec4d5e7639bd4201a827451b20bcad2996a"
+        },
+        "single_retry": {
+          "path": "units/training/training-130-e288403a7bbaa3e3/labels/radiance-audit.json",
+          "sha256": "cab214f26f8eecb602df3ecd556d4613c7bafdd99f86201811c3c89335c64107"
+        }
+      },
+      "failed_composition_frames": [
+        1,
+        6,
+        11,
+        16,
+        21,
+        26,
+        30,
+        35,
+        40,
+        45,
+        50,
+        55,
+        60
+      ],
+      "failed_coverage_frames": [
+        6,
+        16,
+        21,
+        26,
+        30,
+        35,
+        40,
+        50,
+        55
+      ],
+      "max_abs_difference_between_attempts": {
+        "same_seed_complement_linear_MAE": 5.587935447692871e-09,
+        "rendered_vs_mesh_coverage_MAE": 0.0
+      },
+      "complement_mae_ranges": {
+        "dual": [
+          0.014352073892951012,
+          0.03895796462893486
+        ],
+        "single_retry": [
+          0.01435207761824131,
+          0.03895796462893486
+        ]
+      },
+      "reason": "同一场景在单槽按护栏重放后复现相同的合成与覆盖验收失败，排除该场景。继续使用双槽，其他单元的原验收及显存护栏照旧。",
+      "receipt": {
+        "path": "p2-review/geometry-slot-fallback-recovery-130.json",
+        "sha256": "9ea839688f7c61626798b3507df032aec64fb84c434b94e6cd8fdb925ab2f890"
+      }
     }
   }
 }

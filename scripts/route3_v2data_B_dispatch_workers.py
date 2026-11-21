@@ -24,7 +24,8 @@ from route3_v2data_B_dispatch import STOP, RunMeter, execute_on, production_lock
 from route3_v2data_B_geometry_pair import PAIR_CPUS, finish_group
 from route3_v2data_B_geometry_slots import (
     EXTRA_CPU, NOISE_RESULT, PAIR_HANDOFF, QUEUE_MIN, SURVEY_UNITS, Survey, install_gpu_dispatch,
-    optical_gate, preserve_for_retry, process_gpu_samples, record_geometry_slots, update_slot_eta,
+    active_geometry_fallback, optical_gate, preserve_for_retry, process_gpu_samples, record_geometry_slots,
+    update_slot_eta,
 )
 from route3_v2data_B_optical_pair import execute_serial_optical, paired_trial, produce_pairs, record_trial
 from route3_v2data_B_plan import load
@@ -253,10 +254,13 @@ def dispatch_training(plan, estimate, allocation, publish_worktree=None, *, gpu_
     attempted=accepted=0
     peak_ready=len(ready)
     live = load(RECORD)["v2"]
-    switch = live.get("geometry_pair_fallback")
-    survey = Survey()
+    switch = active_geometry_fallback(live)
+    recovery = live.get("geometry_pair_fallback_recovery")
     pair_enabled = bool(gpu_patch and gpu_patch["adopted"] and not switch)
-    survey_done = bool(live.get("geometry_pair_first_30"))
+    reported_survey = live.get("geometry_pair_first_30")
+    keep_measuring = bool(pair_enabled and recovery and reported_survey and reported_survey["accepted"]<SURVEY_UNITS)
+    survey = Survey(reported_survey if keep_measuring else None)
+    survey_done = bool(reported_survey and not keep_measuring)
     if live.get("geometry_pair_extra_worker") and extra_cores:
         survey.added_cpu = live["geometry_pair_extra_worker"]
 
@@ -276,7 +280,8 @@ def dispatch_training(plan, estimate, allocation, publish_worktree=None, *, gpu_
         nonlocal survey_done
         if survey.started is not None and not survey_done:
             survey_done = True
-            save_pair_record(geometry_pair_first_30=survey.report(meter, fallback=switch))
+            fallback = switch or live.get("geometry_pair_fallback")
+            save_pair_record(geometry_pair_first_30=survey.report(meter, fallback=fallback, recovery=recovery))
             summarize()
             report_snapshot(publish_worktree,run_dir/"publish-geometry-pair-first30.log")
     failed_disk=False
@@ -493,14 +498,14 @@ def publish_snapshot(checkout):
                 "geometry_pair_extra_worker","geometry_pair_fallback","optical_slot_decision","optical_geometry_gate",
                 "geometry_pair_noise_policy","geometry_pair_noise_trial","depth_prior_repeatability",
                 "target_gap_details","geometry_pair_planner_override","geometry_gpu_slot_postcheck",
-                "geometry_gpu_slot_provenance"):
+                "geometry_gpu_slot_provenance","geometry_pair_fallback_recovery"):
         if key in v2:
             tracked["v2"][key]=v2[key]
     write_json(checkout/record_path,tracked)
     first=v2["dispatch_cpu_workers"].get("training_first_30")
     trial=v2.get("optical_parallel_trial",{})
     pair = v2.get("dispatch_gpu_slots", {})
-    mode = "双槽" if pair.get("adopted") and not v2.get("geometry_pair_fallback") else "单槽"
+    mode = "双槽" if pair.get("adopted") and not active_geometry_fallback(v2) else "单槽"
     note=f"**B v2 p2 正式派单**。开发集结束后启动三个 CPU 几何工人，GPU 几何使用{mode}。"
     if v2.get("geometry_pair_noise_trial"):
         state = "通过" if v2["geometry_pair_noise_trial"].get("adopted") else "未通过"
@@ -508,7 +513,9 @@ def publish_snapshot(checkout):
     if pair.get("planner_override"):
         note+="经用户同意，采用规划方改判。"
     if v2.get("geometry_pair_fallback"):
-        note+="双槽运行曾触发退回单槽。"
+        note+="双槽运行曾因场景验收失败退回单槽。"
+        if not active_geometry_fallback(v2):
+            note+="单槽重放复现后排除该场景，并恢复双槽。"
     if "geometry_pair_first_30" in v2:
         measured = v2["geometry_pair_first_30"]
         note+=f"几何双槽实测 {measured['accepted']} 场，入列速度为 {measured['accepted_per_hour']:.2f} 场/小时。"
