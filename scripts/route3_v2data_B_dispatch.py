@@ -59,10 +59,11 @@ def execute_on(cpus, rss_gib, abort, command, log, *, uses_gpu=False):
 
 
 class RunMeter:
-    def __init__(self, allocation, abort):
+    def __init__(self, allocation, abort, *, rss_gib=28):
         self.process = psutil.Process()
         self.allocation = allocation
         self.abort = abort
+        self.rss_limit = rss_gib*GIB
         self.start = self.last = time.monotonic()
         self.previous_cpu = {}
         self.previous_wait = None
@@ -109,7 +110,7 @@ class RunMeter:
             occupied = sum(max(0,value-self.previous_cpu.get(pid,value)) for pid,value in current_cpu.items())/interval
             self.peak_cpu_equivalents = max(self.peak_cpu_equivalents,occupied)
         self.previous_cpu = current_cpu
-        if rss>28*GIB:
+        if rss>self.rss_limit:
             self.abort.set()
 
     def report(self, mode, attempts, accepted):

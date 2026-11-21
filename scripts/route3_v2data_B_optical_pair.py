@@ -1,6 +1,6 @@
 """Measure and, if qualified, dispatch paired B optical references under one GPU lock."""
 from collections import Counter
-from contextlib import ExitStack
+from contextlib import ExitStack, nullcontext
 import fcntl
 import os
 import subprocess
@@ -49,10 +49,17 @@ def stage_optical(source, unit):
         (labels/name).symlink_to(source/"labels"/name)
 
 
-def resources():
+def resources(renderers=None):
     root = psutil.Process()
+    selected = root.children(recursive=True) if renderers is None else []
+    for job in renderers or ():
+        try:
+            process = psutil.Process(job.pid)
+            selected.extend([process, *process.children(recursive=True)])
+        except psutil.NoSuchProcess:
+            continue
     pids, rss = set(), 0
-    for process in [root, *root.children(recursive=True)]:
+    for process in [root, *selected]:
         try:
             rss += process.memory_info().rss
             pids.add(process.pid)
@@ -84,7 +91,8 @@ def stop_children(processes):
             process.wait()
 
 
-def render_group(units, allocation, *, parallel, frames=OPTICAL_FRAMES, seed=SEED):
+def render_group(units, allocation, *, parallel, frames=OPTICAL_FRAMES, seed=SEED,
+                 held_lock=None, abort=None):
     workers = [*allocation[1], *allocation[2]]
     half = min(6, len(workers)//2)
     if half < 1:
@@ -94,8 +102,9 @@ def render_group(units, allocation, *, parallel, frames=OPTICAL_FRAMES, seed=SEE
     peak_rss = peak_vram = 0
     result = {unit.name:dict(passed=False) for unit in units}
     before_lock = time.monotonic()
-    with GPU_LOCK.open("a") as lock:
-        fcntl.flock(lock, fcntl.LOCK_EX)
+    with (GPU_LOCK.open("a") if held_lock is None else nullcontext(held_lock)) as lock:
+        if held_lock is None:
+            fcntl.flock(lock, fcntl.LOCK_EX)
         started = time.monotonic()
         groups = [units] if parallel else [[unit] for unit in units]
         for group in groups:
@@ -115,8 +124,10 @@ def render_group(units, allocation, *, parallel, frames=OPTICAL_FRAMES, seed=SEE
                         )
                         processes.append(process)
                     while any(process.poll() is None for process in processes):
-                        rss, vram = resources()
+                        rss, vram = resources(processes)
                         peak_rss, peak_vram = max(peak_rss, rss), max(peak_vram, vram)
+                        if abort is not None and abort.is_set():
+                            raise RuntimeError("combined dispatch resource limit")
                         if rss > RSS_CAP or vram > VRAM_CAP:
                             raise RuntimeError("paired optical render exceeded its combined RSS or VRAM cap")
                         time.sleep(1)
@@ -165,7 +176,7 @@ def within_noise(measured, calibration):
     return all(row[key] <= maxima[row["kind"], key] for row in measured.values() for key in metrics)
 
 
-def paired_trial(estimate, allocation, version):
+def paired_trial(estimate, allocation, version, *, held_lock=None, force_qualification=False, abort=None):
     config = load(RECORD)["v2"]["p2_optical_parallel_policy"]
     if config != trial_policy(config["scene_ids"]) or len(set(config["scene_ids"])) != 2:
         raise ValueError("the paired optical experiment differs from its preregistered policy")
@@ -182,7 +193,7 @@ def paired_trial(estimate, allocation, version):
     proof = load(proof_path)
     source_origin = {}
     for scene_id, source in sources.items():
-        if load(source/"manifest.json").get("generator_version") != version:
+        if force_qualification or load(source/"manifest.json").get("generator_version") != version:
             fallback_path = proof_path
             previous = proof.get("unchanged_category_proof")
             if previous and scene_id in previous["unchanged_smoke_ids"]:
@@ -205,7 +216,7 @@ def paired_trial(estimate, allocation, version):
         units = [path/mode/key for key in ids]
         for unit in units:
             stage_optical(sources[unit.name], unit)
-        report[mode] = render_group(units, allocation, parallel=mode == "parallel")
+        report[mode] = render_group(units, allocation, parallel=mode == "parallel", held_lock=held_lock, abort=abort)
         write_json(path/"progress.json", report)
     serial, parallel = report["serial"], report["parallel"]
     passed = all(row["passed"] for mode in (serial, parallel) for row in mode["scenes"].values())
@@ -220,7 +231,8 @@ def paired_trial(estimate, allocation, version):
             units = [path/"independent-seed"/key for key in ids if not noise_passes[key]]
             for unit in units:
                 stage_optical(sources[unit.name], unit)
-            noise = render_group(units, allocation, parallel=False, frames=(30,), seed=SEED+1)
+            noise = render_group(units, allocation, parallel=False, frames=(30,), seed=SEED+1,
+                                 held_lock=held_lock, abort=abort)
             report["independent_noise_calibration"] = noise
             for unit in units:
                 if noise["scenes"][unit.name]["passed"]:
@@ -251,6 +263,7 @@ def record_trial(report):
     from route3_v2data_B_dispatch import update_p2_eta
     v2 = record["v2"]
     v2["p2_optical_parallel_trial"] = value
+    v2["optical_parallel_trial"] = value
     if v2["p2_dispatch"].get("production_measurements"):
         update_p2_eta(v2)
     write_json(RECORD, record)
