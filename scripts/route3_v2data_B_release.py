@@ -13,9 +13,12 @@ DISPATCH_CODE = ("route3_v2data_B_dispatch.py", "route3_v2data_B_release.py")
 P2_DISPATCH_CODE = (*DISPATCH_CODE, "route3_v2data_B_deploy_p2.py", "route3_v2data_B_optical_pair.py")
 WORKER_DISPATCH_FILE = "route3_v2data_B_dispatch_workers.py"
 DISPATCH_PATCH_VERSION = "p2-cpu-workers-3"
-GPU_DISPATCH_VERSION = "p2-training-gpu-slots-optical-gate"
+PREVIOUS_GPU_DISPATCH_VERSION = "p2-training-gpu-slots-optical-gate"
+PREVIOUS_GPU_DISPATCH_RECEIPT = FORMAL_DATA/"dispatch-gpu-slots-p2.json"
+GPU_DISPATCH_VERSION = "p2-training-gpu-slots-planner-decision"
 GPU_DISPATCH_FILES = ("route3_v2data_B_geometry_pair.py", "route3_v2data_B_geometry_slots.py")
-GPU_DISPATCH_RECEIPT = FORMAL_DATA/"dispatch-gpu-slots-p2.json"
+GPU_DISPATCH_RECEIPT = FORMAL_DATA/"dispatch-gpu-slots-planner-p2.json"
+PLANNER_OVERRIDE = FORMAL_DATA/"p2-review/geometry-pair-planner-override.json"
 P2_CHANGED_FILES = {"route3_v2data_B_scene.py", "route3_v2data_B_batch.py"}
 PLAN_DIR = FORMAL_DATA/"sealed-scene-plans"
 P2_ADDITIONAL_GENERATION_FILES = ("route3_v2data_B_placement.py", "route3_v2data_B_presence.py")
@@ -51,6 +54,36 @@ def gpu_dispatch_code():
             **{name:digest(ROOT/"scripts"/name) for name in GPU_DISPATCH_FILES}}
 
 
+def gpu_dispatch_receipt(ref, state, generator, path, version):
+    if not ref or ref["version"]!=version or ref["path"]!=path.name:
+        return None
+    gpu = load(path)
+    if not (
+        gpu and digest(path)==ref["sha256"] and gpu["version"]==version
+        and gpu["parent"]==state["dispatch_cpu_workers"]
+        and gpu["generation_release_sha256"]==state["generator_patch"]["sha256"]
+        and gpu["generator_code_sha256"]==generator["generator_code_sha256"]
+        and gpu["dispatch_code_sha256"]==code_hash(gpu["dispatch_code"])
+        and digest(FORMAL_DATA/gpu["qualification"]["path"])==gpu["qualification"]["sha256"]
+    ):
+        return None
+    return gpu
+
+
+def approved_geometry_override(qualification, result):
+    approval = load(PLANNER_OVERRIDE)
+    if not approval:
+        return None
+    if not (
+        approval["decision"]=="enable_dual_geometry"
+        and approval["authority"]=="规划方经用户同意"
+        and approval["qualification"]==dict(qualification,adopted=result["adopted"])
+        and result["calibration_complete"] and result["original_speed_passed"] and result["original_resources_passed"]
+    ):
+        raise ValueError("the planner approval does not reference the frozen geometry qualification")
+    return approval
+
+
 def verifies_dispatch(state, receipt):
     ref = state.get("dispatch_cpu_workers")
     if not ref:
@@ -64,22 +97,31 @@ def verifies_dispatch(state, receipt):
         and patch["generator_code_sha256"] == receipt["generator_code_sha256"]
         and patch["dispatch_code_sha256"] == code_hash(patch["dispatch_code"])
     )
+    if not valid_base:
+        return False
     gpu_ref = state.get("dispatch_gpu_slots")
     if not gpu_ref:
-        return valid_base and patch["dispatch_code"] == cpu_worker_dispatch_code()
-    gpu = load(GPU_DISPATCH_RECEIPT)
-    if not gpu:
+        return patch["dispatch_code"] == cpu_worker_dispatch_code()
+    gpu = gpu_dispatch_receipt(gpu_ref,state,receipt,GPU_DISPATCH_RECEIPT,GPU_DISPATCH_VERSION)
+    if not gpu or gpu["dispatch_code"] != gpu_dispatch_code():
         return False
-    qualification = gpu["qualification"]
-    return (valid_base and gpu_ref["version"] == GPU_DISPATCH_VERSION
-            and gpu_ref["path"] == GPU_DISPATCH_RECEIPT.name
-            and digest(GPU_DISPATCH_RECEIPT) == gpu_ref["sha256"]
-            and gpu["version"] == gpu_ref["version"] and gpu["parent"] == ref
-            and gpu["generation_release_sha256"] == state["generator_patch"]["sha256"]
-            and gpu["generator_code_sha256"] == receipt["generator_code_sha256"]
-            and gpu["dispatch_code"] == gpu_dispatch_code()
-            and digest(FORMAL_DATA/qualification["path"]) == qualification["sha256"]
-            and gpu["dispatch_code_sha256"] == code_hash(gpu["dispatch_code"]))
+    previous = gpu.get("previous_gpu_dispatch")
+    if previous:
+        previous_receipt = gpu_dispatch_receipt(
+            previous,state,receipt,PREVIOUS_GPU_DISPATCH_RECEIPT,PREVIOUS_GPU_DISPATCH_VERSION,
+        )
+        if not previous_receipt or previous_receipt["qualification"]!=gpu["qualification"]:
+            return False
+    result = load(FORMAL_DATA/gpu["qualification"]["path"])
+    if not result or gpu["qualification_adopted"]!=result["adopted"]:
+        return False
+    approval = gpu.get("planner_override")
+    if approval:
+        if (approval["path"]!=str(PLANNER_OVERRIDE.relative_to(FORMAL_DATA))
+                or digest(PLANNER_OVERRIDE)!=approval["sha256"]
+                or not approved_geometry_override(gpu["qualification"],result)):
+            return False
+    return gpu["adopted"]==bool(result["adopted"] or approval)
 
 
 def sealed_plan(path):

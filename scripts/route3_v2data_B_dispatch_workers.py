@@ -24,7 +24,7 @@ from route3_v2data_B_dispatch import STOP, RunMeter, execute_on, production_lock
 from route3_v2data_B_geometry_pair import PAIR_CPUS, finish_group
 from route3_v2data_B_geometry_slots import (
     EXTRA_CPU, NOISE_RESULT, PAIR_HANDOFF, QUEUE_MIN, SURVEY_UNITS, Survey, install_gpu_dispatch,
-    optical_gate, preserve_for_retry, process_gpu_samples, update_slot_eta,
+    optical_gate, preserve_for_retry, process_gpu_samples, record_geometry_slots, update_slot_eta,
 )
 from route3_v2data_B_optical_pair import execute_serial_optical, paired_trial, produce_pairs, record_trial
 from route3_v2data_B_plan import load
@@ -331,8 +331,9 @@ def dispatch_training(plan, estimate, allocation, publish_worktree=None, *, gpu_
                 summarize()
                 report_snapshot(publish_worktree,run_dir/"publish-training-first30.log")
             running_allowed=not STOP.is_file() and not abort.is_set()
-            if pair_enabled and not survey_done:
-                survey.ready(len(ready))
+            if pair_enabled:
+                if not survey_done:
+                    survey.ready(len(ready))
                 if len(ready)<QUEUE_MIN and not survey.added_cpu and extra_cores and pending and running_allowed:
                     enable_extra_worker()
                     survey.added_cpu = dict(cpu_ids=extra_cores,ready_at_activation=len(ready),
@@ -353,8 +354,8 @@ def dispatch_training(plan, estimate, allocation, publish_worktree=None, *, gpu_
                     if pair_enabled:
                         if not survey_done:
                             survey.ready(len(ready))
-                        trace = run_dir/f"{group[0][1].name}-pmon.txt" if not survey_done else None
-                        if survey.started is None:
+                        trace = run_dir/f"{group[0][1].name}-pmon.txt" if not survey_done and len(group)==2 else None
+                        if trace and survey.started is None:
                             survey.started=time.monotonic()
                         units=[unit for _,unit in group]
                         future=pool.submit(finish_group,units,version,PAIR_CPUS[:len(units)],abort=abort,
@@ -424,7 +425,10 @@ def dispatch_training(plan, estimate, allocation, publish_worktree=None, *, gpu_
                     switch=dict(at_utc=datetime.now(timezone.utc).isoformat(), failures=errors, archived_attempts={})
                 for spec,unit in group:
                     if unit.name in results:
-                        write_json(unit/"manifest.json",results[unit.name])
+                        result = results[unit.name]
+                        if gpu_patch:
+                            result["geometry_gpu_slots"] = "dual" if dual and len(group)==2 else "single"
+                        write_json(unit/"manifest.json",result)
                         accepted+=1
                         if telemetry and first_thirty is None:
                             telemetry.complete(unit)
@@ -437,16 +441,20 @@ def dispatch_training(plan, estimate, allocation, publish_worktree=None, *, gpu_
                         fail(spec,errors[unit.name])
                 if dual and errors:
                     save_pair_record(geometry_pair_fallback=switch)
+                    print("B geometry GPU slots fell back to one slot",errors,flush=True)
                 if dual and trace and report:
                     survey.track(report,trace,len(ready),len(results))
                 active=None
-                archive_status()
+                units=archive_status()
+                if gpu_patch and results:
+                    record_geometry_slots(units)
                 if accepted and (dual or accepted%4==0):
                     summarize()
                 if dual and (not pair_enabled or survey.accepted>=SURVEY_UNITS):
                     complete_pair_survey()
-    archive_status()
+    units=archive_status()
     if gpu_patch:
+        record_geometry_slots(units)
         complete_pair_survey()
     if start_geometry is not None:
         if telemetry and first_thirty is None and telemetry.samples:
@@ -484,7 +492,8 @@ def publish_snapshot(checkout):
                 "p2_finish_eta","dispatch_gpu_slots","geometry_parallel_trial","geometry_pair_first_30",
                 "geometry_pair_extra_worker","geometry_pair_fallback","optical_slot_decision","optical_geometry_gate",
                 "geometry_pair_noise_policy","geometry_pair_noise_trial","depth_prior_repeatability",
-                "target_gap_details"):
+                "target_gap_details","geometry_pair_planner_override","geometry_gpu_slot_postcheck",
+                "geometry_gpu_slot_provenance"):
         if key in v2:
             tracked["v2"][key]=v2[key]
     write_json(checkout/record_path,tracked)
@@ -494,8 +503,12 @@ def publish_snapshot(checkout):
     mode = "双槽" if pair.get("adopted") and not v2.get("geometry_pair_fallback") else "单槽"
     note=f"**B v2 p2 正式派单**。开发集结束后启动三个 CPU 几何工人，GPU 几何使用{mode}。"
     if v2.get("geometry_pair_noise_trial"):
-        state = "通过" if pair.get("adopted") else "未通过"
+        state = "通过" if v2["geometry_pair_noise_trial"].get("adopted") else "未通过"
         note+=f"按场景补测的深度一致性判据{state}。"
+    if pair.get("planner_override"):
+        note+="经用户同意，采用规划方改判。"
+    if v2.get("geometry_pair_fallback"):
+        note+="双槽运行曾触发退回单槽。"
     if "geometry_pair_first_30" in v2:
         measured = v2["geometry_pair_first_30"]
         note+=f"几何双槽实测 {measured['accepted']} 场，入列速度为 {measured['accepted_per_hour']:.2f} 场/小时。"

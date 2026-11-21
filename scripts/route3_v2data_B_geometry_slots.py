@@ -9,12 +9,15 @@ from route3_v2data_B_batch import FORMAL_DATA, RECORD, sha256, write_json
 from route3_v2data_B_geometry_pair import GPU_CAP, PAIR_CPUS, REVIEW, TRIAL, stage_geometry
 from route3_v2data_B_plan import load
 from route3_v2data_B_release import (
-    GPU_DISPATCH_RECEIPT, GPU_DISPATCH_VERSION, code_hash, gpu_dispatch_code, validate_p2,
+    GPU_DISPATCH_RECEIPT, GPU_DISPATCH_VERSION, PLANNER_OVERRIDE, PREVIOUS_GPU_DISPATCH_RECEIPT,
+    PREVIOUS_GPU_DISPATCH_VERSION, approved_geometry_override, code_hash, gpu_dispatch_code,
+    gpu_dispatch_receipt, validate_p2,
 )
 
 
 PAIR_HANDOFF = "training GPU slots and optical gate dispatch takeover"
 NOISE_RESULT = REVIEW/"geometry-pair-noise-result.json"
+POSTCHECK_PREREGISTRATION = REVIEW/"geometry-gpu-slot-postcheck-preregistration.json"
 ACCEPTED_GEOMETRY_GAP = dict(
     scene_id="training-038-4df143ee5d0b1f26", label="已接受的缺口：training-038",
     failed_checks="13 帧同种子分层互补误差为 0.20–0.26，上限 0.002",
@@ -39,17 +42,28 @@ def install_gpu_dispatch(plan, state):
             result["generator_code_sha256"] != generator["generator_code_sha256"] or
             result["original_parallel_report_sha256"] != sha256(TRIAL)):
         raise ValueError("GPU dispatcher does not match the tested generator and qualification decision")
-    if state.get("dispatch_gpu_slots"):
+    previous_ref = state.get("dispatch_gpu_slots")
+    if previous_ref and previous_ref["version"]==GPU_DISPATCH_VERSION:
         validate_p2(plan, state, generator)
         return load(GPU_DISPATCH_RECEIPT)
     if not state.get("dispatch_cpu_workers"):
         raise ValueError("the preceding CPU dispatcher receipt is required")
+    qualification = dict(path=str(NOISE_RESULT.relative_to(FORMAL_DATA)),sha256=sha256(NOISE_RESULT))
+    if previous_ref:
+        previous = gpu_dispatch_receipt(previous_ref,state,generator,PREVIOUS_GPU_DISPATCH_RECEIPT,
+                                        PREVIOUS_GPU_DISPATCH_VERSION)
+        if not previous or previous["qualification"]!=qualification:
+            raise ValueError("the preceding GPU dispatch receipt or its qualification changed")
+    approval = approved_geometry_override(qualification,result)
+    approval_ref = dict(path=str(PLANNER_OVERRIDE.relative_to(FORMAL_DATA)),
+                        sha256=sha256(PLANNER_OVERRIDE)) if approval else None
     code = gpu_dispatch_code()
     patch = dict(version=GPU_DISPATCH_VERSION, parent=state["dispatch_cpu_workers"],
                  generation_release_sha256=release["sha256"], generator_code_sha256=result["generator_code_sha256"],
                  dispatch_code=code, dispatch_code_sha256=code_hash(code),
-                 qualification=dict(path=str(NOISE_RESULT.relative_to(FORMAL_DATA)), sha256=sha256(NOISE_RESULT)),
-                 adopted=result["adopted"], optical_gate_policy=OPTICAL_GATE_POLICY, maximum_vram_bytes=GPU_CAP,
+                 qualification=qualification, qualification_adopted=result["adopted"], planner_override=approval_ref,
+                 previous_gpu_dispatch=previous_ref, adopted=bool(result["adopted"] or approval),
+                 optical_gate_policy=OPTICAL_GATE_POLICY, maximum_vram_bytes=GPU_CAP,
                  gpu_slot_cpus=PAIR_CPUS,
                  extra_cpu_worker_cores=EXTRA_CPU, extra_worker_ready_queue_threshold=QUEUE_MIN,
                  switched_at_utc=datetime.now(timezone.utc).isoformat())
@@ -67,12 +81,32 @@ def install_gpu_dispatch(plan, state):
             per_scene_serial_maxima={scene:rows["serial_maxima"] for scene,rows in result.get("scenes", {}).items()},
         ),
     )
+    if approval:
+        record["v2"]["geometry_pair_planner_override"] = dict(approval,receipt=approval_ref)
+    postcheck = load(POSTCHECK_PREREGISTRATION)
+    if postcheck:
+        record["v2"]["geometry_gpu_slot_postcheck"] = postcheck
+    provenance = record["v2"].setdefault("geometry_gpu_slot_provenance", dict(
+        backfilled_at_utc=patch["switched_at_utc"], per_scene={},
+    ))
+    for unit in state["units"]:
+        if unit["partition"]=="training":
+            provenance["per_scene"].setdefault(unit["scene_id"],"single")
     record["v2"].setdefault("target_gap_details", {})["train_geometry"] = dict(
         accepted=[ACCEPTED_GEOMETRY_GAP],
     )
     record["v2"]["p2_dispatch"].update(status="running_geometry_gpu_slots", stop_after_current=False)
     write_json(RECORD, record)
     return patch
+
+
+def record_geometry_slots(units):
+    record = load(RECORD)
+    by_scene = record["v2"]["geometry_gpu_slot_provenance"]["per_scene"]
+    for unit in units:
+        if unit["partition"]=="training" and "geometry_gpu_slots" in unit:
+            by_scene[unit["scene_id"]] = unit["geometry_gpu_slots"]
+    write_json(RECORD,record)
 
 
 def optical_gate(specs, units, failures):
