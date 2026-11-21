@@ -744,8 +744,8 @@
       "formal_use": false
     },
     "formal_counts": {
-      "train_geometry": 2,
-      "development": 4,
+      "train_geometry": 0,
+      "development": 12,
       "test": 30,
       "train_optical": 0
     },
@@ -1306,7 +1306,7 @@
       "reserve_bytes": 64424509440
     },
     "generator_version": "B-v2-31aa7f9a4325",
-    "manifest_sha256": "7fd5c3c2a3ab080f29f759cea7fb81e4b8cda8a1feeea8136f9967347d52392c",
+    "manifest_sha256": "903cafd617e0f6891532fd9cab5289886e9c6eaf4d72bb818cc7300339dd9eae",
     "scene_plan_sha256": {
       "training": "3687df48d64d82dd2dfd620c1a1ee6b32f2305186063d0df89c2e6f99a5986d8",
       "development": "78f5ef2aa6625bba938028efb71ad1bf2da3142810d8453d6a387452728c0d85",
@@ -1389,8 +1389,8 @@
       }
     },
     "target_gap": {
-      "train_geometry": 298,
-      "development": 11,
+      "train_geometry": 300,
+      "development": 3,
       "test": 0,
       "train_optical": 80
     },
@@ -1673,10 +1673,15 @@
       "continuation": "single B dispatcher with the shared GPU lock"
     },
     "generator_patch_p2": {
-      "status": "candidate_cpu_preflight",
-      "version": "B-v2-31aa7f9a4325-p2",
-      "parent_version": "B-v2-31aa7f9a4325-p1",
-      "parent_code_sha256": "e05ceea5195c9ec3b71cd552e91ef5ad464e6a019cf2d247c68b14aa5adfa903",
+      "base_version": "B-v2-31aa7f9a4325",
+      "patch_version": "B-v2-31aa7f9a4325-p2",
+      "base_generator_code_sha256": "ceef363e42dd319d1d7a264eabb7dedafbef4a7ef993cbb0155330c72c9a3d94",
+      "parent_patch": {
+        "path": "generator-patch-p1.json",
+        "sha256": "cc66891568fdbbe09e0384bc23309de3d25b832fc1e8c3328cd3942eb7522c68",
+        "version": "B-v2-31aa7f9a4325-p1"
+      },
+      "parent_generator_code_sha256": "e05ceea5195c9ec3b71cd552e91ef5ad464e6a019cf2d247c68b14aa5adfa903",
       "generator_code_sha256": "e10a102491b98494c1f77d20f1a2249ba065a2ae65339faf72087a5a732c35c5",
       "changes": {
         "route3_v2data_B_batch.py": {
@@ -1696,11 +1701,136 @@
           "after": "d5f42b47acf423e4dd36ea415eed04cb89b5629b89170847b8074f1770e0737a"
         }
       },
-      "scope": [
-        "curved matrix refresh and analytic placement for all sealed scenes with multiple designated foregrounds",
-        "positive foreground center hits and recorded layer minima",
-        "full original renderer composition, coverage and complementary color self-check in every partition"
-      ]
+      "dispatch_code": {
+        "route3_v2data_B_dispatch.py": "e39187038d47d278b400917c913c06b8f67a94e16f56b17fd908521cbb4a19e1",
+        "route3_v2data_B_release.py": "3ddf74b30babc3b2f43bcf9bfc0666adfcb4a0b06920d200286f77b127d97a51",
+        "route3_v2data_B_deploy_p2.py": "3f6d25b8cd128709a5495846ea58b513c8b83b6c6cfa2d2d4d70baeecc9bf99b",
+        "route3_v2data_B_optical_pair.py": "71604ad2b95ffa941936e8ab37d2bd685bdcb10eff926d0a21ff603b0892e4f1"
+      },
+      "sealed_plan_sha256": {
+        "training": "3687df48d64d82dd2dfd620c1a1ee6b32f2305186063d0df89c2e6f99a5986d8",
+        "development": "78f5ef2aa6625bba938028efb71ad1bf2da3142810d8453d6a387452728c0d85",
+        "test_unseen_assets": "694a0a17f9b9b09410ea909a73fe49d5222394530496ac5fcc3216b3b85e91b1",
+        "test_unseen_occlusions": "7dfbf1bb9caa574fd85c3bad00bad3d60ba19769e742fcf0ec02153c41df8816"
+      },
+      "optical_frames": [
+        1,
+        30,
+        60
+      ],
+      "qualification": {
+        "path": "p2-review/p2-priority-qualification/proof.json",
+        "sha256": "06bc67883a7d1513aaba9d549d18f0c610ebada7486f7cefb0526c513dd2fd69"
+      },
+      "preflight": {
+        "path": "p2-review/p2-priority-cpu/placement-preflight.json",
+        "sha256": "3d8fc2684ae9bb7a4bec50e4dc90f303634540f20a9c8c7dfcdafe47fe3e0314"
+      },
+      "installed_at_utc": "2026-11-20T19:43:24.795617+00:00",
+      "foreground_presence_policy": {
+        "minimum_center_hits_per_designated_foreground_per_label_frame": null,
+        "light_structure_extra_pixel_floor": null,
+        "pixel_count": "valid pinhole label pixels with a first_hit_object identity belonging to the designated foreground",
+        "center_hit_count": "center_visible pinhole rays with object_id belonging to the designated foreground",
+        "designated_foreground": [
+          "each imported actor (union of its named mesh parts)",
+          "procedural thin structure",
+          "procedurally placed foreground middle layers",
+          "procedural main or curved foreground"
+        ],
+        "threshold_basis": "five fixed-depth endpoint conflicts even with point-sized actors; entrance and exit at the ends of a clip are allowed",
+        "qualification_frame": 30,
+        "supplementary_shape": "background and supplemental aperture-configuration window bars are outside the list of specified main foreground objects",
+        "minimum_center_hits_on_visible_frame": 1,
+        "required_center_frame": 30,
+        "minimum_visible_label_frames": 9,
+        "total_label_frames": 13,
+        "applies_to": "every designated actor individually across all six categories and all partitions",
+        "endpoint_conflicts_review_sha256": "9fe09e262e89466947e91238e15110bb94c0b9a56e2a3f4495582993e4a94f65"
+      },
+      "rebuilt_test_acceptance_policy": {
+        "generator_self_checks": [
+          "color recomposition",
+          "geometry coverage",
+          "same-seed complementary colors",
+          "designated foreground appearance"
+        ],
+        "model_scores": false
+      },
+      "multilayer_placement_policy": {
+        "middle_frame": 30,
+        "label_frames": [
+          1,
+          6,
+          11,
+          16,
+          21,
+          26,
+          30,
+          35,
+          40,
+          45,
+          50,
+          55,
+          60
+        ],
+        "margin_px": 8,
+        "minimum_actor_bbox_height_m": 0.0,
+        "middle_overlap_target_range": [
+          0.3,
+          0.7
+        ],
+        "target_tolerance": 0.02,
+        "minimum_contiguous_framed_label_frames": 9,
+        "framing_tiers": [
+          "all_13_label_frames",
+          "contiguous_at_least_9_including_f030"
+        ],
+        "minimum_depth_gap_fraction": 0.1,
+        "maximum_actor_thickness_fraction": 0.88,
+        "candidate_grid_per_axis": 65,
+        "center_search_half_extent_camera_half_field": 1.2,
+        "framing_scales": [
+          1.0,
+          0.9,
+          0.8,
+          0.65,
+          0.5,
+          0.35,
+          0.24,
+          0.16,
+          0.1,
+          0.06,
+          0.035
+        ],
+        "local_grid_per_axis": 25,
+        "definition": "area of rear projected world AABB covered by the union of earlier layer AABBs",
+        "coverage": "all sealed scenes with more than one designated foreground actor, including procedural middle layers",
+        "depth_axis": "scene Y, the nominal foreground-to-background axis",
+        "preflight": "record per-layer projection, overlap, offscreen frames and adjacent world-box depth gaps before and after repair",
+        "depth_gap_numeric_tolerance_m": 1e-05,
+        "random_draws": [
+          "uniform overlap target",
+          "horizontal preference sign",
+          "vertical preference sign"
+        ],
+        "selection": "first largest scale with a target match, then preferred sides, overlap error and grid order",
+        "fallback": [
+          "try all 13 frames first, then allow a contiguous run of at least nine including f030",
+          "within either tier try smaller uniform scales with the same depth and sampled target",
+          "use the closest feasible midpoint ratio within [0.3, 0.7] if the target tolerance is unreachable",
+          "fail before rendering if no candidate meets either tier and all depth and overlap constraints"
+        ]
+      },
+      "archive": {
+        "path": "archived-p1/migration-plan.json",
+        "sha256": "0be17e8b297ad8fe525164ed9fe1b85222eab313a9c25e5b735b156b106921e3",
+        "count": 17
+      },
+      "status": "installed",
+      "path": "generator-patch-p2.json",
+      "sha256": "9969624ce86f04b54cb5bf4b56a1f6a4e73e3b66c9e97485a35bf6866861b7de",
+      "version": "B-v2-31aa7f9a4325-p2"
     },
     "foreground_presence_policy_p2": {
       "minimum_center_hits_per_designated_foreground_per_label_frame": null,
@@ -1873,60 +2003,270 @@
     },
     "p2_invariance": {
       "status": "passed",
-      "path": "p2-review/visibility-invariance-accepted.json",
-      "sha256": "ecbd5355632834d3fe8bd7619785a9f2e649c609c3f08e55d7f17297b74a7528",
       "scenes": {
         "development-003-8c92e9e93c0ff003": {
           "category": "thin_structure",
-          "partition": "development",
+          "passed": true,
           "structure_equal": true,
-          "geometry_label_files": 53,
-          "differences": 0
+          "differing_labels": [],
+          "label_file_count": 53,
+          "failure": null
         },
         "test_unseen_assets-011-8efb9c29177b1590": {
           "category": "large_foreground",
-          "partition": "test_unseen_assets",
+          "passed": true,
           "structure_equal": true,
-          "geometry_label_files": 53,
-          "differences": 0
+          "differing_labels": [],
+          "label_file_count": 53,
+          "failure": null
         },
         "test_unseen_assets-003-b96e1f4041a3c5eb": {
           "category": "weak_texture",
-          "partition": "test_unseen_assets",
+          "passed": true,
           "structure_equal": true,
-          "geometry_label_files": 53,
-          "differences": 0
+          "differing_labels": [],
+          "label_file_count": 53,
+          "failure": null
         },
         "test_unseen_assets-004-53629464b870257f": {
           "category": "complex_layout",
-          "partition": "test_unseen_assets",
+          "passed": true,
           "structure_equal": true,
-          "geometry_label_files": 53,
-          "differences": 0
+          "differing_labels": [],
+          "label_file_count": 53,
+          "failure": null
         }
       }
     },
     "p2_rebuild": {
-      "status": "drained_pending_qualification",
-      "intended_archive_count": 17,
-      "archive_path": "archived-p1/",
-      "archive_plan_by_partition": {
-        "training": 2,
-        "development": 3,
-        "test_unseen_assets": 6,
-        "test_unseen_occlusions": 6
-      }
+      "status": "affected_test_rebuilt",
+      "archive": {
+        "path": "archived-p1/migration-plan.json",
+        "sha256": "0be17e8b297ad8fe525164ed9fe1b85222eab313a9c25e5b735b156b106921e3",
+        "count": 17
+      },
+      "archived_units": [
+        {
+          "scene_id": "development-000-8e840e827a5e835c",
+          "partition": "development",
+          "category": "curved_self_occlusion",
+          "prior_generator_version": "B-v2-31aa7f9a4325-p1",
+          "original_manifest": "units/development/development-000-8e840e827a5e835c/manifest.json",
+          "archived_manifest": "archived-p1/development/development-000-8e840e827a5e835c/manifest.json",
+          "original_manifest_sha256": "d011429ecd462d27b52598eedc8553649fe036d6d383e842171fa0e0efa98c9c",
+          "bytes": 436123145
+        },
+        {
+          "scene_id": "development-001-c2e77289a531d9c6",
+          "partition": "development",
+          "category": "curved_self_occlusion",
+          "prior_generator_version": "B-v2-31aa7f9a4325-p1",
+          "original_manifest": "units/development/development-001-c2e77289a531d9c6/manifest.json",
+          "archived_manifest": "archived-p1/development/development-001-c2e77289a531d9c6/manifest.json",
+          "original_manifest_sha256": "faa99fbedd75901c1b1a4aef8a9fe3f880f362ef51a940972e26d5e0a00435cb",
+          "bytes": 499545270
+        },
+        {
+          "scene_id": "development-002-9d1be93b64c29ff2",
+          "partition": "development",
+          "category": "curved_self_occlusion",
+          "prior_generator_version": "B-v2-31aa7f9a4325-p1",
+          "original_manifest": "units/development/development-002-9d1be93b64c29ff2/manifest.json",
+          "archived_manifest": "archived-p1/development/development-002-9d1be93b64c29ff2/manifest.json",
+          "original_manifest_sha256": "95ff61f81b2a06dbe06b3fc5d141e3ebc241af7bd457665f4d0bb4c8cf158098",
+          "bytes": 568595411
+        },
+        {
+          "scene_id": "test_unseen_assets-000-a798a119053bc991",
+          "partition": "test_unseen_assets",
+          "category": "curved_self_occlusion",
+          "prior_generator_version": "B-v2-31aa7f9a4325",
+          "original_manifest": "units/test_unseen_assets/test_unseen_assets-000-a798a119053bc991/manifest.json",
+          "archived_manifest": "archived-p1/test_unseen_assets/test_unseen_assets-000-a798a119053bc991/manifest.json",
+          "original_manifest_sha256": "b26959e7389693e0d84095a4b7b07af18c4d8fdebee65c2d71904cfc41b1fa22",
+          "bytes": 469404829
+        },
+        {
+          "scene_id": "test_unseen_assets-002-a1f85b63887a2641",
+          "partition": "test_unseen_assets",
+          "category": "multiple_layers",
+          "prior_generator_version": "B-v2-31aa7f9a4325",
+          "original_manifest": "units/test_unseen_assets/test_unseen_assets-002-a1f85b63887a2641/manifest.json",
+          "archived_manifest": "archived-p1/test_unseen_assets/test_unseen_assets-002-a1f85b63887a2641/manifest.json",
+          "original_manifest_sha256": "7082e37fe1142e7233c2a1ab2c7edf30c476167c74742ed86f5038819a85356e",
+          "bytes": 643327410
+        },
+        {
+          "scene_id": "test_unseen_assets-006-a6f32d33010f57ba",
+          "partition": "test_unseen_assets",
+          "category": "multiple_layers",
+          "prior_generator_version": "B-v2-31aa7f9a4325-p1",
+          "original_manifest": "units/test_unseen_assets/test_unseen_assets-006-a6f32d33010f57ba/manifest.json",
+          "archived_manifest": "archived-p1/test_unseen_assets/test_unseen_assets-006-a6f32d33010f57ba/manifest.json",
+          "original_manifest_sha256": "2a82b4206eff1e8aaabccc4f2e501d689f9ff96887d7c87f9126c5446cbb85df",
+          "bytes": 670672716
+        },
+        {
+          "scene_id": "test_unseen_assets-010-5bf26f51ae3d9871",
+          "partition": "test_unseen_assets",
+          "category": "multiple_layers",
+          "prior_generator_version": "B-v2-31aa7f9a4325-p1",
+          "original_manifest": "units/test_unseen_assets/test_unseen_assets-010-5bf26f51ae3d9871/manifest.json",
+          "archived_manifest": "archived-p1/test_unseen_assets/test_unseen_assets-010-5bf26f51ae3d9871/manifest.json",
+          "original_manifest_sha256": "9a81234aa31be2cd12cc6a434f911802d79d3972655e15a459835f5bb46bcee5",
+          "bytes": 741145401
+        },
+        {
+          "scene_id": "test_unseen_assets-013-563ccaba92b873f5",
+          "partition": "test_unseen_assets",
+          "category": "curved_self_occlusion",
+          "prior_generator_version": "B-v2-31aa7f9a4325-p1",
+          "original_manifest": "units/test_unseen_assets/test_unseen_assets-013-563ccaba92b873f5/manifest.json",
+          "archived_manifest": "archived-p1/test_unseen_assets/test_unseen_assets-013-563ccaba92b873f5/manifest.json",
+          "original_manifest_sha256": "f2838978f9f14491c5524e3ad05555846fadfb5b4fd3edbc6053b895e4259b66",
+          "bytes": 468271779
+        },
+        {
+          "scene_id": "test_unseen_assets-014-53461c519ac03d1d",
+          "partition": "test_unseen_assets",
+          "category": "multiple_layers",
+          "prior_generator_version": "B-v2-31aa7f9a4325-p1",
+          "original_manifest": "units/test_unseen_assets/test_unseen_assets-014-53461c519ac03d1d/manifest.json",
+          "archived_manifest": "archived-p1/test_unseen_assets/test_unseen_assets-014-53461c519ac03d1d/manifest.json",
+          "original_manifest_sha256": "cfa561c9c9b0ae724a88de9609792d7ad940ce4c8ef98f465e845bcfa97e86cd",
+          "bytes": 610203674
+        },
+        {
+          "scene_id": "test_unseen_occlusions-000-a4b256e5d6f3665a",
+          "partition": "test_unseen_occlusions",
+          "category": "curved_self_occlusion",
+          "prior_generator_version": "B-v2-31aa7f9a4325-p1",
+          "original_manifest": "units/test_unseen_occlusions/test_unseen_occlusions-000-a4b256e5d6f3665a/manifest.json",
+          "archived_manifest": "archived-p1/test_unseen_occlusions/test_unseen_occlusions-000-a4b256e5d6f3665a/manifest.json",
+          "original_manifest_sha256": "dbe75794b978a1db3616a4de63589c946dd6c3308319631d8303010f95daead5",
+          "bytes": 506332203
+        },
+        {
+          "scene_id": "test_unseen_occlusions-001-5fac90fc5c5dec52",
+          "partition": "test_unseen_occlusions",
+          "category": "multiple_layers",
+          "prior_generator_version": "B-v2-31aa7f9a4325-p1",
+          "original_manifest": "units/test_unseen_occlusions/test_unseen_occlusions-001-5fac90fc5c5dec52/manifest.json",
+          "archived_manifest": "archived-p1/test_unseen_occlusions/test_unseen_occlusions-001-5fac90fc5c5dec52/manifest.json",
+          "original_manifest_sha256": "97d34539667d31b86ceb1583e6bc19255ab77c7499781f7e6b25ccdfbd3894ec",
+          "bytes": 608801139
+        },
+        {
+          "scene_id": "test_unseen_occlusions-004-71f3204ec61e7ce8",
+          "partition": "test_unseen_occlusions",
+          "category": "curved_self_occlusion",
+          "prior_generator_version": "B-v2-31aa7f9a4325-p1",
+          "original_manifest": "units/test_unseen_occlusions/test_unseen_occlusions-004-71f3204ec61e7ce8/manifest.json",
+          "archived_manifest": "archived-p1/test_unseen_occlusions/test_unseen_occlusions-004-71f3204ec61e7ce8/manifest.json",
+          "original_manifest_sha256": "fcccedcd15ee3fa1f0e52484804e1da02cbcfce28b865410fb401b32dab0fa23",
+          "bytes": 486834972
+        },
+        {
+          "scene_id": "test_unseen_occlusions-005-44db5355f44d4080",
+          "partition": "test_unseen_occlusions",
+          "category": "multiple_layers",
+          "prior_generator_version": "B-v2-31aa7f9a4325-p1",
+          "original_manifest": "units/test_unseen_occlusions/test_unseen_occlusions-005-44db5355f44d4080/manifest.json",
+          "archived_manifest": "archived-p1/test_unseen_occlusions/test_unseen_occlusions-005-44db5355f44d4080/manifest.json",
+          "original_manifest_sha256": "89eeb9c19e2d4d5a51c9d94e115f4600139d37536ce00401f77068e94b3eef7f",
+          "bytes": 534017846
+        },
+        {
+          "scene_id": "test_unseen_occlusions-008-1118d85a09d8b3e3",
+          "partition": "test_unseen_occlusions",
+          "category": "curved_self_occlusion",
+          "prior_generator_version": "B-v2-31aa7f9a4325-p1",
+          "original_manifest": "units/test_unseen_occlusions/test_unseen_occlusions-008-1118d85a09d8b3e3/manifest.json",
+          "archived_manifest": "archived-p1/test_unseen_occlusions/test_unseen_occlusions-008-1118d85a09d8b3e3/manifest.json",
+          "original_manifest_sha256": "70b0cac3eee6e3b14b8f501df9d0838b81e78e11ef0baa0f114cd41ee46e394b",
+          "bytes": 499261427
+        },
+        {
+          "scene_id": "test_unseen_occlusions-012-17edc8ce9e71153d",
+          "partition": "test_unseen_occlusions",
+          "category": "curved_self_occlusion",
+          "prior_generator_version": "B-v2-31aa7f9a4325-p1",
+          "original_manifest": "units/test_unseen_occlusions/test_unseen_occlusions-012-17edc8ce9e71153d/manifest.json",
+          "archived_manifest": "archived-p1/test_unseen_occlusions/test_unseen_occlusions-012-17edc8ce9e71153d/manifest.json",
+          "original_manifest_sha256": "2108e384576cd5a60a0f760f4e9877c33a3fdd0151507f6aa763a0870adb74f5",
+          "bytes": 485747035
+        },
+        {
+          "scene_id": "training-000-2c3ab6e8683fec54",
+          "partition": "training",
+          "category": "curved_self_occlusion",
+          "prior_generator_version": "B-v2-31aa7f9a4325",
+          "original_manifest": "units/training/training-000-2c3ab6e8683fec54/manifest.json",
+          "archived_manifest": "archived-p1/training/training-000-2c3ab6e8683fec54/manifest.json",
+          "original_manifest_sha256": "e3694de6a9102dcc69e88baadb1b5e0757e4e90cd105c54bebf63d26ac3d23e7",
+          "bytes": 470765227
+        },
+        {
+          "scene_id": "training-001-7a9b2de81e9aa875",
+          "partition": "training",
+          "category": "curved_self_occlusion",
+          "prior_generator_version": "B-v2-31aa7f9a4325",
+          "original_manifest": "units/training/training-001-7a9b2de81e9aa875/manifest.json",
+          "archived_manifest": "archived-p1/training/training-001-7a9b2de81e9aa875/manifest.json",
+          "original_manifest_sha256": "021bf570e69e4562e80c07711f1f3ba1c97cce299797e2f6b6f1dc5b96239b11",
+          "bytes": 483346856
+        }
+      ],
+      "affected_test_pending": 0
     },
     "p2_optical_parallel_trial": {
       "status": "preregistered_for_after_training_geometry"
     },
     "p2_finish_eta": {
-      "status": "awaiting_resumed_production_measurements"
+      "status": "conditional_on_sealed_scenes_passing",
+      "measured_at_utc": "2026-11-21T01:29:34.642935+00:00",
+      "estimated_hours": 74.20669234331386,
+      "estimated_finish_utc": "2026-11-24T03:41:58.735371+00:00",
+      "remaining_hours_by_stage": {
+        "tests": 0.0,
+        "development": 3.5832409104301286,
+        "training_geometry": 24.793057007715106,
+        "training_optical": 43.64799469063679,
+        "optical_parallel_trial": 2.1823997345318396
+      },
+      "geometry_basis": "resumed p2 test geometry",
+      "geometry_per_hour": 12.10016174716357,
+      "development_basis": "resumed development",
+      "training_optical_basis": "qualification optical engine time",
+      "includes_sampled_geometry_queue": true,
+      "includes_unknown_future_gpu_queue_for_optics": false,
+      "known_exclusions": {
+        "development": {
+          "path": "units/development/failures.json",
+          "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+          "count": 0
+        },
+        "test_unseen_assets": {
+          "path": "units/test_unseen_assets/failures.json",
+          "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+          "count": 0
+        },
+        "test_unseen_occlusions": {
+          "path": "units/test_unseen_occlusions/failures.json",
+          "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+          "count": 0
+        },
+        "training": {
+          "path": "units/training/failures.json",
+          "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+          "count": 0
+        }
+      }
     },
     "p2_dispatch": {
-      "stop_after_current": true,
+      "stop_after_current": false,
       "original_dispatch_drained": true,
-      "status": "running_single_p2_qualification",
+      "status": "running",
       "affected_inflight": "development-003-8c92e9e93c0ff003",
       "qualification_output": "p2-review/p2-priority-qualification/proof.json",
       "retired_process_groups": [
@@ -1934,7 +2274,173 @@
         679847,
         681870,
         682338
-      ]
+      ],
+      "installed_at_utc": "2026-11-20T19:43:24.795617+00:00",
+      "production_measurements": {
+        "test_unseen_assets": {
+          "partition": "test_unseen_assets",
+          "scene_slots": 2,
+          "attempted_scenes": 6,
+          "accepted_scenes": 6,
+          "seconds": 1811.0063085407019,
+          "accepted_per_hour": 11.927070545328554,
+          "cpu_affinity": {
+            "dispatcher": [
+              0
+            ],
+            "geometry": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "gpu": [
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13
+            ]
+          },
+          "max_compute_threads": 14,
+          "sampled_peak_cpu_equivalents": 4.254934675503794,
+          "peak_combined_rss_bytes": 8603090944,
+          "label_and_gpu_lane_overlap_seconds": 1189.9459088146687,
+          "gpu_idle_for_b_labels_seconds": {
+            "startup": 255.66170935705304,
+            "steady": 75.28563255816698
+          },
+          "shared_lock_busy_while_b_labels_pending_seconds": {
+            "startup": 0,
+            "steady": 0
+          },
+          "combined_memory_limit_hit": false,
+          "generator_version": "B-v2-31aa7f9a4325-p2",
+          "partition_dispatch_finished": true,
+          "placement_fallback_count": 6,
+          "placement_fallback_by_scene": {
+            "test_unseen_assets-002-a1f85b63887a2641": 2,
+            "test_unseen_assets-006-a6f32d33010f57ba": 2,
+            "test_unseen_assets-010-5bf26f51ae3d9871": 1,
+            "test_unseen_assets-014-53461c519ac03d1d": 1
+          },
+          "path": "production-runs/1795205615871872687-test_unseen_assets.json",
+          "sha256": "51c81b921eabaf509cac87548aacce594420b08f7e24c0ef16b49f68df80ac5a"
+        },
+        "test_unseen_occlusions": {
+          "partition": "test_unseen_occlusions",
+          "scene_slots": 2,
+          "attempted_scenes": 6,
+          "accepted_scenes": 6,
+          "seconds": 1759.1939005702734,
+          "accepted_per_hour": 12.278350892984555,
+          "cpu_affinity": {
+            "dispatcher": [
+              0
+            ],
+            "geometry": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "gpu": [
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13
+            ]
+          },
+          "max_compute_threads": 14,
+          "sampled_peak_cpu_equivalents": 4.217104671053898,
+          "peak_combined_rss_bytes": 8640548864,
+          "label_and_gpu_lane_overlap_seconds": 1123.2438515499234,
+          "gpu_idle_for_b_labels_seconds": {
+            "startup": 253.68461148813367,
+            "steady": 68.0318602770567
+          },
+          "shared_lock_busy_while_b_labels_pending_seconds": {
+            "startup": 0,
+            "steady": 0
+          },
+          "combined_memory_limit_hit": false,
+          "generator_version": "B-v2-31aa7f9a4325-p2",
+          "partition_dispatch_finished": true,
+          "placement_fallback_count": 12,
+          "placement_fallback_by_scene": {
+            "test_unseen_occlusions-000-a4b256e5d6f3665a": 1,
+            "test_unseen_occlusions-001-5fac90fc5c5dec52": 2,
+            "test_unseen_occlusions-004-71f3204ec61e7ce8": 3,
+            "test_unseen_occlusions-005-44db5355f44d4080": 1,
+            "test_unseen_occlusions-008-1118d85a09d8b3e3": 2,
+            "test_unseen_occlusions-012-17edc8ce9e71153d": 3
+          },
+          "path": "production-runs/1795207375075606421-test_unseen_occlusions.json",
+          "sha256": "216533e926d9350624ae000fca7a538bd006c78ffcc3435c542c633aeb2419b3"
+        },
+        "development": {
+          "partition": "development",
+          "scene_slots": 2,
+          "attempted_scenes": 9,
+          "accepted_scenes": 8,
+          "seconds": 17199.556370064616,
+          "accepted_per_hour": 1.6744617931033183,
+          "cpu_affinity": {
+            "dispatcher": [
+              0
+            ],
+            "geometry": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "gpu": [
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13
+            ]
+          },
+          "max_compute_threads": 14,
+          "sampled_peak_cpu_equivalents": 5.251110305796034,
+          "peak_combined_rss_bytes": 8242282496,
+          "label_and_gpu_lane_overlap_seconds": 2173.48042107746,
+          "gpu_idle_for_b_labels_seconds": {
+            "startup": 249.55942308530211,
+            "steady": 0
+          },
+          "shared_lock_busy_while_b_labels_pending_seconds": {
+            "startup": 0,
+            "steady": 0
+          },
+          "combined_memory_limit_hit": false,
+          "generator_version": "B-v2-31aa7f9a4325-p2",
+          "partition_dispatch_finished": false,
+          "placement_fallback_count": 5,
+          "placement_fallback_by_scene": {
+            "development-006-cfa2a67575eca884": 1,
+            "development-007-7f68b7245eb4f8a2": 1,
+            "development-008-6feda700c49fc611": 3
+          },
+          "path": "production-runs/1795224574641695651-development.json",
+          "sha256": "472190456d62beec8abf672e959ac3b95ff6209ed12c8fdcdd5cfc3e4137488f"
+        }
+      }
     },
     "multilayer_placement_policy_p2": {
       "middle_frame": 30,
@@ -2155,6 +2661,653 @@
           ]
         }
       ]
+    },
+    "p2_qualification": {
+      "path": "p2-review/p2-priority-qualification/proof.json",
+      "sha256": "06bc67883a7d1513aaba9d549d18f0c610ebada7486f7cefb0526c513dd2fd69",
+      "status": "passed",
+      "seconds": 5975.44540932402,
+      "smoke": {
+        "training-120-2db3c2fe6b5336e7": {
+          "scene_id": "training-120-2db3c2fe6b5336e7",
+          "category": "multiple_layers",
+          "passed": true,
+          "manifest_sha256": "d08f4f266004c3171d6137305cc0c277a3b9579243af59f62975c469f4373097",
+          "audited_frames": 13,
+          "minima": {
+            "foreground_import_00": {
+              "minimum_surface_pixels": 2949,
+              "minimum_center_hits": 2760,
+              "visible_frames": 13,
+              "absent_frames": [],
+              "f030_center_hits": 2794,
+              "passed": true,
+              "midpoint_projected_overlap": 0.0,
+              "minimum_projected_overlap": 0.0,
+              "maximum_projected_overlap": 0.0
+            },
+            "foreground_import_01": {
+              "minimum_surface_pixels": 8700,
+              "minimum_center_hits": 8657,
+              "visible_frames": 13,
+              "absent_frames": [],
+              "f030_center_hits": 8666,
+              "passed": true,
+              "midpoint_projected_overlap": 0.3746744639226569,
+              "minimum_projected_overlap": 0.37320714627924095,
+              "maximum_projected_overlap": 0.37615694025031976
+            }
+          },
+          "fallback_count": 0,
+          "fallback_by_layer": {
+            "foreground_import_00": [],
+            "foreground_import_01": []
+          },
+          "bytes": 455944442
+        },
+        "training-121-15d84d54e54aae7e": {
+          "scene_id": "training-121-15d84d54e54aae7e",
+          "category": "multiple_layers",
+          "passed": true,
+          "manifest_sha256": "3b106cc0e75fa1ff17c033658e15be19f98580d548d30c01df1399ec00858072",
+          "audited_frames": 13,
+          "minima": {
+            "foreground_import_00": {
+              "minimum_surface_pixels": 86126,
+              "minimum_center_hits": 85478,
+              "visible_frames": 13,
+              "absent_frames": [],
+              "f030_center_hits": 85478,
+              "passed": true,
+              "midpoint_projected_overlap": 0.0,
+              "minimum_projected_overlap": 0.0,
+              "maximum_projected_overlap": 0.0
+            },
+            "foreground_import_01": {
+              "minimum_surface_pixels": 8102,
+              "minimum_center_hits": 7932,
+              "visible_frames": 13,
+              "absent_frames": [],
+              "f030_center_hits": 7981,
+              "passed": true,
+              "midpoint_projected_overlap": 0.4342028875253577,
+              "minimum_projected_overlap": 0.4342028875253577,
+              "maximum_projected_overlap": 0.43872893086934817
+            }
+          },
+          "fallback_count": 3,
+          "fallback_by_layer": {
+            "foreground_import_00": [
+              "front_recentered",
+              "reduced_framing_scale"
+            ],
+            "foreground_import_01": [
+              "reduced_framing_scale"
+            ]
+          },
+          "bytes": 520419888
+        },
+        "training-122-e493cc8f58dda6b2": {
+          "scene_id": "training-122-e493cc8f58dda6b2",
+          "category": "multiple_layers",
+          "passed": true,
+          "manifest_sha256": "9e03745fc2a9d06b6c40bd1d9d55c47f03533971d70c1c0f474c733dfaa4868c",
+          "audited_frames": 13,
+          "minima": {
+            "foreground_import_00": {
+              "minimum_surface_pixels": 2819,
+              "minimum_center_hits": 2704,
+              "visible_frames": 13,
+              "absent_frames": [],
+              "f030_center_hits": 2704,
+              "passed": true,
+              "midpoint_projected_overlap": 0.0,
+              "minimum_projected_overlap": 0.0,
+              "maximum_projected_overlap": 0.0
+            },
+            "foreground_import_01": {
+              "minimum_surface_pixels": 5462,
+              "minimum_center_hits": 5410,
+              "visible_frames": 13,
+              "absent_frames": [],
+              "f030_center_hits": 5469,
+              "passed": true,
+              "midpoint_projected_overlap": 0.35289852606350913,
+              "minimum_projected_overlap": 0.30229766950184844,
+              "maximum_projected_overlap": 0.4019852534801912
+            }
+          },
+          "fallback_count": 1,
+          "fallback_by_layer": {
+            "foreground_import_00": [],
+            "foreground_import_01": [
+              "reduced_framing_scale"
+            ]
+          },
+          "bytes": 552841350
+        },
+        "training-129-d8668d929a0896e4": {
+          "scene_id": "training-129-d8668d929a0896e4",
+          "category": "multiple_layers",
+          "passed": true,
+          "manifest_sha256": "7afc0abfa83b1578054d38eedf2fa435aaa7c7748988c2d5c8f0142bef346b40",
+          "audited_frames": 13,
+          "minima": {
+            "foreground_import_00": {
+              "minimum_surface_pixels": 0,
+              "minimum_center_hits": 0,
+              "visible_frames": 11,
+              "absent_frames": [
+                1,
+                60
+              ],
+              "f030_center_hits": 326,
+              "passed": true,
+              "midpoint_projected_overlap": 0.0,
+              "minimum_projected_overlap": 0.0,
+              "maximum_projected_overlap": 0.0
+            },
+            "foreground_import_01": {
+              "minimum_surface_pixels": 30,
+              "minimum_center_hits": 24,
+              "visible_frames": 13,
+              "absent_frames": [],
+              "f030_center_hits": 135,
+              "passed": true,
+              "midpoint_projected_overlap": 0.5506911985036621,
+              "minimum_projected_overlap": 0.4228380054438966,
+              "maximum_projected_overlap": 0.7563519557052895
+            }
+          },
+          "fallback_count": 3,
+          "fallback_by_layer": {
+            "foreground_import_00": [
+              "contiguous_midpoint_framing"
+            ],
+            "foreground_import_01": [
+              "reduced_framing_scale",
+              "contiguous_midpoint_framing"
+            ]
+          },
+          "bytes": 568807754
+        },
+        "training-133-bfb4d10a258066b8": {
+          "scene_id": "training-133-bfb4d10a258066b8",
+          "category": "multiple_layers",
+          "passed": true,
+          "manifest_sha256": "dcb19283e84350db646291bbbfae6fee26a1208a14bd9db019126aa396f870fc",
+          "audited_frames": 13,
+          "minima": {
+            "foreground_import_00": {
+              "minimum_surface_pixels": 566,
+              "minimum_center_hits": 531,
+              "visible_frames": 13,
+              "absent_frames": [],
+              "f030_center_hits": 913,
+              "passed": true,
+              "midpoint_projected_overlap": 0.0,
+              "minimum_projected_overlap": 0.0,
+              "maximum_projected_overlap": 0.0
+            },
+            "foreground_import_01": {
+              "minimum_surface_pixels": 7,
+              "minimum_center_hits": 2,
+              "visible_frames": 13,
+              "absent_frames": [],
+              "f030_center_hits": 2,
+              "passed": true,
+              "midpoint_projected_overlap": 0.6303592656877227,
+              "minimum_projected_overlap": 0.6303592656877227,
+              "maximum_projected_overlap": 0.655711018111563
+            }
+          },
+          "fallback_count": 3,
+          "fallback_by_layer": {
+            "foreground_import_00": [
+              "contiguous_midpoint_framing"
+            ],
+            "foreground_import_01": [
+              "reduced_framing_scale",
+              "closest_in_range"
+            ]
+          },
+          "bytes": 570813040
+        },
+        "training-171-f5de6bcd6aef3f97": {
+          "scene_id": "training-171-f5de6bcd6aef3f97",
+          "category": "multiple_layers",
+          "passed": true,
+          "manifest_sha256": "94454c6a94e52b602b5ff3cdfb2706751d8734a53f2fe7b3d55f60831822cd69",
+          "audited_frames": 13,
+          "minima": {
+            "foreground_import_00": {
+              "minimum_surface_pixels": 56,
+              "minimum_center_hits": 34,
+              "visible_frames": 13,
+              "absent_frames": [],
+              "f030_center_hits": 54,
+              "passed": true,
+              "midpoint_projected_overlap": 0.0,
+              "minimum_projected_overlap": 0.0,
+              "maximum_projected_overlap": 0.0
+            },
+            "foreground_import_01": {
+              "minimum_surface_pixels": 18,
+              "minimum_center_hits": 16,
+              "visible_frames": 13,
+              "absent_frames": [],
+              "f030_center_hits": 18,
+              "passed": true,
+              "midpoint_projected_overlap": 0.37787979856823917,
+              "minimum_projected_overlap": 0.0,
+              "maximum_projected_overlap": 0.379846823689523
+            }
+          },
+          "fallback_count": 3,
+          "fallback_by_layer": {
+            "foreground_import_00": [
+              "reduced_framing_scale"
+            ],
+            "foreground_import_01": [
+              "reduced_framing_scale",
+              "closest_in_range"
+            ]
+          },
+          "bytes": 540901674
+        },
+        "training-173-13ed6793b9ce2fb2": {
+          "scene_id": "training-173-13ed6793b9ce2fb2",
+          "category": "multiple_layers",
+          "passed": true,
+          "manifest_sha256": "2ed69d94b163d20e0ddabf9eee97ed8906b06f95a8559e7edb15a60544749484",
+          "audited_frames": 13,
+          "minima": {
+            "foreground_import_00": {
+              "minimum_surface_pixels": 128,
+              "minimum_center_hits": 98,
+              "visible_frames": 13,
+              "absent_frames": [],
+              "f030_center_hits": 120,
+              "passed": true,
+              "midpoint_projected_overlap": 0.0,
+              "minimum_projected_overlap": 0.0,
+              "maximum_projected_overlap": 0.0
+            },
+            "foreground_import_01": {
+              "minimum_surface_pixels": 54,
+              "minimum_center_hits": 42,
+              "visible_frames": 13,
+              "absent_frames": [],
+              "f030_center_hits": 49,
+              "passed": true,
+              "midpoint_projected_overlap": 0.3170782658250659,
+              "minimum_projected_overlap": 0.0,
+              "maximum_projected_overlap": 0.31782775923385653
+            }
+          },
+          "fallback_count": 3,
+          "fallback_by_layer": {
+            "foreground_import_00": [
+              "reduced_framing_scale"
+            ],
+            "foreground_import_01": [
+              "reduced_framing_scale",
+              "closest_in_range"
+            ]
+          },
+          "bytes": 500825125
+        },
+        "training-270-5991936658a766d8": {
+          "scene_id": "training-270-5991936658a766d8",
+          "category": "complex_layout",
+          "passed": true,
+          "manifest_sha256": "2d28fbb34c4f40af6b10ccf01a95e82cf871cbc29ad9b1831a0ebd0081750264",
+          "audited_frames": 13,
+          "minima": {
+            "foreground_import_00": {
+              "minimum_surface_pixels": 54240,
+              "minimum_center_hits": 53647,
+              "visible_frames": 13,
+              "absent_frames": [],
+              "f030_center_hits": 53717,
+              "passed": true
+            }
+          },
+          "fallback_count": 0,
+          "fallback_by_layer": {},
+          "bytes": 555652006
+        },
+        "training-271-bedfb187a3d409fa": {
+          "scene_id": "training-271-bedfb187a3d409fa",
+          "category": "complex_layout",
+          "passed": true,
+          "manifest_sha256": "7e0f9f3a5a136226049c94eeffc5b57c97080076d14d9259b90c70671bc066d6",
+          "audited_frames": 13,
+          "minima": {
+            "foreground_import_00": {
+              "minimum_surface_pixels": 47924,
+              "minimum_center_hits": 47333,
+              "visible_frames": 13,
+              "absent_frames": [],
+              "f030_center_hits": 47480,
+              "passed": true
+            }
+          },
+          "fallback_count": 0,
+          "fallback_by_layer": {},
+          "bytes": 530374730
+        },
+        "training-000-2c3ab6e8683fec54": {
+          "scene_id": "training-000-2c3ab6e8683fec54",
+          "category": "curved_self_occlusion",
+          "passed": true,
+          "manifest_sha256": "d7cd4f3ac7f425e8c6464a0f6c89a70b3e4a9bcc0d49d73a8abbb38eb7e7fbaf",
+          "audited_frames": 13,
+          "minima": {
+            "foreground_import_00": {
+              "minimum_surface_pixels": 83517,
+              "minimum_center_hits": 82991,
+              "visible_frames": 13,
+              "absent_frames": [],
+              "f030_center_hits": 83376,
+              "passed": true
+            }
+          },
+          "fallback_count": 0,
+          "fallback_by_layer": {},
+          "bytes": 743712596
+        },
+        "training-001-7a9b2de81e9aa875": {
+          "scene_id": "training-001-7a9b2de81e9aa875",
+          "category": "curved_self_occlusion",
+          "passed": true,
+          "manifest_sha256": "d2431f7af2cf24d7a9d41dfe514bb4e8eddbc1586515d4e811c1218e632ea5c9",
+          "audited_frames": 13,
+          "minima": {
+            "foreground_import_00": {
+              "minimum_surface_pixels": 34982,
+              "minimum_center_hits": 34085,
+              "visible_frames": 13,
+              "absent_frames": [],
+              "f030_center_hits": 34217,
+              "passed": true
+            }
+          },
+          "fallback_count": 0,
+          "fallback_by_layer": {},
+          "bytes": 611017985
+        },
+        "training-174-cfd3d2e7961ffbc1": {
+          "scene_id": "training-174-cfd3d2e7961ffbc1",
+          "category": "large_foreground",
+          "passed": true,
+          "manifest_sha256": "b4ce8fa13f6fb670df656b5f546f5bb4fab025276cf00d1d4bdefcee17f8c5ba",
+          "audited_frames": 13,
+          "minima": {
+            "foreground_import_00": {
+              "minimum_surface_pixels": 150627,
+              "minimum_center_hits": 150064,
+              "visible_frames": 13,
+              "absent_frames": [],
+              "f030_center_hits": 152082,
+              "passed": true
+            }
+          },
+          "fallback_count": 0,
+          "fallback_by_layer": {},
+          "bytes": 857913385
+        },
+        "training-175-376df84aa8838fbf": {
+          "scene_id": "training-175-376df84aa8838fbf",
+          "category": "large_foreground",
+          "passed": true,
+          "manifest_sha256": "a36101c6689aa78e306a8838bb21581b6b0127f881e87c671d0fa05fd48385ac",
+          "audited_frames": 13,
+          "minima": {
+            "foreground_import_00": {
+              "minimum_surface_pixels": 123799,
+              "minimum_center_hits": 123045,
+              "visible_frames": 13,
+              "absent_frames": [],
+              "f030_center_hits": 126530,
+              "passed": true
+            }
+          },
+          "fallback_count": 0,
+          "fallback_by_layer": {},
+          "bytes": 818142769
+        },
+        "training-060-6d5047674c33e827": {
+          "scene_id": "training-060-6d5047674c33e827",
+          "category": "thin_structure",
+          "passed": true,
+          "manifest_sha256": "b92d44ab9791a54c4adf1b2a0a367d604a848850134de5bc2ccff5c37c663a3a",
+          "audited_frames": 13,
+          "minima": {
+            "foreground_structure": {
+              "minimum_surface_pixels": 7019,
+              "minimum_center_hits": 3448,
+              "visible_frames": 13,
+              "absent_frames": [],
+              "f030_center_hits": 3931,
+              "passed": true
+            }
+          },
+          "fallback_count": 0,
+          "fallback_by_layer": {},
+          "bytes": 506669681
+        },
+        "training-061-ff0a4ff42915123f": {
+          "scene_id": "training-061-ff0a4ff42915123f",
+          "category": "thin_structure",
+          "passed": true,
+          "manifest_sha256": "f2c6d4439f9e293d7425e79d0b14f359d7c3191e61174930d78ba4566b1f9135",
+          "audited_frames": 13,
+          "minima": {
+            "foreground_structure": {
+              "minimum_surface_pixels": 17835,
+              "minimum_center_hits": 10649,
+              "visible_frames": 13,
+              "absent_frames": [],
+              "f030_center_hits": 10649,
+              "passed": true
+            }
+          },
+          "fallback_count": 0,
+          "fallback_by_layer": {},
+          "bytes": 535385896
+        },
+        "training-234-119141e4e6668bc0": {
+          "scene_id": "training-234-119141e4e6668bc0",
+          "category": "weak_texture",
+          "passed": true,
+          "manifest_sha256": "00a9c7b44b0386b73507fe276751aae21fc0def86acd2d17a0e1b7f811d9abf3",
+          "audited_frames": 13,
+          "minima": {
+            "foreground_import_00": {
+              "minimum_surface_pixels": 60677,
+              "minimum_center_hits": 59856,
+              "visible_frames": 13,
+              "absent_frames": [],
+              "f030_center_hits": 59916,
+              "passed": true
+            }
+          },
+          "fallback_count": 0,
+          "fallback_by_layer": {},
+          "bytes": 592582776
+        },
+        "training-235-7927517232fe4a87": {
+          "scene_id": "training-235-7927517232fe4a87",
+          "category": "weak_texture",
+          "passed": true,
+          "manifest_sha256": "4e4707c7a209fafd94bfd46a6c678e7c1c6b1b44ff1fb46f6b187427c5f947dc",
+          "audited_frames": 13,
+          "minima": {
+            "foreground_import_00": {
+              "minimum_surface_pixels": 68517,
+              "minimum_center_hits": 67764,
+              "visible_frames": 13,
+              "absent_frames": [],
+              "f030_center_hits": 67911,
+              "passed": true
+            }
+          },
+          "fallback_count": 0,
+          "fallback_by_layer": {},
+          "bytes": 551002600
+        }
+      },
+      "invariance": {
+        "development-003-8c92e9e93c0ff003": {
+          "category": "thin_structure",
+          "passed": true,
+          "structure_equal": true,
+          "differing_labels": [],
+          "label_file_count": 53,
+          "failure": null
+        },
+        "test_unseen_assets-011-8efb9c29177b1590": {
+          "category": "large_foreground",
+          "passed": true,
+          "structure_equal": true,
+          "differing_labels": [],
+          "label_file_count": 53,
+          "failure": null
+        },
+        "test_unseen_assets-003-b96e1f4041a3c5eb": {
+          "category": "weak_texture",
+          "passed": true,
+          "structure_equal": true,
+          "differing_labels": [],
+          "label_file_count": 53,
+          "failure": null
+        },
+        "test_unseen_assets-004-53629464b870257f": {
+          "category": "complex_layout",
+          "passed": true,
+          "structure_equal": true,
+          "differing_labels": [],
+          "label_file_count": 53,
+          "failure": null
+        }
+      },
+      "smoke_passed": 17,
+      "invariance_passed": 4,
+      "fallback_count": 16,
+      "unchanged_category_proof": null,
+      "synthetic_curve": {
+        "scene_id": "qualification-synthetic-curve-five-bands-p2",
+        "category": "curved_self_occlusion",
+        "passed": true,
+        "manifest_sha256": "ea371c151213a4c6efc570bc1b8acb18a6d3b9977abc40b8fe0cc64c5fc06c3b",
+        "audited_frames": 13,
+        "minima": {
+          "foreground_import_00": {
+            "minimum_surface_pixels": 4781,
+            "minimum_center_hits": 4597,
+            "visible_frames": 13,
+            "absent_frames": [],
+            "f030_center_hits": 4602,
+            "passed": true,
+            "midpoint_projected_overlap": 0.0,
+            "minimum_projected_overlap": 0.0,
+            "maximum_projected_overlap": 0.0
+          },
+          "foreground_middle_2": {
+            "minimum_surface_pixels": 8877,
+            "minimum_center_hits": 8693,
+            "visible_frames": 13,
+            "absent_frames": [],
+            "f030_center_hits": 8762,
+            "passed": true,
+            "midpoint_projected_overlap": 0.4271342347777153,
+            "minimum_projected_overlap": 0.42321069099039876,
+            "maximum_projected_overlap": 0.4284042679632674
+          },
+          "foreground_middle_3": {
+            "minimum_surface_pixels": 5315,
+            "minimum_center_hits": 5319,
+            "visible_frames": 13,
+            "absent_frames": [],
+            "f030_center_hits": 5453,
+            "passed": true,
+            "midpoint_projected_overlap": 0.608925403815743,
+            "minimum_projected_overlap": 0.6087247890469244,
+            "maximum_projected_overlap": 0.6091709577090181
+          },
+          "foreground_middle_4": {
+            "minimum_surface_pixels": 4837,
+            "minimum_center_hits": 4831,
+            "visible_frames": 13,
+            "absent_frames": [],
+            "f030_center_hits": 5020,
+            "passed": true,
+            "midpoint_projected_overlap": 0.6742460034837916,
+            "minimum_projected_overlap": 0.6737672633416898,
+            "maximum_projected_overlap": 0.6754271730297068
+          }
+        },
+        "fallback_count": 0,
+        "fallback_by_layer": {
+          "foreground_import_00": [],
+          "foreground_middle_2": [],
+          "foreground_middle_3": [],
+          "foreground_middle_4": []
+        },
+        "bytes": 507069406
+      }
+    },
+    "dispatch_cpu_workers": {
+      "status": "handoff_armed_waiting_for_existing_development",
+      "dispatch_code_sha256": "aa541bd3aec13e5d0af4050066cf57ef57fd93c13b90b24948002f4364154e85",
+      "dispatch_code": {
+        "route3_v2data_B_dispatch.py": "c197dc4b6b0d211beffe86ab7dbc06ffb29ef1e4177a058638178845ba0566bc",
+        "route3_v2data_B_release.py": "c9d18bd1355efff8328df08cf60e97b6cb03af9616b873cf8b111941520bcd31",
+        "route3_v2data_B_deploy_p2.py": "3f6d25b8cd128709a5495846ea58b513c8b83b6c6cfa2d2d4d70baeecc9bf99b",
+        "route3_v2data_B_optical_pair.py": "5c71d71a76f8f8bec9023e8fb0f61c2e04a7fafce78fb648264fc432651d4dc0",
+        "route3_v2data_B_dispatch_workers.py": "d0d0e3f46c08d75763d7ff17a846b23f20d2287ed8366ef892ffa0a97580e76b"
+      },
+      "generator_code_sha256": "e10a102491b98494c1f77d20f1a2249ba065a2ae65339faf72087a5a732c35c5",
+      "workers": 3,
+      "cores_each": 2,
+      "maximum_ready_units": 30,
+      "max_compute_threads": 23,
+      "configured_compute_cores": 19,
+      "peak_rss_limit_bytes": 75161927680,
+      "gpu_geometry_slots": 1,
+      "remaining_disk_reserve_bytes": 64424509440,
+      "peak_combined_rss_bytes": null,
+      "training_first_30": null
+    },
+    "optical_parallel_trial": {
+      "status": "awaiting_development_drain",
+      "sources": "the two preregistered p2 training qualification units",
+      "policy": {
+        "scene_ids": [
+          "training-120-2db3c2fe6b5336e7",
+          "training-174-cfd3d2e7961ffbc1"
+        ],
+        "frames": [
+          1,
+          30,
+          60
+        ],
+        "focus_count": 2,
+        "apertures": [
+          1.4,
+          2.0
+        ],
+        "subviews": 64,
+        "samples": 1024,
+        "seed": 20261120,
+        "max_ratio": 0.85,
+        "rss_limit_bytes": 30064771072,
+        "vram_limit_bytes": 25769803776,
+        "timing": "from acquired shared lock through the acceptance of both scenes, with queue time reported separately",
+        "noise": "An exact match passes. Otherwise, independently render f030 with seed+1 at the same sample count, and require each LDR/HDR product's MAE and maximum absolute difference to stay below the corresponding peak independent-seed discrepancy for that scene and representation."
+      },
+      "gpu_lock_continuously_held": true
     }
   }
 }
