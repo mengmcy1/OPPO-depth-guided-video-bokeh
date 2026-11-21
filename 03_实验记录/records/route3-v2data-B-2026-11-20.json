@@ -744,7 +744,7 @@
       "formal_use": false
     },
     "formal_counts": {
-      "train_geometry": 142,
+      "train_geometry": 274,
       "development": 15,
       "test": 30,
       "train_optical": 0
@@ -1306,7 +1306,7 @@
       "reserve_bytes": 64424509440
     },
     "generator_version": "B-v2-31aa7f9a4325",
-    "manifest_sha256": "c5de731299e21c058a2b76660dfb8e5cd47b2243b4b577458c4b4aee7a281285",
+    "manifest_sha256": "171adb1769f19a1fa423231126c3d107a5ff1a51a0f83cb32c920f84f3ac9dcd",
     "scene_plan_sha256": {
       "training": "3687df48d64d82dd2dfd620c1a1ee6b32f2305186063d0df89c2e6f99a5986d8",
       "development": "78f5ef2aa6625bba938028efb71ad1bf2da3142810d8453d6a387452728c0d85",
@@ -1389,7 +1389,7 @@
       }
     },
     "target_gap": {
-      "train_geometry": 158,
+      "train_geometry": 26,
       "development": 0,
       "test": 0,
       "train_optical": 80
@@ -1413,8 +1413,8 @@
       },
       "training": {
         "path": "units/training/failures.json",
-        "sha256": "dfbd0cf2bfbc4f2d74947c6552309cb10c7908db1737b3b2ea245128916e2ff2",
-        "count": 2
+        "sha256": "070d7ccf130761dfebe3215a037be8697f57a51464b692545dd23906980b1c5b",
+        "count": 26
       }
     },
     "optical_difficulty_counts": {},
@@ -2315,24 +2315,24 @@
       }
     },
     "p2_finish_eta": {
-      "status": "conditional_on_optical_gate_and_future_acceptance",
-      "measured_at_utc": "2026-11-21T15:58:17.202764+00:00",
-      "estimated_hours": 37.13536821179547,
-      "estimated_finish_utc": "2026-11-23T05:06:24.528326+00:00",
+      "status": "training_optical_blocked_by_geometry_gate",
+      "measured_at_utc": "2026-11-21T23:22:34.236854+00:00",
+      "estimated_hours": 30.897242267554006,
+      "estimated_finish_utc": "2026-11-23T06:16:24.309017+00:00",
       "remaining_hours_by_stage": {
-        "training_geometry": 6.238125944241467,
+        "training_geometry": 0.0,
         "training_optical": 30.897242267554006
       },
-      "geometry_basis": "first 30 production geometry units with two GPU slots",
-      "geometry_per_hour": 25.00751049183394,
-      "training_geometry_remaining_runnable": 156,
-      "training_geometry_failed": 2,
+      "geometry_basis": "first 30 production geometry units with one GPU slot",
+      "geometry_per_hour": 14.700618472636714,
+      "training_geometry_remaining_runnable": 0,
+      "training_geometry_failed": 26,
       "training_optical_basis": "qualified two-slot optical wall time"
     },
     "p2_dispatch": {
       "stop_after_current": false,
       "original_dispatch_drained": true,
-      "status": "running_geometry_gpu_slots",
+      "status": "training_optical_blocked_by_geometry_gate",
       "affected_inflight": "development-003-8c92e9e93c0ff003",
       "qualification_output": "p2-review/p2-priority-qualification/proof.json",
       "retired_process_groups": [
@@ -2509,10 +2509,10 @@
         "training": {
           "partition": "training",
           "scene_slots": 4,
-          "attempted_scenes": 12,
-          "accepted_scenes": 12,
-          "seconds": 1685.0514042191207,
-          "accepted_per_hour": 25.637200082937266,
+          "attempted_scenes": 138,
+          "accepted_scenes": 144,
+          "seconds": 28342.08552921936,
+          "accepted_per_hour": 18.29082053490926,
           "cpu_affinity": {
             "dispatcher": [
               0
@@ -2543,7 +2543,7 @@
           "max_compute_threads": 19,
           "sampled_peak_cpu_equivalents": 8.497838105548775,
           "peak_combined_rss_bytes": 16692719616,
-          "label_and_gpu_lane_overlap_seconds": 1533.1034916900098,
+          "label_and_gpu_lane_overlap_seconds": 20919.236370518804,
           "gpu_idle_for_b_labels_seconds": {
             "startup": 0,
             "steady": 0
@@ -2554,13 +2554,13 @@
           },
           "combined_memory_limit_hit": false,
           "generator_version": "B-v2-31aa7f9a4325-p2",
-          "partition_dispatch_finished": false,
+          "partition_dispatch_finished": true,
           "cpu_workers": 3,
           "ready_queue_limit": 30,
           "peak_ready_queue": 30,
-          "gpu_geometry_slots": 2,
-          "path": "production-runs/1795276697192456607-training.json",
-          "sha256": "866d2221b6cd74b0288a7ee1bab869321e44d767345b20d7d842e6b84e24276e"
+          "gpu_geometry_slots": 1,
+          "path": "production-runs/1795303354226283757-training.json",
+          "sha256": "a3c6665aed427179aad900848cdbd2fa86da42d34edc772cf36cc51756c6efb1"
         }
       }
     },
@@ -3978,13 +3978,56 @@
       }
     },
     "optical_geometry_gate": {
+      "allowed": false,
       "policy": {
         "maximum_training_failures": 3,
         "category_pause_at": 2,
         "requires_drained_sealed_training_queue": true,
         "selection_pool": "admitted_training_geometry"
       },
-      "status": "waiting_for_geometry_queue"
+      "planned": 300,
+      "admitted": 274,
+      "observed_failures": 4,
+      "failed_scene_ids": [
+        "training-038-4df143ee5d0b1f26",
+        "training-130-e288403a7bbaa3e3",
+        "training-184-5114de0828d476da",
+        "training-211-7b1f5aa0762ff0ba",
+        "training-212-161aa09d97a10429",
+        "training-213-47ab8b3090098222",
+        "training-214-720d5f6c4f48322f",
+        "training-215-ec49e3a61ba78f00",
+        "training-216-d1906ca190d76554",
+        "training-217-2a71804d11613752",
+        "training-218-5fcda9bf557dfbd2",
+        "training-219-58f7b1619d1b258b",
+        "training-220-7782995c169b7c03",
+        "training-221-0e3ba7bf508b0384",
+        "training-222-27f3241488f0303d",
+        "training-223-99a611427925ffa8",
+        "training-224-0a595bfb91359bdd",
+        "training-225-e7d2bdd96db23e35",
+        "training-226-769a1469c7530fb1",
+        "training-227-2811e488cecb1a0c",
+        "training-228-14d48c8ca93b3af9",
+        "training-229-4568d0269c87a6c1",
+        "training-230-015f01652fd9e26b",
+        "training-231-50023ca891b0fa13",
+        "training-232-c027df1c79b58415",
+        "training-233-776d75d3f839af90"
+      ],
+      "failure_count_by_category": {
+        "large_foreground": 2,
+        "multiple_layers": 1,
+        "curved_self_occlusion": 1
+      },
+      "paused_categories": [
+        "large_foreground"
+      ],
+      "unaccounted_scene_ids": [],
+      "contradictory_scene_ids": [],
+      "status": "blocked",
+      "checked_at_utc": "2026-11-21T23:22:34.263508+00:00"
     },
     "geometry_parallel_trial_eta": {
       "remaining_runnable_training_geometry": 203,
@@ -5069,7 +5112,139 @@
         "training-140-05fad3fd2dd65434": "dual",
         "training-141-a8405e071e053fc3": "dual",
         "training-142-c3720b66550a6835": "dual",
-        "training-143-aa999d0bbdfd59a8": "dual"
+        "training-143-aa999d0bbdfd59a8": "dual",
+        "training-144-3582acc4193a8ada": "dual",
+        "training-145-109c724576efe4bb": "dual",
+        "training-146-8a0ee3e962c92314": "dual",
+        "training-147-f363f7035b2adc2a": "dual",
+        "training-148-0a27fb212c949688": "dual",
+        "training-149-d4ae9b7274fff9f7": "dual",
+        "training-150-d1853b117921ec82": "dual",
+        "training-151-b62eef106865d9bb": "dual",
+        "training-152-c33550335db5361a": "dual",
+        "training-153-b59df63e29decad0": "dual",
+        "training-154-fa521945b146b2e9": "dual",
+        "training-155-fd318b1ed234a438": "dual",
+        "training-156-f4219c9a2f9787ed": "dual",
+        "training-157-dc71563e23ab59db": "dual",
+        "training-158-2b318ac0ba4ddc1d": "dual",
+        "training-159-79c13c113b5b6cf7": "dual",
+        "training-160-2a6a65d85055aef4": "dual",
+        "training-161-baa513d587b0b964": "dual",
+        "training-162-305b6aacb0aafb8b": "dual",
+        "training-163-7c461271cf37639c": "dual",
+        "training-164-70111b7d143f24b4": "dual",
+        "training-165-5ec21184e8a81cb0": "dual",
+        "training-166-13e19659f947601e": "dual",
+        "training-167-86d18afe2d278c44": "dual",
+        "training-168-5c739b335ca20b5f": "dual",
+        "training-169-48dfc9836cc6b9a7": "dual",
+        "training-170-b7f646b4ee9080be": "dual",
+        "training-171-f5de6bcd6aef3f97": "dual",
+        "training-172-467ec86af81787bb": "dual",
+        "training-173-13ed6793b9ce2fb2": "dual",
+        "training-174-cfd3d2e7961ffbc1": "dual",
+        "training-175-376df84aa8838fbf": "dual",
+        "training-176-cca99b530d21a96d": "dual",
+        "training-177-fb6b7b8be5b31e0a": "dual",
+        "training-178-32c6f4f013043d8f": "dual",
+        "training-179-9f3c37e903b99e85": "dual",
+        "training-180-ff25a69cb5a48ff4": "dual",
+        "training-181-705df4a9265d0e43": "dual",
+        "training-182-53ae47041f408ba7": "dual",
+        "training-183-e5106964d0748c2c": "dual",
+        "training-185-c73f716278192a33": "dual",
+        "training-187-47dd92425293df2d": "single",
+        "training-186-c6f72a1aae658da7": "single",
+        "training-188-c630cd41d850baba": "single",
+        "training-189-ed85cd06bfb62e0d": "single",
+        "training-190-14528d47c0080dba": "single",
+        "training-191-c790fb21538c3c46": "single",
+        "training-192-83b60b679cbf2af9": "single",
+        "training-193-fa4bb51c37b4ca2e": "single",
+        "training-195-52038ddf4e2b1771": "single",
+        "training-194-df2267ed54a98001": "single",
+        "training-197-bcb19a2c538a2125": "single",
+        "training-196-84b81e0db316cc51": "single",
+        "training-199-8b9e940dc246e55f": "single",
+        "training-198-ad2e6d9fb6941be7": "single",
+        "training-201-151eee88feab99b7": "single",
+        "training-200-29adb137f7a35643": "single",
+        "training-203-5a7f8a290ec4a272": "single",
+        "training-202-c2d5d99b19e6cd94": "single",
+        "training-204-25c2304ec688b0a9": "single",
+        "training-205-7cc8c134876852e9": "single",
+        "training-207-4be5a80acae94f9b": "single",
+        "training-206-cdd99a6433afc0cd": "single",
+        "training-208-4d5d438ee95b6233": "single",
+        "training-209-3a68b2454facb007": "single",
+        "training-210-d9f88e0ac33b9e29": "single",
+        "training-234-119141e4e6668bc0": "single",
+        "training-235-7927517232fe4a87": "single",
+        "training-236-a20217d30559dd6d": "single",
+        "training-237-0c89d5948546ba20": "single",
+        "training-238-447d3b7b380c56fe": "single",
+        "training-239-8f3165465f022636": "single",
+        "training-240-34222fb69d7a0fad": "single",
+        "training-241-5a9885133911214a": "single",
+        "training-243-c2801209143d5e79": "single",
+        "training-242-10cab1bb3db31f04": "single",
+        "training-244-64819aa9c27613bd": "single",
+        "training-245-71ed1cc2d4aead4a": "single",
+        "training-246-270a821c86151a88": "single",
+        "training-247-1a031cb2bb6e6d71": "single",
+        "training-248-d66b6661564e1b23": "single",
+        "training-249-b1ac5cb99173544c": "single",
+        "training-250-6077c679c6bd5093": "single",
+        "training-251-acd4d2b5298ace76": "single",
+        "training-252-aaf5bcbbdd0d3375": "single",
+        "training-253-3d48783734d93f72": "single",
+        "training-254-cefef8209f1a2222": "single",
+        "training-255-c59e132d52e631fa": "single",
+        "training-256-12e9532931deec9a": "single",
+        "training-257-5c595d0067909632": "single",
+        "training-258-acc348be78b3913c": "single",
+        "training-259-ec2a722ed1285407": "single",
+        "training-260-2f95f8a564cc1b0a": "single",
+        "training-261-8bebe7576c8c4880": "single",
+        "training-262-8bf0f5b2a1537c31": "single",
+        "training-263-346d9384555b9351": "single",
+        "training-264-cb17b94396eb633f": "single",
+        "training-265-719abfd6674bb42e": "single",
+        "training-266-d8498b7ba756a9f5": "single",
+        "training-267-4a11c0f3d976e40c": "single",
+        "training-268-2d410329c133a02c": "single",
+        "training-269-bee7b2c6c6290f39": "single",
+        "training-270-5991936658a766d8": "single",
+        "training-271-bedfb187a3d409fa": "single",
+        "training-272-a53137ae4e756fd1": "single",
+        "training-273-ff195616a7c594f7": "single",
+        "training-274-5563349b1f9f5e7a": "single",
+        "training-276-0397824a7d3273d9": "single",
+        "training-275-4756423f133ca285": "single",
+        "training-277-9f4166a0c75952bc": "single",
+        "training-278-306eb4dcef5ca196": "single",
+        "training-279-d933eb221f6edb6d": "single",
+        "training-280-b541bc0ac7453984": "single",
+        "training-281-e3045c8e0ad5c87d": "single",
+        "training-282-cdc234d5f4776474": "single",
+        "training-283-bc54415ee32447be": "single",
+        "training-284-d4266f7fbb347912": "single",
+        "training-285-c8da041e74d8da19": "single",
+        "training-286-cc428b837d21f7dd": "single",
+        "training-287-03e7b98d412a2301": "single",
+        "training-288-fb00969802a1e79a": "single",
+        "training-289-a5a90c8df5d46768": "single",
+        "training-290-b113b2ef7e9b11d2": "single",
+        "training-291-039454dbf9a2a574": "single",
+        "training-292-4728e85bdb814c70": "single",
+        "training-293-20765e492904b78b": "single",
+        "training-294-d40ac51744e9b62f": "single",
+        "training-295-9da1163357c0adb5": "single",
+        "training-296-375be6d07f647f4d": "single",
+        "training-297-2f6d75e82a9d5b4a": "single",
+        "training-298-8e5b4bc097178dc5": "single",
+        "training-299-b56edc5e432bf88c": "single"
       }
     },
     "geometry_pair_first_30": {
@@ -6396,12 +6571,12 @@
       }
     },
     "geometry_pair_fallback": {
-      "at_utc": "2026-11-21T15:22:54.055036+00:00",
+      "at_utc": "2026-11-21T17:34:02.107180+00:00",
       "failures": {
-        "training-130-e288403a7bbaa3e3": "geometry render returned 1"
+        "training-184-5114de0828d476da": "geometry render returned 1"
       },
       "archived_attempts": {
-        "training-130-e288403a7bbaa3e3": "production-runs/1795271940548044214-cpu-workers/failed-pair-attempts/training-130-e288403a7bbaa3e3"
+        "training-184-5114de0828d476da": "production-runs/1795275012124929895-cpu-workers/failed-pair-attempts/training-184-5114de0828d476da"
       }
     },
     "geometry_pair_fallback_recovery": {
