@@ -744,7 +744,7 @@
       "formal_use": false
     },
     "formal_counts": {
-      "train_geometry": 96,
+      "train_geometry": 100,
       "development": 15,
       "test": 30,
       "train_optical": 0
@@ -1306,7 +1306,7 @@
       "reserve_bytes": 64424509440
     },
     "generator_version": "B-v2-31aa7f9a4325",
-    "manifest_sha256": "37fe831b7c3b3f2c36f8d93ab9295428e3806a8afdcfbb9f08205f5ab604a8ef",
+    "manifest_sha256": "b74a87fd17017470c5fe269a2055db4dac9b67ce06cc042aff01e970d4341713",
     "scene_plan_sha256": {
       "training": "3687df48d64d82dd2dfd620c1a1ee6b32f2305186063d0df89c2e6f99a5986d8",
       "development": "78f5ef2aa6625bba938028efb71ad1bf2da3142810d8453d6a387452728c0d85",
@@ -1389,7 +1389,7 @@
       }
     },
     "target_gap": {
-      "train_geometry": 204,
+      "train_geometry": 200,
       "development": 0,
       "test": 0,
       "train_optical": 80
@@ -2315,50 +2315,24 @@
       }
     },
     "p2_finish_eta": {
-      "status": "conditional_on_sealed_scenes_passing",
-      "measured_at_utc": "2026-11-21T09:15:04.125014+00:00",
-      "estimated_hours": 49.26383079118406,
-      "estimated_finish_utc": "2026-11-23T10:30:53.915862+00:00",
+      "status": "conditional_on_optical_gate_and_future_acceptance",
+      "measured_at_utc": "2026-11-21T14:02:20.587072+00:00",
+      "estimated_hours": 44.434087698269224,
+      "estimated_finish_utc": "2026-11-23T10:28:23.302786+00:00",
       "remaining_hours_by_stage": {
-        "tests": 0.0,
-        "development": 0.0,
-        "training_geometry": 18.366588523630053,
-        "training_optical": 30.897242267554006,
-        "optical_parallel_trial": 0.0
+        "training_geometry": 13.536845430715216,
+        "training_optical": 30.897242267554006
       },
-      "geometry_basis": "resumed p2 training geometry",
-      "geometry_per_hour": 14.700607009985761,
-      "development_basis": "resumed development",
-      "training_optical_basis": "paired trial parallel",
-      "includes_sampled_geometry_queue": true,
-      "includes_unknown_future_gpu_queue_for_optics": false,
-      "known_exclusions": {
-        "development": {
-          "path": "units/development/failures.json",
-          "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
-          "count": 0
-        },
-        "test_unseen_assets": {
-          "path": "units/test_unseen_assets/failures.json",
-          "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
-          "count": 0
-        },
-        "test_unseen_occlusions": {
-          "path": "units/test_unseen_occlusions/failures.json",
-          "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
-          "count": 0
-        },
-        "training": {
-          "path": "units/training/failures.json",
-          "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
-          "count": 0
-        }
-      }
+      "geometry_basis": "first 30 production geometry units with one GPU slot",
+      "geometry_per_hour": 14.700618472636714,
+      "training_geometry_remaining_runnable": 199,
+      "training_geometry_failed": 1,
+      "training_optical_basis": "qualified two-slot optical wall time"
     },
     "p2_dispatch": {
       "stop_after_current": false,
       "original_dispatch_drained": true,
-      "status": "running_cpu_worker_dispatch",
+      "status": "running_geometry_gpu_slots",
       "affected_inflight": "development-003-8c92e9e93c0ff003",
       "qualification_output": "p2-review/p2-priority-qualification/proof.json",
       "retired_process_groups": [
@@ -2535,10 +2509,10 @@
         "training": {
           "partition": "training",
           "scene_slots": 4,
-          "attempted_scenes": 60,
-          "accepted_scenes": 30,
-          "seconds": 7346.635409452021,
-          "accepted_per_hour": 14.700607009985761,
+          "attempted_scenes": 131,
+          "accepted_scenes": 100,
+          "seconds": 24582.03451562673,
+          "accepted_per_hour": 14.64484153136914,
           "cpu_affinity": {
             "dispatcher": [
               0
@@ -2567,9 +2541,9 @@
             ]
           },
           "max_compute_threads": 19,
-          "sampled_peak_cpu_equivalents": 5.3417116148954795,
-          "peak_combined_rss_bytes": 9022066688,
-          "label_and_gpu_lane_overlap_seconds": 9907.484456039965,
+          "sampled_peak_cpu_equivalents": 6.174400946676143,
+          "peak_combined_rss_bytes": 9642061824,
+          "label_and_gpu_lane_overlap_seconds": 25925.492823183537,
           "gpu_idle_for_b_labels_seconds": {
             "startup": 0,
             "steady": 0
@@ -2584,8 +2558,8 @@
           "cpu_workers": 3,
           "ready_queue_limit": 30,
           "peak_ready_queue": 30,
-          "path": "production-runs/1795252504123629055-training.json",
-          "sha256": "807dad50e845bb1f0e576d9b7c937c2b3b9def0e810eeee45943d771d6c78988"
+          "path": "production-runs/1795269739522182600-training.json",
+          "sha256": "ff555241e30e55bc3bfb1409745dbb213ffda6638fce4e25139107ad6ac77ddd"
         }
       }
     },
@@ -3467,8 +3441,8 @@
         "sha256": "413694bedcf6c71c9d851c5f9e73403e70d336cef61e7977fc09aef69a401640"
       },
       "ready_queue_peak": 30,
-      "peak_combined_rss_bytes": 9022066688,
-      "sampled_peak_cpu_equivalents": 5.3417116148954795,
+      "peak_combined_rss_bytes": 9642061824,
+      "sampled_peak_cpu_equivalents": 6.174400946676143,
       "training_first_30": {
         "accepted_scenes": 30,
         "sampling_seconds": 7346.629680991173,
@@ -4003,20 +3977,13 @@
       }
     },
     "optical_geometry_gate": {
-      "required": 300,
-      "admitted_at_qualification": 96,
-      "training_failures_at_qualification": [
-        {
-          "scene_id": "training-038-4df143ee5d0b1f26",
-          "category": "curved_self_occlusion",
-          "reason": "scene process returned 1: render.log",
-          "counts_toward_pause": true
-        }
-      ],
-      "status": "legacy_single_geometry_continues_optics_guard_armed",
-      "guard_pid": 199173,
-      "evidence_path": "p2-review/optical-geometry-gate.json",
-      "training_optical_two_to_three_trial": "pending_full_geometry"
+      "policy": {
+        "maximum_training_failures": 3,
+        "category_pause_at": 2,
+        "requires_drained_sealed_training_queue": true,
+        "selection_pool": "admitted_training_geometry"
+      },
+      "status": "waiting_for_geometry_queue"
     },
     "geometry_parallel_trial_eta": {
       "remaining_runnable_training_geometry": 203,
@@ -4086,6 +4053,788 @@
         "calibration_holds_global_gpu_lock": true
       },
       "registered_at": "2026-11-21T13:45:37.001776+00:00"
+    },
+    "dispatch_gpu_slots": {
+      "version": "p2-training-gpu-slots-optical-gate",
+      "parent": {
+        "version": "p2-cpu-workers-3",
+        "path": "dispatch-cpu-workers-p2.json",
+        "sha256": "413694bedcf6c71c9d851c5f9e73403e70d336cef61e7977fc09aef69a401640"
+      },
+      "generation_release_sha256": "9969624ce86f04b54cb5bf4b56a1f6a4e73e3b66c9e97485a35bf6866861b7de",
+      "generator_code_sha256": "e10a102491b98494c1f77d20f1a2249ba065a2ae65339faf72087a5a732c35c5",
+      "dispatch_code": {
+        "route3_v2data_B_dispatch.py": "c197dc4b6b0d211beffe86ab7dbc06ffb29ef1e4177a058638178845ba0566bc",
+        "route3_v2data_B_release.py": "a831593671856df5acc1202c292d59cd18488195f37e60424d839ad0b462e501",
+        "route3_v2data_B_deploy_p2.py": "3f6d25b8cd128709a5495846ea58b513c8b83b6c6cfa2d2d4d70baeecc9bf99b",
+        "route3_v2data_B_optical_pair.py": "b947177d165338b9d797e1de704e2412a4904e405912575ef3c2905527153e96",
+        "route3_v2data_B_dispatch_workers.py": "c6335e81cdae6685a97596890c098e5f89213812775469f1bfde730e1a3a08aa",
+        "route3_v2data_B_geometry_pair.py": "45fb3791a10ce24a475dc71119f08f1133a12cd3e9e55f5f6a516ec012e8793f",
+        "route3_v2data_B_geometry_slots.py": "62abf7cdafbcef60906e3ae872072273fadb75c56f8785741d8b4d8732aab55e"
+      },
+      "dispatch_code_sha256": "5eafe3077a50a054577695527bc5c0442300075dd13817a73df5d0ec46d9d307",
+      "qualification": {
+        "path": "p2-review/geometry-pair-noise-result.json",
+        "sha256": "136a6b41ea33a58932952640377a5623ca0caab76aca3d4ac52718ead66e0b78"
+      },
+      "adopted": false,
+      "optical_gate_policy": {
+        "maximum_training_failures": 3,
+        "category_pause_at": 2,
+        "requires_drained_sealed_training_queue": true,
+        "selection_pool": "admitted_training_geometry"
+      },
+      "maximum_vram_bytes": 30064771072,
+      "gpu_slot_cpus": [
+        [
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        [
+          13,
+          14,
+          15,
+          16,
+          17,
+          18
+        ]
+      ],
+      "extra_cpu_worker_cores": [
+        19,
+        20,
+        21,
+        22
+      ],
+      "extra_worker_ready_queue_threshold": 5,
+      "switched_at_utc": "2026-11-21T14:02:20.561667+00:00"
+    },
+    "geometry_pair_noise_trial": {
+      "version": "B-v2-31aa7f9a4325-p2",
+      "generator_code_sha256": "e10a102491b98494c1f77d20f1a2249ba065a2ae65339faf72087a5a732c35c5",
+      "directory": "p2-review/geometry-pair-noise-1795268737348804188",
+      "policy": {
+        "policy": {
+          "factor": 1.25,
+          "scene_ids": [
+            "training-001-7a9b2de81e9aa875",
+            "training-061-ff0a4ff42915123f"
+          ],
+          "frames": [
+            1,
+            6,
+            11,
+            16,
+            21,
+            26,
+            30,
+            35,
+            40,
+            45,
+            50,
+            55,
+            60
+          ],
+          "serial_repeats_per_scene": 2,
+          "additional_serial_order": [
+            "training-061-ff0a4ff42915123f",
+            "training-061-ff0a4ff42915123f",
+            "training-001-7a9b2de81e9aa875"
+          ],
+          "comparison": "original admission, serial 1 and serial 2, all three unordered pairs, per-scene maxima",
+          "absolute_metrics": {
+            "depth_sharp": [
+              "mae",
+              "maximum_absolute_difference"
+            ],
+            "depth_ds": [
+              "mae",
+              "maximum_absolute_difference"
+            ],
+            "depth_tri": [
+              "mae",
+              "maximum_absolute_difference"
+            ],
+            "confidence": [
+              "mae",
+              "maximum_absolute_difference"
+            ],
+            "aligned_sharp": [
+              "mae",
+              "maximum_absolute_difference"
+            ]
+          },
+          "relative_metric": "maximum over 13 frames of the pixel median of 2*abs(a-b)/(abs(a)+abs(b)) for aligned_sharp, both zero maps to zero",
+          "zero_bound": "a zero serial maximum requires an exact match for that metric",
+          "parallel_source": "reuse original geometry pair qualification outputs",
+          "calibration_holds_global_gpu_lock": true
+        },
+        "registered_at": "2026-11-21T13:45:37.001776+00:00"
+      },
+      "original_parallel_report_sha256": "03a43b05c8927a1928b7f0dfc6c529a5d3f039714e583d9e61f554e4cdc54813",
+      "serial_repeats": {
+        "p2-review/geometry-pair-noise-1795268737348804188/serial-1/training-061-ff0a4ff42915123f": {
+          "seconds": 215.3291376158595,
+          "phases": {
+            "training-061-ff0a4ff42915123f": {
+              "render": {
+                "start_monotonic": 27495854.88113276,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12,
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 203626,
+                "end_monotonic": 27495983.677871823,
+                "seconds": 128.796739064157,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27495983.680223595,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12,
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 205403,
+                "end_monotonic": 27496070.210270375,
+                "seconds": 86.53004677966237,
+                "exit_code": 0
+              }
+            }
+          },
+          "peak_combined_rss_bytes": 7278202880,
+          "peak_combined_vram_bytes": 12111052800,
+          "resource_error": null,
+          "error": null
+        },
+        "p2-review/geometry-pair-noise-1795268737348804188/serial-2/training-061-ff0a4ff42915123f": {
+          "seconds": 226.26605511829257,
+          "phases": {
+            "training-061-ff0a4ff42915123f": {
+              "render": {
+                "start_monotonic": 27496071.448735856,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12,
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 206379,
+                "end_monotonic": 27496211.782931544,
+                "seconds": 140.3341956883669,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27496211.7835769,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12,
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 208094,
+                "end_monotonic": 27496297.714790974,
+                "seconds": 85.93121407553554,
+                "exit_code": 0
+              }
+            }
+          },
+          "peak_combined_rss_bytes": 7683457024,
+          "peak_combined_vram_bytes": 12111052800,
+          "resource_error": null,
+          "error": null
+        },
+        "p2-review/geometry-pair-noise-1795268737348804188/serial-2/training-001-7a9b2de81e9aa875": {
+          "seconds": 253.61021400988102,
+          "phases": {
+            "training-001-7a9b2de81e9aa875": {
+              "render": {
+                "start_monotonic": 27496298.871016216,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12,
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 209090,
+                "end_monotonic": 27496467.318154056,
+                "seconds": 168.44713784009218,
+                "exit_code": 0
+              },
+              "input-priors": {
+                "start_monotonic": 27496467.319784496,
+                "cpu_ids": [
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12,
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18
+                ],
+                "pid": 211000,
+                "end_monotonic": 27496552.481230225,
+                "seconds": 85.16144572943449,
+                "exit_code": 0
+              }
+            }
+          },
+          "peak_combined_rss_bytes": 8032600064,
+          "peak_combined_vram_bytes": 12111052800,
+          "resource_error": null,
+          "error": null
+        }
+      },
+      "gpu_lock_seconds": 698.823646645993,
+      "gpu_lock_wait_seconds": 64.5342623218894,
+      "finished_at": "2026-11-21T13:58:20.712254+00:00",
+      "calibration_complete": true,
+      "scenes": {
+        "training-001-7a9b2de81e9aa875": {
+          "serial_pairs": {
+            "admitted__serial_1": {
+              "metrics": {
+                "depth_sharp": {
+                  "mae": 0.0002947570039675786,
+                  "maximum_absolute_difference": 0.16796875
+                },
+                "depth_ds": {
+                  "mae": 0.008929495341502704,
+                  "maximum_absolute_difference": 5.3125
+                },
+                "depth_tri": {
+                  "mae": 4.034775954026442e-06,
+                  "maximum_absolute_difference": 2.74609375
+                },
+                "confidence": {
+                  "mae": 0.0009380755349038503,
+                  "maximum_absolute_difference": 0.5712890625
+                },
+                "aligned_sharp": {
+                  "mae": 0.0007295369242246335,
+                  "maximum_absolute_difference": 0.68359375,
+                  "max_frame_median_relative_difference": 0.0
+                }
+              },
+              "aligned_sharp_median_relative_by_frame": {
+                "f001": 0.0,
+                "f006": 0.0,
+                "f011": 0.0,
+                "f016": 0.0,
+                "f021": 0.0,
+                "f026": 0.0,
+                "f030": 0.0,
+                "f035": 0.0,
+                "f040": 0.0,
+                "f045": 0.0,
+                "f050": 0.0,
+                "f055": 0.0,
+                "f060": 0.0
+              }
+            },
+            "admitted__serial_2": {
+              "metrics": {
+                "depth_sharp": {
+                  "mae": 0.0002999171041525327,
+                  "maximum_absolute_difference": 0.1533203125
+                },
+                "depth_ds": {
+                  "mae": 0.00840583873482851,
+                  "maximum_absolute_difference": 5.94140625
+                },
+                "depth_tri": {
+                  "mae": 3.3762592535752515e-06,
+                  "maximum_absolute_difference": 2.8046875
+                },
+                "confidence": {
+                  "mae": 0.0008881487167225435,
+                  "maximum_absolute_difference": 0.5
+                },
+                "aligned_sharp": {
+                  "mae": 0.0007442372063031563,
+                  "maximum_absolute_difference": 0.552734375,
+                  "max_frame_median_relative_difference": 0.0004971414455212653
+                }
+              },
+              "aligned_sharp_median_relative_by_frame": {
+                "f001": 0.0,
+                "f006": 0.0,
+                "f011": 0.0,
+                "f016": 0.0,
+                "f021": 0.0,
+                "f026": 0.0,
+                "f030": 0.0,
+                "f035": 0.0004903162480331957,
+                "f040": 0.0,
+                "f045": 0.0,
+                "f050": 0.0,
+                "f055": 0.0,
+                "f060": 0.0004971414455212653
+              }
+            },
+            "serial_1__serial_2": {
+              "metrics": {
+                "depth_sharp": {
+                  "mae": 0.0003079531284478995,
+                  "maximum_absolute_difference": 0.1826171875
+                },
+                "depth_ds": {
+                  "mae": 0.009588438157851879,
+                  "maximum_absolute_difference": 5.94140625
+                },
+                "depth_tri": {
+                  "mae": 5.7753462057847246e-06,
+                  "maximum_absolute_difference": 2.80859375
+                },
+                "confidence": {
+                  "mae": 0.0009632842997327829,
+                  "maximum_absolute_difference": 0.5
+                },
+                "aligned_sharp": {
+                  "mae": 0.0007344272274237413,
+                  "maximum_absolute_difference": 0.734375,
+                  "max_frame_median_relative_difference": 0.000496154825668782
+                }
+              },
+              "aligned_sharp_median_relative_by_frame": {
+                "f001": 0.0,
+                "f006": 0.0,
+                "f011": 0.0,
+                "f016": 0.0,
+                "f021": 0.0,
+                "f026": 0.0,
+                "f030": 0.0,
+                "f035": 0.0,
+                "f040": 0.0,
+                "f045": 0.0,
+                "f050": 0.0,
+                "f055": 0.0,
+                "f060": 0.000496154825668782
+              }
+            }
+          },
+          "serial_maxima": {
+            "depth_sharp": {
+              "mae": 0.0003079531284478995,
+              "maximum_absolute_difference": 0.1826171875
+            },
+            "depth_ds": {
+              "mae": 0.009588438157851879,
+              "maximum_absolute_difference": 5.94140625
+            },
+            "depth_tri": {
+              "mae": 5.7753462057847246e-06,
+              "maximum_absolute_difference": 2.80859375
+            },
+            "confidence": {
+              "mae": 0.0009632842997327829,
+              "maximum_absolute_difference": 0.5712890625
+            },
+            "aligned_sharp": {
+              "mae": 0.0007442372063031563,
+              "maximum_absolute_difference": 0.734375,
+              "max_frame_median_relative_difference": 0.0004971414455212653
+            }
+          },
+          "parallel_vs_admitted": {
+            "metrics": {
+              "depth_sharp": {
+                "mae": 0.00029305297021682444,
+                "maximum_absolute_difference": 0.158203125
+              },
+              "depth_ds": {
+                "mae": 0.008563980746727724,
+                "maximum_absolute_difference": 5.94921875
+              },
+              "depth_tri": {
+                "mae": 8.636942276587853e-07,
+                "maximum_absolute_difference": 2.73046875
+              },
+              "confidence": {
+                "mae": 0.0009152384546513741,
+                "maximum_absolute_difference": 0.5
+              },
+              "aligned_sharp": {
+                "mae": 0.0007586189760611608,
+                "maximum_absolute_difference": 0.515625,
+                "max_frame_median_relative_difference": 0.0005111168138682842
+              }
+            },
+            "aligned_sharp_median_relative_by_frame": {
+              "f001": 0.0,
+              "f006": 0.0,
+              "f011": 0.0,
+              "f016": 0.0,
+              "f021": 0.0,
+              "f026": 0.0,
+              "f030": 0.0,
+              "f035": 0.0,
+              "f040": 0.0,
+              "f045": 0.0,
+              "f050": 0.0,
+              "f055": 0.0,
+              "f060": 0.0005111168138682842
+            }
+          },
+          "metric_passed": {
+            "depth_sharp": {
+              "mae": true,
+              "maximum_absolute_difference": true
+            },
+            "depth_ds": {
+              "mae": true,
+              "maximum_absolute_difference": true
+            },
+            "depth_tri": {
+              "mae": true,
+              "maximum_absolute_difference": true
+            },
+            "confidence": {
+              "mae": true,
+              "maximum_absolute_difference": true
+            },
+            "aligned_sharp": {
+              "mae": true,
+              "maximum_absolute_difference": true,
+              "max_frame_median_relative_difference": true
+            }
+          },
+          "passed": true
+        },
+        "training-061-ff0a4ff42915123f": {
+          "serial_pairs": {
+            "admitted__serial_1": {
+              "metrics": {
+                "depth_sharp": {
+                  "mae": 0.00018412677141336293,
+                  "maximum_absolute_difference": 0.123046875
+                },
+                "depth_ds": {
+                  "mae": 0.012753174282037295,
+                  "maximum_absolute_difference": 11.765625
+                },
+                "depth_tri": {
+                  "mae": 0.0005415422985186944,
+                  "maximum_absolute_difference": 2.43359375
+                },
+                "confidence": {
+                  "mae": 0.0012863917180742973,
+                  "maximum_absolute_difference": 0.5
+                },
+                "aligned_sharp": {
+                  "mae": 0.003919394973378915,
+                  "maximum_absolute_difference": 0.13671875,
+                  "max_frame_median_relative_difference": 0.0050265290774405
+                }
+              },
+              "aligned_sharp_median_relative_by_frame": {
+                "f001": 0.0,
+                "f006": 0.0005067139863967896,
+                "f011": 0.0,
+                "f016": 0.0005585032049566507,
+                "f021": 0.0015201418427750468,
+                "f026": 0.0005839415825903416,
+                "f030": 0.0050265290774405,
+                "f035": 0.0,
+                "f040": 0.0,
+                "f045": 0.0,
+                "f050": 0.0006889424985274673,
+                "f055": 0.0010911074932664633,
+                "f060": 0.0
+              }
+            },
+            "admitted__serial_2": {
+              "metrics": {
+                "depth_sharp": {
+                  "mae": 0.00018879040502584897,
+                  "maximum_absolute_difference": 0.107421875
+                },
+                "depth_ds": {
+                  "mae": 0.013765277484288583,
+                  "maximum_absolute_difference": 8.703125
+                },
+                "depth_tri": {
+                  "mae": 0.0004757215770391318,
+                  "maximum_absolute_difference": 2.43359375
+                },
+                "confidence": {
+                  "mae": 0.0013077977017905468,
+                  "maximum_absolute_difference": 0.5
+                },
+                "aligned_sharp": {
+                  "mae": 0.00560597932109466,
+                  "maximum_absolute_difference": 0.291015625,
+                  "max_frame_median_relative_difference": 0.008396306075155735
+                }
+              },
+              "aligned_sharp_median_relative_by_frame": {
+                "f001": 0.0,
+                "f006": 0.000993542023934424,
+                "f011": 0.0,
+                "f016": 0.0005585032049566507,
+                "f021": 0.0005239716847427189,
+                "f026": 0.001166180707514286,
+                "f030": 0.008396306075155735,
+                "f035": 0.0,
+                "f040": 0.0,
+                "f045": 0.0,
+                "f050": 0.001595320412889123,
+                "f055": 0.0005591277731582522,
+                "f060": 0.0
+              }
+            },
+            "serial_1__serial_2": {
+              "metrics": {
+                "depth_sharp": {
+                  "mae": 0.000189394188614992,
+                  "maximum_absolute_difference": 0.12109375
+                },
+                "depth_ds": {
+                  "mae": 0.01153648730653983,
+                  "maximum_absolute_difference": 11.6640625
+                },
+                "depth_tri": {
+                  "mae": 0.0004662894285642184,
+                  "maximum_absolute_difference": 2.39453125
+                },
+                "confidence": {
+                  "mae": 0.001187938659523542,
+                  "maximum_absolute_difference": 0.5
+                },
+                "aligned_sharp": {
+                  "mae": 0.003824367975959411,
+                  "maximum_absolute_difference": 0.22265625,
+                  "max_frame_median_relative_difference": 0.003370786551386118
+                }
+              },
+              "aligned_sharp_median_relative_by_frame": {
+                "f001": 0.0,
+                "f006": 0.0010471204295754433,
+                "f011": 0.0,
+                "f016": 0.0,
+                "f021": 0.0014659174485132098,
+                "f026": 0.0011730205733329058,
+                "f030": 0.003370786551386118,
+                "f035": 0.0,
+                "f040": 0.0,
+                "f045": 0.0,
+                "f050": 0.0005657708388753235,
+                "f055": 0.0010787486098706722,
+                "f060": 0.0
+              }
+            }
+          },
+          "serial_maxima": {
+            "depth_sharp": {
+              "mae": 0.000189394188614992,
+              "maximum_absolute_difference": 0.123046875
+            },
+            "depth_ds": {
+              "mae": 0.013765277484288583,
+              "maximum_absolute_difference": 11.765625
+            },
+            "depth_tri": {
+              "mae": 0.0005415422985186944,
+              "maximum_absolute_difference": 2.43359375
+            },
+            "confidence": {
+              "mae": 0.0013077977017905468,
+              "maximum_absolute_difference": 0.5
+            },
+            "aligned_sharp": {
+              "mae": 0.00560597932109466,
+              "maximum_absolute_difference": 0.291015625,
+              "max_frame_median_relative_difference": 0.008396306075155735
+            }
+          },
+          "parallel_vs_admitted": {
+            "metrics": {
+              "depth_sharp": {
+                "mae": 0.0001886442590218324,
+                "maximum_absolute_difference": 0.14453125
+              },
+              "depth_ds": {
+                "mae": 0.011296065667500863,
+                "maximum_absolute_difference": 11.765625
+              },
+              "depth_tri": {
+                "mae": 0.0006812409712718084,
+                "maximum_absolute_difference": 2.435546875
+              },
+              "confidence": {
+                "mae": 0.0012105978332842009,
+                "maximum_absolute_difference": 0.5
+              },
+              "aligned_sharp": {
+                "mae": 0.0058600280720454,
+                "maximum_absolute_difference": 0.3125,
+                "max_frame_median_relative_difference": 0.007997538894414902
+              }
+            },
+            "aligned_sharp_median_relative_by_frame": {
+              "f001": 0.0,
+              "f006": 0.0011007154826074839,
+              "f011": 0.0,
+              "f016": 0.0013240650296211243,
+              "f021": 0.001001502270810306,
+              "f026": 0.0017128175823017955,
+              "f030": 0.007997538894414902,
+              "f035": 0.0,
+              "f040": 0.0,
+              "f045": 0.0,
+              "f050": 0.0010946907568722963,
+              "f055": 0.0022333890665322542,
+              "f060": 0.0
+            }
+          },
+          "metric_passed": {
+            "depth_sharp": {
+              "mae": true,
+              "maximum_absolute_difference": true
+            },
+            "depth_ds": {
+              "mae": true,
+              "maximum_absolute_difference": true
+            },
+            "depth_tri": {
+              "mae": false,
+              "maximum_absolute_difference": true
+            },
+            "confidence": {
+              "mae": true,
+              "maximum_absolute_difference": true
+            },
+            "aligned_sharp": {
+              "mae": true,
+              "maximum_absolute_difference": true,
+              "max_frame_median_relative_difference": true
+            }
+          },
+          "passed": false
+        }
+      },
+      "adopted": false,
+      "original_speed_passed": true,
+      "original_resources_passed": true,
+      "receipt": {
+        "path": "p2-review/geometry-pair-noise-result.json",
+        "sha256": "136a6b41ea33a58932952640377a5623ca0caab76aca3d4ac52718ead66e0b78"
+      }
+    },
+    "depth_prior_repeatability": {
+      "statement": "B 输入深度先验的串行复跑结果存在数值波动。",
+      "per_scene_serial_maxima": {
+        "training-001-7a9b2de81e9aa875": {
+          "depth_sharp": {
+            "mae": 0.0003079531284478995,
+            "maximum_absolute_difference": 0.1826171875
+          },
+          "depth_ds": {
+            "mae": 0.009588438157851879,
+            "maximum_absolute_difference": 5.94140625
+          },
+          "depth_tri": {
+            "mae": 5.7753462057847246e-06,
+            "maximum_absolute_difference": 2.80859375
+          },
+          "confidence": {
+            "mae": 0.0009632842997327829,
+            "maximum_absolute_difference": 0.5712890625
+          },
+          "aligned_sharp": {
+            "mae": 0.0007442372063031563,
+            "maximum_absolute_difference": 0.734375,
+            "max_frame_median_relative_difference": 0.0004971414455212653
+          }
+        },
+        "training-061-ff0a4ff42915123f": {
+          "depth_sharp": {
+            "mae": 0.000189394188614992,
+            "maximum_absolute_difference": 0.123046875
+          },
+          "depth_ds": {
+            "mae": 0.013765277484288583,
+            "maximum_absolute_difference": 11.765625
+          },
+          "depth_tri": {
+            "mae": 0.0005415422985186944,
+            "maximum_absolute_difference": 2.43359375
+          },
+          "confidence": {
+            "mae": 0.0013077977017905468,
+            "maximum_absolute_difference": 0.5
+          },
+          "aligned_sharp": {
+            "mae": 0.00560597932109466,
+            "maximum_absolute_difference": 0.291015625,
+            "max_frame_median_relative_difference": 0.008396306075155735
+          }
+        }
+      }
+    },
+    "target_gap_details": {
+      "train_geometry": {
+        "accepted": [
+          {
+            "scene_id": "training-038-4df143ee5d0b1f26",
+            "label": "已接受的缺口：training-038",
+            "failed_checks": "13 帧同种子分层互补误差为 0.20–0.26，上限 0.002",
+            "coverage_passed": true,
+            "complement_error_other_completed_units_at_registration": 0.0
+          }
+        ]
+      }
     }
   }
 }
