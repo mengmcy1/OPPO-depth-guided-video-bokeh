@@ -744,7 +744,7 @@
       "formal_use": false
     },
     "formal_counts": {
-      "train_geometry": 30,
+      "train_geometry": 96,
       "development": 15,
       "test": 30,
       "train_optical": 0
@@ -1306,7 +1306,7 @@
       "reserve_bytes": 64424509440
     },
     "generator_version": "B-v2-31aa7f9a4325",
-    "manifest_sha256": "51cc776509a193df8932260975baf94c22db0dd2713d8b29a4c8f9c08df3e3dc",
+    "manifest_sha256": "37fe831b7c3b3f2c36f8d93ab9295428e3806a8afdcfbb9f08205f5ab604a8ef",
     "scene_plan_sha256": {
       "training": "3687df48d64d82dd2dfd620c1a1ee6b32f2305186063d0df89c2e6f99a5986d8",
       "development": "78f5ef2aa6625bba938028efb71ad1bf2da3142810d8453d6a387452728c0d85",
@@ -1389,7 +1389,7 @@
       }
     },
     "target_gap": {
-      "train_geometry": 270,
+      "train_geometry": 204,
       "development": 0,
       "test": 0,
       "train_optical": 80
@@ -1413,8 +1413,8 @@
       },
       "training": {
         "path": "units/training/failures.json",
-        "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
-        "count": 0
+        "sha256": "8b3e81c8480bc4c8f90c69013a472a134f0b30aa37726a58dd14a6b486194709",
+        "count": 1
       }
     },
     "optical_difficulty_counts": {},
@@ -3717,6 +3717,317 @@
           "maximum_absolute_difference": 0.0009765625
         }
       }
+    },
+    "geometry_parallel_trial": {
+      "scenes": {
+        "training-001-7a9b2de81e9aa875": {
+          "category": "curved_self_occlusion",
+          "manifest_sha256": "18ec8d60becc218e9af4b47b7e4c16f9b93c6a756a3e7db367bb887ea6c823bd",
+          "phases": {
+            "render": {
+              "seconds": 166.029181896,
+              "measurement": "units/training/training-001-7a9b2de81e9aa875/render.resources.json",
+              "marker": "production-runs/1795237170831460380-cpu-workers/training-001-7a9b2de81e9aa875-render.pid"
+            },
+            "input-priors": {
+              "seconds": 86.156656077,
+              "measurement": "units/training/training-001-7a9b2de81e9aa875/input-priors.resources.json",
+              "marker": "production-runs/1795237170831460380-cpu-workers/training-001-7a9b2de81e9aa875-input-priors.pid"
+            }
+          }
+        },
+        "training-061-ff0a4ff42915123f": {
+          "category": "thin_structure",
+          "manifest_sha256": "27ba173f8bc91c4f41385412b7fee263309e8ded0fe6e451d2e121b0b6e1f0b0",
+          "phases": {
+            "render": {
+              "seconds": 132.46832341,
+              "measurement": "units/training/training-061-ff0a4ff42915123f/render.resources.json",
+              "marker": "production-runs/1795237170831460380-cpu-workers/training-061-ff0a4ff42915123f-render.pid"
+            },
+            "input-priors": {
+              "seconds": 85.687293083,
+              "measurement": "units/training/training-061-ff0a4ff42915123f/input-priors.resources.json",
+              "marker": "production-runs/1795237170831460380-cpu-workers/training-061-ff0a4ff42915123f-input-priors.pid"
+            }
+          }
+        }
+      },
+      "serial_calibration": "training-001-7a9b2de81e9aa875",
+      "directory": "p2-review/geometry-pair-1795267561429864627",
+      "generator_version": "B-v2-31aa7f9a4325-p2",
+      "generator_code_sha256": "e10a102491b98494c1f77d20f1a2249ba065a2ae65339faf72087a5a732c35c5",
+      "limits": {
+        "speed_ratio": 0.85,
+        "rss_bytes": 75161927680,
+        "vram_bytes": 30064771072,
+        "observation_half_ulp": 1
+      },
+      "parallel": {
+        "seconds": 281.15563850849867,
+        "phases": {
+          "training-001-7a9b2de81e9aa875": {
+            "render": {
+              "start_monotonic": 27494672.843097895,
+              "cpu_ids": [
+                7,
+                8,
+                9,
+                10,
+                11,
+                12
+              ],
+              "pid": 189896,
+              "end_monotonic": 27494864.000168134,
+              "seconds": 191.1570702381432,
+              "exit_code": 0
+            },
+            "input-priors": {
+              "start_monotonic": 27494864.001435973,
+              "cpu_ids": [
+                7,
+                8,
+                9,
+                10,
+                11,
+                12
+              ],
+              "pid": 193579,
+              "end_monotonic": 27494953.998736404,
+              "seconds": 89.99730043113232,
+              "exit_code": 0
+            }
+          },
+          "training-061-ff0a4ff42915123f": {
+            "render": {
+              "start_monotonic": 27494672.843946286,
+              "cpu_ids": [
+                13,
+                14,
+                15,
+                16,
+                17,
+                18
+              ],
+              "pid": 189900,
+              "end_monotonic": 27494826.45132836,
+              "seconds": 153.60738207399845,
+              "exit_code": 0
+            },
+            "input-priors": {
+              "start_monotonic": 27494826.4526266,
+              "cpu_ids": [
+                13,
+                14,
+                15,
+                16,
+                17,
+                18
+              ],
+              "pid": 192826,
+              "end_monotonic": 27494917.73305441,
+              "seconds": 91.28042780980468,
+              "exit_code": 0
+            }
+          }
+        },
+        "peak_combined_rss_bytes": 11122855936,
+        "peak_combined_vram_bytes": 24222105600,
+        "resource_error": null,
+        "gpu_queue_seconds": 58.4114402346313,
+        "failures": {}
+      },
+      "serial": {
+        "seconds": 245.83797585219145,
+        "phases": {
+          "training-001-7a9b2de81e9aa875": {
+            "render": {
+              "start_monotonic": 27495083.30217464,
+              "cpu_ids": [
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18
+              ],
+              "pid": 195951,
+              "end_monotonic": 27495243.814550497,
+              "seconds": 160.51237585768104,
+              "exit_code": 0
+            },
+            "input-priors": {
+              "start_monotonic": 27495243.81655931,
+              "cpu_ids": [
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18
+              ],
+              "pid": 197843,
+              "end_monotonic": 27495329.14015049,
+              "seconds": 85.32359118014574,
+              "exit_code": 0
+            }
+          }
+        },
+        "peak_combined_rss_bytes": 7979298816,
+        "peak_combined_vram_bytes": 12111052800,
+        "resource_error": null,
+        "gpu_queue_seconds": 127.942944817245,
+        "failures": {}
+      },
+      "original_gpu_phase_sum_seconds": 470.34145446599996,
+      "parallel_to_original_ratio": 0.5977692075381862,
+      "differences": {
+        "parallel_against_admitted": {
+          "training-001-7a9b2de81e9aa875": {
+            "observations": {
+              "samples": 47185920,
+              "changed": 9099,
+              "mae": 6.64408920177569e-08,
+              "maximum_absolute_difference": 0.00048828125,
+              "max_half_ulp": 1
+            },
+            "priors": {
+              "depth": {
+                "samples": 10223616,
+                "changed": 1096846,
+                "mae": 0.0029526324703907357,
+                "maximum_absolute_difference": 5.94921875
+              },
+              "confidence": {
+                "samples": 10223616,
+                "changed": 1336069,
+                "mae": 0.0009152384546513741,
+                "maximum_absolute_difference": 0.5
+              },
+              "aligned_sharp": {
+                "samples": 3407872,
+                "changed": 1005864,
+                "mae": 0.0007586189760611608,
+                "maximum_absolute_difference": 0.515625
+              }
+            }
+          },
+          "training-061-ff0a4ff42915123f": {
+            "observations": {
+              "samples": 47185920,
+              "changed": 8255,
+              "mae": 4.547311820917659e-08,
+              "maximum_absolute_difference": 0.00048828125,
+              "max_half_ulp": 1
+            },
+            "priors": {
+              "depth": {
+                "samples": 10223616,
+                "changed": 1141299,
+                "mae": 0.004055316965931501,
+                "maximum_absolute_difference": 11.765625
+              },
+              "confidence": {
+                "samples": 10223616,
+                "changed": 1582371,
+                "mae": 0.0012105978332842009,
+                "maximum_absolute_difference": 0.5
+              },
+              "aligned_sharp": {
+                "samples": 3407872,
+                "changed": 2020847,
+                "mae": 0.0058600280720454,
+                "maximum_absolute_difference": 0.3125
+              }
+            }
+          }
+        },
+        "serial_against_admitted": {
+          "observations": {
+            "samples": 47185920,
+            "changed": 9006,
+            "mae": 6.605227503718601e-08,
+            "maximum_absolute_difference": 0.00048828125,
+            "max_half_ulp": 1
+          },
+          "priors": {
+            "depth": {
+              "samples": 10223616,
+              "changed": 1104761,
+              "mae": 0.003076095707141436,
+              "maximum_absolute_difference": 5.3125
+            },
+            "confidence": {
+              "samples": 10223616,
+              "changed": 1342908,
+              "mae": 0.0009380755349038503,
+              "maximum_absolute_difference": 0.5712890625
+            },
+            "aligned_sharp": {
+              "samples": 3407872,
+              "changed": 943778,
+              "mae": 0.0007295369242246335,
+              "maximum_absolute_difference": 0.68359375
+            }
+          }
+        }
+      },
+      "equivalence_passed": false,
+      "speed_passed": true,
+      "resources_passed": true,
+      "adopted": false,
+      "recorded_at": "2026-11-21T13:38:05.730316+00:00",
+      "receipt": {
+        "path": "p2-review/geometry-pair-result.json",
+        "sha256": "03a43b05c8927a1928b7f0dfc6c529a5d3f039714e583d9e61f554e4cdc54813"
+      },
+      "dispatch_change": {
+        "switched": false,
+        "status": "kept_existing_single_slot",
+        "reason": "parallel geometry priors exceeded the serial rerun comparison bounds",
+        "generator_code_sha256": "e10a102491b98494c1f77d20f1a2249ba065a2ae65339faf72087a5a732c35c5",
+        "new_dispatch_sha256": null,
+        "first_30_dual_units": null
+      }
+    },
+    "optical_geometry_gate": {
+      "required": 300,
+      "admitted_at_qualification": 96,
+      "training_failures_at_qualification": [
+        {
+          "scene_id": "training-038-4df143ee5d0b1f26",
+          "category": "curved_self_occlusion",
+          "reason": "scene process returned 1: render.log",
+          "counts_toward_pause": true
+        }
+      ],
+      "status": "legacy_single_geometry_continues_optics_guard_armed",
+      "guard_pid": 199173,
+      "evidence_path": "p2-review/optical-geometry-gate.json",
+      "training_optical_two_to_three_trial": "pending_full_geometry"
+    },
+    "geometry_parallel_trial_eta": {
+      "remaining_runnable_training_geometry": 203,
+      "known_geometry_gap": 1,
+      "geometry_accepted_per_hour": 14.700618472636714,
+      "geometry_hours": 13.808942826307481,
+      "geometry_queue_estimated_finish_utc": "2026-11-22T03:27:40.061629+00:00",
+      "optical_double_slot_hours_if_full_geometry": 30.897242267554006,
+      "conditional_total_hours_excluding_resolution_and_optical_probe": 44.706185093861485,
+      "projected_full_finish_utc": null,
+      "measured_at_utc": "2026-11-21T13:39:07.867454+00:00"
     }
   }
 }
