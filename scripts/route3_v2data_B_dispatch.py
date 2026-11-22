@@ -18,7 +18,7 @@ from route3_v2data_B_batch import (
     produce_optical, reserve, run, sha256, write_json,
 )
 from route3_v2data_B_plan import load
-from route3_v2data_B_release import PLAN_DIR, install_optical_patch, load_production_plan
+from route3_v2data_B_release import GPU_DISPATCH_VERSION, PLAN_DIR, install_optical_patch, load_production_plan
 
 
 PARTITIONS = ("test_unseen_assets","test_unseen_occlusions","development","training")
@@ -209,7 +209,6 @@ def run_partition(path, estimate, limit, allocation):
     units.mkdir(parents=True,exist_ok=True)
     failure_path = units/"failures.json"
     failures = load(failure_path) or []
-    blocked = Counter(row["category"] for row in failures if row.get("counts_toward_pause",True))
     excluded = {row["scene_id"] for row in failures}
     pending = deque(spec for spec in plan["scenes"] if spec["scene_id"] not in excluded
                     and not (units/spec["scene_id"]/"manifest.json").is_file())
@@ -233,8 +232,6 @@ def run_partition(path, estimate, limit, allocation):
     def failure(spec, reason, *, count=True):
         failures.append(dict(scene_id=spec["scene_id"],category=spec["category"],
                              reason=reason,counts_toward_pause=count))
-        if count:
-            blocked[spec["category"]] += 1
         write_json(failure_path,failures)
 
     with ThreadPoolExecutor(max_workers=2) as jobs:
@@ -242,8 +239,8 @@ def run_partition(path, estimate, limit, allocation):
         while pending or prepared or cpu or gpu:
             if gpu is None and prepared:
                 spec,unit = prepared.popleft()
-                if abort.is_set() or blocked[spec["category"]]>=2:
-                    failure(spec,"B resource limit or two failed scenes in category",count=False)
+                if abort.is_set():
+                    failure(spec,"B resource limit",count=False)
                 else:
                     gpu=(jobs.submit(finish_unit,unit,spec,plan["effective_generator_version"],execute=gpu_exec),spec,unit)
             if (cpu is None and len(prepared)+int(gpu is not None)<2 and pending
@@ -251,9 +248,6 @@ def run_partition(path, estimate, limit, allocation):
                     and disk_failure is None and (limit is None or attempted<limit)):
                 spec=pending.popleft()
                 unit=units/spec["scene_id"]
-                if blocked[spec["category"]]>=2:
-                    failure(spec,"two failed scenes in category",count=False)
-                    continue
                 attempted += 1
                 if unit.exists():
                     failure(spec,"prior incomplete attempt was preserved")
@@ -315,6 +309,12 @@ def run_partition(path, estimate, limit, allocation):
 
 
 def dispatch(plans, estimate, max_new_scenes=None, *, optics=False, resume_p2=False):
+    active = load(FORMAL_DATA/"manifest.json").get("dispatch_gpu_slots", {})
+    if active.get("version")==GPU_DISPATCH_VERSION and max_new_scenes is None and (
+            optics or any(path.stem=="training" for path in plans)):
+        from route3_v2data_B_dispatch_workers import run
+        run(estimate,gpu_dispatch=True)
+        return []
     with production_lock():
         if resume_p2:
             for path in plans:

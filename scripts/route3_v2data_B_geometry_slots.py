@@ -8,6 +8,7 @@ import time
 from route3_v2data_B_batch import FORMAL_DATA, RECORD, sha256, write_json
 from route3_v2data_B_geometry_pair import GPU_CAP, PAIR_CPUS, REVIEW, TRIAL, stage_geometry
 from route3_v2data_B_plan import load
+from route3_v2data_B_production_policy import POLICY, ProductionStop
 from route3_v2data_B_release import (
     GEOMETRY_REQUEUE, GPU_DISPATCH_RECEIPT, GPU_DISPATCH_VERSION, PLANNER_OVERRIDE,
     approved_geometry_override, code_hash, gpu_dispatch_code, previous_gpu_dispatch, validate_p2,
@@ -17,10 +18,6 @@ from route3_v2data_B_release import (
 PAIR_HANDOFF = "training GPU slots and optical gate dispatch takeover"
 NOISE_RESULT = REVIEW/"geometry-pair-noise-result.json"
 POSTCHECK_PREREGISTRATION = REVIEW/"geometry-gpu-slot-postcheck-preregistration.json"
-OPTICAL_GATE_POLICY = dict(
-    maximum_training_failures=10, minimum_category_coverage_percent=90,
-    requires_drained_sealed_training_queue=True, selection_pool="admitted_training_geometry",
-)
 SURVEY_UNITS = 30
 EXTRA_CPU = (19, 20, 21, 22)
 QUEUE_MIN = 5
@@ -65,7 +62,7 @@ def install_gpu_dispatch(plan, state):
                  qualification=qualification, qualification_adopted=result["adopted"], planner_override=approval_ref,
                  previous_gpu_dispatch=previous_ref, fallback_recovery=previous.get("fallback_recovery"),
                  geometry_requeue=requeue_ref, adopted=True,
-                 optical_gate_policy=OPTICAL_GATE_POLICY, maximum_vram_bytes=GPU_CAP,
+                 production_policy=POLICY, maximum_vram_bytes=GPU_CAP,
                  gpu_slot_cpus=PAIR_CPUS,
                  extra_cpu_worker_cores=EXTRA_CPU, extra_worker_ready_queue_threshold=QUEUE_MIN,
                  switched_at_utc=datetime.now(timezone.utc).isoformat())
@@ -76,7 +73,8 @@ def install_gpu_dispatch(plan, state):
     record["v2"].update(
         dispatch_gpu_slots=patch, geometry_pair_noise_policy=result["policy"],
         geometry_pair_noise_trial=dict(result, receipt=patch["qualification"]), manifest_sha256=manifest,
-        optical_geometry_gate=dict(policy=OPTICAL_GATE_POLICY,status="waiting_for_geometry_queue"),
+        optical_geometry_gate=dict(status="waiting_for_geometry_queue"),
+        production_policy=POLICY,
         depth_prior_repeatability=dict(
             statement="B 输入深度先验的串行复跑结果存在数值波动。",
             per_scene_serial_maxima={scene:rows["serial_maxima"] for scene,rows in result.get("scenes", {}).items()},
@@ -86,6 +84,8 @@ def install_gpu_dispatch(plan, state):
         record["v2"]["geometry_pair_planner_override"] = dict(approval,receipt=approval_ref)
     postcheck = load(POSTCHECK_PREREGISTRATION)
     if postcheck:
+        postcheck["production_effect"] = POLICY["geometry_slot_postcheck_zh"]
+        postcheck["result_handling"]["any_failure"] = "记录失败场景及超限值，不阻塞生产，不自动重算。"
         record["v2"]["geometry_gpu_slot_postcheck"] = postcheck
     provenance = record["v2"].setdefault("geometry_gpu_slot_provenance", dict(
         backfilled_at_utc=patch["switched_at_utc"], per_scene={},
@@ -137,13 +137,6 @@ def record_geometry_requeue_outcome(units, failures):
     write_json(RECORD,record)
 
 
-def rejected_geometry_radiance(unit, error):
-    if error!="geometry render returned 1":
-        return False
-    audit = load(unit/"labels/radiance-audit.json")
-    return bool(audit and any(not row["passed"] for row in audit["audits"]))
-
-
 def record_geometry_slots(units):
     record = load(RECORD)
     by_scene = record["v2"]["geometry_gpu_slot_provenance"]["per_scene"]
@@ -153,30 +146,19 @@ def record_geometry_slots(units):
     write_json(RECORD,record)
 
 
-def optical_gate(specs, units, failures):
+def geometry_outcomes(specs, units, failures):
     planned = {spec["scene_id"]:spec["category"] for spec in specs}
     admitted = {unit["scene_id"] for unit in units if unit["partition"]=="training"}
     counted = {row["scene_id"] for row in failures if row.get("counts_toward_pause", True)}
-    planned_by_category = Counter(planned.values())
-    admitted_by_category = Counter(planned[scene] for scene in admitted & planned.keys())
-    failed_by_category = Counter(planned[scene] for scene in counted & planned.keys())
-    coverage = {}
-    for category,total in sorted(planned_by_category.items()):
-        needed = (total*OPTICAL_GATE_POLICY["minimum_category_coverage_percent"]+99)//100
-        count = admitted_by_category[category]
-        coverage[category] = dict(planned=total,admitted=count,minimum=needed,passed=count>=needed)
-    unaccounted = sorted(planned.keys()-admitted-counted)
-    contradictory = sorted((admitted & counted) | ((admitted | counted)-planned.keys()))
-    checks = dict(
-        all_planned_scenes_resolved=not unaccounted and not contradictory,
-        category_coverage_met=all(row["passed"] for row in coverage.values()),
-        failure_limit_met=len(counted)<=OPTICAL_GATE_POLICY["maximum_training_failures"],
-    )
+    plan_counts = Counter(planned.values())
+    admitted_counts = Counter(planned[scene] for scene in admitted & planned.keys())
+    failed_counts = Counter(planned[scene] for scene in counted & planned.keys())
+    if planned.keys()!=admitted|counted or admitted&counted:
+        raise ProductionStop("admitted_data_corruption","geometry outcomes are missing or contradictory after drain")
     return dict(
-        allowed=all(checks.values()), checks=checks, blocked_by=[key for key,passed in checks.items() if not passed],
-        policy=OPTICAL_GATE_POLICY, planned=len(planned), admitted=len(admitted), observed_failures=len(counted),
-        failed_scene_ids=sorted(counted), failure_count_by_category=dict(failed_by_category),
-        category_coverage=coverage, unaccounted_scene_ids=unaccounted, contradictory_scene_ids=contradictory,
+        status="drained", planned=len(planned), admitted=len(admitted), observed_failures=len(counted),
+        admitted_by_category=dict(admitted_counts), planned_by_category=dict(plan_counts),
+        failures_by_category=dict(failed_counts), failed_scene_ids=sorted(counted),
     )
 
 

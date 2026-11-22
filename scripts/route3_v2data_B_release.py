@@ -17,10 +17,13 @@ PREVIOUS_GPU_DISPATCHES = {
     "p2-training-gpu-slots-optical-gate": "dispatch-gpu-slots-p2.json",
     "p2-training-gpu-slots-planner-decision": "dispatch-gpu-slots-planner-p2.json",
     "p2-training-gpu-slots-scene-failure-recovery": "dispatch-gpu-slots-recovery-p2.json",
+    "p2-training-gpu-slots-category-coverage": "dispatch-gpu-slots-category-coverage-p2.json",
 }
-GPU_DISPATCH_VERSION = "p2-training-gpu-slots-category-coverage"
-GPU_DISPATCH_FILES = ("route3_v2data_B_geometry_pair.py", "route3_v2data_B_geometry_slots.py")
-GPU_DISPATCH_RECEIPT = FORMAL_DATA/"dispatch-gpu-slots-category-coverage-p2.json"
+GPU_DISPATCH_VERSION = "p2-training-keep-going"
+GPU_DISPATCH_FILES = (
+    "route3_v2data_B_geometry_pair.py", "route3_v2data_B_geometry_slots.py", "route3_v2data_B_production_policy.py",
+)
+GPU_DISPATCH_RECEIPT = FORMAL_DATA/"dispatch-gpu-slots-keep-going-p2.json"
 GEOMETRY_REQUEUE = FORMAL_DATA/"p2-review/large-foreground-requeue-2026-11-22.json"
 PLANNER_OVERRIDE = FORMAL_DATA/"p2-review/geometry-pair-planner-override.json"
 FALLBACK_RECOVERY = FORMAL_DATA/"p2-review/geometry-slot-fallback-recovery-130.json"

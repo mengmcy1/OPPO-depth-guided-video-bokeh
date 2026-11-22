@@ -10,12 +10,15 @@ import numpy as np
 import psutil
 
 from route3_v2data_B_batch import (
-    FORMAL_DATA, GIB, GPU_LOCK, RECORD, archive_status, blender, optical_selection,
+    FORMAL_DATA, GIB, GPU_LOCK, OPTICAL_TAGS, RECORD, archive_status, blender, optical_selection,
     reserve, sha256, verify_optical, write_json,
 )
 from route3_v2data_B_plan import load
 from route3_v2data_B_presence import attach_optical_visibility
 from route3_v2data_B_release import OPTICAL_FRAMES, PLAN_DIR, load_production_plan
+from route3_v2data_B_production_policy import (
+    OpticalQueue, ProductionHealth, ProductionStop, ranked_optical_candidates, system_failure,
+)
 
 
 SEED = 20261120
@@ -318,22 +321,50 @@ def optical_slot_probe(group, allocation, tri_cpus, baseline, estimate, run):
     return report
 
 
-def produce_pairs(estimate, allocation, version, *, survey_slots=False, on_policy_decision=None, on_selection=None):
-    target = FORMAL_DATA / "optical"
+def retry_optical_group(group, allocation, cpus, *, parallel, health, attempt):
+    archive = FORMAL_DATA/"p2-review"/f"optical-recovery-{time.time_ns()}"
+    archive.mkdir(parents=True)
+    for _, unit, source in group:
+        unit.rename(archive/unit.name)
+        stage_optical(source,unit)
+    report = render_group([unit for _,unit,_ in group],allocation,parallel=parallel,slot_cpus=cpus)
+    for _,unit,_ in group:
+        row = report["scenes"][unit.name]
+        health.add("optical",unit.name,row["passed"],attempt=attempt,reason=row.get("failure"))
+    return report["scenes"]
+
+
+def produce_pairs(estimate, allocation, version, *, survey_slots=False, on_policy_decision=None,
+                  on_selection=None, health=None):
+    health = health or ProductionHealth()
+    target = FORMAL_DATA/"optical"
     target.mkdir(exist_ok=True)
     selection = target/"selection.json"
+    admitted = [load(path) for path in sorted((FORMAL_DATA/"units/training").glob("*/manifest.json"))]
+    rankings = ranked_optical_candidates(admitted)
     if not selection.exists():
-        admitted = [load(path) for path in sorted((FORMAL_DATA/"units/training").glob("*/manifest.json"))]
-        write_json(selection, optical_selection(admitted))
+        try:
+            chosen = optical_selection(admitted)
+        except ValueError as error:
+            if not str(error).startswith(("fewer eligible training geometry", "insufficient training geometry")):
+                raise
+            chosen, reserved = [], set()
+            for index in range(80):
+                tag = OPTICAL_TAGS[index%len(OPTICAL_TAGS)]
+                item = next((row for row in rankings[tag] if row["scene_id"] not in reserved), None)
+                if item:
+                    chosen.append(item)
+                    reserved.add(item["scene_id"])
+        write_json(selection,chosen)
     selection_sha = sha256(selection)
+    candidates = load(selection)
+    queue = OpticalQueue(candidates,rankings,target/"ranked-replacements.json")
     failures_path = target/"failures.json"
     failures = load(failures_path) or []
-    excluded = {row["scene_id"] for row in failures}
-    counts = Counter(row["category"] for row in failures if row.get("counts_toward_pause", True))
-    candidates = load(selection)
+    excluded = {row["scene_id"] for row in failures if row.get("counts_toward_pause",True)}
+    accepted_ids = {path.parent.name for path in target.glob("*/manifest.json")}
     if on_selection:
         on_selection(candidates,selection)
-    pending = iter(candidates)
     slots_path = target/"slot-decision.json"
     policy = load(slots_path) or dict(baseline=[],baseline_accepted=0,slots=2)
     coordinator, geometry, gpu = allocation
@@ -342,108 +373,130 @@ def produce_pairs(estimate, allocation, version, *, survey_slots=False, on_polic
     double_cpus = (workers[:half],workers[half:2*half])
     tri_cpus = (tuple(cpu for mask in geometry for cpu in mask), *double_cpus) if survey_slots else ()
     if survey_slots and any(len(cpus)!=6 for cpus in tri_cpus):
-        raise ValueError("optical slot qualification requires three groups of six CPU cores")
+        raise ProductionStop("unrecoverable_gpu_or_environment","optical production requires three groups of six CPU cores")
 
     def save_policy():
-        write_json(slots_path, policy)
+        write_json(slots_path,policy)
         record=load(RECORD)
         record["v2"]["optical_slot_decision"] = policy
         write_json(RECORD,record)
 
-    def failure(scene_id, category, reason, count=True):
-        failures.append(dict(scene_id=scene_id, category=category, reason=reason, counts_toward_pause=count))
-        counts[category] += count
-        write_json(failures_path, failures)
+    def save_replacements():
+        record=load(RECORD)
+        latest=record["v2"]["training_optical_selection"] if on_selection else record["v2"].setdefault("training_optical_selection",{})
+        latest.update(replacements=queue.replacements(), remaining_target=80-len(accepted_ids),
+                      exhausted_slots=queue.exhausted(excluded))
+        write_json(RECORD,record)
+
+    def failure(item, reason):
+        scene_id=item["scene_id"]
+        failures.append(dict(scene_id=scene_id,category=item["primary_difficulty"],reason=reason))
+        excluded.add(scene_id)
+        write_json(failures_path,failures)
 
     while not (FORMAL_DATA/"stop-after-current").is_file():
+        health.check()
         group = []
         baseline_pending = survey_slots and policy["baseline_accepted"]<4
         probe_pending = survey_slots and policy.get("two_slot_mean_gpu_percent",100)<75 and "probe" not in policy
         width = (min(2,4-policy["baseline_accepted"]) if baseline_pending
                  else 3 if probe_pending else policy["slots"])
-        reserve(FORMAL_DATA, estimate * width)
-        for item in pending:
+        reserve(FORMAL_DATA,estimate*width)
+        for _,item in queue.pending(excluded,accepted_ids):
             scene_id = item["scene_id"]
             unit = target/scene_id
-            category = item["primary_difficulty"]
-            if scene_id in excluded or (unit/"manifest.json").is_file():
-                continue
-            if counts[category] >= 2:
-                failure(scene_id, category, "two failed optical scenes for this difficulty", False)
-                continue
             source = FORMAL_DATA/"units/training"/scene_id
-            try:
-                stage_optical(source, unit)
-            except OSError as error:
-                failure(scene_id, category, str(error))
-                continue
-            group.append((item, unit, source))
-            if len(group) == width:
+            if unit.exists():
+                archive = FORMAL_DATA/"p2-review"/f"optical-interrupted-{time.time_ns()}"
+                archive.mkdir(parents=True)
+                unit.rename(archive/unit.name)
+            stage_optical(source,unit)
+            group.append((item,unit,source))
+            if len(group)==width:
                 break
         if not group:
             break
+        save_replacements()
+
         is_triple = width==3 and len(group)==3
-        run = render_group([unit for _, unit, _ in group], (coordinator,[],gpu), parallel=True,
-                           slot_cpus=tri_cpus if is_triple else double_cpus, sample_gpu=baseline_pending,
+        run = render_group([unit for _,unit,_ in group],(coordinator,[],gpu),parallel=True,
+                           slot_cpus=tri_cpus if is_triple else double_cpus,sample_gpu=baseline_pending,
                            vram_cap=28*GIB if is_triple else VRAM_CAP)
+        rows=run["scenes"].copy()
+        for _,unit,_ in group:
+            row=rows[unit.name]
+            health.add("optical",unit.name,row["passed"],attempt="triple" if is_triple else "paired",
+                       reason=row.get("failure"))
         fallback = False
         if probe_pending:
             try:
-                policy["probe"] = optical_slot_probe(group, allocation, tri_cpus, policy["baseline"], estimate, run)
-            except (OSError, RuntimeError, ValueError, KeyError) as error:
-                policy["probe"] = dict(probe=run, adopted=False, equivalence_passed=False, reason=str(error))
+                policy["probe"] = optical_slot_probe(group,allocation,tri_cpus,policy["baseline"],estimate,run)
+            except (OSError,RuntimeError,ValueError,KeyError) as error:
+                policy["probe"] = dict(probe=run,adopted=False,equivalence_passed=False,reason=str(error))
             policy["slots"] = 3 if policy["probe"]["adopted"] else 2
             fallback = not policy["probe"]["equivalence_passed"]
             save_policy()
-        elif is_triple and not all(row["passed"] for row in run["scenes"].values()):
+        elif is_triple and not all(row["passed"] for row in rows.values()):
             policy["slots"] = 2
             policy["production_fallback"] = run
             fallback = True
             save_policy()
+
+        def failed_systemically(unit):
+            row=rows[unit.name]
+            return not row["passed"] and system_failure(row.get("failure"),unit/"render.log",
+                                                         exit_code=row.get("exit_code"))
+
+        # Failed scene checks become gaps. Successful but unqualified triple outputs
+        # and GPU/environment errors use the established double-slot recovery path.
         if fallback:
-            archive=FORMAL_DATA/"p2-review"/f"optical-slot-probe-attempt-{time.time_ns()}"
-            archive.mkdir(parents=True)
-            retry_results = {}
-            for index in range(0,len(group),2):
-                retry=group[index:index+2]
-                for _, unit, source in retry:
-                    unit.rename(archive/unit.name)
-                    stage_optical(source,unit)
-                report=render_group([unit for _, unit, _ in retry],allocation,parallel=True,slot_cpus=double_cpus)
-                retry_results.update(report["scenes"])
-            policy["archived_attempt"] = str(archive.relative_to(FORMAL_DATA))
-            save_policy()
-        else:
-            retry_results = run["scenes"]
+            retry = [(item,unit,source) for item,unit,source in group
+                     if rows[unit.name]["passed"] or failed_systemically(unit)]
+            for index in range(0,len(retry),2):
+                rows.update(retry_optical_group(retry[index:index+2],allocation,double_cpus,
+                                               parallel=True,health=health,attempt="paired_recovery"))
+        for item,unit,source in group:
+            if failed_systemically(unit):
+                rows.update(retry_optical_group([(item,unit,source)],allocation,double_cpus,
+                                               parallel=False,health=health,attempt="single_recovery"))
+
+        unrecovered=[]
         for item, unit, source in group:
-            row = retry_results[unit.name]
+            row = rows[unit.name]
             if not row["passed"]:
-                failure(unit.name, item["primary_difficulty"], row["failure"])
+                failure(item,row["failure"])
+                if failed_systemically(unit):
+                    unrecovered.append(f"{unit.name}: {row['failure']}")
                 continue
             labels = unit/"labels"
-            attach_optical_visibility(labels/"optical-audit.json", source/"labels/foreground-presence.json")
+            attach_optical_visibility(labels/"optical-audit.json",source/"labels/foreground-presence.json")
             products = sorted(path for path in labels.glob("*.npz") if not path.is_symlink())
-            outputs = [dict(path=str(path.relative_to(FORMAL_DATA)), bytes=path.stat().st_size, sha256=sha256(path))
+            outputs = [dict(path=str(path.relative_to(FORMAL_DATA)),bytes=path.stat().st_size,sha256=sha256(path))
                        for path in products]
-            write_json(unit/"manifest.json", dict(
-                **item, generator_version=version, optical_frames=list(OPTICAL_FRAMES), partition="training",
-                geometry_manifest_sha256=sha256(source/"manifest.json"), selection_sha256=selection_sha,
-                bytes=sum(row["bytes"] for row in outputs), files=outputs,
+            write_json(unit/"manifest.json",dict(
+                **item,generator_version=version,optical_frames=list(OPTICAL_FRAMES),partition="training",
+                geometry_manifest_sha256=sha256(source/"manifest.json"),selection_sha256=selection_sha,
+                bytes=sum(row["bytes"] for row in outputs),files=outputs,
             ))
-        if baseline_pending:
-            accepted = sum(row["passed"] for row in run["scenes"].values())
-            if accepted:
-                policy["baseline"].append(run)
-                policy["baseline_accepted"] += accepted
-                samples = [usage for batch in policy["baseline"] for usage in batch["gpu_utilization_percent"]]
-                if policy["baseline_accepted"]==4 and samples:
-                    policy["two_slot_mean_gpu_percent"] = sum(samples)/len(samples)
-                save_policy()
+            accepted_ids.add(unit.name)
+        if baseline_pending and any(row["passed"] for row in rows.values()):
+            accepted = sum(row["passed"] for row in rows.values())
+            policy["baseline"].append(run)
+            policy["baseline_accepted"] += accepted
+            samples = [usage for batch in policy["baseline"] for usage in batch["gpu_utilization_percent"]]
+            if policy["baseline_accepted"]==4 and samples:
+                policy["two_slot_mean_gpu_percent"] = sum(samples)/len(samples)
+            save_policy()
         archive_status()
+        save_replacements()
+        if unrecovered:
+            raise ProductionStop("unrecoverable_gpu_or_environment","; ".join(unrecovered))
+        health.check()
         if on_policy_decision and (probe_pending or fallback or
                                    baseline_pending and policy.get("two_slot_mean_gpu_percent",0)>=75):
             on_policy_decision()
     archive_status()
+    save_replacements()
 
 
 def try_p2_pairs(estimate, allocation):

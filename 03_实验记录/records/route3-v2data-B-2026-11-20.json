@@ -4977,9 +4977,10 @@
       },
       "result_handling": {
         "all_pass": "记录为“单双槽产出等价，已复核”，数据不动。",
-        "any_failure": "停下汇报并附超限数值，不自动重算。由规划方决定是否用单槽重算全部双槽单元的深度先验。"
+        "any_failure": "记录失败场景及超限值，不阻塞生产，不自动重算。"
       },
-      "execution_note": "预登记的波动参照已包含被判定的原入列版和串行版差异。按字面定义，该差异总不超过其自身所在集合的最大值，因此 1.5 倍规则无法检出超限。"
+      "execution_note": "预登记的波动参照已包含被判定的原入列版和串行版差异。按字面定义，该差异总不超过其自身所在集合的最大值，因此 1.5 倍规则无法检出超限。",
+      "production_effect": "在训练光学全部完成后执行。结果只用于记录，不拦生产。"
     },
     "geometry_gpu_slot_provenance": {
       "backfilled_at_utc": "2026-11-21T14:39:00.517405+00:00",
@@ -6900,6 +6901,27 @@
         "sha256": "65515a1aa9bfca2683f9cbbad33c47fa6296b9e0a05881822bbfa1cbdf0a4399"
       },
       "status": "authorized"
+    },
+    "production_policy": {
+      "single_scene_failure": "record_gap_and_continue",
+      "stop_conditions": [
+        "insufficient_disk_reserve",
+        "unrecoverable_gpu_or_environment",
+        "admitted_data_corruption",
+        "rolling_failure_rate"
+      ],
+      "rolling_attempts": 30,
+      "rolling_failure_limit": 10,
+      "optical_start": "sealed_geometry_queue_has_drained",
+      "replacement": "next unassigned candidate for the same primary difficulty",
+      "principle_zh": "数据准备效率优先。单个场景失败就记为缺口，然后跳过，不暂停类别或难度标签，也不卡住下一阶段。",
+      "systematic_stop_zh": [
+        "磁盘余量不足",
+        "GPU 或运行环境崩溃，且无法自动恢复",
+        "发现已入列的数据损坏",
+        "最近 30 次尝试里有 10 次以上失败"
+      ],
+      "geometry_slot_postcheck_zh": "在训练光学全部完成后执行。结果只用于记录，不拦生产。"
     }
   }
 }
