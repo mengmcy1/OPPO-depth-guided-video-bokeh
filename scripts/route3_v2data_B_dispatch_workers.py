@@ -515,9 +515,11 @@ def publish_snapshot(checkout):
                 "geometry_pair_noise_policy","geometry_pair_noise_trial","depth_prior_repeatability",
                 "target_gap_details","geometry_pair_planner_override","geometry_gpu_slot_postcheck",
                 "geometry_gpu_slot_provenance","geometry_pair_fallback_recovery","large_foreground_requeue",
-                "training_optical_selection","production_policy","production_halt"):
+                "training_optical_selection","production_policy","production_halt","optical_full_scope"):
         if key in v2:
             tracked["v2"][key]=v2[key]
+    if "optical_full_scope" in v2:
+        tracked["v2"]["rules"]["generation_targets"]["train_optical"]=v2["rules"]["generation_targets"]["train_optical"]
     write_json(checkout/record_path,tracked)
     first=v2["dispatch_cpu_workers"].get("training_first_30")
     trial=v2.get("optical_parallel_trial",{})
@@ -642,7 +644,15 @@ def run_locked(estimate, publish_worktree=None, *, gpu_dispatch=False):
         summary=geometry_outcomes(plan["scenes"],archive["units"],failed)
         summary["checked_at_utc"]=datetime.now(timezone.utc).isoformat()
         record=load(RECORD)
-        record["v2"]["optical_geometry_gate"]=summary
+        v2=record["v2"]
+        v2["optical_geometry_gate"]=summary
+        v2["rules"]["generation_targets"]["train_optical"]=summary["admitted"]
+        v2["target_gap"]["train_optical"]=summary["admitted"]-archive["counts"]["train_optical"]
+        v2.setdefault("optical_full_scope",{}).update(
+            decision="用户决定：先完成 80 个难例，再为其余已入列训练几何生成光学；产物和 F2 都完整才可用。",
+            hard_target=80, total_target=summary["admitted"],
+        )
+        update_slot_eta(v2,failed)
         record["v2"]["p2_dispatch"].update(status="starting_training_optical",stop_after_current=False)
         write_json(RECORD,record)
         print("B geometry queue drained",summary,flush=True)
@@ -665,9 +675,24 @@ def run_locked(estimate, publish_worktree=None, *, gpu_dispatch=False):
             write_json(RECORD,record)
             print("B training optical selection sealed",len(candidates),flush=True)
 
+        def expansion_ready(hard,ordered,path):
+            record=load(RECORD)
+            scope=record["v2"]["optical_full_scope"]
+            scope.update(hard_rendering=hard,expansion=dict(
+                path=str(path.relative_to(FORMAL_DATA)),sha256=sha256(path),count=len(ordered),
+                ordered_scenes=[dict(scene_id=row["scene_id"],primary_difficulty=row["primary_difficulty"])
+                                for row in ordered],
+            ))
+            record["v2"]["p2_dispatch"]["status"]="dispatching_remaining_training_optical"
+            write_json(RECORD,record)
+            if publish_worktree:
+                try_publish_snapshot(publish_worktree)
+            print("B optical expansion order sealed",len(ordered),flush=True)
+
         produce_pairs(estimate,allocation,plan["effective_generator_version"],survey_slots=bool(gpu_patch),
                       on_policy_decision=progress if gpu_patch else None,
-                      on_selection=selection_ready if gpu_patch else None,health=health)
+                      on_selection=selection_ready if gpu_patch else None,
+                      on_expansion=expansion_ready if gpu_patch else None,health=health)
     elif gpu_patch:
         raise RuntimeError("the adopted two-slot optical qualification is required")
     else:
@@ -676,6 +701,18 @@ def run_locked(estimate, publish_worktree=None, *, gpu_dispatch=False):
     record=load(RECORD)
     v2=record["v2"]
     gap = v2["target_gap"]
+    if gpu_patch and not STOP.is_file():
+        archive=load(FORMAL_DATA/"manifest.json")
+        optical=archive["optical_units"]
+        categories={spec["scene_id"]:spec["category"] for spec in plan["scenes"]}
+        scope=v2["optical_full_scope"]
+        scope["rendered_outcome"]=dict(
+            rendered=len(optical), missing=scope["total_target"]-len(optical),
+            by_category=dict(Counter(categories[row["scene_id"]] for row in optical)),
+            primary_labels=dict(Counter(row["primary_difficulty"] for row in optical)),
+            overlapping_labels=dict(Counter(label for row in optical for label in row["difficulties"])),
+            completed_at_utc=datetime.now(timezone.utc).isoformat(),
+        )
     accepted_gaps = v2.get("target_gap_details", {}).get("train_geometry", {}).get("accepted", [])
     remaining = dict(gap,train_geometry=max(0,gap["train_geometry"]-len(accepted_gaps)))
     status=("drained_after_stop" if STOP.is_file() else

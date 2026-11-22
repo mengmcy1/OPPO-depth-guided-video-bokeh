@@ -10118,6 +10118,15 @@
       ],
       "baseline_accepted": 2,
       "slots": 2
+    },
+    "optical_full_scope": {
+      "decision": "用户决定：先完成原计划 80 个难例，再为其余全部已入列训练几何生成光学及 LaMa F2。",
+      "registered_at_utc": "2026-11-22T05:04:42.956894+00:00",
+      "hard_target": 80,
+      "total_target": 295,
+      "scheduling": "按原有难度轮流及分数排序，标签耗尽跳过，其余按场景编号；扩充顺序先封存后渲染。",
+      "usable": "光学及 F2 均完整",
+      "GPU_priority": "各训练阶段单步变为单独运行的 1.5 倍以上时，光学改为单槽。"
     }
   }
 }

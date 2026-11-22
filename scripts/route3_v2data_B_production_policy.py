@@ -14,7 +14,8 @@ POLICY = dict(
                      "admitted_data_corruption", "rolling_failure_rate"],
     rolling_attempts=ROLLING_ATTEMPTS, rolling_failure_limit=FAILURE_LIMIT,
     optical_start="sealed_geometry_queue_has_drained",
-    replacement="next unassigned candidate for the same primary difficulty",
+    replacement="next unassigned candidate for the same primary difficulty in the first 80 slots",
+    optical_scope="first 80 hard cases, then each remaining admitted training geometry",
     principle_zh="数据准备效率优先。单个场景失败就记为缺口，然后跳过，不暂停类别或难度标签，也不卡住下一阶段。",
     systematic_stop_zh=["磁盘余量不足","GPU 或运行环境崩溃，且无法自动恢复",
                         "发现已入列的数据损坏","最近 30 次尝试里有 10 次以上失败"],
@@ -121,7 +122,7 @@ class OpticalQueue:
         self.rankings = rankings
         self.assignments = (load(path) or {}).get("assignments", [[row] for row in selection])
 
-    def pending(self, failed, admitted):
+    def pending(self, failed, admitted, *, replace=True):
         reserved = {row["scene_id"] for slot in self.assignments for row in slot}
         for index, chain in enumerate(self.assignments):
             current = chain[-1]
@@ -129,6 +130,8 @@ class OpticalQueue:
             if name in admitted:
                 continue
             if name in failed:
+                if not replace:
+                    continue
                 tag = current["primary_difficulty"]
                 replacement = next((row for row in self.rankings[tag] if row["scene_id"] not in reserved),None)
                 if replacement is None:
@@ -154,3 +157,27 @@ class OpticalQueue:
         return [dict(slot=index+1, replaced=old["scene_id"], replacement=new["scene_id"],
                      primary_difficulty=new["primary_difficulty"])
                 for index,chain in enumerate(self.assignments) for old,new in zip(chain,chain[1:])]
+
+
+
+def expansion_order(units, rankings, attempted, *, offset=80):
+    """Continue the original tag rotation, then order unranked units by scene ID."""
+    eligible = {unit["scene_id"] for unit in units if unit["partition"]=="training"}-set(attempted)
+    ordered=[]
+    candidates={tag:iter(rankings[tag]) for tag in OPTICAL_TAGS}
+    available=set(eligible)
+    start=offset%len(OPTICAL_TAGS)
+    tags=OPTICAL_TAGS[start:]+OPTICAL_TAGS[:start]
+    while available:
+        moved=False
+        for tag in tags:
+            row=next((item for item in candidates[tag] if item["scene_id"] in available),None)
+            if row:
+                ordered.append(row)
+                available.remove(row["scene_id"])
+                moved=True
+        if not moved:
+            break
+    ordered.extend(dict(scene_id=scene,primary_difficulty="unclassified",difficulties=[],
+                        scores=dict.fromkeys(OPTICAL_TAGS,0)) for scene in sorted(available))
+    return ordered

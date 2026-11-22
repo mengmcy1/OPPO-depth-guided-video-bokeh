@@ -400,9 +400,11 @@ def train():
     rng=np.random.default_rng(SEED)
     generator=torch.Generator(device='cuda').manual_seed(SEED)
     ema={k:v.detach().clone() for k,v in model.heads.state_dict().items()}
+    from route3_v2data_B_training_share import register_training
     for stage,(steps,prob) in STAGES.items():
         dest=OUT/stage
         dest.mkdir(exist_ok=True)
+        register_training(stage,{stage:os.getpid()},{stage:str(dest/"progress.json")})
         curves,counts,uses=[],Counter(),Counter()
         elapsed=0.
         existing=sorted(dest.glob('step-*.pt'))

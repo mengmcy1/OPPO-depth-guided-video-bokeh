@@ -16,9 +16,11 @@ from route3_v2data_B_batch import (
 from route3_v2data_B_plan import load
 from route3_v2data_B_presence import attach_optical_visibility
 from route3_v2data_B_release import OPTICAL_FRAMES, PLAN_DIR, load_production_plan
-from route3_v2data_B_training_share import MAX_DEVICE_MIB, TrainingOverlap, optical_width, training_workers
+from route3_v2data_B_training_share import (
+    MAX_DEVICE_MIB, TrainingOverlap, f2_failures, optical_width, training_workers, wait_for_incremental_f2,
+)
 from route3_v2data_B_production_policy import (
-    OpticalQueue, ProductionHealth, ProductionStop, ranked_optical_candidates, system_failure,
+    OpticalQueue, ProductionHealth, ProductionStop, expansion_order, ranked_optical_candidates, system_failure,
 )
 
 
@@ -348,7 +350,7 @@ def retry_optical_group(group, allocation, cpus, *, parallel, health, attempt):
 
 
 def produce_pairs(estimate, allocation, version, *, survey_slots=False, on_policy_decision=None,
-                  on_selection=None, health=None):
+                  on_selection=None, on_expansion=None, health=None):
     health = health or ProductionHealth()
     target = FORMAL_DATA/"optical"
     target.mkdir(exist_ok=True)
@@ -371,7 +373,9 @@ def produce_pairs(estimate, allocation, version, *, survey_slots=False, on_polic
         write_json(selection,chosen)
     selection_sha = sha256(selection)
     candidates = load(selection)
-    queue = OpticalQueue(candidates,rankings,target/"ranked-replacements.json")
+    hard_queue = OpticalQueue(candidates,rankings,target/"ranked-replacements.json")
+    queue = hard_queue
+    expanded = False
     failures_path = target/"failures.json"
     failures = load(failures_path) or []
     excluded = {row["scene_id"] for row in failures if row.get("counts_toward_pause",True)}
@@ -397,8 +401,10 @@ def produce_pairs(estimate, allocation, version, *, survey_slots=False, on_polic
     def save_replacements():
         record=load(RECORD)
         latest=record["v2"]["training_optical_selection"] if on_selection else record["v2"].setdefault("training_optical_selection",{})
-        latest.update(replacements=queue.replacements(), remaining_target=80-len(accepted_ids),
-                      exhausted_slots=queue.exhausted(excluded))
+        hard_admitted = [chain[-1]["scene_id"] for chain in hard_queue.assignments
+                         if chain[-1]["scene_id"] in accepted_ids]
+        latest.update(replacements=hard_queue.replacements(), remaining_target=80-len(hard_admitted),
+                      exhausted_slots=hard_queue.exhausted(excluded), hard_rendered=len(hard_admitted))
         write_json(RECORD,record)
 
     def failure(item, reason):
@@ -417,7 +423,8 @@ def produce_pairs(estimate, allocation, version, *, survey_slots=False, on_polic
         width = (min(shared_width or 2,4-policy["baseline_accepted"]) if baseline_pending
                  else shared_width or (3 if probe_pending else policy["slots"]))
         reserve(FORMAL_DATA,estimate*width)
-        for _,item in queue.pending(excluded,accepted_ids):
+        failed_f2 = f2_failures() if on_expansion and not expanded else set()
+        for _,item in queue.pending(excluded|failed_f2,accepted_ids-failed_f2,replace=not expanded):
             scene_id = item["scene_id"]
             unit = target/scene_id
             source = FORMAL_DATA/"units/training"/scene_id
@@ -430,7 +437,24 @@ def produce_pairs(estimate, allocation, version, *, survey_slots=False, on_polic
             if len(group)==width:
                 break
         if not group:
-            break
+            if on_expansion is None or expanded:
+                break
+            hard_path = target/"hard-milestone.json"
+            expansion_path = target/"expansion-selection.json"
+            if not hard_path.is_file():
+                ids=[chain[-1]["scene_id"] for chain in hard_queue.assignments
+                     if chain[-1]["scene_id"] in accepted_ids-failed_f2]
+                write_json(hard_path,dict(scene_ids=ids,rendered=len(ids),target=80,
+                                          exhausted=hard_queue.exhausted(excluded|failed_f2)))
+            if not expansion_path.is_file():
+                attempted=accepted_ids|excluded|{row["scene_id"] for slot in hard_queue.assignments for row in slot}
+                write_json(expansion_path,expansion_order(admitted,rankings,attempted))
+            ordered=load(expansion_path)
+            on_expansion(load(hard_path),ordered,expansion_path)
+            queue=OpticalQueue(ordered,rankings,target/"expansion-assignments.json")
+            expanded=True
+            selection_sha=sha256(expansion_path)
+            continue
         save_replacements()
 
         is_triple = width==3 and len(group)==3
@@ -476,6 +500,7 @@ def produce_pairs(estimate, allocation, version, *, survey_slots=False, on_polic
                                                parallel=False,health=health,attempt="single_recovery"))
 
         unrecovered=[]
+        admitted_in_group=set()
         for item, unit, source in group:
             row = rows[unit.name]
             if not row["passed"]:
@@ -491,9 +516,11 @@ def produce_pairs(estimate, allocation, version, *, survey_slots=False, on_polic
             write_json(unit/"manifest.json",dict(
                 **item,generator_version=version,optical_frames=list(OPTICAL_FRAMES),partition="training",
                 geometry_manifest_sha256=sha256(source/"manifest.json"),selection_sha256=selection_sha,
+                optical_rollout="remaining_geometry" if expanded else "hard_80",
                 bytes=sum(row["bytes"] for row in outputs),files=outputs,
             ))
             accepted_ids.add(unit.name)
+            admitted_in_group.add(unit.name)
         if baseline_pending and any(row["passed"] for row in rows.values()):
             accepted = sum(row["passed"] for row in rows.values())
             policy["baseline"].append(run)
@@ -507,6 +534,8 @@ def produce_pairs(estimate, allocation, version, *, survey_slots=False, on_polic
         if unrecovered:
             raise ProductionStop("unrecoverable_gpu_or_environment","; ".join(unrecovered))
         health.check()
+        if on_expansion:
+            wait_for_incremental_f2(admitted_in_group)
         if on_policy_decision and (probe_pending or fallback or
                                    baseline_pending and policy.get("two_slot_mean_gpu_percent",0)>=75):
             on_policy_decision()
