@@ -2315,24 +2315,19 @@
       }
     },
     "p2_finish_eta": {
-      "status": "conditional_on_optical_gate_and_future_acceptance",
-      "measured_at_utc": "2026-11-22T05:54:34.775734+00:00",
-      "estimated_hours": 29.352380154176306,
-      "estimated_finish_utc": "2026-11-23T11:15:43.344289+00:00",
-      "remaining_hours_by_stage": {
-        "training_geometry": 0.0,
-        "training_optical": 29.352380154176306
+      "status": "drained_after_stop",
+      "remaining_units": {
+        "train_geometry": 5,
+        "development": 0,
+        "test": 0,
+        "train_optical": 76
       },
-      "geometry_basis": "first 30 production geometry units with two GPU slots",
-      "geometry_per_hour": 25.00751049183394,
-      "training_geometry_remaining_runnable": 0,
-      "training_geometry_failed": 5,
-      "training_optical_basis": "qualified two-slot optical wall time"
+      "measured_at_utc": "2026-11-22T05:54:49.401202+00:00"
     },
     "p2_dispatch": {
-      "stop_after_current": false,
+      "stop_after_current": true,
       "original_dispatch_drained": true,
-      "status": "dispatching_training_optical",
+      "status": "drained_after_stop",
       "affected_inflight": "development-003-8c92e9e93c0ff003",
       "qualification_output": "p2-review/p2-priority-qualification/proof.json",
       "retired_process_groups": [
