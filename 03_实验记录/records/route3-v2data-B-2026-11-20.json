@@ -744,7 +744,7 @@
       "formal_use": false
     },
     "formal_counts": {
-      "train_geometry": 274,
+      "train_geometry": 295,
       "development": 15,
       "test": 30,
       "train_optical": 0
@@ -1306,7 +1306,7 @@
       "reserve_bytes": 64424509440
     },
     "generator_version": "B-v2-31aa7f9a4325",
-    "manifest_sha256": "171adb1769f19a1fa423231126c3d107a5ff1a51a0f83cb32c920f84f3ac9dcd",
+    "manifest_sha256": "49c611f64bd6a57e9bb9d16b9167407b83f9ff26e82d70084bbec759c3459afe",
     "scene_plan_sha256": {
       "training": "3687df48d64d82dd2dfd620c1a1ee6b32f2305186063d0df89c2e6f99a5986d8",
       "development": "78f5ef2aa6625bba938028efb71ad1bf2da3142810d8453d6a387452728c0d85",
@@ -1389,7 +1389,7 @@
       }
     },
     "target_gap": {
-      "train_geometry": 26,
+      "train_geometry": 5,
       "development": 0,
       "test": 0,
       "train_optical": 80
@@ -1413,8 +1413,8 @@
       },
       "training": {
         "path": "units/training/failures.json",
-        "sha256": "070d7ccf130761dfebe3215a037be8697f57a51464b692545dd23906980b1c5b",
-        "count": 26
+        "sha256": "030e52261511ec41397c0275a20ca27cd52126e539efb4c8376242a6857503df",
+        "count": 5
       }
     },
     "optical_difficulty_counts": {},
@@ -2315,24 +2315,24 @@
       }
     },
     "p2_finish_eta": {
-      "status": "training_optical_blocked_by_geometry_gate",
-      "measured_at_utc": "2026-11-21T23:22:34.236854+00:00",
+      "status": "conditional_on_optical_gate_and_future_acceptance",
+      "measured_at_utc": "2026-11-22T04:06:52.186888+00:00",
       "estimated_hours": 30.897242267554006,
-      "estimated_finish_utc": "2026-11-23T06:16:24.309017+00:00",
+      "estimated_finish_utc": "2026-11-23T11:00:42.259051+00:00",
       "remaining_hours_by_stage": {
         "training_geometry": 0.0,
         "training_optical": 30.897242267554006
       },
-      "geometry_basis": "first 30 production geometry units with one GPU slot",
-      "geometry_per_hour": 14.700618472636714,
+      "geometry_basis": "first 30 production geometry units with two GPU slots",
+      "geometry_per_hour": 25.00751049183394,
       "training_geometry_remaining_runnable": 0,
-      "training_geometry_failed": 26,
+      "training_geometry_failed": 5,
       "training_optical_basis": "qualified two-slot optical wall time"
     },
     "p2_dispatch": {
       "stop_after_current": false,
       "original_dispatch_drained": true,
-      "status": "training_optical_blocked_by_geometry_gate",
+      "status": "dispatching_training_optical",
       "affected_inflight": "development-003-8c92e9e93c0ff003",
       "qualification_output": "p2-review/p2-priority-qualification/proof.json",
       "retired_process_groups": [
@@ -3441,9 +3441,9 @@
         "path": "dispatch-cpu-workers-p2.json",
         "sha256": "413694bedcf6c71c9d851c5f9e73403e70d336cef61e7977fc09aef69a401640"
       },
-      "ready_queue_peak": 30,
-      "peak_combined_rss_bytes": 16692719616,
-      "sampled_peak_cpu_equivalents": 8.497838105548775,
+      "ready_queue_peak": 10,
+      "peak_combined_rss_bytes": 13468385280,
+      "sampled_peak_cpu_equivalents": 5.320536534693121,
       "training_first_30": {
         "accepted_scenes": 30,
         "sampling_seconds": 7346.629680991173,
@@ -3978,56 +3978,39 @@
       }
     },
     "optical_geometry_gate": {
-      "allowed": false,
-      "policy": {
-        "maximum_training_failures": 3,
-        "category_pause_at": 2,
-        "requires_drained_sealed_training_queue": true,
-        "selection_pool": "admitted_training_geometry"
-      },
+      "status": "drained",
       "planned": 300,
-      "admitted": 274,
-      "observed_failures": 4,
+      "admitted": 295,
+      "observed_failures": 5,
+      "admitted_by_category": {
+        "curved_self_occlusion": 59,
+        "large_foreground": 57,
+        "thin_structure": 60,
+        "multiple_layers": 53,
+        "weak_texture": 36,
+        "complex_layout": 30
+      },
+      "planned_by_category": {
+        "curved_self_occlusion": 60,
+        "thin_structure": 60,
+        "multiple_layers": 54,
+        "large_foreground": 60,
+        "weak_texture": 36,
+        "complex_layout": 30
+      },
+      "failures_by_category": {
+        "curved_self_occlusion": 1,
+        "large_foreground": 3,
+        "multiple_layers": 1
+      },
       "failed_scene_ids": [
         "training-038-4df143ee5d0b1f26",
         "training-130-e288403a7bbaa3e3",
         "training-184-5114de0828d476da",
         "training-211-7b1f5aa0762ff0ba",
-        "training-212-161aa09d97a10429",
-        "training-213-47ab8b3090098222",
-        "training-214-720d5f6c4f48322f",
-        "training-215-ec49e3a61ba78f00",
-        "training-216-d1906ca190d76554",
-        "training-217-2a71804d11613752",
-        "training-218-5fcda9bf557dfbd2",
-        "training-219-58f7b1619d1b258b",
-        "training-220-7782995c169b7c03",
-        "training-221-0e3ba7bf508b0384",
-        "training-222-27f3241488f0303d",
-        "training-223-99a611427925ffa8",
-        "training-224-0a595bfb91359bdd",
-        "training-225-e7d2bdd96db23e35",
-        "training-226-769a1469c7530fb1",
-        "training-227-2811e488cecb1a0c",
-        "training-228-14d48c8ca93b3af9",
-        "training-229-4568d0269c87a6c1",
-        "training-230-015f01652fd9e26b",
-        "training-231-50023ca891b0fa13",
-        "training-232-c027df1c79b58415",
-        "training-233-776d75d3f839af90"
+        "training-225-e7d2bdd96db23e35"
       ],
-      "failure_count_by_category": {
-        "large_foreground": 2,
-        "multiple_layers": 1,
-        "curved_self_occlusion": 1
-      },
-      "paused_categories": [
-        "large_foreground"
-      ],
-      "unaccounted_scene_ids": [],
-      "contradictory_scene_ids": [],
-      "status": "blocked",
-      "checked_at_utc": "2026-11-21T23:22:34.263508+00:00"
+      "checked_at_utc": "2026-11-22T04:06:52.207621+00:00"
     },
     "geometry_parallel_trial_eta": {
       "remaining_runnable_training_geometry": 203,
@@ -4099,7 +4082,7 @@
       "registered_at": "2026-11-21T13:45:37.001776+00:00"
     },
     "dispatch_gpu_slots": {
-      "version": "p2-training-gpu-slots-scene-failure-recovery",
+      "version": "p2-training-keep-going",
       "parent": {
         "version": "p2-cpu-workers-3",
         "path": "dispatch-cpu-workers-p2.json",
@@ -4108,15 +4091,16 @@
       "generation_release_sha256": "9969624ce86f04b54cb5bf4b56a1f6a4e73e3b66c9e97485a35bf6866861b7de",
       "generator_code_sha256": "e10a102491b98494c1f77d20f1a2249ba065a2ae65339faf72087a5a732c35c5",
       "dispatch_code": {
-        "route3_v2data_B_dispatch.py": "c197dc4b6b0d211beffe86ab7dbc06ffb29ef1e4177a058638178845ba0566bc",
-        "route3_v2data_B_release.py": "a93b6732a4bc8487c01e7754d2eea7cb1c6d3ba672bf933832f348eff706ee52",
+        "route3_v2data_B_dispatch.py": "634b78ff7765f97e82f1b6c5072dbe1ca99f5951590304591bf7444b02330579",
+        "route3_v2data_B_release.py": "671996c0ff052c7b687fe47cdedfc6a32781cf132e4df764a087f0098b9837f8",
         "route3_v2data_B_deploy_p2.py": "3f6d25b8cd128709a5495846ea58b513c8b83b6c6cfa2d2d4d70baeecc9bf99b",
-        "route3_v2data_B_optical_pair.py": "b947177d165338b9d797e1de704e2412a4904e405912575ef3c2905527153e96",
-        "route3_v2data_B_dispatch_workers.py": "fdfc3cb263f8040bd6e2f0f42a81ff5bf6c87e8ac32804275d6eecb0ac89cb2e",
+        "route3_v2data_B_optical_pair.py": "01be90cc2655d061de6fbe50a1aba5f729dcb60ad942c2ae444c0fc7c8104428",
+        "route3_v2data_B_dispatch_workers.py": "60c8074332da4622e002cd4f8dd1b1b065969d379469482234222a11f90c36dd",
         "route3_v2data_B_geometry_pair.py": "45fb3791a10ce24a475dc71119f08f1133a12cd3e9e55f5f6a516ec012e8793f",
-        "route3_v2data_B_geometry_slots.py": "8be0e2cdbcb166fdcbe5e0e8602649b60b5eefec322d2f12cb61ae3e327f4d1f"
+        "route3_v2data_B_geometry_slots.py": "76b0b31950effe823f4c436819bb4609462d0a03b8cbdce7f5fdbc50cbb29c3d",
+        "route3_v2data_B_production_policy.py": "34c0350d525dc9b458bbeb07310ec4a62151335b2d6d33190d2d2adede21a8cc"
       },
-      "dispatch_code_sha256": "d709b806622269c8df2ca985f546ad8a0fc14434b8e0ada38d710d285df0eeaa",
+      "dispatch_code_sha256": "4013be072d8ab11f9a23219da0dc69bdfebe74cd428577d0493ee08995723de2",
       "qualification": {
         "path": "p2-review/geometry-pair-noise-result.json",
         "sha256": "136a6b41ea33a58932952640377a5623ca0caab76aca3d4ac52718ead66e0b78"
@@ -4127,20 +4111,39 @@
         "sha256": "7a84e97f5568bb29c87acb3cc723dd00a253a91995276f5d0594b208c534035f"
       },
       "previous_gpu_dispatch": {
-        "version": "p2-training-gpu-slots-planner-decision",
-        "path": "dispatch-gpu-slots-planner-p2.json",
-        "sha256": "66640b16d4aba886e711844c34588d5c47b0cd85d5fe514f94ac774ff308ee2a"
+        "version": "p2-training-gpu-slots-category-coverage",
+        "path": "dispatch-gpu-slots-category-coverage-p2.json",
+        "sha256": "cef86e7adf2428a7f70fe3c054f6a0184b4fd8a1e0ce277206363b0ebf84a7ae"
       },
       "fallback_recovery": {
         "path": "p2-review/geometry-slot-fallback-recovery-130.json",
         "sha256": "9ea839688f7c61626798b3507df032aec64fb84c434b94e6cd8fdb925ab2f890"
       },
+      "geometry_requeue": {
+        "path": "p2-review/large-foreground-requeue-2026-11-22.json",
+        "sha256": "65515a1aa9bfca2683f9cbbad33c47fa6296b9e0a05881822bbfa1cbdf0a4399"
+      },
       "adopted": true,
-      "optical_gate_policy": {
-        "maximum_training_failures": 3,
-        "category_pause_at": 2,
-        "requires_drained_sealed_training_queue": true,
-        "selection_pool": "admitted_training_geometry"
+      "production_policy": {
+        "single_scene_failure": "record_gap_and_continue",
+        "stop_conditions": [
+          "insufficient_disk_reserve",
+          "unrecoverable_gpu_or_environment",
+          "admitted_data_corruption",
+          "rolling_failure_rate"
+        ],
+        "rolling_attempts": 30,
+        "rolling_failure_limit": 10,
+        "optical_start": "sealed_geometry_queue_has_drained",
+        "replacement": "next unassigned candidate for the same primary difficulty",
+        "principle_zh": "数据准备效率优先。单个场景失败就记为缺口，然后跳过，不暂停类别或难度标签，也不卡住下一阶段。",
+        "systematic_stop_zh": [
+          "磁盘余量不足",
+          "GPU 或运行环境崩溃，且无法自动恢复",
+          "发现已入列的数据损坏",
+          "最近 30 次尝试里有 10 次以上失败"
+        ],
+        "geometry_slot_postcheck_zh": "在训练光学全部完成后执行。结果只用于记录，不拦生产。"
       },
       "maximum_vram_bytes": 30064771072,
       "gpu_slot_cpus": [
@@ -4168,7 +4171,7 @@
         22
       ],
       "extra_worker_ready_queue_threshold": 5,
-      "switched_at_utc": "2026-11-21T15:30:12.095236+00:00"
+      "switched_at_utc": "2026-11-22T03:45:17.680670+00:00"
     },
     "geometry_pair_noise_trial": {
       "version": "B-v2-31aa7f9a4325-p2",
@@ -5258,7 +5261,28 @@
         "training-296-375be6d07f647f4d": "single",
         "training-297-2f6d75e82a9d5b4a": "single",
         "training-298-8e5b4bc097178dc5": "single",
-        "training-299-b56edc5e432bf88c": "single"
+        "training-299-b56edc5e432bf88c": "single",
+        "training-212-161aa09d97a10429": "dual",
+        "training-213-47ab8b3090098222": "dual",
+        "training-214-720d5f6c4f48322f": "dual",
+        "training-215-ec49e3a61ba78f00": "dual",
+        "training-216-d1906ca190d76554": "dual",
+        "training-217-2a71804d11613752": "dual",
+        "training-218-5fcda9bf557dfbd2": "dual",
+        "training-219-58f7b1619d1b258b": "dual",
+        "training-220-7782995c169b7c03": "dual",
+        "training-221-0e3ba7bf508b0384": "dual",
+        "training-222-27f3241488f0303d": "dual",
+        "training-223-99a611427925ffa8": "dual",
+        "training-224-0a595bfb91359bdd": "dual",
+        "training-226-769a1469c7530fb1": "dual",
+        "training-227-2811e488cecb1a0c": "dual",
+        "training-228-14d48c8ca93b3af9": "dual",
+        "training-229-4568d0269c87a6c1": "dual",
+        "training-230-015f01652fd9e26b": "dual",
+        "training-231-50023ca891b0fa13": "dual",
+        "training-232-c027df1c79b58415": "dual",
+        "training-233-776d75d3f839af90": "dual"
       }
     },
     "geometry_pair_first_30": {
@@ -6900,7 +6924,196 @@
         "path": "p2-review/large-foreground-requeue-2026-11-22.json",
         "sha256": "65515a1aa9bfca2683f9cbbad33c47fa6296b9e0a05881822bbfa1cbdf0a4399"
       },
-      "status": "authorized"
+      "status": "drained",
+      "started_at_utc": "2026-11-22T03:18:54.995340+00:00",
+      "history": [
+        {
+          "scene_id": "training-213-47ab8b3090098222",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false,
+          "status": "类别暂停导致跳过，已重新派发"
+        },
+        {
+          "scene_id": "training-212-161aa09d97a10429",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false,
+          "status": "类别暂停导致跳过，已重新派发"
+        },
+        {
+          "scene_id": "training-214-720d5f6c4f48322f",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false,
+          "status": "类别暂停导致跳过，已重新派发"
+        },
+        {
+          "scene_id": "training-215-ec49e3a61ba78f00",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false,
+          "status": "类别暂停导致跳过，已重新派发"
+        },
+        {
+          "scene_id": "training-216-d1906ca190d76554",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false,
+          "status": "类别暂停导致跳过，已重新派发"
+        },
+        {
+          "scene_id": "training-217-2a71804d11613752",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false,
+          "status": "类别暂停导致跳过，已重新派发"
+        },
+        {
+          "scene_id": "training-218-5fcda9bf557dfbd2",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false,
+          "status": "类别暂停导致跳过，已重新派发"
+        },
+        {
+          "scene_id": "training-219-58f7b1619d1b258b",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false,
+          "status": "类别暂停导致跳过，已重新派发"
+        },
+        {
+          "scene_id": "training-220-7782995c169b7c03",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false,
+          "status": "类别暂停导致跳过，已重新派发"
+        },
+        {
+          "scene_id": "training-221-0e3ba7bf508b0384",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false,
+          "status": "类别暂停导致跳过，已重新派发"
+        },
+        {
+          "scene_id": "training-222-27f3241488f0303d",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false,
+          "status": "类别暂停导致跳过，已重新派发"
+        },
+        {
+          "scene_id": "training-223-99a611427925ffa8",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false,
+          "status": "类别暂停导致跳过，已重新派发"
+        },
+        {
+          "scene_id": "training-225-e7d2bdd96db23e35",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false,
+          "status": "类别暂停导致跳过，已重新派发"
+        },
+        {
+          "scene_id": "training-224-0a595bfb91359bdd",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false,
+          "status": "类别暂停导致跳过，已重新派发"
+        },
+        {
+          "scene_id": "training-226-769a1469c7530fb1",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false,
+          "status": "类别暂停导致跳过，已重新派发"
+        },
+        {
+          "scene_id": "training-227-2811e488cecb1a0c",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false,
+          "status": "类别暂停导致跳过，已重新派发"
+        },
+        {
+          "scene_id": "training-228-14d48c8ca93b3af9",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false,
+          "status": "类别暂停导致跳过，已重新派发"
+        },
+        {
+          "scene_id": "training-229-4568d0269c87a6c1",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false,
+          "status": "类别暂停导致跳过，已重新派发"
+        },
+        {
+          "scene_id": "training-230-015f01652fd9e26b",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false,
+          "status": "类别暂停导致跳过，已重新派发"
+        },
+        {
+          "scene_id": "training-231-50023ca891b0fa13",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false,
+          "status": "类别暂停导致跳过，已重新派发"
+        },
+        {
+          "scene_id": "training-232-c027df1c79b58415",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false,
+          "status": "类别暂停导致跳过，已重新派发"
+        },
+        {
+          "scene_id": "training-233-776d75d3f839af90",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false,
+          "status": "类别暂停导致跳过，已重新派发"
+        }
+      ],
+      "admitted": {
+        "training-212-161aa09d97a10429": "dual",
+        "training-213-47ab8b3090098222": "dual",
+        "training-214-720d5f6c4f48322f": "dual",
+        "training-215-ec49e3a61ba78f00": "dual",
+        "training-216-d1906ca190d76554": "dual",
+        "training-217-2a71804d11613752": "dual",
+        "training-218-5fcda9bf557dfbd2": "dual",
+        "training-219-58f7b1619d1b258b": "dual",
+        "training-220-7782995c169b7c03": "dual",
+        "training-221-0e3ba7bf508b0384": "dual",
+        "training-222-27f3241488f0303d": "dual",
+        "training-223-99a611427925ffa8": "dual",
+        "training-224-0a595bfb91359bdd": "dual",
+        "training-226-769a1469c7530fb1": "dual",
+        "training-227-2811e488cecb1a0c": "dual",
+        "training-228-14d48c8ca93b3af9": "dual",
+        "training-229-4568d0269c87a6c1": "dual",
+        "training-230-015f01652fd9e26b": "dual",
+        "training-231-50023ca891b0fa13": "dual",
+        "training-232-c027df1c79b58415": "dual",
+        "training-233-776d75d3f839af90": "dual"
+      },
+      "new_failures": [
+        {
+          "scene_id": "training-225-e7d2bdd96db23e35",
+          "category": "large_foreground",
+          "reason": "geometry render returned 1"
+        }
+      ],
+      "pending": [],
+      "completed_at_utc": "2026-11-22T04:06:52.167526+00:00"
     },
     "production_policy": {
       "single_scene_failure": "record_gap_and_continue",
@@ -6922,6 +7135,28 @@
         "最近 30 次尝试里有 10 次以上失败"
       ],
       "geometry_slot_postcheck_zh": "在训练光学全部完成后执行。结果只用于记录，不拦生产。"
+    },
+    "training_optical_selection": {
+      "count": 80,
+      "path": "optical/selection.json",
+      "sha256": "4f25bc96378880f02c15ca1b1acac9f7f271b8a48a56861539f5fa59d92ffe0b",
+      "primary_difficulty": {
+        "foreground_focus": 16,
+        "background_focus_with_disocclusion": 16,
+        "thin_and_complex_edge_transmission": 16,
+        "multiple_layers_and_local_occlusion": 16,
+        "highlight_and_bokeh": 16
+      },
+      "difficulty_labels": {
+        "foreground_focus": 80,
+        "background_focus_with_disocclusion": 80,
+        "multiple_layers_and_local_occlusion": 24,
+        "highlight_and_bokeh": 78,
+        "thin_and_complex_edge_transmission": 48
+      },
+      "replacements": [],
+      "remaining_target": 80,
+      "exhausted_slots": []
     }
   }
 }
