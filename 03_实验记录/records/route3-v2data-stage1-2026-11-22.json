@@ -381,5 +381,51 @@
       ],
       "fallback_optical_slots": 1
     }
+  },
+  "1a_training_complete": {
+    "steps_match": true,
+    "branches": {
+      "original": {
+        "checkpoint": "/root/autodl-tmp/route3-stage1-pair-20261122/outputs/route3-v2data-stage1-2026-11-22-01/1a/original/checkpoints/step-030000.pt",
+        "sha256": "0448e58fa4c8e2034f83f7484fd08dc60ec49923d007206af53487eedf21cfcd",
+        "steps": 30000,
+        "counts": {
+          "B": 4500,
+          "C": 7500,
+          "G": 18000
+        },
+        "raw_and_EMA": true
+      },
+      "same-surface": {
+        "checkpoint": "/root/autodl-tmp/route3-stage1-pair-20261122/outputs/route3-v2data-stage1-2026-11-22-01/1a/same-surface/checkpoints/step-030000.pt",
+        "sha256": "704ece2e944c5a984d1cba1b94a742cc466c9d037e5a839517ef92e408e203d0",
+        "steps": 30000,
+        "counts": {
+          "B": 4500,
+          "C": 7500,
+          "G": 18000
+        },
+        "raw_and_EMA": true
+      }
+    },
+    "optical_sharing": {
+      "measured_at_utc": "2026-11-22T04:57:14.421842+00:00",
+      "training_workers": 2,
+      "training_without_optics": {
+        "seconds": 24.024952057749033,
+        "completed_steps": 300,
+        "steps_per_second": 12.487017633953517
+      },
+      "training_with_optics": {
+        "seconds": 24.00353777781129,
+        "completed_steps": 300,
+        "steps_per_second": 12.498157678961725
+      },
+      "training_step_time_ratio": 0.9991086650293298,
+      "optical_slots": 2,
+      "threshold": 1.5,
+      "memory_limit_gib": 30
+    },
+    "recorded_at_utc": "2026-11-22T05:49:54.089167+00:00"
   }
 }
