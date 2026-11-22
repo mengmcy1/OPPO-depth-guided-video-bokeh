@@ -307,6 +307,17 @@ def geometry_loss_gaps(net, inventory, phase, weight):
     return result
 
 
+def load_paired_checkpoint(checkpoint,key,device="cuda"):
+    net=load_model(checkpoint,"model",device=device)
+    if key=="ema":
+        weights=torch.load(checkpoint,weights_only=True,map_location="cpu")["ema"]
+        expected={name for name,p in net.named_parameters() if p.requires_grad and not name.startswith("footprint.")}
+        if set(weights)!=expected:
+            raise ValueError("the stage 1 EMA parameters differ from the paired training state")
+        net.load_state_dict(weights,strict=False)
+    return net
+
+
 @torch.inference_mode()
 def evaluate(checkpoint,output,phase,branch,weight,*,f2_root,smoke=False):
     output.mkdir(parents=True,exist_ok=True)
@@ -322,7 +333,7 @@ def evaluate(checkpoint,output,phase,branch,weight,*,f2_root,smoke=False):
         if path.exists():
             results[key]=load(path)
             continue
-        net=load_model(checkpoint,key).eval()
+        net=load_paired_checkpoint(checkpoint,key).eval()
         edge=EdgeStatistics()
         dev=dev_rows(net,query,regular,key,edge,f2_root)
         old=[] if smoke else old_rows(net,query,key,edge)

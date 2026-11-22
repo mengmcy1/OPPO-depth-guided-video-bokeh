@@ -71,11 +71,11 @@ def optical_counts():
 def wait_for_1a(run):
     while True:
         status=load(run/"dispatch.json")
-        if status.get("status")=="halted":
-            raise RuntimeError(status["reason"])
         checkpoints={b:checkpoint_path(run/"1a"/b,TOTAL) for b in BRANCHES}
         if all(path.is_file() for path in checkpoints.values()) and status.get("1a_checkpoints"):
             return checkpoints
+        if status.get("status")=="halted":
+            raise RuntimeError(status["reason"])
         time.sleep(25)
 
 
