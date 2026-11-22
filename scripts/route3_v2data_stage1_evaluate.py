@@ -1,6 +1,7 @@
 """Paired Stage 1 evaluation on 15 formal development scenes and the legacy three."""
 import argparse
 from collections import defaultdict
+import csv
 from pathlib import Path
 import os
 
@@ -23,7 +24,7 @@ from route3_ovg_refocus_query import original_views
 from route3_s2a_evaluate import masks as legacy_masks
 from route3_s2a_learn import Store
 from route3_upper_bound_evaluate import display,exr
-from route3_v2data_B_batch import FORMAL_DATA,GIB,sha256,write_json
+from route3_v2data_B_batch import FORMAL_DATA,GIB,ROOT,sha256,write_json
 from route3_v2data_B_f2 import build_frame
 from route3_v2data_B_inputs import library_unit_paths,observation
 from route3_v2data_B_plan import load
@@ -44,6 +45,14 @@ FRAMES=(1,30,60)
 LEGACY_CHECKPOINT=ONE_C/"train/aligned/checkpoints/step-005000.pt"
 QUERY=SOURCE/"V1/retrained/step-020000.pt"
 METRICS=("near_in_focus","far_recoverable")
+LEGACY_QUERY_PAIRS=Path("03_实验记录/records/route3-ovg-stage2-2026-11-19-S3-query-pairs.csv")
+QUERY_PAIR_PROTOCOL=(
+    "P2 f/1.4。每个 case 固定权重、可见层、实际焦点、F2 背景、光圈偏移和评分掩码，"
+    "关 Query 只移除第二遍环带隐藏层。阶段 1 使用固定可见层，未启用第一遍边界拆分，"
+    "与 §13.16 的 1c 起点关法相同。§13.16 的 2a/2b 配对还保留第一遍边界背景。"
+    "原三场景沿用旧区域掩码和 F2，按当前检查点重新定焦并构建环带 Query；新开发集使用 v2 LDR 参考。"
+    "按开、关各自的 RGB SSE 和像素数合并求 PSNR，再相减；仅作诊断。"
+)
 
 
 def development_cases(unit):
@@ -58,8 +67,10 @@ def development_cases(unit):
     return cases
 
 
-def dev_cache(unit, cases, f2_root):
-    for frame in FRAMES:
+def dev_cache(unit, cases, f2_root, frames=FRAMES):
+    if torch.is_inference_mode_enabled() or not torch.is_grad_enabled():
+        raise RuntimeError("Development F2 preparation needs autograd for the A-color fit")
+    for frame in frames:
         # The derived F2 cache consumes only the observation-derived inputs.
         if not (f2_entry(unit,frame,f2_root)/"manifest.json").is_file():
             stops=[(case["focus_m"],case["fstop"]) for case in cases if case["frame"]==frame]
@@ -115,6 +126,14 @@ def pooled(values):
     pixels=sum(v["pixels"] for v in values)
     sse=sum(v["sse"] for v in values)
     return dict(sse=sse,pixels=pixels,psnr_db=-10*np.log10(max(sse/(3*pixels),1e-12)) if pixels else None)
+
+
+def paired_psnr(on, off):
+    query_on, query_off = pooled(on), pooled(off)
+    if query_on["pixels"] != query_off["pixels"]:
+        raise ValueError("Query pair uses different pixel support")
+    delta = query_on["psnr_db"] - query_off["psnr_db"] if query_on["pixels"] else None
+    return dict(on=query_on,off=query_off,delta_db=delta)
 
 
 def near_subject(gt,valid,K,nominal):
@@ -183,14 +202,21 @@ def frame_scores(net,query,views,item,cases,scene,model_label,edge,target_for,ba
         offsets=aperture_disk(CONFIG["native_eval_rays"],.05/(2*case["fstop"]),device=K.device,dtype=K.dtype)
         target=display(target_for(case))
         regions=regions_for(case,gt,valid,intrinsics)
-        rays=[]
+        rays_on,rays_off=[],[]
         for part in offsets.split(8):
             bg=background_for(inputs,case,focus,part)
-            rays.append(raster(combined,K,focus,part,512,512,bg).sum(0))
-        rgb=sum(rays)/len(offsets)
+            rays_on.append(raster(combined,K,focus,part,512,512,bg).sum(0))
+            rays_off.append(raster(visible,K,focus,part,512,512,bg).sum(0))
+        rgb_on=sum(rays_on)/len(offsets)
+        rgb_off=sum(rays_off)/len(offsets)
+        metric,mask = (("near_in_focus",regions["in_focus"]) if case["focus_index"]==0 else
+                       ("far_recoverable",regions["recoverable"]))
+        on=region_errors(rgb_on,target,mask)
+        off=region_errors(rgb_off,target,mask)
         rows.append(dict(row,status="evaluated",actual_focus_m=focus,zero_visible=zero_visible,zero_combined=zero,
-                         near_in_focus=region_errors(rgb,target,regions["in_focus"]) if case["focus_index"]==0 else None,
-                         far_recoverable=region_errors(rgb,target,regions["recoverable"]) if case["focus_index"]==1 else None))
+                         near_in_focus=on if metric=="near_in_focus" else None,
+                         far_recoverable=on if metric=="far_recoverable" else None,
+                         query_pair={metric:paired_psnr([on],[off])}))
     return rows
 
 
@@ -198,7 +224,6 @@ def dev_rows(net,query,units,label,edge,f2_root):
     result=[]
     for unit in units:
         cases=development_cases(unit)
-        dev_cache(unit,cases,f2_root)
         views=[view_from_observation(observation(unit,frame,aligned=True),frame) for frame in legacy.TRAIN_FRAMES]
         for frame in FRAMES:
             item=("B",unit.name,legacy.TRAIN_FRAMES.index(frame))
@@ -256,6 +281,21 @@ def summary(rows):
             psnr={scene:pooled(block)["psnr_db"] for scene,block in by_scene.items()}
             measure.update(per_scene=psnr,scene_standard_deviation_db=float(np.std(list(psnr.values()),ddof=1)) if len(psnr)>1 else None)
         out[metric]=measure
+    pairs={}
+    for metric in METRICS:
+        by_scene=defaultdict(list)
+        for row in active:
+            pair=row.get("query_pair",{}).get(metric)
+            if pair and pair["on"]["pixels"]:
+                by_scene[row["scene"]].append(pair)
+        if by_scene:
+            def merge(block):
+                return dict(paired_psnr([p["on"] for p in block],[p["off"] for p in block]),
+                            scored_cases=len(block))
+            pairs[metric]=dict(merge([p for values in by_scene.values() for p in values]),
+                               per_scene={scene:merge(block) for scene,block in by_scene.items()})
+    if pairs:
+        out["query_pair"]=pairs
     return out
 
 
@@ -318,20 +358,35 @@ def load_paired_checkpoint(checkpoint,key,device="cuda"):
     return net
 
 
-@torch.inference_mode()
-def evaluate(checkpoint,output,phase,branch,weight,*,f2_root,smoke=False):
-    output.mkdir(parents=True,exist_ok=True)
+def development_units(smoke=False):
     units=library_unit_paths("dev")
     if len(units)!=15:
         raise ValueError("the paired Stage 1 evaluation needs the 15 registered development scenes")
-    regular=units[:1] if smoke else units
+    return units[:1] if smoke else units
+
+
+def prepare_development(units,f2_root):
     f2_root.mkdir(parents=True,exist_ok=True)
+    for unit in units:
+        dev_cache(unit,development_cases(unit),f2_root)
+
+
+def evaluate(checkpoint,output,phase,branch,weight,*,f2_root,smoke=False,versions=("ema","model")):
+    output.mkdir(parents=True,exist_ok=True)
+    regular=development_units(smoke)
+    prepare_development(regular,f2_root)
+    return score_checkpoint(checkpoint,output,phase,branch,weight,regular,f2_root,smoke,versions)
+
+
+@torch.inference_mode()
+def score_checkpoint(checkpoint,output,phase,branch,weight,regular,f2_root,smoke,versions):
     query=query_net(QUERY)
     results={}
-    for key in ("ema","model"):
+    for key in versions:
         path=output/(key+".json")
-        if path.exists():
-            results[key]=load(path)
+        previous=load(path)
+        if previous.get("query_pair_protocol")==QUERY_PAIR_PROTOCOL:
+            results[key]=previous
             continue
         net=load_paired_checkpoint(checkpoint,key).eval()
         edge=EdgeStatistics()
@@ -348,6 +403,7 @@ def evaluate(checkpoint,output,phase,branch,weight,*,f2_root,smoke=False):
                           same_surface_step_m_inv=float(np.median(near)) if near else None,
                           same_surface_metric="median of per-scene/direction same-surface |inverse-depth excess| p95, 0–2 px",
                           evaluation="P2 actual frozen Query, f/1.4, LDR v2 reference; legacy rows separate",
+                          query_pair_protocol=QUERY_PAIR_PROTOCOL,
                           legacy_note="B K16 L_occ now uses native 512 instead of 2x2 agreement pooling")
         write_json(path,results[key])
         del net
@@ -370,7 +426,19 @@ def legacy_baseline():
                                    "zero_visible_full_image":"zero_visible"}.get(row["region"]))
         if target:
             row_group[target]=dict(pixels=row["pixels"],sse=row["sse"])
+    pair={}
+    with (ROOT/LEGACY_QUERY_PAIRS).open(newline="") as stream:
+        for row in csv.DictReader(stream):
+            if (row["stage"],row["scene"],row["protocol"],row["aperture"],row["method"],row["weights"],
+                row["split"],row["second"])!=("1c","pooled","P2","1.4","OVG","EMA","retrieved","True"):
+                continue
+            metric={("1.4","in_focus"):"near_in_focus",("5.0","recoverable"):"far_recoverable"}.get(
+                (row["nominal_focus_m"],row["region"]))
+            if metric:
+                pair[metric]=dict(on_db=float(row["psnr"]),off_db=float(row["reference_psnr"]),
+                                  delta_db=float(row["PSNR_delta"]),pixels=int(row["pixels"]),cases=int(row["cases"]))
     return dict(checkpoint=str(LEGACY_CHECKPOINT),source=str(source),summary=summary(list(fields.values())),
+                query_pair=pair,query_pair_source=str(LEGACY_QUERY_PAIRS),
                 note="以前的旧 1c 计算记录。新 B L_occ 使用原生 512。")
 
 
@@ -404,10 +472,17 @@ if __name__=="__main__":
     p.add_argument("--branch",choices=("original","same-surface"),required=True)
     p.add_argument("--weight",type=float,required=True)
     p.add_argument("--smoke",action="store_true")
+    p.add_argument("--ema-only",action="store_true")
+    p.add_argument("--prepare-f2-only",action="store_true")
     args=p.parse_args()
     if os.environ.get("CUDA_VISIBLE_DEVICES")!="0":
         p.error("assign the shared CUDA device before evaluation")
     torch.set_num_threads(4)
     cv2.setNumThreads(2)
-    torch.cuda.set_per_process_memory_fraction(12*GIB/torch.cuda.get_device_properties(0).total_memory,0)
-    evaluate(args.checkpoint,args.output,args.phase,args.branch,args.weight,f2_root=args.f2_root,smoke=args.smoke)
+    if args.prepare_f2_only:
+        prepare_development(development_units(args.smoke),args.f2_root)
+    else:
+        torch.cuda.set_per_process_memory_fraction(12*GIB/torch.cuda.get_device_properties(0).total_memory,0)
+        versions=("ema",) if args.ema_only else ("ema","model")
+        evaluate(args.checkpoint,args.output,args.phase,args.branch,args.weight,
+                 f2_root=args.f2_root,smoke=args.smoke,versions=versions)
