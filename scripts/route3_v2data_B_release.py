@@ -16,10 +16,12 @@ DISPATCH_PATCH_VERSION = "p2-cpu-workers-3"
 PREVIOUS_GPU_DISPATCHES = {
     "p2-training-gpu-slots-optical-gate": "dispatch-gpu-slots-p2.json",
     "p2-training-gpu-slots-planner-decision": "dispatch-gpu-slots-planner-p2.json",
+    "p2-training-gpu-slots-scene-failure-recovery": "dispatch-gpu-slots-recovery-p2.json",
 }
-GPU_DISPATCH_VERSION = "p2-training-gpu-slots-scene-failure-recovery"
+GPU_DISPATCH_VERSION = "p2-training-gpu-slots-category-coverage"
 GPU_DISPATCH_FILES = ("route3_v2data_B_geometry_pair.py", "route3_v2data_B_geometry_slots.py")
-GPU_DISPATCH_RECEIPT = FORMAL_DATA/"dispatch-gpu-slots-recovery-p2.json"
+GPU_DISPATCH_RECEIPT = FORMAL_DATA/"dispatch-gpu-slots-category-coverage-p2.json"
+GEOMETRY_REQUEUE = FORMAL_DATA/"p2-review/large-foreground-requeue-2026-11-22.json"
 PLANNER_OVERRIDE = FORMAL_DATA/"p2-review/geometry-pair-planner-override.json"
 FALLBACK_RECOVERY = FORMAL_DATA/"p2-review/geometry-slot-fallback-recovery-130.json"
 P2_CHANGED_FILES = {"route3_v2data_B_scene.py", "route3_v2data_B_batch.py"}
@@ -130,6 +132,9 @@ def verifies_dispatch(state, receipt):
     recovery = gpu.get("fallback_recovery")
     if recovery and (recovery["path"]!=str(FALLBACK_RECOVERY.relative_to(FORMAL_DATA))
                      or digest(FALLBACK_RECOVERY)!=recovery["sha256"]):
+        return False
+    requeue = gpu["geometry_requeue"]
+    if requeue["path"]!=str(GEOMETRY_REQUEUE.relative_to(FORMAL_DATA)) or digest(GEOMETRY_REQUEUE)!=requeue["sha256"]:
         return False
     return gpu["adopted"]==bool(result["adopted"] or approval)
 

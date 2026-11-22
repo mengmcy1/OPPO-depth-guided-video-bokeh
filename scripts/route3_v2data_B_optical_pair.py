@@ -318,7 +318,7 @@ def optical_slot_probe(group, allocation, tri_cpus, baseline, estimate, run):
     return report
 
 
-def produce_pairs(estimate, allocation, version, *, survey_slots=False, on_policy_decision=None):
+def produce_pairs(estimate, allocation, version, *, survey_slots=False, on_policy_decision=None, on_selection=None):
     target = FORMAL_DATA / "optical"
     target.mkdir(exist_ok=True)
     selection = target/"selection.json"
@@ -330,7 +330,10 @@ def produce_pairs(estimate, allocation, version, *, survey_slots=False, on_polic
     failures = load(failures_path) or []
     excluded = {row["scene_id"] for row in failures}
     counts = Counter(row["category"] for row in failures if row.get("counts_toward_pause", True))
-    pending = iter(load(selection))
+    candidates = load(selection)
+    if on_selection:
+        on_selection(candidates,selection)
+    pending = iter(candidates)
     slots_path = target/"slot-decision.json"
     policy = load(slots_path) or dict(baseline=[],baseline_accepted=0,slots=2)
     coordinator, geometry, gpu = allocation

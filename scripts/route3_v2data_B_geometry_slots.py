@@ -9,7 +9,7 @@ from route3_v2data_B_batch import FORMAL_DATA, RECORD, sha256, write_json
 from route3_v2data_B_geometry_pair import GPU_CAP, PAIR_CPUS, REVIEW, TRIAL, stage_geometry
 from route3_v2data_B_plan import load
 from route3_v2data_B_release import (
-    FALLBACK_RECOVERY, GPU_DISPATCH_RECEIPT, GPU_DISPATCH_VERSION, PLANNER_OVERRIDE,
+    GEOMETRY_REQUEUE, GPU_DISPATCH_RECEIPT, GPU_DISPATCH_VERSION, PLANNER_OVERRIDE,
     approved_geometry_override, code_hash, gpu_dispatch_code, previous_gpu_dispatch, validate_p2,
 )
 
@@ -17,14 +17,10 @@ from route3_v2data_B_release import (
 PAIR_HANDOFF = "training GPU slots and optical gate dispatch takeover"
 NOISE_RESULT = REVIEW/"geometry-pair-noise-result.json"
 POSTCHECK_PREREGISTRATION = REVIEW/"geometry-gpu-slot-postcheck-preregistration.json"
-ACCEPTED_GEOMETRY_GAP = dict(
-    scene_id="training-038-4df143ee5d0b1f26", label="已接受的缺口：training-038",
-    failed_checks="13 帧同种子分层互补误差为 0.20–0.26，上限 0.002",
-    coverage_passed=True, complement_error_other_completed_units_at_registration=0.0,
+OPTICAL_GATE_POLICY = dict(
+    maximum_training_failures=10, minimum_category_coverage_percent=90,
+    requires_drained_sealed_training_queue=True, selection_pool="admitted_training_geometry",
 )
-OPTICAL_GATE_POLICY = dict(maximum_training_failures=3, category_pause_at=2,
-                           requires_drained_sealed_training_queue=True,
-                           selection_pool="admitted_training_geometry")
 SURVEY_UNITS = 30
 EXTRA_CPU = (19, 20, 21, 22)
 QUEUE_MIN = 5
@@ -45,33 +41,30 @@ def install_gpu_dispatch(plan, state):
     if previous_ref and previous_ref["version"]==GPU_DISPATCH_VERSION:
         validate_p2(plan, state, generator)
         return load(GPU_DISPATCH_RECEIPT)
-    if not state.get("dispatch_cpu_workers"):
-        raise ValueError("the preceding CPU dispatcher receipt is required")
+    if not state.get("dispatch_cpu_workers") or not previous_ref:
+        raise ValueError("the preceding geometry dispatcher receipts are required")
     qualification = dict(path=str(NOISE_RESULT.relative_to(FORMAL_DATA)),sha256=sha256(NOISE_RESULT))
-    if previous_ref:
-        previous = previous_gpu_dispatch(previous_ref,state,generator)
-        if not previous or previous["qualification"]!=qualification:
-            raise ValueError("the preceding GPU dispatch receipt or its qualification changed")
+    previous = previous_gpu_dispatch(previous_ref,state,generator)
+    if not previous or previous["qualification"]!=qualification:
+        raise ValueError("the preceding GPU dispatch receipt or its qualification changed")
     approval = approved_geometry_override(qualification,result)
     approval_ref = dict(path=str(PLANNER_OVERRIDE.relative_to(FORMAL_DATA)),
                         sha256=sha256(PLANNER_OVERRIDE)) if approval else None
     record = load(RECORD)
-    recovery = load(FALLBACK_RECOVERY)
-    recovery_ref = None
-    if recovery:
-        fallback = record["v2"].get("geometry_pair_fallback")
-        if not fallback or fallback!=recovery["original_fallback"]:
-            raise ValueError("the scene failure recovery does not match the recorded fallback")
-        if any(sha256(FORMAL_DATA/ref["path"])!=ref["sha256"] for ref in recovery["audits"].values()):
-            raise ValueError("the dual and single retry radiance audits changed")
-        recovery_ref = dict(path=str(FALLBACK_RECOVERY.relative_to(FORMAL_DATA)),sha256=sha256(FALLBACK_RECOVERY))
+    requeue = load(GEOMETRY_REQUEUE)
+    if not (requeue and requeue["authority"]=="规划方决定，经用户同意"
+            and requeue["decision"]=="resume_large_foreground_with_two_gpu_slots"
+            and requeue["original_fallback"]==record["v2"].get("geometry_pair_fallback")
+            and (result["adopted"] or approval)):
+        raise ValueError("the approved geometry requeue does not match the live single-slot fallback")
+    requeue_ref = dict(path=str(GEOMETRY_REQUEUE.relative_to(FORMAL_DATA)),sha256=sha256(GEOMETRY_REQUEUE))
     code = gpu_dispatch_code()
     patch = dict(version=GPU_DISPATCH_VERSION, parent=state["dispatch_cpu_workers"],
                  generation_release_sha256=release["sha256"], generator_code_sha256=result["generator_code_sha256"],
                  dispatch_code=code, dispatch_code_sha256=code_hash(code),
                  qualification=qualification, qualification_adopted=result["adopted"], planner_override=approval_ref,
-                 previous_gpu_dispatch=previous_ref, fallback_recovery=recovery_ref,
-                 adopted=bool(result["adopted"] or approval),
+                 previous_gpu_dispatch=previous_ref, fallback_recovery=previous.get("fallback_recovery"),
+                 geometry_requeue=requeue_ref, adopted=True,
                  optical_gate_policy=OPTICAL_GATE_POLICY, maximum_vram_bytes=GPU_CAP,
                  gpu_slot_cpus=PAIR_CPUS,
                  extra_cpu_worker_cores=EXTRA_CPU, extra_worker_ready_queue_threshold=QUEUE_MIN,
@@ -91,13 +84,6 @@ def install_gpu_dispatch(plan, state):
     )
     if approval:
         record["v2"]["geometry_pair_planner_override"] = dict(approval,receipt=approval_ref)
-    if recovery:
-        resumed = datetime.fromisoformat(patch["switched_at_utc"])
-        stopped = datetime.fromisoformat(recovery["fallback_at_utc"])
-        record["v2"]["geometry_pair_fallback_recovery"] = dict(
-            recovery, receipt=recovery_ref, resumed_at_utc=patch["switched_at_utc"],
-            single_slot_interruption_seconds=(resumed-stopped).total_seconds(),
-        )
     postcheck = load(POSTCHECK_PREREGISTRATION)
     if postcheck:
         record["v2"]["geometry_gpu_slot_postcheck"] = postcheck
@@ -107,12 +93,55 @@ def install_gpu_dispatch(plan, state):
     for unit in state["units"]:
         if unit["partition"]=="training":
             provenance["per_scene"].setdefault(unit["scene_id"],"single")
-    record["v2"].setdefault("target_gap_details", {})["train_geometry"] = dict(
-        accepted=[ACCEPTED_GEOMETRY_GAP],
-    )
     record["v2"]["p2_dispatch"].update(status="running_geometry_gpu_slots", stop_after_current=False)
     write_json(RECORD, record)
     return patch
+
+
+def apply_geometry_requeue(patch, failures_path):
+    request = load(GEOMETRY_REQUEUE)
+    ref = patch["geometry_requeue"]
+    if sha256(GEOMETRY_REQUEUE)!=ref["sha256"]:
+        raise ValueError("the geometry requeue receipt changed")
+    record = load(RECORD)
+    v2 = record["v2"]
+    original = request["preserved_original_failures"]
+    skipped = request["original_skips"]
+    live_failures = load(failures_path)
+    if any(row not in live_failures for row in original):
+        raise ValueError("the four original geometry failures must remain unchanged")
+    if any(row in live_failures for row in skipped):
+        if sha256(failures_path)!=request["original_failures_sha256"]:
+            raise ValueError("the failure registry differs from the approved requeue")
+        history = [dict(row, status="类别暂停导致跳过，已重新派发") for row in skipped]
+        v2["large_foreground_requeue"] = dict(
+            request, receipt=ref, status="redispatched",
+            started_at_utc=patch["switched_at_utc"], history=history,
+        )
+        v2.setdefault("target_gap_details", {}).setdefault("train_geometry", {})["accepted"] = request["accepted_geometry_gaps"]
+        write_json(RECORD,record)
+        write_json(failures_path,[row for row in live_failures if row not in skipped])
+    elif v2.get("large_foreground_requeue", {}).get("receipt")!=ref:
+        raise ValueError("the archived category skips do not have a matching production record")
+
+
+def record_geometry_requeue_outcome(units, failures):
+    record = load(RECORD)
+    rerun = record["v2"]["large_foreground_requeue"]
+    scope = {row["scene_id"] for row in rerun["original_skips"]}
+    admitted = {row["scene_id"]:row["geometry_gpu_slots"] for row in units if row["scene_id"] in scope}
+    failed = [row for row in failures if row["scene_id"] in scope and row.get("counts_toward_pause", True)]
+    pending = sorted(scope-admitted.keys()-{row["scene_id"] for row in failed})
+    rerun.update(status="pending" if pending else "drained", admitted=admitted, new_failures=failed, pending=pending,
+                 completed_at_utc=datetime.now(timezone.utc).isoformat() if not pending else None)
+    write_json(RECORD,record)
+
+
+def rejected_geometry_radiance(unit, error):
+    if error!="geometry render returned 1":
+        return False
+    audit = load(unit/"labels/radiance-audit.json")
+    return bool(audit and any(not row["passed"] for row in audit["audits"]))
 
 
 def record_geometry_slots(units):
@@ -127,25 +156,36 @@ def record_geometry_slots(units):
 def optical_gate(specs, units, failures):
     planned = {spec["scene_id"]:spec["category"] for spec in specs}
     admitted = {unit["scene_id"] for unit in units if unit["partition"]=="training"}
-    failed = {row["scene_id"] for row in failures}
     counted = {row["scene_id"] for row in failures if row.get("counts_toward_pause", True)}
-    by_category = Counter(planned[scene] for scene in counted & planned.keys())
-    paused = sorted(name for name,count in by_category.items() if count>=OPTICAL_GATE_POLICY["category_pause_at"])
-    unaccounted = sorted(planned.keys()-admitted-failed)
-    contradictory = sorted((admitted & failed) | ((admitted | failed)-planned.keys()))
-    failure_limit_passed = len(counted)<=OPTICAL_GATE_POLICY["maximum_training_failures"]
+    planned_by_category = Counter(planned.values())
+    admitted_by_category = Counter(planned[scene] for scene in admitted & planned.keys())
+    failed_by_category = Counter(planned[scene] for scene in counted & planned.keys())
+    coverage = {}
+    for category,total in sorted(planned_by_category.items()):
+        needed = (total*OPTICAL_GATE_POLICY["minimum_category_coverage_percent"]+99)//100
+        count = admitted_by_category[category]
+        coverage[category] = dict(planned=total,admitted=count,minimum=needed,passed=count>=needed)
+    unaccounted = sorted(planned.keys()-admitted-counted)
+    contradictory = sorted((admitted & counted) | ((admitted | counted)-planned.keys()))
+    checks = dict(
+        all_planned_scenes_resolved=not unaccounted and not contradictory,
+        category_coverage_met=all(row["passed"] for row in coverage.values()),
+        failure_limit_met=len(counted)<=OPTICAL_GATE_POLICY["maximum_training_failures"],
+    )
     return dict(
-        allowed=failure_limit_passed and not paused and not unaccounted and not contradictory,
+        allowed=all(checks.values()), checks=checks, blocked_by=[key for key,passed in checks.items() if not passed],
         policy=OPTICAL_GATE_POLICY, planned=len(planned), admitted=len(admitted), observed_failures=len(counted),
-        failed_scene_ids=sorted(failed), failure_count_by_category=dict(by_category), paused_categories=paused,
-        unaccounted_scene_ids=unaccounted, contradictory_scene_ids=contradictory,
+        failed_scene_ids=sorted(counted), failure_count_by_category=dict(failed_by_category),
+        category_coverage=coverage, unaccounted_scene_ids=unaccounted, contradictory_scene_ids=contradictory,
     )
 
 
 def active_geometry_fallback(v2):
     fallback = v2.get("geometry_pair_fallback")
     recovery = v2.get("geometry_pair_fallback_recovery", {})
-    resolved = recovery.get("resumed_at_utc") and fallback and fallback["at_utc"]==recovery["fallback_at_utc"]
+    requeue = v2.get("large_foreground_requeue", {})
+    resolved = (recovery.get("resumed_at_utc") and fallback and fallback["at_utc"]==recovery["fallback_at_utc"]
+                or requeue.get("started_at_utc") and requeue["original_fallback"]==fallback)
     return fallback if not resolved else None
 
 

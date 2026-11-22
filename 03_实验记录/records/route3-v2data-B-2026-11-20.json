@@ -4887,9 +4887,22 @@
           {
             "scene_id": "training-038-4df143ee5d0b1f26",
             "label": "已接受的缺口：training-038",
-            "failed_checks": "13 帧同种子分层互补误差为 0.20–0.26，上限 0.002",
-            "coverage_passed": true,
-            "complement_error_other_completed_units_at_registration": 0.0
+            "failed_checks": "同种子分层互补误差超出 0.002，原为单槽生成。"
+          },
+          {
+            "scene_id": "training-130-e288403a7bbaa3e3",
+            "label": "已接受的缺口：training-130",
+            "failed_checks": "同种子分层互补误差超出 0.002，单槽重放复现。"
+          },
+          {
+            "scene_id": "training-184-5114de0828d476da",
+            "label": "已接受的缺口：training-184",
+            "failed_checks": "f060 的 composed_display_MAE 为 0.0282，上限 0.025，有效边界像素 18 个，单槽重放复现。"
+          },
+          {
+            "scene_id": "training-211-7b1f5aa0762ff0ba",
+            "label": "已接受的缺口：training-211",
+            "failed_checks": "同种子分层互补误差超出 0.002，原为单槽生成。"
           }
         ]
       }
@@ -6654,6 +6667,239 @@
       },
       "resumed_at_utc": "2026-11-21T15:30:12.095236+00:00",
       "single_slot_interruption_seconds": 438.0402
+    },
+    "large_foreground_requeue": {
+      "decided_at_utc": "2026-11-22T03:16:43.675005+00:00",
+      "authority": "规划方决定，经用户同意",
+      "decision": "resume_large_foreground_with_two_gpu_slots",
+      "rationale": [
+        "训练几何共有 4 个真实失败，与单双槽无关：130 和 184 用单槽重跑后同样失败，038 和 211 本来就是单槽生成的。",
+        "038、130、211 是同一种失败：同种子分层互补误差 0.04–0.34，上限 0.002。它分布在 3 个类别里，发生率约 1%，不是某个类别特有的问题。",
+        "184 只有 f060 一帧不合格：composed_display_MAE 为 0.0282，上限 0.025，该帧有效边界像素只有 18 个。",
+        "274 个已入列单元的互补误差最大为 8.7e-6，说明这个检查能把失败场景完整拦下。",
+        "大前景达到 2 个失败而暂停，依据不成立；由于这次暂停，212–233 共 22 个场景没有生成。"
+      ],
+      "original_fallback": {
+        "at_utc": "2026-11-21T17:34:02.107180+00:00",
+        "failures": {
+          "training-184-5114de0828d476da": "geometry render returned 1"
+        },
+        "archived_attempts": {
+          "training-184-5114de0828d476da": "production-runs/1795275012124929895-cpu-workers/failed-pair-attempts/training-184-5114de0828d476da"
+        }
+      },
+      "original_failures_sha256": "070d7ccf130761dfebe3215a037be8697f57a51464b692545dd23906980b1c5b",
+      "preserved_original_failures": [
+        {
+          "scene_id": "training-038-4df143ee5d0b1f26",
+          "category": "curved_self_occlusion",
+          "reason": "scene process returned 1: render.log",
+          "counts_toward_pause": true
+        },
+        {
+          "scene_id": "training-130-e288403a7bbaa3e3",
+          "category": "multiple_layers",
+          "reason": "scene process returned 1: render.log",
+          "counts_toward_pause": true
+        },
+        {
+          "scene_id": "training-184-5114de0828d476da",
+          "category": "large_foreground",
+          "reason": "scene process returned 1: render.log",
+          "counts_toward_pause": true
+        },
+        {
+          "scene_id": "training-211-7b1f5aa0762ff0ba",
+          "category": "large_foreground",
+          "reason": "scene process returned 1: render.log",
+          "counts_toward_pause": true
+        }
+      ],
+      "original_skips": [
+        {
+          "scene_id": "training-213-47ab8b3090098222",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false
+        },
+        {
+          "scene_id": "training-212-161aa09d97a10429",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false
+        },
+        {
+          "scene_id": "training-214-720d5f6c4f48322f",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false
+        },
+        {
+          "scene_id": "training-215-ec49e3a61ba78f00",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false
+        },
+        {
+          "scene_id": "training-216-d1906ca190d76554",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false
+        },
+        {
+          "scene_id": "training-217-2a71804d11613752",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false
+        },
+        {
+          "scene_id": "training-218-5fcda9bf557dfbd2",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false
+        },
+        {
+          "scene_id": "training-219-58f7b1619d1b258b",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false
+        },
+        {
+          "scene_id": "training-220-7782995c169b7c03",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false
+        },
+        {
+          "scene_id": "training-221-0e3ba7bf508b0384",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false
+        },
+        {
+          "scene_id": "training-222-27f3241488f0303d",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false
+        },
+        {
+          "scene_id": "training-223-99a611427925ffa8",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false
+        },
+        {
+          "scene_id": "training-225-e7d2bdd96db23e35",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false
+        },
+        {
+          "scene_id": "training-224-0a595bfb91359bdd",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false
+        },
+        {
+          "scene_id": "training-226-769a1469c7530fb1",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false
+        },
+        {
+          "scene_id": "training-227-2811e488cecb1a0c",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false
+        },
+        {
+          "scene_id": "training-228-14d48c8ca93b3af9",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false
+        },
+        {
+          "scene_id": "training-229-4568d0269c87a6c1",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false
+        },
+        {
+          "scene_id": "training-230-015f01652fd9e26b",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false
+        },
+        {
+          "scene_id": "training-231-50023ca891b0fa13",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false
+        },
+        {
+          "scene_id": "training-232-c027df1c79b58415",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false
+        },
+        {
+          "scene_id": "training-233-776d75d3f839af90",
+          "category": "large_foreground",
+          "reason": "two failed scenes in category",
+          "counts_toward_pause": false
+        }
+      ],
+      "accepted_geometry_gaps": [
+        {
+          "scene_id": "training-038-4df143ee5d0b1f26",
+          "label": "已接受的缺口：training-038",
+          "failed_checks": "同种子分层互补误差超出 0.002，原为单槽生成。"
+        },
+        {
+          "scene_id": "training-130-e288403a7bbaa3e3",
+          "label": "已接受的缺口：training-130",
+          "failed_checks": "同种子分层互补误差超出 0.002，单槽重放复现。"
+        },
+        {
+          "scene_id": "training-184-5114de0828d476da",
+          "label": "已接受的缺口：training-184",
+          "failed_checks": "f060 的 composed_display_MAE 为 0.0282，上限 0.025，有效边界像素 18 个，单槽重放复现。"
+        },
+        {
+          "scene_id": "training-211-7b1f5aa0762ff0ba",
+          "label": "已接受的缺口：training-211",
+          "failed_checks": "同种子分层互补误差超出 0.002，原为单槽生成。"
+        }
+      ],
+      "prepared_at_registration": [
+        "training-212-161aa09d97a10429",
+        "training-213-47ab8b3090098222",
+        "training-214-720d5f6c4f48322f",
+        "training-215-ec49e3a61ba78f00",
+        "training-216-d1906ca190d76554",
+        "training-217-2a71804d11613752",
+        "training-218-5fcda9bf557dfbd2",
+        "training-219-58f7b1619d1b258b",
+        "training-220-7782995c169b7c03",
+        "training-221-0e3ba7bf508b0384",
+        "training-222-27f3241488f0303d",
+        "training-223-99a611427925ffa8",
+        "training-224-0a595bfb91359bdd",
+        "training-225-e7d2bdd96db23e35",
+        "training-226-769a1469c7530fb1",
+        "training-227-2811e488cecb1a0c",
+        "training-228-14d48c8ca93b3af9",
+        "training-229-4568d0269c87a6c1",
+        "training-230-015f01652fd9e26b",
+        "training-231-50023ca891b0fa13",
+        "training-232-c027df1c79b58415",
+        "training-233-776d75d3f839af90"
+      ],
+      "receipt": {
+        "path": "p2-review/large-foreground-requeue-2026-11-22.json",
+        "sha256": "65515a1aa9bfca2683f9cbbad33c47fa6296b9e0a05881822bbfa1cbdf0a4399"
+      },
+      "status": "authorized"
     }
   }
 }

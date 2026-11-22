@@ -24,8 +24,8 @@ from route3_v2data_B_dispatch import STOP, RunMeter, execute_on, production_lock
 from route3_v2data_B_geometry_pair import PAIR_CPUS, finish_group
 from route3_v2data_B_geometry_slots import (
     EXTRA_CPU, NOISE_RESULT, PAIR_HANDOFF, QUEUE_MIN, SURVEY_UNITS, Survey, install_gpu_dispatch,
-    active_geometry_fallback, optical_gate, preserve_for_retry, process_gpu_samples, record_geometry_slots,
-    update_slot_eta,
+    active_geometry_fallback, apply_geometry_requeue, optical_gate, preserve_for_retry, process_gpu_samples,
+    record_geometry_requeue_outcome, record_geometry_slots, rejected_geometry_radiance, update_slot_eta,
 )
 from route3_v2data_B_optical_pair import execute_serial_optical, paired_trial, produce_pairs, record_trial
 from route3_v2data_B_plan import load
@@ -238,6 +238,7 @@ def dispatch_training(plan, estimate, allocation, publish_worktree=None, *, gpu_
     run_dir.mkdir(parents=True)
     failures_path=TRAINING/"failures.json"
     failures=load(failures_path) or []
+    category_pause = not (gpu_patch and gpu_patch.get("geometry_requeue"))
     blocked=Counter(row["category"] for row in failures if row.get("counts_toward_pause",True))
     excluded={row["scene_id"] for row in failures}
     pending=deque()
@@ -351,7 +352,7 @@ def dispatch_training(plan, estimate, allocation, publish_worktree=None, *, gpu_
                 group=[]
                 while len(group)<width and ready:
                     spec,unit=ready.popleft()
-                    if blocked[spec["category"]]>=2 and unit.name not in retries:
+                    if category_pause and blocked[spec["category"]]>=2 and unit.name not in retries:
                         fail(spec,"two failed scenes in category",False)
                     else:
                         group.append((spec,unit))
@@ -377,7 +378,7 @@ def dispatch_training(plan, estimate, allocation, publish_worktree=None, *, gpu_
                     failed_disk = free<RESERVE_BYTES+estimate
                     break
                 spec,unit=pending.popleft()
-                if blocked[spec["category"]]>=2:
+                if category_pause and blocked[spec["category"]]>=2:
                     fail(spec,"two failed scenes in category",False)
                     continue
                 attempted+=1
@@ -425,9 +426,14 @@ def dispatch_training(plan, estimate, allocation, publish_worktree=None, *, gpu_
                 except (OSError,RuntimeError,ValueError,KeyError,subprocess.SubprocessError) as error:
                     results,errors={},dict.fromkeys((unit.name for _,unit in group),str(error))
                 dual = pair_enabled
-                if dual and errors:
+                runtime_errors = dict(errors)
+                if dual and not category_pause:
+                    for _,unit in group:
+                        if unit.name in errors and rejected_geometry_radiance(unit,errors[unit.name]):
+                            del runtime_errors[unit.name]
+                if dual and runtime_errors:
                     pair_enabled=False
-                    switch=dict(at_utc=datetime.now(timezone.utc).isoformat(), failures=errors, archived_attempts={})
+                    switch=dict(at_utc=datetime.now(timezone.utc).isoformat(), failures=runtime_errors, archived_attempts={})
                 for spec,unit in group:
                     if unit.name in results:
                         result = results[unit.name]
@@ -437,16 +443,16 @@ def dispatch_training(plan, estimate, allocation, publish_worktree=None, *, gpu_
                         accepted+=1
                         if telemetry and first_thirty is None:
                             telemetry.complete(unit)
-                    elif dual:
+                    elif dual and unit.name in runtime_errors:
                         switch["archived_attempts"][unit.name]=preserve_for_retry(unit,run_dir)
                         write_json(PREPARED/f"{unit.name}.json",prepared_receipt(unit,version))
                         retries.add(unit.name)
                         ready.appendleft((spec,unit))
                     else:
                         fail(spec,errors[unit.name])
-                if dual and errors:
+                if dual and runtime_errors:
                     save_pair_record(geometry_pair_fallback=switch)
-                    print("B geometry GPU slots fell back to one slot",errors,flush=True)
+                    print("B geometry GPU slots fell back to one slot",runtime_errors,flush=True)
                 if dual and trace and report:
                     survey.track(report,trace,len(ready),len(results))
                 active=None
@@ -460,6 +466,8 @@ def dispatch_training(plan, estimate, allocation, publish_worktree=None, *, gpu_
     units=archive_status()
     if gpu_patch:
         record_geometry_slots(units)
+        if gpu_patch.get("geometry_requeue"):
+            record_geometry_requeue_outcome(units,failures)
         complete_pair_survey()
     if start_geometry is not None:
         if telemetry and first_thirty is None and telemetry.samples:
@@ -498,7 +506,8 @@ def publish_snapshot(checkout):
                 "geometry_pair_extra_worker","geometry_pair_fallback","optical_slot_decision","optical_geometry_gate",
                 "geometry_pair_noise_policy","geometry_pair_noise_trial","depth_prior_repeatability",
                 "target_gap_details","geometry_pair_planner_override","geometry_gpu_slot_postcheck",
-                "geometry_gpu_slot_provenance","geometry_pair_fallback_recovery"):
+                "geometry_gpu_slot_provenance","geometry_pair_fallback_recovery","large_foreground_requeue",
+                "training_optical_selection"):
         if key in v2:
             tracked["v2"][key]=v2[key]
     write_json(checkout/record_path,tracked)
@@ -516,6 +525,11 @@ def publish_snapshot(checkout):
         note+="双槽运行曾因场景验收失败退回单槽。"
         if not active_geometry_fallback(v2):
             note+="单槽重放复现后排除该场景，并恢复双槽。"
+    rerun=v2.get("large_foreground_requeue",{})
+    if rerun.get("status")=="drained":
+        note+=f"大面积前景补跑入列 {len(rerun['admitted'])}/22 场。"
+        if v2["optical_geometry_gate"].get("allowed"):
+            note+="按各类别至少 90% 覆盖且真实失败至多 10 场的门槛进入训练光学。"
     if "geometry_pair_first_30" in v2:
         measured = v2["geometry_pair_first_30"]
         note+=f"几何双槽实测 {measured['accepted']} 场，入列速度为 {measured['accepted_per_hour']:.2f} 场/小时。"
@@ -575,6 +589,9 @@ def run(estimate, publish_worktree=None, *, gpu_dispatch=False):
             STOP.rename(FORMAL_DATA/"p2-review"/f"dispatch-handoff-{time.time_ns()}")
         plan=load_production_plan(PLAN_DIR/"training.json")
         if gpu_patch:
+            if gpu_patch.get("geometry_requeue"):
+                apply_geometry_requeue(gpu_patch,TRAINING/"failures.json")
+                archive_status()
             record=load(RECORD)
             update_slot_eta(record["v2"],load(TRAINING/"failures.json") or [])
             write_json(RECORD,record)
@@ -599,11 +616,12 @@ def run(estimate, publish_worktree=None, *, gpu_dispatch=False):
             if not decision["allowed"]:
                 v2["p2_finish_eta"].update(status="training_optical_blocked_by_geometry_gate")
             write_json(RECORD,record)
-            if publish_worktree:
-                try_publish_snapshot(publish_worktree)
             if not decision["allowed"]:
+                if publish_worktree:
+                    try_publish_snapshot(publish_worktree)
                 print("B training optical gate blocked",decision,flush=True)
                 return
+            print("B training optical gate passed",decision,flush=True)
         if trial.get("adopted"):
             def progress():
                 record=load(RECORD)
@@ -612,8 +630,20 @@ def run(estimate, publish_worktree=None, *, gpu_dispatch=False):
                 if publish_worktree:
                     try_publish_snapshot(publish_worktree)
 
-            produce_pairs(estimate,allocation,plan["effective_generator_version"],
-                          survey_slots=bool(gpu_patch),on_policy_decision=progress if gpu_patch else None)
+            def selection_ready(candidates, path):
+                record=load(RECORD)
+                record["v2"]["training_optical_selection"]=dict(
+                    count=len(candidates), path=str(path.relative_to(FORMAL_DATA)), sha256=sha256(path),
+                    primary_difficulty=dict(Counter(item["primary_difficulty"] for item in candidates)),
+                    difficulty_labels=dict(Counter(label for item in candidates for label in item["difficulties"])),
+                )
+                record["v2"]["p2_dispatch"]["status"]="dispatching_training_optical"
+                write_json(RECORD,record)
+                print("B training optical selection sealed",len(candidates),flush=True)
+
+            produce_pairs(estimate,allocation,plan["effective_generator_version"],survey_slots=bool(gpu_patch),
+                          on_policy_decision=progress if gpu_patch else None,
+                          on_selection=selection_ready if gpu_patch else None)
         elif gpu_patch:
             raise RuntimeError("the adopted two-slot optical qualification is required")
         else:
