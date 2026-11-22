@@ -261,5 +261,18 @@
       }
     ],
     "logging": "both branches log the unweighted same-surface loss for B and C; only the candidate branch applies the weight"
+  },
+  "postcheck_scope_at_launch": {
+    "dual_by_category": {
+      "thin_structure": 9,
+      "multiple_layers": 52,
+      "large_foreground": 32
+    },
+    "categories_without_dual_units": [
+      "complex_layout",
+      "curved_self_occlusion",
+      "weak_texture"
+    ],
+    "policy": "after 80 optics, report each eligible category and mark unavailable categories as missing"
   }
 }
