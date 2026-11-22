@@ -517,7 +517,11 @@ def publish_snapshot(checkout):
                 "geometry_gpu_slot_provenance","geometry_pair_fallback_recovery","large_foreground_requeue",
                 "training_optical_selection","production_policy","production_halt","optical_full_scope"):
         if key in v2:
-            tracked["v2"][key]=v2[key]
+            if key=="optical_full_scope" and isinstance(tracked["v2"].get(key),dict):
+                # Keep fields added to the tracked record (scheduling, usable, ...) that the live record lacks.
+                tracked["v2"][key]={**tracked["v2"][key],**v2[key]}
+            else:
+                tracked["v2"][key]=v2[key]
     if "optical_full_scope" in v2:
         tracked["v2"]["rules"]["generation_targets"]["train_optical"]=v2["rules"]["generation_targets"]["train_optical"]
     write_json(checkout/record_path,tracked)
