@@ -90,7 +90,11 @@ def reference_snapshot(inventory, directory, boundary):
             ids = complete_optical(inventory)
             if boundary==0 and len(ids)<30:
                 raise ValueError(f"1b needs 30 complete optical and F2 scenes, found {len(ids)}")
-            write_json(path,dict(step=boundary,scene_ids=ids,complete_scenes=len(ids)))
+            all_frames=len(inventory.items["B"])
+            reference_frames=3*len(ids)
+            write_json(path,dict(step=boundary,scene_ids=ids,complete_scenes=len(ids),
+                                 B_total_frames=all_frames,B_frames_with_optical_reference=reference_frames,
+                                 B_reference_frame_fraction=reference_frames/all_frames))
     return load(path)
 
 
@@ -125,14 +129,15 @@ def checkpoint_path(output, step):
     return output/"checkpoints"/f"step-{step:06d}.pt"
 
 
-def store_checkpoint(path, net, ema, opt, step, phase, branch, inventory, counts, batches, seconds):
+def store_checkpoint(path, net, ema, opt, step, phase, branch, inventory, counts, batches, seconds,
+                     reference_usage):
     if path.exists():
         raise FileExistsError(path)
     path.parent.mkdir(parents=True,exist_ok=True)
     pending = path.with_name(f".{path.name}.{os.getpid()}.part")
     torch.save(dict(
         phase=phase, branch=branch, step=step, inventory=inventory, counts=dict(counts),
-        batches=batches, measured_seconds=seconds,
+        batches=batches, measured_seconds=seconds,reference_usage=reference_usage,
         model={key:value.detach().cpu() for key,value in net.state_dict().items() if not key.startswith("encoder.")},
         ema={key:value.detach().cpu() for key,value in ema.items()},
         optimizer=opt.state_dict(),
@@ -166,6 +171,7 @@ def train(args):
     existing = sorted(directory.glob("step-*.pt"))
     source = existing[-1] if existing else args.start
     step_start, prior_seconds, counts, receipts = 1,0.0,Counter(),[]
+    reference_usage = {}
     if source:
         saved = torch.load(source,weights_only=True,map_location="cpu")
         if saved["branch"]!=args.branch or saved["inventory"]!=frozen:
@@ -183,6 +189,7 @@ def train(args):
             prior_seconds=saved["measured_seconds"]
             counts.update(saved["counts"])
             receipts=list(saved["batches"])
+            reference_usage=saved.get("reference_usage",{})
         elif args.phase!="1b" or saved["phase"]!="1a" or saved["step"]!=TOTAL:
             raise ValueError("1b requires its branch's complete 1a checkpoint")
         else:
@@ -226,6 +233,10 @@ def train(args):
         counts[tier]+=1
         if spec:
             counts["optical_"+tier]+=1
+        if args.phase=="1b" and tier=="B":
+            usage=reference_usage.setdefault(str(epoch),dict(B_batches=0,B_batches_with_L_bokeh=0))
+            usage["B_batches"]+=1
+            usage["B_batches_with_L_bokeh"]+=int("bokeh" in terms)
         identity = [str(x) for x in item]
         if spec:
             identity += [str(spec["focus"]),str(spec["fstop"])]
@@ -243,8 +254,16 @@ def train(args):
             print(f"stage1 {args.phase} {args.branch} step {step}",flush=True)
         if step%SAVE_INTERVAL==0 or step==args.steps:
             elapsed=prior_seconds+time.monotonic()-began
+            if args.phase=="1b":
+                usage=reference_usage[str(epoch)]
+                directory=args.output/"reference-usage"
+                directory.mkdir(exist_ok=True)
+                write_json(directory/f"step-{epoch:06d}.json",dict(
+                    usage,reference_step=epoch,through_step=step,branch=args.branch,
+                    B_batches_L_bokeh_fraction=usage["B_batches_with_L_bokeh"]/usage["B_batches"],
+                ))
             store_checkpoint(checkpoint_path(args.output,step),net,ema,opt,step,args.phase,args.branch,
-                             frozen,counts,receipts,elapsed)
+                             frozen,counts,receipts,elapsed,reference_usage)
 
 
 if __name__=="__main__":

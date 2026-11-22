@@ -93,7 +93,7 @@ def publish_postcheck(checkout,result,path):
     record=load(checkout/relative)
     record["v2"]["geometry_gpu_slot_postcheck_result"]=dict(
         path=str(path),sha256=sha256(path),passed=result["passed"],missing_categories=result["missing_categories"],
-        measured_categories=list(result["comparisons"]),groups={
+        measured_categories=list(result["comparisons"]),hard_optical_available=result["hard_optical_available"],groups={
             mode:{key:row[key] for key in ("scenes","statistics")} for mode,row in result["descriptive"].items()
         },note=result["note"],
     )
@@ -118,9 +118,12 @@ def run_postcheck(run, production_record, checkout):
             publish_postcheck(checkout,load(result_path),result_path)
             return
         while True:
-            counts=load(FORMAL_DATA/"manifest.json")["counts"]
-            if counts["train_optical"]==80:
-                break
+            hard=load(FORMAL_DATA/"optical/hard-milestone.json")
+            if hard.get("rendered")==80:
+                ready=all((FORMAL_DATA/"derived-f2"/name/f"f{frame:03d}"/"manifest.json").is_file()
+                          for name in hard["scene_ids"] for frame in (1,30,60))
+                if ready:
+                    break
             time.sleep(45)
         record=load(production_record)["v2"]
         policy=record[POSTCHECK_POLICY]
@@ -158,7 +161,7 @@ def run_postcheck(run, production_record, checkout):
         result=dict(
             preregistered_policy=policy,finished_at_utc=stamp(),GPU_and_queue_seconds=gpu_seconds,
             passed=not missing and all(row["passed"] for row in tests.values()),comparisons=tests,descriptive=description,
-            missing_categories=missing,
+            missing_categories=missing,hard_optical_available=hard["rendered"],hard_scene_ids=hard["scene_ids"],
             note="无双槽单元的类别记缺失；波动参照包含两项被判定的差异，结果只记录，不作为生产门槛。",
         )
         write_json(result_path,result)

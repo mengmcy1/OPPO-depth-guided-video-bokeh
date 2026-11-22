@@ -247,10 +247,41 @@ def geometry_publication(path):
                 failures=result["failures"])
 
 
+def register_full_optical(checkout,state,available,failures,target):
+    categories={row["scene_id"]:row["category"]
+                for row in load(FORMAL_DATA/"sealed-scene-plans/training.json")["scenes"]}
+    ready=[row for row in state["optical_units"] if row["scene_id"] in available]
+    value=dict(
+        scope="全部已入列训练几何",target=target,available=len(ready),missing=target-len(ready),
+        rendered=len(state["optical_units"]),F2_failures=failures,
+        available_by_category=dict(Counter(categories[row["scene_id"]] for row in ready)),
+        available_by_primary_difficulty=dict(Counter(row["primary_difficulty"] for row in ready)),
+        available_by_difficulty_label=dict(Counter(tag for row in ready for tag in row["difficulties"])),
+        finished_at_utc=datetime.now(timezone.utc).isoformat(),
+    )
+    path=FORMAL_DATA/"p2-review/full-optical-available.json"
+    digest=write_json(path,value)
+    subprocess.run(["git","pull","--rebase","origin","main"],cwd=checkout,check=True)
+    relative=Path("03_实验记录/records")/RECORD.name
+    record=load(checkout/relative)
+    record["v2"].setdefault("optical_full_scope",{})["available_outcome"] = dict(
+        value,path=str(path.relative_to(FORMAL_DATA)),sha256=digest,
+    )
+    write_json(checkout/relative,record)
+    subprocess.run(["git","diff","--check"],cwd=checkout,check=True)
+    subprocess.run(["git","add","--",str(relative)],cwd=checkout,check=True)
+    subprocess.run(["git","diff","--cached","--check"],cwd=checkout,check=True)
+    subprocess.run(["git","commit","-m","报告 B 全量光学和 F2 可用结果",
+                    "-m","Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"],cwd=checkout,check=True)
+    subprocess.run(["git","pull","--rebase","origin","main"],cwd=checkout,check=True)
+    subprocess.run(["git","push","origin","HEAD:main"],cwd=checkout,check=True)
+
+
 def monitor(output, checkout, production_record=RECORD):
     output.mkdir(parents=True,exist_ok=True)
     created, failed = set(), {}
     first_optical = []
+    write_json(output/'F2-worker.json',dict(pid=os.getpid(),started_at_utc=datetime.now(timezone.utc).isoformat()))
     prior_geometry = output/'geometry.json'
     if prior_geometry.is_file():
         summary = geometry_publication(prior_geometry)
@@ -291,11 +322,15 @@ def monitor(output, checkout, production_record=RECORD):
                 write_json(output/'optical.json',result)
                 publish({'optical':dict(**result_reference(output/'optical.json'),passed=result['passed'],
                                          failures=result['failures'], transmission=result['transmission'])},checkout)
-            dispatch = load(production_record)["v2"]["p2_dispatch"]["status"]
-            if len(created)==80 or (dispatch in {'completed','completed_with_accepted_geometry_gap','queue_exhausted_with_shortfalls'}
-                                      and len(created)+len(failed)==len(available)):
-                publish({'F2':dict(ready_scenes=len(created),ready_frames=3*len(created),
+            live=load(production_record)["v2"]
+            dispatch=live["p2_dispatch"]["status"]
+            expected=live.get("optical_full_scope",{}).get("total_target",80)
+            if len(created)>=expected or (dispatch in {'completed','completed_with_accepted_geometry_gap','queue_exhausted_with_shortfalls'}
+                                          and len(created)+len(failed)==len(available)):
+                publish({'F2':dict(ready_scenes=len(created),ready_frames=3*len(created),target=expected,
                                   failed_scenes=failed,finished_utc=datetime.now(timezone.utc).isoformat())},checkout)
+                if live.get("optical_full_scope"):
+                    register_full_optical(checkout,state,created,failed,expected)
                 return
         time.sleep(30)
 

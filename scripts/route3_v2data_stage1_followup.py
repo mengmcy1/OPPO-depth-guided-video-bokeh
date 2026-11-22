@@ -128,6 +128,19 @@ def evaluate_milestone(run, phase, step, checkpoints, weight):
                        effect_smaller_than_scene_spread=difference["effect_smaller_than_scene_spread"])
 
 
+def reference_reports(run):
+    reports=[]
+    for path in sorted((run/"reference-pools").glob("step-*.json")):
+        snapshot=load(path)
+        measured={}
+        for branch in BRANCHES:
+            usage=load(run/"1b"/branch/"reference-usage"/path.name)
+            if usage:
+                measured[branch]=usage
+        reports.append(dict(snapshot,actual_B_usage_by_branch=measured))
+    return reports
+
+
 def follow(run,checkout,production_record):
     run.mkdir(parents=True,exist_ok=True)
     with (run/"followup.lock").open("a") as lock:
@@ -168,7 +181,7 @@ def follow(run,checkout,production_record):
                 runner.status(status="evaluating_1b",step=step)
                 results,summary=evaluate_milestone(run,"1b",step,paths,weight)
                 snapshot={f"1b_step_{step}":summary,
-                          "1b_reference_pools":[load(path) for path in sorted((run/"reference-pools").glob("step-*.json"))]}
+                          "1b_reference_pools":reference_reports(run)}
                 if step==30_000:
                     snapshot["decision"]=adoption(results["original"]["ema"],results["same-surface"]["ema"])
                 label=snapshot.get("decision",{}).get("selected")

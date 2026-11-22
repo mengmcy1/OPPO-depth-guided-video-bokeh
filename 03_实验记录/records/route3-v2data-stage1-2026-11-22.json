@@ -350,5 +350,36 @@
       "started_at_utc": "2026-11-22T04:18:29.912593+00:00"
     },
     "decision_metric": "median per-scene/direction same-surface edge absolute p95, 0–2 px"
+  },
+  "B_optical_rollout_update": {
+    "approved_by": "用户",
+    "registered_at_utc": "2026-11-22T05:03:52.844069+00:00",
+    "hard_count": 80,
+    "current_geometry_scope": 295,
+    "reference_refresh": {
+      "steps": [
+        0,
+        5000,
+        10000,
+        15000,
+        20000,
+        25000
+      ],
+      "pool": "all rendered-and-F2-complete training scenes available at refresh",
+      "measures": [
+        "available optical B frame fraction",
+        "actual B L_bokeh batch fraction, by arm"
+      ]
+    },
+    "postcheck": "after the 80 hard scenes are complete, independent of the remainder",
+    "GPU_priority": {
+      "training_step_slowdown_limit": 1.5,
+      "stages": [
+        1,
+        2,
+        3
+      ],
+      "fallback_optical_slots": 1
+    }
   }
 }
