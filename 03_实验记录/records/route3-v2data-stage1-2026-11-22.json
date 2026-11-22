@@ -274,5 +274,81 @@
       "weak_texture"
     ],
     "policy": "after 80 optics, report each eligible category and mark unavailable categories as missing"
+  },
+  "1a_start": {
+    "dispatch": {
+      "status": "1a_running",
+      "benchmark_mode": "serial",
+      "mode": "parallel",
+      "phase_started_at_utc": "2026-11-22T04:18:29.910113+00:00"
+    },
+    "benchmark": {
+      "benchmarks": {
+        "parallel": {
+          "passed": true,
+          "steps_per_branch": 500,
+          "seconds": 88.02366608008742,
+          "combined_steps_per_second": 11.360581131557964,
+          "peak_combined_gpu_mib": 11095,
+          "traces": [
+            {
+              "seconds": 88.02366608008742,
+              "peak_combined_gpu_mib": 11095,
+              "attempts": {
+                "original": 1,
+                "same-surface": 1
+              }
+            }
+          ]
+        },
+        "serial": {
+          "passed": true,
+          "steps_per_branch": 500,
+          "seconds": 163.11868102476,
+          "combined_steps_per_second": 6.1305056767116,
+          "peak_combined_gpu_mib": 9187,
+          "traces": [
+            {
+              "seconds": 81.56137659028172,
+              "peak_combined_gpu_mib": 9187,
+              "attempts": {
+                "original": 1
+              }
+            },
+            {
+              "seconds": 81.55730443447828,
+              "peak_combined_gpu_mib": 9187,
+              "attempts": {
+                "same-surface": 1
+              }
+            }
+          ]
+        }
+      },
+      "adopted": "parallel",
+      "recorded_at_utc": "2026-11-22T04:18:29.908970+00:00",
+      "optical_concurrent": true,
+      "scope": "500 steps per branch in each compared mode"
+    },
+    "optical": {
+      "train_geometry": 295,
+      "train_optical": 0,
+      "development": 15,
+      "test": 30
+    },
+    "GPU_assignment": {
+      "owner_pid": 614026,
+      "training_pids": {
+        "original": 617864,
+        "same-surface": 617865
+      },
+      "phase": "1a",
+      "mode": "parallel",
+      "gpu_index": 0,
+      "combined_device_limit_gib": 30,
+      "uses_data_lock": false,
+      "started_at_utc": "2026-11-22T04:18:29.912593+00:00"
+    },
+    "decision_metric": "median per-scene/direction same-surface edge absolute p95, 0–2 px"
   }
 }
