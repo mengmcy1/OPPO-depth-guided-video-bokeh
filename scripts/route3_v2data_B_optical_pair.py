@@ -16,6 +16,7 @@ from route3_v2data_B_batch import (
 from route3_v2data_B_plan import load
 from route3_v2data_B_presence import attach_optical_visibility
 from route3_v2data_B_release import OPTICAL_FRAMES, PLAN_DIR, load_production_plan
+from route3_v2data_B_training_share import MAX_DEVICE_MIB, TrainingOverlap, optical_width, training_workers
 from route3_v2data_B_production_policy import (
     OpticalQueue, ProductionHealth, ProductionStop, ranked_optical_candidates, system_failure,
 )
@@ -95,7 +96,8 @@ def stop_children(processes):
 
 
 def render_group(units, allocation, *, parallel, frames=OPTICAL_FRAMES, seed=SEED,
-                 held_lock=None, abort=None, slot_cpus=None, sample_gpu=False, vram_cap=VRAM_CAP):
+                 held_lock=None, abort=None, slot_cpus=None, sample_gpu=False, vram_cap=VRAM_CAP,
+                 coordinated=False):
     if slot_cpus is None:
         workers = [*allocation[1], *allocation[2]]
         half = min(6, len(workers)//2)
@@ -112,6 +114,8 @@ def render_group(units, allocation, *, parallel, frames=OPTICAL_FRAMES, seed=SEE
     with (GPU_LOCK.open("a") if held_lock is None else nullcontext(held_lock)) as lock:
         if held_lock is None:
             fcntl.flock(lock, fcntl.LOCK_EX)
+        overlap=TrainingOverlap(coordinated)
+        overlap.measure_without_optics()
         started = time.monotonic()
         groups = [units] if parallel else [[unit] for unit in units]
         for group in groups:
@@ -138,6 +142,15 @@ def render_group(units, allocation, *, parallel, frames=OPTICAL_FRAMES, seed=SEE
                             raise RuntimeError("combined dispatch resource limit")
                         if rss > RSS_CAP or vram > vram_cap:
                             raise RuntimeError("optical render exceeded its combined RSS or VRAM cap")
+                        if coordinated:
+                            overlap.measure_with_optics(time.monotonic()-started)
+                            current_training=training_workers()
+                            if current_training:
+                                used=int(subprocess.check_output(
+                                    ["nvidia-smi","-i","0","--query-gpu=memory.used","--format=csv,noheader,nounits"],
+                                    text=True).strip())
+                                if used>MAX_DEVICE_MIB:
+                                    raise RuntimeError("optical and training exceeded combined VRAM cap")
                         if sample_gpu:
                             utilization = subprocess.check_output(
                                 ["nvidia-smi", "-i", "0", "--query-gpu=utilization.gpu",
@@ -398,9 +411,11 @@ def produce_pairs(estimate, allocation, version, *, survey_slots=False, on_polic
         health.check()
         group = []
         baseline_pending = survey_slots and policy["baseline_accepted"]<4
-        probe_pending = survey_slots and policy.get("two_slot_mean_gpu_percent",100)<75 and "probe" not in policy
-        width = (min(2,4-policy["baseline_accepted"]) if baseline_pending
-                 else 3 if probe_pending else policy["slots"])
+        shared_width = optical_width() if survey_slots else None
+        probe_pending = (shared_width is None and survey_slots
+                         and policy.get("two_slot_mean_gpu_percent",100)<75 and "probe" not in policy)
+        width = (min(shared_width or 2,4-policy["baseline_accepted"]) if baseline_pending
+                 else shared_width or (3 if probe_pending else policy["slots"]))
         reserve(FORMAL_DATA,estimate*width)
         for _,item in queue.pending(excluded,accepted_ids):
             scene_id = item["scene_id"]
@@ -421,7 +436,7 @@ def produce_pairs(estimate, allocation, version, *, survey_slots=False, on_polic
         is_triple = width==3 and len(group)==3
         run = render_group([unit for _,unit,_ in group],(coordinator,[],gpu),parallel=True,
                            slot_cpus=tri_cpus if is_triple else double_cpus,sample_gpu=baseline_pending,
-                           vram_cap=28*GIB if is_triple else VRAM_CAP)
+                           vram_cap=28*GIB if is_triple else VRAM_CAP,coordinated=survey_slots)
         rows=run["scenes"].copy()
         for _,unit,_ in group:
             row=rows[unit.name]
