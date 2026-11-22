@@ -702,9 +702,225 @@
       "status": "derived_cache_built_on_isolated_training_unit"
     },
     "geometry": {
-      "status": "awaiting_two_formal_p2_units_per_category",
-      "batches_1a": 21,
-      "batches_1b": 70
+      "path": "p2-review/formal-dryrun-b/geometry.json",
+      "sha256": "55999594d852d0e8c7fcc01cb53afe90dd47d9cc13730055c2d56ef758c50dfb",
+      "passed": true,
+      "batches": {
+        "1a/B": {
+          "batches": 21,
+          "optical_batches": 0,
+          "optical_fraction": 0.0,
+          "losses": {
+            "disp": {
+              "batches": 21,
+              "mean": 6.406981638499668,
+              "grad_norm_mean": 76.70698674519856,
+              "grad_norm_max": 141.08633422851562,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 109566,
+              "zero_supervision_batches": 0
+            },
+            "bimodal": {
+              "batches": 21,
+              "mean": 17.67239788600377,
+              "grad_norm_mean": 280.8099165416899,
+              "grad_norm_max": 654.8369750976562,
+              "all_finite": true,
+              "gradient_tensors_min": 78,
+              "supervision": 52550,
+              "zero_supervision_batches": 0
+            },
+            "alpha": {
+              "batches": 21,
+              "mean": 1.0803993997119723,
+              "grad_norm_mean": 8.015360514322916,
+              "grad_norm_max": 21.056211471557617,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 108804,
+              "zero_supervision_batches": 0
+            },
+            "normal": {
+              "batches": 21,
+              "mean": 0.25341249789510456,
+              "grad_norm_mean": 3.8316932292211625,
+              "grad_norm_max": 7.084193229675293,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 5490217,
+              "zero_supervision_batches": 0
+            },
+            "mv": {
+              "batches": 21,
+              "mean": 0.008106771695782385,
+              "grad_norm_mean": 0.06530626706357691,
+              "grad_norm_max": 0.43703484535217285,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 151801,
+              "zero_supervision_batches": 0
+            },
+            "same_surface": {
+              "batches": 21,
+              "mean": 0.019491317659793866,
+              "grad_norm_mean": 0.3085982636326835,
+              "grad_norm_max": 1.052800178527832,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 2619634,
+              "zero_supervision_batches": 0
+            },
+            "total_base": {
+              "batches": 21,
+              "mean": 11.403697683697654,
+              "grad_norm_mean": 138.60059665498278,
+              "grad_norm_max": 280.6880798339844,
+              "all_finite": true,
+              "gradient_tensors_min": 78,
+              "supervision": null,
+              "zero_supervision_batches": null
+            },
+            "total_candidate": {
+              "batches": 21,
+              "mean": 11.423189026968819,
+              "grad_norm_mean": 138.76512000674293,
+              "grad_norm_max": 280.8360290527344,
+              "all_finite": true,
+              "gradient_tensors_min": 78,
+              "supervision": null,
+              "zero_supervision_batches": null
+            }
+          },
+          "supervision": {
+            "disp": 109566,
+            "bimodal": 52550,
+            "alpha": 108804,
+            "mv": 151801,
+            "normal": 5490217,
+            "same_surface": 2619634,
+            "pair_right": 1310956,
+            "pair_excluded_crossing_right": 58356,
+            "pair_down": 1308678,
+            "pair_excluded_crossing_down": 53642
+          }
+        },
+        "1b/B": {
+          "batches": 70,
+          "optical_batches": 0,
+          "optical_fraction": 0.0,
+          "losses": {
+            "disp": {
+              "batches": 70,
+              "mean": 6.478851313250406,
+              "grad_norm_mean": 75.95239118848528,
+              "grad_norm_max": 263.54248046875,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 390080,
+              "zero_supervision_batches": 0
+            },
+            "bimodal": {
+              "batches": 70,
+              "mean": 17.756591136114938,
+              "grad_norm_mean": 280.8463895525251,
+              "grad_norm_max": 793.7671508789062,
+              "all_finite": true,
+              "gradient_tensors_min": 78,
+              "supervision": 188021,
+              "zero_supervision_batches": 0
+            },
+            "alpha": {
+              "batches": 70,
+              "mean": 2.145310686315809,
+              "grad_norm_mean": 15.582762513841901,
+              "grad_norm_max": 44.559356689453125,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 18348094,
+              "zero_supervision_batches": 0
+            },
+            "mv": {
+              "batches": 70,
+              "mean": 0.007959801211420979,
+              "grad_norm_mean": 0.06672614555905707,
+              "grad_norm_max": 0.450298547744751,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 521493,
+              "zero_supervision_batches": 0
+            },
+            "same_surface": {
+              "batches": 70,
+              "mean": 0.019605903680037173,
+              "grad_norm_mean": 0.2990178293415478,
+              "grad_norm_max": 1.139129638671875,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 8393251,
+              "zero_supervision_batches": 0
+            },
+            "occ": {
+              "batches": 70,
+              "mean": 0.8225945053356034,
+              "grad_norm_mean": 13.336584575687136,
+              "grad_norm_max": 123.5881576538086,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 16861636,
+              "zero_supervision_batches": 0
+            },
+            "zero": {
+              "batches": 70,
+              "mean": 0.0022076421433926694,
+              "grad_norm_mean": 4.556916267566586e-07,
+              "grad_norm_max": 1.2384123238007305e-06,
+              "all_finite": true,
+              "gradient_tensors_min": 76,
+              "supervision": 4587520,
+              "zero_supervision_batches": 0
+            },
+            "total_base": {
+              "batches": 70,
+              "mean": 12.075519595827375,
+              "grad_norm_mean": 137.47261663164412,
+              "grad_norm_max": 450.14434814453125,
+              "all_finite": true,
+              "gradient_tensors_min": 78,
+              "supervision": null,
+              "zero_supervision_batches": null
+            },
+            "total_candidate": {
+              "batches": 70,
+              "mean": 12.095125477654593,
+              "grad_norm_mean": 137.62712871006556,
+              "grad_norm_max": 450.2225646972656,
+              "all_finite": true,
+              "gradient_tensors_min": 78,
+              "supervision": null,
+              "zero_supervision_batches": null
+            }
+          },
+          "supervision": {
+            "disp": 390080,
+            "bimodal": 188021,
+            "alpha": 18348094,
+            "mv": 521493,
+            "same_surface": 8393251,
+            "pair_right": 4198218,
+            "pair_excluded_crossing_right": 211369,
+            "pair_down": 4195033,
+            "pair_excluded_crossing_down": 188188,
+            "occ_reveal": 18052,
+            "occ_block": 16843584,
+            "occ": 16861636,
+            "hidden_eligible": 128755,
+            "hidden_placed": 124965,
+            "zero": 4587520
+          }
+        }
+      },
+      "failures": []
     },
     "optical": {
       "status": "awaiting_first_formal_optical_release_and_F2",

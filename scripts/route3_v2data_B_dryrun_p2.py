@@ -217,7 +217,7 @@ def optical_plan(inventory,names):
 
 
 def publish(values, checkout):
-    path = checkout/REPORT.relative_to(ROOT)
+    path = checkout/'03_实验记录/records'/REPORT.name
     lock = checkout/'.git'
     if checkout==ROOT or not lock.exists():
         raise ValueError('publication must use a separate Git worktree')
@@ -229,17 +229,34 @@ def publish(values, checkout):
     subprocess.run(['git','add','--',str(path.relative_to(checkout))],cwd=checkout,check=True)
     changed = subprocess.run(['git','diff','--cached','--quiet'],cwd=checkout)
     if changed.returncode==1:
-        subprocess.run(['git','commit','-m','记录 B v2 p2 空跑和 F2 回退覆盖率'],cwd=checkout,check=True)
+        subprocess.run(['git','commit','-m','记录 B v2 p2 空跑和 F2 回退覆盖率',
+                        '-m','Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>'],cwd=checkout,check=True)
         subprocess.run(['git','pull','--rebase','origin','main'],cwd=checkout,check=True)
         subprocess.run(['git','push','origin','HEAD:main'],cwd=checkout,check=True)
     elif changed.returncode:
         changed.check_returncode()
 
 
+def result_reference(path):
+    return dict(path=str(path.resolve().relative_to(FORMAL_DATA.resolve())),sha256=sha256(path))
+
+
+def geometry_publication(path):
+    result = load(path)
+    return dict(**result_reference(path),passed=result["passed"],batches=result["by_stage"],
+                failures=result["failures"])
+
+
 def monitor(output, checkout, production_record=RECORD):
     output.mkdir(parents=True,exist_ok=True)
     created, failed = set(), {}
     first_optical = []
+    prior_geometry = output/'geometry.json'
+    if prior_geometry.is_file():
+        summary = geometry_publication(prior_geometry)
+        registered = load(checkout/'03_实验记录/records'/REPORT.name).get('b_p2_followup',{}).get('geometry',{})
+        if summary.get('sha256')!=registered.get('sha256'):
+            publish({'geometry':summary},checkout)
     while True:
         state = load(FORMAL_DATA/'manifest.json')
         if state.get('generator_patch',{}).get('version','').endswith('-p2'):
@@ -249,9 +266,7 @@ def monitor(output, checkout, production_record=RECORD):
                 if plan:
                     result = run_batches(inventory,plan)
                     write_json(output/'geometry.json',result)
-                    publish({'geometry':dict(path=str((output/'geometry.json').relative_to(FORMAL_DATA)),
-                                              sha256=sha256(output/'geometry.json'),passed=result['passed'],
-                                              batches=result['by_stage'],failures=result['failures'])},checkout)
+                    publish({'geometry':geometry_publication(output/'geometry.json')},checkout)
             inventory = TrainingData()
             available = [row['scene_id'] for row in state['optical_units'] if row['scene_id'] in inventory.b]
             if not first_optical:
@@ -263,18 +278,21 @@ def monitor(output, checkout, production_record=RECORD):
                     cache_optical(inventory.b[name],FORMAL_DATA/'optical'/name)
                     created.add(name)
                 except (OSError, RuntimeError, ValueError, subprocess.CalledProcessError) as error:
-                    failed[name] = str(error)
-                    write_json(output/'F2-failures.json',failed)
+                    try:
+                        cache_optical(inventory.b[name],FORMAL_DATA/'optical'/name)
+                        created.add(name)
+                    except (OSError, RuntimeError, ValueError, subprocess.CalledProcessError) as retry_error:
+                        failed[name] = str(retry_error)
+                        write_json(output/'F2-failures.json',failed)
             verify_names = [name for name in first_optical if name in created]
             if verify_names and len(verify_names)+sum(name in failed for name in first_optical)==len(first_optical) and not (output/'optical.json').exists():
                 result = run_batches(inventory,optical_plan(inventory,verify_names))
                 result['transmission'] = transmission_report(result['batches'])
                 write_json(output/'optical.json',result)
-                publish({'optical':dict(path=str((output/'optical.json').relative_to(FORMAL_DATA)),
-                                         sha256=sha256(output/'optical.json'),passed=result['passed'],
+                publish({'optical':dict(**result_reference(output/'optical.json'),passed=result['passed'],
                                          failures=result['failures'], transmission=result['transmission'])},checkout)
             dispatch = load(production_record)["v2"]["p2_dispatch"]["status"]
-            if len(created)==80 or (dispatch in {'completed','queue_exhausted_with_shortfalls'}
+            if len(created)==80 or (dispatch in {'completed','completed_with_accepted_geometry_gap','queue_exhausted_with_shortfalls'}
                                       and len(created)+len(failed)==len(available)):
                 publish({'F2':dict(ready_scenes=len(created),ready_frames=3*len(created),
                                   failed_scenes=failed,finished_utc=datetime.now(timezone.utc).isoformat())},checkout)
