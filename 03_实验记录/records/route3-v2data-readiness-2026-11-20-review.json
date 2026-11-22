@@ -1,0 +1,385 @@
+{
+  "scope": "Readiness and scheduling audit for the expanded OPPO route 3 data. No production training or model selection.",
+  "record_time_utc": "2026-11-20T16:04:27+00:00",
+  "code_revision": "29d84a640a27d2da8fbf3ad549d5e7fa3e27f6f5",
+  "audit_workspace": "/root/autodl-tmp/route3-readonly-audit-kOisF1mO",
+  "sealed_test_access": "Partition keys, manifest digests, paths, file sizes and admission status only. No sealed B test images or model scores used.",
+  "B_placement": {
+    "formal_base_counts_at_report": {
+      "train_geometry": 2,
+      "development": 2,
+      "test": 30,
+      "train_optical": 0
+    },
+    "full_category_scope": {
+      "training": {
+        "planned": 60,
+        "registered_at_report": 2
+      },
+      "development": {
+        "planned": 3,
+        "registered_at_report": 2
+      },
+      "test_unseen_assets": {
+        "planned": 2,
+        "registered_at_report": 2
+      },
+      "test_unseen_occlusions": {
+        "planned": 4,
+        "registered_at_report": 4
+      }
+    },
+    "train_and_dev_findings": [
+      {
+        "scene": "training-000-2c3ab6e8683fec54",
+        "partition": "training",
+        "frames": 13,
+        "center_ray_foreground_hits": {
+          "f001": 0,
+          "f006": 0,
+          "f011": 0,
+          "f016": 0,
+          "f021": 0,
+          "f026": 0,
+          "f030": 0,
+          "f035": 0,
+          "f040": 0,
+          "f045": 0,
+          "f050": 0,
+          "f055": 0,
+          "f060": 0
+        },
+        "registered": true
+      },
+      {
+        "scene": "training-001-7a9b2de81e9aa875",
+        "partition": "training",
+        "frames": 13,
+        "center_ray_foreground_hits": {
+          "f001": 0,
+          "f006": 0,
+          "f011": 0,
+          "f016": 0,
+          "f021": 0,
+          "f026": 0,
+          "f030": 0,
+          "f035": 0,
+          "f040": 0,
+          "f045": 0,
+          "f050": 0,
+          "f055": 0,
+          "f060": 0
+        },
+        "registered": true
+      },
+      {
+        "scene": "development-000-8e840e827a5e835c",
+        "partition": "development",
+        "frames": 13,
+        "center_ray_foreground_hits": {
+          "f001": 0,
+          "f006": 0,
+          "f011": 0,
+          "f016": 0,
+          "f021": 0,
+          "f026": 0,
+          "f030": 0,
+          "f035": 0,
+          "f040": 0,
+          "f045": 0,
+          "f050": 0,
+          "f055": 0,
+          "f060": 0
+        },
+        "registered": true
+      },
+      {
+        "scene": "development-001-c2e77289a531d9c6",
+        "partition": "development",
+        "frames": 13,
+        "center_ray_foreground_hits": {
+          "f001": 0,
+          "f006": 0,
+          "f011": 0,
+          "f016": 0,
+          "f021": 0,
+          "f026": 0,
+          "f030": 0,
+          "f035": 0,
+          "f040": 0,
+          "f045": 0,
+          "f050": 0,
+          "f055": 0,
+          "f060": 0
+        },
+        "registered": true
+      },
+      {
+        "scene": "development-002-9d1be93b64c29ff2",
+        "partition": "development",
+        "frames": 13,
+        "center_ray_foreground_hits": {
+          "f001": 0,
+          "f006": 0,
+          "f011": 0,
+          "f016": 0,
+          "f021": 0,
+          "f026": 0,
+          "f030": 0,
+          "f035": 0,
+          "f040": 0,
+          "f045": 0,
+          "f050": 0,
+          "f055": 0,
+          "f060": 0
+        },
+        "registered": false
+      }
+    ],
+    "intervention": "Isolated rebuild with unmodified training seed/asset and one view-layer refresh immediately before curved foreground rotation. No change to deployed source, weights, plans, or sign-off.",
+    "reproduction": {
+      "isolated-original": [
+        [
+          1,
+          0,
+          null
+        ],
+        [
+          30,
+          0,
+          null
+        ],
+        [
+          60,
+          0,
+          null
+        ]
+      ],
+      "isolated-fixed-train": [
+        [
+          1,
+          83462,
+          4.4375
+        ],
+        [
+          30,
+          83376,
+          4.4488
+        ],
+        [
+          60,
+          83832,
+          4.4502
+        ]
+      ],
+      "isolated-fixed-dev": [
+        [
+          1,
+          30914,
+          1.3529
+        ],
+        [
+          30,
+          30779,
+          1.3523
+        ],
+        [
+          60,
+          30735,
+          1.352
+        ]
+      ]
+    },
+    "single_training_seed_other_categories": [
+      {
+        "category": "multiple_layers",
+        "train_scene": "training-122-e493cc8f58dda6b2",
+        "fg_pixels_f030": 132715
+      },
+      {
+        "category": "complex_layout",
+        "train_scene": "training-272-a53137ae4e756fd1",
+        "fg_pixels_f030": 114922
+      },
+      {
+        "category": "weak_texture",
+        "train_scene": "training-236-a20217d30559dd6d",
+        "fg_pixels_f030": 11340
+      },
+      {
+        "category": "large_foreground",
+        "train_scene": "training-176-cca99b530d21a96d",
+        "fg_pixels_f030": 159330
+      },
+      {
+        "category": "thin_structure",
+        "train_scene": "training-062-e1afe20c6ff0e3f1",
+        "fg_pixels_f030": 11559
+      }
+    ],
+    "dispatch": {
+      "method": "stop-after-current",
+      "marker": "/root/autodl-tmp/OPPO-depth-guided-video-bokeh/data/processed/route3-v2data-2026-11-20/B/v2/stop-after-current",
+      "G_impacted": false
+    },
+    "isolated_fixed_f030_cpu_labels_and_Cycles": {
+      "source_scene": "training-000-2c3ab6e8683fec54",
+      "frame": 30,
+      "radiance": {
+        "frame": 30,
+        "same_seed_complement_linear_MAE": 5.7102695905086875e-08,
+        "valid_boundary": 1403,
+        "saturated_boundary": 547,
+        "composed_display_MAE": 0.0016975512262433767,
+        "composed_display_p95": 0.0061781167984008775,
+        "rendered_vs_mesh_coverage_MAE": 0.009393028914928436,
+        "passed": true,
+        "composition_status": "passed",
+        "coverage_status": "passed"
+      },
+      "geometric_boundary_pixels": 1950,
+      "valid_dual_pixels": 1795,
+      "k16_near_far": [
+        {
+          "focus_m": 4.970472445994459,
+          "hidden_rays": 4636,
+          "recoverable_rays": 4088,
+          "includes_hidden_foreground_rays": 481
+        },
+        {
+          "focus_m": 8.132988873055512,
+          "hidden_rays": 4571,
+          "recoverable_rays": 4051,
+          "includes_hidden_foreground_rays": 442
+        }
+      ],
+      "evidence_path": "/root/autodl-tmp/route3-readonly-audit-kOisF1mO/isolated-fixed-train/labels"
+    }
+  },
+  "structural_checks": {
+    "errors": 0,
+    "A": {
+      "fg_digests": 1000,
+      "bg_sizes_and_pools": 19998
+    },
+    "B": {
+      "sealed_planned_scenes": 345,
+      "training_quota_cells": 54,
+      "registered_units_in_scan": 34,
+      "payload_size_checks": 5637,
+      "frozen_plan_implemented_quota_and_reserved_config_check": "passed"
+    },
+    "C": {
+      "unit_digests": 5101,
+      "frames": 40813,
+      "file_existence_checks": 153045,
+      "training_dev_sample_payload_digests": 120,
+      "B_shared_asset_keys": 13,
+      "B_shared_asset_keys_with_split_disagreement": 0
+    },
+    "G": {
+      "selected_raw_windows": 2500,
+      "accepted_windows_at_scan": 2072,
+      "recorded_payload_sizes_checked": 70448,
+      "sample_payload_digests": 2414,
+      "selected_error_receipts": 0
+    },
+    "R": {
+      "windows": 500,
+      "file_sizes_checked": 21796,
+      "sample_payload_digests": 178,
+      "split_benchmark_scenes_train_development_test": [
+        10,
+        1,
+        1
+      ],
+      "observation_role_check": "Each window: 5 inputs and 3 disjoint held-out views, observation-only priors matched input indices."
+    }
+  },
+  "numerical_samples": {
+    "B": {
+      "completed_training_or_dev_units": 4,
+      "frames": 52,
+      "K16_files": 24,
+      "reprojected_rays": 4196,
+      "p95_reprojection_error_px": 0.07253,
+      "fp16_recomposed_display_MAE_max_on_evaluable_frames": 0.009752,
+      "valid_boundary_pixels_across_4_units": 1886,
+      "optical_LDR_HDR_pairs_read": 24,
+      "limitation": "Geometric agreement with the built mesh cannot detect that the intended object was misplaced."
+    },
+    "C": {
+      "stratified_training_dev_windows": 24,
+      "optical_configs": 48,
+      "max_linear_recomposition_error": 0.000428,
+      "visibility_witness_checks": "passed"
+    },
+    "G": {
+      "sample_environments": 12,
+      "neighbor_view_reprojection_points": 149212,
+      "fraction_within_5percent_range": [
+        0.91969,
+        0.99855
+      ],
+      "reprojection_scope": "train and dev, one neighboring-frame pair per environment; range excludes out-of-view and invalid depths."
+    },
+    "R": {
+      "nonsealed_windows_sampled_for_masks": 4,
+      "pairs": 50,
+      "static_pixels_subset_of_common": true
+    },
+    "A": {
+      "same_seed_reproduced_in_train_and_dev": true,
+      "max_linear_recomposition_error": 1.1920929e-07,
+      "foreground_gradient_present": true,
+      "alpha_gradient_present": false
+    }
+  },
+  "runtime": {
+    "context": "CPU-only samples and geometry forward/backward, no optimizer steps. Isolated checkout of committed src/scripts/configs linked to existing data/models/outputs. CPU model check used the DINO standard PyTorch attention backend. No full GPU optics training claimed.",
+    "normal_default_inventory_v2_items": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "expanded_B_optional_items_at_scan": 26,
+    "G_default_reader_nonzero_prior_pixels": [
+      0,
+      9162,
+      0
+    ],
+    "G_dedicated_reader_nonzero_prior_pixels": [
+      65536,
+      9162,
+      30745
+    ],
+    "geometry_backward_B_G": "finite, nonzero gradients",
+    "geometry_backward_C_raw": "binary_cross_entropy: Found dtype Half but expected Float",
+    "geometry_backward_C_promoted_float32": "finite, nonzero gradients; no rewriting files",
+    "B_1b_default": "formal scene id resolves to legacy prepared.json and raises FileNotFoundError",
+    "C_1b_default": "midframe 2 stored references, 0 resolved; legacy c_oracle KeyError rectangles",
+    "C_full_K16_masks_examples": {
+      "1front_1back_extra_block_near": 962969,
+      "3front_2back_missed_block_near": 52359
+    },
+    "stage2": "Default reads legacy A manifest; B/C label_appearance raised FileNotFoundError on new data. B and C store saturation-aware labels on disk.",
+    "edge_difference": "Current edge-statistics code is evaluation-only; formal paired loss run not certified."
+  },
+  "optical_sampling": {
+    "samples": 31,
+    "method": "One-second-spaced nvidia-smi whole-device samples, B optical render owned the lock throughout",
+    "gpu_utilization_percent_min_mean_max": [
+      0,
+      49.8,
+      99
+    ],
+    "device_memory_mib_min_mean_max": [
+      715,
+      3159.7,
+      4534
+    ],
+    "two_concurrent_renders_tested": false
+  },
+  "scheduling": "G continues. Validate corrected release on train/dev, preserve sealed IDs/splits and earlier artifacts, rebuild affected scenes and their dependent outputs. Do not base fixes or selections on sealed test scores. No approval of early formal 1a start or concurrent production optical rendering."
+}

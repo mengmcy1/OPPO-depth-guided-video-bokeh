@@ -747,7 +747,7 @@
       "train_geometry": 295,
       "development": 15,
       "test": 30,
-      "train_optical": 4
+      "train_optical": 8
     },
     "rules": {
       "basis": {
@@ -817,7 +817,7 @@
       "pool_rule": "跨来源去重后，以 来源:素材ID 为规范键。SHA-256 前八位取整数 mod 1000，<800 训练、800–899 开发、≥900 测试。",
       "generation_targets": {
         "train_geometry": 300,
-        "train_optical": 80,
+        "train_optical": 295,
         "development": 15,
         "test": 30
       },
@@ -1306,7 +1306,7 @@
       "reserve_bytes": 64424509440
     },
     "generator_version": "B-v2-31aa7f9a4325",
-    "manifest_sha256": "059cc5d3e9bf4de5114b18696c243f1625fc238067b0f9b1d6400bfb8c920c15",
+    "manifest_sha256": "c9c404056b42485e59a57b6ce0729ad79229d1e424c3e3ede65e96e870e9a19f",
     "scene_plan_sha256": {
       "training": "3687df48d64d82dd2dfd620c1a1ee6b32f2305186063d0df89c2e6f99a5986d8",
       "development": "78f5ef2aa6625bba938028efb71ad1bf2da3142810d8453d6a387452728c0d85",
@@ -1392,9 +1392,9 @@
       "train_geometry": 5,
       "development": 0,
       "test": 0,
-      "train_optical": 76
+      "train_optical": 287
     },
-    "verified_geometry_and_optical_bytes": 19895860327,
+    "verified_geometry_and_optical_bytes": 197230391315,
     "failures": {
       "development": {
         "path": "units/development/failures.json",
@@ -1417,7 +1417,13 @@
         "count": 5
       }
     },
-    "optical_difficulty_counts": {},
+    "optical_difficulty_counts": {
+      "foreground_focus": 8,
+      "background_focus_with_disocclusion": 8,
+      "thin_and_complex_edge_transmission": 4,
+      "highlight_and_bokeh": 7,
+      "multiple_layers_and_local_occlusion": 3
+    },
     "first_formal_batch": {
       "scene_ids": [
         "training-000-2c3ab6e8683fec54",
@@ -2315,19 +2321,24 @@
       }
     },
     "p2_finish_eta": {
-      "status": "drained_after_stop",
-      "remaining_units": {
-        "train_geometry": 5,
-        "development": 0,
-        "test": 0,
-        "train_optical": 76
+      "status": "conditional_on_optical_gate_and_future_acceptance",
+      "measured_at_utc": "2026-11-22T05:55:07.603163+00:00",
+      "estimated_hours": 112.38871874822769,
+      "estimated_finish_utc": "2026-11-26T22:18:26.990657+00:00",
+      "remaining_hours_by_stage": {
+        "training_geometry": 0.0,
+        "training_optical": 112.38871874822769
       },
-      "measured_at_utc": "2026-11-22T05:54:49.401202+00:00"
+      "geometry_basis": "first 30 production geometry units with two GPU slots",
+      "geometry_per_hour": 25.00751049183394,
+      "training_geometry_remaining_runnable": 0,
+      "training_geometry_failed": 5,
+      "training_optical_basis": "qualified two-slot optical wall time"
     },
     "p2_dispatch": {
-      "stop_after_current": true,
+      "stop_after_current": false,
       "original_dispatch_drained": true,
-      "status": "drained_after_stop",
+      "status": "dispatching_training_optical",
       "affected_inflight": "development-003-8c92e9e93c0ff003",
       "qualification_output": "p2-review/p2-priority-qualification/proof.json",
       "retired_process_groups": [
@@ -3437,7 +3448,7 @@
         "sha256": "413694bedcf6c71c9d851c5f9e73403e70d336cef61e7977fc09aef69a401640"
       },
       "ready_queue_peak": 0,
-      "peak_combined_rss_bytes": 116805632,
+      "peak_combined_rss_bytes": 117612544,
       "sampled_peak_cpu_equivalents": 0.0,
       "training_first_30": {
         "accepted_scenes": 30,
@@ -3979,9 +3990,9 @@
       "observed_failures": 5,
       "admitted_by_category": {
         "multiple_layers": 53,
+        "large_foreground": 57,
         "curved_self_occlusion": 59,
         "thin_structure": 60,
-        "large_foreground": 57,
         "weak_texture": 36,
         "complex_layout": 30
       },
@@ -3994,8 +4005,8 @@
         "complex_layout": 30
       },
       "failures_by_category": {
-        "curved_self_occlusion": 1,
         "large_foreground": 3,
+        "curved_self_occlusion": 1,
         "multiple_layers": 1
       },
       "failed_scene_ids": [
@@ -4005,7 +4016,7 @@
         "training-211-7b1f5aa0762ff0ba",
         "training-225-e7d2bdd96db23e35"
       ],
-      "checked_at_utc": "2026-11-22T04:56:09.972362+00:00"
+      "checked_at_utc": "2026-11-22T05:55:07.600431+00:00"
     },
     "geometry_parallel_trial_eta": {
       "remaining_runnable_training_geometry": 203,
@@ -4077,7 +4088,7 @@
       "registered_at": "2026-11-21T13:45:37.001776+00:00"
     },
     "dispatch_gpu_slots": {
-      "version": "p2-training-stage1-competition",
+      "version": "p2-training-full-optical-rollout",
       "parent": {
         "version": "p2-cpu-workers-3",
         "path": "dispatch-cpu-workers-p2.json",
@@ -4087,16 +4098,16 @@
       "generator_code_sha256": "e10a102491b98494c1f77d20f1a2249ba065a2ae65339faf72087a5a732c35c5",
       "dispatch_code": {
         "route3_v2data_B_dispatch.py": "634b78ff7765f97e82f1b6c5072dbe1ca99f5951590304591bf7444b02330579",
-        "route3_v2data_B_release.py": "d3bbe7bd62831c6459ca780a3e70f126ce7176fd58b2c2160d99bbf5ced470fd",
+        "route3_v2data_B_release.py": "89a0721b9fd3818458356b83a529bb6f958d0c5fc786e0cd19208155b548c0c7",
         "route3_v2data_B_deploy_p2.py": "3f6d25b8cd128709a5495846ea58b513c8b83b6c6cfa2d2d4d70baeecc9bf99b",
-        "route3_v2data_B_optical_pair.py": "896a2e3e0c60abd5e1cbb85823c5473ec8256101392ef503841868a5599dc6a4",
-        "route3_v2data_B_dispatch_workers.py": "60c8074332da4622e002cd4f8dd1b1b065969d379469482234222a11f90c36dd",
+        "route3_v2data_B_optical_pair.py": "254d456ddf417e73f67650f4f4e315b292fb88a8dacfbff555fe1ba5c87e3ab1",
+        "route3_v2data_B_dispatch_workers.py": "3b797cdb3363dd03cdcae88d913ad12f7201d4a437d8e15e9542fe62d9c8c876",
         "route3_v2data_B_geometry_pair.py": "45fb3791a10ce24a475dc71119f08f1133a12cd3e9e55f5f6a516ec012e8793f",
         "route3_v2data_B_geometry_slots.py": "76b0b31950effe823f4c436819bb4609462d0a03b8cbdce7f5fdbc50cbb29c3d",
-        "route3_v2data_B_production_policy.py": "34c0350d525dc9b458bbeb07310ec4a62151335b2d6d33190d2d2adede21a8cc",
-        "route3_v2data_B_training_share.py": "32468e72cf57c30f0ee084b5c40645f667289eba660cf307f4cb82dc9bb40096"
+        "route3_v2data_B_production_policy.py": "75e0bd59853ddce1263c21d65068860afd323e521bac51d6c2956c54ec050ec4",
+        "route3_v2data_B_training_share.py": "507fefce8b0f000c81c6d0bf6555d087579f3f8a867911f4c05459151a335e4c"
       },
-      "dispatch_code_sha256": "4ed7c89f7c8dba9c21e21891a0d4dce84143c07288a8c24a483110179b28ac7b",
+      "dispatch_code_sha256": "e32c5da5e2bd61c9e4038253545101807b58caf18095cd07ec55670472ca51c0",
       "qualification": {
         "path": "p2-review/geometry-pair-noise-result.json",
         "sha256": "136a6b41ea33a58932952640377a5623ca0caab76aca3d4ac52718ead66e0b78"
@@ -4107,9 +4118,9 @@
         "sha256": "7a84e97f5568bb29c87acb3cc723dd00a253a91995276f5d0594b208c534035f"
       },
       "previous_gpu_dispatch": {
-        "version": "p2-training-keep-going",
-        "path": "dispatch-gpu-slots-keep-going-p2.json",
-        "sha256": "85c4a36c21c4b67a43fc8cbeaa1083a6ab8653c8234057d6d6246767af24f694"
+        "version": "p2-training-stage1-competition",
+        "path": "dispatch-gpu-slots-stage1-competition-p2.json",
+        "sha256": "6723a9cdf86a1e8be5ae0fdfd576d6276a1b9a27f508ad49117cbd9a4c7be40c"
       },
       "fallback_recovery": {
         "path": "p2-review/geometry-slot-fallback-recovery-130.json",
@@ -4131,7 +4142,8 @@
         "rolling_attempts": 30,
         "rolling_failure_limit": 10,
         "optical_start": "sealed_geometry_queue_has_drained",
-        "replacement": "next unassigned candidate for the same primary difficulty",
+        "replacement": "next unassigned candidate for the same primary difficulty in the first 80 slots",
+        "optical_scope": "first 80 hard cases, then each remaining admitted training geometry",
         "principle_zh": "数据准备效率优先。单个场景失败就记为缺口，然后跳过，不暂停类别或难度标签，也不卡住下一阶段。",
         "systematic_stop_zh": [
           "磁盘余量不足",
@@ -4167,7 +4179,7 @@
         22
       ],
       "extra_worker_ready_queue_threshold": 5,
-      "switched_at_utc": "2026-11-22T04:56:09.359772+00:00"
+      "switched_at_utc": "2026-11-22T05:55:06.992599+00:00"
     },
     "geometry_pair_noise_trial": {
       "version": "B-v2-31aa7f9a4325-p2",
@@ -7109,7 +7121,7 @@
         }
       ],
       "pending": [],
-      "completed_at_utc": "2026-11-22T04:56:09.926948+00:00"
+      "completed_at_utc": "2026-11-22T05:55:07.554450+00:00"
     },
     "production_policy": {
       "single_scene_failure": "record_gap_and_continue",
@@ -7122,7 +7134,8 @@
       "rolling_attempts": 30,
       "rolling_failure_limit": 10,
       "optical_start": "sealed_geometry_queue_has_drained",
-      "replacement": "next unassigned candidate for the same primary difficulty",
+      "replacement": "next unassigned candidate for the same primary difficulty in the first 80 slots",
+      "optical_scope": "first 80 hard cases, then each remaining admitted training geometry",
       "principle_zh": "数据准备效率优先。单个场景失败就记为缺口，然后跳过，不暂停类别或难度标签，也不卡住下一阶段。",
       "systematic_stop_zh": [
         "磁盘余量不足",
@@ -7151,8 +7164,9 @@
         "thin_and_complex_edge_transmission": 48
       },
       "replacements": [],
-      "remaining_target": 76,
-      "exhausted_slots": []
+      "remaining_target": 72,
+      "exhausted_slots": [],
+      "hard_rendered": 8
     },
     "optical_slot_decision": {
       "baseline": [
@@ -13621,13 +13635,69 @@
       "two_slot_mean_gpu_percent": 78.38877630553391
     },
     "optical_full_scope": {
-      "decision": "用户决定：先完成原计划 80 个难例，再为其余全部已入列训练几何生成光学及 LaMa F2。",
+      "decision": "用户决定：先完成 80 个难例，再为其余已入列训练几何生成光学；产物和 F2 都完整才可用。",
       "registered_at_utc": "2026-11-22T05:04:42.956894+00:00",
       "hard_target": 80,
       "total_target": 295,
       "scheduling": "按原有难度轮流及分数排序，标签耗尽跳过，其余按场景编号；扩充顺序先封存后渲染。",
       "usable": "光学及 F2 均完整",
       "GPU_priority": "各训练阶段单步变为单独运行的 1.5 倍以上时，光学改为单槽。"
+    },
+    "last_two_scene_production_run": {
+      "partition": "training",
+      "scene_slots": 4,
+      "attempted_scenes": 0,
+      "accepted_scenes": 0,
+      "seconds": 0.2556276097893715,
+      "accepted_per_hour": 0.0,
+      "cpu_affinity": {
+        "dispatcher": [
+          0
+        ],
+        "geometry": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "gpu": [
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18
+        ]
+      },
+      "max_compute_threads": 19,
+      "sampled_peak_cpu_equivalents": 0.0,
+      "peak_combined_rss_bytes": 117612544,
+      "label_and_gpu_lane_overlap_seconds": 0.0,
+      "gpu_idle_for_b_labels_seconds": {
+        "startup": 0,
+        "steady": 0
+      },
+      "shared_lock_busy_while_b_labels_pending_seconds": {
+        "startup": 0,
+        "steady": 0
+      },
+      "combined_memory_limit_hit": false,
+      "generator_version": "B-v2-31aa7f9a4325-p2",
+      "partition_dispatch_finished": true,
+      "cpu_workers": 3,
+      "ready_queue_limit": 30,
+      "peak_ready_queue": 0,
+      "gpu_geometry_slots": 2,
+      "path": "production-runs/1795326907565225418-training.json",
+      "sha256": "c4ef0b00cfb15539fd6caf48472fbf8418912e976df5543229f00700392c3cc4"
     }
   }
 }
