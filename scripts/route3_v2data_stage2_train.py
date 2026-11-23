@@ -30,6 +30,7 @@ from route3_v2data_B_training_share import register_training
 from route3_v2data_loader import b_k16_cases, b_optical_cases, c_optical_specs, registered_b, window_inventory
 from route3_v2data_optics import f2_entry, linear_reference, observed_background, occupancy, ray_fields
 from route3_v2data_stage1_evaluate import load_paired_checkpoint, view_from_observation
+from src.footprint_order import push_behind_split_background
 from src.layered_aperture import merge_layers
 from src.ovg_appearance import AppearanceHeads, boundary_layer, calibrated_front_opacity, cutoff
 from src.ovg_first_pass import boundary_candidate, observed_split
@@ -365,6 +366,7 @@ def labeled_objective(model, item, rng, generator, phase, *, common_audit=False)
         count = CONFIG["optical_train"]["rays_per_subset"]
         offsets = torch.cat([stratified_pupil(count,.05/(2*fstop),generator,K) for _ in range(2)])
         hidden = model.second(item,ap["depth1"][0].detach().cpu().numpy(),focus,fstop)
+        hidden = push_behind_split_background(hidden,split,tensor(first_small["depth"]),K)
         cloud = merge_layers(base,hidden)
         filler = observed_background(bg_spec,small,focus,offsets)
         colors = raster(cloud,K,focus,offsets,*size,filler)

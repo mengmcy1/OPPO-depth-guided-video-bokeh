@@ -1,4 +1,6 @@
 """Center-O1 and depth-safe 3-sigma footprints for camera-facing surfels."""
+from dataclasses import replace
+
 import torch
 
 from src.aperture_renderer import GaussianScene
@@ -74,3 +76,68 @@ def apply_footprint_order(scene,visible_depth,K,minimum_sigma=.30):
     fields['scales'][:,:2]*=factor[keep,None]
     return GaussianScene(**fields),dict(audit,total=len(factor),shrunk=int((keep&(factor<1)).sum()),
                                        dropped=int((~keep).sum()))
+
+
+@torch.no_grad()
+def push_behind_split_background(scene, split, background_depth, K, *, chunk=4096, audit=None):
+    """Extend O1 to first-pass background hits without dropping Gaussians.
+
+    The split map adds a depth floor only on b=1. Check the original pinhole
+    footprint as well as its center. Scaling by the depth ratio along with
+    the move preserves the pinhole-projected center and footprint.
+    """
+    if scene is None or not len(scene.means) or not split.any():
+        if audit is not None:
+            audit.update(total=len(scene.means) if scene is not None else 0,moved=0,
+                         depth_ratio=[],center_depth_ratio=[],scale_ratio=[])
+        return scene
+    from gsplat.cuda._wrapper import fully_fused_projection
+
+    reference=torch.where(split,background_depth,0.)
+    height,width=reference.shape
+    camera=torch.eye(4,device=K.device,dtype=K.dtype)
+    projected=fully_fused_projection(scene.means,None,scene.quats,scene.scales,camera[None],K[None],
+        width,height,eps2d=.0015,near_plane=1e-4,far_plane=1e5,calc_compensations=True)
+    radii,means,depth,conics,compensations=(value[0] for value in projected)
+    ordered,_=order_hidden(scene,reference,K,'O1')
+    target=ordered.means[:,2].clone()
+    binding=torch.where(target>scene.means[:,2],target/1.03,0.) if audit is not None else None
+    for start in range(0,len(depth),chunk):
+        sl=slice(start,start+chunk)
+        radius=int(radii[sl].max().item())
+        if radius<=0:
+            continue
+        axis=torch.arange(-radius-1,radius+2,device=K.device)
+        yy,xx=torch.meshgrid(axis,axis,indexing='ij')
+        offset=torch.stack((xx.flatten(),yy.flatten()),-1)
+        xy=means[sl].floor().long()[:,None]+offset[None]
+        x,y=xy.unbind(-1)
+        inside=(x>=0)&(x<width)&(y>=0)&(y<height)
+        delta=means[sl,None]-xy-.5
+        dx,dy=delta.unbind(-1)
+        a,b,c=conics[sl].unbind(-1)
+        power=.5*(a[:,None]*dx.square()+c[:,None]*dy.square())+b[:,None]*dx*dy
+        limit=(scene.opacities[sl]*compensations[sl])[:,None]*torch.exp(-power)
+        hit=inside&(radii[sl]>0).all(-1)[:,None]&(power>=0)&(limit>=1/255)
+        z=reference[y.clamp(0,height-1),x.clamp(0,width-1)]
+        needed=torch.where(hit&torch.isfinite(z),z,0.).amax(-1)
+        target[sl]=torch.maximum(target[sl],needed*1.03)
+        if binding is not None:
+            binding[sl]=torch.maximum(binding[sl],needed)
+    moved=target>scene.means[:,2]
+    scale_ratio=torch.where(moved,target/scene.means[:,2].clamp_min(1e-8),1.)
+    means=scene.means.clone()
+    means[moved,:2]*=scale_ratio[moved,None]
+    means[moved,2]=target[moved]
+    if audit is not None:
+        projected=scene.means[moved]@K.T
+        xy=(projected[:,:2]/projected[:,2:]).floor().long()
+        px,py=xy.unbind(-1)
+        inside=(px>=0)&(px<width)&(py>=0)&(py<height)
+        center_depth=reference[py.clamp(0,height-1),px.clamp(0,width-1)]
+        own=inside&(center_depth>0)&torch.isfinite(center_depth)
+        audit.update(total=len(depth),moved=int(moved.sum()),
+                     depth_ratio=(target[moved]/binding[moved]).cpu().tolist(),
+                     center_depth_ratio=(target[moved][own]/center_depth[own]).cpu().tolist(),
+                     scale_ratio=scale_ratio[moved].cpu().tolist())
+    return replace(scene,means=means,scales=scene.scales*scale_ratio[:,None])

@@ -30,6 +30,7 @@ from route3_v2data_stage1_evaluate import (
 )
 from src.aperture_renderer import aperture_disk
 from src.dual_layer import depth_band
+from src.footprint_order import push_behind_split_background
 from src.layered_aperture import merge_layers
 from src.ovg_opaque_eval import opaque_view, subpixel_flags
 from src.ovg_optics import raster
@@ -113,7 +114,7 @@ def k16(unit,name,frame,case):
     return dict(d,ids=d["object_id"],depth=d["depth_axial_m"])
 
 
-def leakage(model,item,case,unit,entry,x,g,vis,front,ref,interior,target,destination):
+def leakage(model,item,case,unit,entry,x,g,vis,front,split_mask,background_depth,ref,interior,target,destination):
     name,frame=item[1],case["frame"]
     labels=k16(unit,name,frame,case)
     same=(labels["ids"]==ref["object_id"][None]) & labels["known"] & ~labels["hidden"]
@@ -126,6 +127,7 @@ def leakage(model,item,case,unit,entry,x,g,vis,front,ref,interior,target,destina
     K=x["K"][0]
     rays=torch.as_tensor(labels["aperture_xy"],device=K.device,dtype=K.dtype)
     hidden=model.second(item,depth.cpu().numpy(),focus,case["fstop"])
+    hidden=push_behind_split_background(hidden,split_mask,background_depth,K)
     base=merge_layers(vis,front)
     full=merge_layers(base,hidden)
     fill=f2_for(unit,entry,frame,x,focus,rays)
@@ -267,10 +269,11 @@ def evaluate_frames(model, phase, raw, out, *, endpoint=False, only_leaks=False,
                                     ("oracle",oracle_mask,front_oracle),("retrieved",mask,first)):
             if only_leaks and mode!="retrieved":
                 continue
-            layers[mode]=(training.visible(ap,x,b,phase),training.background(ap,x,b,background))
+            layers[mode]=(training.visible(ap,x,b,phase),training.background(ap,x,b,background),
+                          b,training.tensor(background["depth"]))
         center=K.new_zeros((1,2))
         raster_zero={}
-        for mode,(vis,_) in layers.items():
+        for mode,(vis,*_) in layers.items():
             z,a=raster(vis,K,1.4,center,512,512,return_alpha=True)
             raster_zero[mode]=z[0],a[0]
         if not only_leaks:
@@ -295,8 +298,8 @@ def evaluate_frames(model, phase, raw, out, *, endpoint=False, only_leaks=False,
             target_rgb=optical_target(unit,name,case)
             emphasis=case["focus_index"]==0
             if emphasis and not raw and (endpoint or only_leaks):
-                vis,front=layers["retrieved"]
-                leaks.append(dict(split=split,**leakage(model,item,case,unit,entry,x,g,vis,front,ref,
+                vis,front,split_mask,background_depth=layers["retrieved"]
+                leaks.append(dict(split=split,**leakage(model,item,case,unit,entry,x,g,vis,front,split_mask,background_depth,ref,
                                                         interior,target_rgb,ray_dir)))
             if only_leaks:
                 continue
@@ -317,9 +320,10 @@ def evaluate_frames(model, phase, raw, out, *, endpoint=False, only_leaks=False,
             zfill=f2_for(unit,entry,frame,x,focus,center)
             hidden=model.second(item,depth.cpu().numpy(),focus,case["fstop"])
             gt, gt_audit=oracle_hidden(peeled,ref,depth,K,focus,case["fstop"])
-            for mode,(vis,front) in layers.items():
+            for mode,(vis,front,split_mask,background_depth) in layers.items():
                 base=merge_layers(vis,front)
-                rendered=merge_layers(base,hidden)
+                ordered=push_behind_split_background(hidden,split_mask,background_depth,K)
+                rendered=merge_layers(base,ordered)
                 on=render_offsets(rendered,K,focus,offsets,fill)
                 zv=raster_zero[mode][0]
                 z=raster(rendered,K,focus,center,512,512,zfill)[0]
@@ -334,7 +338,8 @@ def evaluate_frames(model, phase, raw, out, *, endpoint=False, only_leaks=False,
                         row["zero_split_groups"]=split_zero_scores(display(first_pass_zero),pinhole,zero_groups)
                     off=render_offsets(base,K,focus,offsets,fill)
                     row["query_off"]={k:region_errors(off,target_rgb,v) for k,v in regions.items()}
-                    oracle=render_offsets(merge_layers(base,gt),K,focus,offsets,fill)
+                    ordered_gt=push_behind_split_background(gt,split_mask,background_depth,K)
+                    oracle=render_offsets(merge_layers(base,ordered_gt),K,focus,offsets,fill)
                     row["gt_hidden"]={k:region_errors(oracle,target_rgb,v) for k,v in regions.items()}
                     row["gt_placement"]=gt_audit
                     row["distance_zero"]={k:dict(visible=region_errors(zv,pinhole,v),
@@ -558,8 +563,10 @@ def trained_report(ck, report, losses):
                 loss_scope="16 seeded units per split and tier; loss terms common to training and development (without optional optical references or K16)")
 
 
-def main(run,phase,step,weights,probe=False):
+def main(run,phase,step,weights,probe=False,gpu_cap_gib=None):
     training.configuration()
+    if gpu_cap_gib is not None:
+        torch.cuda.set_per_process_memory_fraction(gpu_cap_gib*GIB/torch.cuda.get_device_properties(0).total_memory,0)
     training.fixed_inputs()
     run.mkdir(parents=True,exist_ok=True)
     out=run/("evaluation-probe" if probe else "evaluation")/phase/f"step-{step:06d}"/weights
@@ -602,10 +609,11 @@ if __name__=="__main__":
     p.add_argument("--weights",choices=("ema","model"),default="ema")
     p.add_argument("--probe",action="store_true")
     p.add_argument("--audit-zero-split",action="store_true")
+    p.add_argument("--gpu-cap-gib",type=int,choices=range(1,16),metavar="GIB")
     a=p.parse_args()
     if a.audit_zero_split:
         if (a.phase,a.step,a.weights)!=("2a",10000,"ema") or a.probe:
             p.error("The zero-split audit uses 2a 10k EMA")
         audit_zero_split(a.run.resolve())
     else:
-        main(a.run.resolve(),a.phase,a.step,a.weights,a.probe)
+        main(a.run.resolve(),a.phase,a.step,a.weights,a.probe,a.gpu_cap_gib)

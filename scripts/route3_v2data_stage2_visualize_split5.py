@@ -25,6 +25,7 @@ from route3_v2data_query_retrain import distribution
 from route3_v2data_stage1_evaluate import new_regions, pooled, region_errors
 from route3_v2data_stage2_eval import bands, f2_for, optical_target, render_offsets
 from src.aperture_renderer import aperture_disk
+from src.footprint_order import push_behind_split_background
 from src.layered_aperture import merge_layers
 from src.ovg_optics import raster
 
@@ -43,7 +44,7 @@ PROTOCOL={
     "C3": "Valid unsaturated GT mixed boundary intersected with q>0, Query background and predicted foreground",
     "C4": "Valid unsaturated GT mixed boundary, GT complementary color and predicted foreground. Use the original first-pass depth, initialized to frozen depth2 when q=0.",
     "C5": "Same as C4 with the GT pure foreground color. Learned opacity, depth and phase-specific footprint are fixed across factors.",
-    "C6": "C5 with GT alpha supplied as front opacity to the normal renderer. The normal rear-opacity rule (0.999 minus front opacity), depths and footprints are retained. Pinhole differences use maximum absolute linear RGB channel error against the GT mixture.",
+    "C6": "C5 with GT alpha supplied as the calibrated front opacity. Rear opacity is 0.999. Pinhole differences use maximum absolute linear RGB channel error against the GT mixture.",
     "support": "The union of split pixels intersects each scoring region and is common to all methods. A separate full-region column retains the original Stage 2 masks.",
     "feasibility": "Linear RGB residual is the maximum over channels of the distance of I to [(1-alpha)*B, (1-alpha)*B+alpha], the set attainable by an RGB foreground in [0,1]. Threshold > .01. Both GT comparisons use identical C1 pixels with valid GT compositing labels.",
 }
@@ -54,7 +55,7 @@ def item_for(plan):
 
 
 def first_observation(model, plan, geom):
-    cached=stage2.RUN/"observed-first/B"/plan["name"]/f'f{plan["frame"]:03d}.npz'
+    cached=model.run/"observed-first/B"/plan["name"]/f'f{plan["frame"]:03d}.npz'
     if cached.is_file():
         return ovg.load(cached)
     views,memory=model.context("B",plan["name"])
@@ -69,7 +70,7 @@ def feasible(alpha, background, observation):
 
 
 @torch.inference_mode()
-def frame_setup(model, plan, phase, only_c6=False):
+def frame_setup(model, plan, phase, only_c6=False, methods=METHODS):
     item=item_for(plan)
     x,y=stage2.sample(item)
     x,ref,masks,subjects=gallery.frame_reference(plan,(x,y))
@@ -90,9 +91,8 @@ def frame_setup(model, plan, phase, only_c6=False):
                  "C3":gt_mixed&available,"C4":gt_mixed,"C5":gt_mixed,"C6":gt_mixed}
     union=predicted|gt_mixed
     frames={}
-    for name,mask in definitions.items():
-        if only_c6 and name!="C6":
-            continue
+    for name in ("C6",) if only_c6 else methods:
+        mask=definitions[name]
         split=stage2.tensor(mask)
         color=first
         if name=="C2":
@@ -147,6 +147,9 @@ def render_case(model, plan, phase, state, index, original, folder):
     truth=optical_target(unit,name,case)
     pinhole=display(rgb)
     hidden=model.second(item_for(plan),g["depth1"][0].cpu().numpy(),focus,case["fstop"])
+    first=first_observation(model,plan,g)
+    depths=K.new_tensor(first["depth"])
+    splits={"none":np.zeros_like(pred),"C1":pred,"C2":pred,"C3":gt&(first["q"]>0)}
     near=index==0
     edge=bands(ref,y)[0]
     regions={"boundary_2px":edge}
@@ -159,7 +162,8 @@ def render_case(model, plan, phase, state, index, original, folder):
     summary={}
     images={"input":pinhole,"GT":truth}
     for key,scene in frames.items():
-        combined=merge_layers(scene,hidden)
+        ordered=push_behind_split_background(hidden,torch.as_tensor(splits.get(key,gt),device=K.device),depths,K)
+        combined=merge_layers(scene,ordered)
         value=render_offsets(combined,K,focus,offsets,fill)
         zero=raster(combined,K,focus,center,512,512,zfill)[0]
         primary=measure(value,truth,common)
@@ -343,7 +347,7 @@ def existing_tiles(path):
     return tiles
 
 
-def run(source,phase,pilot=False,only_c6=False):
+def run(source,phase,pilot=False,only_c6=False,stage_run=stage2.RUN):
     stage2.configuration()
     torch.cuda.set_per_process_memory_fraction(6*GIB/torch.cuda.get_device_properties(0).total_memory,0)
     stage2.fixed_inputs()
@@ -351,7 +355,7 @@ def run(source,phase,pilot=False,only_c6=False):
     out=source/"split5"
     folder=out/(f"{phase}-10k"+("-c6" if only_c6 else ""))
     folder.mkdir(parents=True,exist_ok=True)
-    checkpoint=stage2.RUN/phase/"step-010000.pt"
+    checkpoint=stage_run/phase/"step-010000.pt"
     original=load(source/"metrics.json")
     prior=out/f"{phase}-10k"
     baseline={r["file"]:r for r in load(prior/"metrics.json").get("rows",[]) if not r.get("error")} if only_c6 else {}
@@ -364,7 +368,7 @@ def run(source,phase,pilot=False,only_c6=False):
         raise ValueError("Previously recorded five-grid run has different weights")
     started=time.monotonic()
     previous=report["seconds"]
-    model=stage2.Model()
+    model=stage2.Model(stage_run)
     model.heads.load_state_dict(torch.load(checkpoint,map_location="cpu",weights_only=True)["ema"])
     model.heads.eval()
     rows={r["file"]:r for r in report["rows"]}
@@ -417,13 +421,14 @@ def run(source,phase,pilot=False,only_c6=False):
         write_json(path,report)
 
 
-def follow(source):
+def follow(source,stage_run=stage2.RUN):
     out=source/"split5"
     out.mkdir(exist_ok=True)
     with (out/".follow.lock").open("a") as lock:
         fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
         child=Path(__file__).with_name("route3_v2data_stage1_visualize_repr.py").resolve()
-        queue=[("split5-2b",Path(__file__).resolve(),["--phase","2b"]),("representation",child,[])]
+        queue=[("split5-2b",Path(__file__).resolve(),["--phase","2b","--stage-run",str(stage_run)]),
+               ("representation",child,[])]
         state=out/"status.json"
         def status(activity,**fields):
             write_json(state,dict(state=activity,at=gallery.stamp(),**fields))
@@ -431,7 +436,8 @@ def follow(source):
             subprocess.run(["nvidia-smi","--query-gpu=memory.used,memory.total,utilization.gpu",
                             "--format=csv,noheader"],check=True)
             return subprocess.run([sys.executable,"-u",str(script),"--source",str(source),*args]).returncode
-        while not load(out/"2a-10k-c6/metrics.json").get("completed_at"):
+        baseline="2a-10k-c6" if stage_run==stage2.RUN else "2a-10k"
+        while not load(out/baseline/"metrics.json").get("completed_at"):
             status("waiting_for_2a_c6")
             time.sleep(20)
         retry=load(source/"repr/step1.json")
@@ -442,7 +448,7 @@ def follow(source):
                 time.sleep(30)
             status("retrying_oom_case")
             retry_exit=execute(child,["--retry-oom"])
-        while not official_2b_10k_ready(stage2.RUN):
+        while not official_2b_10k_ready(stage_run):
             status("waiting_for_official_2b_10k",retry_exit=retry_exit)
             time.sleep(30)
         completed={}
@@ -470,6 +476,7 @@ def official_2b_10k_ready(run):
 if __name__=="__main__":
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument("--source",type=Path,default=gallery.OUT)
+    p.add_argument("--stage-run",type=Path,default=stage2.RUN)
     g=p.add_mutually_exclusive_group(required=True)
     g.add_argument("--phase",choices=("2a","2b"))
     g.add_argument("--follow",action="store_true")
@@ -477,8 +484,8 @@ if __name__=="__main__":
     p.add_argument("--only-c6",action="store_true")
     a=p.parse_args()
     if a.follow:
-        follow(a.source.resolve())
+        follow(a.source.resolve(),a.stage_run.resolve())
     else:
         if a.only_c6 and a.phase!="2a":
             p.error("--only-c6 extends the completed 2a gallery")
-        run(a.source.resolve(),a.phase,a.pilot,a.only_c6)
+        run(a.source.resolve(),a.phase,a.pilot,a.only_c6,a.stage_run.resolve())

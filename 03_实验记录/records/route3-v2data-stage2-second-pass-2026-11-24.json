@@ -1,0 +1,1599 @@
+{
+  "recorded_at": "2026-11-24T01:17:51+08:00",
+  "source_run": "route3-v2data-stage2-2026-11-23-02",
+  "checkpoint": "outputs/route3-v2data-stage2-2026-11-23-02/2a/step-010000.pt",
+  "checkpoint_sha256": "c9e25ca4b73854c717aa0e1a4806b313f0c71e9546122767195a0966e63e9c2f",
+  "scope": {
+    "development_cases": 53,
+    "legacy_cases": 18,
+    "protocol": "P2 f/1.4 with a pinned focus, RGB pinhole reference, identical F2 and a consistent scoring mask",
+    "unscored": [
+      {
+        "file": "065_dev010_f030_near.png",
+        "error": "ValueError: P2 无有效名义主体"
+      }
+    ]
+  },
+  "artifacts": {
+    "original": {
+      "path": "route3-cache/visual-20261123/second-pass-audit/report.json",
+      "sha256": "083eaf20d2ce4991cb8c197d35009aa0d9417b4214dd40c0827a78c4cfecc63a"
+    },
+    "pushback": {
+      "path": "route3-cache/visual-20261123/second-pass-pushback-scaled/report.json",
+      "sha256": "08d10e426a265670f6944fb464be93e175f0142c51e5a911da63793e4fdbdf39"
+    },
+    "recoverable": {
+      "path": "route3-cache/visual-20261123/second-pass-recoverable/report.json",
+      "sha256": "3a9b24d47abbd5f4a6a570d79c434d218709856294618b6ddd5bb6e8cafe018f"
+    },
+    "initial_zero_probe": {
+      "path": "route3-cache/visual-20261123/second-pass-recoverable/initial-zero-check.json",
+      "sha256": "79523121b28e8afe82e7bd181aed1b360dafbaafe7ba7a67a1a61ad4db03a808"
+    }
+  },
+  "c6_zero": {
+    "development": {
+      "original_on": {
+        "sse": 809.9856736445722,
+        "pixels": 13893632,
+        "psnr_db": 47.11459708766465,
+        "cases": 53,
+        "pass_60": 3
+      },
+      "original_off": {
+        "sse": 17.02458346443535,
+        "pixels": 13893632,
+        "psnr_db": 63.8886055131491,
+        "cases": 53,
+        "pass_60": 43
+      },
+      "pushed_on": {
+        "sse": 21.069383597332436,
+        "pixels": 13893632,
+        "psnr_db": 62.96285216131171,
+        "cases": 53,
+        "pass_60": 42
+      }
+    },
+    "legacy": {
+      "original_on": {
+        "sse": 14.054474526949406,
+        "pixels": 4718592,
+        "psnr_db": 60.03119069064355,
+        "cases": 18,
+        "pass_60": 13
+      },
+      "original_off": {
+        "sse": 4.285766354300025,
+        "pixels": 4718592,
+        "psnr_db": 65.189051907114,
+        "cases": 18,
+        "pass_60": 18
+      },
+      "pushed_on": {
+        "sse": 4.600233258849998,
+        "pixels": 4718592,
+        "psnr_db": 64.88153828253266,
+        "cases": 18,
+        "pass_60": 18
+      }
+    },
+    "all": {
+      "original_on": {
+        "sse": 824.0401481715218,
+        "pixels": 18612224,
+        "psnr_db": 48.30971153857617,
+        "cases": 71,
+        "pass_60": 16
+      },
+      "original_off": {
+        "sse": 21.310349818735364,
+        "pixels": 18612224,
+        "psnr_db": 64.18328946483355,
+        "cases": 71,
+        "pass_60": 61
+      },
+      "pushed_on": {
+        "sse": 25.669616856182433,
+        "pixels": 18612224,
+        "psnr_db": 63.375001389350665,
+        "cases": 71,
+        "pass_60": 60
+      }
+    }
+  },
+  "center_ray_front_of_first_background": {
+    "development": {
+      "rendered_background_positive": {
+        "pixels": 91421,
+        "pixel_fraction": 0.8841831405470231,
+        "on_sse_fraction": 0.9973296625867203
+      },
+      "rendered_background_at_least_0_001": {
+        "pixels": 90911,
+        "pixel_fraction": 0.8792506479941197,
+        "on_sse_fraction": 0.9972520857633576
+      },
+      "predicted_depth2_positive": {
+        "pixels": 82652,
+        "pixel_fraction": 0.7993732832991605,
+        "on_sse_fraction": 0.9339474755522091
+      },
+      "predicted_depth2_at_least_0_001": {
+        "pixels": 81667,
+        "pixel_fraction": 0.7898468025842392,
+        "on_sse_fraction": 0.9336677002175532
+      }
+    },
+    "legacy": {
+      "rendered_background_positive": {
+        "pixels": 20475,
+        "pixel_fraction": 0.4071224051539012,
+        "on_sse_fraction": 0.8227434574981116
+      },
+      "rendered_background_at_least_0_001": {
+        "pixels": 20192,
+        "pixel_fraction": 0.40149526763699994,
+        "on_sse_fraction": 0.8220388000208856
+      },
+      "predicted_depth2_positive": {
+        "pixels": 21578,
+        "pixel_fraction": 0.42905432275511013,
+        "on_sse_fraction": 0.8338625243887849
+      },
+      "predicted_depth2_at_least_0_001": {
+        "pixels": 20370,
+        "pixel_fraction": 0.4050345979479838,
+        "on_sse_fraction": 0.8229701731367713
+      }
+    },
+    "all": {
+      "rendered_background_positive": {
+        "pixels": 111896,
+        "pixel_fraction": 0.7280724584873249,
+        "on_sse_fraction": 0.9944055174382637
+      },
+      "rendered_background_at_least_0_001": {
+        "pixels": 111103,
+        "pixel_fraction": 0.7229126542085264,
+        "on_sse_fraction": 0.9943174376381583
+      },
+      "predicted_depth2_positive": {
+        "pixels": 104230,
+        "pixel_fraction": 0.6781921815626464,
+        "on_sse_fraction": 0.9322711522468854
+      },
+      "predicted_depth2_at_least_0_001": {
+        "pixels": 102037,
+        "pixel_fraction": 0.6639230128572172,
+        "on_sse_fraction": 0.931813626829595
+      }
+    }
+  },
+  "cpu_ideal_two_layer_dev_db": 63.81,
+  "frames": {
+    "021_dev001_f030_near.png": {
+      "low_alpha_pixels": 341,
+      "original_low_alpha_error": {
+        "off": {
+          "p50": 0.0007891952991485596,
+          "p95": 0.006781458854675293,
+          "max": 0.011134207248687744
+        },
+        "on": {
+          "p50": 0.13858674466609955,
+          "p95": 0.2786496728658676,
+          "max": 0.5924550890922546
+        }
+      },
+      "original_query_weight": {
+        "median": 0.7094554305076599,
+        "p95": 0.9469166398048401
+      },
+      "pushback_all_split_linear_error": {
+        "p50": 0.0004655122756958008,
+        "p95": 0.00213810205459594,
+        "max": 0.01160961389541626
+      },
+      "figures": [
+        "route3-cache/visual-20261123/second-pass-audit/crop_021_dev001_f030_near.png",
+        "route3-cache/visual-20261123/second-pass-pushback-scaled/crop_021_dev001_f030_near.png",
+        "route3-cache/visual-20261123/second-pass-pushback-scaled/pinhole/pinhole_021_dev001_f030_near.png"
+      ]
+    },
+    "051_dev005_f030_near.png": {
+      "low_alpha_pixels": 4669,
+      "original_low_alpha_error": {
+        "off": {
+          "p50": 0.0006615519523620605,
+          "p95": 0.0010521888732910156,
+          "max": 0.007008850574493408
+        },
+        "on": {
+          "p50": 0.12364625930786133,
+          "p95": 0.29137294292449945,
+          "max": 0.5345624685287476
+        }
+      },
+      "original_query_weight": {
+        "median": 0.6945246458053589,
+        "p95": 0.8736732125282287
+      },
+      "pushback_all_split_linear_error": {
+        "p50": 0.0005134642124176025,
+        "p95": 0.001528036594390869,
+        "max": 0.007607579231262207
+      },
+      "figures": [
+        "route3-cache/visual-20261123/second-pass-audit/crop_051_dev005_f030_near.png",
+        "route3-cache/visual-20261123/second-pass-pushback-scaled/crop_051_dev005_f030_near.png"
+      ]
+    },
+    "027_dev006_f030_near.png": {
+      "low_alpha_pixels": 501,
+      "original_low_alpha_error": {
+        "off": {
+          "p50": 0.0007141828536987305,
+          "p95": 0.002789914608001709,
+          "max": 0.010041594505310059
+        },
+        "on": {
+          "p50": 0.08153671026229858,
+          "p95": 0.20190918445587158,
+          "max": 0.4043707847595215
+        }
+      },
+      "original_query_weight": {
+        "median": 0.6805630922317505,
+        "p95": 0.891907811164856
+      },
+      "pushback_all_split_linear_error": {
+        "p50": 0.000362396240234375,
+        "p95": 0.0013316422700881958,
+        "max": 0.01074206829071045
+      },
+      "figures": [
+        "route3-cache/visual-20261123/second-pass-audit/crop_027_dev006_f030_near.png",
+        "route3-cache/visual-20261123/second-pass-pushback-scaled/crop_027_dev006_f030_near.png",
+        "route3-cache/visual-20261123/second-pass-pushback-scaled/pinhole/pinhole_027_dev006_f030_near.png"
+      ]
+    },
+    "003_122104_f030_near.png": {
+      "low_alpha_pixels": 1369,
+      "original_low_alpha_error": {
+        "off": {
+          "p50": 0.00033789873123168945,
+          "p95": 0.0006126224994659422,
+          "max": 0.0017585456371307373
+        },
+        "on": {
+          "p50": 0.00037151575088500977,
+          "p95": 0.0031760454177856366,
+          "max": 0.06365808844566345
+        }
+      },
+      "original_query_weight": {
+        "median": 0.0,
+        "p95": 0.12342654019594188
+      },
+      "pushback_all_split_linear_error": {
+        "p50": 0.0003165006637573242,
+        "p95": 0.0005816251039505004,
+        "max": 0.0017585456371307373
+      },
+      "figures": [
+        "route3-cache/visual-20261123/second-pass-audit/crop_003_122104_f030_near.png",
+        "route3-cache/visual-20261123/second-pass-pushback-scaled/crop_003_122104_f030_near.png",
+        "route3-cache/visual-20261123/second-pass-pushback-scaled/pinhole/pinhole_003_122104_f030_near.png"
+      ]
+    }
+  },
+  "dev005_f030": {
+    "051_dev005_f030_near.png": {
+      "none": {
+        "sse": 0.18339669490964905,
+        "pixels": 262144,
+        "psnr_db": 66.32269671920939,
+        "split_sse": 0.005804279405780655,
+        "non_split_sse": 0.1775924155038684,
+        "split_sse_fraction": 0.031648767763454794,
+        "non_split_sse_fraction": 0.9683512322365452
+      },
+      "before": {
+        "sse": 86.88587899197927,
+        "pixels": 262144,
+        "psnr_db": 39.56711977601112,
+        "split_sse": 86.70828657647542,
+        "non_split_sse": 0.1775924155038684,
+        "split_sse_fraction": 0.9979560267149942,
+        "non_split_sse_fraction": 0.0020439732850059855
+      },
+      "after": {
+        "sse": 1.8648329307511835,
+        "pixels": 262144,
+        "psnr_db": 56.250212469625104,
+        "split_sse": 1.6845522183109107,
+        "non_split_sse": 0.18028071244027277,
+        "split_sse_fraction": 0.9033260784559114,
+        "non_split_sse_fraction": 0.09667392154408863
+      }
+    },
+    "052_dev005_f030_far.png": {
+      "none": {
+        "sse": 0.1835440923181597,
+        "pixels": 262144,
+        "psnr_db": 66.31920766120145,
+        "split_sse": 0.005781456741138946,
+        "non_split_sse": 0.17776263557702077,
+        "split_sse_fraction": 0.03149900750342447,
+        "non_split_sse_fraction": 0.9685009924965755
+      },
+      "before": {
+        "sse": 85.83618599388599,
+        "pixels": 262144,
+        "psnr_db": 39.619907645285345,
+        "split_sse": 85.658423358309,
+        "non_split_sse": 0.17776263557702077,
+        "split_sse_fraction": 0.9979290478308337,
+        "non_split_sse_fraction": 0.0020709521691665398
+      },
+      "after": {
+        "sse": 1.8646030961008,
+        "pixels": 262144,
+        "psnr_db": 56.25074775656833,
+        "split_sse": 1.6841703250752929,
+        "non_split_sse": 0.18043277102550714,
+        "split_sse_fraction": 0.9032326121291858,
+        "non_split_sse_fraction": 0.0967673878708142
+      }
+    }
+  },
+  "pushback": {
+    "method": "The actual first-pass background of b=1 pixels provides a 1.03× depth floor at centers and admitted pinhole footprints. Translate affected gaussians along their camera rays and multiply every world-space scale component by z'/z. No gaussians are removed by the new rule.",
+    "movement": {
+      "total": 8265595,
+      "moved": 726651,
+      "fraction": 0.0879127273959104,
+      "quantiles": {
+        "depth_ratio": {
+          "min": 1.029999852180481,
+          "p10": 1.0299999713897705,
+          "p50": 1.0299999713897705,
+          "p95": 1.0299999713897705,
+          "max": 1.03000009059906
+        },
+        "center_depth_ratio": {
+          "min": 1.029999852180481,
+          "p10": 1.0299999713897705,
+          "p50": 1.031463861465454,
+          "p95": 1.1478068828582764,
+          "max": 7.827132225036621
+        },
+        "scale_ratio": {
+          "min": 1.000000238418579,
+          "p10": 1.0294055938720703,
+          "p50": 1.1382842063903809,
+          "p95": 1.546885907649994,
+          "max": 13.801535606384277
+        }
+      }
+    },
+    "non_split_pinhole_change": {
+      "pixels": 18458536,
+      "changed_above_1e_6": 473518,
+      "max_abs_linear": 0.029971063137054443
+    },
+    "no_split_reference_enters_depth_floor": false,
+    "pinhole_gate": {
+      "cases_complete": true,
+      "full_psnr_at_least_60": true,
+      "three_p95_below_0_01": true
+    }
+  },
+  "recoverable": {
+    "passed": true,
+    "complete": true,
+    "totals": {
+      "development": {
+        "near": {
+          "C1": {
+            "pooled": {
+              "before": {
+                "sse": 5667.233759837417,
+                "pixels": 237530,
+                "psnr_db": 20.994685968468897
+              },
+              "after": {
+                "sse": 5647.188162067259,
+                "pixels": 237530,
+                "psnr_db": 21.01007464968799
+              }
+            },
+            "pooled_delta_db": 0.015388681219093314,
+            "scene_values": {
+              "development-001-c2e77289a531d9c6": {
+                "before": {
+                  "sse": 299.34063707733236,
+                  "pixels": 8469,
+                  "psnr_db": 19.287877089670484
+                },
+                "after": {
+                  "sse": 288.7778028767432,
+                  "pixels": 8469,
+                  "psnr_db": 19.443895797780865
+                },
+                "delta_db": 0.15601870811038054
+              },
+              "development-006-cfa2a67575eca884": {
+                "before": {
+                  "sse": 1068.8528678797475,
+                  "pixels": 5752,
+                  "psnr_db": 12.080222052446402
+                },
+                "after": {
+                  "sse": 1071.4580210234744,
+                  "pixels": 5752,
+                  "psnr_db": 12.069649717376397
+                },
+                "delta_db": -0.010572335070005323
+              },
+              "development-007-7f68b7245eb4f8a2": {
+                "before": {
+                  "sse": 82.35522869046525,
+                  "pixels": 12229,
+                  "psnr_db": 26.488210222058623
+                },
+                "after": {
+                  "sse": 77.34806943406082,
+                  "pixels": 12229,
+                  "psnr_db": 26.760627213013436
+                },
+                "delta_db": 0.2724169909548131
+              },
+              "development-000-8e840e827a5e835c": {
+                "before": {
+                  "sse": 76.78489242073653,
+                  "pixels": 5894,
+                  "psnr_db": 23.62255606094312
+                },
+                "after": {
+                  "sse": 74.01724319756465,
+                  "pixels": 5894,
+                  "psnr_db": 23.781984806485017
+                },
+                "delta_db": 0.15942874554189856
+              },
+              "development-011-d0fd8daa5ce0ec59": {
+                "before": {
+                  "sse": 37.46981192205818,
+                  "pixels": 10691,
+                  "psnr_db": 29.324580710874063
+                },
+                "after": {
+                  "sse": 35.00740464363744,
+                  "pixels": 10691,
+                  "psnr_db": 29.61979669751546
+                },
+                "delta_db": 0.2952159866413986
+              },
+              "development-005-35442efa18790d0a": {
+                "before": {
+                  "sse": 3821.6450899130186,
+                  "pixels": 144002,
+                  "psnr_db": 20.532394262853316
+                },
+                "after": {
+                  "sse": 3820.58048412521,
+                  "pixels": 144002,
+                  "psnr_db": 20.533604257029904
+                },
+                "delta_db": 0.0012099941765875144
+              },
+              "development-002-9d1be93b64c29ff2": {
+                "before": {
+                  "sse": 51.292060263982634,
+                  "pixels": 6548,
+                  "psnr_db": 25.831797816032378
+                },
+                "after": {
+                  "sse": 51.312409912633655,
+                  "pixels": 6548,
+                  "psnr_db": 25.830075134706995
+                },
+                "delta_db": -0.00172268132538278
+              },
+              "development-003-8c92e9e93c0ff003": {
+                "before": {
+                  "sse": 30.727957502291147,
+                  "pixels": 10514,
+                  "psnr_db": 30.11355533887139
+                },
+                "after": {
+                  "sse": 30.720479672917918,
+                  "pixels": 10514,
+                  "psnr_db": 30.11461234868278
+                },
+                "delta_db": 0.0010570098113902304
+              },
+              "development-004-403a5734469f072d": {
+                "before": {
+                  "sse": 107.27246118877959,
+                  "pixels": 16943,
+                  "psnr_db": 26.756233206567813
+                },
+                "after": {
+                  "sse": 107.2366871718271,
+                  "pixels": 16943,
+                  "psnr_db": 26.757681765607906
+                },
+                "delta_db": 0.0014485590400923343
+              },
+              "development-008-6feda700c49fc611": {
+                "before": {
+                  "sse": 19.95226622748588,
+                  "pixels": 3471,
+                  "psnr_db": 27.175836373309522
+                },
+                "after": {
+                  "sse": 19.513976085537266,
+                  "pixels": 3471,
+                  "psnr_db": 27.27230099966596
+                },
+                "delta_db": 0.09646462635643616
+              },
+              "development-009-082e653bca2a3be9": {
+                "before": {
+                  "sse": 21.86687133185061,
+                  "pixels": 2817,
+                  "psnr_db": 25.87121452207484
+                },
+                "after": {
+                  "sse": 21.91373624256292,
+                  "pixels": 2817,
+                  "psnr_db": 25.86191671602835
+                },
+                "delta_db": -0.009297806046490109
+              },
+              "development-012-edecf4a38be3ec1d": {
+                "before": {
+                  "sse": 0.9576967227218818,
+                  "pixels": 1311,
+                  "psnr_db": 36.134959451610285
+                },
+                "after": {
+                  "sse": 0.928411850742183,
+                  "pixels": 1311,
+                  "psnr_db": 36.269832710249524
+                },
+                "delta_db": 0.1348732586392387
+              },
+              "development-013-ce68041af26e6e53": {
+                "before": {
+                  "sse": 1.798155293649069,
+                  "pixels": 4616,
+                  "psnr_db": 38.865598589815335
+                },
+                "after": {
+                  "sse": 1.751832236863831,
+                  "pixels": 4616,
+                  "psnr_db": 38.978945409878
+                },
+                "delta_db": 0.11334682006266661
+              },
+              "development-014-46267e4acd6e6f30": {
+                "before": {
+                  "sse": 46.91776340329827,
+                  "pixels": 4273,
+                  "psnr_db": 24.365168466670596
+                },
+                "after": {
+                  "sse": 46.6216035934836,
+                  "pixels": 4273,
+                  "psnr_db": 24.392669401321424
+                },
+                "delta_db": 0.027500934650827702
+              }
+            },
+            "scene_deltas": {
+              "n": 14,
+              "median_db": 0.06198278050363193,
+              "sd_db": 0.10490370921188756,
+              "positive": 11,
+              "negative": 3,
+              "tied": 0
+            },
+            "passed": true
+          },
+          "C6": {
+            "pooled": {
+              "before": {
+                "sse": 767.6711637906735,
+                "pixels": 237530,
+                "psnr_db": 29.67664496057204
+              },
+              "after": {
+                "sse": 705.9086286155597,
+                "pixels": 237530,
+                "psnr_db": 30.04091232975755
+              }
+            },
+            "pooled_delta_db": 0.3642673691855087,
+            "scene_values": {
+              "development-001-c2e77289a531d9c6": {
+                "before": {
+                  "sse": 58.09474987496154,
+                  "pixels": 8469,
+                  "psnr_db": 26.4081650138109
+                },
+                "after": {
+                  "sse": 48.579057870925084,
+                  "pixels": 8469,
+                  "psnr_db": 27.185042996248733
+                },
+                "delta_db": 0.7768779824378313
+              },
+              "development-006-cfa2a67575eca884": {
+                "before": {
+                  "sse": 29.81099250970528,
+                  "pixels": 5752,
+                  "psnr_db": 27.625636966753184
+                },
+                "after": {
+                  "sse": 28.017390680059084,
+                  "pixels": 5752,
+                  "psnr_db": 27.89512446041932
+                },
+                "delta_db": 0.2694874936661371
+              },
+              "development-007-7f68b7245eb4f8a2": {
+                "before": {
+                  "sse": 29.128040963599503,
+                  "pixels": 12229,
+                  "psnr_db": 31.002009230297464
+                },
+                "after": {
+                  "sse": 25.89848538034822,
+                  "pixels": 12229,
+                  "psnr_db": 31.512378337124844
+                },
+                "delta_db": 0.5103691068273797
+              },
+              "development-000-8e840e827a5e835c": {
+                "before": {
+                  "sse": 24.016752516178055,
+                  "pixels": 5894,
+                  "psnr_db": 28.670171033853563
+                },
+                "after": {
+                  "sse": 21.100244144978575,
+                  "pixels": 5894,
+                  "psnr_db": 29.232439058077453
+                },
+                "delta_db": 0.56226802422389
+              },
+              "development-011-d0fd8daa5ce0ec59": {
+                "before": {
+                  "sse": 16.709429397612087,
+                  "pixels": 10691,
+                  "psnr_db": 32.83177964636041
+                },
+                "after": {
+                  "sse": 13.229103907868966,
+                  "pixels": 10691,
+                  "psnr_db": 33.846091566355526
+                },
+                "delta_db": 1.0143119199951158
+              },
+              "development-005-35442efa18790d0a": {
+                "before": {
+                  "sse": 423.84951562545297,
+                  "pixels": 144002,
+                  "psnr_db": 30.08278087458255
+                },
+                "after": {
+                  "sse": 402.4166873078332,
+                  "pixels": 144002,
+                  "psnr_db": 30.308137970118317
+                },
+                "delta_db": 0.22535709553576666
+              },
+              "development-002-9d1be93b64c29ff2": {
+                "before": {
+                  "sse": 23.977777253074564,
+                  "pixels": 6548,
+                  "psnr_db": 29.134210040556205
+                },
+                "after": {
+                  "sse": 23.056276174888307,
+                  "pixels": 6548,
+                  "psnr_db": 29.304407598508732
+                },
+                "delta_db": 0.17019755795252678
+              },
+              "development-003-8c92e9e93c0ff003": {
+                "before": {
+                  "sse": 79.61722566503872,
+                  "pixels": 10514,
+                  "psnr_db": 25.978821872782916
+                },
+                "after": {
+                  "sse": 65.26157433110694,
+                  "pixels": 10514,
+                  "psnr_db": 26.842316811640423
+                },
+                "delta_db": 0.8634949388575066
+              },
+              "development-004-403a5734469f072d": {
+                "before": {
+                  "sse": 32.89210724796697,
+                  "pixels": 16943,
+                  "psnr_db": 31.89019867910868
+                },
+                "after": {
+                  "sse": 32.62668156946043,
+                  "pixels": 16943,
+                  "psnr_db": 31.92538661228834
+                },
+                "delta_db": 0.03518793317966029
+              },
+              "development-008-6feda700c49fc611": {
+                "before": {
+                  "sse": 18.384964691665765,
+                  "pixels": 3471,
+                  "psnr_db": 27.531130682481702
+                },
+                "after": {
+                  "sse": 17.38036689276572,
+                  "pixels": 3471,
+                  "psnr_db": 27.77516928394549
+                },
+                "delta_db": 0.24403860146378875
+              },
+              "development-009-082e653bca2a3be9": {
+                "before": {
+                  "sse": 14.144539664139781,
+                  "pixels": 2817,
+                  "psnr_db": 27.763192838521302
+                },
+                "after": {
+                  "sse": 13.97831573007858,
+                  "pixels": 2817,
+                  "psnr_db": 27.814532559895568
+                },
+                "delta_db": 0.05133972137426568
+              },
+              "development-012-edecf4a38be3ec1d": {
+                "before": {
+                  "sse": 4.025211097881127,
+                  "pixels": 1311,
+                  "psnr_db": 29.89935285000051
+                },
+                "after": {
+                  "sse": 2.756685368174691,
+                  "pixels": 1311,
+                  "psnr_db": 31.54336745288765
+                },
+                "delta_db": 1.6440146028871396
+              },
+              "development-013-ce68041af26e6e53": {
+                "before": {
+                  "sse": 1.9542957489775796,
+                  "pixels": 4616,
+                  "psnr_db": 38.50396767526677
+                },
+                "after": {
+                  "sse": 1.7648659576200378,
+                  "pixels": 4616,
+                  "psnr_db": 38.946753287562935
+                },
+                "delta_db": 0.44278561229616287
+              },
+              "development-014-46267e4acd6e6f30": {
+                "before": {
+                  "sse": 11.065561534419519,
+                  "pixels": 4273,
+                  "psnr_db": 30.63880689950317
+                },
+                "after": {
+                  "sse": 9.842893299451802,
+                  "pixels": 4273,
+                  "psnr_db": 31.147313703159874
+                },
+                "delta_db": 0.5085068036567044
+              }
+            },
+            "scene_deltas": {
+              "n": 14,
+              "median_db": 0.47564620797643364,
+              "sd_db": 0.43873680809159465,
+              "positive": 14,
+              "negative": 0,
+              "tied": 0
+            },
+            "passed": true
+          }
+        },
+        "far": {
+          "C1": {
+            "pooled": {
+              "before": {
+                "sse": 2893.7063394324155,
+                "pixels": 121140,
+                "psnr_db": 20.989543683196036
+              },
+              "after": {
+                "sse": 2956.890523525908,
+                "pixels": 121140,
+                "psnr_db": 20.89573578624224
+              }
+            },
+            "pooled_delta_db": -0.09380789695379477,
+            "scene_values": {
+              "development-001-c2e77289a531d9c6": {
+                "before": {
+                  "sse": 52.400936434741894,
+                  "pixels": 7201,
+                  "psnr_db": 26.151750174963947
+                },
+                "after": {
+                  "sse": 51.98661544800728,
+                  "pixels": 7201,
+                  "psnr_db": 26.186225217230692
+                },
+                "delta_db": 0.03447504226674525
+              },
+              "development-006-cfa2a67575eca884": {
+                "before": {
+                  "sse": 282.596691065806,
+                  "pixels": 5265,
+                  "psnr_db": 17.473525578676043
+                },
+                "after": {
+                  "sse": 279.7171854345381,
+                  "pixels": 5265,
+                  "psnr_db": 17.518004806014616
+                },
+                "delta_db": 0.04447922733857368
+              },
+              "development-007-7f68b7245eb4f8a2": {
+                "before": {
+                  "sse": 10.430860192379466,
+                  "pixels": 10225,
+                  "psnr_db": 34.68464446922689
+                },
+                "after": {
+                  "sse": 9.602487196038801,
+                  "pixels": 10225,
+                  "psnr_db": 35.044008346499204
+                },
+                "delta_db": 0.35936387727231534
+              },
+              "development-000-8e840e827a5e835c": {
+                "before": {
+                  "sse": 15.201184314627538,
+                  "pixels": 4725,
+                  "psnr_db": 29.696456426944444
+                },
+                "after": {
+                  "sse": 13.760015009650388,
+                  "pixels": 4725,
+                  "psnr_db": 30.129041599296393
+                },
+                "delta_db": 0.43258517235194915
+              },
+              "development-011-d0fd8daa5ce0ec59": {
+                "before": {
+                  "sse": 2.998860483252173,
+                  "pixels": 10896,
+                  "psnr_db": 40.37432087851335
+                },
+                "after": {
+                  "sse": 2.682960884055535,
+                  "pixels": 10896,
+                  "psnr_db": 40.85774008320747
+                },
+                "delta_db": 0.4834192046941155
+              },
+              "development-005-35442efa18790d0a": {
+                "before": {
+                  "sse": 2411.8274122778485,
+                  "pixels": 48831,
+                  "psnr_db": 17.834706459785725
+                },
+                "after": {
+                  "sse": 2481.295366254724,
+                  "pixels": 48831,
+                  "psnr_db": 17.711384084083438
+                },
+                "delta_db": -0.12332237570228699
+              },
+              "development-002-9d1be93b64c29ff2": {
+                "before": {
+                  "sse": 13.752571577703694,
+                  "pixels": 6321,
+                  "psnr_db": 31.395231310568995
+                },
+                "after": {
+                  "sse": 13.73133058796519,
+                  "pixels": 6321,
+                  "psnr_db": 31.40194421939443
+                },
+                "delta_db": 0.006712908825434738
+              },
+              "development-003-8c92e9e93c0ff003": {
+                "before": {
+                  "sse": 16.427687010137305,
+                  "pixels": 9925,
+                  "psnr_db": 32.582753503258395
+                },
+                "after": {
+                  "sse": 16.31222088394521,
+                  "pixels": 9925,
+                  "psnr_db": 32.61338676559017
+                },
+                "delta_db": 0.030633262331775768
+              },
+              "development-004-403a5734469f072d": {
+                "before": {
+                  "sse": 43.39226497647884,
+                  "pixels": 3439,
+                  "psnr_db": 23.761411106472327
+                },
+                "after": {
+                  "sse": 43.43161186112731,
+                  "pixels": 3439,
+                  "psnr_db": 23.757474830720746
+                },
+                "delta_db": -0.003936275751581064
+              },
+              "development-008-6feda700c49fc611": {
+                "before": {
+                  "sse": 18.662991289661292,
+                  "pixels": 2084,
+                  "psnr_db": 25.25037715977467
+                },
+                "after": {
+                  "sse": 18.533826597128307,
+                  "pixels": 2084,
+                  "psnr_db": 25.280538739113595
+                },
+                "delta_db": 0.030161579338926714
+              },
+              "development-009-082e653bca2a3be9": {
+                "before": {
+                  "sse": 1.6450160282683335,
+                  "pixels": 2431,
+                  "psnr_db": 36.46736079693674
+                },
+                "after": {
+                  "sse": 1.7165441341550363,
+                  "pixels": 2431,
+                  "psnr_db": 36.28251239489788
+                },
+                "delta_db": -0.18484840203885966
+              },
+              "development-010-41701db7e3333e89": {
+                "before": {
+                  "sse": 0.2829031384638627,
+                  "pixels": 461,
+                  "psnr_db": 36.891844146601784
+                },
+                "after": {
+                  "sse": 0.2854101957587387,
+                  "pixels": 461,
+                  "psnr_db": 36.85352696675225
+                },
+                "delta_db": -0.03831717984953542
+              },
+              "development-012-edecf4a38be3ec1d": {
+                "before": {
+                  "sse": 3.7128538695433404,
+                  "pixels": 1698,
+                  "psnr_db": 31.373510840219193
+                },
+                "after": {
+                  "sse": 3.706365442169452,
+                  "pixels": 1698,
+                  "psnr_db": 31.38110702737775
+                },
+                "delta_db": 0.007596187158558365
+              },
+              "development-013-ce68041af26e6e53": {
+                "before": {
+                  "sse": 0.19563196741399125,
+                  "pixels": 4349,
+                  "psnr_db": 48.24070839862193
+                },
+                "after": {
+                  "sse": 0.19511166918449874,
+                  "pixels": 4349,
+                  "psnr_db": 48.252274180500166
+                },
+                "delta_db": 0.011565781878232428
+              },
+              "development-014-46267e4acd6e6f30": {
+                "before": {
+                  "sse": 20.178474806089277,
+                  "pixels": 3289,
+                  "psnr_db": 26.892967912930914
+                },
+                "after": {
+                  "sse": 19.93347192746053,
+                  "pixels": 3289,
+                  "psnr_db": 26.946021793455046
+                },
+                "delta_db": 0.05305388052413207
+              }
+            },
+            "scene_deltas": {
+              "n": 15,
+              "median_db": 0.030161579338926714,
+              "sd_db": 0.19304003810974038,
+              "positive": 11,
+              "negative": 4,
+              "tied": 0
+            },
+            "passed": true
+          },
+          "C6": {
+            "pooled": {
+              "before": {
+                "sse": 2000.1815123053877,
+                "pixels": 121140,
+                "psnr_db": 22.593394152751145
+              },
+              "after": {
+                "sse": 1972.3773419663696,
+                "pixels": 121140,
+                "psnr_db": 22.654188191938772
+              }
+            },
+            "pooled_delta_db": 0.060794039187626936,
+            "scene_values": {
+              "development-001-c2e77289a531d9c6": {
+                "before": {
+                  "sse": 19.85945112317661,
+                  "pixels": 7201,
+                  "psnr_db": 30.365468243749433
+                },
+                "after": {
+                  "sse": 20.687838022103406,
+                  "pixels": 7201,
+                  "psnr_db": 30.18798958451406
+                },
+                "delta_db": -0.17747865923537276
+              },
+              "development-006-cfa2a67575eca884": {
+                "before": {
+                  "sse": 24.02487375097624,
+                  "pixels": 5265,
+                  "psnr_db": 28.178585160815807
+                },
+                "after": {
+                  "sse": 24.52809266687548,
+                  "pixels": 5265,
+                  "psnr_db": 28.08855851967795
+                },
+                "delta_db": -0.09002664113785741
+              },
+              "development-007-7f68b7245eb4f8a2": {
+                "before": {
+                  "sse": 5.8161253567851094,
+                  "pixels": 10225,
+                  "psnr_db": 37.221508129611735
+                },
+                "after": {
+                  "sse": 5.110488710577216,
+                  "pixels": 10225,
+                  "psnr_db": 37.783221381609515
+                },
+                "delta_db": 0.5617132519977801
+              },
+              "development-000-8e840e827a5e835c": {
+                "before": {
+                  "sse": 7.394361220299949,
+                  "pixels": 4725,
+                  "psnr_db": 32.82622405186228
+                },
+                "after": {
+                  "sse": 8.295615361109377,
+                  "pixels": 4725,
+                  "psnr_db": 32.3267446044485
+                },
+                "delta_db": -0.49947944741378336
+              },
+              "development-011-d0fd8daa5ce0ec59": {
+                "before": {
+                  "sse": 1.9457769013005901,
+                  "pixels": 10896,
+                  "psnr_db": 42.2529530579617
+                },
+                "after": {
+                  "sse": 1.7107121897394846,
+                  "pixels": 10896,
+                  "psnr_db": 42.812113993158974
+                },
+                "delta_db": 0.5591609351972764
+              },
+              "development-005-35442efa18790d0a": {
+                "before": {
+                  "sse": 1840.7747992635232,
+                  "pixels": 48831,
+                  "psnr_db": 19.008162128372668
+                },
+                "after": {
+                  "sse": 1815.855607249643,
+                  "pixels": 48831,
+                  "psnr_db": 19.067355614837386
+                },
+                "delta_db": 0.05919348646471789
+              },
+              "development-002-9d1be93b64c29ff2": {
+                "before": {
+                  "sse": 8.055613538541792,
+                  "pixels": 6321,
+                  "psnr_db": 33.7180842192399
+                },
+                "after": {
+                  "sse": 8.17589004156001,
+                  "pixels": 6321,
+                  "psnr_db": 33.6537200309153
+                },
+                "delta_db": -0.06436418832459623
+              },
+              "development-003-8c92e9e93c0ff003": {
+                "before": {
+                  "sse": 28.583631671654338,
+                  "pixels": 9925,
+                  "psnr_db": 30.177343632380236
+                },
+                "after": {
+                  "sse": 24.57821772949573,
+                  "pixels": 9925,
+                  "psnr_db": 30.8330138299204
+                },
+                "delta_db": 0.6556701975401644
+              },
+              "development-004-403a5734469f072d": {
+                "before": {
+                  "sse": 27.45427438677932,
+                  "pixels": 3439,
+                  "psnr_db": 25.749434606963213
+                },
+                "after": {
+                  "sse": 27.52937308501622,
+                  "pixels": 3439,
+                  "psnr_db": 25.737571090436653
+                },
+                "delta_db": -0.011863516526560147
+              },
+              "development-008-6feda700c49fc611": {
+                "before": {
+                  "sse": 20.50332429570073,
+                  "pixels": 2084,
+                  "psnr_db": 24.841946884750996
+                },
+                "after": {
+                  "sse": 20.545664484900072,
+                  "pixels": 2084,
+                  "psnr_db": 24.83298777632992
+                },
+                "delta_db": -0.008959108421077389
+              },
+              "development-009-082e653bca2a3be9": {
+                "before": {
+                  "sse": 1.4082162506337532,
+                  "pixels": 2431,
+                  "psnr_db": 37.142368618495844
+                },
+                "after": {
+                  "sse": 1.420045045482425,
+                  "pixels": 2431,
+                  "psnr_db": 37.10604092634753
+                },
+                "delta_db": -0.036327692148311996
+              },
+              "development-010-41701db7e3333e89": {
+                "before": {
+                  "sse": 0.08570133727075646,
+                  "pixels": 461,
+                  "psnr_db": 42.078345814675686
+                },
+                "after": {
+                  "sse": 0.08752508540297121,
+                  "pixels": 461,
+                  "psnr_db": 41.98689636907361
+                },
+                "delta_db": -0.09144944560207335
+              },
+              "development-012-edecf4a38be3ec1d": {
+                "before": {
+                  "sse": 5.222884442408624,
+                  "pixels": 1698,
+                  "psnr_db": 29.891485235555773
+                },
+                "after": {
+                  "sse": 5.036345759813713,
+                  "pixels": 1698,
+                  "psnr_db": 30.049434025864244
+                },
+                "delta_db": 0.15794879030847042
+              },
+              "development-013-ce68041af26e6e53": {
+                "before": {
+                  "sse": 0.30084699511134616,
+                  "pixels": 4349,
+                  "psnr_db": 46.37164984310617
+                },
+                "after": {
+                  "sse": 0.2772050582161931,
+                  "pixels": 4349,
+                  "psnr_db": 46.72709511714571
+                },
+                "delta_db": 0.35544527403953907
+              },
+              "development-014-46267e4acd6e6f30": {
+                "before": {
+                  "sse": 8.751631771225037,
+                  "pixels": 3289,
+                  "psnr_db": 30.5209609196083
+                },
+                "after": {
+                  "sse": 8.53872147643411,
+                  "pixels": 3289,
+                  "psnr_db": 30.627922806160605
+                },
+                "delta_db": 0.10696188655230543
+              }
+            },
+            "scene_deltas": {
+              "n": 15,
+              "median_db": -0.008959108421077389,
+              "sd_db": 0.314209063829755,
+              "positive": 7,
+              "negative": 8,
+              "tied": 0
+            },
+            "passed": true
+          }
+        }
+      },
+      "legacy": {
+        "near": {
+          "C1": {
+            "pooled": {
+              "before": {
+                "sse": 328.103648940944,
+                "pixels": 97461,
+                "psnr_db": 29.499410575380583
+              },
+              "after": {
+                "sse": 330.0914694815468,
+                "pixels": 97461,
+                "psnr_db": 29.4731781682301
+              }
+            },
+            "pooled_delta_db": -0.02623240715048425,
+            "scene_values": {
+              "metric-scene-122104-broad": {
+                "before": {
+                  "sse": 57.32627819314037,
+                  "pixels": 22535,
+                  "psnr_db": 30.716250702351225
+                },
+                "after": {
+                  "sse": 57.31203034627691,
+                  "pixels": 22535,
+                  "psnr_db": 30.717330230020906
+                },
+                "delta_db": 0.001079527669681113
+              },
+              "metric-scene-122105-multilayer": {
+                "before": {
+                  "sse": 119.48947187567698,
+                  "pixels": 40126,
+                  "psnr_db": 30.03217481915012
+                },
+                "after": {
+                  "sse": 119.32970604586141,
+                  "pixels": 40126,
+                  "psnr_db": 30.037985527422407
+                },
+                "delta_db": 0.005810708272285581
+              },
+              "metric-scene-122107-broad": {
+                "before": {
+                  "sse": 151.28789887212668,
+                  "pixels": 34800,
+                  "psnr_db": 28.388963073465572
+                },
+                "after": {
+                  "sse": 153.44973308940848,
+                  "pixels": 34800,
+                  "psnr_db": 28.327343613099227
+                },
+                "delta_db": -0.06161946036634447
+              }
+            },
+            "scene_deltas": {
+              "n": 3,
+              "median_db": 0.001079527669681113,
+              "sd_db": 0.03763946247683458,
+              "positive": 2,
+              "negative": 1,
+              "tied": 0
+            },
+            "passed": true
+          },
+          "C6": {
+            "pooled": {
+              "before": {
+                "sse": 326.294130469424,
+                "pixels": 97461,
+                "psnr_db": 29.523428563056
+              },
+              "after": {
+                "sse": 330.1995278374457,
+                "pixels": 97461,
+                "psnr_db": 29.471756699565532
+              }
+            },
+            "pooled_delta_db": -0.05167186349046915,
+            "scene_values": {
+              "metric-scene-122104-broad": {
+                "before": {
+                  "sse": 36.048493868518456,
+                  "pixels": 22535,
+                  "psnr_db": 32.73091692821717
+                },
+                "after": {
+                  "sse": 36.51279422490898,
+                  "pixels": 22535,
+                  "psnr_db": 32.675337475287684
+                },
+                "delta_db": -0.05557945292948574
+              },
+              "metric-scene-122105-multilayer": {
+                "before": {
+                  "sse": 113.40868136343776,
+                  "pixels": 40126,
+                  "psnr_db": 30.259008227365808
+                },
+                "after": {
+                  "sse": 113.33774790047174,
+                  "pixels": 40126,
+                  "psnr_db": 30.26172544877065
+                },
+                "delta_db": 0.0027172214048434284
+              },
+              "metric-scene-122107-broad": {
+                "before": {
+                  "sse": 176.83695523746775,
+                  "pixels": 34800,
+                  "psnr_db": 27.711274700107275
+                },
+                "after": {
+                  "sse": 180.34898571206497,
+                  "pixels": 34800,
+                  "psnr_db": 27.625867944897763
+                },
+                "delta_db": -0.08540675520951169
+              }
+            },
+            "scene_deltas": {
+              "n": 3,
+              "median_db": -0.05557945292948574,
+              "sd_db": 0.044821879802306154,
+              "positive": 1,
+              "negative": 2,
+              "tied": 0
+            },
+            "passed": true
+          }
+        },
+        "far": {
+          "C1": {
+            "pooled": {
+              "before": {
+                "sse": 302.6139867768566,
+                "pixels": 94841,
+                "psnr_db": 29.732283820526234
+              },
+              "after": {
+                "sse": 302.82534987415534,
+                "pixels": 94841,
+                "psnr_db": 29.729251515718566
+              }
+            },
+            "pooled_delta_db": -0.0030323048076681403,
+            "scene_values": {
+              "metric-scene-122104-broad": {
+                "before": {
+                  "sse": 162.04635838413196,
+                  "pixels": 22224,
+                  "psnr_db": 26.143042073959904
+                },
+                "after": {
+                  "sse": 162.1882059793266,
+                  "pixels": 22224,
+                  "psnr_db": 26.139242131661007
+                },
+                "delta_db": -0.003799942298897463
+              },
+              "metric-scene-122105-multilayer": {
+                "before": {
+                  "sse": 113.9638735584719,
+                  "pixels": 39475,
+                  "psnr_db": 30.166761911926834
+                },
+                "after": {
+                  "sse": 113.95479581183955,
+                  "pixels": 39475,
+                  "psnr_db": 30.167107861232655
+                },
+                "delta_db": 0.0003459493058208807
+              },
+              "metric-scene-122107-broad": {
+                "before": {
+                  "sse": 26.603754834252754,
+                  "pixels": 33142,
+                  "psnr_db": 35.72557030738604
+                },
+                "after": {
+                  "sse": 26.6823480829892,
+                  "pixels": 33142,
+                  "psnr_db": 35.71275922264786
+                },
+                "delta_db": -0.012811084738181933
+              }
+            },
+            "scene_deltas": {
+              "n": 3,
+              "median_db": -0.003799942298897463,
+              "sd_db": 0.006726770523985943,
+              "positive": 1,
+              "negative": 2,
+              "tied": 0
+            },
+            "passed": true
+          },
+          "C6": {
+            "pooled": {
+              "before": {
+                "sse": 277.1582335887206,
+                "pixels": 94841,
+                "psnr_db": 30.113895944517335
+              },
+              "after": {
+                "sse": 277.37473888075044,
+                "pixels": 94841,
+                "psnr_db": 30.110504728374124
+              }
+            },
+            "pooled_delta_db": -0.0033912161432105847,
+            "scene_values": {
+              "metric-scene-122104-broad": {
+                "before": {
+                  "sse": 152.65641358428627,
+                  "pixels": 22224,
+                  "psnr_db": 26.402284279947196
+                },
+                "after": {
+                  "sse": 152.68907258952956,
+                  "pixels": 22224,
+                  "psnr_db": 26.401355258464456
+                },
+                "delta_db": -0.000929021482740211
+              },
+              "metric-scene-122105-multilayer": {
+                "before": {
+                  "sse": 91.52737844694856,
+                  "pixels": 39475,
+                  "psnr_db": 31.11892370045126
+                },
+                "after": {
+                  "sse": 91.59114991909107,
+                  "pixels": 39475,
+                  "psnr_db": 31.115898818171882
+                },
+                "delta_db": -0.003024882279376584
+              },
+              "metric-scene-122107-broad": {
+                "before": {
+                  "sse": 32.97444155748576,
+                  "pixels": 33142,
+                  "psnr_db": 34.79322518461566
+                },
+                "after": {
+                  "sse": 33.09451637212982,
+                  "pixels": 33142,
+                  "psnr_db": 34.777439288041975
+                },
+                "delta_db": -0.015785896573682123
+              }
+            },
+            "scene_deltas": {
+              "n": 3,
+              "median_db": -0.003024882279376584,
+              "sd_db": 0.008041173792490308,
+              "positive": 0,
+              "negative": 3,
+              "tied": 0
+            },
+            "passed": true
+          }
+        }
+      }
+    },
+    "figures": [
+      "route3-cache/visual-20261123/second-pass-recoverable/recoverable_022_dev001_f030_far.png",
+      "route3-cache/visual-20261123/second-pass-recoverable/recoverable_028_dev006_f030_far.png",
+      "route3-cache/visual-20261123/second-pass-recoverable/recoverable_052_dev005_f030_far.png"
+    ],
+    "min_allowed_scene_median_delta_db": -0.1
+  },
+  "seconds": {
+    "original": 223.18143725767732,
+    "pushback": 221.74614064395428,
+    "recoverable": 318.2635974101722
+  },
+  "continuation": {
+    "run": "route3-v2data-stage2-2026-11-24-01",
+    "dispatch_switched_at": "2026-11-24T01:16:59+08:00",
+    "training_started_at": "2026-11-24T01:17:07+08:00",
+    "initialization": {
+      "source_run": "route3-v2data-stage2-2026-11-23-02",
+      "checkpoint_sha256": "c9e25ca4b73854c717aa0e1a4806b313f0c71e9546122767195a0966e63e9c2f",
+      "pinhole_passed": true,
+      "recoverable_passed": true,
+      "pinhole_report_sha256": "08d10e426a265670f6944fb464be93e175f0142c51e5a911da63793e4fdbdf39",
+      "recoverable_report_sha256": "3a9b24d47abbd5f4a6a570d79c434d218709856294618b6ddd5bb6e8cafe018f",
+      "fresh_geometry_zero_probe": [
+        {
+          "scene": "development-000-8e840e827a5e835c",
+          "baseline": {
+            "sse": 0.0049255051750511925,
+            "pixels": 262144,
+            "psnr_db": 82.03210396967472
+          },
+          "actual": {
+            "sse": 0.007124155150788347,
+            "pixels": 262144,
+            "psnr_db": 80.4292780765475
+          },
+          "fixed_only": {
+            "sse": 2.7062364261264005,
+            "pixels": 262144,
+            "psnr_db": 54.6329544129192
+          },
+          "linear_max": 0.015603721141815186
+        },
+        {
+          "scene": "metric-scene-122104-broad",
+          "baseline": {
+            "sse": 0.005325305515720302,
+            "pixels": 262144,
+            "psnr_db": 81.69316648131382
+          },
+          "actual": {
+            "sse": 0.03391842848964721,
+            "pixels": 262144,
+            "psnr_db": 73.6522545437453
+          },
+          "fixed_only": {
+            "sse": 2.563040944595988,
+            "pixels": 262144,
+            "psnr_db": 54.869056325744516
+          },
+          "linear_max": 0.0053539276123046875
+        }
+      ],
+      "note": "The archived preflight describes the original stage-1 initialization. The continuation starts at the original trained 2a endpoint."
+    },
+    "training_step": 1,
+    "reference_pool_frames": 240,
+    "new_2a_baseline": "Formal EMA and raw evaluation and C1–C6 queued in process 483717 alongside 2b",
+    "diagnostics": "The split and representation diagnostics are serial once the official 2b 10k evaluation is complete and 2b has returned to training"
+  }
+}

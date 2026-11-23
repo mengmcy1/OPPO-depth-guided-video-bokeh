@@ -6,7 +6,7 @@ import subprocess
 import sys
 import time
 
-from route3_v2data_B_batch import ROOT, write_json
+from route3_v2data_B_batch import ROOT, sha256, write_json
 from route3_v2data_B_plan import load
 from route3_v2data_stage2_train import RUN, fixed_inputs, now
 
@@ -96,13 +96,21 @@ def node_summary(report):
             f"B 光学 {optical['admitted']} 场入列，{optical['f2_complete']} 场 F2 齐备。")
 
 
-def follow(run):
+def follow(run, resume_2a=False):
     run.mkdir(parents=True,exist_ok=True)
     status=run/"dispatch.json"
     with (run/"dispatch.lock").open("a") as lock:
         fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
         try:
             receipt=load(run/"preflight.json")
+            if resume_2a:
+                continuation=receipt.get("continuation",{})
+                ck=run/"2a/step-010000.pt"
+                if (receipt.get("inputs")!=fixed_inputs() or not ck.is_file()
+                        or continuation.get("checkpoint_sha256")!=sha256(ck)
+                        or not continuation.get("pinhole_passed")
+                        or not continuation.get("recoverable_passed")):
+                    raise ValueError("Resuming 2b requires the validated 2a checkpoint and ordering checks")
             if receipt.get("inputs")!=fixed_inputs():
                 execute(TRAINER,run/"preflight.log","--run",run,"--preflight")
                 receipt=load(run/"preflight.json")
@@ -113,7 +121,8 @@ def follow(run):
                 milestones["start"]=receipt
                 write_json(run/"milestones.json",milestones)
             elapsed_start=time.monotonic()
-            for phase,step,weights in MILESTONES:
+            plan=MILESTONES[1:] if resume_2a else MILESTONES
+            for phase,step,weights in plan:
                 key=f"{phase}-{step//1000}k"
                 if key in milestones:
                     continue
@@ -145,8 +154,10 @@ def follow(run):
                 summary=node_summary(reports["ema"])
                 if "split_conclusion" in output:
                     summary+=f"新开发集的三分支边界结论为{output['split_conclusion']['development']['conclusion']}。"
-                filename=f"route3-v2data-stage2-2026-11-23-{key}.json"
-                commit,pushed=push_record(f"**新阶段 2 {key}**",filename,output,summary)
+                prefix=run.name if resume_2a else "route3-v2data-stage2-2026-11-23"
+                title=f"推后修复 {key}" if resume_2a else key
+                filename=f"{prefix}-{key}.json"
+                commit,pushed=push_record(f"**新阶段 2 {title}**",filename,output,summary)
                 milestones[key]=dict(commit=commit,record=filename,pushed=pushed,evaluation_wall_seconds=sum(
                     r["evaluation_seconds"] for r in reports.values()),completed_at=now(),
                     optical=reports["ema"]["optical"])
@@ -160,5 +171,6 @@ def follow(run):
 if __name__=="__main__":
     p=ArgumentParser(description=__doc__)
     p.add_argument("--run",type=Path,default=RUN)
+    p.add_argument("--resume-2a",action="store_true",help="Start 2b from the validated local 2a endpoint")
     a=p.parse_args()
-    follow(a.run.resolve())
+    follow(a.run.resolve(),a.resume_2a)
