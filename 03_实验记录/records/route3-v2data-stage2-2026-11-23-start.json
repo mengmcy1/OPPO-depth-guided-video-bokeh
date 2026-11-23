@@ -1,0 +1,137 @@
+{
+  "passed": true,
+  "inputs": {
+    "geometry_sha256": "dfb1d7e52eb67fb756186b252312aee3b136096e3835cbcaf60f5d8250e1c220",
+    "query_sha256": "1c19181f296f858a4ff6a6efcb75f8839a3b1a0d066ac7fb744bc7b72486e300",
+    "epsilon": 0.4,
+    "q_min": 0.0
+  },
+  "partition": {
+    "training_scenes": {
+      "A": 817,
+      "B": 295,
+      "C": 4500
+    },
+    "development_scenes": {
+      "A": 91,
+      "B": 15,
+      "C": 500
+    },
+    "skipped": {}
+  },
+  "zero_identity": [
+    {
+      "split": "development",
+      "scene": "development-000-8e840e827a5e835c",
+      "case": "f030-focus0-N1.4",
+      "b1": 0.0313720703125,
+      "stage1": {
+        "zero_visible": {
+          "sse": 2.7062364261264005,
+          "pixels": 262144
+        },
+        "zero_combined": {
+          "sse": 0.004925505067317815,
+          "pixels": 262144
+        }
+      },
+      "zero_visible": {
+        "sse": 2.7062364261264005,
+        "pixels": 262144
+      },
+      "zero_combined": {
+        "sse": 0.0049255051750511925,
+        "pixels": 262144
+      }
+    },
+    {
+      "split": "legacy",
+      "scene": "metric-scene-122104-broad",
+      "case": "f030-N1.4-F1.4",
+      "b1": 0.171630859375,
+      "stage1": {
+        "zero_visible": {
+          "sse": 2.563040944595988,
+          "pixels": 262144
+        },
+        "zero_combined": {
+          "sse": 0.00532530551044097,
+          "pixels": 262144
+        }
+      },
+      "zero_visible": {
+        "sse": 2.563040944595988,
+        "pixels": 262144
+      },
+      "zero_combined": {
+        "sse": 0.005325305515720302,
+        "pixels": 262144
+      }
+    }
+  ],
+  "direct_path_seconds": {
+    "A": {
+      "first_seconds": 0.24761104583740234,
+      "repeat_seconds": 0.12096044421195984,
+      "terms": [
+        "foreground",
+        "comp"
+      ]
+    },
+    "C": {
+      "first_seconds": 1.8352055586874485,
+      "repeat_seconds": 0.9309380948543549,
+      "terms": [
+        "coverage",
+        "foreground",
+        "comp",
+        "alpha",
+        "bimodal",
+        "occ",
+        "zero",
+        "bokeh"
+      ]
+    },
+    "B": {
+      "first_seconds": 1.6850291937589645,
+      "repeat_seconds": 1.1101920641958714,
+      "terms": [
+        "coverage",
+        "foreground",
+        "comp",
+        "alpha",
+        "bimodal",
+        "occ",
+        "zero",
+        "bokeh"
+      ]
+    }
+  },
+  "completed_at": "2026-11-23T20:02:21+08:00",
+  "started_at": "2026-11-23T20:03:20+08:00",
+  "run": "route3-v2data-stage2-2026-11-23-01",
+  "evaluation_probe": "one frame from each of new development and legacy; near and far, A-D/H path",
+  "expected_hours": {
+    "low": 10,
+    "high": 13,
+    "basis": "initial 2a steps plus measured B/C gradient paths and scheduled evaluations"
+  },
+  "stages": {
+    "two_a": {
+      "steps": 10000,
+      "A": 7000,
+      "C": 3000,
+      "learn_footprint": false
+    },
+    "two_b": {
+      "steps": 30000,
+      "A": 6000,
+      "B": 12000,
+      "C": 12000,
+      "learn_footprint": true
+    }
+  },
+  "train_b0_opaque": false,
+  "tilt": false,
+  "evaluation_scope": "P2 f/1.4, newly expanded 15 and original 3 separately"
+}

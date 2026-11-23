@@ -156,6 +156,10 @@ class FrozenQuery:
         size=z.shape[0]
         views,memory=views_for(tier,key,size)
         frame=data.TRAIN_FRAMES[index] if tier=='B' else index
+        return self.second_from_views(views,memory,frame,z,focus,fstop)
+
+    def second_from_views(self,views,memory,frame,z,focus,fstop):
+        size=z.shape[0]
         target=next(v for v in views if v['frame']==frame)
         K=target['K']
         band=depth_band(z,K[0,0],focus,.05/(2*fstop))[0]
