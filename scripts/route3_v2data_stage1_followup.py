@@ -19,7 +19,6 @@ from route3_v2data_stage1_evaluate import QUERY_PAIR_PROTOCOL,adoption,legacy_ba
 EVALUATOR=ROOT/"scripts/route3_v2data_stage1_evaluate.py"
 DRYRUN=FORMAL_DATA/"p2-review/formal-dryrun-b/optical.json"
 PROGRESS=Path("03_实验记录/当前实验进度与方法论.md")
-EARLY_EMA_THRESHOLD_SECONDS=30*60
 
 
 def publish(checkout,values,text):
@@ -115,33 +114,39 @@ def run_evaluation(args,log_path):
     raise RuntimeError(f"Stage 1 evaluation failed twice: {log_path}")
 
 
-def evaluate_milestone(run, phase, step, checkpoints, weight, *, ema_only=False):
+def evaluate_milestone(run, phase, step, checkpoints, weight):
     started=time.monotonic()
     root=run/"evaluation"/phase/f"step-{step:06d}"
     root.mkdir(parents=True,exist_ok=True)
     timing_path=root/"timing.json"
     previous_timing=load(timing_path)
-    versions=("ema",) if ema_only else ("ema","model")
+    versions=("ema","model")
     prepare=milestone_command(run,root,phase,"original",checkpoints["original"],weight)
     run_evaluation([*prepare,"--prepare-f2-only"],root/"development-F2.log")
     preparation_seconds=time.monotonic()-started
     result={}
     branch_seconds={}
+    reused_seconds={}
     for branch,path in checkpoints.items():
         dest=root/branch
         dest.mkdir(parents=True,exist_ok=True)
-        if any(load(dest/f"{key}.json").get("query_pair_protocol")!=QUERY_PAIR_PROTOCOL for key in versions):
+        existing={key:load(dest/f"{key}.json") for key in versions}
+        reusable={key for key,row in existing.items() if row.get("query_pair_protocol")==QUERY_PAIR_PROTOCOL}
+        reused_seconds[branch]={key:existing[key]["scoring_seconds"] for key in sorted(reusable)
+                                if "scoring_seconds" in existing[key]}
+        if len(reusable)<len(versions):
             scoring_started=time.monotonic()
             args=milestone_command(run,dest,phase,branch,path,weight)
-            run_evaluation([*args,"--ema-only"] if ema_only else args,dest/"evaluation.log")
+            run_evaluation(args,dest/"evaluation.log")
             branch_seconds[branch]=time.monotonic()-scoring_started
         result[branch]={key:load(dest/f"{key}.json") for key in versions}
     elapsed=time.monotonic()-started
+    reused=sum(seconds for measurements in reused_seconds.values() for seconds in measurements.values())
     timing=previous_timing if not branch_seconds and previous_timing else dict(
-        wall_seconds=elapsed,development_f2_preparation_seconds=preparation_seconds,
-        scoring_wall_seconds=elapsed-preparation_seconds,scoring_seconds_by_branch=branch_seconds,
-        versions=list(versions),includes_query_off=True,
-        early_ema_threshold_seconds=EARLY_EMA_THRESHOLD_SECONDS,
+        wall_seconds=elapsed+reused,supervisor_wall_seconds=elapsed,
+        development_f2_preparation_seconds=preparation_seconds,
+        scoring_wall_seconds=elapsed-preparation_seconds+reused,scoring_seconds_by_branch=branch_seconds,
+        reused_scoring_seconds=reused_seconds,versions=list(versions),includes_query_off=True,
     )
     write_json(timing_path,timing)
     summary={}
@@ -157,14 +162,13 @@ def evaluate_milestone(run, phase, step, checkpoints, weight, *, ema_only=False)
                        effect_smaller_than_scene_spread=difference["effect_smaller_than_scene_spread"])
 
 
-def estimate_1b(training_seconds, evaluation_seconds, full_evaluation_seconds, ema_only, now):
-    evaluation_remaining=evaluation_seconds+full_evaluation_seconds if ema_only else 2*evaluation_seconds
-    remaining=2*training_seconds+evaluation_remaining
+def estimate_1b(training_seconds, evaluation_seconds, now):
+    remaining=2*(training_seconds+evaluation_seconds)
     return dict(
         measured_at_utc=now.isoformat(),first_10000_training_seconds=training_seconds,
-        first_10000_evaluation_seconds=evaluation_seconds,full_evaluation_seconds=full_evaluation_seconds,
+        first_10000_evaluation_seconds=evaluation_seconds,
         estimated_remaining_seconds=remaining,estimated_completion_utc=(now+timedelta(seconds=remaining)).isoformat(),
-        method="首轮 10,000 步训练墙钟外推两段；20,000 步评价沿用首轮耗时，终点完整评价沿用 1a 已缓存评分耗时或同口径首轮。",
+        method="将首轮两支 10,000 步训练及 EMA、原始权重的完整评价墙钟外推到剩余两段。",
     )
 
 
@@ -209,17 +213,19 @@ def follow(run,checkout,production_record):
             runner.state.pop("halted_at_utc",None)
             runner.status(status="evaluating_1a")
             _,summary=evaluate_milestone(run,"1a",TOTAL,checkpoints,weight)
-            early_ema=summary["runtime"]["wall_seconds"]>EARLY_EMA_THRESHOLD_SECONDS
-            summary["early_1b_ema_only"]=early_ema
+            summary["early_1b_ema_only"]=False
             recovery=load(run/"evaluation"/"development-F2-recovery.json")
             if recovery:
                 summary["development_f2_recovery"]=recovery
             register_milestone(run,checkout,{"1a_endpoint":summary},"两支 1a 已完成 30,000 步，终点评价已登记。")
             gate=wait_for_1b(run,runner,production_record)
-            register_milestone(run,checkout,{"1b_start":gate},"两支 1b 已具备光学与 F2 数据，继续配对训练。")
+            if not load(run/"milestones.json").get("1b_start"):
+                gate["released_at_utc"]=datetime.now(timezone.utc).isoformat()
+                register_milestone(run,checkout,{"1b_start":gate},"两支 1b 已具备光学与 F2 数据，继续配对训练。")
             mode=bench["adopted"]
             outputs={b:run/"1b"/b for b in BRANCHES}
             for step in (10_000,20_000,30_000):
+                runner.state.setdefault("1b_started_at_utc",datetime.now(timezone.utc).isoformat())
                 runner.status(status="1b_running",mode=mode,target_step=step)
                 groups=[BRANCHES] if mode=="parallel" else [(b,) for b in BRANCHES]
                 traces=[runner.group("1b",mode,outputs,group,step,checkpoints) for group in groups]
@@ -233,13 +239,12 @@ def follow(run,checkout,production_record):
                                       max(elapsed) if mode=="parallel" else sum(elapsed))
                 del data
                 runner.status(status="evaluating_1b",step=step)
-                results,endpoint=evaluate_milestone(run,"1b",step,paths,weight,ema_only=early_ema and step<TOTAL)
+                results,endpoint=evaluate_milestone(run,"1b",step,paths,weight)
                 snapshot={f"1b_step_{step}":endpoint,
                           "1b_reference_pools":reference_reports(run)}
                 if step==10_000:
                     snapshot["1b_finish_estimate_after_10000"]=estimate_1b(
-                        training_seconds,endpoint["runtime"]["wall_seconds"],
-                        summary["runtime"]["scoring_wall_seconds"],early_ema,datetime.now(timezone.utc))
+                        training_seconds,endpoint["runtime"]["wall_seconds"],datetime.now(timezone.utc))
                 if step==30_000:
                     snapshot["decision"]=adoption(results["original"]["ema"],results["same-surface"]["ema"])
                 label=snapshot.get("decision",{}).get("selected")

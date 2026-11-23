@@ -4,6 +4,7 @@ from collections import defaultdict
 import csv
 from pathlib import Path
 import os
+import time
 
 os.environ.setdefault("OPENCV_IO_ENABLE_OPENEXR","1")
 import cv2
@@ -99,9 +100,10 @@ class FrameQueries(Store):
     def __init__(self,views,conditioned):
         self.features=conditioned
         self.observed=dict(
-            images=torch.as_tensor(np.stack([row["rgb_linear"] for row in views]),device="cuda").permute(0,3,1,2).contiguous(),
-            K=torch.as_tensor(views[0]["K"],device="cuda"),
-            c2w=torch.as_tensor(np.stack([row["c2w"] for row in views]),device="cuda"),
+            images=torch.as_tensor(np.stack([row["rgb_linear"] for row in views]),device="cuda",
+                                   dtype=torch.float32).permute(0,3,1,2).contiguous(),
+            K=torch.as_tensor(views[0]["K"],device="cuda",dtype=torch.float32),
+            c2w=torch.as_tensor(np.stack([row["c2w"] for row in views]),device="cuda",dtype=torch.float32),
         )
 
     def inputs(self,path):
@@ -125,7 +127,7 @@ def region_errors(image,target,mask):
 def pooled(values):
     pixels=sum(v["pixels"] for v in values)
     sse=sum(v["sse"] for v in values)
-    return dict(sse=sse,pixels=pixels,psnr_db=-10*np.log10(max(sse/(3*pixels),1e-12)) if pixels else None)
+    return dict(sse=sse,pixels=pixels,psnr_db=float(-10*np.log10(max(sse/(3*pixels),1e-12))) if pixels else None)
 
 
 def paired_psnr(on, off):
@@ -388,6 +390,7 @@ def score_checkpoint(checkpoint,output,phase,branch,weight,regular,f2_root,smoke
         if previous.get("query_pair_protocol")==QUERY_PAIR_PROTOCOL:
             results[key]=previous
             continue
+        started=time.monotonic()
         net=load_paired_checkpoint(checkpoint,key).eval()
         edge=EdgeStatistics()
         dev=dev_rows(net,query,regular,key,edge,f2_root)
@@ -397,6 +400,8 @@ def score_checkpoint(checkpoint,output,phase,branch,weight,regular,f2_root,smoke
               if row["scene"] in {q.name for q in regular} and row["relation"]=="same_foreground_surface"
               and row["distance_band"]=="0_to_2_px" and row["absolute_p95_m_inv"] is not None]
         gaps={} if smoke else geometry_loss_gaps(net,DevelopmentData(regular),phase,weight)
+        print("stage1 scored",key,"development scenes",len(regular),
+              "legacy scenes",len({row["scene"] for row in old}),"loss tiers",",".join(gaps),flush=True)
         results[key]=dict(branch=branch,phase=phase,checkpoint=str(checkpoint),checkpoint_sha256=sha256(checkpoint),
                           data_gaps=gaps,development=summary(dev),legacy=summary(old),
                           development_rows=dev,legacy_rows=old,edge_statistics=all_edges,
@@ -404,6 +409,7 @@ def score_checkpoint(checkpoint,output,phase,branch,weight,regular,f2_root,smoke
                           same_surface_metric="median of per-scene/direction same-surface |inverse-depth excess| p95, 0–2 px",
                           evaluation="P2 actual frozen Query, f/1.4, LDR v2 reference; legacy rows separate",
                           query_pair_protocol=QUERY_PAIR_PROTOCOL,
+                          scoring_seconds=time.monotonic()-started,
                           legacy_note="B K16 L_occ now uses native 512 instead of 2x2 agreement pooling")
         write_json(path,results[key])
         del net
