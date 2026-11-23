@@ -65,11 +65,6 @@ def visible_layer(appearance, inputs, split):
 
 def boundary_layer(appearance, inputs, split, color, depth):
     K=inputs['K'][0]
-    cloud=pixel_layer(color,depth,K,torch.eye(4,device=K.device),
-                      valid=split,layer_id=2,sigma_pixels=.7,opacity=.999,subdivisions=5)
-    # The first-pass background starts exactly inactive. Its opacity is the
-    # newly exposed fraction of the learned front opacity, not Query confidence.
-    exposed=(.999-appearance['opacity'][0]).clamp_min(0)
-    subpixels=lambda x: x.repeat_interleave(5,0).repeat_interleave(5,1)
-    cloud.opacities=subpixels(exposed)[subpixels(split)]
-    return cloud
+    # Front-to-back blending applies the foreground transmittance to this layer.
+    return pixel_layer(color,depth,K,torch.eye(4,device=K.device),
+                       valid=split,layer_id=2,sigma_pixels=.7,opacity=.999,subdivisions=5)
