@@ -747,7 +747,7 @@
       "train_geometry": 295,
       "development": 15,
       "test": 30,
-      "train_optical": 8
+      "train_optical": 72
     },
     "rules": {
       "basis": {
@@ -1392,7 +1392,7 @@
       "train_geometry": 5,
       "development": 0,
       "test": 0,
-      "train_optical": 287
+      "train_optical": 223
     },
     "verified_geometry_and_optical_bytes": 197230391315,
     "failures": {
@@ -13641,7 +13641,12 @@
       "total_target": 295,
       "scheduling": "按原有难度轮流及分数排序，标签耗尽跳过，其余按场景编号；扩充顺序先封存后渲染。",
       "usable": "光学及 F2 均完整",
-      "GPU_priority": "各训练阶段单步变为单独运行的 1.5 倍以上时，光学改为单槽。"
+      "GPU_priority": "各训练阶段单步变为单独运行的 1.5 倍以上时，光学改为单槽。",
+      "status_at_query_decision": {
+        "admitted": 72,
+        "f2_complete": 72,
+        "recorded_at": "2026-11-23T19:12:00+08:00"
+      }
     },
     "last_two_scene_production_run": {
       "partition": "training",
