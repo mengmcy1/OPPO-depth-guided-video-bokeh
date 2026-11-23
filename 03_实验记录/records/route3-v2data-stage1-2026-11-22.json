@@ -13009,5 +13009,195 @@
       "candidate": 0.07733698872715355
     },
     "scope": "paired EMA endpoints on the 15-scene development set"
+  },
+  "adoption_corrected": {
+    "original_decision": {
+      "checks": {
+        "same_surface_step_improved": true,
+        "both_zero_floors": false,
+        "both_p2_noninferior": true
+      },
+      "selected": "original",
+      "p2_candidate_minus_original_db": {
+        "near_in_focus": 0.056486058874206435,
+        "far_recoverable": 0.12706790958525715
+      },
+      "effect_smaller_than_scene_spread": {
+        "near_in_focus": true,
+        "far_recoverable": true
+      },
+      "same_surface_p95": {
+        "original": 0.08985675843508653,
+        "candidate": 0.07733698872715355
+      },
+      "scope": "paired EMA endpoints on the 15-scene development set"
+    },
+    "corrected_decision": {
+      "checks": {
+        "same_surface_step_improved": true,
+        "both_zero_floors": true,
+        "both_p2_noninferior": true
+      },
+      "selected": "same-surface",
+      "p2_candidate_minus_original_db": {
+        "near_in_focus": 0.056486058874206435,
+        "far_recoverable": 0.12706790958525715
+      },
+      "effect_smaller_than_scene_spread": {
+        "near_in_focus": true,
+        "far_recoverable": true
+      },
+      "same_surface_p95": {
+        "original": 0.08985675843508653,
+        "candidate": 0.07733698872715355
+      },
+      "scope": "paired EMA endpoints on the 15-scene development set"
+    },
+    "reason": "旧汇总要求全部计划 case 都已评分。development-010 的 f001、f030、f060 近焦 case 由真值判定无有效名义主体，使旧零下限 all_passed 恒为 False。修正后按有评分的 case 检查，另记不可评分的 case。",
+    "ema_checks": {
+      "original": {
+        "zero_floors": {
+          "development": {
+            "zero_visible": {
+              "sse": 213.94911768028885,
+              "pixels": 22806528,
+              "psnr_db": 55.04869929483648,
+              "scored_cases": 87,
+              "floor_db": 50.0,
+              "passed_cases": 87,
+              "all_passed": true
+            },
+            "zero_combined": {
+              "sse": 5.0659592450095365,
+              "pixels": 22806528,
+              "psnr_db": 71.305187376646,
+              "scored_cases": 87,
+              "floor_db": 60.0,
+              "passed_cases": 87,
+              "all_passed": true
+            },
+            "unscored_cases": 3,
+            "unscored_case_ids": [
+              "development-010-41701db7e3333e89/f001-focus0-N1.4",
+              "development-010-41701db7e3333e89/f030-focus0-N1.4",
+              "development-010-41701db7e3333e89/f060-focus0-N1.4"
+            ]
+          },
+          "legacy": {
+            "zero_visible": {
+              "sse": 44.57582159777999,
+              "pixels": 4718592,
+              "psnr_db": 55.01834325169103,
+              "scored_cases": 18,
+              "floor_db": 50.0,
+              "passed_cases": 18,
+              "all_passed": true
+            },
+            "zero_combined": {
+              "sse": 1.5976255995208373,
+              "pixels": 4718592,
+              "psnr_db": 69.47458670947557,
+              "scored_cases": 18,
+              "floor_db": 60.0,
+              "passed_cases": 18,
+              "all_passed": true
+            },
+            "unscored_cases": 0,
+            "unscored_case_ids": []
+          }
+        },
+        "p2_scene_standard_deviation_db": {
+          "near_in_focus": 6.650615449322364,
+          "far_recoverable": 7.618152345673051
+        }
+      },
+      "same-surface": {
+        "zero_floors": {
+          "development": {
+            "zero_visible": {
+              "sse": 213.94911841440654,
+              "pixels": 22806528,
+              "psnr_db": 55.04869927993465,
+              "scored_cases": 87,
+              "floor_db": 50.0,
+              "passed_cases": 87,
+              "all_passed": true
+            },
+            "zero_combined": {
+              "sse": 4.312906042321354,
+              "pixels": 22806528,
+              "psnr_db": 72.00410432248985,
+              "scored_cases": 87,
+              "floor_db": 60.0,
+              "passed_cases": 87,
+              "all_passed": true
+            },
+            "unscored_cases": 3,
+            "unscored_case_ids": [
+              "development-010-41701db7e3333e89/f001-focus0-N1.4",
+              "development-010-41701db7e3333e89/f030-focus0-N1.4",
+              "development-010-41701db7e3333e89/f060-focus0-N1.4"
+            ]
+          },
+          "legacy": {
+            "zero_visible": {
+              "sse": 44.575824559909535,
+              "pixels": 4718592,
+              "psnr_db": 55.018342963095904,
+              "scored_cases": 18,
+              "floor_db": 50.0,
+              "passed_cases": 18,
+              "all_passed": true
+            },
+            "zero_combined": {
+              "sse": 1.5344433369700825,
+              "pixels": 4718592,
+              "psnr_db": 69.64982826084389,
+              "scored_cases": 18,
+              "floor_db": 60.0,
+              "passed_cases": 18,
+              "all_passed": true
+            },
+            "unscored_cases": 0,
+            "unscored_case_ids": []
+          }
+        },
+        "p2_scene_standard_deviation_db": {
+          "near_in_focus": 6.71874795498167,
+          "far_recoverable": 7.669865443988331
+        }
+      }
+    },
+    "evaluated_at_utc": "2026-11-23T08:07:21.006936+00:00",
+    "recorded_at_utc": "2026-11-23T08:07:21.031080+00:00",
+    "evaluation_wall_seconds": 1414.2028319612145,
+    "optical_counts": {
+      "admitted": 66,
+      "f2_complete": 64
+    },
+    "legacy_1c_5k_ema": {
+      "query_pair": {
+        "near_in_focus": {
+          "on_db": 38.75484269440361,
+          "off_db": 40.64414599453628,
+          "delta_db": -1.8893033001326742,
+          "pixels": 1097696,
+          "cases": 9
+        },
+        "far_recoverable": {
+          "on_db": 34.08075867844879,
+          "off_db": 32.93282342444123,
+          "delta_db": 1.1479352540075567,
+          "pixels": 94841,
+          "cases": 9
+        }
+      },
+      "far_per_scene_db": {
+        "metric-scene-122104-broad": 30.2572006085153,
+        "metric-scene-122105-multilayer": 36.367938114648474,
+        "metric-scene-122107-broad": 36.74970184698794
+      }
+    },
+    "artifact": "evaluation/1b/step-030000/adoption-corrected.json"
   }
 }
