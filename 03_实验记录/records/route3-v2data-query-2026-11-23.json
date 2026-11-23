@@ -10943,6 +10943,75 @@
     "new_points": 42,
     "gt_interior": "valid opaque GT outside the ±2 px square boundary band",
     "zero_q_min": "第一遍拆分只由 α̂ 决定，Query 可信度不作门限。原深度约束保持。",
-    "first_pass_uses_query_confidence_gate": false
+    "first_pass_uses_query_confidence_gate": false,
+    "q_positive_rule": {
+      "epsilon": 0.4,
+      "observed_background_required": true,
+      "rule": "candidate_mask and q > 0",
+      "decision_note": "q_min 不由 F1 选择，按方案 4.1 取 q > 0（存在背景候选）。",
+      "tolerant_f1": 0.6794392785996067,
+      "precision": 0.5781437812969477,
+      "recall": 0.8237705930298614,
+      "b1_fraction": 0.05471641344901843,
+      "b1_distance_fractions": {
+        "0": 0.1587662915740376,
+        "1_to_2": 0.41937748972291006,
+        "3_to_5": 0.20992828739956196,
+        "over_5": 0.21192793130349039
+      },
+      "removed_q_zero": {
+        "pixels": 341794,
+        "previous_b1_pixels": 3138792,
+        "fraction_of_previous_b1": 0.10889348513695715,
+        "distance_counts": {
+          "0": 37271,
+          "1_to_2": 84767,
+          "3_to_5": 48960,
+          "over_5": 170796
+        },
+        "distance_fractions": {
+          "0": 0.10904521436888887,
+          "1_to_2": 0.2480061089428135,
+          "3_to_5": 0.14324417631672878,
+          "over_5": 0.4997045003715688
+        }
+      },
+      "counts": {
+        "tp": 444069,
+        "fp": 2344328,
+        "fn": 163236,
+        "gt_boundary": 607305,
+        "split": 2796998,
+        "pixels": 51118080,
+        "precision_hits": 1617067,
+        "recall_hits": 500280,
+        "0": 444069,
+        "1_to_2": 1172998,
+        "3_to_5": 587169,
+        "over_5": 592762
+      },
+      "grid_baseline_reproduced": true,
+      "scenes": 15,
+      "frames_per_scene": [
+        1,
+        6,
+        11,
+        16,
+        21,
+        26,
+        30,
+        35,
+        40,
+        45,
+        50,
+        55,
+        60
+      ],
+      "resolution": 512,
+      "stage1_geometry_sha256": "dfb1d7e52eb67fb756186b252312aee3b136096e3835cbcaf60f5d8250e1c220",
+      "query_sha256": "1c19181f296f858a4ff6a6efcb75f8839a3b1a0d066ac7fb744bc7b72486e300",
+      "recorded_at": "2026-11-23T20:25:43+08:00",
+      "seconds": 589.9880225509405
+    }
   }
 }

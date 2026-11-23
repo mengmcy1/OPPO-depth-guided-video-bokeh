@@ -205,6 +205,7 @@ def evaluate_frames(model, phase, raw, out, *, endpoint=False, only_leaks=False,
         if not only_leaks:
             peeled=peeled_truth(unit,name,frame)
             b=mask.cpu().numpy()
+            low_quality=b & (first["q"]>0) & (first["q"]<.1)
             T=1-raster_zero["retrieved"][1].cpu().numpy()
             alpha=ap["alpha"][0].cpu().numpy()
             bins_and_full=dict(distance_masks,all=valid)
@@ -263,6 +264,8 @@ def evaluate_frames(model, phase, raw, out, *, endpoint=False, only_leaks=False,
                     row["gt_placement"]=gt_audit
                     row["distance_zero"]={k:dict(visible=region_errors(zv,pinhole,v),
                                                combined=region_errors(z,pinhole,v)) for k,v in bins_and_full.items()}
+                    row["low_q_zero"]={k:region_errors(image,pinhole,low_quality)
+                                       for k,image in (("zero_visible",zv),("zero_combined",z))}
                     if endpoint and not raw:
                         b0=(~mask)&torch.isfinite(depth)&(depth>0)&torch.isfinite(x["rgb"][0]).all(0)
                         flags=subpixel_flags(torch.isfinite(depth)&(depth>0)&torch.isfinite(x["rgb"][0]).all(0),b0,5)
@@ -396,6 +399,9 @@ def describe(rows,spatial,unscored,leaks):
                            unscored=[r for r in unscored if r["split"]==split],
                            upper_reference={k:upper_bound(retrieved,k) for k in ("near_in_focus","far_recoverable")},
                            leakage=[r for r in leaks if r["split"]==split])
+        result[split]["b1_diagnostics"]["low_q_zero"]={
+            key:{name:aggregate(rows) for name,rows in domains(data_rows(retrieved,"low_q_zero",key)).items()}
+            for key in GUARDS}
         opaque=[r for r in retrieved if "opaque_b0" in r]
         if opaque:
             result[split]["opaque_b0"]=dict(

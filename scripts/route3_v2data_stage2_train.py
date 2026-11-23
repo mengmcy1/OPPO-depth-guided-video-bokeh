@@ -32,17 +32,18 @@ from route3_v2data_optics import f2_entry, linear_reference, observed_background
 from route3_v2data_stage1_evaluate import load_paired_checkpoint, view_from_observation
 from src.layered_aperture import merge_layers
 from src.ovg_appearance import AppearanceHeads, boundary_layer, cutoff
+from src.ovg_first_pass import boundary_candidate, observed_split
 from src.ovg_net import geometry_loss, masked_mean
 from src.ovg_optics import fixed_visible_surfels, occlusion_loss, raster, stratified_pupil, subcamera
 from src.prefix_transmittance import differentiable_prefix_transmittance
 
-RUN = ROOT/"outputs/route3-v2data-stage2-2026-11-23-01"
+RUN = ROOT/"outputs/route3-v2data-stage2-2026-11-23-02"
 STAGE1 = ROOT.parent/"route3-stage1-pair-20261122/outputs/route3-v2data-stage1-2026-11-22-01"
 INITIAL = STAGE1/"1b/same-surface/checkpoints/step-030000.pt"
 QUERY = ROOT.parent/"route3-query-v2-20261123/outputs/route3-query-v2-20261123/train/step-020000.pt"
 QUERY_RECORD = ROOT/"03_实验记录/records/route3-v2data-query-2026-11-23.json"
 ZONE = ZoneInfo("Asia/Shanghai")
-EPSILON, Q_MIN = .40, .30
+EPSILON = .40
 PHASE_PLAN = {"2a": (10_000, {"A": 7, "C": 3}), "2b": (30_000, {"C": 4, "B": 4, "A": 2})}
 CHECKPOINT_EVERY = 2000
 LABEL_KEYS = ("foreground", "background", "full", "color_valid", "comp_valid")
@@ -58,14 +59,15 @@ def frame_number(item):
 
 
 def fixed_inputs():
-    global EPSILON, Q_MIN
     r = load(QUERY_RECORD)
-    chosen = r["first_pass_final"]["selected"]
-    EPSILON,Q_MIN = chosen["epsilon"],chosen["q_min"]
+    chosen = r["first_pass_final"]["q_positive_rule"]
+    if chosen["epsilon"]!=EPSILON or not chosen["observed_background_required"]:
+        raise ValueError("The frozen first pass requires epsilon=.40 and a background candidate")
     geometry_sha, query_sha = sha256(INITIAL), sha256(QUERY)
     if (geometry_sha, query_sha) != (r["stage1_geometry_sha256"], r["new_query_sha256"]):
         raise ValueError("Frozen stage 1 or Query checkpoint differs from the registered selection")
-    return dict(geometry_sha256=geometry_sha, query_sha256=query_sha, epsilon=EPSILON, q_min=Q_MIN)
+    return dict(geometry_sha256=geometry_sha,query_sha256=query_sha,epsilon=EPSILON,
+                observed_background_required=True,rule="candidate_mask and q > 0")
 
 
 def configuration():
@@ -168,13 +170,13 @@ def sample(item):
 
 
 def candidate_mask(appearance):
-    return ((appearance["alpha"][0] < 1-EPSILON) &
-            (appearance["depth2"][0] >= 1.03*appearance["depth1"][0]))
+    return boundary_candidate(appearance["alpha"][0],
+                              appearance["depth2"][0]>=1.03*appearance["depth1"][0],EPSILON)
 
 
 def split_mask(appearance, first):
-    candidate = candidate_mask(appearance)
-    return candidate if Q_MIN==0 else candidate & (tensor(first["q"]) >= Q_MIN)
+    return observed_split(appearance["alpha"][0],appearance["depth2"][0]>=1.03*appearance["depth1"][0],
+                          tensor(first["q"]),EPSILON)
 
 
 def subpixels(x):
@@ -196,11 +198,10 @@ def visible(appearance, inputs, split, stage):
 
 
 def background(appearance, inputs, split, first):
-    # At q_min=0 the decoded split may have no returned background witness.
-    # The split remains active, while the empty candidate contributes no surfel.
-    split = split & (tensor(first["q"]) > 0)
     if not split.any():
         return None
+    if not (tensor(first["q"])[split] > 0).all():
+        raise ValueError("A first-pass split lacks its background candidate")
     return boundary_layer(appearance, inputs, split, tensor(first["color"]), tensor(first["depth"]))
 
 

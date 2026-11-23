@@ -14,6 +14,7 @@ import torch
 from route3_v2data_B_batch import GIB, ROOT, sha256, write_json
 from route3_v2data_B_plan import load
 from route3_v2data_query_retrain import RECORD, TIME_ZONE, first_pass_frames
+from src.ovg_first_pass import boundary_candidate, observed_split
 
 EPSILON = (.02, .05, .10, .20, .30, .40)
 Q_MIN = (.3, .5, .7, .8, .9)
@@ -38,6 +39,71 @@ def selection_key(row):
     return (-tolerant_f1(n), Fraction(n["over_5"], max(1, n["split"])), distance_to_original)
 
 
+def distance_masks(boundary):
+    near_2 = cv2.dilate(boundary.astype(np.uint8), KERNEL_2).astype(bool)
+    near_5 = cv2.dilate(boundary.astype(np.uint8), KERNEL_5).astype(bool)
+    return near_2, (boundary, near_2 & ~boundary, near_5 & ~near_2, ~near_5)
+
+
+def add_case(n, split, valid, boundary, near_2, distance_bands):
+    hits = int((split & boundary).sum())
+    gt_count = int(boundary.sum())
+    recall_band = cv2.dilate(split.astype(np.uint8), KERNEL_2).astype(bool)
+    n.update(tp=hits, fp=int((split & valid & ~boundary).sum()), fn=gt_count-hits,
+             gt_boundary=gt_count, split=int(split.sum()), pixels=split.size,
+             precision_hits=int((split & near_2 & valid).sum()),
+             recall_hits=int((boundary & recall_band).sum()))
+    n.update({k:int((split & mask).sum()) for k,mask in zip(BINS,distance_bands)})
+
+
+def q_positive(checkpoint, query, reference):
+    start = time.monotonic()
+    final = reference["first_pass_final"]
+    geometry_sha,query_sha=sha256(checkpoint),sha256(query)
+    if (geometry_sha,query_sha)!=(final["stage1_geometry_sha256"],final["query_sha256"]):
+        raise ValueError("Frozen geometry or Query changed")
+    epsilon=final["selected"]["epsilon"]
+    if (epsilon,final["selected"]["q_min"])!=(.40,0.):
+        raise ValueError("The q-positive reevaluation expects the fixed epsilon and the q=0 grid baseline")
+    selected,baseline,removed=Counter(),Counter(),Counter()
+    frames_by_scene=defaultdict(list)
+    for scene,frame,alpha,quality,gate,valid,boundary,_ in first_pass_frames(checkpoint,query):
+        frames_by_scene[scene].append(frame)
+        candidate=boundary_candidate(alpha,gate,epsilon)
+        if not np.isfinite(quality[candidate]).all() or (quality[candidate]<0).any():
+            raise ValueError("The observed-background existence marker is invalid")
+        split=observed_split(alpha,gate,quality,epsilon)
+        missing=candidate & ~split
+        near_2,dist=distance_masks(boundary)
+        add_case(selected,split,valid,boundary,near_2,dist)
+        add_case(baseline,candidate,valid,boundary,near_2,dist)
+        removed.update(pixels=int(missing.sum()))
+        removed.update({k:int((missing&mask).sum()) for k,mask in zip(BINS,dist)})
+    if len(frames_by_scene)!=15 or any(frames!=final["frames_per_scene"] for frames in frames_by_scene.values()):
+        raise ValueError("Expected 15 development scenes and all their recorded label frames")
+    if dict(baseline)!=final["selected"]["counts"]:
+        raise ValueError("The q=0 grid baseline counts changed during reevaluation")
+    if selected["split"]+removed["pixels"]!=baseline["split"] or sum(removed[k] for k in BINS)!=removed["pixels"]:
+        raise ValueError("Missing candidates do not partition the threshold-free splits")
+    return dict(
+        epsilon=epsilon, observed_background_required=True, rule="candidate_mask and q > 0",
+        decision_note="q_min 不由 F1 选择，按方案 4.1 取 q > 0（存在背景候选）。",
+        tolerant_f1=float(tolerant_f1(selected)),
+        precision=selected["precision_hits"]/max(1,selected["split"]),
+        recall=selected["recall_hits"]/max(1,selected["gt_boundary"]),
+        b1_fraction=selected["split"]/selected["pixels"],
+        b1_distance_fractions={k:selected[k]/max(1,selected["split"]) for k in BINS},
+        removed_q_zero=dict(pixels=removed["pixels"],previous_b1_pixels=baseline["split"],
+                            fraction_of_previous_b1=removed["pixels"]/max(1,baseline["split"]),
+                            distance_counts={k:removed[k] for k in BINS},
+                            distance_fractions={k:removed[k]/max(1,removed["pixels"]) for k in BINS}),
+        counts=dict(selected),grid_baseline_reproduced=True,
+        scenes=len(frames_by_scene),frames_per_scene=final["frames_per_scene"],resolution=512,
+        stage1_geometry_sha256=geometry_sha,query_sha256=query_sha,
+        recorded_at=datetime.now(TIME_ZONE).isoformat(timespec="seconds"),seconds=time.monotonic()-start,
+    )
+
+
 def evaluate(checkpoint, query, reference, *, final=False):
     start = time.monotonic()
     geometry_sha, query_sha = sha256(checkpoint), sha256(query)
@@ -60,17 +126,13 @@ def evaluate(checkpoint, query, reference, *, final=False):
     far_alpha, far_quality = [], []
     for scene, frame, alpha, quality, gate, valid, boundary, interior in first_pass_frames(checkpoint, query):
         frames_by_scene[scene].append(frame)
-        near_2 = cv2.dilate(boundary.astype(np.uint8), KERNEL_2).astype(bool)
-        near_5 = cv2.dilate(boundary.astype(np.uint8), KERNEL_5).astype(bool)
-        precision_band = near_2 & valid
-        distance_bands = (boundary, near_2 & ~boundary, near_5 & ~near_2, ~near_5)
+        near_2,distance_bands=distance_masks(boundary)
         candidate = (alpha < 1-min(eps_grid)) & gate
         if not final:
             candidate &= quality >= min(q_grid)
         possible_far = distance_bands[-1] & candidate
         far_alpha.append(alpha[possible_far])
         far_quality.append(quality[possible_far])
-        gt_count = int(boundary.sum())
         coverage = {e: alpha < 1-e for e in eps_grid}
         if final:
             interior = interior & ~near_2
@@ -80,12 +142,7 @@ def evaluate(checkpoint, query, reference, *, final=False):
         by_quality = {q: True if q == 0 else quality >= q for q in q_grid}
         for (e, q), n in counts.items():
             b = depth_and_coverage[e] & by_quality[q]
-            hits = int((b & boundary).sum())
-            recall_band = cv2.dilate(b.astype(np.uint8), KERNEL_2).astype(bool)
-            n.update(tp=hits, fp=int((b & valid & ~boundary).sum()), fn=gt_count-hits,
-                     gt_boundary=gt_count, split=int(b.sum()), pixels=b.size,
-                     precision_hits=int((b & precision_band).sum()), recall_hits=int((boundary & recall_band).sum()))
-            n.update({k: int((b & mask).sum()) for k, mask in zip(BINS, distance_bands)})
+            add_case(n,b,valid,boundary,near_2,distance_bands)
 
     old = reference["first_pass"]
     if len(frames_by_scene) != 15 or any(frames != old["frames"] for frames in frames_by_scene.values()):
@@ -164,11 +221,16 @@ if __name__ == "__main__":
     parser.add_argument("--checkpoint", type=Path, required=True)
     parser.add_argument("--query-checkpoint", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--final-grid", action="store_true")
+    mode=parser.add_mutually_exclusive_group()
+    mode.add_argument("--final-grid", action="store_true")
+    mode.add_argument("--q-positive",action="store_true")
     args = parser.parse_args()
     if os.environ.get("CUDA_VISIBLE_DEVICES") != "0":
         parser.error("assign the shared CUDA device before evaluation")
     torch.set_num_threads(2)
     cv2.setNumThreads(1)
     torch.cuda.set_per_process_memory_fraction(10*GIB/torch.cuda.get_device_properties(0).total_memory, 0)
-    write_json(args.output, evaluate(args.checkpoint, args.query_checkpoint, load(ROOT/RECORD),final=args.final_grid))
+    reference=load(ROOT/RECORD)
+    result=q_positive(args.checkpoint,args.query_checkpoint,reference) if args.q_positive else (
+        evaluate(args.checkpoint,args.query_checkpoint,reference,final=args.final_grid))
+    write_json(args.output,result)
