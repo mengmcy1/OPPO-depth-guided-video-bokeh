@@ -103,12 +103,13 @@ def planned_frames():
 
 def prepare_geometry(net, x, views, memory, frame, cases, subjects, cache=None):
     if cache is None:
-        depth = net(x, protect_residual=True, render_heads=False)["depth1"][0]
+        prediction = net(x, protect_residual=True, render_heads=False)
         packed = None
     else:
         # Reuse the original 1c EMA output and its matching candidate pack.
         packed = ovg.load(cache)
-        depth = x["K"].new_tensor(packed["target_depth"])
+        prediction = dict(depth1=x["K"].new_tensor(packed["target_depth"])[None])
+    depth = prediction["depth1"][0]
     z = depth.cpu().numpy()
     K = x["K"][0]
     focuses = [p2_focus(z, subject) for subject in subjects]
@@ -122,7 +123,7 @@ def prepare_geometry(net, x, views, memory, frame, cases, subjects, cache=None):
             packed, _ = query_input_512(views, dict(anchor, depth=z), np.logical_or.reduce(active),
                                        8, 262144, memory)
         store = FrameQueries(views, packed)
-    return dict(depth=depth, visible=fixed_visible_surfels(dict(depth1=depth[None]), x),
+    return dict(depth=depth, prediction=prediction, visible=fixed_visible_surfels(prediction, x),
                 focuses=focuses, bands=bands, store=store)
 
 
@@ -149,8 +150,14 @@ def largest_error_crop(rgb, target, mask):
     return [int(x), int(y), int(x)+size, int(y)+size]
 
 
-@torch.inference_mode()
-def frame_inputs(plan, views, memory, models, old_blank):
+def scene_views(plan):
+    unit = plan["unit"]
+    if unit:
+        return [view_from_observation(observation(unit, f, aligned=True), f) for f in ovg.TRAIN_FRAMES], None
+    return original_views(plan["source"], plan["manifest"]), query_memory(plan["source"], plan["manifest"]["frames"])
+
+
+def frame_reference(plan):
     unit, frame, cases = (plan[k] for k in ("unit", "frame", "cases"))
     item = ("B", plan["name"], ovg.TRAIN_FRAMES.index(frame))
     x, y = aligned_sample(item, "cuda")
@@ -161,12 +168,19 @@ def frame_inputs(plan, views, memory, models, old_blank):
         masks = [new_regions(unit, c, ref["gt"], ref["valid"], K) for c in cases]
     else:
         masks = [legacy_masks(geometry_root(plan["name"]), c) for c in cases]
+    return x, ref, (masks[0]["in_focus"], masks[1]["recoverable"]), subjects
+
+
+@torch.inference_mode()
+def frame_inputs(plan, views, memory, models, old_blank):
+    x, ref, masks, subjects = frame_reference(plan)
+    unit, frame, cases = (plan[k] for k in ("unit", "frame", "cases"))
     old = None
     if not (unit and old_blank):
         cache = plan["folder"]/"query/1c-aligned-EMA.npz" if plan["folder"] else None
         old = prepare_geometry(models["S1"], x, views, memory, frame, cases, subjects, cache=cache)
     new = prepare_geometry(models["S3"], x, views, memory, frame, cases, subjects)
-    return x, ref, (masks[0]["in_focus"], masks[1]["recoverable"]), old, new
+    return x, ref, masks, old, new
 
 
 @torch.inference_mode()
@@ -236,11 +250,12 @@ def score_text(score):
     return "—" if score["psnr_db"] is None else f'{score["psnr_db"]:.2f}'
 
 
-def draw_panel(path, row, images, masks, remaining):
+def draw_panel(path, row, images, masks, transmission, *, columns=NAMES, tile=TILE):
     title_y, text_y, top_y = 14, 57, 105
-    zoom_y, error_y = top_y+TILE+42, top_y+2*TILE+84
-    width = 2*LEFT+8*TILE+7*GAP
-    pic = Image.new("RGB", (width, error_y+TILE+20), (18, 23, 31))
+    zoom_y, error_y = top_y+tile+42, top_y+2*tile+84
+    count = len(columns)+len(transmission)
+    width = 2*LEFT+count*tile+(count-1)*GAP
+    pic = Image.new("RGB", (width, error_y+tile+20), (18, 23, 31))
     draw = ImageDraw.Draw(pic)
     text = (229, 234, 242)
     muted = (164, 178, 193)
@@ -251,8 +266,8 @@ def draw_panel(path, row, images, masks, remaining):
     draw.text((legend_x, 24), "青色 · 近焦焦内", fill=NEAR_MASK, font=font(19))
     draw.text((legend_x+198, 24), "粉色 · 远焦可恢复", fill=FAR_MASK, font=font(19))
     draw.text((legend_x+409, 24), "黄色 · 共用裁剪框", fill=(255, 220, 62), font=font(19))
-    for i, (key, label) in enumerate(NAMES.items()):
-        x = LEFT+i*(TILE+GAP)
+    for i, (key, label) in enumerate(columns.items()):
+        x = LEFT+i*(tile+GAP)
         draw.text((x, text_y), label, fill=text, font=font(19))
         score = score_text(row["region_scores"][key])
         focus = row["actual_focus_m"][key]
@@ -261,42 +276,44 @@ def draw_panel(path, row, images, masks, remaining):
                   fill=muted, font=font(16))
         if key not in images:
             for y in (top_y, zoom_y, error_y):
-                draw.rectangle((x, y, x+TILE-1, y+TILE-1), fill=(30, 38, 48))
+                draw.rectangle((x, y, x+tile-1, y+tile-1), fill=(30, 38, 48))
             continue
         array = images[key]
         whole = rgb_image(array)
         if key == "GT":
             outlines = np.rint(array*255).astype(np.uint8)
             # Draw contours at display size so fine contours survive downsampling.
-            outlines = cv2.resize(outlines, (TILE, TILE), interpolation=cv2.INTER_AREA)
+            outlines = cv2.resize(outlines, (tile, tile), interpolation=cv2.INTER_AREA)
             for mask, color in zip(masks, (NEAR_MASK, FAR_MASK)):
-                small = cv2.resize(mask.astype(np.uint8), (TILE, TILE), interpolation=cv2.INTER_NEAREST_EXACT)
+                small = cv2.resize(mask.astype(np.uint8), (tile, tile), interpolation=cv2.INTER_NEAREST_EXACT)
                 contours, _ = cv2.findContours(small, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
                 cv2.drawContours(outlines, contours, -1, color, 1)
             whole = Image.fromarray(outlines)
             frame = ImageDraw.Draw(whole)
-            frame.rectangle(tuple(round(v*TILE/512) for v in row["crop_xyxy"]), outline=(255, 220, 62), width=2)
+            frame.rectangle(tuple(round(v*tile/512) for v in row["crop_xyxy"]), outline=(255, 220, 62), width=2)
         else:
-            whole = whole.resize((TILE, TILE), Image.Resampling.LANCZOS)
+            whole = whole.resize((tile, tile), Image.Resampling.LANCZOS)
         pic.paste(whole, (x, top_y))
-        pic.paste(rgb_image(array).crop(row["crop_xyxy"]).resize((TILE, TILE), Image.Resampling.NEAREST),
+        pic.paste(rgb_image(array).crop(row["crop_xyxy"]).resize((tile, tile), Image.Resampling.NEAREST),
                   (x, zoom_y))
         err = np.abs(array-images["GT"]).mean(-1)
-        pic.paste(scalar_image(err, .25, ERROR_SCALE).resize((TILE, TILE), Image.Resampling.NEAREST),
+        pic.paste(scalar_image(err, .25, ERROR_SCALE).resize((tile, tile), Image.Resampling.NEAREST),
                   (x, error_y))
-    x = LEFT+7*(TILE+GAP)
-    draw.text((x, text_y), "S3 · 可见层剩余透射率", fill=text, font=font(19))
-    draw.text((x, text_y+22), "K16 光线平均 · 0–1", fill=muted, font=font(16))
-    pic.paste(scalar_image(remaining, 1., TRANS_SCALE).resize((TILE, TILE), Image.Resampling.NEAREST), (x, top_y))
-    for y, label, maximum, color in ((top_y+TILE+8, "", 1., TRANS_SCALE),
+    for i, (title, values) in enumerate(transmission.items(), len(columns)):
+        x = LEFT+i*(tile+GAP)
+        draw.text((x, text_y), title, fill=text, font=font(19))
+        draw.text((x, text_y+22), "K16 光线平均 · 0–1", fill=muted, font=font(16))
+        pic.paste(scalar_image(values, 1., TRANS_SCALE).resize((tile, tile), Image.Resampling.NEAREST), (x, top_y))
+    x = LEFT+len(columns)*(tile+GAP)
+    for y, label, maximum, color in ((top_y+tile+8, "", 1., TRANS_SCALE),
                                      (error_y+12, "显示 RGB 平均绝对误差", .25, ERROR_SCALE)):
         if label:
             draw.text((x, y), label, fill=text, font=font(18))
             y += 30
-        bar = np.broadcast_to(np.linspace(0, maximum, TILE), (12, TILE))
+        bar = np.broadcast_to(np.linspace(0, maximum, tile), (12, tile))
         pic.paste(scalar_image(bar, maximum, color), (x, y))
         draw.text((x, y+13), "0", fill=muted, font=font(16))
-        draw.text((x+TILE, y+13), f"{maximum:g}", fill=muted, font=font(16), anchor="rt")
+        draw.text((x+tile, y+13), f"{maximum:g}", fill=muted, font=font(16), anchor="rt")
     draw.text((LEFT, zoom_y-30), "同框放大 · 96 × 96 px", fill=text, font=font(19))
     draw.text((LEFT, error_y-30), "整幅误差热图 · 共用色标 0–0.25", fill=text, font=font(19))
     temporary = path.with_suffix(".part")
@@ -304,8 +321,7 @@ def draw_panel(path, row, images, masks, remaining):
     temporary.replace(path)
 
 
-def overview(out, rows, focus):
-    keys = ("GT", "S1", "S3", "S4", "S5")
+def overview(out, rows, focus, *, columns=NAMES, keys=("GT", "S1", "S3", "S4", "S5"), tile=TILE):
     selected = [row for row in rows if row["frame"] == 30 and row["focus"] == focus]
     size, step, left, top = 128, 140, 150, 82
     pic = Image.new("RGB", (left+len(keys)*step+12, top+len(selected)*step+12), (18, 23, 31))
@@ -322,9 +338,9 @@ def overview(out, rows, focus):
             continue
         with Image.open(out/row["file"]) as image:
             for j, key in enumerate(keys):
-                x = LEFT+list(NAMES).index(key)*(TILE+GAP)
-                zoom_y = 105+TILE+42
-                crop = image.crop((x, zoom_y, x+TILE, zoom_y+TILE))
+                x = LEFT+list(columns).index(key)*(tile+GAP)
+                zoom_y = 105+tile+42
+                crop = image.crop((x, zoom_y, x+tile, zoom_y+tile))
                 pic.paste(crop.resize((size, size), Image.Resampling.NEAREST), (left+j*step, y))
     name = f"000_总览_{label}.png"
     pic.save(out/name, compress_level=3)
@@ -430,14 +446,8 @@ def run(output, pilot, old_blank):
         del_state = None
         reserve(output, GIB)
         try:
-            unit = task["unit"]
             if scene != task["name"]:
-                if unit:
-                    views = [view_from_observation(observation(unit, f, aligned=True), f) for f in ovg.TRAIN_FRAMES]
-                    memory = None
-                else:
-                    views = original_views(task["source"], task["manifest"])
-                    memory = query_memory(task["source"], task["manifest"]["frames"])
+                views, memory = scene_views(task)
                 scene = task["name"]
             del_state = frame_inputs(task, views, memory, models, old_blank)
         except Exception as error:
@@ -452,7 +462,7 @@ def run(output, pilot, old_blank):
                 start = time.monotonic()
                 try:
                     row, images, remaining = render_case(task, del_state, queries, i, old_blank)
-                    draw_panel(output/row["file"], row, images, del_state[2], remaining)
+                    draw_panel(output/row["file"], row, images, del_state[2], {"S3 · 可见层剩余透射率": remaining})
                     rows[row["file"]] = dict(row, seconds=time.monotonic()-start)
                     print("VISUAL_DONE", row["file"], round(rows[row["file"]]["seconds"], 2), flush=True)
                 except Exception as error:
