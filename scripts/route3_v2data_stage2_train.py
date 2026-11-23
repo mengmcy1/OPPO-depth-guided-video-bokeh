@@ -31,7 +31,7 @@ from route3_v2data_loader import b_k16_cases, b_optical_cases, c_optical_specs, 
 from route3_v2data_optics import f2_entry, linear_reference, observed_background, occupancy, ray_fields
 from route3_v2data_stage1_evaluate import load_paired_checkpoint, view_from_observation
 from src.layered_aperture import merge_layers
-from src.ovg_appearance import AppearanceHeads, boundary_layer, cutoff
+from src.ovg_appearance import AppearanceHeads, boundary_layer, calibrated_front_opacity, cutoff
 from src.ovg_first_pass import boundary_candidate, observed_split
 from src.ovg_net import geometry_loss, masked_mean
 from src.ovg_optics import fixed_visible_surfels, occlusion_loss, raster, stratified_pupil, subcamera
@@ -187,7 +187,7 @@ def visible(appearance, inputs, split, stage):
     base = fixed_visible_surfels(appearance, inputs)
     rgb = inputs["rgb"][0].permute(1,2,0)
     color = torch.where(split[...,None], appearance["foreground"][0].permute(1,2,0), rgb)
-    opacity = torch.where(split, appearance["opacity"][0], .999)
+    opacity = calibrated_front_opacity(appearance["opacity"][0], split)
     if stage == "2a":
         scales = base.scales
     else:

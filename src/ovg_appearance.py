@@ -1,4 +1,8 @@
 """Appearance heads and depth-locked subdivided surfels for OVG stage 2."""
+from functools import lru_cache
+import json
+from pathlib import Path
+
 import torch
 from torch import nn
 from torch.nn import functional as F
@@ -45,6 +49,25 @@ def boundary_candidate(appearance):
             (appearance['depth2'][0] >= 1.03*appearance['depth1'][0]))
 
 
+@lru_cache(maxsize=4)
+def _front_opacity_samples(device):
+    path=Path(__file__).resolve().parents[1]/'configs/route3-ovg-front-opacity.json'
+    data=json.loads(path.read_text())
+    with torch.inference_mode(False):
+        return tuple(torch.tensor(data[key],device=device,dtype=torch.float32) for key in ('c','a'))
+
+
+def calibrated_front_opacity(opacity, split):
+    """Invert the measured center-ray coverage of the fixed 5×5 footprint."""
+    coverage,samples=_front_opacity_samples(opacity.device)
+    requested=opacity.float().clamp_min(0).minimum(coverage[-1])
+    right=torch.searchsorted(coverage,requested.contiguous()).clamp(1,coverage.numel()-1)
+    left=right-1
+    proportion=(requested-coverage[left])/(coverage[right]-coverage[left])
+    calibrated=torch.lerp(samples[left],samples[right],proportion)
+    return torch.where(split,calibrated.to(opacity.dtype),.999)
+
+
 def visible_layer(appearance, inputs, split):
     color=torch.where(split[None],appearance['foreground'][0],inputs['rgb'][0])
     z=appearance['depth1'][0]
@@ -54,7 +77,7 @@ def visible_layer(appearance, inputs, split):
     def subpixels(values):
         return values.repeat_interleave(5,dim=0).repeat_interleave(5,dim=1)
     scale=subpixels(appearance['radius_multiplier'][0].permute(1,2,0)).reshape(-1,2)
-    opacity=torch.where(split,appearance['opacity'][0],.999)
+    opacity=calibrated_front_opacity(appearance['opacity'][0],split)
     vec=-appearance['normal'][0].permute(1,2,0)
     nx,ny,nz=vec.unbind(-1)
     quat=F.normalize(torch.stack((1+nz,-ny,nx,torch.zeros_like(nz)),-1),dim=-1)
