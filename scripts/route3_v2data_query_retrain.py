@@ -188,10 +188,9 @@ def adopt(comparison):
 
 
 @torch.inference_mode()
-def first_pass(checkpoint, query_path):
+def first_pass_frames(checkpoint, query_path):
     net = load_paired_checkpoint(checkpoint, "ema").eval().requires_grad_(False)
     query = FrozenQuery(query_path)
-    sums = {(eps, q): Counter() for eps in EPS for q in Q}
     for unit in library_unit_paths("dev"):
         views = [view_from_observation(observation(unit, frame, aligned=True), frame)
                  for frame in ovg.TRAIN_FRAMES]
@@ -206,12 +205,18 @@ def first_pass(checkpoint, query_path):
             boundary = boundary & valid
             interior = valid & valid_alpha & (gt_alpha >= .9999) & ~boundary
             depth_gate = back >= 1.03*front
-            for (eps, q), count in sums.items():
-                b = depth_gate & (alpha < 1-eps) & (quality >= q)
-                count.update(tp=int((b&boundary).sum()), fp=int((b&valid&~boundary).sum()),
-                             fn=int((~b&boundary).sum()), split=int(b.sum()), pixels=b.size,
-                             interior_splits=int((b&interior).sum()))
+            yield unit.name, view["frame"], alpha, quality, depth_gate, valid, boundary, interior
         print("QUERY_FIRST_PASS", unit.name, flush=True)
+
+
+def first_pass(checkpoint, query_path):
+    sums = {(eps, q): Counter() for eps in EPS for q in Q}
+    for _, _, alpha, quality, depth_gate, valid, boundary, interior in first_pass_frames(checkpoint, query_path):
+        for (eps, q), count in sums.items():
+            b = depth_gate & (alpha < 1-eps) & (quality >= q)
+            count.update(tp=int((b&boundary).sum()), fp=int((b&valid&~boundary).sum()),
+                         fn=int((~b&boundary).sum()), split=int(b.sum()), pixels=b.size,
+                         interior_splits=int((b&interior).sum()))
     grid = []
     for (eps, q), n in sums.items():
         tp, fp, fn = (n[k] for k in ("tp", "fp", "fn"))
