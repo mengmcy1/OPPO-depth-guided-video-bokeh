@@ -157,10 +157,10 @@ def scene_views(plan):
     return original_views(plan["source"], plan["manifest"]), query_memory(plan["source"], plan["manifest"]["frames"])
 
 
-def frame_reference(plan):
+def frame_reference(plan, sample=None):
     unit, frame, cases = (plan[k] for k in ("unit", "frame", "cases"))
     item = ("B", plan["name"], ovg.TRAIN_FRAMES.index(frame))
-    x, y = aligned_sample(item, "cuda")
+    x, y = aligned_sample(item, "cuda") if sample is None else sample
     K = x["K"][0].cpu().numpy()
     ref = ovg.b_edge_reference(item, y)
     subjects = [near_subject(ref["gt"], ref["valid"], K, c["focus_m"]) for c in cases]
@@ -250,10 +250,12 @@ def score_text(score):
     return "—" if score["psnr_db"] is None else f'{score["psnr_db"]:.2f}'
 
 
-def draw_panel(path, row, images, masks, transmission, *, columns=NAMES, tile=TILE):
+def draw_panel(path, row, images, masks, transmission, *, columns=NAMES, tile=TILE,
+               diagnostic_subtitle="K16 光线平均 · 0–1", diagnostic_images=None):
     title_y, text_y, top_y = 14, 57, 105
     zoom_y, error_y = top_y+tile+42, top_y+2*tile+84
-    count = len(columns)+len(transmission)
+    diagnostics = transmission if diagnostic_images is None else diagnostic_images
+    count = len(columns)+len(diagnostics)
     width = 2*LEFT+count*tile+(count-1)*GAP
     pic = Image.new("RGB", (width, error_y+tile+20), (18, 23, 31))
     draw = ImageDraw.Draw(pic)
@@ -299,14 +301,17 @@ def draw_panel(path, row, images, masks, transmission, *, columns=NAMES, tile=TI
         err = np.abs(array-images["GT"]).mean(-1)
         pic.paste(scalar_image(err, .25, ERROR_SCALE).resize((tile, tile), Image.Resampling.NEAREST),
                   (x, error_y))
-    for i, (title, values) in enumerate(transmission.items(), len(columns)):
+    for i, (title, values) in enumerate(diagnostics.items(), len(columns)):
         x = LEFT+i*(tile+GAP)
         draw.text((x, text_y), title, fill=text, font=font(19))
-        draw.text((x, text_y+22), "K16 光线平均 · 0–1", fill=muted, font=font(16))
-        pic.paste(scalar_image(values, 1., TRANS_SCALE).resize((tile, tile), Image.Resampling.NEAREST), (x, top_y))
-    x = LEFT+len(columns)*(tile+GAP)
-    for y, label, maximum, color in ((top_y+tile+8, "", 1., TRANS_SCALE),
-                                     (error_y+12, "显示 RGB 平均绝对误差", .25, ERROR_SCALE)):
+        draw.text((x, text_y+22), diagnostic_subtitle, fill=muted, font=font(16))
+        diagnostic = scalar_image(values, 1., TRANS_SCALE) if diagnostic_images is None else rgb_image(values)
+        pic.paste(diagnostic.resize((tile, tile), Image.Resampling.NEAREST), (x, top_y))
+    x = LEFT+min(len(columns),count-1)*(tile+GAP)
+    bars=[(error_y+12, "显示 RGB 平均绝对误差", .25, ERROR_SCALE)]
+    if transmission:
+        bars.insert(0,(top_y+tile+8, "", 1., TRANS_SCALE))
+    for y, label, maximum, color in bars:
         if label:
             draw.text((x, y), label, fill=text, font=font(18))
             y += 30
