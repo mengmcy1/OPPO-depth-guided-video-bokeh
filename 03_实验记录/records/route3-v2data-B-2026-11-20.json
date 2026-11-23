@@ -14648,6 +14648,99 @@
       "gpu_geometry_slots": 2,
       "path": "production-runs/1795326907565225418-training.json",
       "sha256": "c4ef0b00cfb15539fd6caf48472fbf8418912e976df5543229f00700392c3cc4"
+    },
+    "geometry_gpu_slot_postcheck_result": {
+      "path": "/root/autodl-tmp/route3-stage1-pair-20261122/outputs/route3-v2data-stage1-2026-11-22-01/geometry-slot-postcheck/result.json",
+      "sha256": "8f844ca215749ddd3ea74da7d25859cc854f32741213d890d7e3bf9fef8bf90a",
+      "passed": false,
+      "missing_categories": [
+        "complex_layout",
+        "curved_self_occlusion",
+        "weak_texture"
+      ],
+      "measured_categories": [
+        "large_foreground",
+        "multiple_layers",
+        "thin_structure"
+      ],
+      "hard_optical_available": 80,
+      "groups": {
+        "dual": {
+          "scenes": 93,
+          "statistics": {
+            "prior_valid_pixel_fraction": {
+              "n": 93,
+              "quantiles_q1_median_q3": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "mean_prior_confidence": {
+              "n": 93,
+              "quantiles_q1_median_q3": [
+                0.5930837063859098,
+                0.7188968491406204,
+                0.8108343553418914
+              ]
+            },
+            "alignment_scale_median": {
+              "n": 93,
+              "quantiles_q1_median_q3": [
+                0.6574872183479258,
+                1.0,
+                1.0
+              ]
+            },
+            "alignment_residual_median": {
+              "n": 93,
+              "quantiles_q1_median_q3": [
+                0.03300595351684987,
+                0.09798418129105563,
+                0.527178618131993
+              ]
+            }
+          }
+        },
+        "single": {
+          "scenes": 202,
+          "statistics": {
+            "prior_valid_pixel_fraction": {
+              "n": 202,
+              "quantiles_q1_median_q3": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "mean_prior_confidence": {
+              "n": 202,
+              "quantiles_q1_median_q3": [
+                0.5633630038609203,
+                0.7086169836797919,
+                0.8120178907858924
+              ]
+            },
+            "alignment_scale_median": {
+              "n": 202,
+              "quantiles_q1_median_q3": [
+                0.5407889695614615,
+                1.0,
+                1.0
+              ]
+            },
+            "alignment_residual_median": {
+              "n": 202,
+              "quantiles_q1_median_q3": [
+                0.0284712635079721,
+                0.06052943166198745,
+                0.39314137481615263
+              ]
+            }
+          }
+        }
+      },
+      "note": "无双槽单元的类别记缺失；波动参照包含两项被判定的差异，结果只记录，不作为生产门槛。"
     }
   }
 }
