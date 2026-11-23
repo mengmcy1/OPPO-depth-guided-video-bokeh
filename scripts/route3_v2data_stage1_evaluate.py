@@ -374,21 +374,28 @@ def prepare_development(units,f2_root):
         dev_cache(unit,development_cases(unit),f2_root)
 
 
-def evaluate(checkpoint,output,phase,branch,weight,*,f2_root,smoke=False,versions=("ema","model")):
+def evaluate(checkpoint,output,phase,branch,weight,*,f2_root,smoke=False,versions=("ema","model"),
+             query_checkpoint=QUERY):
     output.mkdir(parents=True,exist_ok=True)
     regular=development_units(smoke)
     prepare_development(regular,f2_root)
-    return score_checkpoint(checkpoint,output,phase,branch,weight,regular,f2_root,smoke,versions)
+    return score_checkpoint(checkpoint,output,phase,branch,weight,regular,f2_root,smoke,versions,
+                            query_checkpoint)
 
 
 @torch.inference_mode()
-def score_checkpoint(checkpoint,output,phase,branch,weight,regular,f2_root,smoke,versions):
-    query=query_net(QUERY)
+def score_checkpoint(checkpoint,output,phase,branch,weight,regular,f2_root,smoke,versions,
+                     query_checkpoint=QUERY):
+    query=query_net(query_checkpoint)
+    query_sha=sha256(query_checkpoint)
     results={}
     for key in versions:
         path=output/(key+".json")
         previous=load(path)
-        if previous.get("query_pair_protocol")==QUERY_PAIR_PROTOCOL:
+        saved_query=previous.get("query_checkpoint_sha256")
+        if previous.get("query_pair_protocol")==QUERY_PAIR_PROTOCOL and (
+            saved_query==query_sha or (saved_query is None and query_checkpoint.resolve()==QUERY.resolve())
+        ):
             results[key]=previous
             continue
         started=time.monotonic()
@@ -410,6 +417,7 @@ def score_checkpoint(checkpoint,output,phase,branch,weight,regular,f2_root,smoke
                           same_surface_metric="median of per-scene/direction same-surface |inverse-depth excess| p95, 0–2 px",
                           evaluation="P2 actual frozen Query, f/1.4, LDR v2 reference; legacy rows separate",
                           query_pair_protocol=QUERY_PAIR_PROTOCOL,
+                          query_checkpoint_sha256=query_sha,
                           scoring_seconds=time.monotonic()-started,
                           legacy_note="B K16 L_occ now uses native 512 instead of 2x2 agreement pooling")
         write_json(path,results[key])
@@ -473,6 +481,7 @@ def adoption(original, candidate):
 if __name__=="__main__":
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument("--checkpoint",type=Path,required=True)
+    p.add_argument("--query-checkpoint",type=Path,default=QUERY)
     p.add_argument("--output",type=Path,required=True)
     p.add_argument("--f2-root",type=Path,required=True)
     p.add_argument("--phase",choices=("1a","1b"),required=True)
@@ -492,4 +501,5 @@ if __name__=="__main__":
         torch.cuda.set_per_process_memory_fraction(12*GIB/torch.cuda.get_device_properties(0).total_memory,0)
         versions=("ema",) if args.ema_only else ("ema","model")
         evaluate(args.checkpoint,args.output,args.phase,args.branch,args.weight,
-                 f2_root=args.f2_root,smoke=args.smoke,versions=versions)
+                 f2_root=args.f2_root,smoke=args.smoke,versions=versions,
+                 query_checkpoint=args.query_checkpoint)

@@ -94,8 +94,8 @@ def context(views):
 
 
 class FrozenQuery:
-    def __init__(self):
-        self.network=query_net(QUERY).requires_grad_(False)
+    def __init__(self,checkpoint=QUERY):
+        self.network=query_net(checkpoint).requires_grad_(False)
         self.store=Store()
 
     @torch.no_grad()
@@ -124,6 +124,10 @@ class FrozenQuery:
         size=z1.shape[0]
         views,memory=views_for(tier,key,size)
         frame=data.TRAIN_FRAMES[index] if tier=='B' else index
+        return self.first_from_views(views,memory,frame,z1,z2)
+
+    def first_from_views(self,views,memory,frame,z1,z2):
+        size=z1.shape[0]
         target=next(v for v in views if v['frame']==frame)
         mask=(z2>=1.03*z1)
         packed,_=query_input_512(views,dict(target,depth=z1),mask,8,size*size,memory,anchor=z2)

@@ -1,5 +1,6 @@
 """Direct-supervision light fusion and the fixed O1/F2 render comparison."""
 import argparse
+from collections import Counter
 import fcntl
 import math
 import time
@@ -27,9 +28,11 @@ SETTINGS = C['light_fusion']
 
 
 def train_network(root, dest, scenes, monitors, single=False, augmentations=(),
-                  balance_activation=False, require_descent=False):
+                  balance_activation=False, require_descent=False, *, store=None,
+                  scene_tiers=None, monitor_row=None):
     legacy.OUT = root
-    store = Store()
+    if store is None:
+        store = Store()
     seed = SETTINGS['seeds']['overfit' if single else 'S2a']
     torch.manual_seed(seed)
     rng = np.random.default_rng(seed)
@@ -39,14 +42,24 @@ def train_network(root, dest, scenes, monitors, single=False, augmentations=(),
     manifests = {name:store.manifest(name) for name in scenes+monitors}
 
     def far(m):
+        if monitor_row is not None:
+            return monitor_row(m)
         return next(r for r in m['rows'] if r['frame']==30 and r['case']['nominal_focus_m']==5 and r['case']['fstop']==1.4)
 
     def active(row):
         return store.active(row['input'],row['case']['focus_m'],row['case']['fstop'])
 
     first = manifests[scenes[0]]
-    rows = [(name,r,m) for name in scenes for m in [manifests[name]]
-            for r in ([far(m)] if single else m['rows']) if len(active(r))]
+    if scene_tiers is not None:
+        tiers = {tier: [name for name in scenes if scene_tiers[name] == tier] for tier in ("B", "C")}
+        if single or augmentations or not all(tiers.values()) or steps % 10:
+            raise ValueError("Mixed Query training requires B and C scenes and complete 70/30 blocks")
+        shuffle = np.random.default_rng([seed, 70, 30])
+        batches = [tier for _ in range(steps//10) for tier in shuffle.permutation(["B"]*7+["C"]*3)]
+        rows = [(name, row, manifests[name]) for name in scenes for row in manifests[name]["rows"]]
+    else:
+        rows = [(name,r,m) for name in scenes for m in [manifests[name]]
+                for r in ([far(m)] if single else m['rows']) if len(active(r))]
     if not single:
         for variant in augmentations:
             for name in scenes:
@@ -54,7 +67,7 @@ def train_network(root, dest, scenes, monitors, single=False, augmentations=(),
                 rows.extend((name,r,m) for r in m['rows'] if len(active(r)))
     if not rows:
         raise ValueError('No eligible queries for direct supervision')
-    warmup = [] if single else [(scenes[0], r, m) for m in [store.manifest(scenes[0],'256-5-GTwarmup')]
+    warmup = [] if single or scene_tiers is not None else [(scenes[0], r, m) for m in [store.manifest(scenes[0],'256-5-GTwarmup')]
                                 for r in m['rows'] if len(active(r))]
     dest.mkdir(parents=True,exist_ok=True)
     torch.cuda.reset_peak_memory_stats()
@@ -67,6 +80,8 @@ def train_network(root, dest, scenes, monitors, single=False, augmentations=(),
     period = SETTINGS['overfit_monitor_steps' if single else 'eval_every_steps']
     first_step = 1
     progress_file = dest/'progress.json'
+    sample_tiers, sample_scenes = Counter(), Counter()
+    previous_seconds, previous_peak = 0., 0.
     if progress_file.exists():
         resume = read(progress_file)
         step = resume['step']
@@ -79,11 +94,26 @@ def train_network(root, dest, scenes, monitors, single=False, augmentations=(),
         torch.cuda.set_rng_state(state['cuda_rng'])
         init, curve, validation = resume['initial'], resume['curve'], resume['validation']
         train_probe = resume.get('train_probe',train_probe)
+        sample_tiers.update(resume.get("sample_tiers", {}))
+        sample_scenes.update(resume.get("sample_scenes", {}))
+        previous_seconds = resume.get("seconds", 0.)
+        previous_peak = resume.get("peak_allocated_MiB", 0.)
         first_step = step+1
     for step in range(first_step,steps+1):
-        eligible = warmup if warmup and step<=SETTINGS['GT_warmup_steps'] else rows
-        name,row,m = eligible[int(rng.integers(len(eligible)))]
+        if scene_tiers is not None:
+            tier = str(batches[step-1])
+            names = tiers[tier]
+            name = names[int(rng.integers(len(names)))]
+            m = manifests[name]
+            row = m["rows"][int(rng.integers(len(m["rows"])))]
+            sample_tiers[tier] += 1
+            sample_scenes[name] += 1
+        else:
+            eligible = warmup if warmup and step<=SETTINGS['GT_warmup_steps'] else rows
+            name,row,m = eligible[int(rng.integers(len(eligible)))]
         indices = active(row)
+        if scene_tiers is not None and len(indices) != row["active_queries"]:
+            raise ValueError(f"Saved active Query support changed for {name}/{row['case']['id']}")
         b = SETTINGS['batch_queries']
         indexes = rng.choice(indices,size=b,replace=len(indices)<b)
         decay = .5*(1+math.cos(math.pi*(step-1)/steps))
@@ -111,7 +141,10 @@ def train_network(root, dest, scenes, monitors, single=False, augmentations=(),
             if require_descent:
                 train_probe.append(dict(step=step,losses=probe()))
             legacy.checkpoint(dest/f'step-{step:06d}.pt',net,optimizer,step,rng,dict(scenes=scenes,seed=seed))
-            write(dest/'progress.json',dict(initial=init,curve=curve,validation=validation,train_probe=train_probe,step=step))
+            write(dest/'progress.json',dict(initial=init,curve=curve,validation=validation,train_probe=train_probe,step=step,
+                  sample_tiers=dict(sample_tiers),sample_scenes=dict(sample_scenes),
+                  seconds=previous_seconds+time.monotonic()-start,
+                  peak_allocated_MiB=max(previous_peak,torch.cuda.max_memory_allocated()/2**20)))
             if require_descent and step>=2*period:
                 initial_loss=np.mean(train_probe[0]['losses'])
                 if all(np.mean(row['losses'])>=initial_loss for row in train_probe[1:]):
@@ -124,8 +157,10 @@ def train_network(root, dest, scenes, monitors, single=False, augmentations=(),
               and m['matched_ray_linear_RGB_MAE']<=.05)
     write(dest/'training.json',dict(initial=init,final=final,passed=passed,curve=curve,validation=validation,
           trainable_parameters=sum(p.numel() for p in net.parameters()),contexts='256/5',
-          scenes=scenes,seed=seed,seconds=time.monotonic()-start,steps=steps,augmented_roots=[str(p) for p in augmentations],
-          peak_allocated_MiB=torch.cuda.max_memory_allocated()/2**20,GT_warmup_steps=0 if single else SETTINGS['GT_warmup_steps'],
+          scenes=scenes,seed=seed,seconds=previous_seconds+time.monotonic()-start,steps=steps,
+          augmented_roots=[str(p) for p in augmentations],sample_tiers=dict(sample_tiers),sample_scenes=dict(sample_scenes),
+          peak_allocated_MiB=max(previous_peak,torch.cuda.max_memory_allocated()/2**20),
+          GT_warmup_steps=0 if single or scene_tiers is not None else SETTINGS['GT_warmup_steps'],
           balance_activation=balance_activation,train_probe=train_probe))
     return net
 
