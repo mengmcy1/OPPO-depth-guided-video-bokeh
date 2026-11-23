@@ -474,7 +474,8 @@ def save_checkpoint(path, model, ema, opt, rng, gen, step, counts, uses, seconds
     temp = path.with_suffix(".part")
     torch.save(dict(step=step,model=output_state(model.heads),ema={k:v.cpu() for k,v in ema.items()},
                     optimizer=opt.state_dict(),rng=rng.bit_generator.state,pixel_rng=gen.get_state(),
-                    counts=dict(counts),uses=dict(uses),seconds=seconds,peak_allocated_MiB=peak),temp)
+                    counts=dict(counts),uses={k:float(v) for k,v in uses.items()},
+                    seconds=seconds,peak_allocated_MiB=peak),temp)
     temp.replace(path)
 
 
@@ -510,7 +511,8 @@ def train(phase, target, run):
         if available:
             rng.bit_generator.state = ck["rng"]
             gen.set_state(ck["pixel_rng"])
-            counts.update(ck["counts"]); uses.update(ck["uses"])
+            counts.update(ck["counts"])
+            uses.update({k:float(v) for k,v in ck["uses"].items()})
             start,prior_seconds,peak=ck["step"]+1,ck["seconds"],ck["peak_allocated_MiB"]
     terms_path = dest/"losses.jsonl"
     failures_path=run/"training-skips.json"
@@ -555,7 +557,7 @@ def train(phase, target, run):
                 for k,p in model.heads.state_dict().items():
                     ema[k].lerp_(p,1-CONFIG["ema_decay"])
             counts[tier]+=1
-            uses.update(terms)
+            uses.update({k:v.detach() for k,v in terms.items()})
             if step%20==0 or step==1:
                 out=dict(step=step,phase=phase,tier=tier,counts=dict(counts),loss=float(loss.detach()),
                          grad_norm=float(norm),terms={k:float(v.detach()) for k,v in terms.items()},

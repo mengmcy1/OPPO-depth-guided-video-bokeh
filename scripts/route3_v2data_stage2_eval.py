@@ -468,6 +468,17 @@ def fixed_losses(model,phase):
     return result
 
 
+def trained_report(ck, report, losses):
+    return dict(report=report,fixed_losses=losses,
+                scope="P2 f/1.4 (the Phase 1 continuity protocol), 15 development scenes and 3 legacy scenes separately",
+                historical_legacy_2b=dict(near_query_delta_db=-2.01,zero_visible="0/72",zero_combined="0/72",
+                                           zero_scope="historical full P1/P2, two-aperture protocol"),
+                training_seconds=float(ck["seconds"]),batch_counts={k:int(v) for k,v in ck["counts"].items()},
+                loss_batches={k:float(v) for k,v in ck["uses"].items()},
+                loss_batches_scope="Sum of unweighted batch losses per term",
+                loss_scope="16 seeded units per split and tier; loss terms common to training and development (without optional optical references or K16)")
+
+
 def main(run,phase,step,weights,probe=False):
     training.configuration()
     training.fixed_inputs()
@@ -484,12 +495,7 @@ def main(run,phase,step,weights,probe=False):
     rows,spatial,unscored,leaks=evaluate_frames(model,phase,raw,out,endpoint=phase=="2b" and step==30000,
                                                  only_leaks=not step and not probe,probe=probe)
     if step:
-        result=dict(report=describe(rows,spatial,unscored,leaks),fixed_losses=fixed_losses(model,phase),
-                    scope="P2 f/1.4 (the Phase 1 continuity protocol), 15 development scenes and 3 legacy scenes separately",
-                    historical_legacy_2b=dict(near_query_delta_db=-2.01,zero_visible="0/72",zero_combined="0/72",
-                                               zero_scope="historical full P1/P2, two-aperture protocol"),
-                    training_seconds=ck["seconds"],batch_counts=ck["counts"],loss_batches=ck["uses"])
-        result["loss_scope"]="16 seeded units per split and tier; loss terms common to training and development (without optional optical references or K16)"
+        result=trained_report(ck,describe(rows,spatial,unscored,leaks),fixed_losses(model,phase))
     elif probe:
         result=dict(report=describe(rows,spatial,unscored,leaks),scope="one frame per evaluation split")
     else:
@@ -502,9 +508,9 @@ def main(run,phase,step,weights,probe=False):
         for row in manifest["optical_units"]))
     result.update(evaluation_seconds=time.monotonic()-started,stage=phase,step=step,weights=weights,
                   optical=optics,completed_at=training.now())
-    write_json(out/"report.json",result)
     if rows:
         write_json(out/"cases.json",dict(rows=rows,unscored=unscored))
+    write_json(out/"report.json",result)
     print("STAGE2_EVAL_DONE",out,flush=True)
 
 
