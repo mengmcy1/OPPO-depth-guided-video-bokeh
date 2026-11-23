@@ -25,7 +25,9 @@ from route3_v2data_stage2_eval import f2_for, k16, optical_target, oracle_hidden
 from src.aperture_renderer import aperture_disk
 from src.layered_aperture import merge_layers
 from src.ovg_edge_statistics import adjacent_surface_pairs
-from src.ovg_optics import raster
+from src.ovg_opaque_eval import opaque_view, subpixel_flags
+from src.ovg_optics import raster, subcamera
+from src.prefix_transmittance import prefix_transmittance
 from src.ovg_representation_eval import THRESHOLDS, VARIANTS, geometry_basis, representation
 
 
@@ -122,6 +124,7 @@ def frame_setup(plan, net, query, views, memory):
         first=first_pass(plan,new["prediction"],query,views,memory)[0]
     split=stage2.split_mask(new["prediction"],first)
     valid=torch.isfinite(depth)&(depth>0)&torch.isfinite(x["rgb"][0]).all(0)
+    new["b0"]=valid&~split
     links,samples=neighbors(depth,ref,valid,split)
     interior=(y["alpha"][0].cpu().numpy()>=.9999)&y["valid_alpha"][0].cpu().numpy()&~ref["boundary"]
     return x,ref,masks,new,valid,links,samples,interior
@@ -156,24 +159,48 @@ def prep_case(plan, state, query, index, original):
                 is_near=index==0)
 
 
-def layered_rays(visible, hidden, K, focus, offsets, bg=None, *, alpha=False):
+def close_layer(visible, hidden, K, focus, offsets, bg, params, alpha):
+    merged=merge_layers(visible,hidden)
+    result,closed=[],[]
+    for i,offset in enumerate(offsets):
+        value,info=opaque_view(merged,K,focus,offset,*params,None if bg is None else bg[i])
+        result.append(value)
+        closed.append(info["closed"])
+    images=torch.stack(result)
+    if not alpha:
+        return images
+    _,raw=raster(visible,K,focus,offsets,512,512,return_alpha=True)
+    return images,raw.masked_fill(torch.stack(closed),1)
+
+
+def layered_rays(visible, hidden, K, focus, offsets, bg=None, *, alpha=False, closure=None):
     if not isinstance(visible,tuple):
         return raster(merge_layers(visible,hidden),K,focus,offsets,512,512,bg,return_alpha=alpha)
     base,fill=visible
     front,coverage=raster(base,K,focus,offsets,512,512,bg,return_alpha=True)
     miss=coverage<MISS_ALPHA
-    if hidden is not None:
-        front=raster(merge_layers(base,hidden),K,focus,offsets,512,512,bg)
-    farther,other=raster(merge_layers(fill,hidden),K,focus,offsets,512,512,bg,return_alpha=True)
+    if closure is not None:
+        front=close_layer(base,hidden,K,focus,offsets,bg,closure[0],alpha)
+        if alpha:
+            front,coverage=front
+        if not len(fill.means):
+            return (front,coverage) if alpha else front
+        farther=close_layer(fill,hidden,K,focus,offsets,bg,closure[1],alpha)
+        if alpha:
+            farther,other=farther
+    else:
+        if hidden is not None:
+            front=raster(merge_layers(base,hidden),K,focus,offsets,512,512,bg)
+        farther,other=raster(merge_layers(fill,hidden),K,focus,offsets,512,512,bg,return_alpha=True)
     result=torch.where(miss[...,None],farther,front)
     return (result,torch.where(miss,other,coverage)) if alpha else result
 
 
-def rays_for(layer, case, visible_result, hidden=None):
+def rays_for(layer, case, visible_result, hidden=None, closure=None):
     K,focus,offsets,bg=(case[k] for k in ("K","nominal","replays","kfill"))
     images,alphas=[],[]
     for a,b in zip(offsets.split(4),bg.split(4)):
-        outputs=layered_rays(layer,hidden,K,focus,a,b,alpha=visible_result)
+        outputs=layered_rays(layer,hidden,K,focus,a,b,alpha=visible_result,closure=closure)
         if visible_result:
             rgb,alpha=outputs
             images.append(rgb)
@@ -183,7 +210,24 @@ def rays_for(layer, case, visible_result, hidden=None):
     return torch.cat(images),torch.cat(alphas) if alphas else None
 
 
-def ray_metrics(visible, hidden, case, base):
+def opaque_trace(visible, merged, K, focus, offset, support, params):
+    w,z,zv,wv,T=trace_predicted(visible,visible,merged,K,focus,offset,support)
+    if params is not None:
+        _,diag=opaque_view(merged,K,focus,offset,*params)
+        closed=diag["closed"][support].cpu().numpy()
+        w[closed]=diag["query_weight"][support].cpu().numpy()[closed]
+        z[closed]=diag["query_depth"][support].cpu().numpy()[closed]
+        T[closed]=np.nan
+        survived=closed&(w>=.001)
+        if survived.any():
+            depths=torch.zeros_like(params[0]); depths[support]=K.new_tensor(z)
+            intr,view=subcamera(K,focus,offset)
+            prefix=prefix_transmittance(visible,intr,view,depths)[support].cpu().numpy()
+            T[survived]=prefix[survived]
+    return w,z,zv,wv,T
+
+
+def ray_metrics(visible, hidden, case, base, closure=None):
     images,alpha=base
     mask=case["ray_mask"]
     map_miss=(alpha<MISS_ALPHA).float().mean(0).cpu().numpy()
@@ -191,7 +235,7 @@ def ray_metrics(visible, hidden, case, base):
     hist=np.histogram(T,bins=BINS,range=(0.,1.))[0]
     result=dict(rays=T.size,missed=int((alpha[:,mask]<MISS_ALPHA).sum()),T_hist=hist.tolist(),positive_sse_bins=[])
     if case["is_near"] and T.size:
-        rgb=rays_for(visible,case,False,hidden)[0]
+        rgb=rays_for(visible,case,False,hidden,closure)[0]
         _,effect,_,_=ray_effect(images[:,mask].cpu().numpy(),rgb[:,mask].cpu().numpy(),case["truth"][mask])
         sel=torch.from_numpy(mask).to(case["K"].device)
         traces=[]
@@ -199,14 +243,15 @@ def ray_metrics(visible, hidden, case, base):
             if isinstance(visible,tuple):
                 a,b=visible
                 hit=raster(a,case["K"],case["nominal"],offset[None],512,512,return_alpha=True)[1][0]>=MISS_ALPHA
-                components=[(a,sel&hit),(b,sel&~hit)]
+                params=closure if closure is not None else (None,None)
+                components=[(a,sel&hit,params[0]),(b,sel&~hit,params[1])]
             else:
-                components=[(visible,sel)]
+                components=[(visible,sel,None)]
             row=np.zeros((5,int(mask.sum())),np.float32)
-            for part,support in components:
+            for part,support,params in components:
                 if support.any():
-                    row[:,support[sel].cpu().numpy()]=trace_predicted(part,part,merge_layers(part,hidden),
-                        case["K"],case["nominal"],offset,support)
+                    row[:,support[sel].cpu().numpy()]=opaque_trace(part,merge_layers(part,hidden),
+                        case["K"],case["nominal"],offset,support,params)
             traces.append(row)
         w,zh,zv,_,prefix=map(np.stack,zip(*traces))
         result["positive_sse_bins"]=bins(w,zh,zv,prefix,effect)
@@ -217,22 +262,22 @@ def score(value,target,mask):
     return pooled([region_errors(value,target,mask)])
 
 
-def evaluate_variant(layer, case, name, system, measure_rays, visible_k16):
+def evaluate_variant(layer, case, name, system, measure_rays, visible_k16, closure=None):
     K,focus,center,zfill=(case[k] for k in ("K","focus","center","zfill"))
     mask,truth,pinhole=(case[k] for k in ("mask","truth","pinhole"))
     hidden=case["hidden"][system]
     if isinstance(layer,tuple):
-        chunks=[layered_rays(layer,hidden,K,focus,a,b).sum(0)
+        chunks=[layered_rays(layer,hidden,K,focus,a,b,closure=closure).sum(0)
                 for a,b in zip(case["offsets"].split(8),case["fill"].split(8))]
         rgb=sum(chunks)/len(case["offsets"])
     else:
         rgb=render_offsets(merge_layers(layer,hidden),K,focus,case["offsets"],case["fill"])
     valid=np.ones(mask.shape,bool)
     row=dict(variant=name, system=system, optical=score(rgb,truth,mask),
-             zero_visible=score(layered_rays(layer,None,K,focus,center)[0],pinhole,valid),
-             zero_combined=score(layered_rays(layer,hidden,K,focus,center,zfill)[0],pinhole,valid))
+             zero_visible=score(layered_rays(layer,None,K,focus,center,closure=closure)[0],pinhole,valid),
+             zero_combined=score(layered_rays(layer,hidden,K,focus,center,zfill,closure=closure)[0],pinhole,valid))
     if measure_rays:
-        row["rays"],miss=ray_metrics(layer,hidden,case,visible_k16)
+        row["rays"],miss=ray_metrics(layer,hidden,case,visible_k16,closure)
     else:
         miss=None
     return row,display(rgb.cpu().numpy()),miss
@@ -318,7 +363,7 @@ def plot_results(out,reports):
         report=reports["step1"]["summary"]["development"]
         options=[v for v in VARIANTS[1:] if v+"/S5" in report]
         lead=max(options,key=lambda v:report[v+"/S5"]["near"]["pooled"]["psnr_db"]) if options else "V0"
-    for phase in ("step1","step2"):
+    for phase in ("step1","v3opaque","step2"):
         if phase not in reports:
             continue
         for row in sorted(reports[phase]["rows"],key=lambda r:fig_key(r,phase)):
@@ -337,6 +382,14 @@ def plot_results(out,reports):
                     if phase=="step1":
                         cells=[(v["variant"],v["variant"],v) for v in row["variants"]]
                         map_keys=("V0",lead) if lead!="V0" else ("V0",)
+                    elif phase=="v3opaque":
+                        cells=[(v["variant"],v["variant"],v) for v in row["variants"]]
+                        baseline=cache/f"step1_{row['file']}.npz"
+                        if baseline.is_file():
+                            with np.load(baseline,allow_pickle=False) as original:
+                                for key in ("V0","V3"):
+                                    images[key]=original[key].astype(np.float32)
+                        map_keys=("V3+o",)
                     else:
                         kept=[v for v in row["variants"] if v["variant"].startswith(variant+"@")]
                         cells=[(v["variant"]+"/"+v["system"],v["variant"].split("@")[1]+" "+v["system"],v)
@@ -344,7 +397,8 @@ def plot_results(out,reports):
                         map_keys=()
                     columns={"input":"输入 RGB","GT":"GT · Cycles"}
                     for key,title,v in cells:
-                        images[key]=d[key].astype(np.float32)
+                        if key not in images:
+                            images[key]=d[key].astype(np.float32)
                         scores[key]=v["optical"]
                         columns[key]=title
                     maps={v+" · 未命中率":d["miss_"+v].astype(np.float32) for v in map_keys
@@ -358,10 +412,14 @@ def plot_results(out,reports):
 
 
 @torch.inference_mode()
-def run_phase(out, originals, phase, selected, pilot=False):
+def run_phase(out, originals, phase, selected, pilot=False, retry=False):
     path=out/(phase+".json")
     report=load(path) or dict(rows=[],seconds=0.)
     existing={r["file"]:r for r in report["rows"]}
+    retry_names={name for name,r in existing.items() if r.get("error","").startswith("OutOfMemoryError:")} if retry else set()
+    for name in retry_names:
+        failed=existing.pop(name)
+        report.setdefault("retry_history",[]).append(dict(file=name,original_error=failed["error"],at=gallery.stamp()))
     previous=report["seconds"]
     start=time.monotonic()
     net=load_paired_checkpoint(stage2.INITIAL,"ema").eval()
@@ -377,6 +435,8 @@ def run_phase(out, originals, phase, selected, pilot=False):
     for task in plan:
         pending=[(i,source[f["file"]]) for i,f in enumerate(task["files"])
                  if f["file"] in source and f["file"] not in existing]
+        if retry:
+            pending=[p for p in pending if p[1]["file"] in retry_names]
         if pilot:
             pending=[p for p in pending if p[1]["file"]=="021_dev001_f030_near.png"]
         if not pending:
@@ -399,8 +459,12 @@ def run_phase(out, originals, phase, selected, pilot=False):
                     existing[r["file"]]=dict(r,error=f"{type(error).__name__}: {error}")
                     print("REPR_SKIP",phase,r["file"],str(error),flush=True)
                     torch.cuda.empty_cache()
-            grids=[(v,"GT",v) for v in VARIANTS] if phase=="step1" else [
-                (v,t,v+"@"+t) for v in selected for t in ("GT","0.03","0.10","0.25")]
+            if phase=="step1":
+                grids=[(v,"GT",v) for v in VARIANTS]
+            elif phase=="v3opaque":
+                grids=[("V3","GT","V3+o")]
+            else:
+                grids=[(v,t,v+"@"+t) for v in selected for t in ("GT","0.03","0.10","0.25")]
             arrays={r["file"]:dict(input=c["pinhole"].astype(np.float16),GT=c["truth"].astype(np.float16),
                                     near=masks[0],far=masks[1]) for _,r,c in cases}
             values=defaultdict(list)
@@ -411,16 +475,24 @@ def run_phase(out, originals, phase, selected, pilot=False):
                     basis_by_link[method]=geometry_basis(new["depth"],x["K"][0],links[method])
                 layer=representation(new["visible"],new["depth"],color,x["K"][0],valid,links[method],variant,
                                      basis_by_link.get(method))
+                closure=None
+                if phase=="v3opaque":
+                    depth=new["depth"]
+                    b0=new["b0"]
+                    fill_mask=basis_by_link[method][3]&valid
+                    base,fill=layer
+                    closure=((depth,b0,subpixel_flags(valid,b0,5),len(base.means)),
+                             (depth*1.005,fill_mask,torch.ones(len(fill.means),dtype=torch.bool,device=depth.device),len(fill.means)))
                 for _,ref_row,c in cases:
                     name=ref_row["file"]
                     if name in existing:
                         continue
                     try:
-                        measure_rays=phase=="step1"
-                        base=rays_for(layer,c,True) if measure_rays else None
-                        for system in ("S5",) if phase=="step1" else ("S3","S4","S5"):
-                            row,rgb,miss=evaluate_variant(layer,c,label,system,measure_rays,base)
-                            key=label if phase=="step1" else label+"/"+system
+                        measure_rays=phase!="step2"
+                        base=rays_for(layer,c,True,closure=closure) if measure_rays else None
+                        for system in ("S5",) if phase!="step2" else ("S3","S4","S5"):
+                            row,rgb,miss=evaluate_variant(layer,c,label,system,measure_rays,base,closure)
+                            key=label if phase!="step2" else label+"/"+system
                             if variant=="V0":
                                 ref_score=ref_row["region_scores"]["S5"]
                                 if row["optical"]["pixels"]!=ref_score["pixels"] or abs(row["optical"]["psnr_db"]-ref_score["psnr_db"])>.001:
@@ -456,14 +528,24 @@ def run_phase(out, originals, phase, selected, pilot=False):
         report["seconds"]=previous+time.monotonic()-start
         write_json(path,report)
     if not pilot:
-        report["summary"]=stats(report["rows"],phase)
-        if phase=="step1":
+        report["summary"]=stats(report["rows"],"step1" if phase=="v3opaque" else phase)
+        if phase=="step1" and not retry:
             report["adjacent"]={g:sample_stats({r:samples[(g,r)] for r in ("same","crossing")})
                                 for g in ("development","legacy") if samples[(g,"same")]}
         report["completed_at"]=gallery.stamp()
         report["seconds"]=previous+time.monotonic()-start
         write_json(path,report)
     return report
+
+
+def compare_opaque(ordinary, opaque):
+    by_case={r["file"]:r for r in ordinary["rows"] if not r.get("error")}
+    for row in opaque["rows"]:
+        if row["file"] in by_case and not row.get("error"):
+            baseline=[x for x in by_case[row["file"]]["variants"] if x["variant"] in ("V0","V3")]
+            row["variants"]=baseline+[x for x in row["variants"] if x["variant"]=="V3+o"]
+    common=[row for row in opaque["rows"] if not row.get("error") and len(row["variants"])==3]
+    opaque["summary"]=stats(common,"step1")
 
 
 def number(v, digits=3):
@@ -476,7 +558,7 @@ def publish(out,reports,plots):
            "第一步以 V0 为参照，第二步以同表示、同隐藏层的 GT 连接为参照。"
            "零光圈列为合并 PSNR 与过线数。未命中以累计 α < 1/255 定义，高透射 SSE 按 §13.16.6 统计。",""]
     lines.append("选中表示为 "+("、".join(reports["selected"]) if reports["selected"] else "无，通过两个零光圈约束的正收益候选为空")+"。")
-    for phase in ("step1","step2"):
+    for phase in ("step1","v3opaque","step2"):
         if phase not in reports:
             continue
         phase_report=reports[phase]
@@ -506,6 +588,11 @@ def publish(out,reports,plots):
                 n=r["effective_joined"] if label=="crossing" else b["pairs"]-r["effective_joined"]
                 lines.append(f"  - τ={tau}，{'跨断层误缝合' if label=='crossing' else '同表面未缝合'} {n/max(1,b['pairs']):.2%}。")
     lines+=["","## 跳过",""]+[f"- {r['file']}，{r['error']}" for r in reports["skipped"]]
+    for retry in reports["step1"].get("retry_history",[]):
+        name=retry["file"]
+        current=next(r for r in reports["step1"]["rows"] if r["file"]==name)
+        result="已补跑成功" if "error" not in current else "补跑后仍失败"
+        lines.append(f"- {name}，首次显存不足，{result}。")
     (out/"汇总.md").write_text("\n".join(lines)+"\n",encoding="utf-8")
     html=['<!doctype html><meta charset=utf-8><title>可见层表示对照</title><h1>可见层表示对照</h1>',
           '<p><a href="汇总.md">汇总</a></p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,34em),1fr));gap:1em">']
@@ -515,9 +602,9 @@ def publish(out,reports,plots):
     (out/"index.html").write_text("\n".join(html+["</div>"])+"\n",encoding="utf-8")
 
 
-def main(source,pilot):
+def main(source,pilot,retry=False):
     stage2.configuration()
-    torch.cuda.set_per_process_memory_fraction(7*GIB/torch.cuda.get_device_properties(0).total_memory,0)
+    torch.cuda.set_per_process_memory_fraction((9 if retry else 7)*GIB/torch.cuda.get_device_properties(0).total_memory,0)
     torch.backends.cuda.matmul.allow_tf32=False
     stage2.fixed_inputs()
     out=source/"repr"
@@ -527,17 +614,29 @@ def main(source,pilot):
         write_json(out/"protocol.json",dict(PROTOCOL,source_sha256=sha256(source/"metrics.json"),registered_at=gallery.stamp()))
     originals=load(source/"metrics.json")
     report=load(out/"step1.json")
+    if retry:
+        run_phase(out,originals,"step1",[],retry=True)
+        return
     if not report.get("completed_at"):
         report=run_phase(out,originals,"step1",[],pilot)
     if pilot:
         return
     selected=select(report["summary"])
     result=dict(step1=report,selected=selected)
+    note=out/"v3opaque-protocol.json"
+    if not note.is_file():
+        write_json(note,dict(variant="V3+o",connection="GT",system="S5",registered_at=gallery.stamp(),
+            closure="First resolve the V3 branch from ordinary V0 admission, then apply the existing b=0 opaque operation to the selected layer. Both the V0 and fill branch retain their own eligible pixel centers."))
+    closed=load(out/"v3opaque.json")
+    if not closed.get("completed_at"):
+        closed=run_phase(out,originals,"v3opaque",[])
+    compare_opaque(report,closed)
+    result["v3opaque"]=closed
     if selected:
         second=load(out/"step2.json")
         result["step2"]=second if second.get("completed_at") else run_phase(out,originals,"step2",selected)
     result["skipped"]=[r for r in originals["rows"] if r.get("error")]
-    for name in ("step1","step2"):
+    for name in ("step1","v3opaque","step2"):
         result["skipped"].extend(r for r in result.get(name,{}).get("rows",[]) if r.get("error"))
     plots=plot_results(out,result)
     write_json(out/"metrics.json",result)
@@ -548,5 +647,6 @@ if __name__=="__main__":
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument("--source",type=Path,default=gallery.OUT)
     p.add_argument("--pilot",action="store_true")
+    p.add_argument("--retry-oom",action="store_true")
     a=p.parse_args()
-    main(a.source.resolve(),a.pilot)
+    main(a.source.resolve(),a.pilot,a.retry_oom)

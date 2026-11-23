@@ -251,7 +251,7 @@ def score_text(score):
 
 
 def draw_panel(path, row, images, masks, transmission, *, columns=NAMES, tile=TILE,
-               diagnostic_subtitle="K16 光线平均 · 0–1", diagnostic_images=None):
+               diagnostic_subtitle="K16 光线平均 · 0–1", diagnostic_images=None, cached_columns=None):
     title_y, text_y, top_y = 14, 57, 105
     zoom_y, error_y = top_y+tile+42, top_y+2*tile+84
     diagnostics = transmission if diagnostic_images is None else diagnostic_images
@@ -276,6 +276,10 @@ def draw_panel(path, row, images, masks, transmission, *, columns=NAMES, tile=TI
         distance = "" if focus is None else f"   ·   {focus:.3f} m"
         draw.text((x, text_y+22), f"{score} dB{distance}" if score != "—" else "无结果",
                   fill=muted, font=font(16))
+        if cached_columns and key in cached_columns:
+            for y, contents in zip((top_y,zoom_y,error_y),cached_columns[key]):
+                pic.paste(contents.resize((tile,tile),Image.Resampling.LANCZOS),(x,y))
+            continue
         if key not in images:
             for y in (top_y, zoom_y, error_y):
                 draw.rectangle((x, y, x+tile-1, y+tile-1), fill=(30, 38, 48))

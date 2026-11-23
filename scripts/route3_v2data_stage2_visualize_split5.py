@@ -9,6 +9,7 @@ import sys
 import time
 
 import numpy as np
+from PIL import Image, ImageDraw
 import torch
 
 import route3_ovg_data as ovg
@@ -28,12 +29,13 @@ from src.layered_aperture import merge_layers
 from src.ovg_optics import raster
 
 
-METHODS=("none","C1","C2","C3","C4","C5")
+METHODS=("none","C1","C2","C3","C4","C5","C6")
 COLUMNS={"input":"输入 RGB","GT":"GT · Cycles","none":"不拆分",
          "C1":"C1 · 现行拆分","C2":"C2 · 换 GT 背景","C3":"C3 · 换 GT 位置",
-         "C4":"C4 · GT 位置和背景","C5":"C5 · GT 前景和背景"}
-PAIRS=tuple((k,"none") for k in METHODS[1:])+(("C2","C1"),("C3","C1"),("C5","C4"))
+         "C4":"C4 · GT 位置和背景","C5":"C5 · GT 前景和背景","C6":"C6 · 加 GT α"}
+PAIRS=tuple((k,"none") for k in METHODS[1:])+(("C2","C1"),("C3","C1"),("C5","C4"),("C6","C5"))
 REGIONS=("near_in_focus","near_recoverable","far_recoverable","boundary_2px","zero_combined")
+PINHOLE_CASES={"021_dev001_f030_near.png","027_dev006_f030_near.png","003_122104_f030_near.png"}
 PROTOCOL={
     "model": "EMA appearance and fixed Stage 1 30k same-surface geometry. The second-pass Query, P2 focal distance, 64 offsets and F2 are shared within each case.",
     "C1": "Stage 2 observed_split, Query background, predicted foreground",
@@ -41,6 +43,7 @@ PROTOCOL={
     "C3": "Valid unsaturated GT mixed boundary intersected with q>0, Query background and predicted foreground",
     "C4": "Valid unsaturated GT mixed boundary, GT complementary color and predicted foreground. Use the original first-pass depth, initialized to frozen depth2 when q=0.",
     "C5": "Same as C4 with the GT pure foreground color. Learned opacity, depth and phase-specific footprint are fixed across factors.",
+    "C6": "C5 with GT alpha supplied as front opacity to the normal renderer. The normal rear-opacity rule (0.999 minus front opacity), depths and footprints are retained. Pinhole differences use maximum absolute linear RGB channel error against the GT mixture.",
     "support": "The union of split pixels intersects each scoring region and is common to all methods. A separate full-region column retains the original Stage 2 masks.",
     "feasibility": "Linear RGB residual is the maximum over channels of the distance of I to [(1-alpha)*B, (1-alpha)*B+alpha], the set attainable by an RGB foreground in [0,1]. Threshold > .01. Both GT comparisons use identical C1 pixels with valid GT compositing labels.",
 }
@@ -66,7 +69,7 @@ def feasible(alpha, background, observation):
 
 
 @torch.inference_mode()
-def frame_setup(model, plan, phase):
+def frame_setup(model, plan, phase, only_c6=False):
     item=item_for(plan)
     x,y=stage2.sample(item)
     x,ref,masks,subjects=gallery.frame_reference(plan,(x,y))
@@ -84,19 +87,23 @@ def frame_setup(model, plan, phase):
     predicted=stage2.split_mask(appearance,first).cpu().numpy()
     available=first["q"]>0
     definitions={"none":np.zeros_like(predicted),"C1":predicted,"C2":predicted,
-                 "C3":gt_mixed&available,"C4":gt_mixed,"C5":gt_mixed}
+                 "C3":gt_mixed&available,"C4":gt_mixed,"C5":gt_mixed,"C6":gt_mixed}
     union=predicted|gt_mixed
     frames={}
     for name,mask in definitions.items():
+        if only_c6 and name!="C6":
+            continue
         split=stage2.tensor(mask)
         color=first
         if name=="C2":
             color=dict(first,color=np.where(bg_valid[...,None],gt["background"],first["color"]))
-        if name in ("C4","C5"):
+        if name in ("C4","C5","C6"):
             color=dict(first,color=gt["background"],q=np.where(mask,1,first["q"]))
         ap=appearance
-        if name=="C5":
+        if name in ("C5","C6"):
             ap=dict(appearance,foreground=stage2.tensor(gt["foreground"]).permute(2,0,1)[None])
+        if name=="C6":
+            ap["opacity"]=stage2.tensor(alpha)[None]
         visible=stage2.visible(ap,x,split,phase)
         frames[name]=merge_layers(visible,stage2.background(ap,x,split,color))
     rgb=x["rgb"][0].permute(1,2,0).cpu().numpy()
@@ -109,7 +116,8 @@ def frame_setup(model, plan, phase):
         feasibility=dict(C1_all_pixels=int(predicted.sum()),C1_all_over=int((pred_bad&predicted).sum()),
                          matched_pixels=int(matched.sum()),matched_C1_over=int((pred_bad&matched).sum()),
                          matched_GT_over=int((gt_bad&matched).sum())))
-    return x,y,geom,ref,masks,subjects,frames,union,predicted,gt_mixed,rgb,facts
+    mixture=alpha[...,None]*gt["foreground"]+(1-alpha[...,None])*gt["background"]
+    return x,y,geom,ref,masks,subjects,frames,union,predicted,gt_mixed,rgb,facts,mixture
 
 
 def measure(value,target,regions):
@@ -123,8 +131,8 @@ def overlay(rgb,mask,paint):
 
 
 @torch.inference_mode()
-def render_case(model, plan, phase, state, index, original):
-    x,y,g,ref,masks,subjects,frames,union,pred,gt,rgb,facts=state
+def render_case(model, plan, phase, state, index, original, folder):
+    x,y,g,ref,masks,subjects,frames,union,pred,gt,rgb,facts,mixture=state
     case,K=plan["cases"][index],x["K"][0]
     frame,unit,name=(plan[k] for k in ("frame","unit","name"))
     focus=original["actual_focus_m"]["S3"]
@@ -160,6 +168,9 @@ def render_case(model, plan, phase, state, index, original):
         full.update(measure(zero,pinhole,{"zero_combined":np.ones_like(union)}))
         summary[key]=dict(common=primary,full=full)
         images[key]=display(value.cpu().numpy())
+        if key=="C6" and original["file"] in PINHOLE_CASES:
+            audit=pinhole_audit(folder,original,zero.cpu().numpy(),mixture,gt)
+            summary[key]["pinhole_audit"]=audit
     primary=original["region"]
     scores={k:v["common"][primary] for k,v in summary.items()}
     scores.update(input=measure(x["rgb"][0].permute(1,2,0),truth,{"input":common[primary]})["input"],
@@ -170,6 +181,30 @@ def render_case(model, plan, phase, state, index, original):
     row.update(actual_focus_m=dict(input=None,GT=case["focus_m"],**dict.fromkeys(METHODS,focus)),
                region_scores=scores,metrics=summary,frame_facts=facts)
     return row,images,diagnostics,masks
+
+
+def pinhole_audit(folder, original, zero, mixture, mask):
+    if not mask.any():
+        return dict(pixels=0)
+    error=np.abs(zero.astype(np.float64)-mixture).max(-1)
+    q=np.quantile(error[mask],[.5,.95,1.]).tolist()
+    actual,expected=display(zero),display(mixture)
+    box=gallery.largest_error_crop(actual,expected,mask)
+    name="pinhole_"+original["file"]
+    width=280
+    pic=Image.new("RGB",(3*width+40,width+120),(18,23,31))
+    d=ImageDraw.Draw(pic)
+    d.text((10,6),f'{original["short"]} · f{original["frame"]:03d} · C6 零光圈',font=gallery.font(26),fill="white")
+    for i,(panel,image) in enumerate((("GT α 混合",gallery.rgb_image(expected)),("C6 针孔",gallery.rgb_image(actual)),
+                                      ("有效混合区线性误差 · 0–0.25",gallery.scalar_image(error*mask,.25,gallery.ERROR_SCALE)))):
+        x=10+i*(width+10)
+        d.text((x,49),panel,font=gallery.font(17),fill="white")
+        pic.paste(image.crop(box).resize((width,width),Image.Resampling.NEAREST),(x,77))
+    d.text((10,width+86),f'p50 {q[0]:.5f}    p95 {q[1]:.5f}    max {q[2]:.5f}',font=gallery.font(18),fill="white")
+    path=folder/"pinhole"
+    path.mkdir(exist_ok=True)
+    pic.save(path/name)
+    return dict(pixels=int(mask.sum()),p50=q[0],p95=q[1],max=q[2],crop_xyxy=box,file=f"pinhole/{name}")
 
 
 def pooled_groups(rows, scope, region):
@@ -205,6 +240,23 @@ def summarize(rows):
     return result
 
 
+def c6_pinhole_summary(rows):
+    result={}
+    partitions={"all":lambda r:True,"development":lambda r:r["short"].startswith("dev"),
+                "legacy":lambda r:not r["short"].startswith("dev")}
+    for key,eligible in partitions.items():
+        chosen=[r for r in rows if not r.get("error") and eligible(r)]
+        columns={}
+        for support in ("common","full"):
+            scores=[r["metrics"]["C6"][support]["zero_combined"] for r in chosen]
+            scores=[r for r in scores if r["pixels"]]
+            columns[support]=dict(**pooled(scores),cases=len(scores),pass_60=sum(r["psnr_db"]>=60 for r in scores))
+        result[key]=columns
+    full=result["all"]["full"]["psnr_db"]
+    result["compositing_error"]=full is not None and full<50
+    return result
+
+
 def number(value):
     return "—" if value is None else f"{value:+.3f}"
 
@@ -214,7 +266,7 @@ def share(a,b):
 
 
 def report_files(folder, report):
-    md=[f"# {report['phase']} 边界拆分五格","",
+    md=[f"# {report['phase']} 边界拆分 C1–C6","",
         "主表以拆分并集与评分区相交为公共支持。每格为合并增量／逐场景中位数／标准差／正、负、持平场景数，单位 dB。"
         "C2 在有 GT 背景标签的 C1 像素换色，缺标签像素保留 Query 颜色，位置和深度一致。",""]
     for cohort,part in report["summary"].items():
@@ -236,6 +288,21 @@ def report_files(folder, report):
              f"- C1 全部像素的可行性残差 >0.01 为 {share(feas['C1_all_over'],feas['C1_all_pixels'])}。"
              f"同一 GT 有效子集内，C1 为 {share(feas['matched_C1_over'],feas['matched_pixels'])}，"
              f"换成 GT α 和背景为 {share(feas['matched_GT_over'],feas['matched_pixels'])}。"]
+    md+=["","## C6 零光圈与 GT 混合核对","",
+         "过线按含隐藏层的原 60 dB 下限。C6 使用原渲染器，后层不透明度照常由前层设定值计算。","",
+         "| 分区 | 全图 PSNR / 过线 | 公共支持 PSNR / 过线 |","|---|---:|---:|"]
+    for key in ("all","development","legacy"):
+        details=report["C6_zero"][key]
+        values=[f"{number(d['psnr_db'])} / {d['pass_60']}/{d['cases']}" for d in (details["full"],details["common"])]
+        md.append(f"| {key} | {' | '.join(values)} |")
+    if report["C6_zero"]["compositing_error"]:
+        md+=["","**合成约定检查失败**。C6 全图合并值低于 50 dB。"]
+    md+=["","| 场景 | 像素数 | 线性 RGB 最大通道绝对差 p50 / p95 / 最大值 |","|---|---:|---:|"]
+    for r in report["rows"]:
+        a=r.get("metrics",{}).get("C6",{}).get("pinhole_audit",{})
+        if a.get("pixels"):
+            md.append(f"| [{r['short']} f{r['frame']:03d}]({a['file']}) | {a['pixels']} | "
+                      f"{a['p50']:.5f} / {a['p95']:.5f} / {a['max']:.5f} |")
     md+=["","## 跳过",""]+[f"- {r['file']}，{r['error']}" for r in report["rows"] if r.get("error")]
     (folder/"汇总.md").write_text("\n".join(md)+"\n",encoding="utf-8")
     html=['<!doctype html><meta charset=utf-8><title>边界拆分五格</title><h1>边界拆分五格</h1>',
@@ -254,7 +321,8 @@ def filename(row):
 
 
 def root_index(out):
-    links={phase:f"{phase}-10k" for phase in ("2a","2b") if (out/f"{phase}-10k/汇总.md").is_file()}
+    links={phase:folder for phase,folder in (("2a 原五格","2a-10k"),("2a 含 C6","2a-10k-c6"),("2b 含 C6","2b-10k"))
+           if (out/folder/"汇总.md").is_file()}
     html=['<!doctype html><meta charset=utf-8><title>边界拆分五格</title><h1>边界拆分五格</h1>']
     md=["# 边界拆分五格",""]
     for phase,folder in links.items():
@@ -264,16 +332,29 @@ def root_index(out):
     (out/"汇总.md").write_text("\n".join(md)+"\n",encoding="utf-8")
 
 
-def run(source,phase,pilot=False):
+def existing_tiles(path):
+    tile=225
+    y=105
+    tiles={}
+    with Image.open(path) as im:
+        for i,key in enumerate(tuple(COLUMNS)[:-1]):
+            x=gallery.LEFT+i*(tile+gallery.GAP)
+            tiles[key]=[im.crop((x,top,x+tile,top+tile)) for top in (y,y+tile+42,y+2*tile+84)]
+    return tiles
+
+
+def run(source,phase,pilot=False,only_c6=False):
     stage2.configuration()
     torch.cuda.set_per_process_memory_fraction(6*GIB/torch.cuda.get_device_properties(0).total_memory,0)
     stage2.fixed_inputs()
     torch.backends.cuda.matmul.allow_tf32=False
     out=source/"split5"
-    folder=out/f"{phase}-10k"
+    folder=out/(f"{phase}-10k"+("-c6" if only_c6 else ""))
     folder.mkdir(parents=True,exist_ok=True)
     checkpoint=stage2.RUN/phase/"step-010000.pt"
     original=load(source/"metrics.json")
+    prior=out/f"{phase}-10k"
+    baseline={r["file"]:r for r in load(prior/"metrics.json").get("rows",[]) if not r.get("error")} if only_c6 else {}
     path=folder/"metrics.json"
     digest=sha256(checkpoint)
     report=load(path) or dict(phase=phase,checkpoint=str(checkpoint),checkpoint_sha256=digest,protocol=PROTOCOL,
@@ -298,7 +379,7 @@ def run(source,phase,pilot=False):
             continue
         reserve(folder,GIB)
         try:
-            state=frame_setup(model,frame,phase)
+            state=frame_setup(model,frame,phase,only_c6)
         except Exception as error:
             for _,r in pending:
                 rows[r["file"]]=dict(r,error=f"{type(error).__name__}: {error}")
@@ -307,9 +388,15 @@ def run(source,phase,pilot=False):
         else:
             for idx,old in pending:
                 try:
-                    r,images,diag,masks=render_case(model,frame,phase,state,idx,old)
-                    gallery.draw_panel(folder/filename(r),r,images,masks,{},columns=COLUMNS,tile=225,
-                                       diagnostic_images=diag,diagnostic_subtitle="实际拆分位置")
+                    r,images,diag,masks=render_case(model,frame,phase,state,idx,old,folder)
+                    cached=None
+                    if only_c6:
+                        base=baseline[r["file"]]
+                        for key in ("metrics","region_scores","actual_focus_m"):
+                            r[key]=dict(base[key],**r[key])
+                        cached=existing_tiles(prior/filename(base))
+                    gallery.draw_panel(folder/filename(r),r,images,masks,{},columns=COLUMNS,tile=205,
+                                       diagnostic_images=diag,diagnostic_subtitle="实际拆分位置",cached_columns=cached)
                     rows[r["file"]]=r
                     print("SPLIT5_DONE",phase,r["file"],r["frame_facts"]["counts"],flush=True)
                 except Exception as error:
@@ -322,6 +409,7 @@ def run(source,phase,pilot=False):
         write_json(path,report)
     if not pilot:
         report["summary"]=summarize(report["rows"])
+        report["C6_zero"]=c6_pinhole_summary(report["rows"])
         report["completed_at"]=gallery.stamp()
         report_files(folder,report)
         root_index(out)
@@ -334,15 +422,49 @@ def follow(source):
     out.mkdir(exist_ok=True)
     with (out/".follow.lock").open("a") as lock:
         fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
-        for phase in ("2a","2b"):
-            checkpoint=stage2.RUN/phase/"step-010000.pt"
-            while not checkpoint.is_file():
-                write_json(out/"status.json",dict(state="waiting_for_checkpoint",phase=phase,at=gallery.stamp()))
+        child=Path(__file__).with_name("route3_v2data_stage1_visualize_repr.py").resolve()
+        queue=[("split5-2b",Path(__file__).resolve(),["--phase","2b"]),("representation",child,[])]
+        state=out/"status.json"
+        def status(activity,**fields):
+            write_json(state,dict(state=activity,at=gallery.stamp(),**fields))
+        def execute(script, args):
+            subprocess.run(["nvidia-smi","--query-gpu=memory.used,memory.total,utilization.gpu",
+                            "--format=csv,noheader"],check=True)
+            return subprocess.run([sys.executable,"-u",str(script),"--source",str(source),*args]).returncode
+        while not load(out/"2a-10k-c6/metrics.json").get("completed_at"):
+            status("waiting_for_2a_c6")
+            time.sleep(20)
+        retry=load(source/"repr/step1.json")
+        retry_exit=None
+        if any(r.get("error","").startswith("OutOfMemoryError:") for r in retry.get("rows",[])):
+            while gpu_free_mib()<15*1024:
+                status("waiting_for_isolated_retry_headroom")
                 time.sleep(30)
-            command=[sys.executable,"-u",str(Path(__file__).resolve()),"--source",str(source),"--phase",phase]
-            write_json(out/"status.json",dict(state="evaluating",phase=phase,at=gallery.stamp()))
-            subprocess.run(command,check=True)
-        write_json(out/"status.json",dict(state="complete",at=gallery.stamp()))
+            status("retrying_oom_case")
+            retry_exit=execute(child,["--retry-oom"])
+        while not official_2b_10k_ready(stage2.RUN):
+            status("waiting_for_official_2b_10k",retry_exit=retry_exit)
+            time.sleep(30)
+        completed={}
+        for label,script,args in queue:
+            status("evaluating",job=label,completed=completed,retry_exit=retry_exit)
+            completed[label]=execute(script,args)
+        status("complete" if not any(completed.values()) else "evaluation_failed",
+               completed=completed,retry_exit=retry_exit)
+
+
+def gpu_free_mib():
+    value=subprocess.check_output(["nvidia-smi","--query-gpu=memory.free",
+                                  "--format=csv,noheader,nounits"],text=True)
+    return int(value.splitlines()[0])
+
+
+def official_2b_10k_ready(run):
+    report=load(run/"evaluation/2b/step-010000/ema/report.json")
+    dispatch=load(run/"dispatch.json")
+    return (report.get("stage")=="2b" and report.get("step")==10000 and report.get("weights")=="ema" and
+            dispatch.get("status")=="training" and dispatch.get("stage")=="2b" and
+            dispatch.get("target_step",0)>10000)
 
 
 if __name__=="__main__":
@@ -352,8 +474,11 @@ if __name__=="__main__":
     g.add_argument("--phase",choices=("2a","2b"))
     g.add_argument("--follow",action="store_true")
     p.add_argument("--pilot",action="store_true")
+    p.add_argument("--only-c6",action="store_true")
     a=p.parse_args()
     if a.follow:
         follow(a.source.resolve())
     else:
-        run(a.source.resolve(),a.phase,a.pilot)
+        if a.only_c6 and a.phase!="2a":
+            p.error("--only-c6 extends the completed 2a gallery")
+        run(a.source.resolve(),a.phase,a.pilot,a.only_c6)
