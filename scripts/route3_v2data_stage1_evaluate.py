@@ -265,16 +265,17 @@ def old_rows(net,query,label,edge):
 
 def summary(rows):
     active=[row for row in rows if row["status"]=="evaluated"]
-    out={}
+    unscored=[f'{row["scene"]}/{row["case"]}' for row in rows if row["status"]!="evaluated"]
+    out=dict(unscored_cases=len(unscored),unscored_case_ids=unscored)
     for metric in (*METRICS,"zero_visible","zero_combined"):
         values=[r[metric] for r in active if r[metric] and r[metric]["pixels"]]
         measure=pooled(values)
         measure["scored_cases"]=len(values)
         if metric.startswith("zero_"):
             floor=50.0 if metric=="zero_visible" else 60.0
-            measure.update(floor_db=floor,passed_cases=sum(pooled([v])["psnr_db"]>=floor for v in values),
-                           all_passed=bool(values and len(active)==len(rows) and
-                                           all(pooled([v])["psnr_db"]>=floor for v in values)))
+            passed_cases=sum(pooled([v])["psnr_db"]>=floor for v in values)
+            measure.update(floor_db=floor,passed_cases=passed_cases,
+                           all_passed=bool(values) and passed_cases==len(values))
         else:
             by_scene=defaultdict(list)
             for r in active:
