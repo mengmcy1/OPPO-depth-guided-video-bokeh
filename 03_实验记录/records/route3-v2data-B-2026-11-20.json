@@ -747,7 +747,7 @@
       "train_geometry": 295,
       "development": 15,
       "test": 30,
-      "train_optical": 72
+      "train_optical": 80
     },
     "rules": {
       "basis": {
@@ -1306,7 +1306,7 @@
       "reserve_bytes": 64424509440
     },
     "generator_version": "B-v2-31aa7f9a4325",
-    "manifest_sha256": "c9c404056b42485e59a57b6ce0729ad79229d1e424c3e3ede65e96e870e9a19f",
+    "manifest_sha256": "019cf0c15aaff24e9ab7576492236f1456cb1c57897316a931139072d36055ed",
     "scene_plan_sha256": {
       "training": "3687df48d64d82dd2dfd620c1a1ee6b32f2305186063d0df89c2e6f99a5986d8",
       "development": "78f5ef2aa6625bba938028efb71ad1bf2da3142810d8453d6a387452728c0d85",
@@ -1392,7 +1392,7 @@
       "train_geometry": 5,
       "development": 0,
       "test": 0,
-      "train_optical": 223
+      "train_optical": 215
     },
     "verified_geometry_and_optical_bytes": 197230391315,
     "failures": {
@@ -2338,7 +2338,7 @@
     "p2_dispatch": {
       "stop_after_current": false,
       "original_dispatch_drained": true,
-      "status": "dispatching_training_optical",
+      "status": "dispatching_remaining_training_optical",
       "affected_inflight": "development-003-8c92e9e93c0ff003",
       "qualification_output": "p2-review/p2-priority-qualification/proof.json",
       "retired_process_groups": [
@@ -7164,9 +7164,9 @@
         "thin_and_complex_edge_transmission": 48
       },
       "replacements": [],
-      "remaining_target": 72,
+      "remaining_target": 0,
       "exhausted_slots": [],
-      "hard_rendered": 8
+      "hard_rendered": 80
     },
     "optical_slot_decision": {
       "baseline": [
@@ -13636,16 +13636,961 @@
     },
     "optical_full_scope": {
       "decision": "用户决定：先完成 80 个难例，再为其余已入列训练几何生成光学；产物和 F2 都完整才可用。",
-      "registered_at_utc": "2026-11-22T05:04:42.956894+00:00",
       "hard_target": 80,
       "total_target": 295,
-      "scheduling": "按原有难度轮流及分数排序，标签耗尽跳过，其余按场景编号；扩充顺序先封存后渲染。",
-      "usable": "光学及 F2 均完整",
-      "GPU_priority": "各训练阶段单步变为单独运行的 1.5 倍以上时，光学改为单槽。",
-      "status_at_query_decision": {
-        "admitted": 72,
-        "f2_complete": 72,
-        "recorded_at": "2026-11-23T19:12:00+08:00"
+      "hard_rendering": {
+        "scene_ids": [
+          "training-171-f5de6bcd6aef3f97",
+          "training-104-ed959c9469c17608",
+          "training-069-0ad3a696375884bf",
+          "training-144-3582acc4193a8ada",
+          "training-105-726c72c20bf403b4",
+          "training-173-13ed6793b9ce2fb2",
+          "training-224-0a595bfb91359bdd",
+          "training-087-e246dd843f332a4c",
+          "training-154-fa521945b146b2e9",
+          "training-065-e80e056e921c89cb",
+          "training-262-8bf0f5b2a1537c31",
+          "training-091-7138fd6acad9772b",
+          "training-108-50a8b0000171e4cc",
+          "training-160-2a6a65d85055aef4",
+          "training-099-91618e3e936d8bbb",
+          "training-129-d8668d929a0896e4",
+          "training-113-b053d03fffaca202",
+          "training-061-ff0a4ff42915123f",
+          "training-143-aa999d0bbdfd59a8",
+          "training-075-81cd9c5a8c2122bc",
+          "training-149-d4ae9b7274fff9f7",
+          "training-109-156fc340568d4b6a",
+          "training-090-ff8f0f360c455b3a",
+          "training-159-79c13c113b5b6cf7",
+          "training-092-72f2b5c082b70b73",
+          "training-033-458f598222b9f805",
+          "training-086-bbb38d49f9a712d4",
+          "training-046-4f78e7fdc9b0d0bd",
+          "training-157-dc71563e23ab59db",
+          "training-071-2345d368c9e2cc12",
+          "training-132-0a15641e6123d4ff",
+          "training-107-4b99cc301efd6064",
+          "training-066-4a9c7b3a1f110559",
+          "training-121-15d84d54e54aae7e",
+          "training-112-428cfa39403fbda7",
+          "training-268-2d410329c133a02c",
+          "training-073-c77c508538ed6eae",
+          "training-084-737c52cb48b4fede",
+          "training-153-b59df63e29decad0",
+          "training-102-8d47472c5dbcc0c8",
+          "training-166-13e19659f947601e",
+          "training-093-d8f72e54a64ce79f",
+          "training-078-8a67e2e69ec63c65",
+          "training-125-6d704b13c345a337",
+          "training-114-b3b91a86e4999313",
+          "training-230-015f01652fd9e26b",
+          "training-096-783b05ff5b65d107",
+          "training-077-e0dbd60c4b4a5517",
+          "training-162-305b6aacb0aafb8b",
+          "training-088-c5cb153915d4606f",
+          "training-232-c027df1c79b58415",
+          "training-116-d4f05620c2b2e016",
+          "training-064-086730c4acaff4f2",
+          "training-161-baa513d587b0b964",
+          "training-106-7f73fdeb23c9db2e",
+          "training-205-7cc8c134876852e9",
+          "training-100-8c522772a040c259",
+          "training-063-2194134e4b0c7105",
+          "training-147-f363f7035b2adc2a",
+          "training-118-639913dcc4d777e6",
+          "training-169-48dfc9836cc6b9a7",
+          "training-094-ca97b4045515c692",
+          "training-072-31b286ff6377ae60",
+          "training-155-fd318b1ed234a438",
+          "training-074-e757bee971cb318d",
+          "training-207-4be5a80acae94f9b",
+          "training-082-f9818b8f27ce561a",
+          "training-081-ffffcf59dc7e4350",
+          "training-156-f4219c9a2f9787ed",
+          "training-080-43386b8b8e99e758",
+          "training-126-627fc10d62778eaf",
+          "training-111-d7e217467bd2475e",
+          "training-085-4314e53b136c7e2d",
+          "training-139-a6fdfc32f252dada",
+          "training-095-b148ae741d51098e",
+          "training-187-47dd92425293df2d",
+          "training-089-b2a3e0ca0003160b",
+          "training-067-b04aa536b482f2e0",
+          "training-136-073bbcbb83cece0e",
+          "training-285-c8da041e74d8da19"
+        ],
+        "rendered": 80,
+        "target": 80,
+        "exhausted": []
+      },
+      "expansion": {
+        "path": "optical/expansion-selection.json",
+        "sha256": "16707b77952144186eb137bf34308d4c00773e7358a84f19ca5c5a42224bb689",
+        "count": 215,
+        "ordered_scenes": [
+          {
+            "scene_id": "training-044-5a97108f5a9086dc",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-068-845212140fd82b21",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-097-bc0d8b3ce29a5f4c",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-158-2b318ac0ba4ddc1d",
+            "primary_difficulty": "multiple_layers_and_local_occlusion"
+          },
+          {
+            "scene_id": "training-098-34084be1d5f9c679",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-201-151eee88feab99b7",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-079-3e07c2ea841832f9",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-110-5dd8c29db3f73ffc",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-123-bb3b63aa641990b6",
+            "primary_difficulty": "multiple_layers_and_local_occlusion"
+          },
+          {
+            "scene_id": "training-031-eeb819d68fc1c2ca",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-120-2db3c2fe6b5336e7",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-291-039454dbf9a2a574",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-103-fe83df7a6c79a980",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-140-05fad3fd2dd65434",
+            "primary_difficulty": "multiple_layers_and_local_occlusion"
+          },
+          {
+            "scene_id": "training-060-6d5047674c33e827",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-195-52038ddf4e2b1771",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-027-d3456b23a462c6de",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-062-e1afe20c6ff0e3f1",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-145-109c724576efe4bb",
+            "primary_difficulty": "multiple_layers_and_local_occlusion"
+          },
+          {
+            "scene_id": "training-189-ed85cd06bfb62e0d",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-233-776d75d3f839af90",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-053-f272d322f73e299b",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-083-37304d8947489c3d",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-164-70111b7d143f24b4",
+            "primary_difficulty": "multiple_layers_and_local_occlusion"
+          },
+          {
+            "scene_id": "training-289-a5a90c8df5d46768",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-246-270a821c86151a88",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-115-78e9d36f81ad938e",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-076-d7015b328ddc7df3",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-137-ddbd64a306f037b2",
+            "primary_difficulty": "multiple_layers_and_local_occlusion"
+          },
+          {
+            "scene_id": "training-179-9f3c37e903b99e85",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-172-467ec86af81787bb",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-249-b1ac5cb99173544c",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-117-8923afa9b74ab6dc",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-142-c3720b66550a6835",
+            "primary_difficulty": "multiple_layers_and_local_occlusion"
+          },
+          {
+            "scene_id": "training-180-ff25a69cb5a48ff4",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-257-5c595d0067909632",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-196-84b81e0db316cc51",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-070-918f36e7e62f3576",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-168-5c739b335ca20b5f",
+            "primary_difficulty": "multiple_layers_and_local_occlusion"
+          },
+          {
+            "scene_id": "training-297-2f6d75e82a9d5b4a",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-210-d9f88e0ac33b9e29",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-264-cb17b94396eb633f",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-275-4756423f133ca285",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-128-308d33775b95ae11",
+            "primary_difficulty": "multiple_layers_and_local_occlusion"
+          },
+          {
+            "scene_id": "training-026-f3242e982385bafd",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-197-bcb19a2c538a2125",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-286-cc428b837d21f7dd",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-101-2f2c19e48b042cbc",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-138-9681693dbd32371d",
+            "primary_difficulty": "multiple_layers_and_local_occlusion"
+          },
+          {
+            "scene_id": "training-217-2a71804d11613752",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-131-0a6f6184692eee91",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-227-2811e488cecb1a0c",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-272-a53137ae4e756fd1",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-135-cc4cdd521717bb2e",
+            "primary_difficulty": "multiple_layers_and_local_occlusion"
+          },
+          {
+            "scene_id": "training-041-f0cded361b343fe5",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-203-5a7f8a290ec4a272",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-212-161aa09d97a10429",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-119-4208e017665514b8",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-134-d94144815efa92fe",
+            "primary_difficulty": "multiple_layers_and_local_occlusion"
+          },
+          {
+            "scene_id": "training-141-a8405e071e053fc3",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-204-25c2304ec688b0a9",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-192-83b60b679cbf2af9",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-036-f25994aab81aae06",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-146-8a0ee3e962c92314",
+            "primary_difficulty": "multiple_layers_and_local_occlusion"
+          },
+          {
+            "scene_id": "training-223-99a611427925ffa8",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-206-cdd99a6433afc0cd",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-292-4728e85bdb814c70",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-010-3fe02ef73c064f8c",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-124-7621bd7e50def34f",
+            "primary_difficulty": "multiple_layers_and_local_occlusion"
+          },
+          {
+            "scene_id": "training-290-b113b2ef7e9b11d2",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-151-b62eef106865d9bb",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-276-0397824a7d3273d9",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-273-ff195616a7c594f7",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-165-5ec21184e8a81cb0",
+            "primary_difficulty": "multiple_layers_and_local_occlusion"
+          },
+          {
+            "scene_id": "training-208-4d5d438ee95b6233",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-269-bee7b2c6c6290f39",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-218-5fcda9bf557dfbd2",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-021-f914af69080224a7",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-163-7c461271cf37639c",
+            "primary_difficulty": "multiple_layers_and_local_occlusion"
+          },
+          {
+            "scene_id": "training-024-bb5d3336889f345e",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-228-14d48c8ca93b3af9",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-045-c64fd671f8773920",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-043-e47d6a94f6f92243",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-148-0a27fb212c949688",
+            "primary_difficulty": "multiple_layers_and_local_occlusion"
+          },
+          {
+            "scene_id": "training-231-50023ca891b0fa13",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-058-58d4e98741dded1a",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-265-719abfd6674bb42e",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-274-5563349b1f9f5e7a",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-150-d1853b117921ec82",
+            "primary_difficulty": "multiple_layers_and_local_occlusion"
+          },
+          {
+            "scene_id": "training-015-a4dd5b2a31751d13",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-039-ae7b08806c2f3975",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-260-2f95f8a564cc1b0a",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-281-e3045c8e0ad5c87d",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-170-b7f646b4ee9080be",
+            "primary_difficulty": "multiple_layers_and_local_occlusion"
+          },
+          {
+            "scene_id": "training-202-c2d5d99b19e6cd94",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-258-acc348be78b3913c",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-055-7eacb5c0a36ff4f8",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-280-b541bc0ac7453984",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-127-f793218e172f7a27",
+            "primary_difficulty": "multiple_layers_and_local_occlusion"
+          },
+          {
+            "scene_id": "training-221-0e3ba7bf508b0384",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-167-86d18afe2d278c44",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-252-aaf5bcbbdd0d3375",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-004-33797c8abc6f9233",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-152-c33550335db5361a",
+            "primary_difficulty": "multiple_layers_and_local_occlusion"
+          },
+          {
+            "scene_id": "training-256-12e9532931deec9a",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-037-131d1181d32bc66c",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-266-d8498b7ba756a9f5",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-000-2c3ab6e8683fec54",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-122-e493cc8f58dda6b2",
+            "primary_difficulty": "multiple_layers_and_local_occlusion"
+          },
+          {
+            "scene_id": "training-007-a282550a5861bdc0",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-032-44cfcc63d35bb0e4",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-283-bc54415ee32447be",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-001-7a9b2de81e9aa875",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-133-bfb4d10a258066b8",
+            "primary_difficulty": "multiple_layers_and_local_occlusion"
+          },
+          {
+            "scene_id": "training-056-ca01ff092ab41638",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-214-720d5f6c4f48322f",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-226-769a1469c7530fb1",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-009-0a88c292b2eff27b",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-182-53ae47041f408ba7",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-030-03518d765a0d0265",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-052-508775efac3e456d",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-294-d40ac51744e9b62f",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-279-d933eb221f6edb6d",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-059-66b8ae4282e15f27",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-049-511ade82c4ec19b2",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-005-36de5f3bced635fa",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-014-21a8471fdaf738d6",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-255-c59e132d52e631fa",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-054-0329be55c7c2abdd",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-282-cdc234d5f4776474",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-254-cefef8209f1a2222",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-050-fc6d4fdf5f491ff1",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-057-8aa0498878e6a9a6",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-287-03e7b98d412a2301",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-209-3a68b2454facb007",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-263-346d9384555b9351",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-296-375be6d07f647f4d",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-295-9da1163357c0adb5",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-176-cca99b530d21a96d",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-222-27f3241488f0303d",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-298-8e5b4bc097178dc5",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-271-bedfb187a3d409fa",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-023-e977af57cf78a85b",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-016-408d2e210a5f6e96",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-284-d4266f7fbb347912",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-034-ffc602da96ebfe1c",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-040-e9713fc8460641ae",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-251-acd4d2b5298ace76",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-193-fa4bb51c37b4ca2e",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-008-6ba6f641b9d7a029",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-177-fb6b7b8be5b31e0a",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-240-34222fb69d7a0fad",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-020-2f33904b712ea967",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-293-20765e492904b78b",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-277-9f4166a0c75952bc",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-019-95de7e7b7a62e27b",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-244-64819aa9c27613bd",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-029-da107fbc33c0296f",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-011-190575e8b94be27b",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-267-4a11c0f3d976e40c",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-219-58f7b1619d1b258b",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-003-84a292bddc71820b",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-299-b56edc5e432bf88c",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-042-ebb047414331b501",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-018-d5299e63a8e2771b",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-017-560dd88c379662d5",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-229-4568d0269c87a6c1",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-250-6077c679c6bd5093",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-048-0128c1d6a20edcf4",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-002-c49d9ad7c4e92e63",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-191-c790fb21538c3c46",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-047-0c5e9af4f62e7903",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-278-306eb4dcef5ca196",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-035-27b506b478b32e78",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-194-df2267ed54a98001",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-261-8bebe7576c8c4880",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-198-ad2e6d9fb6941be7",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-012-5975a19d5c87d923",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-288-fb00969802a1e79a",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-216-d1906ca190d76554",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-199-8b9e940dc246e55f",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-270-5991936658a766d8",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-185-c73f716278192a33",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-051-f088d4f362514c33",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-253-3d48783734d93f72",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-028-cd666dc4c87e0dee",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-013-592dc61274e516fc",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-236-a20217d30559dd6d",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-178-32c6f4f013043d8f",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-025-854c464a666a96ad",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-238-447d3b7b380c56fe",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-006-b485f55b834928b2",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-220-7782995c169b7c03",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-022-6b85c6367c0e2cd0",
+            "primary_difficulty": "thin_and_complex_edge_transmission"
+          },
+          {
+            "scene_id": "training-259-ec2a722ed1285407",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-242-10cab1bb3db31f04",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-215-ec49e3a61ba78f00",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-200-29adb137f7a35643",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-186-c6f72a1aae658da7",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-213-47ab8b3090098222",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-181-705df4a9265d0e43",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-245-71ed1cc2d4aead4a",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-241-5a9885133911214a",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-175-376df84aa8838fbf",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-190-14528d47c0080dba",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-183-e5106964d0748c2c",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-174-cfd3d2e7961ffbc1",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-248-d66b6661564e1b23",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-243-c2801209143d5e79",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-239-8f3165465f022636",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-237-0c89d5948546ba20",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-188-c630cd41d850baba",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          },
+          {
+            "scene_id": "training-247-1a031cb2bb6e6d71",
+            "primary_difficulty": "highlight_and_bokeh"
+          },
+          {
+            "scene_id": "training-235-7927517232fe4a87",
+            "primary_difficulty": "foreground_focus"
+          },
+          {
+            "scene_id": "training-234-119141e4e6668bc0",
+            "primary_difficulty": "background_focus_with_disocclusion"
+          }
+        ]
       }
     },
     "last_two_scene_production_run": {
