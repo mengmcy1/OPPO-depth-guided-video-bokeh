@@ -164,8 +164,79 @@ def render_offsets(cloud,K,focus,offsets,filler,opaque=None):
     return sum(chunks)/len(offsets)
 
 
+def split_pixel_groups(b):
+    neighbors=cv2.dilate(b.astype(np.uint8),np.ones((3,3),np.uint8)).astype(bool)
+    return {"b1":b,"b0_adjacent":neighbors&~b,"b0_other":~neighbors}
+
+
+def split_zero_scores(image, target, groups):
+    error=np.square(image.astype(np.float64)-target.astype(np.float64)).sum(-1)
+    return {key:pooled([dict(sse=float(error[area].sum()),pixels=int(area.sum()))])
+            for key,area in groups.items()}
+
+
 @torch.inference_mode()
-def evaluate_frames(model, phase, raw, out, *, endpoint=False, only_leaks=False, probe=False):
+def audit_zero_split(run):
+    training.configuration()
+    training.fixed_inputs()
+    checkpoint=run/"2a/step-010000.pt"
+    destination=run/"evaluation/2a/step-010000/ema/zero-split-audit.json"
+    if destination.exists():
+        raise FileExistsError(destination)
+    model=training.Model(run)
+    model.heads.load_state_dict(torch.load(checkpoint,map_location="cpu",weights_only=True)["ema"])
+    rows=[]
+    for split,name,frame,unit,entry,cases in frames():
+        if split!="development" or not name.startswith(("development-005-","development-006-")):
+            continue
+        item=("B",name,ovg.TRAIN_FRAMES.index(frame))
+        x,y=training.sample(item)
+        g=model.geometry(x)
+        first=model.first(item,g)
+        ap=model.appearance(g,x,first)
+        b=training.split_mask(ap,first)
+        groups=split_pixel_groups(b.cpu().numpy())
+        K=x["K"][0]
+        ref=ovg.b_edge_reference(item,y)
+        case=next(c for c in cases if c["focus_index"]==0)
+        focus=p2_focus(g["depth1"][0].cpu().numpy(),near_subject(ref["gt"],ref["valid"],K.cpu().numpy(),case["focus_m"]))
+        if focus is None:
+            raise ValueError(f"Missing near-focus subject for {name} f{frame:03d}")
+        center=K.new_zeros((1,2))
+        fill=f2_for(unit,entry,frame,x,focus,center)
+        vis=training.visible(ap,x,b,"2a")
+        front=training.background(ap,x,b,first)
+        fixed=training.fixed_visible_surfels(g,x)
+        rendered=raster(merge_layers(vis,front),K,focus,center,512,512,fill)[0].cpu().numpy()
+        initial=raster(fixed,K,focus,center,512,512,fill)[0].cpu().numpy()
+        rgb=x["rgb"][0].permute(1,2,0).cpu().numpy()
+        image,baseline,target=display(rendered),display(initial),display(rgb)
+        other=groups["b0_other"]
+        designated=groups["b1"]
+        row=dict(scene=name,frame=frame,case=case["id"],actual_focus_m=focus,b1_fraction=float(designated.mean()),
+                 groups=split_zero_scores(image,target,groups),
+                 step_zero_groups=split_zero_scores(baseline,target,groups),
+                 b0_other_max_abs_display=float(np.abs(image[other]-baseline[other]).max()),
+                 b0_other_max_abs_linear=float(np.abs(rendered[other]-initial[other]).max()),
+                 b1_foreground_input_mae=float(np.abs(ap["foreground"][0].permute(1,2,0).cpu().numpy()[designated]
+                                                     -rgb[designated]).mean()) if designated.any() else None,
+                 b1_opacity_p10_p50_p90=np.quantile(ap["opacity"][0][b].cpu().numpy(),[.1,.5,.9]).tolist()
+                 if designated.any() else [None,None,None])
+        rows.append(row)
+        print("STAGE2_ZERO_SPLIT",name,frame,row["b0_other_max_abs_display"],row["b0_other_max_abs_linear"],flush=True)
+    if len(rows)!=6:
+        raise ValueError(f"Expected six audit frames, found {len(rows)}")
+    aggregate={key:pooled([row["groups"][key] for row in rows]) for key in rows[0]["groups"]}
+    maximum_display=max(row["b0_other_max_abs_display"] for row in rows)
+    maximum_linear=max(row["b0_other_max_abs_linear"] for row in rows)
+    write_json(destination,dict(scope="2a 10k EMA; center ray, first-pass background and fixed F2; second-pass Query disabled",
+                                rows=rows,aggregate=aggregate,limit=1e-4,max_abs_display=maximum_display,
+                                max_abs_linear=maximum_linear,passed=max(maximum_display,maximum_linear)<1e-4,
+                                completed_at=training.now()))
+
+
+@torch.inference_mode()
+def evaluate_frames(model, phase, raw, out, *, endpoint=False, only_leaks=False, probe=False, audit_split=False):
     records, spatial, leaks, unscored=[],[],[],[]
     lpips=None if only_leaks else lpips_model()
     ray_dir=out/"leakage"
@@ -205,6 +276,7 @@ def evaluate_frames(model, phase, raw, out, *, endpoint=False, only_leaks=False,
         if not only_leaks:
             peeled=peeled_truth(unit,name,frame)
             b=mask.cpu().numpy()
+            zero_groups=split_pixel_groups(b) if audit_split else None
             low_quality=b & (first["q"]>0) & (first["q"]<.1)
             T=1-raster_zero["retrieved"][1].cpu().numpy()
             alpha=ap["alpha"][0].cpu().numpy()
@@ -257,6 +329,9 @@ def evaluate_frames(model, phase, raw, out, *, endpoint=False, only_leaks=False,
                          zero_visible={k:region_errors(zv,pinhole,v) for k,v in score_sets.items()},
                          zero_combined={k:region_errors(z,pinhole,v) for k,v in score_sets.items()})
                 if mode=="retrieved":
+                    if zero_groups is not None:
+                        first_pass_zero=raster(base,K,focus,center,512,512,zfill)[0].cpu().numpy()
+                        row["zero_split_groups"]=split_zero_scores(display(first_pass_zero),pinhole,zero_groups)
                     off=render_offsets(base,K,focus,offsets,fill)
                     row["query_off"]={k:region_errors(off,target_rgb,v) for k,v in regions.items()}
                     oracle=render_offsets(merge_layers(base,gt),K,focus,offsets,fill)
@@ -402,6 +477,10 @@ def describe(rows,spatial,unscored,leaks):
         result[split]["b1_diagnostics"]["low_q_zero"]={
             key:{name:aggregate(rows) for name,rows in domains(data_rows(retrieved,"low_q_zero",key)).items()}
             for key in GUARDS}
+        if retrieved and "zero_split_groups" in retrieved[0]:
+            result[split]["zero_split_groups"]={
+                key:{name:pooled(values) for name,values in domains(data_rows(retrieved,"zero_split_groups",key)).items()}
+                for key in retrieved[0]["zero_split_groups"]}
         opaque=[r for r in retrieved if "opaque_b0" in r]
         if opaque:
             result[split]["opaque_b0"]=dict(
@@ -493,7 +572,8 @@ def main(run,phase,step,weights,probe=False):
         ck=torch.load(path,map_location="cpu",weights_only=True)
         model.heads.load_state_dict(ck[weights])
     rows,spatial,unscored,leaks=evaluate_frames(model,phase,raw,out,endpoint=phase=="2b" and step==30000,
-                                                 only_leaks=not step and not probe,probe=probe)
+                                                 only_leaks=not step and not probe,probe=probe,
+                                                 audit_split=phase=="2b" and step==10000)
     if step:
         result=trained_report(ck,describe(rows,spatial,unscored,leaks),fixed_losses(model,phase))
     elif probe:
@@ -521,5 +601,11 @@ if __name__=="__main__":
     p.add_argument("--step",type=int,required=True)
     p.add_argument("--weights",choices=("ema","model"),default="ema")
     p.add_argument("--probe",action="store_true")
+    p.add_argument("--audit-zero-split",action="store_true")
     a=p.parse_args()
-    main(a.run.resolve(),a.phase,a.step,a.weights,a.probe)
+    if a.audit_zero_split:
+        if (a.phase,a.step,a.weights)!=("2a",10000,"ema") or a.probe:
+            p.error("The zero-split audit uses 2a 10k EMA")
+        audit_zero_split(a.run.resolve())
+    else:
+        main(a.run.resolve(),a.phase,a.step,a.weights,a.probe)
