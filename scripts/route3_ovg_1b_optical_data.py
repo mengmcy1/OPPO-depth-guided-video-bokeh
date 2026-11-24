@@ -12,7 +12,7 @@ import route3_ovg_data as data
 from src.aperture_renderer import GaussianScene, aperture_disk
 from src.footprint_order import apply_footprint_order
 from route3_s2a_candidates import local_placement
-from src.ovg_optics import raster
+from src.ovg_optics import crop_camera, raster
 
 
 def geometry_root(scene):
@@ -217,19 +217,22 @@ def background_samples(spec, K, focus, offsets, size):
     return render_f2(A, p['background_depth'], image, K, focus, offsets, size)
 
 
-def render_f2(scene, background_depth, fill_rgb_linear, K, focus, offsets, size):
+def render_f2(scene, background_depth, fill_rgb_linear, K, focus, offsets, size, *, crop=None):
     """Evaluate the legacy A-color and LaMa F2 lookup on the requested rays."""
     h, w = size
     bg = cv2.resize(background_depth, (w, h), interpolation=cv2.INTER_NEAREST_EXACT)
     image = cv2.resize(fill_rgb_linear, (w, h), interpolation=cv2.INTER_AREA)
     bg, image = (torch.as_tensor(x, device=K.device, dtype=K.dtype) for x in (bg,image))
     bg = torch.where(torch.isfinite(bg) & (bg > 0), bg, 1e4)
-    y, x = torch.meshgrid(torch.arange(h, device=K.device)+.5, torch.arange(w, device=K.device)+.5,
-                          indexing='ij')
+    top, left, height, width = crop or (0, 0, h, w)
+    bg = bg[top:top+height, left:left+width]
+    y, x = torch.meshgrid(torch.arange(top, top+height, device=K.device)+.5,
+                          torch.arange(left, left+width, device=K.device)+.5, indexing='ij')
     uv = torch.stack((x, y), dim=-1)
     shifts = offsets[:, None, None] * K.diag()[:2] * (bg.reciprocal() - 1 / focus)[None, ..., None]
     grid = 2 * (uv[None] + shifts) / K.new_tensor([w, h]) - 1
     src = image.permute(2, 0, 1)[None].expand(len(offsets), -1, -1, -1)
     fill = torch.nn.functional.grid_sample(src, grid, padding_mode='border', align_corners=False).permute(0, 2, 3, 1)
     with torch.no_grad():
-        return raster(scene, K, focus, offsets, h, w, fill)
+        intrinsics = crop_camera(K, crop) if crop is not None else K
+        return raster(scene, intrinsics, focus, offsets, height, width, fill)

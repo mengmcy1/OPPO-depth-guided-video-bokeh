@@ -26,7 +26,7 @@ from route3_v2data_optics import hidden_substitute, linear_reference, observed_b
 from src.layered_aperture import merge_layers
 from src.ovg_appearance import AppearanceHeads
 from src.ovg_net import geometry_loss, masked_mean, scene_consistency
-from src.ovg_optics import fixed_visible_surfels, occlusion_loss, raster, resized_prediction, stratified_pupil
+from src.ovg_optics import crop_camera, fixed_visible_surfels, occlusion_loss, raster, resized_prediction, stratified_pupil
 
 
 REPORT = ROOT/'03_实验记录/records/route3-v2data-loader-dryrun-2026-11-21.json'
@@ -45,7 +45,8 @@ def balanced_count(valid, boundary, cap):
 
 
 def stage_objective(net, inventory, item, stage, generator, *, spec=None, audit_k16=False,
-                    audit_transmission=False, b_occ_mode=B_OCC_MODE, stage3_place=None):
+                    audit_transmission=False, b_occ_mode=B_OCC_MODE, stage3_place=None,
+                    stage3_crop=None):
     """Use native K16 for occlusion and an optional optical target for Bokeh."""
     tier = item[0]
     device = next(net.parameters()).device
@@ -149,18 +150,40 @@ def stage_objective(net, inventory, item, stage, generator, *, spec=None, audit_
     terms['zero'] = masked_mean((zero-x['rgb'][0].permute(1,2,0)).abs().mean(-1),common)
     counts['zero'] = int(common.sum())
     if spec:
+        optical_input, optical_K, optical_shape = x, K, shape
+        native_crop = stage3_crop is not None
+        if native_crop:
+            if stage != '3a' or tier != 'B' or b_occ_mode != 'native' or not occupancy_spec:
+                raise ValueError("Native optical crops require Stage 3a B and native occlusion geometry")
+            top, left, height, width = stage3_crop
+            native_K = native_input['K'][0]
+            optical_input = native_input
+            optical_K = crop_camera(native_K, stage3_crop)
+            optical_shape = height, width
+            with torch.no_grad():
+                hidden, placed = stage3_place(spec,reference,native_pred['depth1'][0].detach(),native_K)
+            counts.update(hidden_eligible=placed['eligible'],hidden_placed=placed['placed'],
+                          hidden_has_grad=any(v.requires_grad for v in vars(hidden).values()) if hidden is not None else False,
+                          native_bokeh_crop=list(stage3_crop))
+            # Keep all native Gaussians. Off-crop centers can still contribute
+            # via a footprint or pupil-ray shift across the crop edge.
+            combined = merge_layers(occ_visible,hidden)
         radius = .05/(2*spec['fstop'])
-        groups = [stratified_pupil(opts['rays_per_subset'],radius,generator,K) for _ in range(2)]
-        target = torch.as_tensor(cv2.resize(linear_reference(spec),shape[::-1],interpolation=cv2.INTER_AREA),
-                                 dtype=K.dtype,device=device)
+        groups = [stratified_pupil(opts['rays_per_subset'],radius,generator,optical_K) for _ in range(2)]
+        truth = linear_reference(spec)
+        if native_crop:
+            target_rgb = truth[top:top+height, left:left+width]
+        else:
+            target_rgb = cv2.resize(truth,shape[::-1],interpolation=cv2.INTER_AREA)
+        target = torch.as_tensor(target_rgb,dtype=K.dtype,device=device)
         means = []
         for offsets in groups:
-            background = observed_background(spec,x,focus,offsets)
+            background = observed_background(spec,optical_input,focus,offsets,crop=stage3_crop)
             # Recompute one ray at a time in the backward pass to bound memory,
             # keeping the original two independent pupil subsets.
             def ray(means, scales, aperture, fill):
                 scene = replace(combined,means=means,scales=scales)
-                value = raster(scene,K,focus,aperture,*shape,fill,return_alpha=audit_transmission)
+                value = raster(scene,optical_K,focus,aperture,*optical_shape,fill,return_alpha=audit_transmission)
                 if audit_transmission:
                     return value[0][0],value[1][0]
                 return value[0].clamp(0,1) if stage=='3a' else value[0]
@@ -178,7 +201,8 @@ def stage_objective(net, inventory, item, stage, generator, *, spec=None, audit_
                 images = values
             means.append(torch.stack(tuple(images)).mean(0))
         terms['bokeh'] = ((means[0]-target)*(means[1]-target)).mean()
-        counts.update(bokeh=shape[0]*shape[1], bokeh_rays=shape[0]*shape[1]*sum(map(len,groups)))
+        bokeh_pixels = optical_shape[0]*optical_shape[1]
+        counts.update(bokeh=bokeh_pixels, bokeh_rays=bokeh_pixels*sum(map(len,groups)))
     return terms, counts, weights
 
 

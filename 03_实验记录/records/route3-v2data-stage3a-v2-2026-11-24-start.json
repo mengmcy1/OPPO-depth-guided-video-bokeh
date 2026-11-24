@@ -1,0 +1,140 @@
+{
+  "run": "/root/autodl-tmp/route3-stage2-v2-20261123/outputs/route3-v2data-stage3a-2026-11-24-02",
+  "version": 2,
+  "config": "03_实验记录/records/route3-v2data-stage3-config-2026-11-24.json",
+  "config_sha256": "81e74096cb638db99f9de53993107ddcd730d4ef7296b8116ac31f94bb1b121b",
+  "stopped_run": {
+    "stopped_at": "2026-11-24T19:18:08+08:00",
+    "run": "route3-v2data-stage3a-2026-11-24-01",
+    "last_logged_step": 2937,
+    "checkpoint": "step-002500.pt",
+    "stopped_pids": [
+      810521,
+      817614
+    ],
+    "reason": "Two geometry readout rows lack spatial adaptation. Reducing B optics to 256 erases 1–3 pixel thin foreground features.",
+    "configuration_sha256": "64ad699561a337913511401437eb45af5102f15862aaf86e864cbe28585f1d24"
+  },
+  "gradient_check": {
+    "at": "2026-11-24T19:22:24+08:00",
+    "scene": "training-061-ff0a4ff42915123f",
+    "case": "f001-focus0-N1.4-optics",
+    "gate_pixels": 133520,
+    "L_bokeh": 0.00021113082766532898,
+    "gradient_norms": {
+      "rgb_half": 0.0011280553881078959,
+      "rgb_quarter": 7.708498742431402e-05,
+      "depth_quarter": 0.002153021516278386,
+      "semantic": 0.001873438130132854,
+      "dpt": 0.0007241906132549047,
+      "quarter": 0.0008603769238106906,
+      "shared_view": 4.626449663192034e-05,
+      "match": 6.689286965411156e-05,
+      "refine": 0.001267902902327478,
+      "half_decoder": 0.0006563461502082646,
+      "full": 0.00033700151834636927,
+      "prior_head": 0.00016218007658608258,
+      "prior_pixel": 5.846186468261294e-05,
+      "geometry": 0.0008552095969207585
+    },
+    "hidden_has_grad": false,
+    "hidden_placed": 9335,
+    "auxiliary": {
+      "disp": 1.0444122552871704,
+      "bimodal": 6.4049201011657715,
+      "alpha": 1.5618292093276978,
+      "mv": 0.02452538162469864,
+      "same_surface": 0.03367152810096741,
+      "occ": 1.1120622158050537,
+      "zero": 8.225056080846116e-05
+    },
+    "native_crop": [
+      137,
+      211,
+      256,
+      256
+    ],
+    "thin_pixels": 7317,
+    "thin_fraction": 0.1116485595703125,
+    "seconds": 2.780666094273329,
+    "peak_cuda_reserved_bytes": 4674551808,
+    "passed": true
+  },
+  "start_time": "2026-11-24T19:22:24+08:00",
+  "training_pid": 832558,
+  "step_zero": {
+    "report": "/root/autodl-tmp/route3-stage2-v2-20261123/outputs/route3-v2data-stage3a-2026-11-24-01/evaluation/step-000000/ema/report.json",
+    "sha256": "84b6882cfb62cdbed570d52a278ee3154453c0bbd694863790a35afdb1a9e271",
+    "commit": "0a3ea35"
+  },
+  "starting_data": {
+    "batch_percent": {
+      "B": 50,
+      "C": 30,
+      "R": 10,
+      "G": 10
+    },
+    "batch_scenes": 1,
+    "seed": 20261118,
+    "B_optical_start": 128,
+    "B_hard_at_start": 75,
+    "hard_selection": "Weight 2 for completed hard milestone scenes, weight 1 for other complete scenes. Suppress the foreground-focus priority for imported foregrounds below 1% as in 13.15.8.",
+    "refresh_steps": 500,
+    "B_usage_keys": [
+      "scene_id",
+      "frame",
+      "focus_index",
+      "fstop"
+    ],
+    "final_stage_full_window_target_draws_per_scene": 20,
+    "test_cases_used": 0,
+    "inventory_slots": {
+      "B": 3835,
+      "C": 36000,
+      "R": 1880,
+      "G": 17560
+    },
+    "B_thin_at_start": 59
+  },
+  "native_F2_alignment": {
+    "shape": [
+      2,
+      256,
+      256,
+      3
+    ],
+    "mae": 3.0146460971991473e-07,
+    "maximum": 0.0014174580574035645,
+    "entries_gt_0p0005": 10,
+    "entries_gt_0p001": 2,
+    "comparisons": 393216,
+    "check": "F2 from native crop rendering versus full-sensor slice at matched rays",
+    "note": "Rasterization and floating-point ordering can differ at an off-center crop. Record the numerical difference and its frequency."
+  },
+  "first_progress": {
+    "step": 275,
+    "phase": "3a",
+    "counts": {
+      "R": 27,
+      "B": 137,
+      "bokeh_B": 137,
+      "B_crops": 137,
+      "B_thin_crops": 106,
+      "B_crop_thin_pixels": 604282,
+      "B_required_thin_crops": 69,
+      "C": 83,
+      "bokeh_C": 13,
+      "G": 28
+    },
+    "seconds": 148.25343377888203,
+    "at": "2026-11-24T19:24:52+08:00",
+    "B_crop_statistics": {
+      "crops": 137,
+      "crops_with_thin": 106,
+      "quota_draws": 69,
+      "thin_crop_fraction": 0.7737226277372263,
+      "mean_thin_pixel_fraction": 0.06730373410412865
+    },
+    "peak_reserved_bytes": 5605687296
+  }
+}

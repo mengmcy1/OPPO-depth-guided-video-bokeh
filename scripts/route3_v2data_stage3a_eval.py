@@ -24,7 +24,9 @@ from route3_v2data_stage2_eval import (
     bands, f2_for, frames, legacy_masks, geometry_root, optical_target,
 )
 from route3_v2data_stage2_train import INITIAL, sample
-from route3_v2data_stage3a import OUT, RECORD, Placement, checkpoint, checkpoint_model, gpu_setup
+from route3_v2data_stage3a import (
+    OUT, Placement, checkpoint, checkpoint_model, configuration_for, gpu_setup, parameter_changes,
+)
 from route3_ovg_subpixel import save_npz
 from src.aperture_renderer import aperture_disk
 from src.c1_bokehme import region_sse
@@ -199,7 +201,7 @@ def subgroup(output,rows):
 
 @torch.inference_mode()
 def evaluate(run,step,weights,*,smoke=False):
-    configuration=load(RECORD)
+    configuration=configuration_for(run)
     gpu_setup(configuration)
     torch.cuda.set_per_process_memory_fraction(8*GIB/torch.cuda.get_device_properties(0).total_memory,0)
     began=time.monotonic()
@@ -251,9 +253,12 @@ def evaluate(run,step,weights,*,smoke=False):
                             if any(r["scene"].split("-")[1] in ids for r in rows["development"])}
     geometry_now=development["geometry"]
     guards=configuration["evaluation"]["relative_geometry_limits"]
-    previous=load(start_dir/"report.json")["report"]["development"]["geometry"] if step else geometry_now
+    start_report = load(start_dir/"report.json")["report"]["development"] if step else development
+    previous=start_report["geometry"]
     development["geometry_limits"]={k:dict(value=geometry_now[k],initial=previous[k],allowed_growth=v,
                                          passed=geometry_now[k]<=previous[k]*(1+v)) for k,v in guards.items()}
+    for name,group in development["groups"].items():
+        group["start_foreground_coc_px"] = start_report.get("groups",{}).get(name,{}).get("foreground_coc_px")
     if not smoke:
         development["paired_vs_A"]={k:pair_vs_A(development["metrics"],external["summaries"]["f1.4"],k)
                                     for k in ("near_in_focus","far_recoverable")}
@@ -261,6 +266,8 @@ def evaluate(run,step,weights,*,smoke=False):
         report=report,external_baselines=baseline["summaries"]["f1.4"],legacy_baselines=baseline["legacy"],
         optical_protocol="P2 f/1.4, GT hidden substitute on and the identical F2 branch off, 64 rays clipped in linear RGB before averaging",
         test_cases_used=0,seconds=time.monotonic()-began)
+    if step:
+        payload["parameter_changes"] = parameter_changes(src,weights,configuration)
     write_json(output/"cases.json",rows)
     if not smoke:
         from route3_v2data_stage3a_panels import panels

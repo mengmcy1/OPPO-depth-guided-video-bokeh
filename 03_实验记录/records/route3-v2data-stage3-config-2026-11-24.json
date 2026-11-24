@@ -177,5 +177,149 @@
     },
     "selection": "Among EMA checkpoints satisfying all geometry and zero floors, maximize the new development near-focus pooled PSNR (earlier step wins ties). Adopt only if that checkpoint also has nonnegative paired near and far medians against step 0 with the same GT substitute and V0.",
     "pair_tie_threshold_db": 0.0
+  },
+  "stage3a_v1_stop": {
+    "stopped_at": "2026-11-24T19:18:08+08:00",
+    "run": "route3-v2data-stage3a-2026-11-24-01",
+    "last_logged_step": 2937,
+    "checkpoint": "step-002500.pt",
+    "stopped_pids": [
+      810521,
+      817614
+    ],
+    "reason": "Two geometry readout rows lack spatial adaptation. Reducing B optics to 256 erases 1–3 pixel thin foreground features.",
+    "configuration_sha256": "64ad699561a337913511401437eb45af5102f15862aaf86e864cbe28585f1d24"
+  },
+  "stage3a_v2": {
+    "version": 2,
+    "created_at": "2026-11-24T19:21:45+08:00",
+    "run": "/root/autodl-tmp/route3-stage2-v2-20261123/outputs/route3-v2data-stage3a-2026-11-24-02",
+    "parameter_groups": {
+      "rgb_half": {
+        "elements": 960
+      },
+      "rgb_quarter": {
+        "elements": 13968
+      },
+      "depth_quarter": {
+        "elements": 16080
+      },
+      "semantic": {
+        "elements": 98560
+      },
+      "dpt": {
+        "elements": 221760
+      },
+      "quarter": {
+        "elements": 92352
+      },
+      "shared_view": {
+        "elements": 10272
+      },
+      "match": {
+        "elements": 2080
+      },
+      "refine": {
+        "elements": 79296
+      },
+      "half_decoder": {
+        "elements": 55488
+      },
+      "full": {
+        "elements": 38784
+      },
+      "prior_head": {
+        "elements": 18627
+      },
+      "prior_pixel": {
+        "elements": 33
+      },
+      "geometry": {
+        "elements": 390
+      }
+    },
+    "trainable_parameters": 648650,
+    "frozen": "ViT encoder, coverage and footprint heads. Prior selector participates because its weights directly change fused front depth. All geometry rows are trainable. Rear depth keeps its existing geometry supervision; normal rows have no direct V0 or auxiliary loss in this configuration. Parameter deltas are recorded for each row.",
+    "optical": {
+      "reference": "13.15.5 per-ray clipped linear RGB LDR",
+      "training_resolution_limit": 256,
+      "estimator": "Independent stratified pupil-subset cross product, 8+8 rays. Clip each predicted ray before averaging.",
+      "occ_B_resolution": 512,
+      "occ_rays": 4,
+      "eval_rays": 64,
+      "B_source_resolution": [
+        512,
+        512
+      ],
+      "B_crop_size": [
+        256,
+        256
+      ],
+      "B_crops_per_batch": 1,
+      "B_min_thin_crop_fraction": 0.5,
+      "B_crop_sampling": "One native crop. Alternate B draws: first draw and every second thereafter require at least one GT thin foreground pixel. Choose a random eligible configuration and uniform legal crop origin. Ordinary draws keep the full pool and the existing difficulty weights.",
+      "B_thin_mask": "Native first-hit object IDs for foreground_structure from the B generation label or thin-structure difficulty entry. Other foreground objects are excluded.",
+      "B_screen_coordinates": "Render all native V0 and detached GT geometry with only the principal point shifted; crop the native target and retain full-sensor F2 lookup.",
+      "C": "Retain the original resolution limit and optical sampling."
+    },
+    "data": {
+      "batch_percent": {
+        "B": 50,
+        "C": 30,
+        "R": 10,
+        "G": 10
+      },
+      "batch_scenes": 1,
+      "seed": 20261118,
+      "B_optical_start": 128,
+      "B_hard_at_start": 75,
+      "hard_selection": "Weight 2 for completed hard milestone scenes, weight 1 for other complete scenes. Suppress the foreground-focus priority for imported foregrounds below 1% as in 13.15.8.",
+      "refresh_steps": 500,
+      "B_usage_keys": [
+        "scene_id",
+        "frame",
+        "focus_index",
+        "fstop"
+      ],
+      "final_stage_full_window_target_draws_per_scene": 20,
+      "test_cases_used": 0,
+      "inventory_slots": {
+        "B": 3835,
+        "C": 36000,
+        "R": 1880,
+        "G": 17560
+      },
+      "B_thin_at_start": 59
+    },
+    "training": {
+      "steps": 20000,
+      "learning_rate": 1e-05,
+      "optimizer": "AdamW, weight decay 0",
+      "gradient_clip": 5.0,
+      "ema_decay": 0.999,
+      "checkpoint_steps": [
+        5000,
+        10000,
+        15000,
+        20000
+      ],
+      "eval_steps": [
+        5000,
+        10000,
+        15000,
+        20000
+      ],
+      "eval_aperture": 1.4,
+      "evaluate_ema_every_node": true,
+      "raw_at_terminal": true,
+      "max_process_gpu_gib": 14,
+      "rationale": "Keep the registered 3a learning rate and step count. Expand the existing depth decoder and use one native B crop in the per-process 14 GiB limit."
+    },
+    "step_zero": {
+      "report": "/root/autodl-tmp/route3-stage2-v2-20261123/outputs/route3-v2data-stage3a-2026-11-24-01/evaluation/step-000000/ema/report.json",
+      "sha256": "84b6882cfb62cdbed570d52a278ee3154453c0bbd694863790a35afdb1a9e271",
+      "commit": "0a3ea35"
+    },
+    "reuse_hidden_parents": "/root/autodl-tmp/route3-stage2-v2-20261123/outputs/route3-v2data-stage3a-2026-11-24-01/hidden-parents"
   }
 }

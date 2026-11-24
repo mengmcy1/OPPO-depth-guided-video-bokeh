@@ -12,7 +12,7 @@ import psutil
 from route3_v2data_B_batch import ROOT, sha256, write_json
 from route3_v2data_B_plan import load
 from route3_v2data_stage2_train import now
-from route3_v2data_stage3a import CHECKPOINTS, INITIAL, OUT, checkpoint, read_checkpoint
+from route3_v2data_stage3a import CHECKPOINTS, INITIAL, OUT, checkpoint, configuration_for, crop_statistics, read_checkpoint
 
 RECORDS = ROOT/"03_实验记录/records"
 PROGRESS = RECORDS.parent/"当前实验进度与方法论.md"
@@ -151,18 +151,31 @@ def write_summary(folder,payload):
                 verdict=("通过" if lim["passed"] else "超限") if lim else "—"
                 rows.append(f"| {name} | {fmt(value,5)} | {previous} | {threshold} | {verdict} |")
             if "groups" in d:
-                rows.extend(["","| 子集 | 近焦合并 / 中位 | 远焦合并 / 中位 | 前景 CoC p50 / p95（px） |",
-                             "|---|---:|---:|---:|"])
+                rows.extend(["","| 子集 | 近焦合并 / 中位 | 远焦合并 / 中位 | 当前 CoC p50 / p95（px） | 起点 CoC p50 / p95（px） |",
+                             "|---|---:|---:|---:|---:|"])
                 for name,entry in d["groups"].items():
                     psnr=[f'{fmt(v["combined"]["psnr"])} / {fmt(v["scene_median"]["psnr"])}'
                           for v in entry["regions"].values()]
                     c=entry["foreground_coc_px"]
-                    rows.append(f"| {name} | {psnr[0]} | {psnr[1]} | {fmt(c['p50'])} / {fmt(c['p95'])} |")
+                    start=entry.get("start_foreground_coc_px") or {}
+                    rows.append(f"| {name} | {psnr[0]} | {psnr[1]} | {fmt(c['p50'])} / {fmt(c['p95'])}"
+                                f" | {fmt(start.get('p50'))} / {fmt(start.get('p95'))} |")
             if "paired_vs_A" in d:
                 rows.append("")
                 for metric,p in d["paired_vs_A"].items():
                     rows.append(f'- 相对 A {labels[metric]}配对 {paired_text(p)}，合并差 {fmt(p["pooled_delta_db"])} dB。')
             rows.extend(["",f'[图像面板]({weight}/index.html) · [观察清单]({weight}/观察清单.md)',""])
+        deltas=data.get("parameter_changes")
+        if deltas:
+            rows.extend(["## 相对起点的参数变化","",
+                         "| 模块 | L2 变化 | 相对变化 |","|---|---:|---:|"])
+            for name,value in deltas["modules"].items():
+                rel=value["relative_l2"]
+                rows.append(f"| {name} | {value['delta_l2']:.6g} | {fmt(100*rel,5) + '%' if rel is not None else '—'} |")
+            for name,value in deltas["geometry_rows"].items():
+                rel=value["relative_l2"]
+                rows.append(f"| geometry row {name} | {value['delta_l2']:.6g} | {fmt(100*rel,5) + '%' if rel is not None else '—'} |")
+            rows.append("")
         rows.extend(["## 新开发集外部基线 · f/1.4","",
                      "| 方法 | 近焦合并 / 中位 | 远焦合并 / 中位 |",
                      "|---|---:|---:|"])
@@ -173,6 +186,11 @@ def write_summary(folder,payload):
             rows.append(f'| {method} | {fmt(a["combined"]["psnr"])} / {fmt(a["scene_median"]["psnr"])}'
                         f' | {fmt(b["combined"]["psnr"])} / {fmt(b["scene_median"]["psnr"])} |')
         rows.extend(["","Dr.Bokeh 为 B2 Oracle 输入，含 GT 深度和覆盖率。原三场景外部基线沿用归档。",""])
+    crops=payload["sampling"].get("B_crop_statistics")
+    if crops:
+        rows.extend(["## 原生 B 光学裁块","",
+                     f"实际 {crops['crops_with_thin']}/{crops['crops']} 个裁块覆盖 GT 细结构。"
+                     f"所有 B 裁块里的 GT 细结构像素平均占比为 {100*crops['mean_thin_pixel_fraction']:.3f}%。",""])
     if payload.get("adoption"):
         a=payload["adoption"]
         rows.extend(["## 采用判定","",f'采用 {a["selected"]}。{a["reason"]}。',f'检查点 {a["adopted_checkpoint"]}'])
@@ -191,10 +209,12 @@ def training_sample_counts(run,step):
             scene=rest.split("/",1)[0]
             scene_counts[scene]+=n
     return dict(batches=ck["counts"],B_scene_counts=dict(scene_counts),B_case_counts={
-        k.removeprefix("B/"):v for k,v in cases.items() if k.startswith("B/")},training_seconds=ck["seconds"])
+        k.removeprefix("B/"):v for k,v in cases.items() if k.startswith("B/")},training_seconds=ck["seconds"],
+        B_crop_statistics=crop_statistics(ck["counts"]))
 
 
 def node(run,step,all_ema):
+    version=configuration_for(run).get("version",1)
     ema=evaluate_step(run,step,"ema")
     if step:
         all_ema.append(ema)
@@ -203,7 +223,7 @@ def node(run,step,all_ema):
     if terminal:
         versions["model"]=evaluate_step(run,step,"model")
     folder=artifact(run,step,"ema").parents[1]
-    payload=dict(step=step,run=str(run),versions=versions,
+    payload=dict(step=step,run=str(run),version=version,versions=versions,
                  sampling=training_sample_counts(run,step),evaluation_seconds=sum(r["seconds"] for r in versions.values()),
                  sources={k:dict(path=str(artifact(run,step,k)),sha256=sha256(artifact(run,step,k))) for k in versions})
     if terminal:
@@ -226,8 +246,10 @@ def node(run,step,all_ema):
         note+=f"采用{'训练后几何' if payload['adoption']['selected']=='trained' else '起点几何'}。"
     local=folder/"milestone.json"
     write_json(local,payload)
-    name=f"route3-v2data-stage3a-2026-11-24-step-{step:06d}.json"
-    commit=publish(f"**阶段 3a {step:,} 步**",name,payload,note)
+    prefix="route3-v2data-stage3a-v2" if version==2 else "route3-v2data-stage3a"
+    name=f"{prefix}-2026-11-24-step-{step:06d}.json"
+    heading=f"**阶段 3a {'第二版 ' if version==2 else ''}{step:,} 步**"
+    commit=publish(heading,name,payload,note)
     return dict(step=step,summary=payload["summary_path"],commit=commit,reported_at=now())
 
 

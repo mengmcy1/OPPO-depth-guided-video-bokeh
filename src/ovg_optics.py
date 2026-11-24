@@ -47,6 +47,14 @@ def subcamera(K, focus, offset):
     return intr, view
 
 
+def crop_camera(K, crop):
+    """Shift the principal point to a sensor crop without changing focal length."""
+    top, left, _, _ = crop
+    intrinsics = K.clone()
+    intrinsics[:2, 2] -= K.new_tensor([left, top])
+    return intrinsics
+
+
 def raster(scene, K, focus, offsets, height, width, background=None, *, return_alpha=False):
     images, coverage = [], []
     for j, offset in enumerate(offsets):

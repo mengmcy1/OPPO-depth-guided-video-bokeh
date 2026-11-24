@@ -156,7 +156,7 @@ def read_f2(entry, unit):
 
 
 @torch.no_grad()
-def observed_background(spec, inputs, focus, offsets):
+def observed_background(spec, inputs, focus, offsets, *, crop=None):
     """Use the fixed derived legacy F2 lookup for B optical training only."""
     if not spec or spec['tiers'] != 'B':
         return None
@@ -165,4 +165,4 @@ def observed_background(spec, inputs, focus, offsets):
     K = inputs['K'][0]
     scene = GaussianScene(**{key:value.to(K.device) for key,value in cloud.items()})
     return render_f2(scene, fields['background_depth'], fields['fill_rgb_linear'],
-                     K, focus, offsets, tuple(inputs['rgb'].shape[-2:]))
+                     K, focus, offsets, tuple(inputs['rgb'].shape[-2:]), crop=crop)
