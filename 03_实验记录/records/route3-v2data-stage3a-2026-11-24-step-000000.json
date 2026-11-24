@@ -1,0 +1,2847 @@
+{
+  "step": 0,
+  "run": "/root/autodl-tmp/route3-stage2-v2-20261123/outputs/route3-v2data-stage3a-2026-11-24-01",
+  "versions": {
+    "ema": {
+      "step": 0,
+      "weights": "ema",
+      "checkpoint": "/root/autodl-tmp/route3-stage1-pair-20261122/outputs/route3-v2data-stage1-2026-11-22-01/1b/same-surface/checkpoints/step-030000.pt",
+      "sha256": "dfb1d7e52eb67fb756186b252312aee3b136096e3835cbcaf60f5d8250e1c220",
+      "report": {
+        "development": {
+          "metrics": {
+            "full_image": {
+              "scored": 87,
+              "unscored": 3,
+              "combined": {
+                "pixels": 22806528,
+                "sse": 10010.386851107325,
+                "psnr": 38.34729568188759,
+                "patch_lpips": 0.028819335135668186
+              },
+              "scene_median": {
+                "psnr": 40.45166332519159,
+                "patch_lpips": 0.026724734461879507
+              },
+              "paired_vs_stage3": {
+                "psnr": {
+                  "n": 15,
+                  "median_db": 0.0,
+                  "sd_db": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 15
+                },
+                "patch_lpips": {
+                  "n": 15,
+                  "median": 0.0,
+                  "sd": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 15
+                }
+              }
+            },
+            "near_in_focus": {
+              "scored": 42,
+              "unscored": 3,
+              "combined": {
+                "pixels": 1487075,
+                "sse": 1363.2303442224327,
+                "psnr": 35.148848827368795,
+                "patch_lpips": 0.043358195566291474
+              },
+              "scene_median": {
+                "psnr": 35.15062513363678,
+                "patch_lpips": 0.02623333043065596
+              },
+              "paired_vs_stage3": {
+                "psnr": {
+                  "n": 14,
+                  "median_db": 0.0,
+                  "sd_db": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 14
+                },
+                "patch_lpips": {
+                  "n": 14,
+                  "median": 0.0,
+                  "sd": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 14
+                }
+              }
+            },
+            "far_recoverable": {
+              "scored": 45,
+              "unscored": 0,
+              "combined": {
+                "pixels": 167431,
+                "sse": 1940.582412152848,
+                "psnr": 24.13025034861528,
+                "patch_lpips": 0.07826746933826892
+              },
+              "scene_median": {
+                "psnr": 31.788743625967655,
+                "patch_lpips": 0.027036384964170167
+              },
+              "paired_vs_stage3": {
+                "psnr": {
+                  "n": 15,
+                  "median_db": 0.0,
+                  "sd_db": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 15
+                },
+                "patch_lpips": {
+                  "n": 15,
+                  "median": 0.0,
+                  "sd": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 15
+                }
+              }
+            },
+            "boundary_2px": {
+              "scored": 87,
+              "unscored": 3,
+              "combined": {
+                "pixels": 1170597,
+                "sse": 4561.90699208155,
+                "psnr": 28.8638223483361,
+                "patch_lpips": 0.04315149591628716
+              },
+              "scene_median": {
+                "psnr": 32.28394417262257,
+                "patch_lpips": 0.030616444961910294
+              },
+              "paired_vs_stage3": {
+                "psnr": {
+                  "n": 15,
+                  "median_db": 0.0,
+                  "sd_db": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 15
+                },
+                "patch_lpips": {
+                  "n": 15,
+                  "median": 0.0,
+                  "sd": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 15
+                }
+              }
+            },
+            "zero_visible": {
+              "scored": 87,
+              "unscored": 3,
+              "combined": {
+                "pixels": 22806528,
+                "sse": 213.94911841440654,
+                "psnr": 55.04869927993465,
+                "patch_lpips": null
+              },
+              "scene_median": {
+                "psnr": 54.90325788994535,
+                "patch_lpips": null
+              },
+              "paired_vs_stage3": {
+                "psnr": {
+                  "n": 15,
+                  "median_db": 0.0,
+                  "sd_db": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 15
+                },
+                "patch_lpips": {
+                  "n": 0,
+                  "median": null,
+                  "sd": null,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 0
+                }
+              },
+              "floor_db": 50.0,
+              "pass_cases": 87
+            },
+            "zero_combined": {
+              "scored": 87,
+              "unscored": 3,
+              "combined": {
+                "pixels": 22806528,
+                "sse": 4.427648672767698,
+                "psnr": 71.8900727632708,
+                "patch_lpips": null
+              },
+              "scene_median": {
+                "psnr": 78.13990078621238,
+                "patch_lpips": null
+              },
+              "paired_vs_stage3": {
+                "psnr": {
+                  "n": 15,
+                  "median_db": 0.0,
+                  "sd_db": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 15
+                },
+                "patch_lpips": {
+                  "n": 0,
+                  "median": null,
+                  "sd": null,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 0
+                }
+              },
+              "floor_db": 60.0,
+              "pass_cases": 87
+            }
+          },
+          "geometry": {
+            "inverse_depth_rmse": 0.10069018465818269,
+            "inverse_depth_pixels": 11579021,
+            "same_surface_step": 0.07733698872715355,
+            "near_subject_coc_mae": 0.31666484495159,
+            "near_coc_pixels": 1443183,
+            "GT_occlusion_crossing_abs_p95": 0.58990288124754,
+            "GT_occlusion_crossing_signed_median": -0.010539202703469641,
+            "crossing_pairs": 142204
+          },
+          "paired_vs_start": {
+            "full_image": {
+              "before": {
+                "pixels": 22806528,
+                "sse": 10010.386851107325,
+                "psnr": 38.34729568188759,
+                "patch_lpips": 0.028819335135668186
+              },
+              "after": {
+                "pixels": 22806528,
+                "sse": 10010.386851107325,
+                "psnr": 38.34729568188759,
+                "patch_lpips": 0.028819335135668186
+              },
+              "pooled_delta_db": 0.0,
+              "n": 15,
+              "median_db": 0.0,
+              "sd_db": 0.0,
+              "positive": 0,
+              "negative": 0,
+              "tied": 15
+            },
+            "near_in_focus": {
+              "before": {
+                "pixels": 1487075,
+                "sse": 1363.2303442224327,
+                "psnr": 35.148848827368795,
+                "patch_lpips": 0.043358195566291474
+              },
+              "after": {
+                "pixels": 1487075,
+                "sse": 1363.2303442224327,
+                "psnr": 35.148848827368795,
+                "patch_lpips": 0.043358195566291474
+              },
+              "pooled_delta_db": 0.0,
+              "n": 14,
+              "median_db": 0.0,
+              "sd_db": 0.0,
+              "positive": 0,
+              "negative": 0,
+              "tied": 14
+            },
+            "far_recoverable": {
+              "before": {
+                "pixels": 167431,
+                "sse": 1940.582412152848,
+                "psnr": 24.13025034861528,
+                "patch_lpips": 0.07826746933826892
+              },
+              "after": {
+                "pixels": 167431,
+                "sse": 1940.582412152848,
+                "psnr": 24.13025034861528,
+                "patch_lpips": 0.07826746933826892
+              },
+              "pooled_delta_db": 0.0,
+              "n": 15,
+              "median_db": 0.0,
+              "sd_db": 0.0,
+              "positive": 0,
+              "negative": 0,
+              "tied": 15
+            },
+            "boundary_2px": {
+              "before": {
+                "pixels": 1170597,
+                "sse": 4561.90699208155,
+                "psnr": 28.8638223483361,
+                "patch_lpips": 0.04315149591628716
+              },
+              "after": {
+                "pixels": 1170597,
+                "sse": 4561.90699208155,
+                "psnr": 28.8638223483361,
+                "patch_lpips": 0.04315149591628716
+              },
+              "pooled_delta_db": 0.0,
+              "n": 15,
+              "median_db": 0.0,
+              "sd_db": 0.0,
+              "positive": 0,
+              "negative": 0,
+              "tied": 15
+            },
+            "zero_visible": {
+              "before": {
+                "pixels": 22806528,
+                "sse": 213.94911841440654,
+                "psnr": 55.04869927993465,
+                "patch_lpips": null
+              },
+              "after": {
+                "pixels": 22806528,
+                "sse": 213.94911841440654,
+                "psnr": 55.04869927993465,
+                "patch_lpips": null
+              },
+              "pooled_delta_db": 0.0,
+              "n": 15,
+              "median_db": 0.0,
+              "sd_db": 0.0,
+              "positive": 0,
+              "negative": 0,
+              "tied": 15
+            },
+            "zero_combined": {
+              "before": {
+                "pixels": 22806528,
+                "sse": 4.427648672767698,
+                "psnr": 71.8900727632708,
+                "patch_lpips": null
+              },
+              "after": {
+                "pixels": 22806528,
+                "sse": 4.427648672767698,
+                "psnr": 71.8900727632708,
+                "patch_lpips": null
+              },
+              "pooled_delta_db": 0.0,
+              "n": 15,
+              "median_db": 0.0,
+              "sd_db": 0.0,
+              "positive": 0,
+              "negative": 0,
+              "tied": 15
+            }
+          },
+          "gt_minus_f2_near": {
+            "before": {
+              "pixels": 1487075,
+              "sse": 1254.0792470014896,
+              "psnr": 35.51129146222284,
+              "patch_lpips": null
+            },
+            "after": {
+              "pixels": 1487075,
+              "sse": 1363.2303442224327,
+              "psnr": 35.148848827368795,
+              "patch_lpips": 0.043358195566291474
+            },
+            "pooled_delta_db": -0.36244263485404815,
+            "n": 14,
+            "median_db": -0.3698131011210446,
+            "sd_db": 0.3314802213866588,
+            "positive": 1,
+            "negative": 13,
+            "tied": 0
+          },
+          "unscored": [
+            {
+              "scene": "development-010-41701db7e3333e89",
+              "case": "f001-focus0-N1.4",
+              "reason": "no_valid_nominal_subject"
+            },
+            {
+              "scene": "development-010-41701db7e3333e89",
+              "case": "f030-focus0-N1.4",
+              "reason": "no_valid_nominal_subject"
+            },
+            {
+              "scene": "development-010-41701db7e3333e89",
+              "case": "f060-focus0-N1.4",
+              "reason": "no_valid_nominal_subject"
+            }
+          ],
+          "groups": {
+            "thin_structure": {
+              "regions": {
+                "near_in_focus": {
+                  "scored": 9,
+                  "unscored": 0,
+                  "combined": {
+                    "pixels": 143747,
+                    "sse": 244.76290753463684,
+                    "psnr": 32.459744409173304,
+                    "patch_lpips": 0.01567920595207191
+                  },
+                  "scene_median": {
+                    "psnr": 29.81315611911441,
+                    "patch_lpips": 0.02350868323367844
+                  },
+                  "paired_vs_stage3": {
+                    "psnr": {
+                      "n": 3,
+                      "median_db": 0.0,
+                      "sd_db": 0.0,
+                      "positive": 0,
+                      "negative": 0,
+                      "tied": 3
+                    },
+                    "patch_lpips": {
+                      "n": 3,
+                      "median": 0.0,
+                      "sd": 0.0,
+                      "positive": 0,
+                      "negative": 0,
+                      "tied": 3
+                    }
+                  }
+                },
+                "far_recoverable": {
+                  "scored": 9,
+                  "unscored": 0,
+                  "combined": {
+                    "pixels": 84696,
+                    "sse": 1786.7188428320665,
+                    "psnr": 21.529279372678364,
+                    "patch_lpips": 0.12469379777220924
+                  },
+                  "scene_median": {
+                    "psnr": 26.207126107749687,
+                    "patch_lpips": 0.05192005946257807
+                  },
+                  "paired_vs_stage3": {
+                    "psnr": {
+                      "n": 3,
+                      "median_db": 0.0,
+                      "sd_db": 0.0,
+                      "positive": 0,
+                      "negative": 0,
+                      "tied": 3
+                    },
+                    "patch_lpips": {
+                      "n": 3,
+                      "median": 0.0,
+                      "sd": 0.0,
+                      "positive": 0,
+                      "negative": 0,
+                      "tied": 3
+                    }
+                  }
+                }
+              },
+              "foreground_coc_px": {
+                "pixels": 225748,
+                "p50": 0.9714817404747009,
+                "p95": 2.769815897941589
+              }
+            },
+            "development-008": {
+              "regions": {
+                "near_in_focus": {
+                  "scored": 3,
+                  "unscored": 0,
+                  "combined": {
+                    "pixels": 5091,
+                    "sse": 57.52003948921286,
+                    "psnr": 24.241051762260316,
+                    "patch_lpips": 0.044430367279987316
+                  },
+                  "scene_median": {
+                    "psnr": 24.241051762260316,
+                    "patch_lpips": 0.044430367279987316
+                  },
+                  "paired_vs_stage3": {
+                    "psnr": {
+                      "n": 1,
+                      "median_db": 0.0,
+                      "sd_db": null,
+                      "positive": 0,
+                      "negative": 0,
+                      "tied": 1
+                    },
+                    "patch_lpips": {
+                      "n": 1,
+                      "median": 0.0,
+                      "sd": null,
+                      "positive": 0,
+                      "negative": 0,
+                      "tied": 1
+                    }
+                  }
+                },
+                "far_recoverable": {
+                  "scored": 3,
+                  "unscored": 0,
+                  "combined": {
+                    "pixels": 5114,
+                    "sse": 44.34228298716936,
+                    "psnr": 25.390639291622765,
+                    "patch_lpips": 0.07125895977891489
+                  },
+                  "scene_median": {
+                    "psnr": 25.390639291622765,
+                    "patch_lpips": 0.07125895977891489
+                  },
+                  "paired_vs_stage3": {
+                    "psnr": {
+                      "n": 1,
+                      "median_db": 0.0,
+                      "sd_db": null,
+                      "positive": 0,
+                      "negative": 0,
+                      "tied": 1
+                    },
+                    "patch_lpips": {
+                      "n": 1,
+                      "median": 0.0,
+                      "sd": null,
+                      "positive": 0,
+                      "negative": 0,
+                      "tied": 1
+                    }
+                  }
+                }
+              },
+              "foreground_coc_px": {
+                "pixels": 25914,
+                "p50": 0.5149993300437927,
+                "p95": 5.21341593265533
+              }
+            }
+          },
+          "geometry_limits": {
+            "inverse_depth_rmse": {
+              "value": 0.10069018465818269,
+              "initial": 0.10069018465818269,
+              "allowed_growth": 0.05,
+              "passed": true
+            },
+            "same_surface_step": {
+              "value": 0.07733698872715355,
+              "initial": 0.07733698872715355,
+              "allowed_growth": 0.1,
+              "passed": true
+            },
+            "near_subject_coc_mae": {
+              "value": 0.31666484495159,
+              "initial": 0.31666484495159,
+              "allowed_growth": 0.1,
+              "passed": true
+            },
+            "GT_occlusion_crossing_abs_p95": {
+              "value": 0.58990288124754,
+              "initial": 0.58990288124754,
+              "allowed_growth": 0.1,
+              "passed": true
+            }
+          },
+          "paired_vs_A": {
+            "near_in_focus": {
+              "before": {
+                "pixels": 1487075,
+                "sse": 1255.912749345612,
+                "psnr": 35.50494658069812,
+                "patch_lpips": 0.04317647108143616
+              },
+              "after": {
+                "pixels": 1487075,
+                "sse": 1363.2303442224324,
+                "psnr": 35.148848827368795,
+                "patch_lpips": 0.043358195566291474
+              },
+              "pooled_delta_db": -0.3560977533293226,
+              "n": 14,
+              "median_db": -2.0958605162681856,
+              "sd_db": 3.6127364143507674,
+              "positive": 2,
+              "negative": 12,
+              "tied": 0
+            },
+            "far_recoverable": {
+              "before": {
+                "pixels": 167431,
+                "sse": 4025.9260993650437,
+                "psnr": 20.960913271981752,
+                "patch_lpips": 0.11051116796134655
+              },
+              "after": {
+                "pixels": 167431,
+                "sse": 1940.5824121528478,
+                "psnr": 24.13025034861528,
+                "patch_lpips": 0.07826746933826892
+              },
+              "pooled_delta_db": 3.1693370766335285,
+              "n": 15,
+              "median_db": 3.5219189521952217,
+              "sd_db": 4.996023472457184,
+              "positive": 14,
+              "negative": 1,
+              "tied": 0
+            }
+          }
+        },
+        "legacy": {
+          "metrics": {
+            "full_image": {
+              "scored": 18,
+              "unscored": 0,
+              "combined": {
+                "pixels": 4718592,
+                "sse": 1947.6140609298307,
+                "psnr": 38.61430780471429,
+                "patch_lpips": 0.02483104457826278
+              },
+              "scene_median": {
+                "psnr": 39.05787645624517,
+                "patch_lpips": 0.02481507774249773
+              },
+              "paired_vs_stage3": {
+                "psnr": {
+                  "n": 3,
+                  "median_db": 0.0,
+                  "sd_db": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 3
+                },
+                "patch_lpips": {
+                  "n": 3,
+                  "median": 0.0,
+                  "sd": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 3
+                }
+              }
+            },
+            "near_in_focus": {
+              "scored": 9,
+              "unscored": 0,
+              "combined": {
+                "pixels": 1097696,
+                "sse": 814.5637037712686,
+                "psnr": 36.06678281953234,
+                "patch_lpips": 0.026502687866186207
+              },
+              "scene_median": {
+                "psnr": 36.31581736900591,
+                "patch_lpips": 0.02872142814655245
+              },
+              "paired_vs_stage3": {
+                "psnr": {
+                  "n": 3,
+                  "median_db": 0.0,
+                  "sd_db": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 3
+                },
+                "patch_lpips": {
+                  "n": 3,
+                  "median": 0.0,
+                  "sd": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 3
+                }
+              }
+            },
+            "far_recoverable": {
+              "scored": 9,
+              "unscored": 0,
+              "combined": {
+                "pixels": 94841,
+                "sse": 233.8930022780305,
+                "psnr": 30.85100150660057,
+                "patch_lpips": 0.032926818053459775
+              },
+              "scene_median": {
+                "psnr": 31.859308861277782,
+                "patch_lpips": 0.02454897175249422
+              },
+              "paired_vs_stage3": {
+                "psnr": {
+                  "n": 3,
+                  "median_db": 0.0,
+                  "sd_db": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 3
+                },
+                "patch_lpips": {
+                  "n": 3,
+                  "median": 0.0,
+                  "sd": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 3
+                }
+              }
+            },
+            "boundary_2px": {
+              "scored": 18,
+              "unscored": 0,
+              "combined": {
+                "pixels": 275694,
+                "sse": 1110.7894026908646,
+                "psnr": 28.719168414841313,
+                "patch_lpips": 0.03713575949451366
+              },
+              "scene_median": {
+                "psnr": 29.07775067319146,
+                "patch_lpips": 0.03548300298534376
+              },
+              "paired_vs_stage3": {
+                "psnr": {
+                  "n": 3,
+                  "median_db": 0.0,
+                  "sd_db": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 3
+                },
+                "patch_lpips": {
+                  "n": 3,
+                  "median": 0.0,
+                  "sd": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 3
+                }
+              }
+            },
+            "zero_visible": {
+              "scored": 18,
+              "unscored": 0,
+              "combined": {
+                "pixels": 4718592,
+                "sse": 44.575824559909535,
+                "psnr": 55.018342963095904,
+                "patch_lpips": null
+              },
+              "scene_median": {
+                "psnr": 54.8927307697102,
+                "patch_lpips": null
+              },
+              "paired_vs_stage3": {
+                "psnr": {
+                  "n": 3,
+                  "median_db": 0.0,
+                  "sd_db": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 3
+                },
+                "patch_lpips": {
+                  "n": 0,
+                  "median": null,
+                  "sd": null,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 0
+                }
+              },
+              "floor_db": 50.0,
+              "pass_cases": 18
+            },
+            "zero_combined": {
+              "scored": 18,
+              "unscored": 0,
+              "combined": {
+                "pixels": 4718592,
+                "sse": 3.055952153077051,
+                "psnr": 66.65787131549409,
+                "patch_lpips": null
+              },
+              "scene_median": {
+                "psnr": 66.2361957981748,
+                "patch_lpips": null
+              },
+              "paired_vs_stage3": {
+                "psnr": {
+                  "n": 3,
+                  "median_db": 0.0,
+                  "sd_db": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 3
+                },
+                "patch_lpips": {
+                  "n": 0,
+                  "median": null,
+                  "sd": null,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 0
+                }
+              },
+              "floor_db": 60.0,
+              "pass_cases": 18
+            }
+          },
+          "geometry": {
+            "inverse_depth_rmse": 0.1345492204683372,
+            "inverse_depth_pixels": 2359296,
+            "same_surface_step": 0.2969554774754906,
+            "near_subject_coc_mae": 0.9924133069711589,
+            "near_coc_pixels": 1097696,
+            "GT_occlusion_crossing_abs_p95": 0.7172636018690881,
+            "GT_occlusion_crossing_signed_median": 0.00010924525093763959,
+            "crossing_pairs": 26747
+          },
+          "paired_vs_start": {
+            "full_image": {
+              "before": {
+                "pixels": 4718592,
+                "sse": 1947.6140609298307,
+                "psnr": 38.61430780471429,
+                "patch_lpips": 0.02483104457826278
+              },
+              "after": {
+                "pixels": 4718592,
+                "sse": 1947.6140609298307,
+                "psnr": 38.61430780471429,
+                "patch_lpips": 0.02483104457826278
+              },
+              "pooled_delta_db": 0.0,
+              "n": 3,
+              "median_db": 0.0,
+              "sd_db": 0.0,
+              "positive": 0,
+              "negative": 0,
+              "tied": 3
+            },
+            "near_in_focus": {
+              "before": {
+                "pixels": 1097696,
+                "sse": 814.5637037712686,
+                "psnr": 36.06678281953234,
+                "patch_lpips": 0.026502687866186207
+              },
+              "after": {
+                "pixels": 1097696,
+                "sse": 814.5637037712686,
+                "psnr": 36.06678281953234,
+                "patch_lpips": 0.026502687866186207
+              },
+              "pooled_delta_db": 0.0,
+              "n": 3,
+              "median_db": 0.0,
+              "sd_db": 0.0,
+              "positive": 0,
+              "negative": 0,
+              "tied": 3
+            },
+            "far_recoverable": {
+              "before": {
+                "pixels": 94841,
+                "sse": 233.8930022780305,
+                "psnr": 30.85100150660057,
+                "patch_lpips": 0.032926818053459775
+              },
+              "after": {
+                "pixels": 94841,
+                "sse": 233.8930022780305,
+                "psnr": 30.85100150660057,
+                "patch_lpips": 0.032926818053459775
+              },
+              "pooled_delta_db": 0.0,
+              "n": 3,
+              "median_db": 0.0,
+              "sd_db": 0.0,
+              "positive": 0,
+              "negative": 0,
+              "tied": 3
+            },
+            "boundary_2px": {
+              "before": {
+                "pixels": 275694,
+                "sse": 1110.7894026908646,
+                "psnr": 28.719168414841313,
+                "patch_lpips": 0.03713575949451366
+              },
+              "after": {
+                "pixels": 275694,
+                "sse": 1110.7894026908646,
+                "psnr": 28.719168414841313,
+                "patch_lpips": 0.03713575949451366
+              },
+              "pooled_delta_db": 0.0,
+              "n": 3,
+              "median_db": 0.0,
+              "sd_db": 0.0,
+              "positive": 0,
+              "negative": 0,
+              "tied": 3
+            },
+            "zero_visible": {
+              "before": {
+                "pixels": 4718592,
+                "sse": 44.575824559909535,
+                "psnr": 55.018342963095904,
+                "patch_lpips": null
+              },
+              "after": {
+                "pixels": 4718592,
+                "sse": 44.575824559909535,
+                "psnr": 55.018342963095904,
+                "patch_lpips": null
+              },
+              "pooled_delta_db": 0.0,
+              "n": 3,
+              "median_db": 0.0,
+              "sd_db": 0.0,
+              "positive": 0,
+              "negative": 0,
+              "tied": 3
+            },
+            "zero_combined": {
+              "before": {
+                "pixels": 4718592,
+                "sse": 3.055952153077051,
+                "psnr": 66.65787131549409,
+                "patch_lpips": null
+              },
+              "after": {
+                "pixels": 4718592,
+                "sse": 3.055952153077051,
+                "psnr": 66.65787131549409,
+                "patch_lpips": null
+              },
+              "pooled_delta_db": 0.0,
+              "n": 3,
+              "median_db": 0.0,
+              "sd_db": 0.0,
+              "positive": 0,
+              "negative": 0,
+              "tied": 3
+            }
+          },
+          "gt_minus_f2_near": {
+            "before": {
+              "pixels": 1097696,
+              "sse": 534.4957894228959,
+              "psnr": 37.896590480282065,
+              "patch_lpips": null
+            },
+            "after": {
+              "pixels": 1097696,
+              "sse": 814.5637037712686,
+              "psnr": 36.06678281953234,
+              "patch_lpips": 0.026502687866186207
+            },
+            "pooled_delta_db": -1.8298076607497222,
+            "n": 3,
+            "median_db": -2.1731200203536574,
+            "sd_db": 1.208959381711426,
+            "positive": 0,
+            "negative": 3,
+            "tied": 0
+          },
+          "unscored": []
+        }
+      },
+      "external_baselines": {
+        "stage3": {
+          "full_image": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 9769.410382772352,
+              "psnr": 38.453120759330446,
+              "patch_lpips": 0.02853305470853151
+            },
+            "scene_median": {
+              "psnr": 40.45814410739935,
+              "patch_lpips": 0.026847021302610113
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 0.0,
+                "sd_db": 0.0,
+                "positive": 0,
+                "negative": 0,
+                "tied": 15
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": 0.0,
+                "sd": 0.0,
+                "positive": 0,
+                "negative": 0,
+                "tied": 15
+              }
+            }
+          },
+          "near_in_focus": {
+            "scored": 42,
+            "unscored": 3,
+            "combined": {
+              "pixels": 1487075,
+              "sse": 1272.5487221631383,
+              "psnr": 35.447797080621434,
+              "patch_lpips": 0.042976010825491434
+            },
+            "scene_median": {
+              "psnr": 35.07954874714365,
+              "patch_lpips": 0.025628083900453832
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 14,
+                "median_db": 0.0,
+                "sd_db": 0.0,
+                "positive": 0,
+                "negative": 0,
+                "tied": 14
+              },
+              "patch_lpips": {
+                "n": 14,
+                "median": 0.0,
+                "sd": 0.0,
+                "positive": 0,
+                "negative": 0,
+                "tied": 14
+              }
+            }
+          },
+          "far_recoverable": {
+            "scored": 45,
+            "unscored": 0,
+            "combined": {
+              "pixels": 167431,
+              "sse": 1991.7948381714327,
+              "psnr": 24.017125232929935,
+              "patch_lpips": 0.07787218006596583
+            },
+            "scene_median": {
+              "psnr": 31.935760399903824,
+              "patch_lpips": 0.026760817992228264
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 0.0,
+                "sd_db": 0.0,
+                "positive": 0,
+                "negative": 0,
+                "tied": 15
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": 0.0,
+                "sd": 0.0,
+                "positive": 0,
+                "negative": 0,
+                "tied": 15
+              }
+            }
+          },
+          "boundary_2px": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 1170597,
+              "sse": 4538.252481492759,
+              "psnr": 28.886400076974272,
+              "patch_lpips": 0.04276826404361084
+            },
+            "scene_median": {
+              "psnr": 32.67841394823011,
+              "patch_lpips": 0.030597753371434867
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 0.0,
+                "sd_db": 0.0,
+                "positive": 0,
+                "negative": 0,
+                "tied": 15
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": 0.0,
+                "sd": 0.0,
+                "positive": 0,
+                "negative": 0,
+                "tied": 15
+              }
+            }
+          },
+          "zero_visible": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 213.94911841440654,
+              "psnr": 55.04869927993465,
+              "patch_lpips": null
+            },
+            "scene_median": {
+              "psnr": 54.90325788994535,
+              "patch_lpips": null
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 0.0,
+                "sd_db": 0.0,
+                "positive": 0,
+                "negative": 0,
+                "tied": 15
+              },
+              "patch_lpips": {
+                "n": 0,
+                "median": null,
+                "sd": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "floor_db": 50.0,
+            "pass_cases": 87
+          },
+          "zero_combined": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 5.028976386552945,
+              "psnr": 71.33700832884332,
+              "patch_lpips": null
+            },
+            "scene_median": {
+              "psnr": 75.31758046135823,
+              "patch_lpips": null
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 0.0,
+                "sd_db": 0.0,
+                "positive": 0,
+                "negative": 0,
+                "tied": 15
+              },
+              "patch_lpips": {
+                "n": 0,
+                "median": null,
+                "sd": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "floor_db": 60.0,
+            "pass_cases": 87
+          }
+        },
+        "stage3_f2": {
+          "full_image": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 9965.776309927343,
+              "psnr": 38.36669294443514,
+              "patch_lpips": 0.028766011847386662
+            },
+            "scene_median": {
+              "psnr": 40.47403479882864,
+              "patch_lpips": 0.026977506453150113
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 0.015890691429291337,
+                "sd_db": 0.3825341751150274,
+                "positive": 9,
+                "negative": 6,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": -2.66658175102491e-05,
+                "sd": 0.00067536122465955,
+                "positive": 6,
+                "negative": 9,
+                "tied": 0
+              }
+            }
+          },
+          "near_in_focus": {
+            "scored": 42,
+            "unscored": 3,
+            "combined": {
+              "pixels": 1487075,
+              "sse": 1254.079247907299,
+              "psnr": 35.511291459085975,
+              "patch_lpips": 0.04294757804177735
+            },
+            "scene_median": {
+              "psnr": 35.179028919110635,
+              "patch_lpips": 0.025148729211267772
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 14,
+                "median_db": 0.1128644037260571,
+                "sd_db": 0.39887118984387104,
+                "positive": 12,
+                "negative": 2,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 14,
+                "median": -0.0003116504313483868,
+                "sd": 0.0006590975888850467,
+                "positive": 3,
+                "negative": 11,
+                "tied": 0
+              }
+            }
+          },
+          "far_recoverable": {
+            "scored": 45,
+            "unscored": 0,
+            "combined": {
+              "pixels": 167431,
+              "sse": 2011.5959260256327,
+              "psnr": 23.97416378438028,
+              "patch_lpips": 0.07859323498569956
+            },
+            "scene_median": {
+              "psnr": 31.742394875871675,
+              "patch_lpips": 0.026823323714097205
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -0.009248825902286484,
+                "sd_db": 0.7070450209439871,
+                "positive": 7,
+                "negative": 8,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": 0.0003657690382708259,
+                "sd": 0.0044864054005778675,
+                "positive": 10,
+                "negative": 5,
+                "tied": 0
+              }
+            }
+          },
+          "boundary_2px": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 1170597,
+              "sse": 4528.807031028622,
+              "psnr": 28.895448453669893,
+              "patch_lpips": 0.04307625367134922
+            },
+            "scene_median": {
+              "psnr": 32.77692373285624,
+              "patch_lpips": 0.03059331617335107
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 0.10636264162742037,
+                "sd_db": 0.6126789963154624,
+                "positive": 11,
+                "negative": 4,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": -7.395587931724804e-05,
+                "sd": 0.002428060961392791,
+                "positive": 5,
+                "negative": 10,
+                "tied": 0
+              }
+            }
+          },
+          "zero_visible": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 213.94911841440654,
+              "psnr": 55.04869927993465,
+              "patch_lpips": null
+            },
+            "scene_median": {
+              "psnr": 54.90325788994535,
+              "patch_lpips": null
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 0.0,
+                "sd_db": 0.0,
+                "positive": 0,
+                "negative": 0,
+                "tied": 15
+              },
+              "patch_lpips": {
+                "n": 0,
+                "median": null,
+                "sd": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "floor_db": 50.0,
+            "pass_cases": 87
+          },
+          "zero_combined": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 0.028135149297738693,
+              "psnr": 93.85931205232238,
+              "patch_lpips": null
+            },
+            "scene_median": {
+              "psnr": 101.62024858488792,
+              "patch_lpips": null
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 27.080739963075445,
+                "sd_db": 8.009998685121797,
+                "positive": 15,
+                "negative": 0,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 0,
+                "median": null,
+                "sd": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "floor_db": 60.0,
+            "pass_cases": 87
+          }
+        },
+        "A": {
+          "full_image": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 22188.30624660638,
+              "psnr": 34.89056277838805,
+              "patch_lpips": 0.04330607228393222
+            },
+            "scene_median": {
+              "psnr": 40.1323581685784,
+              "patch_lpips": 0.040072568216316995
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -1.1160866954530633,
+                "sd_db": 4.13605021854735,
+                "positive": 3,
+                "negative": 12,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": 0.008314886865181375,
+                "sd": 0.02633039118195087,
+                "positive": 14,
+                "negative": 1,
+                "tied": 0
+              }
+            }
+          },
+          "near_in_focus": {
+            "scored": 42,
+            "unscored": 3,
+            "combined": {
+              "pixels": 1487075,
+              "sse": 1255.9127493456122,
+              "psnr": 35.50494658069812,
+              "patch_lpips": 0.04317647108143616
+            },
+            "scene_median": {
+              "psnr": 36.84759506742956,
+              "patch_lpips": 0.031482603121388966
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 14,
+                "median_db": 2.1392266807064875,
+                "sd_db": 3.510210845936069,
+                "positive": 12,
+                "negative": 2,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 14,
+                "median": 0.0009311288041130121,
+                "sd": 0.027998537143932474,
+                "positive": 7,
+                "negative": 7,
+                "tied": 0
+              }
+            }
+          },
+          "far_recoverable": {
+            "scored": 45,
+            "unscored": 0,
+            "combined": {
+              "pixels": 167431,
+              "sse": 4025.9260993650423,
+              "psnr": 20.960913271981752,
+              "patch_lpips": 0.11051116796134655
+            },
+            "scene_median": {
+              "psnr": 29.59040212704574,
+              "patch_lpips": 0.05330714988224025
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -5.404322856040231,
+                "sd_db": 5.579884128581003,
+                "positive": 1,
+                "negative": 14,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": 0.029134617734554946,
+                "sd": 0.04110444044511513,
+                "positive": 14,
+                "negative": 1,
+                "tied": 0
+              }
+            }
+          },
+          "boundary_2px": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 1170597,
+              "sse": 7993.075180023706,
+              "psnr": 26.42814763682977,
+              "patch_lpips": 0.06164676685135282
+            },
+            "scene_median": {
+              "psnr": 30.820446972048067,
+              "patch_lpips": 0.03772080247004514
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -1.2550545931824502,
+                "sd_db": 4.849394905520796,
+                "positive": 3,
+                "negative": 12,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": 0.01954109823406298,
+                "sd": 0.032260474989227204,
+                "positive": 13,
+                "negative": 2,
+                "tied": 0
+              }
+            }
+          },
+          "zero_visible": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 56994.71951053367,
+              "psnr": 30.793458085940966,
+              "patch_lpips": null
+            },
+            "scene_median": {
+              "psnr": 31.095374206444262,
+              "patch_lpips": null
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -24.155138762010132,
+                "sd_db": 2.6064689399598424,
+                "positive": 0,
+                "negative": 15,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 0,
+                "median": null,
+                "sd": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "floor_db": 50.0,
+            "pass_cases": 0
+          },
+          "zero_combined": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 314.1375892515887,
+              "psnr": 53.38060522729695,
+              "patch_lpips": null
+            },
+            "scene_median": {
+              "psnr": 56.613922765821954,
+              "patch_lpips": null
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -17.202836213944828,
+                "sd_db": 6.857136848334185,
+                "positive": 0,
+                "negative": 15,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 0,
+                "median": null,
+                "sd": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "floor_db": 60.0,
+            "pass_cases": 34
+          }
+        },
+        "R1_R2": {
+          "full_image": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 22206.96164281059,
+              "psnr": 34.88691286861557,
+              "patch_lpips": 0.043132840635373405
+            },
+            "scene_median": {
+              "psnr": 40.13749835671117,
+              "patch_lpips": 0.03917590075297994
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -1.1258174811399044,
+                "sd_db": 4.138301921463147,
+                "positive": 3,
+                "negative": 12,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": 0.007756723040057995,
+                "sd": 0.026387155975865977,
+                "positive": 14,
+                "negative": 1,
+                "tied": 0
+              }
+            }
+          },
+          "near_in_focus": {
+            "scored": 42,
+            "unscored": 3,
+            "combined": {
+              "pixels": 1487075,
+              "sse": 1259.6857465102041,
+              "psnr": 35.491919119597284,
+              "patch_lpips": 0.043239914698715916
+            },
+            "scene_median": {
+              "psnr": 36.66951396922414,
+              "patch_lpips": 0.031601073085212684
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 14,
+                "median_db": 2.1401033794021007,
+                "sd_db": 3.4350059764972856,
+                "positive": 12,
+                "negative": 2,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 14,
+                "median": 0.0010415289456375352,
+                "sd": 0.027990502731408066,
+                "positive": 7,
+                "negative": 7,
+                "tied": 0
+              }
+            }
+          },
+          "far_recoverable": {
+            "scored": 45,
+            "unscored": 0,
+            "combined": {
+              "pixels": 167431,
+              "sse": 4020.847675855026,
+              "psnr": 20.96639505054693,
+              "patch_lpips": 0.10867897321411805
+            },
+            "scene_median": {
+              "psnr": 29.643409358795108,
+              "patch_lpips": 0.05223666433511036
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -5.492604804141738,
+                "sd_db": 5.5741650953512965,
+                "positive": 1,
+                "negative": 14,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": 0.027677479087756154,
+                "sd": 0.04065318594434971,
+                "positive": 14,
+                "negative": 1,
+                "tied": 0
+              }
+            }
+          },
+          "boundary_2px": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 1170597,
+              "sse": 8004.984912587683,
+              "psnr": 26.421681437729326,
+              "patch_lpips": 0.06129957305261709
+            },
+            "scene_median": {
+              "psnr": 30.828873744120635,
+              "patch_lpips": 0.03741062263358515
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -1.2899897101661821,
+                "sd_db": 4.886249295387971,
+                "positive": 3,
+                "negative": 12,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": 0.017845297408011232,
+                "sd": 0.03199470748431838,
+                "positive": 13,
+                "negative": 2,
+                "tied": 0
+              }
+            }
+          },
+          "zero_visible": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 56994.71951053367,
+              "psnr": 30.793458085940966,
+              "patch_lpips": null
+            },
+            "scene_median": {
+              "psnr": 31.095374206444262,
+              "patch_lpips": null
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -24.155138762010132,
+                "sd_db": 2.6064689399598424,
+                "positive": 0,
+                "negative": 15,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 0,
+                "median": null,
+                "sd": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "floor_db": 50.0,
+            "pass_cases": 0
+          },
+          "zero_combined": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 347.42765907153614,
+              "psnr": 52.94316039174318,
+              "patch_lpips": null
+            },
+            "scene_median": {
+              "psnr": 56.458706169928085,
+              "patch_lpips": null
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -18.7951498336664,
+                "sd_db": 6.275683194813177,
+                "positive": 0,
+                "negative": 15,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 0,
+                "median": null,
+                "sd": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "floor_db": 60.0,
+            "pass_cases": 33
+          }
+        },
+        "DrBokeh": {
+          "full_image": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 11442.018382438833,
+              "psnr": 37.766777881339046,
+              "patch_lpips": 0.03180286468345362
+            },
+            "scene_median": {
+              "psnr": 41.28616209608317,
+              "patch_lpips": 0.02836960513880153
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 0.3930584513892086,
+                "sd_db": 2.3289149841651713,
+                "positive": 10,
+                "negative": 5,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": -0.0013244125734672707,
+                "sd": 0.016035341137062443,
+                "positive": 6,
+                "negative": 9,
+                "tied": 0
+              }
+            }
+          },
+          "near_in_focus": {
+            "scored": 42,
+            "unscored": 3,
+            "combined": {
+              "pixels": 1487075,
+              "sse": 544.1672693046658,
+              "psnr": 39.13721711065776,
+              "patch_lpips": 0.033238199117617495
+            },
+            "scene_median": {
+              "psnr": 38.432192001324154,
+              "patch_lpips": 0.017156645902645
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 14,
+                "median_db": 1.9717188462199964,
+                "sd_db": 3.683183352798866,
+                "positive": 11,
+                "negative": 3,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 14,
+                "median": -0.008012913569597244,
+                "sd": 0.01324758883521346,
+                "positive": 3,
+                "negative": 11,
+                "tied": 0
+              }
+            }
+          },
+          "far_recoverable": {
+            "scored": 45,
+            "unscored": 0,
+            "combined": {
+              "pixels": 167431,
+              "sse": 494.7500679562984,
+              "psnr": 30.065712633042576,
+              "patch_lpips": 0.1073725005114855
+            },
+            "scene_median": {
+              "psnr": 32.80002646901202,
+              "patch_lpips": 0.02986722106783489
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -1.1589730052289724,
+                "sd_db": 5.299982419871877,
+                "positive": 7,
+                "negative": 8,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": 0.002896749533753497,
+                "sd": 0.03675616336856523,
+                "positive": 10,
+                "negative": 5,
+                "tied": 0
+              }
+            }
+          },
+          "boundary_2px": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 1170597,
+              "sse": 6623.187591036385,
+              "psnr": 27.24461605584322,
+              "patch_lpips": 0.056620908648757
+            },
+            "scene_median": {
+              "psnr": 31.219113206474592,
+              "patch_lpips": 0.026986431157237204
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -1.2523037940046038,
+                "sd_db": 3.8369174526967416,
+                "positive": 6,
+                "negative": 9,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": -0.0017015419161240317,
+                "sd": 0.024117326007622585,
+                "positive": 6,
+                "negative": 9,
+                "tied": 0
+              }
+            }
+          },
+          "zero_visible": {
+            "scored": 0,
+            "unscored": 90,
+            "combined": {
+              "pixels": 0,
+              "sse": 0,
+              "psnr": null,
+              "patch_lpips": null
+            },
+            "scene_median": {
+              "psnr": null,
+              "patch_lpips": null
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 0,
+                "median_db": null,
+                "sd_db": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 0,
+                "median": null,
+                "sd": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "floor_db": 50.0,
+            "pass_cases": 0
+          },
+          "zero_combined": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 4104.543854193222,
+              "psnr": 42.21915529129032,
+              "patch_lpips": null
+            },
+            "scene_median": {
+              "psnr": 44.02821389135386,
+              "patch_lpips": null
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -31.06802014063068,
+                "sd_db": 7.924569269486722,
+                "positive": 0,
+                "negative": 15,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 0,
+                "median": null,
+                "sd": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "floor_db": 60.0,
+            "pass_cases": 0
+          }
+        },
+        "GT_oracle": {
+          "full_image": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 4283.052912976542,
+              "psnr": 42.0342698957192,
+              "patch_lpips": 0.027716251004955953
+            },
+            "scene_median": {
+              "psnr": 44.03161495224309,
+              "patch_lpips": 0.03418587513647253
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 1.8542115570320732,
+                "sd_db": 2.444005115502189,
+                "positive": 12,
+                "negative": 3,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": -0.00024991724053317465,
+                "sd": 0.01107277915743418,
+                "positive": 7,
+                "negative": 8,
+                "tied": 0
+              }
+            }
+          },
+          "near_in_focus": {
+            "scored": 42,
+            "unscored": 3,
+            "combined": {
+              "pixels": 1487075,
+              "sse": 530.7623249416433,
+              "psnr": 39.24554039455828,
+              "patch_lpips": 0.03807027053151478
+            },
+            "scene_median": {
+              "psnr": 37.50814105672275,
+              "patch_lpips": 0.012991416815849928
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 14,
+                "median_db": 3.7507968961989455,
+                "sd_db": 3.925177012841424,
+                "positive": 13,
+                "negative": 1,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 14,
+                "median": -0.007722564098730077,
+                "sd": 0.011414240211231389,
+                "positive": 2,
+                "negative": 12,
+                "tied": 0
+              }
+            }
+          },
+          "far_recoverable": {
+            "scored": 45,
+            "unscored": 0,
+            "combined": {
+              "pixels": 167431,
+              "sse": 152.22922056390414,
+              "psnr": 35.184591021021355,
+              "patch_lpips": 0.04478748553302902
+            },
+            "scene_median": {
+              "psnr": 37.74710172172833,
+              "patch_lpips": 0.02906018786487559
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 4.368730845519281,
+                "sd_db": 5.597937404080528,
+                "positive": 11,
+                "negative": 4,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": 0.0022541394031761926,
+                "sd": 0.03877648575356286,
+                "positive": 9,
+                "negative": 6,
+                "tied": 0
+              }
+            }
+          },
+          "boundary_2px": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 1170597,
+              "sse": 1729.44259075211,
+              "psnr": 33.07622511407968,
+              "patch_lpips": 0.02696506063958092
+            },
+            "scene_median": {
+              "psnr": 34.089522133638816,
+              "patch_lpips": 0.022076914205826408
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 2.955959658363092,
+                "sd_db": 3.914715910798183,
+                "positive": 10,
+                "negative": 5,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": -0.001669103810728081,
+                "sd": 0.022134533747344576,
+                "positive": 6,
+                "negative": 9,
+                "tied": 0
+              }
+            }
+          },
+          "zero_visible": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 213.94870276100679,
+              "psnr": 55.04870771727502,
+              "patch_lpips": null
+            },
+            "scene_median": {
+              "psnr": 54.90323983140278,
+              "patch_lpips": null
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 3.2935096996311586e-06,
+                "sd_db": 5.5797710128646114e-05,
+                "positive": 8,
+                "negative": 7,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 0,
+                "median": null,
+                "sd": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "floor_db": 50.0,
+            "pass_cases": 87
+          },
+          "zero_combined": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 33.865474861344765,
+              "psnr": 63.0542325963205,
+              "patch_lpips": null
+            },
+            "scene_median": {
+              "psnr": 69.55360788849455,
+              "patch_lpips": null
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -4.928763395823168,
+                "sd_db": 4.843655276794387,
+                "positive": 1,
+                "negative": 14,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 0,
+                "median": null,
+                "sd": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "floor_db": 60.0,
+            "pass_cases": 77
+          }
+        }
+      },
+      "legacy_baselines": {
+        "references": {
+          "stage3": {
+            "file": "/root/autodl-tmp/route3-query-v2-20261123/outputs/route3-query-v2-20261123/new-query/ema.json",
+            "scope": "P2，1b 30k + 新 Query，原三场景，仅 f/1.4"
+          },
+          "stage3_f2": {
+            "file": "/root/autodl-tmp/route3-query-v2-20261123/outputs/route3-query-v2-20261123/new-query/ema.json",
+            "scope": "P2，同一归档的 Query 关闭配对，仅 f/1.4"
+          },
+          "A": {
+            "file": "03_实验记录/records/route3-ovg-1c-2026-11-19-C3-optical.csv",
+            "scope": "原三场景 P2，SHARP + A-color"
+          },
+          "R1_R2": {
+            "file": "03_实验记录/records/route3-g3-r15-2026-11-17-R3-per-config.csv",
+            "scope": "原三场景 P2，历史原几何 R1+R2，归档掩码"
+          },
+          "DrBokeh": {
+            "file": "03_实验记录/records/route3-baseline-dev3-2026-11-20-auxiliary.csv",
+            "scope": "原三场景 P1，1c 深度与 LDF 分割，仅 f/1.4。新场景用 B2 Oracle 输入"
+          },
+          "GT_oracle": {
+            "file": "03_实验记录/records/route3-ovg-1c-2026-11-19-C3-optical.csv",
+            "scope": "原三场景 P2，GT 可见几何与 GT 隐藏层归档"
+          }
+        },
+        "pooled": {
+          "f1.4": {
+            "stage3": {
+              "full_image": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              },
+              "near_in_focus": {
+                "pixels": 1097696,
+                "sse": 596.1517291759033,
+                "psnr": 37.42246528370325,
+                "patch_lpips": null
+              },
+              "far_recoverable": {
+                "pixels": 94841,
+                "sse": 266.10148519576694,
+                "psnr": 30.29070080743191,
+                "patch_lpips": null
+              },
+              "boundary_2px": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              }
+            },
+            "stage3_f2": {
+              "full_image": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              },
+              "near_in_focus": {
+                "pixels": 1097696,
+                "sse": 534.495789290783,
+                "psnr": 37.896590481355524,
+                "patch_lpips": null
+              },
+              "far_recoverable": {
+                "pixels": 94841,
+                "sse": 277.1417593897643,
+                "psnr": 30.114154095475058,
+                "patch_lpips": null
+              },
+              "boundary_2px": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              }
+            },
+            "A": {
+              "full_image": {
+                "pixels": 4718592,
+                "sse": 3236.8045838213857,
+                "psnr": 36.40817201318574,
+                "patch_lpips": 0.02158887141260024
+              },
+              "near_in_focus": {
+                "pixels": 1097696,
+                "sse": 331.4295669452932,
+                "psnr": 39.972120869901886,
+                "patch_lpips": 0.012274375665678116
+              },
+              "far_recoverable": {
+                "pixels": 94841,
+                "sse": 486.38699174735206,
+                "psnr": 27.67135427871336,
+                "patch_lpips": 0.038358007664552995
+              },
+              "boundary_2px": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              }
+            },
+            "R1_R2": {
+              "full_image": {
+                "pixels": 4718592,
+                "sse": 3475.1767459009043,
+                "psnr": 36.09956784267938,
+                "patch_lpips": 0.02378441240994099
+              },
+              "near_in_focus": {
+                "pixels": 1097696,
+                "sse": 341.062520536917,
+                "psnr": 39.84769339083338,
+                "patch_lpips": 0.013733374456462744
+              },
+              "far_recoverable": {
+                "pixels": 94841,
+                "sse": 510.0591981965484,
+                "psnr": 27.464967953760016,
+                "patch_lpips": 0.041832383448303534
+              },
+              "boundary_2px": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              }
+            },
+            "DrBokeh": {
+              "full_image": {
+                "pixels": 4718592,
+                "sse": 7157.809318243653,
+                "psnr": 32.96153557032969,
+                "patch_lpips": 0.10328465915598725
+              },
+              "near_in_focus": {
+                "pixels": 1097696,
+                "sse": 1785.877090364159,
+                "psnr": 32.657517702822325,
+                "patch_lpips": 0.09154535086281566
+              },
+              "far_recoverable": {
+                "pixels": 94841,
+                "sse": 438.9230711232943,
+                "psnr": 28.117289699593275,
+                "patch_lpips": 0.10085631767249062
+              },
+              "boundary_2px": {
+                "pixels": 275694,
+                "sse": 2132.154905360848,
+                "psnr": 25.887298153927254,
+                "patch_lpips": 0.11893236511913881
+              }
+            },
+            "GT_oracle": {
+              "full_image": {
+                "pixels": 4718592,
+                "sse": 1526.468204980525,
+                "psnr": 39.67245919026171,
+                "patch_lpips": 0.013063314692985273
+              },
+              "near_in_focus": {
+                "pixels": 1097696,
+                "sse": 249.33134268834448,
+                "psnr": 41.208264605812424,
+                "patch_lpips": 0.015631216370124254
+              },
+              "far_recoverable": {
+                "pixels": 94841,
+                "sse": 69.31840759568769,
+                "psnr": 36.13268801828206,
+                "patch_lpips": 0.013406253160318335
+              },
+              "boundary_2px": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              }
+            }
+          },
+          "f2": {
+            "stage3": {
+              "full_image": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              },
+              "near_in_focus": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              },
+              "far_recoverable": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              },
+              "boundary_2px": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              }
+            },
+            "stage3_f2": {
+              "full_image": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              },
+              "near_in_focus": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              },
+              "far_recoverable": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              },
+              "boundary_2px": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              }
+            },
+            "A": {
+              "full_image": {
+                "pixels": 4718592,
+                "sse": 1687.3968161108712,
+                "psnr": 39.237164564575046,
+                "patch_lpips": 0.015583920165984545
+              },
+              "near_in_focus": {
+                "pixels": 1138210,
+                "sse": 201.27957378572364,
+                "psnr": 42.295439474633255,
+                "patch_lpips": 0.008639904947441131
+              },
+              "far_recoverable": {
+                "pixels": 66785,
+                "sse": 243.12738311882515,
+                "psnr": 29.15966309411371,
+                "patch_lpips": 0.02937040258634497
+              },
+              "boundary_2px": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              }
+            },
+            "R1_R2": {
+              "full_image": {
+                "pixels": 4718592,
+                "sse": 1885.7319116281737,
+                "psnr": 38.75453731218676,
+                "patch_lpips": 0.01786714623256458
+              },
+              "near_in_focus": {
+                "pixels": 1138210,
+                "sse": 210.30891252103083,
+                "psnr": 42.10485973889614,
+                "patch_lpips": 0.01087979111227813
+              },
+              "far_recoverable": {
+                "pixels": 66785,
+                "sse": 270.289466050894,
+                "psnr": 28.699710646907462,
+                "patch_lpips": 0.03249093553341777
+              },
+              "boundary_2px": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              }
+            },
+            "DrBokeh": {
+              "full_image": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              },
+              "near_in_focus": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              },
+              "far_recoverable": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              },
+              "boundary_2px": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              }
+            },
+            "GT_oracle": {
+              "full_image": {
+                "pixels": 4718592,
+                "sse": 1547.291866692671,
+                "psnr": 39.613614390912396,
+                "patch_lpips": 0.012266677259105031
+              },
+              "near_in_focus": {
+                "pixels": 1138210,
+                "sse": 684.4535556166649,
+                "psnr": 36.979996676824214,
+                "patch_lpips": 0.018193331524833167
+              },
+              "far_recoverable": {
+                "pixels": 66785,
+                "sse": 54.53364590180383,
+                "psnr": 35.651356511760255,
+                "patch_lpips": 0.013107162786300745
+              },
+              "boundary_2px": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              }
+            }
+          }
+        }
+      },
+      "optical_protocol": "P2 f/1.4, GT hidden substitute on and the identical F2 branch off, 64 rays clipped in linear RGB before averaging",
+      "test_cases_used": 0,
+      "seconds": 265.76926131919026,
+      "panels": {
+        "rows": [
+          {
+            "case": "f030-focus0-N1.4",
+            "scene": "development-001-c2e77289a531d9c6",
+            "file": "panels/dev001-f030-focus0-N1.4.jpg",
+            "reason": "固定 · 近焦配对较低 +0.000 dB",
+            "observations": {
+              "subject_pixels": 18174,
+              "depth_inverse_spread": [
+                0.04541311116466987,
+                0.04541311116466987
+              ],
+              "inverse_distance_to_focus": [
+                0.037572863426558696,
+                0.037572863426558696
+              ],
+              "foreground_coc_mae_px": [
+                0.25958477571824734,
+                0.25958477571824734
+              ],
+              "mean_edge_gradient": {
+                "reference": 0.42731794714927673,
+                "start": 0.411851704120636,
+                "current": 0.411851704120636
+              },
+              "interpretation": "Lower inverse-depth spread can indicate flattening; lower distance to focus with greater GT CoC error flags focus drift. Edge gradient is sharpness evidence, not a width measurement."
+            }
+          },
+          {
+            "case": "f030-focus0-N1.4",
+            "scene": "development-006-cfa2a67575eca884",
+            "file": "panels/dev006-f030-focus0-N1.4.jpg",
+            "reason": "固定",
+            "observations": {
+              "subject_pixels": 55240,
+              "depth_inverse_spread": [
+                0.03872991389449604,
+                0.03872991389449604
+              ],
+              "inverse_distance_to_focus": [
+                0.014758719998675196,
+                0.014758719998675196
+              ],
+              "foreground_coc_mae_px": [
+                0.21159766978172181,
+                0.21159766978172181
+              ],
+              "mean_edge_gradient": {
+                "reference": 0.381134033203125,
+                "start": 0.30842873454093933,
+                "current": 0.30842873454093933
+              },
+              "interpretation": "Lower inverse-depth spread can indicate flattening; lower distance to focus with greater GT CoC error flags focus drift. Edge gradient is sharpness evidence, not a width measurement."
+            }
+          },
+          {
+            "case": "f030-focus0-N1.4",
+            "scene": "development-003-8c92e9e93c0ff003",
+            "file": "panels/dev003-f030-focus0-N1.4.jpg",
+            "reason": "固定",
+            "observations": {
+              "subject_pixels": 16417,
+              "depth_inverse_spread": [
+                0.04725583702313393,
+                0.04725583702313393
+              ],
+              "inverse_distance_to_focus": [
+                0.04416884250467273,
+                0.04416884250467273
+              ],
+              "foreground_coc_mae_px": [
+                1.0129636912338045,
+                1.0129636912338045
+              ],
+              "mean_edge_gradient": {
+                "reference": 0.1009993851184845,
+                "start": 0.09772595763206482,
+                "current": 0.09772595763206482
+              },
+              "interpretation": "Lower inverse-depth spread can indicate flattening; lower distance to focus with greater GT CoC error flags focus drift. Edge gradient is sharpness evidence, not a width measurement."
+            }
+          },
+          {
+            "case": "f030-focus0-N1.4",
+            "scene": "development-004-403a5734469f072d",
+            "file": "panels/dev004-f030-focus0-N1.4.jpg",
+            "reason": "固定",
+            "observations": {
+              "subject_pixels": 4716,
+              "depth_inverse_spread": [
+                0.043434444659406095,
+                0.043434444659406095
+              ],
+              "inverse_distance_to_focus": [
+                0.03394878636452259,
+                0.03394878636452259
+              ],
+              "foreground_coc_mae_px": [
+                0.5018191511242748,
+                0.5018191511242748
+              ],
+              "mean_edge_gradient": {
+                "reference": 0.17376308143138885,
+                "start": 0.17934323847293854,
+                "current": 0.17934323847293854
+              },
+              "interpretation": "Lower inverse-depth spread can indicate flattening; lower distance to focus with greater GT CoC error flags focus drift. Edge gradient is sharpness evidence, not a width measurement."
+            }
+          },
+          {
+            "case": "f030-focus1-N1.4",
+            "scene": "development-005-35442efa18790d0a",
+            "file": "panels/dev005-f030-focus1-N1.4.jpg",
+            "reason": "固定",
+            "observations": {
+              "subject_pixels": 19981,
+              "depth_inverse_spread": [
+                0.04922303980182226,
+                0.04922303980182226
+              ],
+              "inverse_distance_to_focus": [
+                0.11575372224821122,
+                0.11575372224821122
+              ],
+              "foreground_coc_mae_px": [
+                1.8975336181646734,
+                1.8975336181646734
+              ],
+              "mean_edge_gradient": {
+                "reference": 0.02849949337542057,
+                "start": 0.21451985836029053,
+                "current": 0.21451985836029053
+              },
+              "interpretation": "Lower inverse-depth spread can indicate flattening; lower distance to focus with greater GT CoC error flags focus drift. Edge gradient is sharpness evidence, not a width measurement."
+            }
+          },
+          {
+            "case": "f030-focus0-N1.4",
+            "scene": "development-008-6feda700c49fc611",
+            "file": "panels/dev008-f030-focus0-N1.4.jpg",
+            "reason": "固定",
+            "observations": {
+              "subject_pixels": 2075,
+              "depth_inverse_spread": [
+                0.17327425257854617,
+                0.17327425257854617
+              ],
+              "inverse_distance_to_focus": [
+                0.13995761881410326,
+                0.13995761881410326
+              ],
+              "foreground_coc_mae_px": [
+                1.9918786840553744,
+                1.9918786840553744
+              ],
+              "mean_edge_gradient": {
+                "reference": 0.2301291972398758,
+                "start": 0.17045678198337555,
+                "current": 0.17045678198337555
+              },
+              "interpretation": "Lower inverse-depth spread can indicate flattening; lower distance to focus with greater GT CoC error flags focus drift. Edge gradient is sharpness evidence, not a width measurement."
+            }
+          },
+          {
+            "case": "f030-focus1-N1.4",
+            "scene": "development-008-6feda700c49fc611",
+            "file": "panels/dev008-f030-focus1-N1.4.jpg",
+            "reason": "固定",
+            "observations": {
+              "subject_pixels": 2072,
+              "depth_inverse_spread": [
+                0.19393810539022815,
+                0.19393810539022815
+              ],
+              "inverse_distance_to_focus": [
+                0.33875184985826784,
+                0.33875184985826784
+              ],
+              "foreground_coc_mae_px": [
+                1.9312224172659822,
+                1.9312224172659822
+              ],
+              "mean_edge_gradient": {
+                "reference": 0.2027461975812912,
+                "start": 0.21343167126178741,
+                "current": 0.21343167126178741
+              },
+              "interpretation": "Lower inverse-depth spread can indicate flattening; lower distance to focus with greater GT CoC error flags focus drift. Edge gradient is sharpness evidence, not a width measurement."
+            }
+          },
+          {
+            "case": "f030-focus1-N1.4",
+            "scene": "development-000-8e840e827a5e835c",
+            "file": "panels/dev000-f030-focus1-N1.4.jpg",
+            "reason": "固定",
+            "observations": {
+              "subject_pixels": 2028,
+              "depth_inverse_spread": [
+                0.07497592500907344,
+                0.07497592500907344
+              ],
+              "inverse_distance_to_focus": [
+                0.2797204389329366,
+                0.2797204389329366
+              ],
+              "foreground_coc_mae_px": [
+                0.5771343842060608,
+                0.5771343842060608
+              ],
+              "mean_edge_gradient": {
+                "reference": 0.15000736713409424,
+                "start": 0.1545673906803131,
+                "current": 0.1545673906803131
+              },
+              "interpretation": "Lower inverse-depth spread can indicate flattening; lower distance to focus with greater GT CoC error flags focus drift. Edge gradient is sharpness evidence, not a width measurement."
+            }
+          },
+          {
+            "case": "f030-N1.4-F5",
+            "scene": "metric-scene-122104-broad",
+            "file": "panels/122104-f030-N1.4-F5.jpg",
+            "reason": "固定",
+            "observations": {
+              "subject_pixels": 9749,
+              "depth_inverse_spread": [
+                0.1854586826607426,
+                0.1854586826607426
+              ],
+              "inverse_distance_to_focus": [
+                0.30457481180620505,
+                0.30457481180620505
+              ],
+              "foreground_coc_mae_px": [
+                2.2609236491424682,
+                2.2609236491424682
+              ],
+              "mean_edge_gradient": {
+                "reference": 0.08163536339998245,
+                "start": 0.1535140573978424,
+                "current": 0.1535140573978424
+              },
+              "interpretation": "Lower inverse-depth spread can indicate flattening; lower distance to focus with greater GT CoC error flags focus drift. Edge gradient is sharpness evidence, not a width measurement."
+            }
+          },
+          {
+            "case": "f030-focus0-N1.4",
+            "scene": "development-000-8e840e827a5e835c",
+            "file": "panels/dev000-f030-focus0-N1.4.jpg",
+            "reason": "近焦配对较低 +0.000 dB",
+            "observations": {
+              "subject_pixels": 3720,
+              "depth_inverse_spread": [
+                0.04532889765760112,
+                0.04532889765760112
+              ],
+              "inverse_distance_to_focus": [
+                0.03325269272837194,
+                0.03325269272837194
+              ],
+              "foreground_coc_mae_px": [
+                0.4503513468209133,
+                0.4503513468209133
+              ],
+              "mean_edge_gradient": {
+                "reference": 0.18121948838233948,
+                "start": 0.17951257526874542,
+                "current": 0.17951257526874542
+              },
+              "interpretation": "Lower inverse-depth spread can indicate flattening; lower distance to focus with greater GT CoC error flags focus drift. Edge gradient is sharpness evidence, not a width measurement."
+            }
+          },
+          {
+            "case": "f030-focus0-N1.4",
+            "scene": "development-013-ce68041af26e6e53",
+            "file": "panels/dev013-f030-focus0-N1.4.jpg",
+            "reason": "近焦配对较高 +0.000 dB",
+            "observations": {
+              "subject_pixels": 118686,
+              "depth_inverse_spread": [
+                0.010607529948985563,
+                0.010607529948985563
+              ],
+              "inverse_distance_to_focus": [
+                0.0066583618009050495,
+                0.0066583618009050495
+              ],
+              "foreground_coc_mae_px": [
+                0.2041577569380903,
+                0.2041577569380903
+              ],
+              "mean_edge_gradient": {
+                "reference": 0.18739840388298035,
+                "start": 0.19845294952392578,
+                "current": 0.19845294952392578
+              },
+              "interpretation": "Lower inverse-depth spread can indicate flattening; lower distance to focus with greater GT CoC error flags focus drift. Edge gradient is sharpness evidence, not a width measurement."
+            }
+          },
+          {
+            "case": "f030-focus0-N1.4",
+            "scene": "development-014-46267e4acd6e6f30",
+            "file": "panels/dev014-f030-focus0-N1.4.jpg",
+            "reason": "近焦配对较高 +0.000 dB",
+            "observations": {
+              "subject_pixels": 288,
+              "depth_inverse_spread": [
+                0.029598398349596777,
+                0.029598398349596777
+              ],
+              "inverse_distance_to_focus": [
+                0.023193544465107116,
+                0.023193544465107116
+              ],
+              "foreground_coc_mae_px": [
+                0.4413492679595947,
+                0.4413492679595947
+              ],
+              "mean_edge_gradient": {
+                "reference": 0.37553444504737854,
+                "start": 0.3754330575466156,
+                "current": 0.3754330575466156
+              },
+              "interpretation": "Lower inverse-depth spread can indicate flattening; lower distance to focus with greater GT CoC error flags focus drift. Edge gradient is sharpness evidence, not a width measurement."
+            }
+          }
+        ],
+        "unavailable": [],
+        "index": "/root/autodl-tmp/route3-stage2-v2-20261123/outputs/route3-v2data-stage3a-2026-11-24-01/evaluation/step-000000/ema/index.html",
+        "observations": "/root/autodl-tmp/route3-stage2-v2-20261123/outputs/route3-v2data-stage3a-2026-11-24-01/evaluation/step-000000/ema/观察清单.md"
+      }
+    }
+  },
+  "sampling": {},
+  "evaluation_seconds": 265.76926131919026,
+  "sources": {
+    "ema": {
+      "path": "/root/autodl-tmp/route3-stage2-v2-20261123/outputs/route3-v2data-stage3a-2026-11-24-01/evaluation/step-000000/ema/report.json",
+      "sha256": "84b6882cfb62cdbed570d52a278ee3154453c0bbd694863790a35afdb1a9e271"
+    }
+  },
+  "summary_path": "/root/autodl-tmp/route3-stage2-v2-20261123/outputs/route3-v2data-stage3a-2026-11-24-01/evaluation/step-000000/汇总.md"
+}
