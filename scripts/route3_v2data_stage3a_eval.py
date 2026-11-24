@@ -27,6 +27,7 @@ from route3_v2data_stage2_train import INITIAL, sample
 from route3_v2data_stage3a import (
     OUT, Placement, checkpoint, checkpoint_model, configuration_for, gpu_setup, parameter_changes,
 )
+from route3_v2data_stage3a_prior_diagnostic import evaluate_prior_residual
 from route3_ovg_subpixel import save_npz
 from src.aperture_renderer import aperture_disk
 from src.c1_bokehme import region_sse
@@ -210,6 +211,9 @@ def evaluate(run,step,weights,*,smoke=False):
     if (output/"report.json").is_file():
         return load(output/"report.json")
     src=checkpoint(run,step) if step else INITIAL
+    diagnostic = None
+    if step == 10000 and configuration.get("version") == 2 and not smoke:
+        diagnostic = evaluate_prior_residual(src,weights,output,configuration["evaluation"]["fixed_cases"])
     net=(checkpoint_model(src,weights) if step else load_paired_checkpoint(src,"ema")).eval()
     place=Placement(run/"dev-hidden-parents")
     model=lpips_model()
@@ -268,11 +272,13 @@ def evaluate(run,step,weights,*,smoke=False):
         test_cases_used=0,seconds=time.monotonic()-began)
     if step:
         payload["parameter_changes"] = parameter_changes(src,weights,configuration)
+    if diagnostic is not None:
+        payload["thin_prior_residual"] = diagnostic
     write_json(output/"cases.json",rows)
     if not smoke:
         from route3_v2data_stage3a_panels import panels
         payload["panels"]=panels(output,start_dir if step else output,rows,development,
-                                 configuration["evaluation"]["fixed_cases"])
+                                 configuration["evaluation"]["fixed_cases"],diagnostic=diagnostic)
     write_json(output/"report.json",payload)
     return payload
 

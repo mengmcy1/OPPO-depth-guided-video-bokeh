@@ -13,6 +13,7 @@ from route3_v2data_B_batch import ROOT, sha256, write_json
 from route3_v2data_B_plan import load
 from route3_v2data_stage2_train import now
 from route3_v2data_stage3a import CHECKPOINTS, INITIAL, OUT, checkpoint, configuration_for, crop_statistics, read_checkpoint
+from route3_v2data_stage3a_prior_diagnostic import diagnostic_markdown
 
 RECORDS = ROOT/"03_实验记录/records"
 PROGRESS = RECORDS.parent/"当前实验进度与方法论.md"
@@ -176,6 +177,9 @@ def write_summary(folder,payload):
                 rel=value["relative_l2"]
                 rows.append(f"| geometry row {name} | {value['delta_l2']:.6g} | {fmt(100*rel,5) + '%' if rel is not None else '—'} |")
             rows.append("")
+        diagnostic = data.get("thin_prior_residual")
+        if diagnostic:
+            rows.extend(diagnostic_markdown(diagnostic))
         rows.extend(["## 新开发集外部基线 · f/1.4","",
                      "| 方法 | 近焦合并 / 中位 | 远焦合并 / 中位 |",
                      "|---|---:|---:|"])
@@ -242,6 +246,8 @@ def node(run,step,all_ema):
     note=(f"EMA 新开发集近焦／远焦 {n:.3f}／{f:.3f} dB，"
           f"相对 A 配对中位 {a['near_in_focus']['median_db']:+.3f}／{a['far_recoverable']['median_db']:+.3f} dB。"
           f"几何护栏{'通过' if q['geometry'] else '超限'}，零光圈{'两项过线' if all(q['zero'].values()) else '有未过线项'}。")
+    if ema.get("thin_prior_residual"):
+        note+="固定细结构帧的框内背景和前景逆深度、先验及残差分布已写入汇总与观察清单。"
     if terminal:
         note+=f"采用{'训练后几何' if payload['adoption']['selected']=='trained' else '起点几何'}。"
     local=folder/"milestone.json"

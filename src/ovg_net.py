@@ -55,15 +55,19 @@ def select_prior(priors, confidence, logits):
     return base,weights
 
 
-def protect_inverse_depth(fused, final, priors, confidence):
-    """Attenuate the entire correction using input confidence and agreement."""
+def residual_attenuation(priors, confidence):
+    """Input-only multiplier of the combined inverse-depth correction."""
     available = (confidence > 0) & torch.isfinite(priors) & (priors > 0)
     inverse = torch.where(available, priors.clamp_min(1e-8).reciprocal(), 0.)
     depth_splat = inverse[:, 1:2]
     relative = (inverse - depth_splat).abs() / depth_splat.clamp_min(1e-8)
     agreement = (available & (relative <= .03)).sum(1) >= 2
     trusted = available[:, 1] & (confidence[:, 1] >= .6)
-    attenuation = torch.where(trusted, torch.where(agreement, .05, .20), 1.)
+    return torch.where(trusted, torch.where(agreement, .05, .20), 1.)
+
+
+def protect_inverse_depth(fused, final, priors, confidence):
+    attenuation = residual_attenuation(priors, confidence)
     return fused + attenuation * (final - fused)
 
 

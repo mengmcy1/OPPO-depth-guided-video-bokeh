@@ -9,6 +9,7 @@ from PIL import Image, ImageDraw
 import route3_v2data_stage1_visualize as gallery
 from route3_v2data_baseline_dev3_extended_report import box_for
 from route3_v2data_B_batch import write_json
+from route3_v2data_stage3a_prior_diagnostic import diagnostic_markdown
 
 
 def short(name):
@@ -63,7 +64,7 @@ def diagnostics(new,old,focus,previous):
     )
 
 
-def draw(path,row,previous,new,old,old_focus):
+def draw(path,row,previous,new,old,old_focus,diagnostic=None):
     tile,gap,left=235,10,12
     cells=[("输入 RGB",new["input"]),("LDR 参考",new["truth"]),("当前 F2",new["f2"]),
            ("当前 GT 替身",new["current"]),("起点 GT 替身",old["current"])]
@@ -71,7 +72,8 @@ def draw(path,row,previous,new,old,old_focus):
     boxes=(box_for(new["current"],truth,new["boundary"]),
            box_for(new["current"],truth,new["near_or_far"] & ~new["boundary"]))
     labels=["全图","边界放大","分区放大","显示 RGB 绝对误差","零光圈绝对误差","前层深度","前景 CoC 误差"]
-    pic=Image.new("RGB",(left*2+5*(tile+gap)-gap,80+len(labels)*(tile+29)),(18,23,31))
+    total = len(cells) + (2 if diagnostic is not None else 0)
+    pic=Image.new("RGB",(left*2+total*(tile+gap)-gap,80+len(labels)*(tile+29)),(18,23,31))
     d=ImageDraw.Draw(pic)
     d.text((left,6),f'{row["scene"]} · {row["case"]}',font=gallery.font(22),fill="white")
     d.text((left,34),f'P2 对焦距离 · 当前 {row["focus_m"]:.3f} m · 起点 {old_focus:.3f} m',
@@ -95,6 +97,10 @@ def draw(path,row,previous,new,old,old_focus):
             p=ImageDraw.Draw(full)
             for box,color in zip(boxes,((255,148,70),(70,216,219))):
                 p.rectangle(box,outline=color,width=2)
+            if diagnostic is not None:
+                for box in diagnostic["bounding_boxes"]:
+                    y0,x0,y1,x1 = box["yxyx_exclusive"]
+                    p.rectangle((x0,y0,x1-1,y1-1),outline=(236,98,238),width=2)
         abs_error=np.abs(data.astype(np.float32)-truth).mean(-1)
         pictures=[full, *(source.crop(box) for box in boxes),
                   gallery.scalar_image(abs_error,.25,cv2.COLORMAP_INFERNO)]
@@ -108,10 +114,22 @@ def draw(path,row,previous,new,old,old_focus):
             if layer is not None:
                 y=88+j*(tile+29)
                 pic.paste(layer.resize((tile,tile),Image.Resampling.NEAREST if j in (1,2) else Image.Resampling.BOX),(x,y))
+    if diagnostic is not None:
+        maps = diagnostic["maps"]
+        with np.load(maps) as arr:
+            extra = [
+                (f"先验融合深度 · 0–{top:.1f} m",gallery.scalar_image(arr["fused_depth"],top,cv2.COLORMAP_VIRIDIS)),
+                ("残差衰减系数 · 0–1",gallery.scalar_image(arr["attenuation"],1.,cv2.COLORMAP_VIRIDIS)),
+            ]
+        for i,(name,layer) in enumerate(extra,len(cells)):
+            x=left+i*(tile+gap)
+            d.text((x,52),name,font=gallery.font(14),fill="white")
+            for j,part in enumerate((layer,*(layer.crop(box) for box in boxes))):
+                pic.paste(part.resize((tile,tile),Image.Resampling.NEAREST),(x,88+j*(tile+29)))
     pic.save(path,quality=94,subsampling=0)
 
 
-def panels(output,start_dir,rows,development,fixed):
+def panels(output,start_dir,rows,development,fixed,*,diagnostic=None):
     start = json.loads((start_dir/"cases.json").read_text())
     start_rows = {(r["scene"],r["case"]):r for block in start.values() for r in block if r.get("artifact")}
     selection,unavailable=review_rows(rows,development,fixed)
@@ -131,9 +149,14 @@ def panels(output,start_dir,rows,development,fixed):
             unavailable.append(dict(scene=key[0],case=key[1],reason="no matched start image"))
             continue
         name=f"{short(row['scene'])}-{row['case']}.jpg"
+        view = None
+        if diagnostic is not None and (short(row["scene"]),row["frame"],row["focus_index"]) in map(tuple,fixed):
+            data = diagnostic["frames"].get(f'{short(row["scene"])}-f{row["frame"]:03d}')
+            if data is not None:
+                view = dict(bounding_boxes=data["bounding_boxes"],maps=output/data["artifact"])
         with np.load(output/row["artifact"]) as new, np.load(start_dir/previous["artifact"]) as old:
             stats=diagnostics(new,old,row["focus_m"],previous["focus_m"])
-            draw(folder/name,row,previous,new,old,previous["focus_m"])
+            draw(folder/name,row,previous,new,old,previous["focus_m"],view)
         results.append(dict(case=row["case"],scene=row["scene"],file=f"panels/{name}",reason=label,observations=stats))
         def values(key):
             return " / ".join("—" if v is None else f"{v:.4f}" for v in stats[key])
@@ -145,6 +168,9 @@ def panels(output,start_dir,rows,development,fixed):
                          "全图与同框放大用于核对光晕、裂缝和过锐边缘。",""])
         html.append(f'<figure><a href="panels/{escape(name)}"><img src="panels/{escape(name)}" '
                     f'loading="lazy" width="100%"></a><figcaption>{escape(name)} · {escape(label)}</figcaption></figure>')
+    if diagnostic is not None:
+        markdown.extend(diagnostic_markdown(diagnostic))
+        html.insert(2,'<p>固定细结构帧的 GT 洋红框用于选取框内背景，新增融合深度与衰减系数图。</p>')
     (output/"index.html").write_text("\n".join(html)+"\n")
     (output/"观察清单.md").write_text("\n".join(markdown)+"\n")
     summary=dict(rows=results,unavailable=unavailable,index=str(output/"index.html"),observations=str(output/"观察清单.md"))
