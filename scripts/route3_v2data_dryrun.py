@@ -45,7 +45,7 @@ def balanced_count(valid, boundary, cap):
 
 
 def stage_objective(net, inventory, item, stage, generator, *, spec=None, audit_k16=False,
-                    audit_transmission=False, b_occ_mode=B_OCC_MODE):
+                    audit_transmission=False, b_occ_mode=B_OCC_MODE, stage3_place=None):
     """Use native K16 for occlusion and an optional optical target for Bokeh."""
     tier = item[0]
     device = next(net.parameters()).device
@@ -65,7 +65,7 @@ def stage_objective(net, inventory, item, stage, generator, *, spec=None, audit_
         sampling = CONFIG['boundary_sampling']
         _, terms, support = geometry_loss(
             pred, x, y, weights, boundary_sampling=sampling, generator=generator,
-            alpha_split_weights=CONFIG['alpha_interior_boundary_weights'] if stage=='1b' else None)
+            alpha_split_weights=CONFIG['alpha_interior_boundary_weights'] if stage!='1a' else None)
         boundary = y['depth_boundary']
         cap = sampling[0]
         counts.update(disp=balanced_count(y['valid'],boundary,cap),
@@ -130,12 +130,18 @@ def stage_objective(net, inventory, item, stage, generator, *, spec=None, audit_
                                       sparse=sparse,sample_scale=sample_scale)
         counts.update(occ_reveal=int(reveal.sum()),occ_block=int(block.sum()))
         counts['occ'] = counts['occ_reveal']+counts['occ_block']
-        hidden, placed = hidden_substitute(occupancy_spec,rays,reference,pred['depth1'][0],K)
-        counts.update(hidden_eligible=placed['eligible'],hidden_placed=placed['placed'])
+        if stage != '3a':
+            hidden, placed = hidden_substitute(occupancy_spec,rays,reference,pred['depth1'][0],K)
+            counts.update(hidden_eligible=placed['eligible'],hidden_placed=placed['placed'])
         if audit_k16:
             audit_rng = torch.Generator(device=device).manual_seed(8)
             _, _, full_reveal, full_block = occupancy(rays,batch[1],occ_shape,audit_rng,len(rays['depth']))
             counts.update(all_K16_occ_block=int(full_block.sum()),all_K16_occ_reveal=int(full_reveal.sum()))
+    if stage == '3a' and tier == 'B' and spec:
+        with torch.no_grad():
+            hidden, placed = stage3_place(spec,reference,pred["depth1"][0].detach(),K)
+        counts.update(hidden_eligible=placed["eligible"],hidden_placed=placed["placed"],
+                      hidden_has_grad=any(v.requires_grad for v in vars(hidden).values()) if hidden is not None else False)
     combined = merge_layers(visible,hidden)
     zero = raster(combined,K,focus,center,*shape,observed_background(spec,x,focus,center))[0]
     if common.shape != shape:
@@ -155,7 +161,9 @@ def stage_objective(net, inventory, item, stage, generator, *, spec=None, audit_
             def ray(means, scales, aperture, fill):
                 scene = replace(combined,means=means,scales=scales)
                 value = raster(scene,K,focus,aperture,*shape,fill,return_alpha=audit_transmission)
-                return (value[0][0],value[1][0]) if audit_transmission else value[0]
+                if audit_transmission:
+                    return value[0][0],value[1][0]
+                return value[0].clamp(0,1) if stage=='3a' else value[0]
             values = [checkpoint(ray,combined.means,combined.scales,offsets[j:j+1],
                                  None if background is None else background[j:j+1],use_reentrant=False)
                       for j in range(len(offsets))]

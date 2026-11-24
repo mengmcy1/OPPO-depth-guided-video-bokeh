@@ -1,0 +1,181 @@
+{
+  "created_at": "2026-11-24T18:32:17+08:00",
+  "scheme": "13.17.3 and 13.17.4.1",
+  "stage": "3a",
+  "run": "/root/autodl-tmp/route3-stage2-v2-20261123/outputs/route3-v2data-stage3a-2026-11-24-01",
+  "geometry": {
+    "checkpoint": "/root/autodl-tmp/route3-stage1-pair-20261122/outputs/route3-v2data-stage1-2026-11-22-01/1b/same-surface/checkpoints/step-030000.pt",
+    "sha256": "dfb1d7e52eb67fb756186b252312aee3b136096e3835cbcaf60f5d8250e1c220",
+    "weights": "ema",
+    "split": "b ≡ 0",
+    "renderer": "V0, fixed camera-facing 5×5 per-pixel surfels, opacity .999"
+  },
+  "query": {
+    "checkpoint": "/root/autodl-tmp/route3-query-v2-20261123/outputs/route3-query-v2-20261123/train/step-020000.pt",
+    "sha256": "1c19181f296f858a4ff6a6efcb75f8839a3b1a0d066ac7fb744bc7b72486e300",
+    "frozen": true,
+    "loaded_in_3a": false
+  },
+  "hidden": {
+    "tiers": [
+      "B optical"
+    ],
+    "implementation": "hidden_substitute → place",
+    "policy": "Use GT recoverable surface points and input witness RGB. Cache only fixed parent samples. Recompute local disparity fit and footprint order every step under no_grad with detached current front depth, without passing labels to the network.",
+    "other_tiers": "Visible only; C can retain its existing analytic LDR optical batches and K16 supervision.",
+    "evaluation_legacy": "Archived GT recoverable parents and the same detached place()."
+  },
+  "parameter_groups": {
+    "front_inverse_depth_residual": {
+      "tensors": [
+        "geometry.weight",
+        "geometry.bias"
+      ],
+      "active_output_row": 0,
+      "elements": 65
+    },
+    "multiview_residual_gate": {
+      "tensors": [
+        "geometry.weight",
+        "geometry.bias"
+      ],
+      "active_output_row": 5,
+      "elements": 65
+    }
+  },
+  "frozen": "All other rows of the geometry head (rear offset and normal), encoder, all feature blocks, learned prior selector, coverage and footprint modules. The input-derived total residual attenuation remains fixed.",
+  "loss_weights": {
+    "bokeh": 1.0,
+    "disp": 0.00025,
+    "bimodal": 6.25e-05,
+    "alpha": 0.000125,
+    "mv": 1.25e-05,
+    "occ": 0.00025,
+    "same_surface": 0.005,
+    "zero": 0.025
+  },
+  "weights_reason": "Raise optical emphasis relative to Stage 1. The supervised geometry and same-surface weights share a 1/4000 multiplier; the old C dry run measured mean raw disp and bokeh gradient norms 13.20 and 0.0060. Keep larger relative occ/zero regularizers. Unchanged coverage is still logged.",
+  "optical": {
+    "reference": "13.15.5 per-ray clipped linear RGB LDR",
+    "training_resolution_limit": 256,
+    "estimator": "Independent stratified pupil-subset cross product, 8+8 rays. Clip each predicted ray before averaging.",
+    "occ_B_resolution": 512,
+    "occ_rays": 4,
+    "eval_rays": 64
+  },
+  "data": {
+    "batch_percent": {
+      "B": 50,
+      "C": 30,
+      "R": 10,
+      "G": 10
+    },
+    "batch_scenes": 1,
+    "seed": 20261118,
+    "B_optical_start": 126,
+    "B_hard_at_start": 75,
+    "hard_selection": "Weight 2 for completed hard milestone scenes, weight 1 for other complete scenes. Suppress the foreground-focus priority for imported foregrounds below 1% as in 13.15.8.",
+    "refresh_steps": 500,
+    "B_usage_keys": [
+      "scene_id",
+      "frame",
+      "focus_index",
+      "fstop"
+    ],
+    "final_stage_full_window_target_draws_per_scene": 20,
+    "test_cases_used": 0,
+    "inventory_slots": {
+      "B": 3835,
+      "C": 36000,
+      "R": 1880,
+      "G": 17560
+    }
+  },
+  "training": {
+    "steps": 20000,
+    "learning_rate": 1e-05,
+    "optimizer": "AdamW with weight decay 0 for row freezing",
+    "gradient_clip": 5.0,
+    "ema_decay": 0.999,
+    "checkpoint_steps": [
+      5000,
+      10000,
+      15000,
+      20000
+    ],
+    "eval_steps": [
+      0,
+      5000,
+      10000,
+      15000,
+      20000
+    ],
+    "eval_aperture": 1.4,
+    "evaluate_ema_every_node": true,
+    "raw_at_terminal": true,
+    "max_process_gpu_gib": 14,
+    "rationale": "One-tenth of Stage 1 LR for a two-row geometry fine-tune; evaluate P2 f/1.4 on the benchmark's main masks."
+  },
+  "evaluation": {
+    "fixed_cases": [
+      [
+        "dev001",
+        30,
+        0
+      ],
+      [
+        "dev006",
+        30,
+        0
+      ],
+      [
+        "dev003",
+        30,
+        0
+      ],
+      [
+        "dev004",
+        30,
+        0
+      ],
+      [
+        "dev005",
+        30,
+        1
+      ],
+      [
+        "dev008",
+        30,
+        0
+      ],
+      [
+        "dev008",
+        30,
+        1
+      ],
+      [
+        "dev000",
+        30,
+        1
+      ],
+      [
+        "122104",
+        30,
+        1
+      ]
+    ],
+    "extra_scene_selection": "Top and bottom two paired near-focus scene deltas; f030 near with evaluated fallback frame",
+    "relative_geometry_limits": {
+      "inverse_depth_rmse": 0.05,
+      "same_surface_step": 0.1,
+      "near_subject_coc_mae": 0.1,
+      "GT_occlusion_crossing_abs_p95": 0.1
+    },
+    "zero_floors_db": {
+      "zero_visible": 50.0,
+      "zero_combined": 60.0
+    },
+    "selection": "Among EMA checkpoints satisfying all geometry and zero floors, maximize the new development near-focus pooled PSNR (earlier step wins ties). Adopt only if that checkpoint also has nonnegative paired near and far medians against step 0 with the same GT substitute and V0.",
+    "pair_tie_threshold_db": 0.0
+  }
+}

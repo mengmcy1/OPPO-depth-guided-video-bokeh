@@ -85,7 +85,7 @@ def witness_colors(points, witness, intrinsics, poses, image):
     return rgb, kept
 
 
-def hidden_substitute(spec, rays, reference, visible_z, K):
+def hidden_parents(spec, rays, reference):
     use = rays['recoverable']
     if spec['tiers'] == 'B':
         unit = spec['unit']
@@ -113,7 +113,7 @@ def hidden_substitute(spec, rays, reference, visible_z, K):
             src = cv2.imread(str(ROOT/rows[index]['image']))
             return legacy.srgb_to_linear(src[...,::-1].astype(np.float32)/255)
     if not use.any():
-        return None, dict(eligible=0, placed=0)
+        return None
     h,w = reference['gt'].shape
     uv, depth = project(points,poses[frame],intrinsics[frame])
     good = (depth>0)&(uv[:,0]>=0)&(uv[:,0]<w)&(uv[:,1]>=0)&(uv[:,1]<h)&(witness>=0)&(witness<len(poses))
@@ -123,8 +123,16 @@ def hidden_substitute(spec, rays, reference, visible_z, K):
     packed = np.stack((pixel[:,0],pixel[:,1],ids),axis=-1)
     unique = np.flatnonzero(good)[np.unique(packed,axis=0,return_index=True)[1]]
     colors, visible = witness_colors(points[unique],witness[unique],intrinsics,poses,image)
-    parents = dict(uv=uv[unique].astype(np.float32),depth=depth[unique].astype(np.float32),
-                   recoverable=visible,colors_linear=colors)
+    return dict(uv=uv[unique].astype(np.float32),depth=depth[unique].astype(np.float32),
+                recoverable=visible,colors_linear=colors)
+
+
+def hidden_substitute(spec, rays, reference, visible_z, K, *, parents=None):
+    if parents is None:
+        parents = hidden_parents(spec, rays, reference)
+        if parents is None:
+            return None, dict(eligible=0, placed=0)
+    h,w = reference["gt"].shape
     background = reference['valid'] & ~np.isin(reference['object_id'],reference['foreground'])
     return place(parents, reference['gt'], background, visible_z, K, w)
 
