@@ -10,7 +10,6 @@ import route3_ovg_data as ovg
 import route3_v2data_stage1_visualize as gallery
 from route3_ldr_u1r import model as lpips_model
 from route3_ovg_1b_optical_data import b_oracle, place
-from route3_ovg_1b_train import load_model
 from route3_upper_bound_evaluate import score
 from route3_v2data_baseline_dev3_extended_report import (
     REGIONS, group_regions, pooled, percentile,
@@ -25,7 +24,7 @@ from route3_v2data_stage2_eval import (
     bands, f2_for, frames, legacy_masks, geometry_root, optical_target,
 )
 from route3_v2data_stage2_train import INITIAL, sample
-from route3_v2data_stage3a import OUT, RECORD, Placement, checkpoint, gpu_setup
+from route3_v2data_stage3a import OUT, RECORD, Placement, checkpoint, checkpoint_model, gpu_setup
 from route3_ovg_subpixel import save_npz
 from src.aperture_renderer import aperture_disk
 from src.c1_bokehme import region_sse
@@ -209,7 +208,7 @@ def evaluate(run,step,weights,*,smoke=False):
     if (output/"report.json").is_file():
         return load(output/"report.json")
     src=checkpoint(run,step) if step else INITIAL
-    net=(load_model(src,key=weights) if step else load_paired_checkpoint(src,"ema")).eval()
+    net=(checkpoint_model(src,weights) if step else load_paired_checkpoint(src,"ema")).eval()
     place=Placement(run/"dev-hidden-parents")
     model=lpips_model()
     torch.set_num_threads(3)

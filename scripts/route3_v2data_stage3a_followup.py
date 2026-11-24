@@ -12,7 +12,7 @@ import psutil
 from route3_v2data_B_batch import ROOT, sha256, write_json
 from route3_v2data_B_plan import load
 from route3_v2data_stage2_train import now
-from route3_v2data_stage3a import CHECKPOINTS, INITIAL, OUT, RECORD, checkpoint
+from route3_v2data_stage3a import CHECKPOINTS, INITIAL, OUT, checkpoint, read_checkpoint
 
 RECORDS = ROOT/"03_实验记录/records"
 PROGRESS = RECORDS.parent/"当前实验进度与方法论.md"
@@ -182,8 +182,7 @@ def write_summary(folder,payload):
 def training_sample_counts(run,step):
     if not step:
         return {}
-    import torch
-    ck=torch.load(checkpoint(run,step),weights_only=True,map_location="cpu")
+    ck=read_checkpoint(checkpoint(run,step))
     cases=ck["optical_sampling"]
     scene_counts=defaultdict(int)
     for id,n in cases.items():

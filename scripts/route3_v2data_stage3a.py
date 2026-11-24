@@ -11,6 +11,7 @@ import time
 
 import cv2
 import numpy as np
+from numpy.core.multiarray import scalar as numpy_scalar
 import torch
 
 from route3_ovg_1b_common import CONFIG as STAGE1
@@ -232,6 +233,22 @@ def checkpoint(run, step):
     return run/"checkpoints"/f"step-{step:06d}.pt"
 
 
+def checkpoint_types():
+    # The live run was launched with NumPy strings in its draw counters.
+    # Permit just these scalar types for its own Stage 3a checkpoints.
+    return torch.serialization.safe_globals([numpy_scalar,np.dtype,np.dtypes.StrDType,np.str_])
+
+
+def read_checkpoint(path):
+    with checkpoint_types():
+        return torch.load(path,weights_only=True,map_location="cpu")
+
+
+def checkpoint_model(path,key):
+    with checkpoint_types():
+        return load_model(path,key=key)
+
+
 def save_checkpoint(path, net, ema, opt, counts, sampled, seconds, config_hash):
     if path.is_file():
         raise FileExistsError(path)
@@ -240,7 +257,8 @@ def save_checkpoint(path, net, ema, opt, counts, sampled, seconds, config_hash):
     model = state(net)
     shadow = dict(model,**{k:v.detach().cpu() for k,v in ema.items()})
     torch.save(dict(phase="3a",step=int(path.stem[5:]),model=model,ema=shadow,optimizer=opt.state_dict(),
-                    counts=dict(counts),optical_sampling=dict(sampled),seconds=seconds,config_sha256=config_hash),temp)
+                    counts={str(k):v for k,v in counts.items()},optical_sampling=dict(sampled),
+                    seconds=seconds,config_sha256=config_hash),temp)
     temp.replace(path)
 
 
@@ -259,10 +277,10 @@ def train(run):
         inventory = TrainingData()
         placer = Placement(run/"hidden-parents")
         existing = sorted((run/"checkpoints").glob("step-*.pt"))
-        saved = torch.load(existing[-1],map_location="cpu",weights_only=True) if existing else None
+        saved = read_checkpoint(existing[-1]) if existing else None
         if saved and saved["config_sha256"]!=digest:
             raise ValueError("Checkpoint configuration changed")
-        net = load_model(existing[-1],key="model") if saved else load_paired_checkpoint(INITIAL,"ema")
+        net = checkpoint_model(existing[-1],"model") if saved else load_paired_checkpoint(INITIAL,"ema")
         tensors = trainable_geometry(net)
         opt = torch.optim.AdamW(tensors,lr=cfg["training"]["learning_rate"],weight_decay=0.)
         ema = {name:p.detach().clone() for name,p in net.named_parameters() if p.requires_grad}
@@ -290,7 +308,7 @@ def train(run):
                 if step%interval==1:
                     verify_disk(run)
                     pool=reference(run,inventory,step,interval)
-                tier = schedule[step-1]
+                tier = str(schedule[step-1])
                 rng = np.random.default_rng([SEED,3,step])
                 item,spec=choose_item(inventory,tier,pool,rng)
                 pixel_rng=torch.Generator(device="cuda").manual_seed(int(rng.integers(2**32)))
