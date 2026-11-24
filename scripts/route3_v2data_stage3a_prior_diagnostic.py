@@ -57,6 +57,15 @@ def gt_regions(reference, ids):
     return {"gap_background": gaps, "foreground": front}, boxes
 
 
+def thin_regions(slug, unit, reference):
+    ids = thin_surface_ids(unit)
+    if slug == "dev008" or (not ids and load(unit/"scene-spec.json")["category"] == "thin_structure"):
+        ids = reference["foreground"]
+    if len(ids) == 0:
+        raise ValueError(f"Missing designated foreground labels for {unit.name}")
+    return gt_regions(reference, ids)
+
+
 def inputs(unit, frame):
     item = ("B", unit.name, ovg.TRAIN_FRAMES.index(frame))
     return sample(item)[0]
@@ -78,12 +87,7 @@ def scene_data(net, case, initial, output):
     prior_valid = (prior_conf > 0) & np.isfinite(prior_z) & (prior_z > 0)
     priors = np.where(prior_valid, 1 / prior_z.clip(min=.05), np.nan)
     reference = ovg.b_foreground_reference(unit.name, frame)
-    ids = thin_surface_ids(unit)
-    if slug == "dev008" or (not ids and load(unit/"scene-spec.json")["category"] == "thin_structure"):
-        ids = reference["foreground"]
-    if len(ids) == 0:
-        raise ValueError(f"Missing designated foreground labels for {unit.name}")
-    masks, boxes = gt_regions(reference, ids)
+    masks, boxes = thin_regions(slug,unit,reference)
     gt = np.divide(1., reference["gt"], where=reference["gt"] > 0,
                    out=np.zeros(reference["gt"].shape, dtype=np.float32), dtype=np.float32)
     fused = 1 / fused_depth

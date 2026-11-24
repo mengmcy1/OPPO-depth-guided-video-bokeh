@@ -266,6 +266,11 @@ def evaluate(run,step,weights,*,smoke=False):
     if not smoke:
         development["paired_vs_A"]={k:pair_vs_A(development["metrics"],external["summaries"]["f1.4"],k)
                                     for k in ("near_in_focus","far_recoverable")}
+    fixed = configuration["evaluation"]["fixed_cases"]
+    comparison = None
+    if step == 20000 and weights == "ema" and configuration.get("version") == 2 and not smoke:
+        from route3_v2data_stage3a_prior_compare import evaluate_prior_comparison
+        comparison = evaluate_prior_comparison(net,place,output,fixed,rows["development"],start["development"])
     payload=dict(step=step,weights=weights,checkpoint=str(src),sha256=sha256(src),
         report=report,external_baselines=baseline["summaries"]["f1.4"],legacy_baselines=baseline["legacy"],
         optical_protocol="P2 f/1.4, GT hidden substitute on and the identical F2 branch off, 64 rays clipped in linear RGB before averaging",
@@ -274,11 +279,13 @@ def evaluate(run,step,weights,*,smoke=False):
         payload["parameter_changes"] = parameter_changes(src,weights,configuration)
     if diagnostic is not None:
         payload["thin_prior_residual"] = diagnostic
+    if comparison is not None:
+        payload["prior_comparison"] = comparison
     write_json(output/"cases.json",rows)
     if not smoke:
         from route3_v2data_stage3a_panels import panels
         payload["panels"]=panels(output,start_dir if step else output,rows,development,
-                                 configuration["evaluation"]["fixed_cases"],diagnostic=diagnostic)
+                                 fixed,diagnostic=diagnostic,comparison=comparison)
     write_json(output/"report.json",payload)
     return payload
 

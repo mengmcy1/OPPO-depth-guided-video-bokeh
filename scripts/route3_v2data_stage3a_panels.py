@@ -9,6 +9,7 @@ from PIL import Image, ImageDraw
 import route3_v2data_stage1_visualize as gallery
 from route3_v2data_baseline_dev3_extended_report import box_for
 from route3_v2data_B_batch import write_json
+from route3_v2data_stage3a_prior_compare import PANEL_PRIORS, LABELS as PRIOR_LABELS, comparison_markdown
 from route3_v2data_stage3a_prior_diagnostic import diagnostic_markdown
 
 
@@ -64,7 +65,7 @@ def diagnostics(new,old,focus,previous):
     )
 
 
-def draw(path,row,previous,new,old,old_focus,diagnostic=None):
+def draw(path,row,previous,new,old,old_focus,diagnostic=None,*,comparison=None):
     tile,gap,left=235,10,12
     cells=[("输入 RGB",new["input"]),("LDR 参考",new["truth"]),("当前 F2",new["f2"]),
            ("当前 GT 替身",new["current"]),("起点 GT 替身",old["current"])]
@@ -73,7 +74,9 @@ def draw(path,row,previous,new,old,old_focus,diagnostic=None):
            box_for(new["current"],truth,new["near_or_far"] & ~new["boundary"]))
     labels=["全图","边界放大","分区放大","显示 RGB 绝对误差","零光圈绝对误差","前层深度","前景 CoC 误差"]
     total = len(cells) + (2 if diagnostic is not None else 0)
-    pic=Image.new("RGB",(left*2+total*(tile+gap)-gap,80+len(labels)*(tile+29)),(18,23,31))
+    height = 80+len(labels)*(tile+29)
+    extra_height = 2*tile+58 if comparison is not None else 0
+    pic=Image.new("RGB",(left*2+total*(tile+gap)-gap,height+extra_height),(18,23,31))
     d=ImageDraw.Draw(pic)
     d.text((left,6),f'{row["scene"]} · {row["case"]}',font=gallery.font(22),fill="white")
     d.text((left,34),f'P2 对焦距离 · 当前 {row["focus_m"]:.3f} m · 起点 {old_focus:.3f} m',
@@ -126,16 +129,33 @@ def draw(path,row,previous,new,old,old_focus,diagnostic=None):
             d.text((x,52),name,font=gallery.font(14),fill="white")
             for j,part in enumerate((layer,*(layer.crop(box) for box in boxes))):
                 pic.paste(part.resize((tile,tile),Image.Resampling.NEAREST),(x,88+j*(tile+29)))
+    if comparison is not None:
+        d.text((left,height),f"先验对照 · 上层深度 0–{top:.1f} m · 下层光学渲染",
+               font=gallery.font(16),fill=(196,205,220))
+        with np.load(comparison["maps"]) as maps:
+            for i,method in enumerate((*PANEL_PRIORS,"endpoint")):
+                depth = new["depth"] if method=="endpoint" else maps[method+"_depth"]
+                rgb = new["current"] if method=="endpoint" else maps[method+"_rgb"]
+                score = comparison["scores"][method]
+                x = left+i*(tile+gap)
+                psnr = f'{score["psnr"]:.2f} dB' if score["psnr"] is not None else "—"
+                d.text((x,height+23),f'{PRIOR_LABELS[method]} · {psnr} · {score["focus_m"]:.2f} m',
+                       font=gallery.font(13),fill="white")
+                depth_tile = gallery.scalar_image(depth,top,cv2.COLORMAP_VIRIDIS)
+                rgb_tile = gallery.rgb_image(rgb.astype(np.float32))
+                pic.paste(depth_tile.resize((tile,tile),Image.Resampling.NEAREST),(x,height+43))
+                pic.paste(rgb_tile.resize((tile,tile),Image.Resampling.BOX),(x,height+tile+49))
     pic.save(path,quality=94,subsampling=0)
 
 
-def panels(output,start_dir,rows,development,fixed,*,diagnostic=None):
+def panels(output,start_dir,rows,development,fixed,*,diagnostic=None,comparison=None):
     start = json.loads((start_dir/"cases.json").read_text())
     start_rows = {(r["scene"],r["case"]):r for block in start.values() for r in block if r.get("artifact")}
     selection,unavailable=review_rows(rows,development,fixed)
     folder=output/"panels"
     folder.mkdir(exist_ok=True)
     results=[]
+    prior_cases = {(r["scene"],r["case"]):r["methods"] for r in comparison["cases"]} if comparison else {}
     html=['<!doctype html><meta charset="utf-8"><title>阶段 3a 对照图</title>',
           '<h1>阶段 3a 对照图</h1><p>光学误差色标 0–0.25，零光圈 0–0.05，CoC 0–2 px。</p>']
     markdown=["# 阶段 3a 图像观察清单","",
@@ -150,14 +170,22 @@ def panels(output,start_dir,rows,development,fixed,*,diagnostic=None):
             continue
         name=f"{short(row['scene'])}-{row['case']}.jpg"
         view = None
+        prior_view = None
         if diagnostic is not None and (short(row["scene"]),row["frame"],row["focus_index"]) in map(tuple,fixed):
             data = diagnostic["frames"].get(f'{short(row["scene"])}-f{row["frame"]:03d}')
             if data is not None:
                 view = dict(bounding_boxes=data["bounding_boxes"],maps=output/data["artifact"])
+        if comparison is not None:
+            slug = short(row["scene"])
+            prior_maps = comparison["panel_artifacts"].get(f'{slug}/{row["case"]}')
+            if prior_maps is not None:
+                prior_view = dict(maps=output/prior_maps,scores=prior_cases[(slug,row["case"])])
         with np.load(output/row["artifact"]) as new, np.load(start_dir/previous["artifact"]) as old:
             stats=diagnostics(new,old,row["focus_m"],previous["focus_m"])
-            draw(folder/name,row,previous,new,old,previous["focus_m"],view)
+            draw(folder/name,row,previous,new,old,previous["focus_m"],view,comparison=prior_view)
         results.append(dict(case=row["case"],scene=row["scene"],file=f"panels/{name}",reason=label,observations=stats))
+        if prior_view is not None:
+            results[-1]["prior_comparison"] = True
         def values(key):
             return " / ".join("—" if v is None else f"{v:.4f}" for v in stats[key])
         markdown.extend([f"## {name}","",
@@ -171,6 +199,9 @@ def panels(output,start_dir,rows,development,fixed,*,diagnostic=None):
     if diagnostic is not None:
         markdown.extend(diagnostic_markdown(diagnostic))
         html.insert(2,'<p>固定细结构帧的 GT 洋红框用于选取框内背景，新增融合深度与衰减系数图。</p>')
+    if comparison is not None:
+        markdown.extend(comparison_markdown(comparison))
+        html.insert(2,'<p>固定细结构与 dev008 面板底部并列 P1/P2/P3/P5 和 20k EMA 的深度与光学渲染。</p>')
     (output/"index.html").write_text("\n".join(html)+"\n")
     (output/"观察清单.md").write_text("\n".join(markdown)+"\n")
     summary=dict(rows=results,unavailable=unavailable,index=str(output/"index.html"),observations=str(output/"观察清单.md"))

@@ -13,6 +13,7 @@ from route3_v2data_B_batch import ROOT, sha256, write_json
 from route3_v2data_B_plan import load
 from route3_v2data_stage2_train import now
 from route3_v2data_stage3a import CHECKPOINTS, INITIAL, OUT, checkpoint, configuration_for, crop_statistics, read_checkpoint
+from route3_v2data_stage3a_prior_compare import comparison_markdown
 from route3_v2data_stage3a_prior_diagnostic import diagnostic_markdown
 
 RECORDS = ROOT/"03_实验记录/records"
@@ -180,6 +181,9 @@ def write_summary(folder,payload):
         diagnostic = data.get("thin_prior_residual")
         if diagnostic:
             rows.extend(diagnostic_markdown(diagnostic))
+        comparison = data.get("prior_comparison")
+        if comparison:
+            rows.extend(comparison_markdown(comparison))
         rows.extend(["## 新开发集外部基线 · f/1.4","",
                      "| 方法 | 近焦合并 / 中位 | 远焦合并 / 中位 |",
                      "|---|---:|---:|"])
@@ -248,6 +252,8 @@ def node(run,step,all_ema):
           f"几何护栏{'通过' if q['geometry'] else '超限'}，零光圈{'两项过线' if all(q['zero'].values()) else '有未过线项'}。")
     if ema.get("thin_prior_residual"):
         note+="固定细结构帧的框内背景和前景逆深度、先验及残差分布已写入汇总与观察清单。"
+    if ema.get("prior_comparison"):
+        note+="细结构场景与 dev008 的 5 种先验对照已写入汇总及观察清单。"
     if terminal:
         note+=f"采用{'训练后几何' if payload['adoption']['selected']=='trained' else '起点几何'}。"
     local=folder/"milestone.json"
