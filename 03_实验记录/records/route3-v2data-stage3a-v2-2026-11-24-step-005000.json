@@ -1,0 +1,4192 @@
+{
+  "step": 5000,
+  "run": "/root/autodl-tmp/route3-stage2-v2-20261123/outputs/route3-v2data-stage3a-2026-11-24-02",
+  "version": 2,
+  "versions": {
+    "ema": {
+      "step": 5000,
+      "weights": "ema",
+      "checkpoint": "/root/autodl-tmp/route3-stage2-v2-20261123/outputs/route3-v2data-stage3a-2026-11-24-02/checkpoints/step-005000.pt",
+      "sha256": "967e5edfab416045517f0712096b14fcaa456a81c99edb081708fff09104c1de",
+      "report": {
+        "development": {
+          "metrics": {
+            "full_image": {
+              "scored": 87,
+              "unscored": 3,
+              "combined": {
+                "pixels": 22806528,
+                "sse": 10091.446068651381,
+                "psnr": 38.31227025725272,
+                "patch_lpips": 0.02890198947133062
+              },
+              "scene_median": {
+                "psnr": 40.26244490416162,
+                "patch_lpips": 0.02708199954859462
+              },
+              "paired_vs_stage3": {
+                "psnr": {
+                  "n": 15,
+                  "median_db": 0.0,
+                  "sd_db": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 15
+                },
+                "patch_lpips": {
+                  "n": 15,
+                  "median": 0.0,
+                  "sd": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 15
+                }
+              }
+            },
+            "near_in_focus": {
+              "scored": 42,
+              "unscored": 3,
+              "combined": {
+                "pixels": 1487075,
+                "sse": 1329.209006703807,
+                "psnr": 35.25860851862193,
+                "patch_lpips": 0.043048834397111456
+              },
+              "scene_median": {
+                "psnr": 35.02232828978295,
+                "patch_lpips": 0.02524001091122638
+              },
+              "paired_vs_stage3": {
+                "psnr": {
+                  "n": 14,
+                  "median_db": 0.0,
+                  "sd_db": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 14
+                },
+                "patch_lpips": {
+                  "n": 14,
+                  "median": 0.0,
+                  "sd": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 14
+                }
+              }
+            },
+            "far_recoverable": {
+              "scored": 45,
+              "unscored": 0,
+              "combined": {
+                "pixels": 167431,
+                "sse": 2012.0486777475082,
+                "psnr": 23.97318642382946,
+                "patch_lpips": 0.07979283892665517
+              },
+              "scene_median": {
+                "psnr": 32.02046830875868,
+                "patch_lpips": 0.027144017636505518
+              },
+              "paired_vs_stage3": {
+                "psnr": {
+                  "n": 15,
+                  "median_db": 0.0,
+                  "sd_db": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 15
+                },
+                "patch_lpips": {
+                  "n": 15,
+                  "median": 0.0,
+                  "sd": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 15
+                }
+              }
+            },
+            "boundary_2px": {
+              "scored": 87,
+              "unscored": 3,
+              "combined": {
+                "pixels": 1170597,
+                "sse": 4590.420508707008,
+                "psnr": 28.836761902797903,
+                "patch_lpips": 0.043368639689032915
+              },
+              "scene_median": {
+                "psnr": 32.08722632935308,
+                "patch_lpips": 0.029371818048924858
+              },
+              "paired_vs_stage3": {
+                "psnr": {
+                  "n": 15,
+                  "median_db": 0.0,
+                  "sd_db": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 15
+                },
+                "patch_lpips": {
+                  "n": 15,
+                  "median": 0.0,
+                  "sd": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 15
+                }
+              }
+            },
+            "zero_visible": {
+              "scored": 87,
+              "unscored": 3,
+              "combined": {
+                "pixels": 22806528,
+                "sse": 213.94913857743387,
+                "psnr": 55.04869887064616,
+                "patch_lpips": null
+              },
+              "scene_median": {
+                "psnr": 54.90325853820549,
+                "patch_lpips": null
+              },
+              "paired_vs_stage3": {
+                "psnr": {
+                  "n": 15,
+                  "median_db": 0.0,
+                  "sd_db": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 15
+                },
+                "patch_lpips": {
+                  "n": 0,
+                  "median": null,
+                  "sd": null,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 0
+                }
+              },
+              "floor_db": 50.0,
+              "pass_cases": 87
+            },
+            "zero_combined": {
+              "scored": 87,
+              "unscored": 3,
+              "combined": {
+                "pixels": 22806528,
+                "sse": 4.428179535431335,
+                "psnr": 71.88955208757493,
+                "patch_lpips": null
+              },
+              "scene_median": {
+                "psnr": 78.14009632507592,
+                "patch_lpips": null
+              },
+              "paired_vs_stage3": {
+                "psnr": {
+                  "n": 15,
+                  "median_db": 0.0,
+                  "sd_db": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 15
+                },
+                "patch_lpips": {
+                  "n": 0,
+                  "median": null,
+                  "sd": null,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 0
+                }
+              },
+              "floor_db": 60.0,
+              "pass_cases": 87
+            }
+          },
+          "geometry": {
+            "inverse_depth_rmse": 0.09113073728804869,
+            "inverse_depth_pixels": 11579021,
+            "same_surface_step": 0.08414141178108855,
+            "near_subject_coc_mae": 0.34684240986059706,
+            "near_coc_pixels": 1443183,
+            "GT_occlusion_crossing_abs_p95": 0.588359746892454,
+            "GT_occlusion_crossing_signed_median": -0.009525620698924292,
+            "crossing_pairs": 142204
+          },
+          "paired_vs_start": {
+            "full_image": {
+              "before": {
+                "pixels": 22806528,
+                "sse": 10010.386851107325,
+                "psnr": 38.34729568188759,
+                "patch_lpips": 0.028819335135668186
+              },
+              "after": {
+                "pixels": 22806528,
+                "sse": 10091.446068651381,
+                "psnr": 38.31227025725272,
+                "patch_lpips": 0.02890198947133062
+              },
+              "pooled_delta_db": -0.03502542463486691,
+              "n": 15,
+              "median_db": -0.030404959437213108,
+              "sd_db": 0.2956537713470215,
+              "positive": 6,
+              "negative": 9,
+              "tied": 0
+            },
+            "near_in_focus": {
+              "before": {
+                "pixels": 1487075,
+                "sse": 1363.2303442224327,
+                "psnr": 35.148848827368795,
+                "patch_lpips": 0.043358195566291474
+              },
+              "after": {
+                "pixels": 1487075,
+                "sse": 1329.209006703807,
+                "psnr": 35.25860851862193,
+                "patch_lpips": 0.043048834397111456
+              },
+              "pooled_delta_db": 0.10975969125313156,
+              "n": 14,
+              "median_db": -0.009599028813152444,
+              "sd_db": 0.5157456759332714,
+              "positive": 5,
+              "negative": 9,
+              "tied": 0
+            },
+            "far_recoverable": {
+              "before": {
+                "pixels": 167431,
+                "sse": 1940.582412152848,
+                "psnr": 24.13025034861528,
+                "patch_lpips": 0.07826746933826892
+              },
+              "after": {
+                "pixels": 167431,
+                "sse": 2012.0486777475082,
+                "psnr": 23.97318642382946,
+                "patch_lpips": 0.07979283892665517
+              },
+              "pooled_delta_db": -0.15706392478582032,
+              "n": 15,
+              "median_db": -0.09107283016682644,
+              "sd_db": 0.4063267391809999,
+              "positive": 6,
+              "negative": 9,
+              "tied": 0
+            },
+            "boundary_2px": {
+              "before": {
+                "pixels": 1170597,
+                "sse": 4561.90699208155,
+                "psnr": 28.8638223483361,
+                "patch_lpips": 0.04315149591628716
+              },
+              "after": {
+                "pixels": 1170597,
+                "sse": 4590.420508707008,
+                "psnr": 28.836761902797903,
+                "patch_lpips": 0.043368639689032915
+              },
+              "pooled_delta_db": -0.027060445538197087,
+              "n": 15,
+              "median_db": -0.11098259781182307,
+              "sd_db": 0.3611635096707703,
+              "positive": 5,
+              "negative": 10,
+              "tied": 0
+            },
+            "zero_visible": {
+              "before": {
+                "pixels": 22806528,
+                "sse": 213.94911841440654,
+                "psnr": 55.04869927993465,
+                "patch_lpips": null
+              },
+              "after": {
+                "pixels": 22806528,
+                "sse": 213.94913857743387,
+                "psnr": 55.04869887064616,
+                "patch_lpips": null
+              },
+              "pooled_delta_db": -4.092884893225346e-07,
+              "n": 15,
+              "median_db": -4.409096305835192e-07,
+              "sd_db": 1.9045282921543043e-06,
+              "positive": 7,
+              "negative": 8,
+              "tied": 0
+            },
+            "zero_combined": {
+              "before": {
+                "pixels": 22806528,
+                "sse": 4.427648672767698,
+                "psnr": 71.8900727632708,
+                "patch_lpips": null
+              },
+              "after": {
+                "pixels": 22806528,
+                "sse": 4.428179535431335,
+                "psnr": 71.88955208757493,
+                "patch_lpips": null
+              },
+              "pooled_delta_db": -0.0005206756958671122,
+              "n": 15,
+              "median_db": 0.0004283189170450896,
+              "sd_db": 0.0075776738984485005,
+              "positive": 10,
+              "negative": 5,
+              "tied": 0
+            }
+          },
+          "gt_minus_f2_near": {
+            "before": {
+              "pixels": 1487075,
+              "sse": 1233.0024840892327,
+              "psnr": 35.58490175697571,
+              "patch_lpips": null
+            },
+            "after": {
+              "pixels": 1487075,
+              "sse": 1329.209006703807,
+              "psnr": 35.25860851862193,
+              "patch_lpips": 0.043048834397111456
+            },
+            "pooled_delta_db": -0.32629323835378443,
+            "n": 14,
+            "median_db": -0.24438497452906915,
+            "sd_db": 0.3246791283864577,
+            "positive": 2,
+            "negative": 12,
+            "tied": 0
+          },
+          "unscored": [
+            {
+              "scene": "development-010-41701db7e3333e89",
+              "case": "f001-focus0-N1.4",
+              "reason": "no_valid_nominal_subject"
+            },
+            {
+              "scene": "development-010-41701db7e3333e89",
+              "case": "f030-focus0-N1.4",
+              "reason": "no_valid_nominal_subject"
+            },
+            {
+              "scene": "development-010-41701db7e3333e89",
+              "case": "f060-focus0-N1.4",
+              "reason": "no_valid_nominal_subject"
+            }
+          ],
+          "groups": {
+            "thin_structure": {
+              "regions": {
+                "near_in_focus": {
+                  "scored": 9,
+                  "unscored": 0,
+                  "combined": {
+                    "pixels": 143747,
+                    "sse": 220.23804252899566,
+                    "psnr": 32.91827706047364,
+                    "patch_lpips": 0.014406432822489178
+                  },
+                  "scene_median": {
+                    "psnr": 29.865880929612494,
+                    "patch_lpips": 0.019579968399084026
+                  },
+                  "paired_vs_stage3": {
+                    "psnr": {
+                      "n": 3,
+                      "median_db": 0.0,
+                      "sd_db": 0.0,
+                      "positive": 0,
+                      "negative": 0,
+                      "tied": 3
+                    },
+                    "patch_lpips": {
+                      "n": 3,
+                      "median": 0.0,
+                      "sd": 0.0,
+                      "positive": 0,
+                      "negative": 0,
+                      "tied": 3
+                    }
+                  }
+                },
+                "far_recoverable": {
+                  "scored": 9,
+                  "unscored": 0,
+                  "combined": {
+                    "pixels": 84696,
+                    "sse": 1857.4698203870735,
+                    "psnr": 21.360623885878777,
+                    "patch_lpips": 0.12747034837948126
+                  },
+                  "scene_median": {
+                    "psnr": 25.598268491081512,
+                    "patch_lpips": 0.056878020331884424
+                  },
+                  "paired_vs_stage3": {
+                    "psnr": {
+                      "n": 3,
+                      "median_db": 0.0,
+                      "sd_db": 0.0,
+                      "positive": 0,
+                      "negative": 0,
+                      "tied": 3
+                    },
+                    "patch_lpips": {
+                      "n": 3,
+                      "median": 0.0,
+                      "sd": 0.0,
+                      "positive": 0,
+                      "negative": 0,
+                      "tied": 3
+                    }
+                  }
+                }
+              },
+              "foreground_coc_px": {
+                "pixels": 225748,
+                "p50": 0.9722281396389008,
+                "p95": 3.537911283969879
+              },
+              "start_foreground_coc_px": {
+                "pixels": 225748,
+                "p50": 0.9714817404747009,
+                "p95": 2.769815897941589
+              }
+            },
+            "development-008": {
+              "regions": {
+                "near_in_focus": {
+                  "scored": 3,
+                  "unscored": 0,
+                  "combined": {
+                    "pixels": 5091,
+                    "sse": 58.104356579213956,
+                    "psnr": 24.19715655384231,
+                    "patch_lpips": 0.04551156217763224
+                  },
+                  "scene_median": {
+                    "psnr": 24.19715655384231,
+                    "patch_lpips": 0.04551156217763224
+                  },
+                  "paired_vs_stage3": {
+                    "psnr": {
+                      "n": 1,
+                      "median_db": 0.0,
+                      "sd_db": null,
+                      "positive": 0,
+                      "negative": 0,
+                      "tied": 1
+                    },
+                    "patch_lpips": {
+                      "n": 1,
+                      "median": 0.0,
+                      "sd": null,
+                      "positive": 0,
+                      "negative": 0,
+                      "tied": 1
+                    }
+                  }
+                },
+                "far_recoverable": {
+                  "scored": 3,
+                  "unscored": 0,
+                  "combined": {
+                    "pixels": 5114,
+                    "sse": 45.28197204527458,
+                    "psnr": 25.29956646145594,
+                    "patch_lpips": 0.07608202991640726
+                  },
+                  "scene_median": {
+                    "psnr": 25.29956646145594,
+                    "patch_lpips": 0.07608202991640726
+                  },
+                  "paired_vs_stage3": {
+                    "psnr": {
+                      "n": 1,
+                      "median_db": 0.0,
+                      "sd_db": null,
+                      "positive": 0,
+                      "negative": 0,
+                      "tied": 1
+                    },
+                    "patch_lpips": {
+                      "n": 1,
+                      "median": 0.0,
+                      "sd": null,
+                      "positive": 0,
+                      "negative": 0,
+                      "tied": 1
+                    }
+                  }
+                }
+              },
+              "foreground_coc_px": {
+                "pixels": 25914,
+                "p50": 0.6224028766155243,
+                "p95": 5.298657417297363
+              },
+              "start_foreground_coc_px": {
+                "pixels": 25914,
+                "p50": 0.5149993300437927,
+                "p95": 5.21341593265533
+              }
+            }
+          },
+          "geometry_limits": {
+            "inverse_depth_rmse": {
+              "value": 0.09113073728804869,
+              "initial": 0.10069018465818269,
+              "allowed_growth": 0.05,
+              "passed": true
+            },
+            "same_surface_step": {
+              "value": 0.08414141178108855,
+              "initial": 0.07733698872715355,
+              "allowed_growth": 0.1,
+              "passed": true
+            },
+            "near_subject_coc_mae": {
+              "value": 0.34684240986059706,
+              "initial": 0.31666484495159,
+              "allowed_growth": 0.1,
+              "passed": true
+            },
+            "GT_occlusion_crossing_abs_p95": {
+              "value": 0.588359746892454,
+              "initial": 0.58990288124754,
+              "allowed_growth": 0.1,
+              "passed": true
+            }
+          },
+          "paired_vs_A": {
+            "near_in_focus": {
+              "before": {
+                "pixels": 1487075,
+                "sse": 1255.912749345612,
+                "psnr": 35.50494658069812,
+                "patch_lpips": 0.04317647108143616
+              },
+              "after": {
+                "pixels": 1487075,
+                "sse": 1329.2090067038073,
+                "psnr": 35.25860851862193,
+                "patch_lpips": 0.043048834397111456
+              },
+              "pooled_delta_db": -0.24633806207619102,
+              "n": 14,
+              "median_db": -2.127924747447395,
+              "sd_db": 3.696439139703932,
+              "positive": 2,
+              "negative": 12,
+              "tied": 0
+            },
+            "far_recoverable": {
+              "before": {
+                "pixels": 167431,
+                "sse": 4025.9260993650437,
+                "psnr": 20.960913271981752,
+                "patch_lpips": 0.11051116796134655
+              },
+              "after": {
+                "pixels": 167431,
+                "sse": 2012.048677747508,
+                "psnr": 23.97318642382946,
+                "patch_lpips": 0.07979283892665517
+              },
+              "pooled_delta_db": 3.012273151847708,
+              "n": 15,
+              "median_db": 3.8867876744946557,
+              "sd_db": 4.875656386378105,
+              "positive": 13,
+              "negative": 2,
+              "tied": 0
+            }
+          }
+        },
+        "legacy": {
+          "metrics": {
+            "full_image": {
+              "scored": 18,
+              "unscored": 0,
+              "combined": {
+                "pixels": 4718592,
+                "sse": 1982.0246555923936,
+                "psnr": 38.53824629142465,
+                "patch_lpips": 0.025827676456840365
+              },
+              "scene_median": {
+                "psnr": 39.11932436379408,
+                "patch_lpips": 0.023517977857039796
+              },
+              "paired_vs_stage3": {
+                "psnr": {
+                  "n": 3,
+                  "median_db": 0.0,
+                  "sd_db": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 3
+                },
+                "patch_lpips": {
+                  "n": 3,
+                  "median": 0.0,
+                  "sd": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 3
+                }
+              }
+            },
+            "near_in_focus": {
+              "scored": 9,
+              "unscored": 0,
+              "combined": {
+                "pixels": 1097696,
+                "sse": 827.5137998243044,
+                "psnr": 35.99828091451313,
+                "patch_lpips": 0.026596734945919846
+              },
+              "scene_median": {
+                "psnr": 36.38067946398126,
+                "patch_lpips": 0.027399897179938425
+              },
+              "paired_vs_stage3": {
+                "psnr": {
+                  "n": 3,
+                  "median_db": 0.0,
+                  "sd_db": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 3
+                },
+                "patch_lpips": {
+                  "n": 3,
+                  "median": 0.0,
+                  "sd": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 3
+                }
+              }
+            },
+            "far_recoverable": {
+              "scored": 9,
+              "unscored": 0,
+              "combined": {
+                "pixels": 94841,
+                "sse": 255.3267257662485,
+                "psnr": 30.470211032268992,
+                "patch_lpips": 0.03696164419534472
+              },
+              "scene_median": {
+                "psnr": 31.204220528721592,
+                "patch_lpips": 0.0240963177392298
+              },
+              "paired_vs_stage3": {
+                "psnr": {
+                  "n": 3,
+                  "median_db": 0.0,
+                  "sd_db": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 3
+                },
+                "patch_lpips": {
+                  "n": 3,
+                  "median": 0.0,
+                  "sd": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 3
+                }
+              }
+            },
+            "boundary_2px": {
+              "scored": 18,
+              "unscored": 0,
+              "combined": {
+                "pixels": 275694,
+                "sse": 1123.9559036420333,
+                "psnr": 28.667992964487432,
+                "patch_lpips": 0.03901862998795267
+              },
+              "scene_median": {
+                "psnr": 29.0886697282115,
+                "patch_lpips": 0.03360385607624306
+              },
+              "paired_vs_stage3": {
+                "psnr": {
+                  "n": 3,
+                  "median_db": 0.0,
+                  "sd_db": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 3
+                },
+                "patch_lpips": {
+                  "n": 3,
+                  "median": 0.0,
+                  "sd": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 3
+                }
+              }
+            },
+            "zero_visible": {
+              "scored": 18,
+              "unscored": 0,
+              "combined": {
+                "pixels": 4718592,
+                "sse": 44.5758480985979,
+                "psnr": 55.01834066976318,
+                "patch_lpips": null
+              },
+              "scene_median": {
+                "psnr": 54.89272860682896,
+                "patch_lpips": null
+              },
+              "paired_vs_stage3": {
+                "psnr": {
+                  "n": 3,
+                  "median_db": 0.0,
+                  "sd_db": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 3
+                },
+                "patch_lpips": {
+                  "n": 0,
+                  "median": null,
+                  "sd": null,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 0
+                }
+              },
+              "floor_db": 50.0,
+              "pass_cases": 18
+            },
+            "zero_combined": {
+              "scored": 18,
+              "unscored": 0,
+              "combined": {
+                "pixels": 4718592,
+                "sse": 3.0544586700427097,
+                "psnr": 66.65999428716431,
+                "patch_lpips": null
+              },
+              "scene_median": {
+                "psnr": 66.23657691369667,
+                "patch_lpips": null
+              },
+              "paired_vs_stage3": {
+                "psnr": {
+                  "n": 3,
+                  "median_db": 0.0,
+                  "sd_db": 0.0,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 3
+                },
+                "patch_lpips": {
+                  "n": 0,
+                  "median": null,
+                  "sd": null,
+                  "positive": 0,
+                  "negative": 0,
+                  "tied": 0
+                }
+              },
+              "floor_db": 60.0,
+              "pass_cases": 18
+            }
+          },
+          "geometry": {
+            "inverse_depth_rmse": 0.14389611869614546,
+            "inverse_depth_pixels": 2359296,
+            "same_surface_step": 0.305685787423793,
+            "near_subject_coc_mae": 1.1776990237206841,
+            "near_coc_pixels": 1097696,
+            "GT_occlusion_crossing_abs_p95": 0.732746793099384,
+            "GT_occlusion_crossing_signed_median": 0.004360619987832437,
+            "crossing_pairs": 26747
+          },
+          "paired_vs_start": {
+            "full_image": {
+              "before": {
+                "pixels": 4718592,
+                "sse": 1947.6140609298307,
+                "psnr": 38.61430780471429,
+                "patch_lpips": 0.02483104457826278
+              },
+              "after": {
+                "pixels": 4718592,
+                "sse": 1982.0246555923936,
+                "psnr": 38.53824629142465,
+                "patch_lpips": 0.025827676456840365
+              },
+              "pooled_delta_db": -0.07606151328963762,
+              "n": 3,
+              "median_db": 0.06144790754891005,
+              "sd_db": 0.23450908778081295,
+              "positive": 2,
+              "negative": 1,
+              "tied": 0
+            },
+            "near_in_focus": {
+              "before": {
+                "pixels": 1097696,
+                "sse": 814.5637037712686,
+                "psnr": 36.06678281953234,
+                "patch_lpips": 0.026502687866186207
+              },
+              "after": {
+                "pixels": 1097696,
+                "sse": 827.5137998243044,
+                "psnr": 35.99828091451313,
+                "patch_lpips": 0.026596734945919846
+              },
+              "pooled_delta_db": -0.06850190501921105,
+              "n": 3,
+              "median_db": -0.024204009662909698,
+              "sd_db": 0.1329617594791367,
+              "positive": 1,
+              "negative": 2,
+              "tied": 0
+            },
+            "far_recoverable": {
+              "before": {
+                "pixels": 94841,
+                "sse": 233.8930022780305,
+                "psnr": 30.85100150660057,
+                "patch_lpips": 0.032926818053459775
+              },
+              "after": {
+                "pixels": 94841,
+                "sse": 255.3267257662485,
+                "psnr": 30.470211032268992,
+                "patch_lpips": 0.03696164419534472
+              },
+              "pooled_delta_db": -0.38079047433157953,
+              "n": 3,
+              "median_db": -0.26925393337217685,
+              "sd_db": 0.23391474359390324,
+              "positive": 0,
+              "negative": 3,
+              "tied": 0
+            },
+            "boundary_2px": {
+              "before": {
+                "pixels": 275694,
+                "sse": 1110.7894026908646,
+                "psnr": 28.719168414841313,
+                "patch_lpips": 0.03713575949451366
+              },
+              "after": {
+                "pixels": 275694,
+                "sse": 1123.9559036420333,
+                "psnr": 28.667992964487432,
+                "patch_lpips": 0.03901862998795267
+              },
+              "pooled_delta_db": -0.05117545035388105,
+              "n": 3,
+              "median_db": 0.010919055020039536,
+              "sd_db": 0.158434956022044,
+              "positive": 2,
+              "negative": 1,
+              "tied": 0
+            },
+            "zero_visible": {
+              "before": {
+                "pixels": 4718592,
+                "sse": 44.575824559909535,
+                "psnr": 55.018342963095904,
+                "patch_lpips": null
+              },
+              "after": {
+                "pixels": 4718592,
+                "sse": 44.5758480985979,
+                "psnr": 55.01834066976318,
+                "patch_lpips": null
+              },
+              "pooled_delta_db": -2.29333272727672e-06,
+              "n": 3,
+              "median_db": -2.16288123766617e-06,
+              "sd_db": 1.6194833740987028e-06,
+              "positive": 0,
+              "negative": 3,
+              "tied": 0
+            },
+            "zero_combined": {
+              "before": {
+                "pixels": 4718592,
+                "sse": 3.055952153077051,
+                "psnr": 66.65787131549409,
+                "patch_lpips": null
+              },
+              "after": {
+                "pixels": 4718592,
+                "sse": 3.0544586700427097,
+                "psnr": 66.65999428716431,
+                "patch_lpips": null
+              },
+              "pooled_delta_db": 0.0021229716702180212,
+              "n": 3,
+              "median_db": 0.002731569273493051,
+              "sd_db": 0.0015309040944122,
+              "positive": 3,
+              "negative": 0,
+              "tied": 0
+            }
+          },
+          "gt_minus_f2_near": {
+            "before": {
+              "pixels": 1097696,
+              "sse": 529.01174335277,
+              "psnr": 37.94138023462884,
+              "patch_lpips": null
+            },
+            "after": {
+              "pixels": 1097696,
+              "sse": 827.5137998243044,
+              "psnr": 35.99828091451313,
+              "patch_lpips": 0.026596734945919846
+            },
+            "pooled_delta_db": -1.9430993201157065,
+            "n": 3,
+            "median_db": -2.3214685057668376,
+            "sd_db": 1.227921911355999,
+            "positive": 0,
+            "negative": 3,
+            "tied": 0
+          },
+          "unscored": []
+        }
+      },
+      "external_baselines": {
+        "stage3": {
+          "full_image": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 9769.410382772352,
+              "psnr": 38.453120759330446,
+              "patch_lpips": 0.02853305470853151
+            },
+            "scene_median": {
+              "psnr": 40.45814410739935,
+              "patch_lpips": 0.026847021302610113
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 0.0,
+                "sd_db": 0.0,
+                "positive": 0,
+                "negative": 0,
+                "tied": 15
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": 0.0,
+                "sd": 0.0,
+                "positive": 0,
+                "negative": 0,
+                "tied": 15
+              }
+            }
+          },
+          "near_in_focus": {
+            "scored": 42,
+            "unscored": 3,
+            "combined": {
+              "pixels": 1487075,
+              "sse": 1272.5487221631383,
+              "psnr": 35.447797080621434,
+              "patch_lpips": 0.042976010825491434
+            },
+            "scene_median": {
+              "psnr": 35.07954874714365,
+              "patch_lpips": 0.025628083900453832
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 14,
+                "median_db": 0.0,
+                "sd_db": 0.0,
+                "positive": 0,
+                "negative": 0,
+                "tied": 14
+              },
+              "patch_lpips": {
+                "n": 14,
+                "median": 0.0,
+                "sd": 0.0,
+                "positive": 0,
+                "negative": 0,
+                "tied": 14
+              }
+            }
+          },
+          "far_recoverable": {
+            "scored": 45,
+            "unscored": 0,
+            "combined": {
+              "pixels": 167431,
+              "sse": 1991.7948381714327,
+              "psnr": 24.017125232929935,
+              "patch_lpips": 0.07787218006596583
+            },
+            "scene_median": {
+              "psnr": 31.935760399903824,
+              "patch_lpips": 0.026760817992228264
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 0.0,
+                "sd_db": 0.0,
+                "positive": 0,
+                "negative": 0,
+                "tied": 15
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": 0.0,
+                "sd": 0.0,
+                "positive": 0,
+                "negative": 0,
+                "tied": 15
+              }
+            }
+          },
+          "boundary_2px": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 1170597,
+              "sse": 4538.252481492759,
+              "psnr": 28.886400076974272,
+              "patch_lpips": 0.04276826404361084
+            },
+            "scene_median": {
+              "psnr": 32.67841394823011,
+              "patch_lpips": 0.030597753371434867
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 0.0,
+                "sd_db": 0.0,
+                "positive": 0,
+                "negative": 0,
+                "tied": 15
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": 0.0,
+                "sd": 0.0,
+                "positive": 0,
+                "negative": 0,
+                "tied": 15
+              }
+            }
+          },
+          "zero_visible": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 213.94911841440654,
+              "psnr": 55.04869927993465,
+              "patch_lpips": null
+            },
+            "scene_median": {
+              "psnr": 54.90325788994535,
+              "patch_lpips": null
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 0.0,
+                "sd_db": 0.0,
+                "positive": 0,
+                "negative": 0,
+                "tied": 15
+              },
+              "patch_lpips": {
+                "n": 0,
+                "median": null,
+                "sd": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "floor_db": 50.0,
+            "pass_cases": 87
+          },
+          "zero_combined": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 5.028976386552945,
+              "psnr": 71.33700832884332,
+              "patch_lpips": null
+            },
+            "scene_median": {
+              "psnr": 75.31758046135823,
+              "patch_lpips": null
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 0.0,
+                "sd_db": 0.0,
+                "positive": 0,
+                "negative": 0,
+                "tied": 15
+              },
+              "patch_lpips": {
+                "n": 0,
+                "median": null,
+                "sd": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "floor_db": 60.0,
+            "pass_cases": 87
+          }
+        },
+        "stage3_f2": {
+          "full_image": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 9965.776309927343,
+              "psnr": 38.36669294443514,
+              "patch_lpips": 0.028766011847386662
+            },
+            "scene_median": {
+              "psnr": 40.47403479882864,
+              "patch_lpips": 0.026977506453150113
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 0.015890691429291337,
+                "sd_db": 0.3825341751150274,
+                "positive": 9,
+                "negative": 6,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": -2.66658175102491e-05,
+                "sd": 0.00067536122465955,
+                "positive": 6,
+                "negative": 9,
+                "tied": 0
+              }
+            }
+          },
+          "near_in_focus": {
+            "scored": 42,
+            "unscored": 3,
+            "combined": {
+              "pixels": 1487075,
+              "sse": 1254.079247907299,
+              "psnr": 35.511291459085975,
+              "patch_lpips": 0.04294757804177735
+            },
+            "scene_median": {
+              "psnr": 35.179028919110635,
+              "patch_lpips": 0.025148729211267772
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 14,
+                "median_db": 0.1128644037260571,
+                "sd_db": 0.39887118984387104,
+                "positive": 12,
+                "negative": 2,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 14,
+                "median": -0.0003116504313483868,
+                "sd": 0.0006590975888850467,
+                "positive": 3,
+                "negative": 11,
+                "tied": 0
+              }
+            }
+          },
+          "far_recoverable": {
+            "scored": 45,
+            "unscored": 0,
+            "combined": {
+              "pixels": 167431,
+              "sse": 2011.5959260256327,
+              "psnr": 23.97416378438028,
+              "patch_lpips": 0.07859323498569956
+            },
+            "scene_median": {
+              "psnr": 31.742394875871675,
+              "patch_lpips": 0.026823323714097205
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -0.009248825902286484,
+                "sd_db": 0.7070450209439871,
+                "positive": 7,
+                "negative": 8,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": 0.0003657690382708259,
+                "sd": 0.0044864054005778675,
+                "positive": 10,
+                "negative": 5,
+                "tied": 0
+              }
+            }
+          },
+          "boundary_2px": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 1170597,
+              "sse": 4528.807031028622,
+              "psnr": 28.895448453669893,
+              "patch_lpips": 0.04307625367134922
+            },
+            "scene_median": {
+              "psnr": 32.77692373285624,
+              "patch_lpips": 0.03059331617335107
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 0.10636264162742037,
+                "sd_db": 0.6126789963154624,
+                "positive": 11,
+                "negative": 4,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": -7.395587931724804e-05,
+                "sd": 0.002428060961392791,
+                "positive": 5,
+                "negative": 10,
+                "tied": 0
+              }
+            }
+          },
+          "zero_visible": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 213.94911841440654,
+              "psnr": 55.04869927993465,
+              "patch_lpips": null
+            },
+            "scene_median": {
+              "psnr": 54.90325788994535,
+              "patch_lpips": null
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 0.0,
+                "sd_db": 0.0,
+                "positive": 0,
+                "negative": 0,
+                "tied": 15
+              },
+              "patch_lpips": {
+                "n": 0,
+                "median": null,
+                "sd": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "floor_db": 50.0,
+            "pass_cases": 87
+          },
+          "zero_combined": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 0.028135149297738693,
+              "psnr": 93.85931205232238,
+              "patch_lpips": null
+            },
+            "scene_median": {
+              "psnr": 101.62024858488792,
+              "patch_lpips": null
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 27.080739963075445,
+                "sd_db": 8.009998685121797,
+                "positive": 15,
+                "negative": 0,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 0,
+                "median": null,
+                "sd": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "floor_db": 60.0,
+            "pass_cases": 87
+          }
+        },
+        "A": {
+          "full_image": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 22188.30624660638,
+              "psnr": 34.89056277838805,
+              "patch_lpips": 0.04330607228393222
+            },
+            "scene_median": {
+              "psnr": 40.1323581685784,
+              "patch_lpips": 0.040072568216316995
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -1.1160866954530633,
+                "sd_db": 4.13605021854735,
+                "positive": 3,
+                "negative": 12,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": 0.008314886865181375,
+                "sd": 0.02633039118195087,
+                "positive": 14,
+                "negative": 1,
+                "tied": 0
+              }
+            }
+          },
+          "near_in_focus": {
+            "scored": 42,
+            "unscored": 3,
+            "combined": {
+              "pixels": 1487075,
+              "sse": 1255.9127493456122,
+              "psnr": 35.50494658069812,
+              "patch_lpips": 0.04317647108143616
+            },
+            "scene_median": {
+              "psnr": 36.84759506742956,
+              "patch_lpips": 0.031482603121388966
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 14,
+                "median_db": 2.1392266807064875,
+                "sd_db": 3.510210845936069,
+                "positive": 12,
+                "negative": 2,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 14,
+                "median": 0.0009311288041130121,
+                "sd": 0.027998537143932474,
+                "positive": 7,
+                "negative": 7,
+                "tied": 0
+              }
+            }
+          },
+          "far_recoverable": {
+            "scored": 45,
+            "unscored": 0,
+            "combined": {
+              "pixels": 167431,
+              "sse": 4025.9260993650423,
+              "psnr": 20.960913271981752,
+              "patch_lpips": 0.11051116796134655
+            },
+            "scene_median": {
+              "psnr": 29.59040212704574,
+              "patch_lpips": 0.05330714988224025
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -5.404322856040231,
+                "sd_db": 5.579884128581003,
+                "positive": 1,
+                "negative": 14,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": 0.029134617734554946,
+                "sd": 0.04110444044511513,
+                "positive": 14,
+                "negative": 1,
+                "tied": 0
+              }
+            }
+          },
+          "boundary_2px": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 1170597,
+              "sse": 7993.075180023706,
+              "psnr": 26.42814763682977,
+              "patch_lpips": 0.06164676685135282
+            },
+            "scene_median": {
+              "psnr": 30.820446972048067,
+              "patch_lpips": 0.03772080247004514
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -1.2550545931824502,
+                "sd_db": 4.849394905520796,
+                "positive": 3,
+                "negative": 12,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": 0.01954109823406298,
+                "sd": 0.032260474989227204,
+                "positive": 13,
+                "negative": 2,
+                "tied": 0
+              }
+            }
+          },
+          "zero_visible": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 56994.71951053367,
+              "psnr": 30.793458085940966,
+              "patch_lpips": null
+            },
+            "scene_median": {
+              "psnr": 31.095374206444262,
+              "patch_lpips": null
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -24.155138762010132,
+                "sd_db": 2.6064689399598424,
+                "positive": 0,
+                "negative": 15,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 0,
+                "median": null,
+                "sd": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "floor_db": 50.0,
+            "pass_cases": 0
+          },
+          "zero_combined": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 314.1375892515887,
+              "psnr": 53.38060522729695,
+              "patch_lpips": null
+            },
+            "scene_median": {
+              "psnr": 56.613922765821954,
+              "patch_lpips": null
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -17.202836213944828,
+                "sd_db": 6.857136848334185,
+                "positive": 0,
+                "negative": 15,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 0,
+                "median": null,
+                "sd": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "floor_db": 60.0,
+            "pass_cases": 34
+          }
+        },
+        "R1_R2": {
+          "full_image": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 22206.96164281059,
+              "psnr": 34.88691286861557,
+              "patch_lpips": 0.043132840635373405
+            },
+            "scene_median": {
+              "psnr": 40.13749835671117,
+              "patch_lpips": 0.03917590075297994
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -1.1258174811399044,
+                "sd_db": 4.138301921463147,
+                "positive": 3,
+                "negative": 12,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": 0.007756723040057995,
+                "sd": 0.026387155975865977,
+                "positive": 14,
+                "negative": 1,
+                "tied": 0
+              }
+            }
+          },
+          "near_in_focus": {
+            "scored": 42,
+            "unscored": 3,
+            "combined": {
+              "pixels": 1487075,
+              "sse": 1259.6857465102041,
+              "psnr": 35.491919119597284,
+              "patch_lpips": 0.043239914698715916
+            },
+            "scene_median": {
+              "psnr": 36.66951396922414,
+              "patch_lpips": 0.031601073085212684
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 14,
+                "median_db": 2.1401033794021007,
+                "sd_db": 3.4350059764972856,
+                "positive": 12,
+                "negative": 2,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 14,
+                "median": 0.0010415289456375352,
+                "sd": 0.027990502731408066,
+                "positive": 7,
+                "negative": 7,
+                "tied": 0
+              }
+            }
+          },
+          "far_recoverable": {
+            "scored": 45,
+            "unscored": 0,
+            "combined": {
+              "pixels": 167431,
+              "sse": 4020.847675855026,
+              "psnr": 20.96639505054693,
+              "patch_lpips": 0.10867897321411805
+            },
+            "scene_median": {
+              "psnr": 29.643409358795108,
+              "patch_lpips": 0.05223666433511036
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -5.492604804141738,
+                "sd_db": 5.5741650953512965,
+                "positive": 1,
+                "negative": 14,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": 0.027677479087756154,
+                "sd": 0.04065318594434971,
+                "positive": 14,
+                "negative": 1,
+                "tied": 0
+              }
+            }
+          },
+          "boundary_2px": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 1170597,
+              "sse": 8004.984912587683,
+              "psnr": 26.421681437729326,
+              "patch_lpips": 0.06129957305261709
+            },
+            "scene_median": {
+              "psnr": 30.828873744120635,
+              "patch_lpips": 0.03741062263358515
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -1.2899897101661821,
+                "sd_db": 4.886249295387971,
+                "positive": 3,
+                "negative": 12,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": 0.017845297408011232,
+                "sd": 0.03199470748431838,
+                "positive": 13,
+                "negative": 2,
+                "tied": 0
+              }
+            }
+          },
+          "zero_visible": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 56994.71951053367,
+              "psnr": 30.793458085940966,
+              "patch_lpips": null
+            },
+            "scene_median": {
+              "psnr": 31.095374206444262,
+              "patch_lpips": null
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -24.155138762010132,
+                "sd_db": 2.6064689399598424,
+                "positive": 0,
+                "negative": 15,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 0,
+                "median": null,
+                "sd": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "floor_db": 50.0,
+            "pass_cases": 0
+          },
+          "zero_combined": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 347.42765907153614,
+              "psnr": 52.94316039174318,
+              "patch_lpips": null
+            },
+            "scene_median": {
+              "psnr": 56.458706169928085,
+              "patch_lpips": null
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -18.7951498336664,
+                "sd_db": 6.275683194813177,
+                "positive": 0,
+                "negative": 15,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 0,
+                "median": null,
+                "sd": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "floor_db": 60.0,
+            "pass_cases": 33
+          }
+        },
+        "DrBokeh": {
+          "full_image": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 11442.018382438833,
+              "psnr": 37.766777881339046,
+              "patch_lpips": 0.03180286468345362
+            },
+            "scene_median": {
+              "psnr": 41.28616209608317,
+              "patch_lpips": 0.02836960513880153
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 0.3930584513892086,
+                "sd_db": 2.3289149841651713,
+                "positive": 10,
+                "negative": 5,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": -0.0013244125734672707,
+                "sd": 0.016035341137062443,
+                "positive": 6,
+                "negative": 9,
+                "tied": 0
+              }
+            }
+          },
+          "near_in_focus": {
+            "scored": 42,
+            "unscored": 3,
+            "combined": {
+              "pixels": 1487075,
+              "sse": 544.1672693046658,
+              "psnr": 39.13721711065776,
+              "patch_lpips": 0.033238199117617495
+            },
+            "scene_median": {
+              "psnr": 38.432192001324154,
+              "patch_lpips": 0.017156645902645
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 14,
+                "median_db": 1.9717188462199964,
+                "sd_db": 3.683183352798866,
+                "positive": 11,
+                "negative": 3,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 14,
+                "median": -0.008012913569597244,
+                "sd": 0.01324758883521346,
+                "positive": 3,
+                "negative": 11,
+                "tied": 0
+              }
+            }
+          },
+          "far_recoverable": {
+            "scored": 45,
+            "unscored": 0,
+            "combined": {
+              "pixels": 167431,
+              "sse": 494.7500679562984,
+              "psnr": 30.065712633042576,
+              "patch_lpips": 0.1073725005114855
+            },
+            "scene_median": {
+              "psnr": 32.80002646901202,
+              "patch_lpips": 0.02986722106783489
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -1.1589730052289724,
+                "sd_db": 5.299982419871877,
+                "positive": 7,
+                "negative": 8,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": 0.002896749533753497,
+                "sd": 0.03675616336856523,
+                "positive": 10,
+                "negative": 5,
+                "tied": 0
+              }
+            }
+          },
+          "boundary_2px": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 1170597,
+              "sse": 6623.187591036385,
+              "psnr": 27.24461605584322,
+              "patch_lpips": 0.056620908648757
+            },
+            "scene_median": {
+              "psnr": 31.219113206474592,
+              "patch_lpips": 0.026986431157237204
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -1.2523037940046038,
+                "sd_db": 3.8369174526967416,
+                "positive": 6,
+                "negative": 9,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": -0.0017015419161240317,
+                "sd": 0.024117326007622585,
+                "positive": 6,
+                "negative": 9,
+                "tied": 0
+              }
+            }
+          },
+          "zero_visible": {
+            "scored": 0,
+            "unscored": 90,
+            "combined": {
+              "pixels": 0,
+              "sse": 0,
+              "psnr": null,
+              "patch_lpips": null
+            },
+            "scene_median": {
+              "psnr": null,
+              "patch_lpips": null
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 0,
+                "median_db": null,
+                "sd_db": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 0,
+                "median": null,
+                "sd": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "floor_db": 50.0,
+            "pass_cases": 0
+          },
+          "zero_combined": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 4104.543854193222,
+              "psnr": 42.21915529129032,
+              "patch_lpips": null
+            },
+            "scene_median": {
+              "psnr": 44.02821389135386,
+              "patch_lpips": null
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -31.06802014063068,
+                "sd_db": 7.924569269486722,
+                "positive": 0,
+                "negative": 15,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 0,
+                "median": null,
+                "sd": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "floor_db": 60.0,
+            "pass_cases": 0
+          }
+        },
+        "GT_oracle": {
+          "full_image": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 4283.052912976542,
+              "psnr": 42.0342698957192,
+              "patch_lpips": 0.027716251004955953
+            },
+            "scene_median": {
+              "psnr": 44.03161495224309,
+              "patch_lpips": 0.03418587513647253
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 1.8542115570320732,
+                "sd_db": 2.444005115502189,
+                "positive": 12,
+                "negative": 3,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": -0.00024991724053317465,
+                "sd": 0.01107277915743418,
+                "positive": 7,
+                "negative": 8,
+                "tied": 0
+              }
+            }
+          },
+          "near_in_focus": {
+            "scored": 42,
+            "unscored": 3,
+            "combined": {
+              "pixels": 1487075,
+              "sse": 530.7623249416433,
+              "psnr": 39.24554039455828,
+              "patch_lpips": 0.03807027053151478
+            },
+            "scene_median": {
+              "psnr": 37.50814105672275,
+              "patch_lpips": 0.012991416815849928
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 14,
+                "median_db": 3.7507968961989455,
+                "sd_db": 3.925177012841424,
+                "positive": 13,
+                "negative": 1,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 14,
+                "median": -0.007722564098730077,
+                "sd": 0.011414240211231389,
+                "positive": 2,
+                "negative": 12,
+                "tied": 0
+              }
+            }
+          },
+          "far_recoverable": {
+            "scored": 45,
+            "unscored": 0,
+            "combined": {
+              "pixels": 167431,
+              "sse": 152.22922056390414,
+              "psnr": 35.184591021021355,
+              "patch_lpips": 0.04478748553302902
+            },
+            "scene_median": {
+              "psnr": 37.74710172172833,
+              "patch_lpips": 0.02906018786487559
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 4.368730845519281,
+                "sd_db": 5.597937404080528,
+                "positive": 11,
+                "negative": 4,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": 0.0022541394031761926,
+                "sd": 0.03877648575356286,
+                "positive": 9,
+                "negative": 6,
+                "tied": 0
+              }
+            }
+          },
+          "boundary_2px": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 1170597,
+              "sse": 1729.44259075211,
+              "psnr": 33.07622511407968,
+              "patch_lpips": 0.02696506063958092
+            },
+            "scene_median": {
+              "psnr": 34.089522133638816,
+              "patch_lpips": 0.022076914205826408
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 2.955959658363092,
+                "sd_db": 3.914715910798183,
+                "positive": 10,
+                "negative": 5,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 15,
+                "median": -0.001669103810728081,
+                "sd": 0.022134533747344576,
+                "positive": 6,
+                "negative": 9,
+                "tied": 0
+              }
+            }
+          },
+          "zero_visible": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 213.94870276100679,
+              "psnr": 55.04870771727502,
+              "patch_lpips": null
+            },
+            "scene_median": {
+              "psnr": 54.90323983140278,
+              "patch_lpips": null
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": 3.2935096996311586e-06,
+                "sd_db": 5.5797710128646114e-05,
+                "positive": 8,
+                "negative": 7,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 0,
+                "median": null,
+                "sd": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "floor_db": 50.0,
+            "pass_cases": 87
+          },
+          "zero_combined": {
+            "scored": 87,
+            "unscored": 3,
+            "combined": {
+              "pixels": 22806528,
+              "sse": 33.865474861344765,
+              "psnr": 63.0542325963205,
+              "patch_lpips": null
+            },
+            "scene_median": {
+              "psnr": 69.55360788849455,
+              "patch_lpips": null
+            },
+            "paired_vs_stage3": {
+              "psnr": {
+                "n": 15,
+                "median_db": -4.928763395823168,
+                "sd_db": 4.843655276794387,
+                "positive": 1,
+                "negative": 14,
+                "tied": 0
+              },
+              "patch_lpips": {
+                "n": 0,
+                "median": null,
+                "sd": null,
+                "positive": 0,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "floor_db": 60.0,
+            "pass_cases": 77
+          }
+        }
+      },
+      "legacy_baselines": {
+        "references": {
+          "stage3": {
+            "file": "/root/autodl-tmp/route3-query-v2-20261123/outputs/route3-query-v2-20261123/new-query/ema.json",
+            "scope": "P2，1b 30k + 新 Query，原三场景，仅 f/1.4"
+          },
+          "stage3_f2": {
+            "file": "/root/autodl-tmp/route3-query-v2-20261123/outputs/route3-query-v2-20261123/new-query/ema.json",
+            "scope": "P2，同一归档的 Query 关闭配对，仅 f/1.4"
+          },
+          "A": {
+            "file": "03_实验记录/records/route3-ovg-1c-2026-11-19-C3-optical.csv",
+            "scope": "原三场景 P2，SHARP + A-color"
+          },
+          "R1_R2": {
+            "file": "03_实验记录/records/route3-g3-r15-2026-11-17-R3-per-config.csv",
+            "scope": "原三场景 P2，历史原几何 R1+R2，归档掩码"
+          },
+          "DrBokeh": {
+            "file": "03_实验记录/records/route3-baseline-dev3-2026-11-20-auxiliary.csv",
+            "scope": "原三场景 P1，1c 深度与 LDF 分割，仅 f/1.4。新场景用 B2 Oracle 输入"
+          },
+          "GT_oracle": {
+            "file": "03_实验记录/records/route3-ovg-1c-2026-11-19-C3-optical.csv",
+            "scope": "原三场景 P2，GT 可见几何与 GT 隐藏层归档"
+          }
+        },
+        "pooled": {
+          "f1.4": {
+            "stage3": {
+              "full_image": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              },
+              "near_in_focus": {
+                "pixels": 1097696,
+                "sse": 596.1517291759033,
+                "psnr": 37.42246528370325,
+                "patch_lpips": null
+              },
+              "far_recoverable": {
+                "pixels": 94841,
+                "sse": 266.10148519576694,
+                "psnr": 30.29070080743191,
+                "patch_lpips": null
+              },
+              "boundary_2px": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              }
+            },
+            "stage3_f2": {
+              "full_image": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              },
+              "near_in_focus": {
+                "pixels": 1097696,
+                "sse": 534.495789290783,
+                "psnr": 37.896590481355524,
+                "patch_lpips": null
+              },
+              "far_recoverable": {
+                "pixels": 94841,
+                "sse": 277.1417593897643,
+                "psnr": 30.114154095475058,
+                "patch_lpips": null
+              },
+              "boundary_2px": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              }
+            },
+            "A": {
+              "full_image": {
+                "pixels": 4718592,
+                "sse": 3236.8045838213857,
+                "psnr": 36.40817201318574,
+                "patch_lpips": 0.02158887141260024
+              },
+              "near_in_focus": {
+                "pixels": 1097696,
+                "sse": 331.4295669452932,
+                "psnr": 39.972120869901886,
+                "patch_lpips": 0.012274375665678116
+              },
+              "far_recoverable": {
+                "pixels": 94841,
+                "sse": 486.38699174735206,
+                "psnr": 27.67135427871336,
+                "patch_lpips": 0.038358007664552995
+              },
+              "boundary_2px": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              }
+            },
+            "R1_R2": {
+              "full_image": {
+                "pixels": 4718592,
+                "sse": 3475.1767459009043,
+                "psnr": 36.09956784267938,
+                "patch_lpips": 0.02378441240994099
+              },
+              "near_in_focus": {
+                "pixels": 1097696,
+                "sse": 341.062520536917,
+                "psnr": 39.84769339083338,
+                "patch_lpips": 0.013733374456462744
+              },
+              "far_recoverable": {
+                "pixels": 94841,
+                "sse": 510.0591981965484,
+                "psnr": 27.464967953760016,
+                "patch_lpips": 0.041832383448303534
+              },
+              "boundary_2px": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              }
+            },
+            "DrBokeh": {
+              "full_image": {
+                "pixels": 4718592,
+                "sse": 7157.809318243653,
+                "psnr": 32.96153557032969,
+                "patch_lpips": 0.10328465915598725
+              },
+              "near_in_focus": {
+                "pixels": 1097696,
+                "sse": 1785.877090364159,
+                "psnr": 32.657517702822325,
+                "patch_lpips": 0.09154535086281566
+              },
+              "far_recoverable": {
+                "pixels": 94841,
+                "sse": 438.9230711232943,
+                "psnr": 28.117289699593275,
+                "patch_lpips": 0.10085631767249062
+              },
+              "boundary_2px": {
+                "pixels": 275694,
+                "sse": 2132.154905360848,
+                "psnr": 25.887298153927254,
+                "patch_lpips": 0.11893236511913881
+              }
+            },
+            "GT_oracle": {
+              "full_image": {
+                "pixels": 4718592,
+                "sse": 1526.468204980525,
+                "psnr": 39.67245919026171,
+                "patch_lpips": 0.013063314692985273
+              },
+              "near_in_focus": {
+                "pixels": 1097696,
+                "sse": 249.33134268834448,
+                "psnr": 41.208264605812424,
+                "patch_lpips": 0.015631216370124254
+              },
+              "far_recoverable": {
+                "pixels": 94841,
+                "sse": 69.31840759568769,
+                "psnr": 36.13268801828206,
+                "patch_lpips": 0.013406253160318335
+              },
+              "boundary_2px": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              }
+            }
+          },
+          "f2": {
+            "stage3": {
+              "full_image": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              },
+              "near_in_focus": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              },
+              "far_recoverable": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              },
+              "boundary_2px": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              }
+            },
+            "stage3_f2": {
+              "full_image": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              },
+              "near_in_focus": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              },
+              "far_recoverable": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              },
+              "boundary_2px": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              }
+            },
+            "A": {
+              "full_image": {
+                "pixels": 4718592,
+                "sse": 1687.3968161108712,
+                "psnr": 39.237164564575046,
+                "patch_lpips": 0.015583920165984545
+              },
+              "near_in_focus": {
+                "pixels": 1138210,
+                "sse": 201.27957378572364,
+                "psnr": 42.295439474633255,
+                "patch_lpips": 0.008639904947441131
+              },
+              "far_recoverable": {
+                "pixels": 66785,
+                "sse": 243.12738311882515,
+                "psnr": 29.15966309411371,
+                "patch_lpips": 0.02937040258634497
+              },
+              "boundary_2px": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              }
+            },
+            "R1_R2": {
+              "full_image": {
+                "pixels": 4718592,
+                "sse": 1885.7319116281737,
+                "psnr": 38.75453731218676,
+                "patch_lpips": 0.01786714623256458
+              },
+              "near_in_focus": {
+                "pixels": 1138210,
+                "sse": 210.30891252103083,
+                "psnr": 42.10485973889614,
+                "patch_lpips": 0.01087979111227813
+              },
+              "far_recoverable": {
+                "pixels": 66785,
+                "sse": 270.289466050894,
+                "psnr": 28.699710646907462,
+                "patch_lpips": 0.03249093553341777
+              },
+              "boundary_2px": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              }
+            },
+            "DrBokeh": {
+              "full_image": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              },
+              "near_in_focus": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              },
+              "far_recoverable": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              },
+              "boundary_2px": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              }
+            },
+            "GT_oracle": {
+              "full_image": {
+                "pixels": 4718592,
+                "sse": 1547.291866692671,
+                "psnr": 39.613614390912396,
+                "patch_lpips": 0.012266677259105031
+              },
+              "near_in_focus": {
+                "pixels": 1138210,
+                "sse": 684.4535556166649,
+                "psnr": 36.979996676824214,
+                "patch_lpips": 0.018193331524833167
+              },
+              "far_recoverable": {
+                "pixels": 66785,
+                "sse": 54.53364590180383,
+                "psnr": 35.651356511760255,
+                "patch_lpips": 0.013107162786300745
+              },
+              "boundary_2px": {
+                "pixels": 0,
+                "sse": 0,
+                "psnr": null,
+                "patch_lpips": null
+              }
+            }
+          }
+        }
+      },
+      "optical_protocol": "P2 f/1.4, GT hidden substitute on and the identical F2 branch off, 64 rays clipped in linear RGB before averaging",
+      "test_cases_used": 0,
+      "seconds": 287.62371189147234,
+      "parameter_changes": {
+        "modules": {
+          "rgb_half": {
+            "initial_l2": 6.061078108340145,
+            "delta_l2": 0.038386391130761484,
+            "relative_l2": 0.006333261252307765
+          },
+          "rgb_quarter": {
+            "initial_l2": 8.25728183035023,
+            "delta_l2": 0.13896009092442,
+            "relative_l2": 0.016828793515762323
+          },
+          "depth_quarter": {
+            "initial_l2": 10.820674250514783,
+            "delta_l2": 0.0919756570451466,
+            "relative_l2": 0.008499993153455381
+          },
+          "semantic": {
+            "initial_l2": 15.339653407593374,
+            "delta_l2": 0.33369621792821547,
+            "relative_l2": 0.021753830354669584
+          },
+          "dpt": {
+            "initial_l2": 26.354405962859843,
+            "delta_l2": 0.47671860907882196,
+            "relative_l2": 0.018088763212900396
+          },
+          "quarter": {
+            "initial_l2": 13.884492429824476,
+            "delta_l2": 0.32086370944134274,
+            "relative_l2": 0.02310950227839182
+          },
+          "shared_view": {
+            "initial_l2": 9.334445556737894,
+            "delta_l2": 0.09142937320997284,
+            "relative_l2": 0.009794837053174119
+          },
+          "match": {
+            "initial_l2": 4.0435663931424655,
+            "delta_l2": 0.035854548080621794,
+            "relative_l2": 0.008867060558577193
+          },
+          "refine": {
+            "initial_l2": 16.5768133702242,
+            "delta_l2": 0.2513973898519161,
+            "relative_l2": 0.015165604162708624
+          },
+          "half_decoder": {
+            "initial_l2": 12.641509962662544,
+            "delta_l2": 0.2481008210372486,
+            "relative_l2": 0.019625885022440295
+          },
+          "full": {
+            "initial_l2": 12.013787910789798,
+            "delta_l2": 0.17290453794114577,
+            "relative_l2": 0.014392174993022568
+          },
+          "prior_head": {
+            "initial_l2": 8.254815950713226,
+            "delta_l2": 0.1332946128362009,
+            "relative_l2": 0.016147496640998286
+          },
+          "prior_pixel": {
+            "initial_l2": 1.1516819331836885,
+            "delta_l2": 0.004863752945353913,
+            "relative_l2": 0.004223173781938771
+          },
+          "geometry": {
+            "initial_l2": 1.8649858948991338,
+            "delta_l2": 0.013904077648050569,
+            "relative_l2": 0.007455325901433994
+          }
+        },
+        "geometry_rows": {
+          "0": {
+            "initial_l2": 0.6066076738981905,
+            "delta_l2": 0.0035869875098591365,
+            "relative_l2": 0.005913191778152737
+          },
+          "1": {
+            "initial_l2": 0.526154011764471,
+            "delta_l2": 0.006771560642144849,
+            "relative_l2": 0.012869921146160696
+          },
+          "2": {
+            "initial_l2": 0.301087738480544,
+            "delta_l2": 0.0,
+            "relative_l2": 0.0
+          },
+          "3": {
+            "initial_l2": 0.39688009059555507,
+            "delta_l2": 0.0,
+            "relative_l2": 0.0
+          },
+          "4": {
+            "initial_l2": 0.9153785264618032,
+            "delta_l2": 0.0,
+            "relative_l2": 0.0
+          },
+          "5": {
+            "initial_l2": 1.3218456773628517,
+            "delta_l2": 0.01160184736655714,
+            "relative_l2": 0.008777005943464903
+          }
+        }
+      },
+      "panels": {
+        "rows": [
+          {
+            "case": "f030-focus0-N1.4",
+            "scene": "development-001-c2e77289a531d9c6",
+            "file": "panels/dev001-f030-focus0-N1.4.jpg",
+            "reason": "固定",
+            "observations": {
+              "subject_pixels": 18174,
+              "depth_inverse_spread": [
+                0.04541311116466987,
+                0.045576197819728305
+              ],
+              "inverse_distance_to_focus": [
+                0.037572863426558696,
+                0.037446259864978494
+              ],
+              "foreground_coc_mae_px": [
+                0.25958477571824734,
+                0.29916857918116657
+              ],
+              "mean_edge_gradient": {
+                "reference": 0.42731794714927673,
+                "start": 0.411851704120636,
+                "current": 0.4104696214199066
+              },
+              "interpretation": "Lower inverse-depth spread can indicate flattening; lower distance to focus with greater GT CoC error flags focus drift. Edge gradient is sharpness evidence, not a width measurement."
+            }
+          },
+          {
+            "case": "f030-focus0-N1.4",
+            "scene": "development-006-cfa2a67575eca884",
+            "file": "panels/dev006-f030-focus0-N1.4.jpg",
+            "reason": "固定",
+            "observations": {
+              "subject_pixels": 55240,
+              "depth_inverse_spread": [
+                0.03872991389449604,
+                0.03827774945732146
+              ],
+              "inverse_distance_to_focus": [
+                0.014758719998675196,
+                0.015085127679574007
+              ],
+              "foreground_coc_mae_px": [
+                0.21159766978172181,
+                0.26727128039875553
+              ],
+              "mean_edge_gradient": {
+                "reference": 0.381134033203125,
+                "start": 0.30842873454093933,
+                "current": 0.3070301115512848
+              },
+              "interpretation": "Lower inverse-depth spread can indicate flattening; lower distance to focus with greater GT CoC error flags focus drift. Edge gradient is sharpness evidence, not a width measurement."
+            }
+          },
+          {
+            "case": "f030-focus0-N1.4",
+            "scene": "development-003-8c92e9e93c0ff003",
+            "file": "panels/dev003-f030-focus0-N1.4.jpg",
+            "reason": "固定 · 近焦配对较高 +1.826 dB",
+            "observations": {
+              "subject_pixels": 16417,
+              "depth_inverse_spread": [
+                0.04725583702313393,
+                0.030130726739776785
+              ],
+              "inverse_distance_to_focus": [
+                0.04416884250467273,
+                0.027444375328960314
+              ],
+              "foreground_coc_mae_px": [
+                1.0129636912338045,
+                0.8718023294361833
+              ],
+              "mean_edge_gradient": {
+                "reference": 0.1009993851184845,
+                "start": 0.09772595763206482,
+                "current": 0.10418082028627396
+              },
+              "interpretation": "Lower inverse-depth spread can indicate flattening; lower distance to focus with greater GT CoC error flags focus drift. Edge gradient is sharpness evidence, not a width measurement."
+            }
+          },
+          {
+            "case": "f030-focus0-N1.4",
+            "scene": "development-004-403a5734469f072d",
+            "file": "panels/dev004-f030-focus0-N1.4.jpg",
+            "reason": "固定",
+            "observations": {
+              "subject_pixels": 4716,
+              "depth_inverse_spread": [
+                0.043434444659406095,
+                0.04839753772344421
+              ],
+              "inverse_distance_to_focus": [
+                0.03394878636452259,
+                0.036865008959648754
+              ],
+              "foreground_coc_mae_px": [
+                0.5018191511242748,
+                0.6981114959494353
+              ],
+              "mean_edge_gradient": {
+                "reference": 0.17376308143138885,
+                "start": 0.17934323847293854,
+                "current": 0.17907001078128815
+              },
+              "interpretation": "Lower inverse-depth spread can indicate flattening; lower distance to focus with greater GT CoC error flags focus drift. Edge gradient is sharpness evidence, not a width measurement."
+            }
+          },
+          {
+            "case": "f030-focus1-N1.4",
+            "scene": "development-005-35442efa18790d0a",
+            "file": "panels/dev005-f030-focus1-N1.4.jpg",
+            "reason": "固定",
+            "observations": {
+              "subject_pixels": 19981,
+              "depth_inverse_spread": [
+                0.04922303980182226,
+                0.046568204932986385
+              ],
+              "inverse_distance_to_focus": [
+                0.11575372224821122,
+                0.14429331501174447
+              ],
+              "foreground_coc_mae_px": [
+                1.8975336181646734,
+                2.8687568619876385
+              ],
+              "mean_edge_gradient": {
+                "reference": 0.02849949337542057,
+                "start": 0.21451985836029053,
+                "current": 0.19806723296642303
+              },
+              "interpretation": "Lower inverse-depth spread can indicate flattening; lower distance to focus with greater GT CoC error flags focus drift. Edge gradient is sharpness evidence, not a width measurement."
+            }
+          },
+          {
+            "case": "f030-focus0-N1.4",
+            "scene": "development-008-6feda700c49fc611",
+            "file": "panels/dev008-f030-focus0-N1.4.jpg",
+            "reason": "固定",
+            "observations": {
+              "subject_pixels": 2075,
+              "depth_inverse_spread": [
+                0.17327425257854617,
+                0.1839364454488053
+              ],
+              "inverse_distance_to_focus": [
+                0.13995761881410326,
+                0.15114956443687225
+              ],
+              "foreground_coc_mae_px": [
+                1.9918786840553744,
+                2.045527269064662
+              ],
+              "mean_edge_gradient": {
+                "reference": 0.2301291972398758,
+                "start": 0.17045678198337555,
+                "current": 0.1713671088218689
+              },
+              "interpretation": "Lower inverse-depth spread can indicate flattening; lower distance to focus with greater GT CoC error flags focus drift. Edge gradient is sharpness evidence, not a width measurement."
+            }
+          },
+          {
+            "case": "f030-focus1-N1.4",
+            "scene": "development-008-6feda700c49fc611",
+            "file": "panels/dev008-f030-focus1-N1.4.jpg",
+            "reason": "固定",
+            "observations": {
+              "subject_pixels": 2072,
+              "depth_inverse_spread": [
+                0.19393810539022815,
+                0.2018683101849699
+              ],
+              "inverse_distance_to_focus": [
+                0.33875184985826784,
+                0.33754829655504065
+              ],
+              "foreground_coc_mae_px": [
+                1.9312224172659822,
+                2.0052619781273213
+              ],
+              "mean_edge_gradient": {
+                "reference": 0.2027461975812912,
+                "start": 0.21343167126178741,
+                "current": 0.21427038311958313
+              },
+              "interpretation": "Lower inverse-depth spread can indicate flattening; lower distance to focus with greater GT CoC error flags focus drift. Edge gradient is sharpness evidence, not a width measurement."
+            }
+          },
+          {
+            "case": "f030-focus1-N1.4",
+            "scene": "development-000-8e840e827a5e835c",
+            "file": "panels/dev000-f030-focus1-N1.4.jpg",
+            "reason": "固定",
+            "observations": {
+              "subject_pixels": 2028,
+              "depth_inverse_spread": [
+                0.07497592500907344,
+                0.07554552481195666
+              ],
+              "inverse_distance_to_focus": [
+                0.2797204389329366,
+                0.28307791267560645
+              ],
+              "foreground_coc_mae_px": [
+                0.5771343842060608,
+                0.5666234727206785
+              ],
+              "mean_edge_gradient": {
+                "reference": 0.15000736713409424,
+                "start": 0.1545673906803131,
+                "current": 0.1547839194536209
+              },
+              "interpretation": "Lower inverse-depth spread can indicate flattening; lower distance to focus with greater GT CoC error flags focus drift. Edge gradient is sharpness evidence, not a width measurement."
+            }
+          },
+          {
+            "case": "f030-N1.4-F5",
+            "scene": "metric-scene-122104-broad",
+            "file": "panels/122104-f030-N1.4-F5.jpg",
+            "reason": "固定",
+            "observations": {
+              "subject_pixels": 9749,
+              "depth_inverse_spread": [
+                0.1854586826607426,
+                0.19198326484612388
+              ],
+              "inverse_distance_to_focus": [
+                0.30457481180620505,
+                0.30038549177808854
+              ],
+              "foreground_coc_mae_px": [
+                2.2609236491424682,
+                2.465079344251924
+              ],
+              "mean_edge_gradient": {
+                "reference": 0.08163536339998245,
+                "start": 0.1535140573978424,
+                "current": 0.15258289873600006
+              },
+              "interpretation": "Lower inverse-depth spread can indicate flattening; lower distance to focus with greater GT CoC error flags focus drift. Edge gradient is sharpness evidence, not a width measurement."
+            }
+          },
+          {
+            "case": "f030-focus0-N1.4",
+            "scene": "development-014-46267e4acd6e6f30",
+            "file": "panels/dev014-f030-focus0-N1.4.jpg",
+            "reason": "近焦配对较低 -0.250 dB",
+            "observations": {
+              "subject_pixels": 288,
+              "depth_inverse_spread": [
+                0.029598398349596777,
+                0.030953889470843068
+              ],
+              "inverse_distance_to_focus": [
+                0.023193544465107116,
+                0.023637099790717146
+              ],
+              "foreground_coc_mae_px": [
+                0.4413492679595947,
+                0.5002303570508957
+              ],
+              "mean_edge_gradient": {
+                "reference": 0.37553444504737854,
+                "start": 0.3754330575466156,
+                "current": 0.37023842334747314
+              },
+              "interpretation": "Lower inverse-depth spread can indicate flattening; lower distance to focus with greater GT CoC error flags focus drift. Edge gradient is sharpness evidence, not a width measurement."
+            }
+          },
+          {
+            "case": "f030-focus0-N1.4",
+            "scene": "development-011-d0fd8daa5ce0ec59",
+            "file": "panels/dev011-f030-focus0-N1.4.jpg",
+            "reason": "近焦配对较低 -0.195 dB",
+            "observations": {
+              "subject_pixels": 19394,
+              "depth_inverse_spread": [
+                0.03863354211742102,
+                0.039313812908512595
+              ],
+              "inverse_distance_to_focus": [
+                0.02845423811338914,
+                0.02918555489480645
+              ],
+              "foreground_coc_mae_px": [
+                0.19297928491474195,
+                0.19516987603350228
+              ],
+              "mean_edge_gradient": {
+                "reference": 0.2712121903896332,
+                "start": 0.26597878336906433,
+                "current": 0.26431310176849365
+              },
+              "interpretation": "Lower inverse-depth spread can indicate flattening; lower distance to focus with greater GT CoC error flags focus drift. Edge gradient is sharpness evidence, not a width measurement."
+            }
+          },
+          {
+            "case": "f030-focus0-N1.4",
+            "scene": "development-005-35442efa18790d0a",
+            "file": "panels/dev005-f030-focus0-N1.4.jpg",
+            "reason": "近焦配对较高 +0.385 dB",
+            "observations": {
+              "subject_pixels": 21607,
+              "depth_inverse_spread": [
+                0.04938111495141081,
+                0.04847105044797048
+              ],
+              "inverse_distance_to_focus": [
+                0.03961701317125338,
+                0.03786984050394212
+              ],
+              "foreground_coc_mae_px": [
+                1.9382081322443339,
+                2.9275936900523862
+              ],
+              "mean_edge_gradient": {
+                "reference": 0.2708694338798523,
+                "start": 0.2675963044166565,
+                "current": 0.26653051376342773
+              },
+              "interpretation": "Lower inverse-depth spread can indicate flattening; lower distance to focus with greater GT CoC error flags focus drift. Edge gradient is sharpness evidence, not a width measurement."
+            }
+          }
+        ],
+        "unavailable": [],
+        "index": "/root/autodl-tmp/route3-stage2-v2-20261123/outputs/route3-v2data-stage3a-2026-11-24-02/evaluation/step-005000/ema/index.html",
+        "observations": "/root/autodl-tmp/route3-stage2-v2-20261123/outputs/route3-v2data-stage3a-2026-11-24-02/evaluation/step-005000/ema/观察清单.md"
+      }
+    }
+  },
+  "sampling": {
+    "batches": {
+      "R": 500,
+      "B": 2500,
+      "bokeh_B": 2500,
+      "B_crops": 2500,
+      "B_thin_crops": 1878,
+      "B_crop_thin_pixels": 11391202,
+      "B_required_thin_crops": 1250,
+      "C": 1500,
+      "bokeh_C": 199,
+      "G": 500
+    },
+    "B_scene_counts": {
+      "training-087-e246dd843f332a4c": 43,
+      "training-044-5a97108f5a9086dc": 7,
+      "training-064-086730c4acaff4f2": 35,
+      "training-118-639913dcc4d777e6": 34,
+      "training-089-b2a3e0ca0003160b": 42,
+      "training-081-ffffcf59dc7e4350": 47,
+      "training-074-e757bee971cb318d": 33,
+      "training-093-d8f72e54a64ce79f": 35,
+      "training-061-ff0a4ff42915123f": 36,
+      "training-129-d8668d929a0896e4": 9,
+      "training-073-c77c508538ed6eae": 43,
+      "training-096-783b05ff5b65d107": 34,
+      "training-067-b04aa536b482f2e0": 23,
+      "training-106-7f73fdeb23c9db2e": 31,
+      "training-108-50a8b0000171e4cc": 47,
+      "training-160-2a6a65d85055aef4": 14,
+      "training-063-2194134e4b0c7105": 41,
+      "training-187-47dd92425293df2d": 17,
+      "training-066-4a9c7b3a1f110559": 35,
+      "training-120-2db3c2fe6b5336e7": 3,
+      "training-136-073bbcbb83cece0e": 16,
+      "training-114-b3b91a86e4999313": 37,
+      "training-166-13e19659f947601e": 12,
+      "training-094-ca97b4045515c692": 38,
+      "training-069-0ad3a696375884bf": 36,
+      "training-100-8c522772a040c259": 34,
+      "training-075-81cd9c5a8c2122bc": 38,
+      "training-092-72f2b5c082b70b73": 38,
+      "training-080-43386b8b8e99e758": 34,
+      "training-264-cb17b94396eb633f": 9,
+      "training-112-428cfa39403fbda7": 35,
+      "training-102-8d47472c5dbcc0c8": 31,
+      "training-082-f9818b8f27ce561a": 32,
+      "training-286-cc428b837d21f7dd": 5,
+      "training-086-bbb38d49f9a712d4": 42,
+      "training-031-eeb819d68fc1c2ca": 9,
+      "training-224-0a595bfb91359bdd": 12,
+      "training-088-c5cb153915d4606f": 40,
+      "training-275-4756423f133ca285": 4,
+      "training-105-726c72c20bf403b4": 31,
+      "training-084-737c52cb48b4fede": 44,
+      "training-291-039454dbf9a2a574": 11,
+      "training-078-8a67e2e69ec63c65": 36,
+      "training-113-b053d03fffaca202": 35,
+      "training-079-3e07c2ea841832f9": 17,
+      "training-104-ed959c9469c17608": 36,
+      "training-083-37304d8947489c3d": 15,
+      "training-060-6d5047674c33e827": 23,
+      "training-109-156fc340568d4b6a": 45,
+      "training-076-d7015b328ddc7df3": 20,
+      "training-026-f3242e982385bafd": 5,
+      "training-068-845212140fd82b21": 19,
+      "training-071-2345d368c9e2cc12": 30,
+      "training-107-4b99cc301efd6064": 39,
+      "training-153-b59df63e29decad0": 20,
+      "training-115-78e9d36f81ad938e": 22,
+      "training-179-9f3c37e903b99e85": 6,
+      "training-090-ff8f0f360c455b3a": 39,
+      "training-085-4314e53b136c7e2d": 21,
+      "training-249-b1ac5cb99173544c": 9,
+      "training-137-ddbd64a306f037b2": 5,
+      "training-072-31b286ff6377ae60": 32,
+      "training-230-015f01652fd9e26b": 10,
+      "training-210-d9f88e0ac33b9e29": 14,
+      "training-091-7138fd6acad9772b": 31,
+      "training-289-a5a90c8df5d46768": 7,
+      "training-262-8bf0f5b2a1537c31": 14,
+      "training-162-305b6aacb0aafb8b": 18,
+      "training-117-8923afa9b74ab6dc": 22,
+      "training-195-52038ddf4e2b1771": 6,
+      "training-144-3582acc4193a8ada": 16,
+      "training-095-b148ae741d51098e": 32,
+      "training-101-2f2c19e48b042cbc": 17,
+      "training-149-d4ae9b7274fff9f7": 12,
+      "training-103-fe83df7a6c79a980": 28,
+      "training-111-d7e217467bd2475e": 34,
+      "training-268-2d410329c133a02c": 8,
+      "training-116-d4f05620c2b2e016": 35,
+      "training-098-34084be1d5f9c679": 29,
+      "training-169-48dfc9836cc6b9a7": 11,
+      "training-077-e0dbd60c4b4a5517": 44,
+      "training-285-c8da041e74d8da19": 14,
+      "training-232-c027df1c79b58415": 13,
+      "training-158-2b318ac0ba4ddc1d": 10,
+      "training-159-79c13c113b5b6cf7": 8,
+      "training-171-f5de6bcd6aef3f97": 3,
+      "training-156-f4219c9a2f9787ed": 18,
+      "training-161-baa513d587b0b964": 13,
+      "training-110-5dd8c29db3f73ffc": 18,
+      "training-180-ff25a69cb5a48ff4": 5,
+      "training-154-fa521945b146b2e9": 6,
+      "training-205-7cc8c134876852e9": 9,
+      "training-099-91618e3e936d8bbb": 25,
+      "training-027-d3456b23a462c6de": 4,
+      "training-070-918f36e7e62f3576": 11,
+      "training-143-aa999d0bbdfd59a8": 15,
+      "training-033-458f598222b9f805": 12,
+      "training-125-6d704b13c345a337": 8,
+      "training-207-4be5a80acae94f9b": 7,
+      "training-297-2f6d75e82a9d5b4a": 6,
+      "training-246-270a821c86151a88": 11,
+      "training-053-f272d322f73e299b": 5,
+      "training-046-4f78e7fdc9b0d0bd": 11,
+      "training-145-109c724576efe4bb": 2,
+      "training-173-13ed6793b9ce2fb2": 6,
+      "training-157-dc71563e23ab59db": 14,
+      "training-155-fd318b1ed234a438": 16,
+      "training-062-e1afe20c6ff0e3f1": 22,
+      "training-168-5c739b335ca20b5f": 7,
+      "training-257-5c595d0067909632": 5,
+      "training-142-c3720b66550a6835": 3,
+      "training-123-bb3b63aa641990b6": 4,
+      "training-132-0a15641e6123d4ff": 6,
+      "training-164-70111b7d143f24b4": 7,
+      "training-172-467ec86af81787bb": 10,
+      "training-197-bcb19a2c538a2125": 5,
+      "training-097-bc0d8b3ce29a5f4c": 9,
+      "training-065-e80e056e921c89cb": 33,
+      "training-189-ed85cd06bfb62e0d": 8,
+      "training-196-84b81e0db316cc51": 2,
+      "training-139-a6fdfc32f252dada": 11,
+      "training-201-151eee88feab99b7": 3,
+      "training-126-627fc10d62778eaf": 3,
+      "training-128-308d33775b95ae11": 5,
+      "training-140-05fad3fd2dd65434": 6,
+      "training-233-776d75d3f839af90": 7,
+      "training-121-15d84d54e54aae7e": 8,
+      "training-147-f363f7035b2adc2a": 7
+    },
+    "B_case_counts": {
+      "training-087-e246dd843f332a4c/f030-focus1-N1.4-optics": 6,
+      "training-044-5a97108f5a9086dc/f030-focus0-N2-optics": 2,
+      "training-064-086730c4acaff4f2/f001-focus0-N2-optics": 5,
+      "training-118-639913dcc4d777e6/f001-focus0-N2-optics": 2,
+      "training-089-b2a3e0ca0003160b/f060-focus0-N2-optics": 4,
+      "training-081-ffffcf59dc7e4350/f001-focus1-N2-optics": 6,
+      "training-074-e757bee971cb318d/f030-focus0-N2-optics": 4,
+      "training-093-d8f72e54a64ce79f/f060-focus0-N1.4-optics": 4,
+      "training-061-ff0a4ff42915123f/f001-focus1-N2-optics": 5,
+      "training-129-d8668d929a0896e4/f030-focus1-N2-optics": 1,
+      "training-073-c77c508538ed6eae/f030-focus1-N1.4-optics": 2,
+      "training-061-ff0a4ff42915123f/f030-focus1-N2-optics": 3,
+      "training-096-783b05ff5b65d107/f030-focus0-N2-optics": 7,
+      "training-067-b04aa536b482f2e0/f001-focus1-N2-optics": 2,
+      "training-106-7f73fdeb23c9db2e/f060-focus0-N1.4-optics": 3,
+      "training-096-783b05ff5b65d107/f060-focus0-N2-optics": 3,
+      "training-108-50a8b0000171e4cc/f060-focus1-N1.4-optics": 5,
+      "training-160-2a6a65d85055aef4/f060-focus1-N1.4-optics": 2,
+      "training-063-2194134e4b0c7105/f001-focus0-N2-optics": 2,
+      "training-187-47dd92425293df2d/f060-focus0-N1.4-optics": 2,
+      "training-066-4a9c7b3a1f110559/f001-focus1-N2-optics": 2,
+      "training-120-2db3c2fe6b5336e7/f060-focus0-N1.4-optics": 1,
+      "training-089-b2a3e0ca0003160b/f001-focus0-N1.4-optics": 7,
+      "training-136-073bbcbb83cece0e/f001-focus0-N1.4-optics": 1,
+      "training-114-b3b91a86e4999313/f001-focus1-N2-optics": 5,
+      "training-166-13e19659f947601e/f060-focus0-N1.4-optics": 1,
+      "training-094-ca97b4045515c692/f060-focus1-N2-optics": 4,
+      "training-069-0ad3a696375884bf/f030-focus1-N2-optics": 4,
+      "training-100-8c522772a040c259/f060-focus0-N1.4-optics": 7,
+      "training-075-81cd9c5a8c2122bc/f030-focus0-N2-optics": 1,
+      "training-092-72f2b5c082b70b73/f060-focus0-N2-optics": 7,
+      "training-080-43386b8b8e99e758/f030-focus0-N2-optics": 3,
+      "training-064-086730c4acaff4f2/f030-focus0-N1.4-optics": 2,
+      "training-264-cb17b94396eb633f/f030-focus0-N2-optics": 1,
+      "training-112-428cfa39403fbda7/f060-focus0-N1.4-optics": 5,
+      "training-092-72f2b5c082b70b73/f060-focus1-N1.4-optics": 2,
+      "training-118-639913dcc4d777e6/f060-focus0-N1.4-optics": 4,
+      "training-102-8d47472c5dbcc0c8/f060-focus0-N1.4-optics": 3,
+      "training-082-f9818b8f27ce561a/f001-focus0-N1.4-optics": 3,
+      "training-081-ffffcf59dc7e4350/f060-focus1-N1.4-optics": 4,
+      "training-286-cc428b837d21f7dd/f030-focus0-N2-optics": 1,
+      "training-086-bbb38d49f9a712d4/f001-focus0-N1.4-optics": 6,
+      "training-031-eeb819d68fc1c2ca/f001-focus1-N1.4-optics": 2,
+      "training-081-ffffcf59dc7e4350/f001-focus0-N2-optics": 4,
+      "training-224-0a595bfb91359bdd/f030-focus0-N1.4-optics": 3,
+      "training-088-c5cb153915d4606f/f001-focus1-N2-optics": 4,
+      "training-275-4756423f133ca285/f060-focus0-N1.4-optics": 1,
+      "training-105-726c72c20bf403b4/f030-focus0-N2-optics": 2,
+      "training-100-8c522772a040c259/f030-focus1-N2-optics": 7,
+      "training-084-737c52cb48b4fede/f001-focus0-N1.4-optics": 5,
+      "training-224-0a595bfb91359bdd/f030-focus1-N2-optics": 2,
+      "training-081-ffffcf59dc7e4350/f060-focus1-N2-optics": 6,
+      "training-291-039454dbf9a2a574/f060-focus0-N2-optics": 2,
+      "training-078-8a67e2e69ec63c65/f030-focus0-N2-optics": 5,
+      "training-113-b053d03fffaca202/f060-focus0-N2-optics": 3,
+      "training-081-ffffcf59dc7e4350/f030-focus0-N2-optics": 4,
+      "training-079-3e07c2ea841832f9/f001-focus0-N1.4-optics": 1,
+      "training-082-f9818b8f27ce561a/f060-focus1-N2-optics": 4,
+      "training-089-b2a3e0ca0003160b/f030-focus1-N2-optics": 4,
+      "training-104-ed959c9469c17608/f060-focus1-N1.4-optics": 5,
+      "training-083-37304d8947489c3d/f001-focus0-N1.4-optics": 2,
+      "training-060-6d5047674c33e827/f001-focus1-N2-optics": 2,
+      "training-079-3e07c2ea841832f9/f030-focus1-N2-optics": 1,
+      "training-074-e757bee971cb318d/f060-focus1-N1.4-optics": 4,
+      "training-109-156fc340568d4b6a/f060-focus1-N2-optics": 4,
+      "training-076-d7015b328ddc7df3/f060-focus0-N2-optics": 2,
+      "training-026-f3242e982385bafd/f030-focus0-N1.4-optics": 1,
+      "training-068-845212140fd82b21/f030-focus0-N1.4-optics": 3,
+      "training-071-2345d368c9e2cc12/f001-focus0-N1.4-optics": 2,
+      "training-087-e246dd843f332a4c/f001-focus1-N1.4-optics": 6,
+      "training-107-4b99cc301efd6064/f030-focus0-N2-optics": 4,
+      "training-074-e757bee971cb318d/f030-focus1-N1.4-optics": 4,
+      "training-084-737c52cb48b4fede/f060-focus0-N1.4-optics": 1,
+      "training-068-845212140fd82b21/f060-focus1-N2-optics": 2,
+      "training-073-c77c508538ed6eae/f001-focus0-N1.4-optics": 5,
+      "training-106-7f73fdeb23c9db2e/f001-focus1-N2-optics": 6,
+      "training-113-b053d03fffaca202/f060-focus1-N2-optics": 5,
+      "training-088-c5cb153915d4606f/f001-focus0-N1.4-optics": 4,
+      "training-153-b59df63e29decad0/f060-focus0-N1.4-optics": 1,
+      "training-115-78e9d36f81ad938e/f060-focus0-N1.4-optics": 2,
+      "training-179-9f3c37e903b99e85/f001-focus1-N1.4-optics": 1,
+      "training-090-ff8f0f360c455b3a/f030-focus1-N1.4-optics": 4,
+      "training-085-4314e53b136c7e2d/f060-focus1-N1.4-optics": 3,
+      "training-084-737c52cb48b4fede/f030-focus0-N1.4-optics": 4,
+      "training-249-b1ac5cb99173544c/f030-focus1-N2-optics": 1,
+      "training-082-f9818b8f27ce561a/f001-focus0-N2-optics": 5,
+      "training-137-ddbd64a306f037b2/f060-focus1-N1.4-optics": 1,
+      "training-118-639913dcc4d777e6/f001-focus0-N1.4-optics": 9,
+      "training-137-ddbd64a306f037b2/f030-focus1-N2-optics": 1,
+      "training-072-31b286ff6377ae60/f030-focus1-N2-optics": 5,
+      "training-066-4a9c7b3a1f110559/f060-focus0-N1.4-optics": 5,
+      "training-064-086730c4acaff4f2/f060-focus0-N2-optics": 4,
+      "training-115-78e9d36f81ad938e/f030-focus0-N2-optics": 3,
+      "training-230-015f01652fd9e26b/f060-focus0-N2-optics": 1,
+      "training-090-ff8f0f360c455b3a/f060-focus1-N2-optics": 4,
+      "training-210-d9f88e0ac33b9e29/f030-focus1-N2-optics": 3,
+      "training-061-ff0a4ff42915123f/f060-focus0-N1.4-optics": 2,
+      "training-100-8c522772a040c259/f001-focus1-N1.4-optics": 2,
+      "training-083-37304d8947489c3d/f030-focus0-N1.4-optics": 2,
+      "training-102-8d47472c5dbcc0c8/f001-focus0-N1.4-optics": 4,
+      "training-091-7138fd6acad9772b/f060-focus0-N2-optics": 4,
+      "training-108-50a8b0000171e4cc/f030-focus1-N1.4-optics": 5,
+      "training-061-ff0a4ff42915123f/f060-focus0-N2-optics": 1,
+      "training-289-a5a90c8df5d46768/f060-focus1-N1.4-optics": 1,
+      "training-262-8bf0f5b2a1537c31/f001-focus1-N1.4-optics": 3,
+      "training-072-31b286ff6377ae60/f001-focus1-N1.4-optics": 4,
+      "training-162-305b6aacb0aafb8b/f030-focus1-N2-optics": 3,
+      "training-081-ffffcf59dc7e4350/f060-focus0-N2-optics": 5,
+      "training-117-8923afa9b74ab6dc/f001-focus1-N2-optics": 2,
+      "training-090-ff8f0f360c455b3a/f060-focus1-N1.4-optics": 2,
+      "training-195-52038ddf4e2b1771/f030-focus1-N1.4-optics": 2,
+      "training-144-3582acc4193a8ada/f060-focus1-N1.4-optics": 4,
+      "training-095-b148ae741d51098e/f060-focus0-N2-optics": 3,
+      "training-089-b2a3e0ca0003160b/f001-focus1-N1.4-optics": 6,
+      "training-117-8923afa9b74ab6dc/f030-focus0-N1.4-optics": 3,
+      "training-061-ff0a4ff42915123f/f001-focus1-N1.4-optics": 3,
+      "training-230-015f01652fd9e26b/f060-focus1-N2-optics": 2,
+      "training-101-2f2c19e48b042cbc/f001-focus0-N1.4-optics": 2,
+      "training-149-d4ae9b7274fff9f7/f060-focus1-N1.4-optics": 3,
+      "training-103-fe83df7a6c79a980/f001-focus0-N2-optics": 6,
+      "training-111-d7e217467bd2475e/f060-focus0-N1.4-optics": 3,
+      "training-096-783b05ff5b65d107/f001-focus1-N2-optics": 2,
+      "training-268-2d410329c133a02c/f001-focus1-N1.4-optics": 1,
+      "training-116-d4f05620c2b2e016/f001-focus0-N2-optics": 6,
+      "training-098-34084be1d5f9c679/f060-focus0-N2-optics": 4,
+      "training-100-8c522772a040c259/f060-focus1-N2-optics": 3,
+      "training-086-bbb38d49f9a712d4/f030-focus1-N1.4-optics": 6,
+      "training-075-81cd9c5a8c2122bc/f001-focus0-N2-optics": 2,
+      "training-060-6d5047674c33e827/f060-focus1-N1.4-optics": 4,
+      "training-087-e246dd843f332a4c/f030-focus0-N2-optics": 7,
+      "training-249-b1ac5cb99173544c/f030-focus1-N1.4-optics": 1,
+      "training-111-d7e217467bd2475e/f001-focus0-N1.4-optics": 3,
+      "training-169-48dfc9836cc6b9a7/f001-focus0-N2-optics": 2,
+      "training-082-f9818b8f27ce561a/f030-focus0-N1.4-optics": 4,
+      "training-249-b1ac5cb99173544c/f060-focus1-N1.4-optics": 1,
+      "training-082-f9818b8f27ce561a/f030-focus1-N1.4-optics": 3,
+      "training-077-e0dbd60c4b4a5517/f060-focus1-N1.4-optics": 5,
+      "training-071-2345d368c9e2cc12/f060-focus0-N2-optics": 3,
+      "training-285-c8da041e74d8da19/f001-focus0-N2-optics": 1,
+      "training-092-72f2b5c082b70b73/f001-focus1-N1.4-optics": 5,
+      "training-210-d9f88e0ac33b9e29/f001-focus1-N2-optics": 2,
+      "training-108-50a8b0000171e4cc/f030-focus1-N2-optics": 4,
+      "training-104-ed959c9469c17608/f001-focus0-N2-optics": 3,
+      "training-118-639913dcc4d777e6/f060-focus0-N2-optics": 1,
+      "training-232-c027df1c79b58415/f001-focus0-N1.4-optics": 1,
+      "training-078-8a67e2e69ec63c65/f030-focus1-N1.4-optics": 5,
+      "training-092-72f2b5c082b70b73/f001-focus0-N1.4-optics": 8,
+      "training-091-7138fd6acad9772b/f030-focus1-N1.4-optics": 4,
+      "training-084-737c52cb48b4fede/f030-focus0-N2-optics": 5,
+      "training-066-4a9c7b3a1f110559/f001-focus0-N2-optics": 4,
+      "training-144-3582acc4193a8ada/f001-focus1-N1.4-optics": 1,
+      "training-158-2b318ac0ba4ddc1d/f001-focus1-N1.4-optics": 1,
+      "training-081-ffffcf59dc7e4350/f030-focus1-N1.4-optics": 6,
+      "training-285-c8da041e74d8da19/f001-focus1-N2-optics": 1,
+      "training-082-f9818b8f27ce561a/f001-focus1-N1.4-optics": 3,
+      "training-076-d7015b328ddc7df3/f030-focus1-N2-optics": 1,
+      "training-162-305b6aacb0aafb8b/f001-focus1-N1.4-optics": 2,
+      "training-086-bbb38d49f9a712d4/f060-focus1-N2-optics": 5,
+      "training-159-79c13c113b5b6cf7/f030-focus0-N2-optics": 1,
+      "training-108-50a8b0000171e4cc/f060-focus0-N1.4-optics": 4,
+      "training-291-039454dbf9a2a574/f060-focus1-N2-optics": 1,
+      "training-103-fe83df7a6c79a980/f060-focus1-N2-optics": 2,
+      "training-171-f5de6bcd6aef3f97/f030-focus0-N2-optics": 1,
+      "training-112-428cfa39403fbda7/f001-focus1-N1.4-optics": 6,
+      "training-115-78e9d36f81ad938e/f001-focus1-N1.4-optics": 4,
+      "training-073-c77c508538ed6eae/f060-focus1-N1.4-optics": 3,
+      "training-107-4b99cc301efd6064/f060-focus0-N2-optics": 4,
+      "training-106-7f73fdeb23c9db2e/f030-focus0-N1.4-optics": 4,
+      "training-156-f4219c9a2f9787ed/f030-focus0-N2-optics": 3,
+      "training-080-43386b8b8e99e758/f030-focus1-N1.4-optics": 7,
+      "training-102-8d47472c5dbcc0c8/f030-focus1-N1.4-optics": 8,
+      "training-072-31b286ff6377ae60/f060-focus1-N1.4-optics": 3,
+      "training-161-baa513d587b0b964/f030-focus1-N2-optics": 2,
+      "training-109-156fc340568d4b6a/f001-focus0-N1.4-optics": 5,
+      "training-110-5dd8c29db3f73ffc/f001-focus1-N2-optics": 4,
+      "training-111-d7e217467bd2475e/f001-focus1-N2-optics": 6,
+      "training-180-ff25a69cb5a48ff4/f060-focus1-N2-optics": 1,
+      "training-060-6d5047674c33e827/f001-focus1-N1.4-optics": 2,
+      "training-088-c5cb153915d4606f/f060-focus1-N1.4-optics": 6,
+      "training-179-9f3c37e903b99e85/f060-focus1-N1.4-optics": 2,
+      "training-080-43386b8b8e99e758/f060-focus1-N1.4-optics": 2,
+      "training-161-baa513d587b0b964/f030-focus0-N2-optics": 2,
+      "training-078-8a67e2e69ec63c65/f001-focus1-N2-optics": 3,
+      "training-230-015f01652fd9e26b/f001-focus0-N2-optics": 1,
+      "training-109-156fc340568d4b6a/f030-focus1-N2-optics": 6,
+      "training-154-fa521945b146b2e9/f001-focus1-N1.4-optics": 1,
+      "training-069-0ad3a696375884bf/f030-focus0-N2-optics": 4,
+      "training-158-2b318ac0ba4ddc1d/f060-focus0-N1.4-optics": 2,
+      "training-101-2f2c19e48b042cbc/f060-focus0-N2-optics": 3,
+      "training-067-b04aa536b482f2e0/f060-focus0-N2-optics": 3,
+      "training-083-37304d8947489c3d/f060-focus1-N1.4-optics": 2,
+      "training-230-015f01652fd9e26b/f030-focus1-N2-optics": 2,
+      "training-061-ff0a4ff42915123f/f060-focus1-N1.4-optics": 6,
+      "training-112-428cfa39403fbda7/f001-focus0-N2-optics": 2,
+      "training-166-13e19659f947601e/f030-focus0-N2-optics": 1,
+      "training-109-156fc340568d4b6a/f060-focus0-N2-optics": 5,
+      "training-205-7cc8c134876852e9/f030-focus0-N1.4-optics": 1,
+      "training-085-4314e53b136c7e2d/f060-focus1-N2-optics": 1,
+      "training-099-91618e3e936d8bbb/f001-focus0-N2-optics": 2,
+      "training-073-c77c508538ed6eae/f001-focus1-N2-optics": 3,
+      "training-106-7f73fdeb23c9db2e/f030-focus0-N2-optics": 3,
+      "training-027-d3456b23a462c6de/f030-focus0-N2-optics": 2,
+      "training-112-428cfa39403fbda7/f001-focus1-N2-optics": 3,
+      "training-210-d9f88e0ac33b9e29/f060-focus1-N2-optics": 1,
+      "training-108-50a8b0000171e4cc/f030-focus0-N2-optics": 3,
+      "training-158-2b318ac0ba4ddc1d/f030-focus0-N1.4-optics": 1,
+      "training-116-d4f05620c2b2e016/f030-focus0-N2-optics": 3,
+      "training-070-918f36e7e62f3576/f001-focus1-N2-optics": 2,
+      "training-169-48dfc9836cc6b9a7/f060-focus0-N2-optics": 2,
+      "training-108-50a8b0000171e4cc/f060-focus0-N2-optics": 3,
+      "training-286-cc428b837d21f7dd/f060-focus0-N2-optics": 1,
+      "training-113-b053d03fffaca202/f001-focus0-N1.4-optics": 1,
+      "training-111-d7e217467bd2475e/f060-focus0-N2-optics": 4,
+      "training-060-6d5047674c33e827/f060-focus1-N2-optics": 3,
+      "training-060-6d5047674c33e827/f001-focus0-N1.4-optics": 4,
+      "training-136-073bbcbb83cece0e/f001-focus1-N2-optics": 4,
+      "training-113-b053d03fffaca202/f001-focus1-N2-optics": 6,
+      "training-104-ed959c9469c17608/f060-focus0-N1.4-optics": 4,
+      "training-106-7f73fdeb23c9db2e/f001-focus0-N2-optics": 4,
+      "training-068-845212140fd82b21/f001-focus0-N2-optics": 1,
+      "training-224-0a595bfb91359bdd/f030-focus0-N2-optics": 2,
+      "training-264-cb17b94396eb633f/f030-focus0-N1.4-optics": 1,
+      "training-075-81cd9c5a8c2122bc/f030-focus0-N1.4-optics": 3,
+      "training-143-aa999d0bbdfd59a8/f001-focus1-N2-optics": 2,
+      "training-072-31b286ff6377ae60/f030-focus0-N1.4-optics": 3,
+      "training-073-c77c508538ed6eae/f001-focus1-N1.4-optics": 2,
+      "training-107-4b99cc301efd6064/f030-focus1-N1.4-optics": 3,
+      "training-078-8a67e2e69ec63c65/f060-focus0-N2-optics": 3,
+      "training-093-d8f72e54a64ce79f/f030-focus1-N1.4-optics": 4,
+      "training-156-f4219c9a2f9787ed/f030-focus1-N1.4-optics": 2,
+      "training-074-e757bee971cb318d/f030-focus0-N1.4-optics": 3,
+      "training-095-b148ae741d51098e/f001-focus0-N2-optics": 4,
+      "training-088-c5cb153915d4606f/f060-focus0-N2-optics": 3,
+      "training-111-d7e217467bd2475e/f060-focus1-N2-optics": 1,
+      "training-033-458f598222b9f805/f001-focus0-N1.4-optics": 2,
+      "training-073-c77c508538ed6eae/f060-focus1-N2-optics": 7,
+      "training-033-458f598222b9f805/f060-focus1-N1.4-optics": 2,
+      "training-111-d7e217467bd2475e/f060-focus1-N1.4-optics": 6,
+      "training-125-6d704b13c345a337/f001-focus1-N2-optics": 2,
+      "training-086-bbb38d49f9a712d4/f001-focus1-N1.4-optics": 3,
+      "training-074-e757bee971cb318d/f030-focus1-N2-optics": 5,
+      "training-077-e0dbd60c4b4a5517/f001-focus1-N1.4-optics": 7,
+      "training-161-baa513d587b0b964/f060-focus1-N1.4-optics": 2,
+      "training-110-5dd8c29db3f73ffc/f060-focus0-N1.4-optics": 3,
+      "training-158-2b318ac0ba4ddc1d/f001-focus1-N2-optics": 3,
+      "training-067-b04aa536b482f2e0/f060-focus1-N2-optics": 4,
+      "training-166-13e19659f947601e/f030-focus1-N2-optics": 2,
+      "training-075-81cd9c5a8c2122bc/f001-focus1-N2-optics": 5,
+      "training-207-4be5a80acae94f9b/f030-focus0-N1.4-optics": 2,
+      "training-080-43386b8b8e99e758/f001-focus0-N1.4-optics": 2,
+      "training-268-2d410329c133a02c/f060-focus0-N2-optics": 2,
+      "training-082-f9818b8f27ce561a/f060-focus0-N1.4-optics": 2,
+      "training-091-7138fd6acad9772b/f060-focus0-N1.4-optics": 3,
+      "training-160-2a6a65d85055aef4/f030-focus1-N1.4-optics": 2,
+      "training-187-47dd92425293df2d/f001-focus1-N2-optics": 2,
+      "training-094-ca97b4045515c692/f001-focus1-N1.4-optics": 2,
+      "training-108-50a8b0000171e4cc/f060-focus1-N2-optics": 2,
+      "training-077-e0dbd60c4b4a5517/f030-focus0-N1.4-optics": 5,
+      "training-297-2f6d75e82a9d5b4a/f060-focus1-N2-optics": 2,
+      "training-085-4314e53b136c7e2d/f030-focus1-N1.4-optics": 3,
+      "training-104-ed959c9469c17608/f060-focus0-N2-optics": 4,
+      "training-072-31b286ff6377ae60/f060-focus0-N1.4-optics": 3,
+      "training-069-0ad3a696375884bf/f001-focus1-N2-optics": 4,
+      "training-246-270a821c86151a88/f060-focus1-N2-optics": 1,
+      "training-066-4a9c7b3a1f110559/f030-focus0-N2-optics": 3,
+      "training-159-79c13c113b5b6cf7/f060-focus0-N1.4-optics": 1,
+      "training-099-91618e3e936d8bbb/f060-focus1-N1.4-optics": 2,
+      "training-053-f272d322f73e299b/f030-focus0-N1.4-optics": 1,
+      "training-099-91618e3e936d8bbb/f030-focus1-N2-optics": 1,
+      "training-232-c027df1c79b58415/f060-focus0-N1.4-optics": 2,
+      "training-103-fe83df7a6c79a980/f030-focus1-N1.4-optics": 5,
+      "training-108-50a8b0000171e4cc/f001-focus1-N1.4-optics": 7,
+      "training-105-726c72c20bf403b4/f030-focus1-N2-optics": 2,
+      "training-077-e0dbd60c4b4a5517/f001-focus0-N2-optics": 2,
+      "training-117-8923afa9b74ab6dc/f001-focus0-N2-optics": 1,
+      "training-046-4f78e7fdc9b0d0bd/f060-focus1-N2-optics": 1,
+      "training-094-ca97b4045515c692/f060-focus0-N1.4-optics": 3,
+      "training-076-d7015b328ddc7df3/f060-focus0-N1.4-optics": 2,
+      "training-145-109c724576efe4bb/f030-focus0-N2-optics": 1,
+      "training-285-c8da041e74d8da19/f030-focus1-N1.4-optics": 2,
+      "training-173-13ed6793b9ce2fb2/f030-focus1-N1.4-optics": 1,
+      "training-075-81cd9c5a8c2122bc/f030-focus1-N2-optics": 4,
+      "training-169-48dfc9836cc6b9a7/f001-focus1-N1.4-optics": 1,
+      "training-093-d8f72e54a64ce79f/f001-focus1-N2-optics": 4,
+      "training-149-d4ae9b7274fff9f7/f001-focus1-N1.4-optics": 2,
+      "training-104-ed959c9469c17608/f001-focus1-N2-optics": 3,
+      "training-094-ca97b4045515c692/f001-focus1-N2-optics": 5,
+      "training-078-8a67e2e69ec63c65/f060-focus1-N1.4-optics": 5,
+      "training-079-3e07c2ea841832f9/f001-focus1-N2-optics": 1,
+      "training-136-073bbcbb83cece0e/f060-focus0-N2-optics": 2,
+      "training-159-79c13c113b5b6cf7/f001-focus1-N1.4-optics": 1,
+      "training-063-2194134e4b0c7105/f030-focus0-N1.4-optics": 5,
+      "training-079-3e07c2ea841832f9/f060-focus1-N1.4-optics": 1,
+      "training-157-dc71563e23ab59db/f001-focus1-N1.4-optics": 3,
+      "training-091-7138fd6acad9772b/f001-focus1-N2-optics": 2,
+      "training-092-72f2b5c082b70b73/f060-focus1-N2-optics": 4,
+      "training-100-8c522772a040c259/f030-focus1-N1.4-optics": 4,
+      "training-098-34084be1d5f9c679/f001-focus0-N2-optics": 2,
+      "training-115-78e9d36f81ad938e/f060-focus1-N1.4-optics": 1,
+      "training-115-78e9d36f81ad938e/f030-focus1-N1.4-optics": 3,
+      "training-088-c5cb153915d4606f/f060-focus0-N1.4-optics": 2,
+      "training-155-fd318b1ed234a438/f030-focus1-N2-optics": 3,
+      "training-062-e1afe20c6ff0e3f1/f060-focus1-N1.4-optics": 1,
+      "training-249-b1ac5cb99173544c/f001-focus1-N2-optics": 2,
+      "training-066-4a9c7b3a1f110559/f030-focus0-N1.4-optics": 4,
+      "training-101-2f2c19e48b042cbc/f030-focus1-N1.4-optics": 2,
+      "training-116-d4f05620c2b2e016/f060-focus1-N2-optics": 3,
+      "training-113-b053d03fffaca202/f060-focus1-N1.4-optics": 5,
+      "training-074-e757bee971cb318d/f001-focus0-N1.4-optics": 3,
+      "training-156-f4219c9a2f9787ed/f030-focus1-N2-optics": 3,
+      "training-089-b2a3e0ca0003160b/f060-focus1-N1.4-optics": 7,
+      "training-109-156fc340568d4b6a/f030-focus1-N1.4-optics": 8,
+      "training-066-4a9c7b3a1f110559/f030-focus1-N2-optics": 7,
+      "training-101-2f2c19e48b042cbc/f030-focus1-N2-optics": 2,
+      "training-112-428cfa39403fbda7/f030-focus1-N2-optics": 4,
+      "training-073-c77c508538ed6eae/f030-focus0-N1.4-optics": 9,
+      "training-157-dc71563e23ab59db/f030-focus0-N2-optics": 4,
+      "training-076-d7015b328ddc7df3/f001-focus1-N2-optics": 6,
+      "training-077-e0dbd60c4b4a5517/f060-focus0-N1.4-optics": 4,
+      "training-168-5c739b335ca20b5f/f001-focus0-N1.4-optics": 1,
+      "training-115-78e9d36f81ad938e/f001-focus1-N2-optics": 1,
+      "training-125-6d704b13c345a337/f060-focus1-N1.4-optics": 1,
+      "training-104-ed959c9469c17608/f030-focus0-N2-optics": 6,
+      "training-026-f3242e982385bafd/f030-focus0-N2-optics": 1,
+      "training-257-5c595d0067909632/f030-focus1-N2-optics": 1,
+      "training-044-5a97108f5a9086dc/f030-focus1-N1.4-optics": 1,
+      "training-095-b148ae741d51098e/f060-focus1-N2-optics": 5,
+      "training-113-b053d03fffaca202/f030-focus0-N1.4-optics": 1,
+      "training-100-8c522772a040c259/f001-focus1-N2-optics": 1,
+      "training-107-4b99cc301efd6064/f001-focus1-N1.4-optics": 6,
+      "training-060-6d5047674c33e827/f030-focus1-N1.4-optics": 1,
+      "training-107-4b99cc301efd6064/f001-focus0-N1.4-optics": 4,
+      "training-142-c3720b66550a6835/f030-focus1-N1.4-optics": 1,
+      "training-061-ff0a4ff42915123f/f060-focus1-N2-optics": 4,
+      "training-069-0ad3a696375884bf/f001-focus1-N1.4-optics": 4,
+      "training-157-dc71563e23ab59db/f060-focus0-N2-optics": 2,
+      "training-064-086730c4acaff4f2/f001-focus1-N1.4-optics": 4,
+      "training-257-5c595d0067909632/f001-focus1-N1.4-optics": 1,
+      "training-067-b04aa536b482f2e0/f030-focus1-N1.4-optics": 2,
+      "training-046-4f78e7fdc9b0d0bd/f060-focus0-N1.4-optics": 1,
+      "training-083-37304d8947489c3d/f060-focus0-N1.4-optics": 2,
+      "training-082-f9818b8f27ce561a/f060-focus1-N1.4-optics": 1,
+      "training-062-e1afe20c6ff0e3f1/f001-focus0-N1.4-optics": 4,
+      "training-088-c5cb153915d4606f/f030-focus1-N1.4-optics": 2,
+      "training-123-bb3b63aa641990b6/f001-focus0-N2-optics": 1,
+      "training-078-8a67e2e69ec63c65/f060-focus0-N1.4-optics": 1,
+      "training-144-3582acc4193a8ada/f060-focus0-N2-optics": 4,
+      "training-099-91618e3e936d8bbb/f030-focus1-N1.4-optics": 1,
+      "training-249-b1ac5cb99173544c/f001-focus0-N1.4-optics": 2,
+      "training-031-eeb819d68fc1c2ca/f030-focus1-N2-optics": 1,
+      "training-080-43386b8b8e99e758/f060-focus1-N2-optics": 7,
+      "training-085-4314e53b136c7e2d/f030-focus1-N2-optics": 3,
+      "training-069-0ad3a696375884bf/f060-focus0-N2-optics": 4,
+      "training-102-8d47472c5dbcc0c8/f030-focus0-N2-optics": 1,
+      "training-085-4314e53b136c7e2d/f030-focus0-N2-optics": 1,
+      "training-072-31b286ff6377ae60/f060-focus0-N2-optics": 3,
+      "training-264-cb17b94396eb633f/f060-focus1-N2-optics": 2,
+      "training-093-d8f72e54a64ce79f/f001-focus0-N2-optics": 1,
+      "training-132-0a15641e6123d4ff/f060-focus0-N2-optics": 1,
+      "training-246-270a821c86151a88/f001-focus1-N1.4-optics": 3,
+      "training-105-726c72c20bf403b4/f001-focus0-N2-optics": 2,
+      "training-061-ff0a4ff42915123f/f030-focus1-N1.4-optics": 3,
+      "training-093-d8f72e54a64ce79f/f060-focus1-N1.4-optics": 4,
+      "training-286-cc428b837d21f7dd/f001-focus0-N2-optics": 1,
+      "training-093-d8f72e54a64ce79f/f060-focus1-N2-optics": 3,
+      "training-104-ed959c9469c17608/f060-focus1-N2-optics": 2,
+      "training-088-c5cb153915d4606f/f030-focus0-N1.4-optics": 4,
+      "training-164-70111b7d143f24b4/f030-focus0-N2-optics": 1,
+      "training-149-d4ae9b7274fff9f7/f001-focus0-N2-optics": 1,
+      "training-087-e246dd843f332a4c/f001-focus1-N2-optics": 6,
+      "training-099-91618e3e936d8bbb/f001-focus1-N1.4-optics": 3,
+      "training-137-ddbd64a306f037b2/f060-focus0-N2-optics": 1,
+      "training-172-467ec86af81787bb/f030-focus0-N1.4-optics": 1,
+      "training-161-baa513d587b0b964/f030-focus0-N1.4-optics": 1,
+      "training-077-e0dbd60c4b4a5517/f030-focus0-N2-optics": 6,
+      "training-197-bcb19a2c538a2125/f030-focus0-N2-optics": 1,
+      "training-262-8bf0f5b2a1537c31/f060-focus0-N2-optics": 1,
+      "training-155-fd318b1ed234a438/f030-focus0-N2-optics": 4,
+      "training-156-f4219c9a2f9787ed/f001-focus1-N1.4-optics": 2,
+      "training-103-fe83df7a6c79a980/f030-focus0-N1.4-optics": 2,
+      "training-116-d4f05620c2b2e016/f001-focus1-N1.4-optics": 3,
+      "training-112-428cfa39403fbda7/f060-focus1-N2-optics": 1,
+      "training-072-31b286ff6377ae60/f001-focus1-N2-optics": 1,
+      "training-102-8d47472c5dbcc0c8/f001-focus1-N2-optics": 4,
+      "training-053-f272d322f73e299b/f060-focus1-N2-optics": 1,
+      "training-109-156fc340568d4b6a/f060-focus0-N1.4-optics": 7,
+      "training-289-a5a90c8df5d46768/f030-focus1-N2-optics": 2,
+      "training-102-8d47472c5dbcc0c8/f001-focus0-N2-optics": 3,
+      "training-113-b053d03fffaca202/f001-focus1-N1.4-optics": 2,
+      "training-249-b1ac5cb99173544c/f060-focus0-N2-optics": 1,
+      "training-162-305b6aacb0aafb8b/f001-focus0-N2-optics": 3,
+      "training-061-ff0a4ff42915123f/f001-focus0-N2-optics": 4,
+      "training-097-bc0d8b3ce29a5f4c/f060-focus1-N2-optics": 2,
+      "training-077-e0dbd60c4b4a5517/f001-focus1-N2-optics": 1,
+      "training-084-737c52cb48b4fede/f060-focus1-N2-optics": 3,
+      "training-099-91618e3e936d8bbb/f030-focus0-N1.4-optics": 1,
+      "training-224-0a595bfb91359bdd/f001-focus0-N1.4-optics": 1,
+      "training-118-639913dcc4d777e6/f001-focus1-N2-optics": 2,
+      "training-153-b59df63e29decad0/f001-focus0-N1.4-optics": 2,
+      "training-075-81cd9c5a8c2122bc/f001-focus1-N1.4-optics": 4,
+      "training-065-e80e056e921c89cb/f030-focus1-N2-optics": 3,
+      "training-070-918f36e7e62f3576/f060-focus0-N1.4-optics": 2,
+      "training-143-aa999d0bbdfd59a8/f001-focus1-N1.4-optics": 2,
+      "training-189-ed85cd06bfb62e0d/f030-focus0-N2-optics": 1,
+      "training-291-039454dbf9a2a574/f030-focus1-N1.4-optics": 2,
+      "training-078-8a67e2e69ec63c65/f001-focus0-N2-optics": 1,
+      "training-297-2f6d75e82a9d5b4a/f030-focus1-N2-optics": 1,
+      "training-090-ff8f0f360c455b3a/f030-focus1-N2-optics": 6,
+      "training-087-e246dd843f332a4c/f001-focus0-N2-optics": 1,
+      "training-086-bbb38d49f9a712d4/f030-focus0-N1.4-optics": 3,
+      "training-096-783b05ff5b65d107/f060-focus0-N1.4-optics": 2,
+      "training-285-c8da041e74d8da19/f060-focus1-N1.4-optics": 3,
+      "training-166-13e19659f947601e/f060-focus1-N2-optics": 2,
+      "training-072-31b286ff6377ae60/f001-focus0-N1.4-optics": 4,
+      "training-196-84b81e0db316cc51/f030-focus1-N1.4-optics": 1,
+      "training-078-8a67e2e69ec63c65/f001-focus1-N1.4-optics": 3,
+      "training-114-b3b91a86e4999313/f030-focus0-N1.4-optics": 2,
+      "training-080-43386b8b8e99e758/f001-focus1-N1.4-optics": 2,
+      "training-195-52038ddf4e2b1771/f001-focus0-N2-optics": 1,
+      "training-118-639913dcc4d777e6/f030-focus1-N2-optics": 3,
+      "training-074-e757bee971cb318d/f060-focus1-N2-optics": 1,
+      "training-063-2194134e4b0c7105/f030-focus1-N2-optics": 5,
+      "training-071-2345d368c9e2cc12/f030-focus1-N2-optics": 2,
+      "training-091-7138fd6acad9772b/f001-focus0-N1.4-optics": 3,
+      "training-114-b3b91a86e4999313/f060-focus0-N2-optics": 2,
+      "training-098-34084be1d5f9c679/f030-focus0-N2-optics": 2,
+      "training-086-bbb38d49f9a712d4/f030-focus1-N2-optics": 3,
+      "training-106-7f73fdeb23c9db2e/f060-focus1-N2-optics": 3,
+      "training-092-72f2b5c082b70b73/f030-focus1-N1.4-optics": 1,
+      "training-089-b2a3e0ca0003160b/f060-focus1-N2-optics": 1,
+      "training-109-156fc340568d4b6a/f030-focus0-N1.4-optics": 2,
+      "training-062-e1afe20c6ff0e3f1/f001-focus1-N2-optics": 6,
+      "training-063-2194134e4b0c7105/f030-focus0-N2-optics": 5,
+      "training-118-639913dcc4d777e6/f060-focus1-N2-optics": 2,
+      "training-033-458f598222b9f805/f001-focus1-N2-optics": 1,
+      "training-285-c8da041e74d8da19/f001-focus0-N1.4-optics": 1,
+      "training-115-78e9d36f81ad938e/f001-focus0-N1.4-optics": 1,
+      "training-031-eeb819d68fc1c2ca/f030-focus1-N1.4-optics": 1,
+      "training-113-b053d03fffaca202/f001-focus0-N2-optics": 1,
+      "training-187-47dd92425293df2d/f030-focus0-N2-optics": 2,
+      "training-087-e246dd843f332a4c/f030-focus0-N1.4-optics": 4,
+      "training-083-37304d8947489c3d/f060-focus1-N2-optics": 3,
+      "training-224-0a595bfb91359bdd/f001-focus0-N2-optics": 1,
+      "training-116-d4f05620c2b2e016/f030-focus1-N1.4-optics": 6,
+      "training-156-f4219c9a2f9787ed/f060-focus0-N1.4-optics": 3,
+      "training-067-b04aa536b482f2e0/f030-focus1-N2-optics": 3,
+      "training-162-305b6aacb0aafb8b/f001-focus1-N2-optics": 2,
+      "training-139-a6fdfc32f252dada/f030-focus1-N2-optics": 2,
+      "training-107-4b99cc301efd6064/f060-focus1-N2-optics": 3,
+      "training-275-4756423f133ca285/f030-focus0-N1.4-optics": 1,
+      "training-068-845212140fd82b21/f060-focus0-N1.4-optics": 2,
+      "training-097-bc0d8b3ce29a5f4c/f030-focus0-N1.4-optics": 1,
+      "training-160-2a6a65d85055aef4/f001-focus1-N1.4-optics": 3,
+      "training-093-d8f72e54a64ce79f/f060-focus0-N2-optics": 4,
+      "training-162-305b6aacb0aafb8b/f030-focus0-N2-optics": 1,
+      "training-154-fa521945b146b2e9/f030-focus0-N2-optics": 1,
+      "training-153-b59df63e29decad0/f030-focus0-N2-optics": 1,
+      "training-172-467ec86af81787bb/f030-focus0-N2-optics": 2,
+      "training-062-e1afe20c6ff0e3f1/f030-focus0-N2-optics": 1,
+      "training-113-b053d03fffaca202/f030-focus0-N2-optics": 3,
+      "training-149-d4ae9b7274fff9f7/f030-focus1-N2-optics": 1,
+      "training-090-ff8f0f360c455b3a/f001-focus0-N2-optics": 5,
+      "training-207-4be5a80acae94f9b/f001-focus1-N2-optics": 3,
+      "training-098-34084be1d5f9c679/f030-focus1-N1.4-optics": 5,
+      "training-246-270a821c86151a88/f060-focus1-N1.4-optics": 1,
+      "training-087-e246dd843f332a4c/f060-focus1-N2-optics": 2,
+      "training-160-2a6a65d85055aef4/f001-focus1-N2-optics": 1,
+      "training-205-7cc8c134876852e9/f060-focus0-N2-optics": 2,
+      "training-108-50a8b0000171e4cc/f001-focus1-N2-optics": 1,
+      "training-097-bc0d8b3ce29a5f4c/f001-focus1-N1.4-optics": 1,
+      "training-077-e0dbd60c4b4a5517/f030-focus1-N1.4-optics": 3,
+      "training-249-b1ac5cb99173544c/f030-focus0-N2-optics": 1,
+      "training-153-b59df63e29decad0/f030-focus1-N2-optics": 1,
+      "training-102-8d47472c5dbcc0c8/f030-focus0-N1.4-optics": 2,
+      "training-205-7cc8c134876852e9/f030-focus1-N2-optics": 1,
+      "training-114-b3b91a86e4999313/f001-focus1-N1.4-optics": 5,
+      "training-112-428cfa39403fbda7/f030-focus0-N1.4-optics": 3,
+      "training-063-2194134e4b0c7105/f060-focus0-N2-optics": 7,
+      "training-115-78e9d36f81ad938e/f060-focus1-N2-optics": 3,
+      "training-111-d7e217467bd2475e/f030-focus1-N2-optics": 3,
+      "training-094-ca97b4045515c692/f030-focus0-N2-optics": 6,
+      "training-179-9f3c37e903b99e85/f030-focus0-N2-optics": 1,
+      "training-268-2d410329c133a02c/f030-focus0-N1.4-optics": 1,
+      "training-201-151eee88feab99b7/f030-focus1-N1.4-optics": 2,
+      "training-103-fe83df7a6c79a980/f001-focus0-N1.4-optics": 1,
+      "training-246-270a821c86151a88/f060-focus0-N1.4-optics": 2,
+      "training-071-2345d368c9e2cc12/f001-focus0-N2-optics": 6,
+      "training-232-c027df1c79b58415/f030-focus1-N2-optics": 1,
+      "training-126-627fc10d62778eaf/f060-focus1-N2-optics": 1,
+      "training-110-5dd8c29db3f73ffc/f001-focus1-N1.4-optics": 3,
+      "training-166-13e19659f947601e/f001-focus0-N2-optics": 1,
+      "training-104-ed959c9469c17608/f030-focus1-N1.4-optics": 2,
+      "training-132-0a15641e6123d4ff/f030-focus0-N1.4-optics": 1,
+      "training-101-2f2c19e48b042cbc/f001-focus0-N2-optics": 1,
+      "training-172-467ec86af81787bb/f060-focus1-N2-optics": 1,
+      "training-128-308d33775b95ae11/f030-focus0-N2-optics": 2,
+      "training-091-7138fd6acad9772b/f030-focus0-N1.4-optics": 3,
+      "training-114-b3b91a86e4999313/f001-focus0-N1.4-optics": 5,
+      "training-144-3582acc4193a8ada/f001-focus0-N1.4-optics": 1,
+      "training-083-37304d8947489c3d/f001-focus0-N2-optics": 1,
+      "training-095-b148ae741d51098e/f030-focus1-N2-optics": 7,
+      "training-089-b2a3e0ca0003160b/f030-focus0-N1.4-optics": 3,
+      "training-088-c5cb153915d4606f/f030-focus0-N2-optics": 3,
+      "training-083-37304d8947489c3d/f030-focus1-N1.4-optics": 1,
+      "training-153-b59df63e29decad0/f060-focus1-N2-optics": 2,
+      "training-117-8923afa9b74ab6dc/f030-focus1-N2-optics": 2,
+      "training-084-737c52cb48b4fede/f001-focus1-N1.4-optics": 3,
+      "training-153-b59df63e29decad0/f001-focus1-N1.4-optics": 2,
+      "training-084-737c52cb48b4fede/f001-focus1-N2-optics": 6,
+      "training-102-8d47472c5dbcc0c8/f060-focus1-N2-optics": 1,
+      "training-116-d4f05620c2b2e016/f001-focus0-N1.4-optics": 1,
+      "training-062-e1afe20c6ff0e3f1/f030-focus1-N1.4-optics": 3,
+      "training-100-8c522772a040c259/f060-focus0-N2-optics": 2,
+      "training-105-726c72c20bf403b4/f060-focus0-N2-optics": 3,
+      "training-207-4be5a80acae94f9b/f001-focus0-N2-optics": 1,
+      "training-160-2a6a65d85055aef4/f060-focus1-N2-optics": 2,
+      "training-090-ff8f0f360c455b3a/f030-focus0-N1.4-optics": 4,
+      "training-089-b2a3e0ca0003160b/f001-focus0-N2-optics": 4,
+      "training-073-c77c508538ed6eae/f001-focus0-N2-optics": 4,
+      "training-044-5a97108f5a9086dc/f001-focus0-N1.4-optics": 2,
+      "training-118-639913dcc4d777e6/f030-focus0-N2-optics": 2,
+      "training-117-8923afa9b74ab6dc/f060-focus1-N2-optics": 2,
+      "training-090-ff8f0f360c455b3a/f001-focus0-N1.4-optics": 4,
+      "training-064-086730c4acaff4f2/f060-focus1-N2-optics": 2,
+      "training-129-d8668d929a0896e4/f001-focus0-N2-optics": 2,
+      "training-067-b04aa536b482f2e0/f030-focus0-N1.4-optics": 1,
+      "training-064-086730c4acaff4f2/f060-focus1-N1.4-optics": 3,
+      "training-094-ca97b4045515c692/f060-focus1-N1.4-optics": 6,
+      "training-101-2f2c19e48b042cbc/f060-focus1-N2-optics": 1,
+      "training-069-0ad3a696375884bf/f030-focus0-N1.4-optics": 3,
+      "training-070-918f36e7e62f3576/f030-focus0-N1.4-optics": 2,
+      "training-086-bbb38d49f9a712d4/f030-focus0-N2-optics": 5,
+      "training-132-0a15641e6123d4ff/f001-focus1-N2-optics": 1,
+      "training-085-4314e53b136c7e2d/f060-focus0-N2-optics": 5,
+      "training-110-5dd8c29db3f73ffc/f030-focus0-N1.4-optics": 2,
+      "training-140-05fad3fd2dd65434/f060-focus1-N2-optics": 1,
+      "training-071-2345d368c9e2cc12/f030-focus0-N1.4-optics": 5,
+      "training-065-e80e056e921c89cb/f030-focus0-N2-optics": 4,
+      "training-155-fd318b1ed234a438/f060-focus0-N1.4-optics": 1,
+      "training-161-baa513d587b0b964/f060-focus0-N1.4-optics": 2,
+      "training-101-2f2c19e48b042cbc/f060-focus1-N1.4-optics": 2,
+      "training-116-d4f05620c2b2e016/f060-focus1-N1.4-optics": 5,
+      "training-136-073bbcbb83cece0e/f030-focus0-N1.4-optics": 1,
+      "training-085-4314e53b136c7e2d/f001-focus0-N2-optics": 2,
+      "training-063-2194134e4b0c7105/f060-focus1-N1.4-optics": 2,
+      "training-074-e757bee971cb318d/f060-focus0-N2-optics": 4,
+      "training-195-52038ddf4e2b1771/f060-focus0-N2-optics": 1,
+      "training-090-ff8f0f360c455b3a/f001-focus1-N2-optics": 3,
+      "training-081-ffffcf59dc7e4350/f030-focus1-N2-optics": 1,
+      "training-031-eeb819d68fc1c2ca/f030-focus0-N2-optics": 2,
+      "training-092-72f2b5c082b70b73/f030-focus0-N1.4-optics": 2,
+      "training-187-47dd92425293df2d/f060-focus1-N2-optics": 3,
+      "training-077-e0dbd60c4b4a5517/f030-focus1-N2-optics": 5,
+      "training-053-f272d322f73e299b/f001-focus1-N2-optics": 1,
+      "training-067-b04aa536b482f2e0/f060-focus1-N1.4-optics": 2,
+      "training-070-918f36e7e62f3576/f030-focus1-N2-optics": 2,
+      "training-246-270a821c86151a88/f001-focus0-N2-optics": 2,
+      "training-082-f9818b8f27ce561a/f030-focus1-N2-optics": 2,
+      "training-108-50a8b0000171e4cc/f030-focus0-N1.4-optics": 5,
+      "training-172-467ec86af81787bb/f001-focus0-N2-optics": 1,
+      "training-100-8c522772a040c259/f001-focus0-N1.4-optics": 1,
+      "training-172-467ec86af81787bb/f060-focus0-N2-optics": 1,
+      "training-179-9f3c37e903b99e85/f001-focus1-N2-optics": 2,
+      "training-080-43386b8b8e99e758/f060-focus0-N1.4-optics": 4,
+      "training-066-4a9c7b3a1f110559/f060-focus1-N2-optics": 1,
+      "training-168-5c739b335ca20b5f/f001-focus1-N1.4-optics": 2,
+      "training-093-d8f72e54a64ce79f/f030-focus0-N2-optics": 2,
+      "training-205-7cc8c134876852e9/f001-focus1-N2-optics": 1,
+      "training-075-81cd9c5a8c2122bc/f030-focus1-N1.4-optics": 2,
+      "training-137-ddbd64a306f037b2/f001-focus1-N1.4-optics": 1,
+      "training-168-5c739b335ca20b5f/f030-focus1-N2-optics": 1,
+      "training-060-6d5047674c33e827/f030-focus1-N2-optics": 1,
+      "training-080-43386b8b8e99e758/f060-focus0-N2-optics": 1,
+      "training-086-bbb38d49f9a712d4/f060-focus0-N2-optics": 3,
+      "training-230-015f01652fd9e26b/f001-focus1-N2-optics": 1,
+      "training-106-7f73fdeb23c9db2e/f060-focus0-N2-optics": 3,
+      "training-078-8a67e2e69ec63c65/f030-focus0-N1.4-optics": 2,
+      "training-107-4b99cc301efd6064/f060-focus1-N1.4-optics": 4,
+      "training-067-b04aa536b482f2e0/f030-focus0-N2-optics": 2,
+      "training-079-3e07c2ea841832f9/f001-focus0-N2-optics": 3,
+      "training-063-2194134e4b0c7105/f030-focus1-N1.4-optics": 5,
+      "training-169-48dfc9836cc6b9a7/f060-focus1-N1.4-optics": 2,
+      "training-085-4314e53b136c7e2d/f001-focus0-N1.4-optics": 2,
+      "training-157-dc71563e23ab59db/f060-focus1-N2-optics": 1,
+      "training-118-639913dcc4d777e6/f001-focus1-N1.4-optics": 3,
+      "training-262-8bf0f5b2a1537c31/f060-focus1-N1.4-optics": 1,
+      "training-069-0ad3a696375884bf/f030-focus1-N1.4-optics": 6,
+      "training-068-845212140fd82b21/f060-focus0-N2-optics": 2,
+      "training-078-8a67e2e69ec63c65/f001-focus0-N1.4-optics": 4,
+      "training-187-47dd92425293df2d/f001-focus0-N2-optics": 1,
+      "training-095-b148ae741d51098e/f030-focus0-N2-optics": 2,
+      "training-077-e0dbd60c4b4a5517/f060-focus1-N2-optics": 2,
+      "training-132-0a15641e6123d4ff/f060-focus1-N1.4-optics": 1,
+      "training-109-156fc340568d4b6a/f030-focus0-N2-optics": 3,
+      "training-068-845212140fd82b21/f030-focus1-N1.4-optics": 3,
+      "training-233-776d75d3f839af90/f001-focus0-N1.4-optics": 1,
+      "training-063-2194134e4b0c7105/f001-focus1-N2-optics": 1,
+      "training-109-156fc340568d4b6a/f060-focus1-N1.4-optics": 1,
+      "training-033-458f598222b9f805/f030-focus1-N1.4-optics": 2,
+      "training-107-4b99cc301efd6064/f060-focus0-N1.4-optics": 4,
+      "training-210-d9f88e0ac33b9e29/f060-focus0-N2-optics": 2,
+      "training-114-b3b91a86e4999313/f060-focus0-N1.4-optics": 4,
+      "training-189-ed85cd06bfb62e0d/f030-focus1-N1.4-optics": 3,
+      "training-103-fe83df7a6c79a980/f060-focus0-N2-optics": 4,
+      "training-087-e246dd843f332a4c/f060-focus0-N1.4-optics": 2,
+      "training-121-15d84d54e54aae7e/f060-focus0-N2-optics": 3,
+      "training-026-f3242e982385bafd/f060-focus0-N2-optics": 1,
+      "training-145-109c724576efe4bb/f030-focus1-N1.4-optics": 1,
+      "training-088-c5cb153915d4606f/f060-focus1-N2-optics": 1,
+      "training-168-5c739b335ca20b5f/f001-focus0-N2-optics": 1,
+      "training-095-b148ae741d51098e/f001-focus1-N2-optics": 1,
+      "training-144-3582acc4193a8ada/f030-focus1-N2-optics": 1,
+      "training-064-086730c4acaff4f2/f060-focus0-N1.4-optics": 4,
+      "training-098-34084be1d5f9c679/f060-focus1-N2-optics": 6,
+      "training-117-8923afa9b74ab6dc/f030-focus1-N1.4-optics": 1,
+      "training-074-e757bee971cb318d/f001-focus0-N2-optics": 4,
+      "training-136-073bbcbb83cece0e/f030-focus1-N2-optics": 1,
+      "training-099-91618e3e936d8bbb/f060-focus0-N1.4-optics": 5,
+      "training-164-70111b7d143f24b4/f060-focus1-N2-optics": 1,
+      "training-071-2345d368c9e2cc12/f001-focus1-N1.4-optics": 2,
+      "training-060-6d5047674c33e827/f030-focus0-N1.4-optics": 3,
+      "training-075-81cd9c5a8c2122bc/f060-focus0-N2-optics": 5,
+      "training-114-b3b91a86e4999313/f030-focus0-N2-optics": 1,
+      "training-118-639913dcc4d777e6/f060-focus1-N1.4-optics": 3,
+      "training-232-c027df1c79b58415/f030-focus1-N1.4-optics": 3,
+      "training-104-ed959c9469c17608/f001-focus1-N1.4-optics": 3,
+      "training-126-627fc10d62778eaf/f001-focus1-N2-optics": 2,
+      "training-091-7138fd6acad9772b/f060-focus1-N2-optics": 6,
+      "training-168-5c739b335ca20b5f/f001-focus1-N2-optics": 1,
+      "training-069-0ad3a696375884bf/f060-focus1-N2-optics": 3,
+      "training-143-aa999d0bbdfd59a8/f030-focus0-N2-optics": 1,
+      "training-112-428cfa39403fbda7/f060-focus1-N1.4-optics": 3,
+      "training-262-8bf0f5b2a1537c31/f060-focus0-N1.4-optics": 1,
+      "training-084-737c52cb48b4fede/f030-focus1-N1.4-optics": 5,
+      "training-069-0ad3a696375884bf/f001-focus0-N2-optics": 1,
+      "training-089-b2a3e0ca0003160b/f060-focus0-N1.4-optics": 2,
+      "training-065-e80e056e921c89cb/f001-focus1-N1.4-optics": 3,
+      "training-189-ed85cd06bfb62e0d/f030-focus0-N1.4-optics": 1,
+      "training-027-d3456b23a462c6de/f001-focus0-N1.4-optics": 1,
+      "training-084-737c52cb48b4fede/f001-focus0-N2-optics": 4,
+      "training-161-baa513d587b0b964/f001-focus1-N1.4-optics": 1,
+      "training-115-78e9d36f81ad938e/f060-focus0-N2-optics": 2,
+      "training-246-270a821c86151a88/f030-focus0-N1.4-optics": 2,
+      "training-262-8bf0f5b2a1537c31/f030-focus0-N1.4-optics": 1,
+      "training-065-e80e056e921c89cb/f001-focus0-N1.4-optics": 4,
+      "training-105-726c72c20bf403b4/f060-focus1-N2-optics": 5,
+      "training-098-34084be1d5f9c679/f030-focus1-N2-optics": 2,
+      "training-108-50a8b0000171e4cc/f001-focus0-N1.4-optics": 5,
+      "training-064-086730c4acaff4f2/f001-focus0-N1.4-optics": 3,
+      "training-173-13ed6793b9ce2fb2/f001-focus0-N1.4-optics": 1,
+      "training-078-8a67e2e69ec63c65/f030-focus1-N2-optics": 3,
+      "training-114-b3b91a86e4999313/f001-focus0-N2-optics": 3,
+      "training-140-05fad3fd2dd65434/f001-focus1-N2-optics": 1,
+      "training-064-086730c4acaff4f2/f030-focus1-N2-optics": 3,
+      "training-289-a5a90c8df5d46768/f060-focus1-N2-optics": 2,
+      "training-114-b3b91a86e4999313/f030-focus1-N2-optics": 4,
+      "training-094-ca97b4045515c692/f001-focus0-N1.4-optics": 4,
+      "training-072-31b286ff6377ae60/f030-focus0-N2-optics": 3,
+      "training-113-b053d03fffaca202/f030-focus1-N2-optics": 2,
+      "training-129-d8668d929a0896e4/f030-focus0-N1.4-optics": 1,
+      "training-080-43386b8b8e99e758/f030-focus0-N1.4-optics": 2,
+      "training-099-91618e3e936d8bbb/f001-focus1-N2-optics": 3,
+      "training-171-f5de6bcd6aef3f97/f030-focus0-N1.4-optics": 1,
+      "training-096-783b05ff5b65d107/f030-focus1-N1.4-optics": 5,
+      "training-105-726c72c20bf403b4/f001-focus0-N1.4-optics": 3,
+      "training-291-039454dbf9a2a574/f030-focus0-N2-optics": 1,
+      "training-102-8d47472c5dbcc0c8/f001-focus1-N1.4-optics": 3,
+      "training-112-428cfa39403fbda7/f030-focus1-N1.4-optics": 2,
+      "training-088-c5cb153915d4606f/f001-focus1-N1.4-optics": 5,
+      "training-094-ca97b4045515c692/f030-focus0-N1.4-optics": 1,
+      "training-090-ff8f0f360c455b3a/f030-focus0-N2-optics": 2,
+      "training-069-0ad3a696375884bf/f060-focus1-N1.4-optics": 1,
+      "training-117-8923afa9b74ab6dc/f030-focus0-N2-optics": 2,
+      "training-160-2a6a65d85055aef4/f060-focus0-N2-optics": 2,
+      "training-073-c77c508538ed6eae/f060-focus0-N2-optics": 4,
+      "training-156-f4219c9a2f9787ed/f060-focus1-N2-optics": 1,
+      "training-113-b053d03fffaca202/f030-focus1-N1.4-optics": 1,
+      "training-074-e757bee971cb318d/f001-focus1-N1.4-optics": 1,
+      "training-083-37304d8947489c3d/f060-focus0-N2-optics": 1,
+      "training-070-918f36e7e62f3576/f001-focus0-N2-optics": 1,
+      "training-066-4a9c7b3a1f110559/f060-focus0-N2-optics": 5,
+      "training-109-156fc340568d4b6a/f001-focus1-N1.4-optics": 1,
+      "training-091-7138fd6acad9772b/f001-focus1-N1.4-optics": 3,
+      "training-065-e80e056e921c89cb/f060-focus0-N2-optics": 3,
+      "training-291-039454dbf9a2a574/f001-focus1-N2-optics": 1,
+      "training-195-52038ddf4e2b1771/f001-focus1-N2-optics": 1,
+      "training-097-bc0d8b3ce29a5f4c/f001-focus0-N1.4-optics": 2,
+      "training-286-cc428b837d21f7dd/f030-focus1-N2-optics": 1,
+      "training-114-b3b91a86e4999313/f030-focus1-N1.4-optics": 1,
+      "training-046-4f78e7fdc9b0d0bd/f001-focus0-N2-optics": 2,
+      "training-092-72f2b5c082b70b73/f030-focus0-N2-optics": 1,
+      "training-084-737c52cb48b4fede/f060-focus1-N1.4-optics": 4,
+      "training-140-05fad3fd2dd65434/f060-focus1-N1.4-optics": 1,
+      "training-285-c8da041e74d8da19/f001-focus1-N1.4-optics": 1,
+      "training-140-05fad3fd2dd65434/f001-focus0-N1.4-optics": 1,
+      "training-081-ffffcf59dc7e4350/f030-focus0-N1.4-optics": 3,
+      "training-066-4a9c7b3a1f110559/f060-focus1-N1.4-optics": 2,
+      "training-143-aa999d0bbdfd59a8/f030-focus0-N1.4-optics": 1,
+      "training-111-d7e217467bd2475e/f030-focus1-N1.4-optics": 2,
+      "training-107-4b99cc301efd6064/f030-focus0-N1.4-optics": 1,
+      "training-092-72f2b5c082b70b73/f001-focus0-N2-optics": 4,
+      "training-109-156fc340568d4b6a/f001-focus0-N2-optics": 2,
+      "training-113-b053d03fffaca202/f060-focus0-N1.4-optics": 5,
+      "training-297-2f6d75e82a9d5b4a/f001-focus0-N2-optics": 1,
+      "training-114-b3b91a86e4999313/f060-focus1-N2-optics": 2,
+      "training-136-073bbcbb83cece0e/f001-focus1-N1.4-optics": 2,
+      "training-257-5c595d0067909632/f001-focus0-N2-optics": 1,
+      "training-095-b148ae741d51098e/f001-focus1-N1.4-optics": 5,
+      "training-111-d7e217467bd2475e/f030-focus0-N1.4-optics": 2,
+      "training-081-ffffcf59dc7e4350/f001-focus1-N1.4-optics": 2,
+      "training-068-845212140fd82b21/f001-focus0-N1.4-optics": 1,
+      "training-031-eeb819d68fc1c2ca/f001-focus0-N2-optics": 1,
+      "training-092-72f2b5c082b70b73/f001-focus1-N2-optics": 2,
+      "training-075-81cd9c5a8c2122bc/f060-focus0-N1.4-optics": 3,
+      "training-076-d7015b328ddc7df3/f001-focus0-N2-optics": 2,
+      "training-061-ff0a4ff42915123f/f030-focus0-N1.4-optics": 2,
+      "training-147-f363f7035b2adc2a/f030-focus1-N1.4-optics": 1,
+      "training-117-8923afa9b74ab6dc/f060-focus0-N2-optics": 4,
+      "training-100-8c522772a040c259/f030-focus0-N2-optics": 3,
+      "training-210-d9f88e0ac33b9e29/f060-focus0-N1.4-optics": 1,
+      "training-172-467ec86af81787bb/f001-focus1-N1.4-optics": 1,
+      "training-096-783b05ff5b65d107/f001-focus0-N2-optics": 4,
+      "training-205-7cc8c134876852e9/f060-focus0-N1.4-optics": 2,
+      "training-180-ff25a69cb5a48ff4/f001-focus0-N1.4-optics": 3,
+      "training-084-737c52cb48b4fede/f030-focus1-N2-optics": 3,
+      "training-061-ff0a4ff42915123f/f030-focus0-N2-optics": 3,
+      "training-132-0a15641e6123d4ff/f001-focus0-N2-optics": 1,
+      "training-162-305b6aacb0aafb8b/f060-focus0-N2-optics": 3,
+      "training-081-ffffcf59dc7e4350/f060-focus0-N1.4-optics": 5,
+      "training-129-d8668d929a0896e4/f060-focus1-N2-optics": 1,
+      "training-093-d8f72e54a64ce79f/f030-focus0-N1.4-optics": 3,
+      "training-105-726c72c20bf403b4/f001-focus1-N1.4-optics": 1,
+      "training-156-f4219c9a2f9787ed/f030-focus0-N1.4-optics": 2,
+      "training-136-073bbcbb83cece0e/f030-focus0-N2-optics": 2,
+      "training-046-4f78e7fdc9b0d0bd/f060-focus1-N1.4-optics": 3,
+      "training-079-3e07c2ea841832f9/f060-focus0-N2-optics": 4,
+      "training-033-458f598222b9f805/f030-focus0-N2-optics": 2,
+      "training-155-fd318b1ed234a438/f030-focus0-N1.4-optics": 1,
+      "training-224-0a595bfb91359bdd/f030-focus1-N1.4-optics": 1,
+      "training-123-bb3b63aa641990b6/f001-focus0-N1.4-optics": 1,
+      "training-230-015f01652fd9e26b/f060-focus1-N1.4-optics": 1,
+      "training-103-fe83df7a6c79a980/f001-focus1-N2-optics": 2,
+      "training-210-d9f88e0ac33b9e29/f001-focus0-N2-optics": 2,
+      "training-097-bc0d8b3ce29a5f4c/f030-focus1-N1.4-optics": 1,
+      "training-075-81cd9c5a8c2122bc/f060-focus1-N1.4-optics": 6,
+      "training-155-fd318b1ed234a438/f001-focus1-N1.4-optics": 4,
+      "training-071-2345d368c9e2cc12/f001-focus1-N2-optics": 3,
+      "training-099-91618e3e936d8bbb/f060-focus1-N2-optics": 1,
+      "training-121-15d84d54e54aae7e/f060-focus1-N1.4-optics": 1,
+      "training-125-6d704b13c345a337/f030-focus0-N1.4-optics": 2,
+      "training-197-bcb19a2c538a2125/f001-focus0-N1.4-optics": 1,
+      "training-128-308d33775b95ae11/f060-focus0-N2-optics": 1,
+      "training-071-2345d368c9e2cc12/f060-focus0-N1.4-optics": 2,
+      "training-172-467ec86af81787bb/f001-focus0-N1.4-optics": 1,
+      "training-076-d7015b328ddc7df3/f001-focus0-N1.4-optics": 3,
+      "training-117-8923afa9b74ab6dc/f060-focus1-N1.4-optics": 2,
+      "training-162-305b6aacb0aafb8b/f060-focus1-N2-optics": 2,
+      "training-116-d4f05620c2b2e016/f030-focus1-N2-optics": 3,
+      "training-082-f9818b8f27ce561a/f060-focus0-N2-optics": 3,
+      "training-087-e246dd843f332a4c/f001-focus0-N1.4-optics": 1,
+      "training-080-43386b8b8e99e758/f030-focus1-N2-optics": 2,
+      "training-285-c8da041e74d8da19/f060-focus1-N2-optics": 3,
+      "training-063-2194134e4b0c7105/f001-focus0-N1.4-optics": 2,
+      "training-091-7138fd6acad9772b/f001-focus0-N2-optics": 1,
+      "training-117-8923afa9b74ab6dc/f001-focus0-N1.4-optics": 2,
+      "training-169-48dfc9836cc6b9a7/f030-focus0-N2-optics": 2,
+      "training-075-81cd9c5a8c2122bc/f001-focus0-N1.4-optics": 3,
+      "training-062-e1afe20c6ff0e3f1/f001-focus0-N2-optics": 1,
+      "training-083-37304d8947489c3d/f001-focus1-N1.4-optics": 1,
+      "training-164-70111b7d143f24b4/f001-focus1-N1.4-optics": 2,
+      "training-065-e80e056e921c89cb/f060-focus1-N1.4-optics": 4,
+      "training-067-b04aa536b482f2e0/f001-focus0-N2-optics": 2,
+      "training-082-f9818b8f27ce561a/f030-focus0-N2-optics": 1,
+      "training-108-50a8b0000171e4cc/f001-focus0-N2-optics": 3,
+      "training-087-e246dd843f332a4c/f060-focus1-N1.4-optics": 2,
+      "training-159-79c13c113b5b6cf7/f001-focus0-N1.4-optics": 3,
+      "training-099-91618e3e936d8bbb/f001-focus0-N1.4-optics": 4,
+      "training-100-8c522772a040c259/f001-focus0-N2-optics": 3,
+      "training-111-d7e217467bd2475e/f001-focus1-N1.4-optics": 3,
+      "training-065-e80e056e921c89cb/f001-focus1-N2-optics": 5,
+      "training-166-13e19659f947601e/f001-focus1-N2-optics": 1,
+      "training-065-e80e056e921c89cb/f060-focus0-N1.4-optics": 2,
+      "training-144-3582acc4193a8ada/f030-focus0-N1.4-optics": 2,
+      "training-084-737c52cb48b4fede/f060-focus0-N2-optics": 1,
+      "training-164-70111b7d143f24b4/f001-focus0-N2-optics": 1,
+      "training-120-2db3c2fe6b5336e7/f060-focus0-N2-optics": 1,
+      "training-085-4314e53b136c7e2d/f001-focus1-N2-optics": 1,
+      "training-026-f3242e982385bafd/f001-focus0-N1.4-optics": 2,
+      "training-116-d4f05620c2b2e016/f001-focus1-N2-optics": 2,
+      "training-257-5c595d0067909632/f060-focus1-N1.4-optics": 1,
+      "training-139-a6fdfc32f252dada/f001-focus0-N1.4-optics": 2,
+      "training-098-34084be1d5f9c679/f001-focus1-N1.4-optics": 3,
+      "training-107-4b99cc301efd6064/f001-focus1-N2-optics": 2,
+      "training-095-b148ae741d51098e/f060-focus1-N1.4-optics": 1,
+      "training-053-f272d322f73e299b/f030-focus1-N1.4-optics": 1,
+      "training-142-c3720b66550a6835/f001-focus1-N2-optics": 2,
+      "training-068-845212140fd82b21/f001-focus1-N2-optics": 1,
+      "training-102-8d47472c5dbcc0c8/f060-focus0-N2-optics": 2,
+      "training-139-a6fdfc32f252dada/f060-focus0-N1.4-optics": 1,
+      "training-136-073bbcbb83cece0e/f060-focus1-N1.4-optics": 2,
+      "training-110-5dd8c29db3f73ffc/f060-focus0-N2-optics": 1,
+      "training-103-fe83df7a6c79a980/f001-focus1-N1.4-optics": 2,
+      "training-291-039454dbf9a2a574/f030-focus0-N1.4-optics": 1,
+      "training-072-31b286ff6377ae60/f001-focus0-N2-optics": 1,
+      "training-069-0ad3a696375884bf/f001-focus0-N1.4-optics": 1,
+      "training-164-70111b7d143f24b4/f060-focus0-N2-optics": 1,
+      "training-090-ff8f0f360c455b3a/f001-focus1-N1.4-optics": 1,
+      "training-103-fe83df7a6c79a980/f030-focus0-N2-optics": 1,
+      "training-197-bcb19a2c538a2125/f001-focus0-N2-optics": 1,
+      "training-063-2194134e4b0c7105/f060-focus0-N1.4-optics": 5,
+      "training-099-91618e3e936d8bbb/f060-focus0-N2-optics": 1,
+      "training-155-fd318b1ed234a438/f060-focus1-N1.4-optics": 1,
+      "training-080-43386b8b8e99e758/f001-focus1-N2-optics": 2,
+      "training-065-e80e056e921c89cb/f001-focus0-N2-optics": 2,
+      "training-149-d4ae9b7274fff9f7/f060-focus0-N1.4-optics": 1,
+      "training-153-b59df63e29decad0/f060-focus0-N2-optics": 4,
+      "training-031-eeb819d68fc1c2ca/f060-focus0-N2-optics": 2,
+      "training-046-4f78e7fdc9b0d0bd/f030-focus0-N1.4-optics": 1,
+      "training-268-2d410329c133a02c/f001-focus0-N1.4-optics": 1,
+      "training-076-d7015b328ddc7df3/f060-focus1-N2-optics": 2,
+      "training-143-aa999d0bbdfd59a8/f060-focus1-N1.4-optics": 1,
+      "training-136-073bbcbb83cece0e/f060-focus1-N2-optics": 1,
+      "training-112-428cfa39403fbda7/f001-focus0-N1.4-optics": 5,
+      "training-105-726c72c20bf403b4/f030-focus1-N1.4-optics": 3,
+      "training-143-aa999d0bbdfd59a8/f060-focus0-N2-optics": 2,
+      "training-120-2db3c2fe6b5336e7/f030-focus0-N1.4-optics": 1,
+      "training-093-d8f72e54a64ce79f/f001-focus1-N1.4-optics": 1,
+      "training-289-a5a90c8df5d46768/f060-focus0-N2-optics": 1,
+      "training-187-47dd92425293df2d/f030-focus1-N1.4-optics": 2,
+      "training-089-b2a3e0ca0003160b/f030-focus0-N2-optics": 1,
+      "training-066-4a9c7b3a1f110559/f030-focus1-N1.4-optics": 1,
+      "training-118-639913dcc4d777e6/f030-focus0-N1.4-optics": 2,
+      "training-132-0a15641e6123d4ff/f060-focus1-N2-optics": 1,
+      "training-088-c5cb153915d4606f/f030-focus1-N2-optics": 4,
+      "training-073-c77c508538ed6eae/f030-focus0-N2-optics": 2,
+      "training-262-8bf0f5b2a1537c31/f001-focus0-N2-optics": 1,
+      "training-110-5dd8c29db3f73ffc/f030-focus0-N2-optics": 2,
+      "training-098-34084be1d5f9c679/f001-focus0-N1.4-optics": 1,
+      "training-091-7138fd6acad9772b/f030-focus1-N2-optics": 2,
+      "training-112-428cfa39403fbda7/f060-focus0-N2-optics": 1,
+      "training-173-13ed6793b9ce2fb2/f060-focus1-N1.4-optics": 1,
+      "training-153-b59df63e29decad0/f030-focus0-N1.4-optics": 1,
+      "training-094-ca97b4045515c692/f001-focus0-N2-optics": 3,
+      "training-086-bbb38d49f9a712d4/f001-focus1-N2-optics": 1,
+      "training-060-6d5047674c33e827/f030-focus0-N2-optics": 1,
+      "training-115-78e9d36f81ad938e/f001-focus0-N2-optics": 1,
+      "training-105-726c72c20bf403b4/f001-focus1-N2-optics": 4,
+      "training-149-d4ae9b7274fff9f7/f060-focus0-N2-optics": 1,
+      "training-101-2f2c19e48b042cbc/f001-focus1-N2-optics": 2,
+      "training-065-e80e056e921c89cb/f030-focus1-N1.4-optics": 1,
+      "training-088-c5cb153915d4606f/f001-focus0-N2-optics": 2,
+      "training-093-d8f72e54a64ce79f/f001-focus0-N1.4-optics": 3,
+      "training-062-e1afe20c6ff0e3f1/f060-focus0-N1.4-optics": 1,
+      "training-143-aa999d0bbdfd59a8/f001-focus0-N2-optics": 2,
+      "training-166-13e19659f947601e/f030-focus1-N1.4-optics": 1,
+      "training-095-b148ae741d51098e/f060-focus0-N1.4-optics": 2,
+      "training-116-d4f05620c2b2e016/f060-focus0-N1.4-optics": 2,
+      "training-157-dc71563e23ab59db/f030-focus1-N2-optics": 1,
+      "training-071-2345d368c9e2cc12/f060-focus1-N1.4-optics": 2,
+      "training-197-bcb19a2c538a2125/f001-focus1-N1.4-optics": 1,
+      "training-099-91618e3e936d8bbb/f030-focus0-N2-optics": 1,
+      "training-232-c027df1c79b58415/f060-focus1-N2-optics": 2,
+      "training-086-bbb38d49f9a712d4/f001-focus0-N2-optics": 2,
+      "training-117-8923afa9b74ab6dc/f060-focus0-N1.4-optics": 1,
+      "training-060-6d5047674c33e827/f060-focus0-N1.4-optics": 2,
+      "training-115-78e9d36f81ad938e/f030-focus0-N1.4-optics": 1,
+      "training-275-4756423f133ca285/f030-focus1-N2-optics": 1,
+      "training-161-baa513d587b0b964/f001-focus0-N1.4-optics": 1,
+      "training-268-2d410329c133a02c/f030-focus0-N2-optics": 1,
+      "training-044-5a97108f5a9086dc/f001-focus1-N2-optics": 1,
+      "training-090-ff8f0f360c455b3a/f060-focus0-N1.4-optics": 1,
+      "training-161-baa513d587b0b964/f030-focus1-N1.4-optics": 1,
+      "training-087-e246dd843f332a4c/f030-focus1-N2-optics": 2,
+      "training-166-13e19659f947601e/f060-focus1-N1.4-optics": 1,
+      "training-173-13ed6793b9ce2fb2/f001-focus1-N1.4-optics": 1,
+      "training-224-0a595bfb91359bdd/f060-focus1-N1.4-optics": 1,
+      "training-121-15d84d54e54aae7e/f001-focus0-N2-optics": 1,
+      "training-027-d3456b23a462c6de/f060-focus0-N2-optics": 1,
+      "training-033-458f598222b9f805/f001-focus1-N1.4-optics": 1,
+      "training-106-7f73fdeb23c9db2e/f001-focus1-N1.4-optics": 2,
+      "training-105-726c72c20bf403b4/f060-focus1-N1.4-optics": 2,
+      "training-079-3e07c2ea841832f9/f030-focus1-N1.4-optics": 2,
+      "training-110-5dd8c29db3f73ffc/f001-focus0-N2-optics": 2,
+      "training-067-b04aa536b482f2e0/f001-focus1-N1.4-optics": 2,
+      "training-262-8bf0f5b2a1537c31/f060-focus1-N2-optics": 2,
+      "training-086-bbb38d49f9a712d4/f060-focus1-N1.4-optics": 2,
+      "training-164-70111b7d143f24b4/f060-focus0-N1.4-optics": 1,
+      "training-086-bbb38d49f9a712d4/f060-focus0-N1.4-optics": 3,
+      "training-140-05fad3fd2dd65434/f001-focus0-N2-optics": 1,
+      "training-153-b59df63e29decad0/f001-focus1-N2-optics": 3,
+      "training-116-d4f05620c2b2e016/f030-focus0-N1.4-optics": 1,
+      "training-144-3582acc4193a8ada/f001-focus0-N2-optics": 1,
+      "training-153-b59df63e29decad0/f060-focus1-N1.4-optics": 2,
+      "training-143-aa999d0bbdfd59a8/f030-focus1-N2-optics": 2,
+      "training-105-726c72c20bf403b4/f060-focus0-N1.4-optics": 3,
+      "training-076-d7015b328ddc7df3/f030-focus1-N1.4-optics": 1,
+      "training-139-a6fdfc32f252dada/f001-focus0-N2-optics": 1,
+      "training-070-918f36e7e62f3576/f001-focus0-N1.4-optics": 2,
+      "training-114-b3b91a86e4999313/f060-focus1-N1.4-optics": 3,
+      "training-107-4b99cc301efd6064/f030-focus1-N2-optics": 2,
+      "training-064-086730c4acaff4f2/f001-focus1-N2-optics": 3,
+      "training-230-015f01652fd9e26b/f030-focus1-N1.4-optics": 2,
+      "training-062-e1afe20c6ff0e3f1/f030-focus0-N1.4-optics": 1,
+      "training-189-ed85cd06bfb62e0d/f060-focus1-N1.4-optics": 1,
+      "training-121-15d84d54e54aae7e/f030-focus0-N2-optics": 2,
+      "training-149-d4ae9b7274fff9f7/f030-focus0-N2-optics": 1,
+      "training-169-48dfc9836cc6b9a7/f030-focus0-N1.4-optics": 1,
+      "training-166-13e19659f947601e/f030-focus0-N1.4-optics": 2,
+      "training-264-cb17b94396eb633f/f001-focus0-N1.4-optics": 2,
+      "training-068-845212140fd82b21/f060-focus1-N1.4-optics": 2,
+      "training-139-a6fdfc32f252dada/f001-focus1-N2-optics": 2,
+      "training-094-ca97b4045515c692/f030-focus1-N2-optics": 1,
+      "training-093-d8f72e54a64ce79f/f030-focus1-N2-optics": 2,
+      "training-187-47dd92425293df2d/f030-focus1-N2-optics": 1,
+      "training-189-ed85cd06bfb62e0d/f001-focus1-N1.4-optics": 1,
+      "training-147-f363f7035b2adc2a/f060-focus0-N2-optics": 1,
+      "training-098-34084be1d5f9c679/f030-focus0-N1.4-optics": 2,
+      "training-094-ca97b4045515c692/f030-focus1-N1.4-optics": 1,
+      "training-154-fa521945b146b2e9/f060-focus1-N1.4-optics": 1,
+      "training-111-d7e217467bd2475e/f001-focus0-N2-optics": 1,
+      "training-169-48dfc9836cc6b9a7/f030-focus1-N2-optics": 1,
+      "training-128-308d33775b95ae11/f030-focus1-N1.4-optics": 1,
+      "training-264-cb17b94396eb633f/f060-focus0-N2-optics": 1,
+      "training-064-086730c4acaff4f2/f030-focus0-N2-optics": 1,
+      "training-143-aa999d0bbdfd59a8/f030-focus1-N1.4-optics": 1,
+      "training-147-f363f7035b2adc2a/f060-focus0-N1.4-optics": 1,
+      "training-158-2b318ac0ba4ddc1d/f060-focus1-N1.4-optics": 1,
+      "training-090-ff8f0f360c455b3a/f060-focus0-N2-optics": 3,
+      "training-144-3582acc4193a8ada/f001-focus1-N2-optics": 1,
+      "training-118-639913dcc4d777e6/f030-focus1-N1.4-optics": 1,
+      "training-205-7cc8c134876852e9/f001-focus0-N2-optics": 1,
+      "training-147-f363f7035b2adc2a/f030-focus1-N2-optics": 1,
+      "training-232-c027df1c79b58415/f001-focus1-N1.4-optics": 1,
+      "training-087-e246dd843f332a4c/f060-focus0-N2-optics": 4,
+      "training-155-fd318b1ed234a438/f001-focus1-N2-optics": 1,
+      "training-104-ed959c9469c17608/f030-focus1-N2-optics": 2,
+      "training-262-8bf0f5b2a1537c31/f001-focus1-N2-optics": 3,
+      "training-233-776d75d3f839af90/f001-focus1-N2-optics": 1,
+      "training-264-cb17b94396eb633f/f030-focus1-N2-optics": 2,
+      "training-233-776d75d3f839af90/f060-focus1-N1.4-optics": 1,
+      "training-129-d8668d929a0896e4/f001-focus1-N1.4-optics": 1,
+      "training-068-845212140fd82b21/f001-focus1-N1.4-optics": 1,
+      "training-157-dc71563e23ab59db/f030-focus1-N1.4-optics": 1,
+      "training-092-72f2b5c082b70b73/f060-focus0-N1.4-optics": 2,
+      "training-123-bb3b63aa641990b6/f001-focus1-N1.4-optics": 1,
+      "training-173-13ed6793b9ce2fb2/f060-focus0-N2-optics": 1,
+      "training-089-b2a3e0ca0003160b/f001-focus1-N2-optics": 2,
+      "training-129-d8668d929a0896e4/f060-focus1-N1.4-optics": 2,
+      "training-100-8c522772a040c259/f030-focus0-N1.4-optics": 1,
+      "training-147-f363f7035b2adc2a/f060-focus1-N1.4-optics": 2,
+      "training-139-a6fdfc32f252dada/f030-focus0-N2-optics": 1,
+      "training-079-3e07c2ea841832f9/f060-focus0-N1.4-optics": 2,
+      "training-232-c027df1c79b58415/f001-focus0-N2-optics": 2,
+      "training-125-6d704b13c345a337/f030-focus0-N2-optics": 3,
+      "training-094-ca97b4045515c692/f060-focus0-N2-optics": 2,
+      "training-155-fd318b1ed234a438/f001-focus0-N1.4-optics": 1,
+      "training-106-7f73fdeb23c9db2e/f060-focus1-N1.4-optics": 1,
+      "training-162-305b6aacb0aafb8b/f060-focus1-N1.4-optics": 1,
+      "training-205-7cc8c134876852e9/f030-focus0-N2-optics": 1,
+      "training-129-d8668d929a0896e4/f030-focus1-N1.4-optics": 1,
+      "training-153-b59df63e29decad0/f030-focus1-N1.4-optics": 1,
+      "training-079-3e07c2ea841832f9/f030-focus0-N2-optics": 1,
+      "training-297-2f6d75e82a9d5b4a/f001-focus1-N1.4-optics": 2,
+      "training-187-47dd92425293df2d/f060-focus1-N1.4-optics": 1,
+      "training-062-e1afe20c6ff0e3f1/f001-focus1-N1.4-optics": 1,
+      "training-103-fe83df7a6c79a980/f060-focus1-N1.4-optics": 2,
+      "training-257-5c595d0067909632/f060-focus0-N1.4-optics": 1,
+      "training-233-776d75d3f839af90/f001-focus0-N2-optics": 1,
+      "training-140-05fad3fd2dd65434/f030-focus1-N2-optics": 1,
+      "training-033-458f598222b9f805/f030-focus0-N1.4-optics": 1,
+      "training-160-2a6a65d85055aef4/f060-focus0-N1.4-optics": 1,
+      "training-154-fa521945b146b2e9/f001-focus0-N2-optics": 1,
+      "training-097-bc0d8b3ce29a5f4c/f001-focus1-N2-optics": 1,
+      "training-154-fa521945b146b2e9/f030-focus0-N1.4-optics": 1,
+      "training-233-776d75d3f839af90/f060-focus1-N2-optics": 1,
+      "training-096-783b05ff5b65d107/f030-focus1-N2-optics": 3,
+      "training-069-0ad3a696375884bf/f060-focus0-N1.4-optics": 1,
+      "training-286-cc428b837d21f7dd/f030-focus1-N1.4-optics": 1,
+      "training-096-783b05ff5b65d107/f001-focus0-N1.4-optics": 2,
+      "training-128-308d33775b95ae11/f001-focus0-N1.4-optics": 1,
+      "training-210-d9f88e0ac33b9e29/f030-focus1-N1.4-optics": 2,
+      "training-107-4b99cc301efd6064/f001-focus0-N2-optics": 2,
+      "training-072-31b286ff6377ae60/f030-focus1-N1.4-optics": 1,
+      "training-062-e1afe20c6ff0e3f1/f060-focus1-N2-optics": 2,
+      "training-162-305b6aacb0aafb8b/f030-focus1-N1.4-optics": 1,
+      "training-082-f9818b8f27ce561a/f001-focus1-N2-optics": 1,
+      "training-207-4be5a80acae94f9b/f060-focus1-N1.4-optics": 1,
+      "training-096-783b05ff5b65d107/f030-focus0-N1.4-optics": 3,
+      "training-078-8a67e2e69ec63c65/f060-focus1-N2-optics": 1,
+      "training-044-5a97108f5a9086dc/f030-focus1-N2-optics": 1,
+      "training-233-776d75d3f839af90/f060-focus0-N2-optics": 1,
+      "training-291-039454dbf9a2a574/f060-focus0-N1.4-optics": 1,
+      "training-063-2194134e4b0c7105/f060-focus1-N2-optics": 2,
+      "training-187-47dd92425293df2d/f060-focus0-N2-optics": 2,
+      "training-077-e0dbd60c4b4a5517/f001-focus0-N1.4-optics": 2,
+      "training-064-086730c4acaff4f2/f030-focus1-N1.4-optics": 1,
+      "training-089-b2a3e0ca0003160b/f030-focus1-N1.4-optics": 1,
+      "training-095-b148ae741d51098e/f030-focus1-N1.4-optics": 2,
+      "training-197-bcb19a2c538a2125/f060-focus0-N2-optics": 1,
+      "training-106-7f73fdeb23c9db2e/f030-focus1-N1.4-optics": 1,
+      "training-275-4756423f133ca285/f030-focus0-N2-optics": 1,
+      "training-071-2345d368c9e2cc12/f030-focus0-N2-optics": 1,
+      "training-168-5c739b335ca20b5f/f030-focus0-N2-optics": 1,
+      "training-154-fa521945b146b2e9/f001-focus0-N1.4-optics": 1,
+      "training-187-47dd92425293df2d/f030-focus0-N1.4-optics": 1,
+      "training-157-dc71563e23ab59db/f001-focus0-N2-optics": 2,
+      "training-285-c8da041e74d8da19/f030-focus0-N1.4-optics": 1,
+      "training-172-467ec86af81787bb/f030-focus1-N2-optics": 1,
+      "training-195-52038ddf4e2b1771/f030-focus1-N2-optics": 1,
+      "training-156-f4219c9a2f9787ed/f060-focus1-N1.4-optics": 1,
+      "training-076-d7015b328ddc7df3/f001-focus1-N1.4-optics": 1,
+      "training-046-4f78e7fdc9b0d0bd/f030-focus1-N1.4-optics": 1,
+      "training-096-783b05ff5b65d107/f060-focus1-N2-optics": 1,
+      "training-098-34084be1d5f9c679/f001-focus1-N2-optics": 1,
+      "training-201-151eee88feab99b7/f060-focus0-N2-optics": 1,
+      "training-180-ff25a69cb5a48ff4/f030-focus1-N1.4-optics": 1,
+      "training-110-5dd8c29db3f73ffc/f030-focus1-N1.4-optics": 1,
+      "training-189-ed85cd06bfb62e0d/f060-focus0-N2-optics": 1,
+      "training-285-c8da041e74d8da19/f030-focus1-N2-optics": 1,
+      "training-066-4a9c7b3a1f110559/f001-focus1-N1.4-optics": 1,
+      "training-105-726c72c20bf403b4/f030-focus0-N1.4-optics": 1,
+      "training-210-d9f88e0ac33b9e29/f030-focus0-N2-optics": 1,
+      "training-079-3e07c2ea841832f9/f030-focus0-N1.4-optics": 1,
+      "training-104-ed959c9469c17608/f030-focus0-N1.4-optics": 1,
+      "training-147-f363f7035b2adc2a/f001-focus0-N2-optics": 1,
+      "training-137-ddbd64a306f037b2/f060-focus1-N2-optics": 1,
+      "training-268-2d410329c133a02c/f001-focus1-N2-optics": 1,
+      "training-101-2f2c19e48b042cbc/f060-focus0-N1.4-optics": 2,
+      "training-121-15d84d54e54aae7e/f001-focus1-N2-optics": 1,
+      "training-109-156fc340568d4b6a/f001-focus1-N2-optics": 1,
+      "training-224-0a595bfb91359bdd/f060-focus1-N2-optics": 1,
+      "training-232-c027df1c79b58415/f001-focus1-N2-optics": 1,
+      "training-033-458f598222b9f805/f060-focus1-N2-optics": 1,
+      "training-098-34084be1d5f9c679/f060-focus0-N1.4-optics": 1,
+      "training-106-7f73fdeb23c9db2e/f001-focus0-N1.4-optics": 1,
+      "training-143-aa999d0bbdfd59a8/f001-focus0-N1.4-optics": 1,
+      "training-071-2345d368c9e2cc12/f060-focus1-N2-optics": 1,
+      "training-149-d4ae9b7274fff9f7/f030-focus1-N1.4-optics": 1,
+      "training-065-e80e056e921c89cb/f060-focus1-N2-optics": 1,
+      "training-139-a6fdfc32f252dada/f030-focus0-N1.4-optics": 2,
+      "training-068-845212140fd82b21/f030-focus1-N2-optics": 1,
+      "training-156-f4219c9a2f9787ed/f001-focus0-N1.4-optics": 1,
+      "training-096-783b05ff5b65d107/f001-focus1-N1.4-optics": 2,
+      "training-158-2b318ac0ba4ddc1d/f060-focus1-N2-optics": 1,
+      "training-104-ed959c9469c17608/f001-focus0-N1.4-optics": 1,
+      "training-171-f5de6bcd6aef3f97/f030-focus1-N2-optics": 1,
+      "training-097-bc0d8b3ce29a5f4c/f001-focus0-N2-optics": 1,
+      "training-262-8bf0f5b2a1537c31/f030-focus1-N1.4-optics": 1,
+      "training-161-baa513d587b0b964/f060-focus1-N2-optics": 1,
+      "training-123-bb3b63aa641990b6/f001-focus1-N2-optics": 1,
+      "training-289-a5a90c8df5d46768/f030-focus0-N2-optics": 1,
+      "training-158-2b318ac0ba4ddc1d/f030-focus1-N1.4-optics": 1,
+      "training-268-2d410329c133a02c/f030-focus1-N1.4-optics": 1,
+      "training-053-f272d322f73e299b/f060-focus0-N2-optics": 1,
+      "training-159-79c13c113b5b6cf7/f030-focus1-N1.4-optics": 1,
+      "training-291-039454dbf9a2a574/f001-focus0-N1.4-optics": 2,
+      "training-081-ffffcf59dc7e4350/f001-focus0-N1.4-optics": 1,
+      "training-196-84b81e0db316cc51/f001-focus1-N2-optics": 1,
+      "training-046-4f78e7fdc9b0d0bd/f060-focus0-N2-optics": 1,
+      "training-073-c77c508538ed6eae/f030-focus1-N2-optics": 1,
+      "training-149-d4ae9b7274fff9f7/f030-focus0-N1.4-optics": 1,
+      "training-077-e0dbd60c4b4a5517/f060-focus0-N2-optics": 2,
+      "training-072-31b286ff6377ae60/f060-focus1-N2-optics": 1,
+      "training-046-4f78e7fdc9b0d0bd/f030-focus1-N2-optics": 1,
+      "training-103-fe83df7a6c79a980/f060-focus0-N1.4-optics": 1,
+      "training-062-e1afe20c6ff0e3f1/f030-focus1-N2-optics": 1,
+      "training-065-e80e056e921c89cb/f030-focus0-N1.4-optics": 1,
+      "training-159-79c13c113b5b6cf7/f060-focus0-N2-optics": 1,
+      "training-160-2a6a65d85055aef4/f030-focus0-N2-optics": 1,
+      "training-233-776d75d3f839af90/f030-focus0-N1.4-optics": 1,
+      "training-073-c77c508538ed6eae/f060-focus0-N1.4-optics": 1,
+      "training-144-3582acc4193a8ada/f060-focus1-N2-optics": 1,
+      "training-173-13ed6793b9ce2fb2/f001-focus1-N2-optics": 1,
+      "training-071-2345d368c9e2cc12/f030-focus1-N1.4-optics": 1,
+      "training-172-467ec86af81787bb/f030-focus1-N1.4-optics": 1
+    },
+    "training_seconds": 2475.005134344101,
+    "B_crop_statistics": {
+      "crops": 2500,
+      "crops_with_thin": 1878,
+      "quota_draws": 1250,
+      "thin_crop_fraction": 0.7512,
+      "mean_thin_pixel_fraction": 0.06952637939453125
+    }
+  },
+  "evaluation_seconds": 287.62371189147234,
+  "sources": {
+    "ema": {
+      "path": "/root/autodl-tmp/route3-stage2-v2-20261123/outputs/route3-v2data-stage3a-2026-11-24-02/evaluation/step-005000/ema/report.json",
+      "sha256": "f44ef770beca401bccbbab5c8a4e4ff8cf012685961da2266af9ab629a69ad7b"
+    }
+  },
+  "summary_path": "/root/autodl-tmp/route3-stage2-v2-20261123/outputs/route3-v2data-stage3a-2026-11-24-02/evaluation/step-005000/汇总.md"
+}
