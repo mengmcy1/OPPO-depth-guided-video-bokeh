@@ -187,11 +187,11 @@ def group_regions(rows, method, metric):
     return summary
 
 
-def subgroup(output, rows):
+def subgroup(output, rows, *, include_coc=True):
     result = {}
     coc = defaultdict(list)
     for row in rows:
-        if "coc_samples" in row:
+        if include_coc and "coc_samples" in row:
             with np.load(output/row["coc_samples"]) as arrays:
                 for name in arrays.files:
                     coc[name].append(arrays[name])
@@ -330,7 +330,7 @@ def finish(output, seconds):
     converted = {}
     for stop in protocol["stops"]:
         active = [r for r in rows if r["fstop"]==stop]
-        converted[f"f{stop:g}"] = subgroup(output,active)
+        converted[f"f{stop:g}"] = subgroup(output,active,include_coc=False)
         converted[f"f{stop:g} 细结构"] = subgroup(output,[r for r in active if r["category"]=="thin_structure"])
         converted[f"f{stop:g} development-008"] = subgroup(output,[r for r in active
                                                                      if r["scene"].startswith("development-008-")])
@@ -359,6 +359,7 @@ def finish(output, seconds):
             text.append("| "+" | ".join((label,stop,*values))+" |")
     text.append("")
     text.extend(f'- {line["scope"]} · {line["file"]}' for line in summary["legacy"]["references"].values())
+    text.append("- [连续性参考图 · 122104 f030 近焦](../visual-20261123/003_122104_f030_near.png)")
     text.extend(["","## 图像观察清单",""])
     text.extend(f"- [{Path(name).stem}]({name}) · {tag}" for name,tag in fixed.items())
     text.extend(["","缺测条目保留在 [summary.json](summary.json)。"])
