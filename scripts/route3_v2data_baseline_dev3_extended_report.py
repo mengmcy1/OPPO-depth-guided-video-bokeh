@@ -214,7 +214,7 @@ def legacy_sources():
         R1_R2=dict(file=str((records/"route3-g3-r15-2026-11-17-R3-per-config.csv").relative_to(ROOT)),
                    scope="原三场景 P2，历史原几何 R1+R2，归档掩码"),
         DrBokeh=dict(file=str((records/"route3-baseline-dev3-2026-11-20-auxiliary.csv").relative_to(ROOT)),
-                     scope="原三场景 P1，原生深度与分割，仅 f/1.4。新场景用 B2 Oracle 输入"),
+                     scope="原三场景 P1，1c 深度与 LDF 分割，仅 f/1.4。新场景用 B2 Oracle 输入"),
         GT_oracle=dict(file=str((records/"route3-ovg-1c-2026-11-19-C3-optical.csv").relative_to(ROOT)),
                        scope="原三场景 P2，GT 可见几何与 GT 隐藏层归档"),
     )
@@ -260,7 +260,7 @@ def legacy_sources():
                 put(float(row["fstop"]),"R1_R2",metric,score_row(row))
     for row in archived_rows("DrBokeh"):
         if (row["scene"].startswith("metric-scene-") and row["protocol"]=="P1"
-                and row["method"]=="drbokeh" and row["arm"]=="native" and float(row["aperture"])==1.4):
+                and row["method"]=="drbokeh" and row["arm"]=="1c-depth" and float(row["aperture"])==1.4):
             put(1.4,"DrBokeh",row["region"],score_row(row))
     results = {f"f{stop:g}":{method:{area:pooled(combined[(stop,method,area)])
                           for area in REGIONS} for method in METHODS} for stop in (1.4,2.)}
@@ -348,12 +348,12 @@ def finish(output, seconds):
             "",f"{len(rows)} 个计划 case 已登记，出图 {summary['case_panels']} 张。",*make_tables(converted),
             "## 原 3 场景的历史引用",
             "",
-            "以下为原归档的分区口径。Dr.Bokeh 行使用原生输入与 P1，单独标注。空白代表该档无对应结果。",
+            "以下为原归档的分区口径。Dr.Bokeh 行使用 1c 深度、LDF 分割与 P1。空白代表该档无对应结果。",
             "", "| 方法 | 光圈 | 全图 PSNR | 全图 patch LPIPS | 近焦焦内 | 远焦可恢复 | 边界 ±2 px |",
             "|---|---|---:|---:|---:|---:|---:|"]
     for stop,methods in summary["legacy"]["pooled"].items():
         for method,data in methods.items():
-            label = "Dr.Bokeh · 原生 P1" if method=="DrBokeh" else LABELS[method]
+            label = "Dr.Bokeh · 1c 深度 P1" if method=="DrBokeh" else LABELS[method]
             values = (fmt(data["full_image"]["psnr"]),fmt(data["full_image"]["patch_lpips"],4),
                       *[fmt(data[r]["psnr"]) for r in REGIONS[1:]])
             text.append("| "+" | ".join((label,stop,*values))+" |")

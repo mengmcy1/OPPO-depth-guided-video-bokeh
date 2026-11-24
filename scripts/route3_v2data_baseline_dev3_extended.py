@@ -121,7 +121,9 @@ def build_frame(unit, frame, cases, network, views):
     image = display_tensor(rgb)
     gt = reference["gt"].astype(np.float32)
     known = reference["valid"] & np.isfinite(gt) & (gt > 0)
-    subject = [near_subject(gt, known, intr, c["focus_m"]) for c in cases]
+    # Use the archived Stage 1 mask before any dtype conversion. Its
+    # one-pixel CoC threshold is sensitive to rounding at thin boundaries.
+    subject = [near_subject(reference["gt"], reference["valid"], intr, c["focus_m"]) for c in cases]
     rig = gallery.prepare_geometry(network, x, views, None, frame, cases, subject)
     oracle_z = np.where(known, gt, 1e4).astype(np.float32)
     oracle_visible = fixed_visible_surfels(dict(depth1=K.new_tensor(oracle_z)[None]), x)
