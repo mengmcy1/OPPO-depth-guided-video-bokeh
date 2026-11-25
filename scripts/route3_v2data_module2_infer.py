@@ -110,10 +110,10 @@ def mark_overlay(overlay,mask,a,dx,dy,paint):
     overlay[yy+dy,xx+dx]=paint
 
 
-def tear_audit(gt,pred_inv,labels,zones):
-    errors = {key:{g:defaultdict(int) for g in GROUPS} for key in ("b_union","c_003","c_010")}
+def tear_audit(gt,pred_inv,labels,zones,learned=()):
+    errors = {key:{g:defaultdict(int) for g in GROUPS} for key in ("b_union","c_003","c_010",*learned)}
     mismatch = {k:dict(edges=0,GT_connected=0) for k in GROUPS}
-    maps = {k:np.zeros((*pred_inv.shape,3),np.uint8) for k in ("b","b_union","c_003","c_010")}
+    maps = {k:np.zeros((*pred_inv.shape,3),np.uint8) for k in ("b","b_union","c_003","c_010",*learned)}
     for k,(dy,dx) in enumerate(DIRECTIONS):
         a,b = edge_slices(dy,dx)
         t = gt[k][a]
@@ -132,12 +132,17 @@ def tear_audit(gt,pred_inv,labels,zones):
             false_link = ~predicted&disconnected
             mark_overlay(maps[arm],false_link,a,dx,dy,(255,30,30))
             mark_overlay(maps[arm],false_tear,a,dx,dy,(30,155,255))
+            if arm in learned:
+                mark_overlay(maps[arm],false_tear&misaligned,a,dx,dy,(255,203,32))
             for name,m in regions.items():
                 c = errors[arm][name]
                 c["GT_connected"] += int((connected&m).sum())
                 c["GT_torn"] += int((disconnected&m).sum())
                 c["false_torn"] += int((false_tear&m).sum())
                 c["false_connected"] += int((false_link&m).sum())
+                if arm in learned:
+                    c["false_step_connected"] += int((misaligned&m).sum())
+                    c["false_step_torn"] += int((false_tear&misaligned&m).sum())
     return errors,mismatch,maps
 
 
@@ -276,10 +281,12 @@ def score_psnr(score):
     return pooled([score])["psnr_db"]
 
 
-def frame_results(net,cohort,name,frame,unit,entry,cases,root,arms):
+def frame_results(net,cohort,name,frame,unit,entry,cases,root,arms,*,
+                  tear_predictor=None,panel_writer=panel):
     item = ("B",name,ovg.TRAIN_FRAMES.index(frame))
     x,y = sample(item)
-    pred = net(x,protect_residual=True,render_heads=False)["depth1"][0]
+    prediction = net(x,protect_residual=True,render_heads=False,return_features=tear_predictor is not None)
+    pred = prediction["depth1"][0]
     K = x["K"][0]
     k = K.cpu().numpy()
     ref = ovg.b_edge_reference(item,y)
@@ -296,7 +303,10 @@ def frame_results(net,cohort,name,frame,unit,entry,cases,root,arms):
     label = ovg.load(CACHE/name/f"f{frame:03d}.npz")["status"]
     rho_pred = pred.reciprocal().cpu().numpy()
     tears = labels_for_arm(label,rho_pred)
-    audit,misaligned,overlay = tear_audit(label,rho_pred,tears,zones)
+    learned = tear_predictor(x,prediction) if tear_predictor is not None else {}
+    tears.update(learned)
+    audit,misaligned,overlay = tear_audit(label,rho_pred,tears,zones,learned)
+    del prediction
     pending = []
     for case in cases:
         nominal,idx = case["focus_m"],case["focus_index"]
@@ -376,7 +386,7 @@ def frame_results(net,cohort,name,frame,unit,entry,cases,root,arms):
     for case,row,gt,masks,focuses in pending:
         if focuses is not None:
             file = root/"panels"/f'{title(name)}-{case["id"]}.jpg'
-            row.update(panel(file,row,images[case["id"]],gt,pinhole,masks,overlay,arms))
+            row.update(panel_writer(file,row,images[case["id"]],gt,pinhole,masks,overlay,arms))
             for rec in row["methods"].values():
                 del rec["heat"]
     return dict(rows=[r[1] for r in pending],tear_accuracy=audit,alignment=misaligned,
@@ -426,8 +436,9 @@ def pooled_arms(rows,arm):
     return optics
 
 
-def compare(group,base,new,result):
-    keys = ("near_gt_minus_f2",*REGIONS[1:],*ZERO)
+def compare(group,base,new,result,*,include_absolute_near=False):
+    regions = REGIONS if include_absolute_near else REGIONS[1:]
+    keys = ("near_gt_minus_f2",*regions,*ZERO)
     values = {}
     for k in keys:
         ds = {}
@@ -441,7 +452,7 @@ def compare(group,base,new,result):
     return values
 
 
-def summarize(parts,arms):
+def summarize(parts,arms,*,pairings=PAIR,include_absolute_near=False):
     raw = [r for part in parts for r in part["rows"]]
     result = {}
     for cohort in ("development","legacy","thin_structure","dev008"):
@@ -458,7 +469,8 @@ def summarize(parts,arms):
             by_scene[r["scene"]].append(r)
         grouped = {scene:{arm:pooled_arms(rr,arm) for arm in arms} for scene,rr in by_scene.items()}
         all_methods = {arm:pooled_arms(rows,arm) for arm in arms}
-        comparisons = {arm:compare(grouped,PAIR[arm],arm,all_methods) for arm in arms if arm in PAIR}
+        comparisons = {arm:compare(grouped,pairings[arm],arm,all_methods,include_absolute_near=include_absolute_near)
+                       for arm in arms if arm in pairings}
         result[cohort] = dict(scored=len(rows),unscored=[r for r in own if r["status"]!="evaluated"],
                               methods=all_methods,per_scene=grouped,paired=comparisons)
     return result
@@ -484,6 +496,9 @@ def acc_stats(parts):
                 out["diagonals"][key]+=n
     for arm in accuracy.values():
         for v in arm.values():
+            if "false_step_connected" in v:
+                v["false_step_torn_fraction"] = (v["false_step_torn"]/v["false_step_connected"]
+                                                 if v["false_step_connected"] else None)
             v["false_connected_fraction"] = v["false_connected"]/v["GT_torn"] if v["GT_torn"] else None
             v["false_torn_fraction"] = v["false_torn"]/v["GT_connected"] if v["GT_connected"] else None
     for row in interp.values():
