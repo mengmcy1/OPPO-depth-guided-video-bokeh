@@ -21,7 +21,7 @@ from route3_v2data_stage2_eval import bands, f2_for, frames, geometry_root, opti
 from route3_v2data_stage2_train import QUERY, sample
 from route3_v2data_stage3a import FIXED, gpu_setup
 from route3_v2data_stage3a_eval import BASELINE, render
-from route3_v2data_stage3b import OUT, hidden_cloud, load_geometry, optical_band, pack_frame, path_for, traced_render
+from route3_v2data_stage3b import OUT, hidden_cloud, load_geometry, optical_band, pack_frame, path_for, read_checkpoint, traced_render
 from src.aperture_renderer import aperture_disk
 from src.c1_bokehme import region_sse
 from src.layered_aperture import merge_layers
@@ -221,7 +221,7 @@ def evaluate(run,step,weights,*,variant="V0",smoke=False):
     geometry = load_geometry()
     query = query_net(QUERY)
     if step:
-        query.load_state_dict(torch.load(path_for(run,step),map_location="cpu",weights_only=True)[weights])
+        query.load_state_dict(read_checkpoint(path_for(run,step))[weights])
     initial_path = run/"evaluation/step-000000/ema"
     starting = load(initial_path/"report.json")
     if step and not starting and not smoke:

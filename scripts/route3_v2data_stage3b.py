@@ -4,6 +4,7 @@ from collections import Counter
 from dataclasses import replace
 from functools import lru_cache
 import json
+import math
 import os
 from pathlib import Path
 import subprocess
@@ -75,6 +76,13 @@ def atomic_checkpoint(path, value):
     temporary = path.with_suffix(".part")
     torch.save(value,temporary)
     temporary.replace(path)
+
+
+def read_checkpoint(path):
+    # The active server process writes NumPy float64 for the cosine Adam LR.
+    # Its numeric optimizer scalar is the only extra type allowed here.
+    with torch.serialization.safe_globals([np.core.multiarray.scalar,np.dtype,np.dtypes.Float64DType]):
+        return torch.load(path,map_location="cpu",weights_only=True)
 
 
 def load_geometry():
@@ -407,7 +415,7 @@ def train(run,components):
     snapshots = sorted((run/"checkpoints").glob("step-*.pt"))
     start,prior,counts = 1,0.,Counter()
     if snapshots:
-        saved = torch.load(snapshots[-1],map_location="cpu",weights_only=True)
+        saved = read_checkpoint(snapshots[-1])
         if saved["config_sha256"]!=config_sha:
             raise ValueError("Stage 3b config changed since the last checkpoint")
         network.load_state_dict(saved["model"])
@@ -437,7 +445,7 @@ def train(run,components):
                 pool = load(path)
             rng = np.random.default_rng([SEED,3,step])
             is_b = step%2==1
-            opt.param_groups[0]["lr"] = FINAL_LR+(LR-FINAL_LR)*.5*(1+np.cos(np.pi*(step-1)/SCHEDULE[-1]))
+            opt.param_groups[0]["lr"] = FINAL_LR+(LR-FINAL_LR)*.5*(1+math.cos(math.pi*(step-1)/SCHEDULE[-1]))
             opt.zero_grad(set_to_none=True)
             network.train()
             if is_b:
