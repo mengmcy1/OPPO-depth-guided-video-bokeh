@@ -54,15 +54,15 @@ def competitor_pace(train, render):
                 interpretation="3b 自身进度日志的相邻时间窗，B 光学渲染在各窗共同运行。差值是共同运行时的观测变化。")
 
 
-def display_report(summary):
-    lines = ["# 模块二学习档 (d)","",
+def display_report(summary, arms=ARMS, heading="模块二学习档 (d)"):
+    lines = [f"# {heading}","",
              "P2、f/1.4、K64 的光学输出沿用七臂口径。透射与正向 SSE 用标称焦距下的 K16 真值光线。"
              "PSNR 合并按 SSE ÷ (3 × 像素数)。",""]
     for scope, row in summary.items():
         lines.extend([f"## {scope} · {row['scored']} 个有效 case","",
                       "| 档 | 近焦 | 替身−F2 | 远焦 | 边界 ±2 px | 全图 | 零光圈仅可见 | 零光圈完整 | T≥0.1 占比 | T≥0.1 SSE | 0.02≤T<0.1 SSE | front_order SSE |",
                       "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|"])
-        for method in ARMS:
+        for method in arms:
             rec = row["methods"][method]
             ray = rec["transmission"]
             v = [fmt(rec[k]["psnr_db"]) for k in KEYS]
@@ -78,10 +78,10 @@ def display_report(summary):
                 v = pair[key]
                 lines.append(f"| {method} − V0 | {key} | {fmt(v['pooled_delta_db'])} | "
                              f"{fmt(v['median_db'])} | {fmt(v['sd_db'])} | {v['positive']}/{v['n']} |")
-        lines.extend(["","| 场景 | V0 远焦 | d-nodepth | d-full | b | c τ=.10 |",
-                      "|---|---:|---:|---:|---:|---:|"])
+        lines.extend(["","| 场景 | " + " | ".join(f"{arm} 远焦" for arm in arms) + " |",
+                      "|---|" + "---:|"*len(arms)])
         for scene, values in row["per_scene"].items():
-            cols = [fmt(values[arm]["far_recoverable"]["psnr_db"]) for arm in ARMS]
+            cols = [fmt(values[arm]["far_recoverable"]["psnr_db"]) for arm in arms]
             lines.append("| "+" | ".join([title(scene), *cols])+" |")
         lines.append("")
     return lines
@@ -147,14 +147,14 @@ def extra_tables(record):
     return lines
 
 
-def crop_observation(row):
+def crop_observation(row, columns=None):
     region = "near_in_focus" if row["focus_index"]==0 else "far_recoverable"
     tile,pitch,top = 182,190,76+207
     with Image.open(row["panel"]) as fig:
         im = np.array(fig, dtype=np.float32)/255
     truth = im[top:top+tile, :tile]
     values = []
-    for arm,i in zip(DISPLAY, (3,4,7,8,9)):
+    for arm,i in (columns or dict(zip(DISPLAY, (3,4,7,8,9)))).items():
         offset = i*pitch
         image = im[top:top+tile, offset:offset+tile]
         difference = float(np.abs(image-truth).mean())
@@ -163,21 +163,21 @@ def crop_observation(row):
     return ("目标区放大框显示 RGB MAE / 该 case 区域 PSNR (dB) 为 "+"、".join(values)+"。")
 
 
-def gallery(cases, gaps, review):
-    doc = ["# 学习档 (d) 图像观察清单",""]
+def gallery(cases, gaps, review, *, output=RESULTS, columns=None, heading="模块二学习档 (d)"):
+    doc = [f"# {heading} 图像观察清单",""]
     doc += [f"- {row['observation']} [{row['case']}]({row['panel']})" for row in review["observations"]]
     doc += ["","## 逐 case 同框读数",""]
-    html = ["<!doctype html><meta charset='utf-8'><title>模块二学习档 (d)</title>",
-            "<h1>模块二学习档 (d)</h1>"]
-    with (RESULTS/"focus.csv").open("w", newline="") as f:
+    html = [f"<!doctype html><meta charset='utf-8'><title>{escape(heading)}</title>",
+            f"<h1>{escape(heading)}</h1>"]
+    with (output/"focus.csv").open("w", newline="") as f:
         out = csv.writer(f)
         out.writerow(("cohort","scene","frame","case","arm","P2_focus_m","GT_focus_m"))
         for row in cases:
             if row["status"]!="evaluated":
                 continue
-            rel = Path(row["panel"]).relative_to(RESULTS)
+            rel = Path(row["panel"]).relative_to(output)
             label = f"{title(row['scene'])} · {row['case']}"
-            note = crop_observation(row)
+            note = crop_observation(row,columns)
             doc.append(f"- {label}。{note} [面板]({rel})")
             html.append(f"<figure><a href='{escape(str(rel))}'><img width='1300' loading='lazy' "
                         f"src='{escape(str(rel))}'></a><figcaption>{escape(label)}。"
@@ -186,11 +186,11 @@ def gallery(cases, gaps, review):
                 out.writerow((row["cohort"],row["scene"],row["frame"],row["case"],arm,v["focus_m"],row["GT_focus_m"]))
     for frame in gaps:
         if "panel" in frame:
-            rel = Path(frame["panel"]).relative_to(RESULTS)
+            rel = Path(frame["panel"]).relative_to(output)
             html.append(f"<figure><a href='{rel}'><img width='876' loading='lazy' src='{rel}'></a>"
                         f"<figcaption>{escape(frame['case'])} · 远焦缝隙</figcaption></figure>")
-    (RESULTS/"观察清单.md").write_text("\n".join(doc)+"\n")
-    (RESULTS/"index.html").write_text("\n".join(html)+"\n")
+    (output/"观察清单.md").write_text("\n".join(doc)+"\n")
+    (output/"index.html").write_text("\n".join(html)+"\n")
 
 
 def compact_summary(summary):

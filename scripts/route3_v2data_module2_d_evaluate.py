@@ -22,13 +22,12 @@ BASE = old.OUT/"all-arms"
 RESULTS = RUN/"evaluation"
 ARMS = ("V0_pred", "d_nodepth", "d_full", "b", "c_010")
 REFERENCE = dict(V0_pred="V0 预测", b="b · GT 撕裂", c_010="c · τ=.10")
-PAIRS = dict(b="V0_pred", c_010="V0_pred", d_full="V0_pred", d_nodepth="V0_pred")
 LEARNED = ("d_full", "d_nodepth")
 
 
-def chosen_heads(training):
+def chosen_heads(training, variants=VARIANTS):
     heads = {}
-    for arm, channels in VARIANTS.items():
+    for arm, channels in variants.items():
         selected = training["selected"][arm]
         ck = torch.load(selected["path"], map_location="cpu", weights_only=True)
         if ck["step"] != selected["step"] or ck["geometry_sha256"] != training["geometry_sha256"]:
@@ -94,7 +93,8 @@ def append_panels(archived):
     return draw
 
 
-def join_cases(result, previous):
+def join_cases(result, previous, reference_arms=None):
+    names = reference_arms or {arm:arm for arm in REFERENCE}
     for current in result["rows"]:
         base = previous[current["case"]]
         for key in ("scene", "frame", "cohort", "status", "focus_index", "nominal_focus_m", "GT_focus_m"):
@@ -114,7 +114,7 @@ def join_cases(result, previous):
                     raise ValueError(f"Archived {key} pixel support differs on {current['case']}")
             if row["rays"] and row["rays"]["rays"] != reference["rays"]["rays"]:
                 raise ValueError(f"Archived K16 subject ray count differs on {current['case']}")
-        current["methods"].update({arm: base["methods"][arm] for arm in REFERENCE})
+        current["methods"].update({arm: base["methods"][archived] for arm,archived in names.items()})
 
 
 def gap_crop(mask):
@@ -240,24 +240,27 @@ def diagnose_dev005(net, predict, cases, unit, entry, frame, official):
 
 
 @torch.inference_mode()
-def run(one):
-    training = load(RUN/"training-report.json")
-    before = load(BASE/"report.json")
+def run(one, *, run_root=RUN, archive_path=BASE/"report.json", variants=VARIANTS, references=None,
+        methods=ARMS, baseline_commit="1a922ac", trace_gap=True):
+    training = load(run_root/"training-report.json")
+    before = load(archive_path)
     if not training or not before:
         raise FileNotFoundError("The learned checkpoint decision and archived seven-arm evaluation are required")
     if training["geometry_sha256"] != sha256(INITIAL):
         raise ValueError("The selected tear heads were trained on a different frozen geometry")
     if before["test_cases_used"] or before["summary"]["development"]["scored"] != 87:
         raise ValueError("The seven-arm archive does not match the preregistered development protocol")
-    root = RESULTS if one is None else RUN/"evaluation-smoke"
+    learned = tuple(variants)
+    pairings = {method:"V0_pred" for method in methods if method!="V0_pred"}
+    root = run_root/("evaluation" if one is None else "evaluation-smoke")
     began = time.monotonic()
     competitor_begin = old.competitor_state()
     old.gpu_setup(dict(training=dict(max_process_gpu_gib=old.GPU_GIB)))
     waited = old.yield_gpu()
     model = old.load_geometry()
-    predict = predictor(chosen_heads(training))
+    predict = predictor(chosen_heads(training, variants))
     reference = {}
-    for row in before["case_rows"]:
+    for row in before.get("case_rows",before.get("cases",())):
         reference.setdefault((row["scene"], row["frame"]), {})[row["case"]] = row
     parts, gaps = [], []
     for cohort,name,frame,unit,entry,cases in old.frames():
@@ -274,13 +277,13 @@ def run(one):
         part = load(save)
         if not part:
             waited += old.yield_gpu()
-            part = old.frame_results(model, cohort, name, frame, unit, entry, cases, root, LEARNED,
+            part = old.frame_results(model, cohort, name, frame, unit, entry, cases, root, learned,
                                      tear_predictor=predict, panel_writer=append_panels(lookup))
-            join_cases(part, lookup)
+            join_cases(part, lookup, references)
             old.save_json(save, part)
         parts.append(part)
         print("TEAR_OPTICAL_FRAME", name, frame, len(parts), flush=True)
-        if one is None and old.title(name) == "dev005":
+        if trace_gap and one is None and old.title(name) == "dev005":
             path = root/"gap"/f"f{frame:03d}.json"
             gap = load(path)
             if not gap:
@@ -288,7 +291,7 @@ def run(one):
                 gap = diagnose_dev005(model, predict, cases, unit, entry, frame, part["rows"])
                 old.save_json(path, gap)
             gaps.append(gap)
-    summary = old.summarize(parts, ARMS, pairings=PAIRS, include_absolute_near=True)
+    summary = old.summarize(parts, methods, pairings=pairings, include_absolute_near=True)
     if not parts or (not one and any(summary[c]["scored"] != before["summary"][c]["scored"]
                                     for c in ("development", "legacy"))):
         raise ValueError("The learned arms did not cover the frozen scored case inventory")
@@ -296,7 +299,7 @@ def run(one):
     if not one:
         # Compare the exact native threshold used for training selection and rendering.
         edge = old.acc_stats(development)["tear_accuracy"]
-        for arm in LEARNED:
+        for arm in learned:
             selected_step = training["selected"][arm]["step"]
             monitor = next(r["development"][arm]["regions"] for r in training["history"]
                            if r["step"] == selected_step)
@@ -309,8 +312,8 @@ def run(one):
     old.save_json(root/"report.json",
                   dict(summary=summary, diagnostics=old.acc_stats(development),
                        cases=[r for p in parts for r in p["rows"]], gap=gaps,
-                       configuration=dict(geometry_sha256=training["geometry_sha256"], baseline_commit="1a922ac",
-                                          reused_arms=list(REFERENCE), render_K=64, subject_diagnostic_K=16),
+                       configuration=dict(geometry_sha256=training["geometry_sha256"], baseline_commit=baseline_commit,
+                                          reused_arms=list(references or REFERENCE), render_K=64, subject_diagnostic_K=16),
                        seconds=time.monotonic()-began, gpu_wait_seconds=waited+sum(p["gpu_wait_seconds"] for p in parts),
                        peak_reserved_gib=torch.cuda.max_memory_reserved()/GIB,
                        peak_allocated_gib=torch.cuda.max_memory_allocated()/GIB,
@@ -320,4 +323,14 @@ def run(one):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--smoke", metavar="SCENE_SHORT_NAME")
-    run(parser.parse_args().smoke)
+    parser.add_argument("--v2", action="store_true")
+    arguments = parser.parse_args()
+    if arguments.v2:
+        from route3_v2data_module2_d_v2_train import ARMS as V2, CHANNELS, RUN as V2_RUN
+
+        archived = dict(V0_pred="V0_pred", v1="d_full", b="b", c_010="c_010")
+        run(arguments.smoke, run_root=V2_RUN, archive_path=RESULTS/"report.json",
+            variants=dict.fromkeys(V2,CHANNELS), references=archived,
+            methods=("V0_pred","v1",*V2,"b","c_010"), baseline_commit="32b8641", trace_gap=False)
+    else:
+        run(arguments.smoke)
