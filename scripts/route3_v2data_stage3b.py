@@ -194,7 +194,7 @@ class BOptical:
         if count_rays:
             with torch.no_grad():
                 reference = ovg.b_edge_reference(item,y)
-                case = dict(frame=frame,focus_index=int(spec["label"].stem.split("-focus")[1][0]),
+                case = dict(frame=frame,focus_index=int(spec["truth"].stem.split("-focus")[1][0]),
                             focus_m=focus,fstop=fstop)
                 mask = new_regions(unit,case,reference["gt"],reference["valid"],K.cpu().numpy())["recoverable"]
                 mask = mask[top:top+h,left:left+w]
@@ -262,7 +262,7 @@ class DirectBatches:
     def loss(self,network,manifest,rng,spec=None):
         choices = manifest["rows"]
         if spec:
-            idx = int(spec["label"].stem.split("-focus")[1][0])
+            idx = int(spec["truth"].stem.split("-focus")[1][0])
             choices = [r for r in choices if r["frame"]==spec["frame"] and r["case"]["focus_index"]==idx]
             if not choices:
                 choices = [r for r in manifest["rows"] if r["case"]["focus_index"]==idx] or manifest["rows"]
