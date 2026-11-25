@@ -105,10 +105,12 @@ def cached(unit, frame):
         return np.load(path, mmap_mode="r"), data["groups"], data["regions"]
 
 
-def batch(features, groups, side, cap, balance, rng):
+def sample_crop(groups, side, cap, balance, rng, *, torn_pixels=None):
     limit = groups.shape[-1] - side
-    if balance and np.any((groups == 1) | (groups == 4)):
-        _, yy, xx = np.where((groups == 1) | (groups == 4))
+    if balance and torn_pixels is None:
+        torn_pixels = np.nonzero((groups == 1) | (groups == 4))[1:]
+    if balance and len(torn_pixels[0]):
+        yy, xx = torn_pixels
         i = rng.integers(len(yy))
         y = rng.integers(max(0, yy[i]-side+2), min(limit, yy[i]-1)+1) if 0 < yy[i] < groups.shape[-2]-1 else int(np.clip(yy[i]-side//2, 0, limit))
         x = rng.integers(max(0, xx[i]-side+2), min(limit, xx[i]-1)+1) if 0 < xx[i] < groups.shape[-1]-1 else int(np.clip(xx[i]-side//2, 0, limit))
@@ -125,15 +127,20 @@ def batch(features, groups, side, cap, balance, rng):
     masks = [np.flatnonzero((flat == 1) | (flat == 4)),
              np.flatnonzero(flat == 2), np.flatnonzero(flat == 3), np.flatnonzero(flat == 4)]
     indices = [rng.choice(i, cap, replace=False) if len(i) > cap else i for i in masks]
+    return loc, indices
+
+
+def batch(features, groups, side, cap, balance, rng):
+    loc, indices = sample_crop(groups, side, cap, balance, rng)
     packed = np.ascontiguousarray(features[loc].transpose(2, 0, 1))
     image = torch.as_tensor(packed, device="cuda", dtype=torch.float32)[None]
-    return image, [torch.as_tensor(i, device="cuda") for i in indices], (int(y), int(x))
+    return image, [torch.as_tensor(i, device="cuda") for i in indices], tuple(axis.start for axis in loc)
 
 
-def apply_loss(model, image, uses):
+def apply_loss(model, image, uses, weights=WEIGHTS):
     logits = model(image[:, :model[0].in_channels]).reshape(-1)
     loss = logits.new_zeros(())
-    for group, (weight, idx) in enumerate(zip(WEIGHTS, uses)):
+    for group, (weight, idx) in enumerate(zip(weights, uses)):
         if idx.numel():
             picked = logits[idx]
             target = torch.full_like(picked, float(group in (0, 3)))

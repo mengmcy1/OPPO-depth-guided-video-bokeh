@@ -1,0 +1,62 @@
+{
+  "date": "2026-11-25 Asia/Shanghai",
+  "prior_result_commit": "32b8641",
+  "prior_config": "route3-v2data-module2-tear-d-config-2026-11-25.json",
+  "prior_config_sha256": "5eed6b8eb60760cc46937d65dd11dd0248409913fe9f374eef132f3006faf420",
+  "reuse": "同一冻结几何与 V1 原生特征、107 场 / 321 帧训练、15 场 / 45 帧开发、同一训练监控抽样；沿用 d-full 75 通道、10,884 参数。",
+  "training": {
+    "steps": 20000,
+    "crops_per_step": 8,
+    "report_every": 1000
+  },
+  "optimization": "两支从同一随机初始化开始，沿用 V1 的 Adam、20261125 种子、1e-3→1e-5 余弦学习率和 EMA 0.999。",
+  "sampling": "沿用每个裁块的 V1 场景帧采样、四组有效边和每组采边上限。每步 4 个普通均匀裁块、4 个撕裂锚点优先裁块。每组在同批 8 个裁块的采样边上求平均，两支共享同一批张量与边索引。",
+  "loss_group_order": [
+    "GT 断开",
+    "GT 连通且预测逆深度相对差 > 0.10",
+    "其余 GT 连通",
+    "杆或缝隙的 GT 断开（叠加）"
+  ],
+  "loss_weights": {
+    "v2a": [
+      1,
+      1,
+      1,
+      2
+    ],
+    "v2b": [
+      2,
+      1,
+      1,
+      2
+    ]
+  },
+  "selection": {
+    "validation_group_weights": [
+      1,
+      1,
+      1,
+      2
+    ],
+    "tear_threshold": "t > 0.5",
+    "protocol": "与 V1 相同，开发集加权边误差最低者，同分取较早步；每 1,000 步验证。",
+    "record_GT_torn_false_link": true
+  },
+  "evaluation": {
+    "reuse_arms": [
+      "V0_pred",
+      "v1",
+      "b",
+      "c_010"
+    ],
+    "new_arms": [
+      "v2a",
+      "v2b"
+    ],
+    "development_scored": 87,
+    "legacy_scored": 18,
+    "protocol": "V1 P2 f/1.4 K64，K16 泄漏诊断，原面板裁剪框与色标。"
+  },
+  "stage3_integration": false,
+  "independent_test_cases_used": 0
+}
