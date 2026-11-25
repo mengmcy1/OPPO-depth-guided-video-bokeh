@@ -29,6 +29,23 @@ def report_path(run,step,kind):
     return run/"evaluation"/f"step-{step:06d}"/kind/"report.json"
 
 
+def collect_visual_review(report, folder):
+    review = load(folder/"visual-review.json")
+    if not review:
+        return
+    for panel in report["panels"]:
+        if panel["case"] in review:
+            panel["visual_observation"] = review[panel["case"]]
+    path = folder/"观察清单.md"
+    text = path.read_text()
+    heading = "## 实际画面核对"
+    if heading not in text:
+        notes = [f'- {p["case"]}。{p["visual_observation"]} [面板]({p["path"]})'
+                 for p in report["panels"] if "visual_observation" in p]
+        with path.open("a") as f:
+            f.write("\n"+heading+"\n\n"+"\n".join(notes)+"\n")
+
+
 def evaluate_version(run,step,kind):
     is_variant = kind.startswith("V")
     path = report_path(run,step,kind)
@@ -38,7 +55,9 @@ def evaluate_version(run,step,kind):
         args += ["--variant",kind] if is_variant else ["--weights",kind]
         with (run/f"eval-{step:06d}-{kind}.log").open("a") as f:
             subprocess.run(args,cwd=ROOT,stdout=f,stderr=subprocess.STDOUT,check=True)
-    return load(path)
+    report = load(path)
+    collect_visual_review(report,path.parent)
+    return report
 
 
 def publish(path,payload,paragraph):
