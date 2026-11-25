@@ -121,12 +121,14 @@ def compact(report):
 
 def measured_pace(report):
     start,end = (report[k] for k in ("competitor_start","competitor_end"))
+    pilot = load(OUT/"a-check/report.json")
+    baseline = pilot["competitor_start"] if pilot else start
     log = [(int(v.split()[1]),float(v.split()[-1])) for v in (COMPETITOR/"train.log").read_text().splitlines()
            if v.startswith("STAGE3B ")]
-    early = [p for p in log if p[0]<=start["step"]-250]
+    early = [p for p in log if p[0]<=baseline["step"]-250]
     ds = end["step"]-start["step"]
     during = (end["seconds"]-start["seconds"])/ds if ds>0 else None
-    base = (start["seconds"]-early[-1][1])/(start["step"]-early[-1][0]) if early else None
+    base = (baseline["seconds"]-early[-1][1])/(baseline["step"]-early[-1][0]) if early else None
     return dict(before_seconds_per_step=base,during_seconds_per_step=during,step_delta=ds,
                 during_to_before=during/base if base and during else None,
                 interpretation="Observed adjacent time windows with B optical production also active. This is not an isolated speed test.")
@@ -155,7 +157,8 @@ def make(root,record):
         raise ValueError("Visual index and paired case support differ")
     observations = ["# 模块二图像观察清单","",
                     "目视核对记录按固定框比较各档。逐 case 的裁块颜色差从已生成面板直接计算。",""]
-    observations.extend([f"- {x['case']}。{x['observation']} [{x['group']}]({x['panel']})" for x in review["observations"]])
+    observations.extend([f"- {x['case']}。{x['observation'].rstrip('。')}。 [{x['group']}]({x['panel']})"
+                         for x in review["observations"]])
     observations.extend(["","## 逐 case 裁块",""])
     html=['<!doctype html><meta charset="utf-8"><title>模块二只推理对照</title>',
           '<h1>模块二只推理对照</h1><p>每行对比同焦点、同放大框与同一色标。</p>']
