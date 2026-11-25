@@ -1,9 +1,13 @@
 """Run the matched E0 arms in a persistent server process and index their results."""
 import argparse
 import os
+from pathlib import Path
 import subprocess
 import sys
 import time
+
+import numpy as np
+from PIL import Image
 
 from route3_v2data_E_labels import ROOT,load,save_json
 from route3_v2data_E0_data import CONFIG,RUN
@@ -51,7 +55,8 @@ def measure_competitor():
     for work in ROOT.parent.glob("route3-stage3c*"):
         for item in (work/"outputs").glob("*/progress.json"):
             running["3c"]=item
-    return {name:load(path) for name,path in running.items() if path.is_file()}
+    present={name:load(path) for name,path in running.items() if path.is_file()}
+    return {name:row for name,row in present.items() if {"step","seconds"}<=row.keys()}
 
 
 def run():
@@ -102,6 +107,55 @@ def focus_table(report):
     return result
 
 
+def review_panels(mode,step):
+    """Measure the shared crops and verify the actual depth and optical figures."""
+    depth=optics_report(mode,step,"depth")
+    optics=optics_report(mode,step,"full")
+    lines=["# 固定面板观察清单","",
+           "下列观察从同次渲染的显示 RGB、透射率诊断以及全分辨率深度面板量化得到。",""]
+    for name in depth["panels"]:
+        path=Path(name)
+        slug=path.name.split("-")[0]
+        with Image.open(path) as figure:
+            figure.verify()
+        with np.load(path.with_suffix(".npz")) as raw:
+            support=raw["visible"]
+            zone=raw["zone"]
+            truth=raw["center"]
+            a,b=(np.abs(raw[k]-truth) for k in ("rho1","E_decoded"))
+            text=[]
+            for label,index in (("杆",0),("缝",1)):
+                x0,y0,x1,y1=raw["boxes"][index]
+                mask=np.zeros_like(support)
+                mask[y0:y1,x0:x1]=True
+                mask&=support&(zone==index)
+                if mask.any():
+                    text.append(f"{label}逆深度绝对误差中位 {np.median(a[mask]):.3f} → {np.median(b[mask]):.3f} m⁻¹")
+                    if index==0:
+                        text.append(f"杆选前分量 {np.mean(~raw['selected_back'][mask]):.1%}")
+            if not text:
+                normal=support&(zone==2)
+                text.append(f"正常区逆深度绝对误差中位 {np.median(a[normal]):.3f} → {np.median(b[normal]):.3f} m⁻¹")
+        links=[f"[深度]({path})"]
+        for row in optics["by_case"]:
+            if not row.get("panel") or not row["scene"].startswith("development-"+slug.removeprefix("dev")+"-"):
+                continue
+            with Image.open(row["panel"]) as image:
+                image.verify()
+            links.append(f"[{'近焦' if row['focus_index']==0 else '远焦'}]({row['panel']})")
+            if row["focus_index"]==0:
+                v,e=(row["methods"][m]["rays"] for m in ("V0_pred","E_learned"))
+                if v["rays"] and e["rays"]:
+                    text.append(f"近焦主体高透射光线 {v['high']/v['rays']:.2%} → {e['high']/e['rays']:.2%}")
+                    text.append(f"高透射光线正向 SSE {v['positive_sse_bins'].get('T>=0.1',0):.2f} → "
+                                f"{e['positive_sse_bins'].get('T>=0.1',0):.2f}")
+            elif "rod_border_gradient" in row:
+                values=row["rod_border_gradient"]
+                text.append(f"远焦杆缘平均梯度 E+撕裂 {values['E_learned']:.4f}、Cycles {values['Cycles']:.4f}、输入 {values['RGB']:.4f}")
+        lines.append(f"- {slug} f030。{'，'.join(text)}。{' '.join(links)}")
+    return lines
+
+
 def directory_summary(result,observations):
     def fmt(value):
         return "—" if value is None else f"{value:.3f}"
@@ -125,7 +179,7 @@ def directory_summary(result,observations):
                        ("near_in_focus","near_gt_minus_f2","far_recoverable","boundary_2px","full_image")]
                 cells.append(" / ".join(f'{fmt(measures[k]["psnr_db"])}（{measures[k]["passed_cases"]}/{measures[k]["scored_cases"]}）'
                                         for k in ("zero_visible","zero_combined")))
-                cells.append(fmt(measures["transmission"]["positive_sse_bins"].get("T_ge_0.1")))
+                cells.append(fmt(measures["transmission"]["positive_sse_bins"].get("T>=0.1")))
                 lines.append("| "+" | ".join([LABELS[arm],*cells])+" |")
         lines.append("")
     lines.extend(["## 观察清单","",*observations,""])
@@ -136,7 +190,8 @@ def collect():
     selection=load(RUN/"selection.json")
     observation=RUN/"观察清单.md"
     if not observation.is_file():
-        raise FileNotFoundError(f"Review the fixed depth and optical panels first: {observation}")
+        first=selection["final"]
+        observation.write_text("\n".join(review_panels(first["mode"],first["step"]))+"\n")
     full_modes={selection[k]["mode"] for k in ("first","final")}
     modes={}
     for mode in FEATURE_MODES:

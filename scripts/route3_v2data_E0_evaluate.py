@@ -4,16 +4,17 @@ from collections import defaultdict
 import time
 
 import numpy as np
+from scipy import ndimage
 import torch
 
 import route3_ovg_data as ovg
 import route3_v2data_module2_infer as module2
 from route3_ovg_1c import aligned_input
 from route3_v2data_B_inputs import to_srgb8
-from route3_v2data_E_cache import LAYERS,load_encoder
+from route3_v2data_E_cache import LAYERS,load_encoder,write_arrays
 from route3_v2data_E_labels import load,save_json,unit_paths
 from route3_v2data_E_panels import crop,save_depth
-from route3_v2data_E0_data import RUN,dataset,windows_for_mask
+from route3_v2data_E0_data import RUN,auxiliary_path,dataset,mapped,windows_for_mask
 from route3_v2data_E0_train import (GPU_LIMIT,add_diagnostics,diagnostic_summary,frame_batch,
                                    gpu_gate,new_diagnostics,predict)
 from route3_v2data_E0_tears import INPUT_CHANNELS,features,load_model
@@ -166,7 +167,9 @@ def panel_depth(root,name,x,out):
            crop((z==1)&support if (z==1).any() else (z==2)&support))
     output=root/"depth-panels"
     output.mkdir(parents=True,exist_ok=True)
-    return str(save_depth(module2.title(name),{"rgb":x["features"][0,:3].cpu().numpy()},fields,boxes,2.,output=output))
+    panel=save_depth(module2.title(name),{"rgb":x["features"][0,:3].cpu().numpy()},fields,boxes,2.,output=output)
+    write_arrays(panel.with_suffix(".npz"),dict(fields,visible=support,boxes=np.asarray(boxes)))
+    return str(panel)
 
 
 def add_guard_stats(rows,edges,coc,method,name,depth,target,ref,inputs,unit,cases):
@@ -249,6 +252,21 @@ def optical_adapter(network,inputs,arms,tear):
     return adapter
 
 
+def panel_optical(name,frame,path,row,pictures,truth,rgb,masks,overlays,arms):
+    panel=module2.panel(path,row,pictures,truth,rgb,masks,overlays,arms)
+    if row["focus_index"]==1:
+        zone=mapped(auxiliary_path(name,frame),"zone")[0]
+        rods=zone==0
+        if rods.any():
+            support=ndimage.binary_dilation(rods,iterations=2)
+            def contrast(image):
+                gray=image.mean(2)
+                length=np.hypot(ndimage.sobel(gray,axis=0),ndimage.sobel(gray,axis=1))/8
+                return float(np.mean(length[support]))
+            panel["rod_border_gradient"]={k:contrast(v) for k,v in dict(pictures,Cycles=truth,RGB=rgb).items()}
+    return panel
+
+
 @torch.inference_mode()
 def optics(root,network,inputs,arms,tear=None,smoke=False):
     geometry=module2.load_geometry()
@@ -270,7 +288,8 @@ def optics(root,network,inputs,arms,tear=None,smoke=False):
             part=load(cache)
         else:
             gpu_gate()
-            draw = module2.panel if shown in FIXED and frame==30 else lambda *args:{}
+            def draw(*args):
+                return panel_optical(name,frame,*args) if shown in FIXED and frame==30 else {}
             part=module2.frame_results(geometry,cohort,name,frame,unit,entry,cases,root,arms,
                                        geometry_override=adapter,panel_writer=draw)
             save_json(cache,part)
