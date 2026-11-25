@@ -10,6 +10,7 @@ import time
 import numpy as np
 import torch
 
+from route3_ovg_r2_train import model as frozen_geometry_constructor
 from route3_v2data_B_batch import GIB, sha256
 from route3_v2data_B_inputs import library_unit_paths
 from route3_v2data_B_plan import load
@@ -21,7 +22,7 @@ from route3_v2data_stage2_train import INITIAL
 from route3_v2data_stage3a import gpu_setup
 from src.ovg_tear_head import VARIANTS, TearHead
 
-RUN = V1.with_name("route3-v2data-module2-tear-d-v2-2026-11-25-01")
+RUN = V1.with_name("route3-v2data-module2-tear-d-v2-2026-11-25-02")
 CONFIG = ROOT/"03_实验记录/records/route3-v2data-module2-tear-d-v2-config-2026-11-25.json"
 ARMS = ("v2a", "v2b")
 CHANNELS = VARIANTS["d_full"]
@@ -85,8 +86,15 @@ def run():
     began = time.monotonic()
     before = competitor_state()
     waited = yield_gpu()
-    torch.manual_seed(cfg["seed"])
-    full = TearHead(CHANNELS)
+    # Reconstruct the original CPU RNG position before initializing the d-full head.
+    # Reading cached native features skips the RNG consumed by the v1 OVG constructor.
+    with torch.random.fork_rng(devices=[]):
+        torch.random.default_generator.manual_seed(cfg["seed"])
+        frozen_geometry_constructor("cpu")
+        full = TearHead(CHANNELS)
+    init_sha = hashlib.sha256(b"".join(p.detach().numpy().tobytes() for p in full.parameters())).hexdigest()
+    if init_sha != config["initialization_sha256"]:
+        raise ValueError(f"The d-full initialization differs from the original RNG replay: {init_sha}")
     models = {arm:deepcopy(full).cuda().to(memory_format=torch.channels_last) for arm in ARMS}
     ema = {arm:deepcopy(head).eval().requires_grad_(False) for arm,head in models.items()}
     parameters = {arm:sum(p.numel() for p in head.parameters()) for arm, head in models.items()}
@@ -167,7 +175,7 @@ def run():
               train_seconds=time.monotonic()-began,peak_allocated_gib=torch.cuda.max_memory_allocated()/GIB,
               peak_reserved_gib=torch.cuda.max_memory_reserved()/GIB,gpu_wait_seconds=waited,
               sampled_scenes=dict(samples),sampled_edges_by_group=groups_seen.tolist(),
-              shared_crop_edge_sequence_sha256=digest.hexdigest(), geometry_sha256=geometry,
+              shared_crop_edge_sequence_sha256=digest.hexdigest(), initialization_sha256=init_sha, geometry_sha256=geometry,
               competitor_start=before,competitor_end=competitor_state()))
     progress(cfg["steps"], "trained")
 

@@ -9,7 +9,7 @@
     "crops_per_step": 8,
     "report_every": 1000
   },
-  "optimization": "两支从同一随机初始化开始，沿用 V1 的 Adam、20261125 种子、1e-3→1e-5 余弦学习率和 EMA 0.999。",
+  "optimization": "两支从重放 v1 CPU 随机状态得到的同一实际初值开始，沿用 v1 的 Adam、20261125 种子、1e-3→1e-5 余弦学习率和 EMA 0.999。",
   "sampling": "沿用每个裁块的 V1 场景帧采样、四组有效边和每组采边上限。每步 4 个普通均匀裁块、4 个撕裂锚点优先裁块。每组在同批 8 个裁块的采样边上求平均，两支共享同一批张量与边索引。",
   "loss_group_order": [
     "GT 断开",
@@ -58,5 +58,8 @@
     "protocol": "V1 P2 f/1.4 K64，K16 泄漏诊断，原面板裁剪框与色标。"
   },
   "stage3_integration": false,
-  "independent_test_cases_used": 0
+  "independent_test_cases_used": 0,
+  "initialization_sha256": "7f4dbeb320d053adecd876c1a6d5e764e051c270b2b8d2e2d1e9bbbc7857d90c",
+  "initialization_verified": "消费与 v1 相同的 CPU OVG 构造随机数后初始化，按参数顺序哈希。缓存仅用于训练输入，原冻结几何权重未动。",
+  "superseded_attempt": "保留 outputs/route3-v2data-module2-tear-d-v2-2026-11-25-01。约 3,850 步在资源让行时结束。特征缓存捷径令初始权重与 v1 不同，正式两版经初值复现后从头训练。"
 }
