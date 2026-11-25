@@ -105,8 +105,10 @@ def summary(rows,start=None):
                 oracle = deltas(off,gt)
                 ratios = {s:effect["per_scene"][s]/a for s,a in oracle["per_scene"].items()
                           if a is not None and a>.1}
+                pooled_ratio = (effect["pooled_db"]/oracle["pooled_db"]
+                                if oracle["pooled_db"] is not None and oracle["pooled_db"]>.1 else None)
                 metrics[region] = dict(gt_minus_f2=oracle,middle_ratio=float(np.median(list(ratios.values()))) if ratios else None,
-                                       ratio_count=len(ratios),ratios=ratios)
+                                       pooled_ratio=pooled_ratio,ratio_count=len(ratios),ratios=ratios)
             metrics.setdefault(region,{})
             metrics[region].update(query_minus_f2=effect,query_vs_start=difference(old,effect))
         zero = {}

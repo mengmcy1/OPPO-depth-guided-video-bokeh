@@ -13,7 +13,19 @@ from route3_v2data_B_plan import load
 from route3_v2data_stage2_train import now
 from route3_v2data_stage3a_followup import AUTHOR, PROGRESS, RECORDS, git, synchronise
 from route3_v2data_stage3b import OUT, SCHEDULE, path_for
-from route3_v2data_stage3b_eval import REGIONS, adoption, difference
+from route3_v2data_stage3b_eval import BASELINE, REGIONS, START_GT, adoption, difference
+
+BASE_METHODS = {"A":"A","R1_R2":"R1+R2","DrBokeh":"Dr.Bokeh","GT_oracle":"GT Oracle"}
+
+
+def frozen_references():
+    sources = load(BASELINE)
+    dev = sources["summaries"]["f1.4"]
+    legacy = sources["legacy"]["pooled"]["f1.4"]
+    geometry = load(START_GT.with_name("report.json"))["report"]["development"]["groups"]
+    return dict(external_baselines={display:dev[k] for k,display in BASE_METHODS.items()},
+                legacy_baselines={display:legacy[k] for k,display in BASE_METHODS.items() if k in legacy},
+                frozen_foreground_coc_px={k:v["foreground_coc_px"] for k,v in geometry.items()})
 
 
 def fmt(value,n=3):
@@ -103,12 +115,13 @@ def markdown(folder,data):
     for version,report in data["versions"].items():
         for cohort,block in report["summary"].items():
             rows.extend([f"## {version.upper()} · {cohort}","",
-                         "| 区域 | Query − F2 | 相对起点 Query | GT − F2 | 收益比中位数及场景数 |",
+                         "| 区域 | Query − F2 | 相对起点 Query | GT − F2 | 收益比合并 / 中位及场景数 |",
                          "|---|---:|---:|---:|---:|"])
             for region,v in block["metrics"].items():
                 gt = v.get("gt_minus_f2")
                 rows.append(f'| {region} | {pair_text(v["query_minus_f2"])} | {pair_text(v["query_vs_start"])} | '
-                            f'{pair_text(gt) if gt else "—"} | {fmt(v.get("middle_ratio"))}（{v.get("ratio_count",0)}） |')
+                            f'{pair_text(gt) if gt else "—"} | {fmt(v.get("pooled_ratio"))} / '
+                            f'{fmt(v.get("middle_ratio"))}（{v.get("ratio_count",0)}） |')
             rows.append("")
             for key,v in block["zero"].items():
                 rows.append(f'- {key}。{v["passed"]}/{v["scored"]} 过线，合并 {fmt(v["psnr_db"])} dB。')
@@ -117,10 +130,14 @@ def markdown(folder,data):
                          f'（{block["hidden_hits"]}/{block["far_rays"]}）。',""])
         rows.extend([f'[固定面板]({version}/index.html) · [观察清单]({version}/观察清单.md)',""])
     rows.extend(["## 冻结几何下的外部参照","",
-                 "| 方法 | 新开发近焦合并 | 新开发远焦合并 |","|---|---:|---:|"])
+                 "| 方法 | 新开发近焦 | 新开发远焦 | 旧三场近焦 | 旧三场远焦 |","|---|---:|---:|---:|---:|"])
     for method,block in data["external_baselines"].items():
         a,b = [block[k]["combined"]["psnr"] for k in REGIONS[:2]]
-        rows.append(f"| {method} | {fmt(a)} | {fmt(b)} |")
+        c,d = [data["legacy_baselines"][method][k]["psnr"] for k in REGIONS[:2]]
+        rows.append(f"| {method} | {fmt(a)} | {fmt(b)} | {fmt(c)} | {fmt(d)} |")
+    rows.append("")
+    for label,value in data["frozen_foreground_coc_px"].items():
+        rows.append(f'- {label} 的冻结前景 CoC p50／p95 为 {fmt(value["p50"])}／{fmt(value["p95"])} px。')
     rows.append("")
     if "adoption" in data:
         choice = data["adoption"]
@@ -162,7 +179,7 @@ def follow(run):
             record = dict(step=step,at=now(),run=str(run),
                           checkpoint=dict(path=str(path_for(run,step)),sha256=sha256(path_for(run,step))),
                           summary=str(folder/"汇总.md"),
-                          external_baselines={k:v for k,v in ema["baseline"].items() if k in ("A","R1+R2","Dr.Bokeh","oracle","Oracle")},
+                          **frozen_references(),
                           versions={n:dict(summary=data["summary"],panels=data["panels"],seconds=data["seconds"])
                                     for n,data in (("ema",ema),("model",raw))})
             if step==0:
