@@ -36,6 +36,16 @@ REGIONS = ("near_in_focus","far_recoverable","boundary_2px")
 FLOORS = dict(zero_visible=50.,zero_combined=60.)
 
 
+def gt_reference_path(original=START_GT):
+    corrected = original.with_name("cases-fp16-fit-corrected.json")
+    pending = original.with_name("fp16-fit-correction.pending")
+    if pending.is_file() and not corrected.is_file():
+        print("STAGE3B_WAIT_GT_REFERENCE", corrected, flush=True)
+        while pending.is_file() and not corrected.is_file():
+            time.sleep(5)
+    return corrected if corrected.is_file() else original
+
+
 def slug(name):
     return "dev"+name.split("-")[1] if name.startswith("development-") else name.split("-")[2]
 
@@ -210,6 +220,7 @@ def variant_image(layer,closure,hidden,K,focus,offsets,fill):
 
 @torch.inference_mode()
 def evaluate(run,step,weights,*,variant="V0",smoke=False):
+    gt_path = gt_reference_path()
     gpu_setup(dict(training=dict(max_process_gpu_gib=7)))
     began = time.monotonic()
     directory = "evaluation-smoke" if smoke else "evaluation"
@@ -227,7 +238,7 @@ def evaluate(run,step,weights,*,variant="V0",smoke=False):
     if step and not starting and not smoke:
         raise ValueError("Register the stage 3b starting evaluation first")
     prior = {(r["scene"],r["case"]):r for r in starting["rows"]} if starting else {}
-    gt = load(START_GT)
+    gt = load(gt_path)
     archived = {(r["scene"],r["case"]):r for v in gt.values() for r in v}
     legacy_plans = {(p["name"],p["frame"]):p for p in gallery.planned_frames() if p["unit"] is None}
     rows,panels = [],[]
@@ -310,7 +321,7 @@ def evaluate(run,step,weights,*,variant="V0",smoke=False):
         print("STAGE3B_EVAL",step,weights,variant,name,frame,flush=True)
     payload = dict(step=step,weights=weights,variant=variant,rows=rows,summary=summary(rows,starting["rows"] if starting else None),
                    baseline=load(BASELINE)["summaries"]["f1.4"],panels=panels,seconds=time.monotonic()-began,
-                   hidden_weight_threshold=.001,GT_reference=str(START_GT),test_cases_used=0)
+                   hidden_weight_threshold=.001,GT_reference=str(gt_path),test_cases_used=0)
     if panels:
         (output/"观察清单.md").write_text("# 固定面板观察清单\n\n"+"\n".join(
             f'- {p["case"]}。{p["observation"]} [面板]({p["path"]})' for p in panels)+"\n")

@@ -66,16 +66,49 @@ def prepare(folder, dominant_p2=False):
         np.savez_compressed(memory/'observations.npz',position_world_estimated=xyz,colors_linear=rgb.astype(np.float16),confidence=conf,source_reference=refs);np.savez_compressed(memory/'memory.npz',**m);write(memory/'summary.json',stats);print('S2A_MEMORY',folder.name,stats,flush=True)
 
 
-def local_placement(gt_depth,estimated,background,radius=24,return_valid=False):
-    """GT-label-only disparity mapping; fit visible background, never hidden GT."""
-    valid=background&(gt_depth>0)&np.isfinite(estimated)&(estimated>0);height,width=gt_depth.shape;yy,xx=np.mgrid[:height,:width];held=((xx//8+yy//8)%5==0)&valid;train=valid&~held;g=1/np.maximum(gt_depth,1e-6);e=1/np.maximum(estimated,1e-6);size=2*radius+1
-    box=lambda v:uniform_filter(v.astype(np.float64),size=size,mode='constant')*size*size
-    n=box(train);sx=box(g*train);sy=box(e*train);sxx=box(g*g*train);sxy=box(g*e*train);var=sxx-sx*sx/np.maximum(n,1);cov=sxy-sx*sy/np.maximum(n,1)
-    a=np.where(var>1e-5,cov/np.maximum(var,1e-12),1.);a=np.clip(a,.1,3.);b=(sy-a*sx)/np.maximum(n,1);supported=n>=32
-    # Label-only fallback to the nearest supported local visible-background fit.
-    if supported.any():index=distance_transform_edt(~supported,return_distances=False,return_indices=True);a=np.where(supported,a,a[tuple(index)]);b=np.where(supported,b,b[tuple(index)])
-    else:a=np.ones_like(g);b=np.zeros_like(g)
-    error=(a*g+b-e)[held];result=(a.astype(np.float32),b.astype(np.float32),dict(local_fit_supported_fraction=float(supported.mean()),heldout_pixels=int(held.sum()),heldout_inverse_depth_RMSE=float(np.sqrt(np.mean(error**2))) if len(error) else None,heldout_relative_inverse_error=float(np.mean(abs(error)/np.maximum(e[held],1e-6))) if len(error) else None,window_radius_px=radius,estimated_geometry_consistency_validation_not_true_hidden_depth_error=True));return (*result,supported) if return_valid else result
+def local_placement(gt_depth, estimated, background, radius=24, return_valid=False):
+    """Fit the visible background's local inverse-depth mapping."""
+    gt = np.asarray(gt_depth, dtype=np.float32)
+    estimate = np.asarray(estimated, dtype=np.float32)
+    valid = background & np.isfinite(gt) & (gt > 0) & np.isfinite(estimate) & (estimate > 0)
+    yy, xx = np.indices(gt.shape)
+    held = ((xx // 8 + yy // 8) % 5 == 0) & valid
+    train = valid & ~held
+    g = np.zeros_like(gt)
+    e = np.zeros_like(estimate)
+    # Invalid label depths must stay zero before the local moments. A mask
+    # times an infinite reciprocal would produce NaN even outside the fit.
+    np.divide(1., np.maximum(gt, 1e-6), out=g, where=valid)
+    np.divide(1., np.maximum(estimate, 1e-6), out=e, where=valid)
+    size = 2 * radius + 1
+
+    def box(value):
+        return uniform_filter(value.astype(np.float64), size=size, mode="constant") * size * size
+
+    n = box(train)
+    denom = np.maximum(n, 1)
+    sx, sy = box(g * train), box(e * train)
+    sxx, sxy = box(g * g * train), box(g * e * train)
+    variance = sxx - sx * sx / denom
+    covariance = sxy - sx * sy / denom
+    a = np.clip(np.where(variance > 1e-5, covariance / np.maximum(variance, 1e-12), 1.), .1, 3.)
+    b = (sy - a * sx) / denom
+    supported = n >= 32
+    if supported.any():
+        index = distance_transform_edt(~supported, return_distances=False, return_indices=True)
+        a = np.where(supported, a, a[tuple(index)])
+        b = np.where(supported, b, b[tuple(index)])
+    else:
+        a, b = np.ones_like(g), np.zeros_like(g)
+    error = (a * g + b - e)[held]
+    audit = dict(
+        local_fit_supported_fraction=float(supported.mean()), heldout_pixels=int(held.sum()),
+        heldout_inverse_depth_RMSE=float(np.sqrt(np.mean(error**2))) if len(error) else None,
+        heldout_relative_inverse_error=float(np.mean(abs(error) / np.maximum(e[held], 1e-6))) if len(error) else None,
+        window_radius_px=radius, estimated_geometry_consistency_validation_not_true_hidden_depth_error=True,
+    )
+    result = a.astype(np.float32), b.astype(np.float32), audit
+    return (*result, supported) if return_valid else result
 
 
 def labels(folder,training=False,ordered=False):
