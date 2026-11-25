@@ -7,7 +7,6 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-from route3_s2a_candidates import local_placement
 from route3_v2data_B_inputs import FORMAL_DATA
 from route3_v2data_E_cache import cache_path
 from route3_v2data_E_labels import REGIONS, ROOT, RUN, load, save_json
@@ -133,6 +132,9 @@ def markdown(record):
 
 def check_dev005():
     """Isolate the archived empty placement using native arrays on CPU."""
+    from route3_v2data_fp16_fit_audit import archived_local_placement
+
+    historical_fit=archived_local_placement()
     name="development-005-35442efa18790d0a"
     labels=FORMAL_DATA/"units/development"/name/"labels"
     rows=[]
@@ -153,7 +155,7 @@ def check_dev005():
                      zero_depth_pixels=int((raw<=0).sum()),casts={})
             for dtype in (np.float16,np.float32):
                 with np.errstate(over="ignore",invalid="ignore",divide="ignore"):
-                    a,b,_,mask=local_placement(raw.astype(dtype),1/geometry["rho1"],bg,return_valid=True)
+                    a,b,_,mask=historical_fit(raw.astype(dtype),1/geometry["rho1"],bg,return_valid=True)
                     inverse=a[y,x]/parents["depth"]+b[y,x]
                 finite=np.isfinite(inverse)
                 supported=known&mask[y,x]
