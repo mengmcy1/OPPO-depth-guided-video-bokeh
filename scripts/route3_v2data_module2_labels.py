@@ -35,7 +35,7 @@ def inputs():
 
 
 def archive(c, name, unit, frame):
-    if c=="development":
+    if c in ("development","training"):
         return unit/"labels"/f"f{frame:03d}-pinhole.npz"
     return PREVIOUS/"truth"/name/"geometry"/f"f{frame:03d}-center.npz"
 
@@ -168,7 +168,7 @@ def scene(job,frames,pilot):
                 overlay(OUT/"label-audit-v2"/f"{name}-f{frame:03d}.jpg",unit,frame,gt,status)
         save_npz(dest,status=status)
         row=dict(scene=name,cohort=cohort,frame=frame,protocol=PROTOCOL,alignment=alignment,
-                 directions=counts,cache=str(dest),subset="thin_structure" if name.split("-")[1] in THIN else
+                 directions=counts,cache=str(dest),subset="thin_structure" if cohort=="development" and name.split("-")[1] in THIN else
                  "dev008" if name.startswith("development-008-") else cohort)
         save_json(met,row)
         rows.append(row)
