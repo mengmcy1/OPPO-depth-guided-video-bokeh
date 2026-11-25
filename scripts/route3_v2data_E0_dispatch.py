@@ -215,6 +215,15 @@ def collect():
         seconds=end[name]["seconds"]-begin[name]["seconds"]
         shared[name]=dict(before=begin[name],after=end[name],steps=steps,seconds=seconds,
                           concurrent_wall_per_step=seconds/steps if steps else None)
+    if "3b" in shared:
+        candidates=[(int(p.stem.removeprefix("step-")),p) for p in (COMPETITOR/"checkpoints").glob("step-*.pt")]
+        earlier=sorted((n,p) for n,p in candidates if n<=begin["3b"]["step"])
+        if len(earlier)>=2:
+            (a,old),(b,latest)=earlier[-2:]
+            baseline=(latest.stat().st_mtime-old.stat().st_mtime)/(b-a)
+            overlap=shared["3b"]["concurrent_wall_per_step"]
+            shared["3b"].update(pre_E0_checkpoint_window=[a,b],pre_E0_wall_per_step=baseline,
+                                 comparison_ratio=overlap/baseline if overlap is not None and baseline>0 else None)
     result=dict(selection=selection,modes=modes,h2_window_cache=load(RUN/"window-cache.json"),
                 shared_resources=dict(begin=begin,end=end,overlap=shared),
                 test_cases_used=0,run=RUN.name,observation=observation.read_text().splitlines())
