@@ -130,7 +130,7 @@ def rescale_nearest(value, size):
     return cv2.resize(value, size[::-1], interpolation=cv2.INTER_NEAREST_EXACT)
 
 
-def place(parents, front_gt, background, visible_z, K, reference_width):
+def place(parents, front_gt, background, visible_z, K, reference_width, *, order_depth=None):
     """Local disparity fit and fixed footprint order for this visible geometry."""
     own = visible_z.detach().float().cpu().numpy()
     h, w = own.shape
@@ -168,7 +168,8 @@ def place(parents, front_gt, background, visible_z, K, reference_width):
         scene = GaussianScene(xyz, q, torch.cat((sigma, depth[:, None] * 2e-4), -1),
                               torch.full_like(depth, .999), tensor(parents['colors_linear'][keep]),
                               torch.ones_like(depth, dtype=torch.long))
-    result, stats = apply_footprint_order(scene, visible_z.detach(), K)
+    order_z = visible_z if order_depth is None else order_depth
+    result, stats = apply_footprint_order(scene, order_z.detach(), K)
     stats.update(eligible=int(parents['recoverable'].sum()), placed=int(keep.sum()))
     return result, stats
 

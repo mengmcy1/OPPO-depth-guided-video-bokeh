@@ -18,19 +18,26 @@ def merge_layers(visible: GaussianScene, hidden: GaussianScene = None):
 
 def pixel_layer(rgb_linear: Tensor, depth: Tensor, K: Tensor, c2w: Tensor,
                 valid: Tensor = None, layer_id: int = 0, sigma_pixels: float = .7,
-                opacity: float = .999, subdivisions: int = 5):
+                opacity: float = .999, subdivisions: int = 5, *, subpixel_depth: Tensor = None):
     """Pixel-centered, camera-facing surfels; fixed initialization, no fitting.
 
     Backprojection/splatting are discrete approximations, not exact optics.
     Poses are fixed GT inputs here; the aperture integrator stays differentiable.
     """
     h,w=depth.shape;device,dtype=depth.device,depth.dtype
+    if subpixel_depth is not None and (
+        subpixel_depth.shape!=(h*subdivisions,w*subdivisions)
+        or subpixel_depth.device!=device or subpixel_depth.dtype!=dtype
+    ):
+        raise ValueError("Explicit subpixel depth must match the subdivided sensor grid and depth dtype/device")
     if subdivisions>1:
         # Piecewise constant source pixels subdivided in position, not a new
         # image interpolation or fitted color model. Preserve depth boundaries.
-        depth=depth.repeat_interleave(subdivisions,0).repeat_interleave(subdivisions,1)
+        depth=depth.repeat_interleave(subdivisions,0).repeat_interleave(subdivisions,1) if subpixel_depth is None else subpixel_depth
         rgb_linear=rgb_linear.repeat_interleave(subdivisions,0).repeat_interleave(subdivisions,1)
         if valid is not None:valid=valid.repeat_interleave(subdivisions,0).repeat_interleave(subdivisions,1)
+    elif subpixel_depth is not None:
+        depth=subpixel_depth
     hh,ww=depth.shape
     yy,xx=torch.meshgrid(torch.arange(hh,device=device,dtype=dtype),torch.arange(ww,device=device,dtype=dtype),indexing='ij')
     rays=torch.stack([(xx+.5)/subdivisions,(yy+.5)/subdivisions,torch.ones_like(xx)],-1)@torch.linalg.inv(K).T
