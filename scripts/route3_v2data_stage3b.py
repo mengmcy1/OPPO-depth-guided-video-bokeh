@@ -81,7 +81,7 @@ def load_geometry():
     return load_paired_checkpoint(INITIAL,"ema").eval().requires_grad_(False)
 
 
-def hidden_cloud(network, store, row, K, depth, band, indices=None):
+def hidden_cloud(network, store, row, K, depth, band, indices=None, *, placement_depth=None):
     """Preserve tensor outputs while keeping the existing discrete O1 decisions."""
     c = row["case"]
     if indices is None:
@@ -108,9 +108,10 @@ def hidden_cloud(network, store, row, K, depth, band, indices=None):
     quats = xyz.new_zeros((len(xyz),4))
     quats[:,0] = 1
     cloud = GaussianScene(xyz,quats,scales,opacity,colors,torch.ones_like(opacity,dtype=torch.long))
-    ordered,_ = order_hidden(cloud,depth,K,"O1")
+    placement = depth if placement_depth is None else placement_depth
+    ordered,_ = order_hidden(cloud,placement,K,"O1")
     with torch.no_grad():
-        factor,keep = footprint_scale(ordered.means,ordered.scales[:,:2],ordered.scales[:,2],depth,K)
+        factor,keep = footprint_scale(ordered.means,ordered.scales[:,:2],ordered.scales[:,2],placement,K)
     scales = torch.cat((ordered.scales[keep,:2]*factor[keep,None],ordered.scales[keep,2:]),1)
     return GaussianScene(ordered.means[keep],ordered.quats[keep],scales,ordered.opacities[keep],
                          ordered.colors[keep],ordered.source_frames[keep]) if keep.any() else None
