@@ -172,7 +172,27 @@
       "coc": 0.1,
       "gate_l1": 0.01
     },
-    "phase2_actual_term_scales": "Recorded at the first phase-two batch for each arm",
+    "phase2_actual_term_scales": {
+      "E-L": {
+        "step": 8001,
+        "unweighted": {
+          "nll": -4.819161415100098,
+          "dual": 0.14026165008544922,
+          "order": 0.46975553035736084,
+          "segment": 0.4534537196159363,
+          "coc": 6.213240623474121,
+          "gate_l1": 0.39585503935813904
+        },
+        "weighted": {
+          "nll": -4.819161415100098,
+          "dual": 0.14026165008544922,
+          "order": 0.046975553035736084,
+          "segment": 0.045345371961593633,
+          "coc": 0.6213240623474121,
+          "gate_l1": 0.0039585503935813905
+        }
+      }
+    },
     "optimizer": "Adam",
     "lr_initial": 0.0003,
     "lr_final": 1e-05,
