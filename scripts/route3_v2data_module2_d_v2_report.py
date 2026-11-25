@@ -25,18 +25,25 @@ HEADING = "模块二 d-full 第二版"
 def observed_pace(train, optics):
     train_start = train["competitor_start"]
     end = train["competitor_end"]
-    log = [line.split() for line in (COMPETITOR/"train.log").read_text().splitlines()
-           if line.startswith("STAGE3B ")]
-    earlier = next((p for p in log if int(p[1]) == train_start["step"]-225), None)
-    reference = dict(step=int(earlier[1]),seconds=float(earlier[-1])) if earlier else {}
+    comparison = load(RUN/"stage3b-comparison-windows.json") or {}
+    if comparison:
+        reference, baseline_end = comparison["baseline"]
+    else:
+        log = [line.split() for line in (COMPETITOR/"train.log").read_text().splitlines()
+               if line.startswith("STAGE3B ")]
+        earlier = next((p for p in log if int(p[1]) == train_start["step"]-225), None)
+        reference = dict(step=int(earlier[1]),seconds=float(earlier[-1])) if earlier else {}
+        baseline_end = train_start
+    active_start = comparison.get("after_first_yield", train_start)
     smoke = load(RUN/"evaluation-smoke/report.json")
     optical_start = smoke["competitor_start"] if smoke else optics["competitor_start"]
     stop = optics["competitor_end"]
-    return dict(before=pace(reference,train_start),training=pace(train_start,end),
-                evaluation=pace(optical_start,stop), windows=dict(before=[reference,train_start],
-                training=[train_start,end], evaluation=[optical_start,stop]),
-                interpretation="同时有 B 光学在运行。训练窗口含给 3b 正式评价让行的时间。")
-
+    return dict(before=pace(reference,baseline_end),training=pace(active_start,end),
+                training_with_startup_yield=pace(train_start,end), evaluation=pace(optical_start,stop),
+                windows=dict(before=[reference,baseline_end],training=[active_start,end],
+                             training_with_startup_yield=[train_start,end],evaluation=[optical_start,stop]),
+                comparison_receipt=comparison,
+                interpretation="B 光学在各窗口同时运行，记录 3b 日志的观测差值。")
 
 def train_curves(v1, train):
     setup = dict(v1=(v1,"d_full","0.40"),v2a=(train,"v2a","tab:blue"),v2b=(train,"v2b","tab:orange"))
@@ -120,7 +127,15 @@ def report():
                   optical_gpu_wait_seconds=optical["gpu_wait_seconds"],
                   optical_and_smoke_wall_seconds=(RESULTS/"report.json").stat().st_mtime
                        -datetime.fromisoformat(load(RUN/"training-progress.json")["at"]).timestamp())
-    record = dict(configuration=optical["configuration"],training=train,
+    training = {k:v for k,v in train.items() if k!="history"}
+    training["edge_curves_at_half"] = {arm:curves[arm] for arm in HEADS[1:]}
+    training["selected_development_PR"] = {
+        arm:next(row["development"][arm]["curve"] for row in train["history"]
+                 if row["step"]==train["selected"][arm]["step"])
+        for arm in HEADS[1:]
+    }
+    training["full_report"] = str(RUN/"training-report.json")
+    record = dict(configuration=optical["configuration"],training=training,
                   v1_curve=curves["v1"], summary=compact_summary(summary),
                   far_scene_summary=far_stats, tear_accuracy=accuracy,visual_review=review,
                   timing=actual, stage3b_observed_seconds_per_step=observed_pace(train,optical),
