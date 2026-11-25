@@ -128,6 +128,22 @@ def gap_crop(mask):
 
 def gap_ray_trace(visible, hidden, K, focus, rays, fill, mask):
     """Exact alpha-weighted hidden RGB contribution and diagnostic prefix T."""
+    if hidden is None:
+        pixels = int(mask.sum())
+        t = np.zeros(mask.shape, np.float32)
+        rgb = K.new_zeros((*mask.shape, 3))
+        for r, background in zip(rays.split(4), fill.split(4)):
+            values, alpha = old.raster(visible, K, focus, r, 512, 512, background, return_alpha=True)
+            t += (1-alpha).sum(0).cpu().numpy()
+            rgb += values.clamp(0, 1).sum(0)
+        t /= len(rays)
+        report = dict(gap_pixels=pixels, rays=pixels*len(rays), hidden_hit_rays=0, hidden_hit_fraction=0.,
+                      mean_visible_prefix_T_given_hidden_hit=None,
+                      mean_visible_prefix_T_hidden_unreached_as_zero=0.,
+                      mean_visible_residual_T=float(t[mask].mean()), mean_hidden_composite_weight=0.,
+                      mean_hidden_linear_RGB_contribution=[0., 0., 0.])
+        return report, (old.display(rgb/len(rays)), t, np.zeros((*mask.shape, 3), np.float32))
+
     cloud = old.merge_layers(visible, hidden)
     membership = cloud.colors.new_zeros((len(cloud.means), 1))
     membership[len(visible.means):] = 1.
@@ -212,10 +228,9 @@ def diagnose_dev005(net, predict, cases, unit, entry, frame, official):
             maximum = K.new_tensor(sub.max(axis=(2, 3)))
             options["subpixel_depth"] = K.new_tensor(sub.transpose(0, 2, 1, 3).reshape(2560, 2560))
         visible = old.pixel_layer(color, depth, K, torch.eye(4, device=K.device, dtype=K.dtype), **options)
-        hidden = old.place_hidden(unit, name, frame, case, ref, depth, maximum, K)
-        if hidden is None:
-            raise ValueError(f"Missing the registered hidden substitute in dev005/{case['id']}")
+        hidden, placement = old.place_hidden(unit, name, frame, case, ref, depth, maximum, K, return_stats=True)
         output["methods"][arm], pictures[arm] = gap_ray_trace(visible, hidden, K, focus, rays, fill, gap)
+        output["methods"][arm]["placement"] = placement
         del visible, hidden
     truth = old.optical_target(unit, name, case)
     path = RESULTS/"panels"/f"dev005-f{frame:03d}-far-gap.jpg"

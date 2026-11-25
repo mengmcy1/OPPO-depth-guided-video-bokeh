@@ -163,7 +163,7 @@ def light(visible,hidden,K,focus,rays,filled):
     return sum(parts)/len(rays)
 
 
-def place_hidden(unit,name,frame,case,ref,depth,maximum,K):
+def place_hidden(unit,name,frame,case,ref,depth,maximum,K,*,return_stats=False):
     if unit is None:
         parents,front,background = b_oracle(name,frame)
     else:
@@ -176,9 +176,9 @@ def place_hidden(unit,name,frame,case,ref,depth,maximum,K):
             parents = hidden_parents(spec,ray_fields(spec),ref)
         front = ref["gt"]
         background = ref["valid"]&~np.isin(ref["object_id"],ref["foreground"])
-    if parents is None:
-        return None
-    return place(parents,front,background,depth,K,512,order_depth=maximum)[0]
+    result = ((None, dict(eligible=0, placed=0, moved=0, shrunk=0, dropped=0)) if parents is None
+              else place(parents,front,background,depth,K,512,order_depth=maximum))
+    return result if return_stats else result[0]
 
 
 def ray_diagnostics(visible,hidden,K,nominal,offsets,fill,mask,truth):
