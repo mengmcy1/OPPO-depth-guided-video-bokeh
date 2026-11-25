@@ -231,6 +231,24 @@ def scope_inventory():
     return result
 
 
+def verify_3b_reference():
+    reference=matches([r for rows in load(START_FIXED).values() for r in rows])
+    receipt={}
+    for weights in ("ema","model"):
+        path=STAGE3B/"evaluation/step-010000"/weights/"report.json"
+        report=load(path)
+        if Path(report["GT_reference"]).resolve()!=START_FIXED.resolve():
+            raise ValueError(f"Stage 3b 10k {weights} did not use the corrected reference")
+        active=[r for r in report["rows"] if r["status"]=="evaluated"]
+        for row in active:
+            metric=REGIONS[row["focus_index"]]
+            expected=reference[row["scene"],row["case"]]["scores"]["stage3"]["metrics"][metric]
+            if row["gt"][metric]!=expected:
+                raise ValueError(f"Stage 3b reference differs on {row['scene']}/{row['case']}")
+        receipt[weights]=dict(report_sha256=sha256(path),matched_cases=len(active))
+    return dict(step=10000,case_reference_sha256=sha256(START_FIXED),weights=receipt)
+
+
 def collect():
     source=RUN
     a=load(source/"stage3a-regraded.json")
@@ -238,10 +256,21 @@ def collect():
     scope=scope_inventory()
     evidence=load(source/"stage3a/step-000000/ema/audit.json")
     rings=load(source/"module2/placement-audit.json")
-    priors=load(source/"stage3a-priors/report-fp16-fit-corrected.json")
+    prior_path=source/"stage3a-priors/report-fp16-fit-corrected.json"
+    priors=load(prior_path)
     out={}
+    learned_arms={"v1":("d_full","d_nodepth"),"v2":("v2a","v2b")}
     for kind in ("seven","v1","v2"):
-        data=load(source/"module2"/kind/"report-fp16-fit-corrected.json")
+        folder=source/"module2"/kind
+        data=load(folder/"report-fp16-fit-corrected.json")
+        arms=learned_arms.get(kind,tuple(data["by_arm"]))
+        expected={(row["scene"],row["case"],arm) for stamp in rings["by_case"].values()
+                  for arm in arms for row in (stamp["gt" if arm in ("V0_GT","a") else "pred"],)
+                  if row["needs_rescore"]}
+        actual={(row["scene"],row["case"],arm) for path in (folder/"frames").glob("*/*.json")
+                for row in load(path) for arm in row["methods"]}
+        if actual!=expected:
+            raise ValueError(f"{kind} replay coverage differs: missing {len(expected-actual)}, unexpected {len(actual-expected)}")
         out[kind]={k:data[k] for k in ("by_arm","changes")}
     gate=load(source/"module2/a-check/report-fp16-fit-corrected.json")
     out["a-check"]={k:gate[k] for k in ("changes","affected")}
@@ -249,9 +278,15 @@ def collect():
     optics=load(source/"verified-images.json")
     if not a or not b or not rings or not priors or not gaps or len(optics)!=3:
         raise ValueError("Incomplete targeted replay")
+    endpoint=source/"stage3a/step-020000/ema/report-fp16-fit-corrected.json"
+    endpoint_report=load(endpoint)
+    endpoint_report["prior_comparison"]=priors
+    endpoint_report["corrected_prior_comparison_sha256"]=sha256(prior_path)
+    save_json(endpoint,endpoint_report)
     record=dict(fix_commit="6cff9f9", original_fit_commit="1f61930", audited_scope=scope,
         mechanism="Native stored FP16 GT zeros become infinity in the reciprocal. Zero times infinity contaminates uniform-filter moments.",
-        stage3a=a,stage3b=b,stage3a_prior_only={"validity":priors["validity"],"changes":priors["changes"]},
+        stage3a=a,stage3b=b,stage3b_reference_verification=verify_3b_reference(),
+        stage3a_prior_only={"validity":priors["validity"],"changes":priors["changes"]},
         module2=out,module2_geometry_audit=rings["summary"],
         module2_v1_gaps=gaps,regression_clouds=evidence["verification"],unchanged_render_arrays=optics,
         overflow_cases=[r for r in evidence["cases"] if r["old_candidate_nonfinite"]],
