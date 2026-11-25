@@ -1,0 +1,218 @@
+{
+  "geometry": {
+    "geometry_sha256": "dfb1d7e52eb67fb756186b252312aee3b136096e3835cbcaf60f5d8250e1c220",
+    "protect_residual": true,
+    "raw_depth_dtype": "float32"
+  },
+  "seed": 20261126,
+  "precision": "BF16 convolutions; FP32 heads, reductions and Adam",
+  "architecture": {
+    "E-L": 257594,
+    "E-H1": 326410,
+    "E-H2": 378410
+  },
+  "source_margins": {
+    "DepthSplat": 0.902,
+    "triangulation": 0.057,
+    "priority": "triangulation, DepthSplat, rho2"
+  },
+  "effective_mass": "log(w_back_eff)=logsigmoid(gate_logit)+logsigmoid(-front_logit); front via log1mexp; modes use both gated masses",
+  "unittests": [
+    "test_source_specific_margins_and_triangulation_priority (test_ovg_e.EGeometryTest) ... ok",
+    "test_zero_gate_returns_exact_ovg_and_small_gate_converges (test_ovg_e.EGeometryTest) ... ok",
+    "",
+    "----------------------------------------------------------------------",
+    "Ran 2 tests in 0.005s",
+    "",
+    "OK"
+  ],
+  "frozen_cache_receipt": "7bf34688733709996792bd82a40ddd710286fcb180cbd6fd032edf81b28c8cfb",
+  "qualification": {
+    "E-L": {
+      "seconds": 1.8011713922023773,
+      "batch_crops": 8,
+      "phase2_terms_at_initial_weights": {
+        "nll": 5.511956214904785,
+        "dual": 0.1806471198797226,
+        "order": 0.48738157749176025,
+        "segment": 1.0491461753845215,
+        "coc": 12.146987915039062,
+        "gate_l1": 0.5
+      },
+      "finite_gradient_modules": {
+        "phi": 0.0005315739573366414,
+        "enc1": 0.0029319224390657126,
+        "enc2": 0.00018099026591333428,
+        "bottleneck": 0.00019925852596284528,
+        "dec2": 0.0012864626734742438,
+        "dec1": 0.012293309285485823,
+        "mixture": 6.2093917793504,
+        "gate": 0.8335787677746087,
+        "segment": 0.032716665478138625
+      },
+      "max_reserved_gib": 0.982421875
+    },
+    "E-H1": {
+      "seconds": 0.4382137805223465,
+      "batch_crops": 8,
+      "phase2_terms_at_initial_weights": {
+        "nll": 5.511956214904785,
+        "dual": 0.1806471198797226,
+        "order": 0.48738157749176025,
+        "segment": 1.0485217571258545,
+        "coc": 12.146987915039062,
+        "gate_l1": 0.5
+      },
+      "finite_gradient_modules": {
+        "phi": 0.00046355464196540935,
+        "enc1": 0.0024661170809360776,
+        "enc2": 9.959703398253241e-05,
+        "bottleneck": 0.00013832791543605166,
+        "dec2": 0.006505876539213322,
+        "dec1": 0.014186269074868824,
+        "mixture": 6.2409431268897855,
+        "gate": 0.8352386579131214,
+        "segment": 0.03284831318421079,
+        "global_projection": 0.004986358086277035,
+        "context_fusion": 0.0016062131835775338
+      },
+      "max_reserved_gib": 1.142578125
+    },
+    "E-H2": {
+      "seconds": 0.7589737325906754,
+      "batch_crops": 8,
+      "phase2_terms_at_initial_weights": {
+        "nll": 5.511956214904785,
+        "dual": 0.1806471198797226,
+        "order": 0.48738157749176025,
+        "segment": 1.0491070747375488,
+        "coc": 12.146987915039062,
+        "gate_l1": 0.5
+      },
+      "finite_gradient_modules": {
+        "phi": 0.00041013901293821193,
+        "enc1": 0.0021804666042136165,
+        "enc2": 8.199469704956804e-05,
+        "bottleneck": 0.000104176504383406,
+        "dec2": 0.005902397590264437,
+        "dec1": 0.014333644581482344,
+        "mixture": 6.244939656272776,
+        "gate": 0.8354682776102117,
+        "segment": 0.03290192933899968,
+        "global_projection": 0.003931870603496273,
+        "local_projection": 0.004208953511415593,
+        "context_fusion": 0.0015224405972193364
+      },
+      "max_reserved_gib": 2.5546875
+    }
+  },
+  "inputs": {
+    "native_ovg_channels": 32,
+    "encoder": "frozen Depth Anything V2 Small, layers 2/5/8/11 zero-based",
+    "global_input_side": 518,
+    "local_window_native_side": 112,
+    "local_encoder_input_side": 448,
+    "coordinates": "window in native pixel-edge coordinates; level pixel center x+0.5 and align_corners=False"
+  },
+  "data": {
+    "train_scenes": 285,
+    "train_frames": 855,
+    "holdout_scenes": [
+      "training-061-ff0a4ff42915123f",
+      "training-064-086730c4acaff4f2",
+      "training-072-31b286ff6377ae60",
+      "training-089-b2a3e0ca0003160b",
+      "training-111-d7e217467bd2475e",
+      "training-140-05fad3fd2dd65434",
+      "training-145-109c724576efe4bb",
+      "training-146-8a0ee3e962c92314",
+      "training-170-b7f646b4ee9080be",
+      "training-173-13ed6793b9ce2fb2"
+    ],
+    "holdout_frames": 30,
+    "dev_scenes": 15,
+    "dev_frames": 45,
+    "independent_test_used": 0,
+    "holdout_numeric_ids": [
+      61,
+      64,
+      72,
+      89,
+      111,
+      140,
+      145,
+      146,
+      170,
+      173
+    ]
+  },
+  "training": {
+    "steps": 20000,
+    "batch_crops": 8,
+    "crop_px": 256,
+    "region_anchors": {
+      "rod": 2,
+      "gap": 2,
+      "mv_valid": 2,
+      "mv_invalid": 2
+    },
+    "phase1_steps": 8000,
+    "phase2_steps": 12000,
+    "coefficient": {
+      "formula": "K=(0.05 m / 1.4) * fx_pixels, CoC diameter in pixels",
+      "min": 25.3968253968254,
+      "median": 25.3968253968254,
+      "max": 25.3968253968254
+    },
+    "loss_weights": {
+      "nll": 1.0,
+      "dual": 1.0,
+      "order": 0.1,
+      "segment": 0.1,
+      "coc": 0.1,
+      "gate_l1": 0.01
+    },
+    "phase2_actual_term_scales": "Recorded at the first phase-two batch for each arm",
+    "optimizer": "Adam",
+    "lr_initial": 0.0003,
+    "lr_final": 1e-05,
+    "ema": 0.999,
+    "crop_order_sha256": "91bd66d73e3cc8ce6edefcdc140e4dcbf221445dc3065f52b8b9a5fccfbfd20d",
+    "check_every": 1000,
+    "gpu_process_budget_gib": {
+      "E-L": 3.0,
+      "E-H1": 3.0,
+      "E-H2": 5.5
+    },
+    "h2_overlap": "arithmetic mean, active only inside M",
+    "gate_collapse": "Report extrema; halt for exact whole-domain zero or one at two consecutive phase-two checks"
+  },
+  "selection": {
+    "rule": "Among EMA candidates with holdout rod p50 no higher than frozen OVG, take lowest balanced NLL. Otherwise take lowest rod p50.",
+    "tie_key": "lower rod p50, then earlier step, then E-L/E-H1/E-H2 in that order",
+    "development_used_for_selection": false
+  },
+  "losses_disabled": [
+    "L_bokeh"
+  ],
+  "split_metrics": {
+    "rod": 0,
+    "gap": 1,
+    "normal": 2,
+    "boundary": 3
+  },
+  "tear_retraining": {
+    "steps": 20000,
+    "crops_per_step": 8,
+    "ema": 0.999,
+    "weights": [
+      1,
+      1,
+      1,
+      2
+    ],
+    "initial_lr": 0.001,
+    "final_lr": 1e-05,
+    "selection": "Minimize mean holdout weighted edge error and false-step tear rate; then weighted edge error and earliest step."
+  }
+}

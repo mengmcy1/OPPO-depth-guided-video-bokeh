@@ -45,7 +45,7 @@ def palette(labels,colors):
     return Image.fromarray(np.asarray(colors,dtype=np.uint8)[labels.astype(np.int32)])
 
 
-def save_depth(name,bundle,raw,crops,hi):
+def save_depth(name,bundle,raw,crops,hi,*,output=OUT):
     photos=[
         ("RGB",rgb(gallery.display(bundle["rgb"].transpose(1,2,0)))),
         ("GT 中心",scalar(raw["center"],hi)),
@@ -58,6 +58,8 @@ def save_depth(name,bundle,raw,crops,hi):
         ("杆／缝／正常",palette(raw["zone"],[(233,111,79),(87,203,255),(64,69,79)])),
         ("βb ρ₂／DS／三角",palette(raw["mv_source"],[(64,69,79),(107,222,144),(192,133,238)])),
     ]
+    if "gate" in raw:
+        photos.insert(7,("门控 g",scalar(raw["gate"],1)))
     tile=184
     pitch=tile+7
     fig=Image.new("RGB",(len(photos)*pitch,77+3*(tile+26)),(16,21,29))
@@ -75,7 +77,7 @@ def save_depth(name,bundle,raw,crops,hi):
         for i,img in enumerate((full, *(photo.crop(box) for box in crops))):
             filt=Image.Resampling.BOX if i==0 else Image.Resampling.NEAREST
             fig.paste(img.resize((tile,tile),filt),(left,72+i*(tile+26)))
-    path=OUT/f"{name}-f030-depth.jpg"
+    path=output/f"{name}-f030-depth.jpg"
     fig.save(path,quality=95)
     return path
 

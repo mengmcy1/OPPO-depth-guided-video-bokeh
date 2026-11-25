@@ -30,3 +30,16 @@ def tear_features(feature, rgb, inverse_depth):
         color_difference[:, i][aa] = (rgb[aa] - rgb[bb]).abs().mean(1)
         log_difference[:, i][aa] = (log_depth[aa] - log_depth[bb]).abs()
     return torch.cat((feature, rgb, color_difference, log_difference), 1)
+
+
+def e_tear_features(d1, rgb, decoded, means, effective_back):
+    """Form native E features and four edge differences for each measured quantity."""
+    if d1.shape[1]!=32 or rgb.shape[1]!=3 or means.shape[1]!=2:
+        raise ValueError("Unexpected E tear feature layout")
+    fields=(rgb,decoded.log(),means[:,:1],means[:,1:],effective_back)
+    differences = [v.new_zeros((v.shape[0],4,*v.shape[-2:])) for v in fields]
+    for i,(dy,dx) in enumerate(DIRECTIONS):
+        a,b=edge_slices(dy,dx)
+        for field,target in zip(fields,differences):
+            target[:,i][(...,*a)]=(field[(...,*a)]-field[(...,*b)]).abs().mean(1)
+    return torch.cat((d1,rgb,*differences),1)

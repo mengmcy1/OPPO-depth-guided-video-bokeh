@@ -172,15 +172,15 @@ def curves(bins):
 
 
 @torch.inference_mode()
-def evaluate(models, frames, partition):
+def evaluate(models, frames, partition, *, load_frame=cached, gpu_check=yield_gpu):
     bins = torch.zeros(len(models), 4, 10, device="cuda", dtype=torch.int64)
     counts = torch.zeros(len(models), 3, 4, device="cuda", dtype=torch.int64)
     thresholds = torch.as_tensor(THRESHOLDS, device="cuda", dtype=torch.float32)
     waited = 0.
     for i, (unit, frame) in enumerate(frames):
         if i % 6 == 0:
-            waited += yield_gpu()
-        ft, groups, regions = cached(unit, frame)
+            waited += gpu_check()
+        ft, groups, regions = load_frame(unit, frame)
         packed = np.ascontiguousarray(ft.transpose(2, 0, 1))
         image = torch.as_tensor(packed, device="cuda", dtype=torch.float32)[None]
         group = torch.as_tensor(groups, device="cuda").reshape(-1)

@@ -133,7 +133,7 @@ def run():
     before=competitor_state()
     waited=yield_gpu()
     torch.manual_seed(SEED)
-    model=ELight().cuda().to(memory_format=torch.channels_last)
+    model=ELight(legacy_mixture=True).cuda().to(memory_format=torch.channels_last)
     parameters=sum(p.numel() for p in model.parameters())
     optimizer=torch.optim.Adam(model.parameters(),lr=cfg["adam_lr"])
     rng=np.random.default_rng(SEED)
@@ -225,7 +225,7 @@ def diagnose():
     start=time.monotonic()
     waited=yield_gpu()
     ck=torch.load(MODEL,weights_only=True,map_location="cpu")
-    model=ELight().eval().cuda()
+    model=ELight(legacy_mixture=True).eval().cuda()
     model.load_state_dict(ck["model"])
     margin=ck["margin"]
     groups=defaultdict(lambda:defaultdict(lambda:dict(counts=defaultdict(list),errors=defaultdict(list),gate=[])))

@@ -241,7 +241,7 @@ def panel(path,row,snap,truth,ref,masks,overlays,arms):
         else:
             rec=row["methods"][method]
             pname=score_psnr(rec["optical"]["full_image"])
-            cname=f"{ARM_NAMES[method]} · {pname:.1f}"
+            cname=f"{ARM_NAMES.get(method,method)} · {pname:.1f}"
             error=gallery.scalar_image(np.abs(value-truth).mean(-1),.25,cv2.COLORMAP_INFERNO)
             diagnostic=None
             heat=rec.get("heat")
@@ -282,10 +282,11 @@ def score_psnr(score):
 
 
 def frame_results(net,cohort,name,frame,unit,entry,cases,root,arms,*,
-                  tear_predictor=None,panel_writer=panel):
+                  tear_predictor=None,panel_writer=panel,geometry_override=None):
     item = ("B",name,ovg.TRAIN_FRAMES.index(frame))
     x,y = sample(item)
-    prediction = net(x,protect_residual=True,render_heads=False,return_features=tear_predictor is not None)
+    prediction = net(x,protect_residual=True,render_heads=False,
+                     return_features=tear_predictor is not None or geometry_override is not None)
     pred = prediction["depth1"][0]
     K = x["K"][0]
     k = K.cpu().numpy()
@@ -293,6 +294,8 @@ def frame_results(net,cohort,name,frame,unit,entry,cases,root,arms,*,
     sensor = torch.as_tensor(ref["gt"],device=K.device,dtype=K.dtype)
     known = torch.as_tensor(ref["valid"],device=K.device)&torch.isfinite(sensor)&(sensor>0)
     gt_depth = torch.where(known,sensor,pred)
+    depths = {"gt":gt_depth,"pred":pred}
+    sources = {arm:("gt" if arm in ("V0_GT","a") else "pred") for arm in arms}
     color = x["rgb"][0].permute(1,2,0)
     pinhole = display(color)
     full = np.ones_like(ref["valid"],bool)
@@ -306,15 +309,26 @@ def frame_results(net,cohort,name,frame,unit,entry,cases,root,arms,*,
     learned = tear_predictor(x,prediction) if tear_predictor is not None else {}
     tears.update(learned)
     audit,misaligned,overlay = tear_audit(label,rho_pred,tears,zones,learned)
+    if geometry_override is not None:
+        e_depth,e_arms,e_tears = geometry_override(name,frame,unit,x,prediction,label)
+        depths["E"] = e_depth
+        sources.update(dict.fromkeys(e_arms,"E"))
+        tears.update(e_tears)
+        e_inverse = e_depth.reciprocal().cpu().numpy()
+        e_base = labels_for_arm(label,e_inverse)
+        e_audit,e_mismatch,e_overlay = tear_audit(label,e_inverse,dict(e_base,**e_tears),zones,e_tears)
+        audit.update({k:v for k,v in e_audit.items() if k in e_tears})
+        overlay.update({k:v for k,v in e_overlay.items() if k in e_tears})
+        misaligned=e_mismatch
     del prediction
     pending = []
     for case in cases:
         nominal,idx = case["focus_m"],case["focus_index"]
         subject = near_subject(ref["gt"],ref["valid"],k,nominal)
-        focus_gt,focus_pred = (p2_focus(d.cpu().numpy(),subject) for d in (gt_depth,pred))
+        focuses={key:p2_focus(depth.cpu().numpy(),subject) for key,depth in depths.items()}
         row = dict(scene=name,cohort=cohort,frame=frame,case=case["id"],focus_index=idx,
-                   nominal_focus_m=nominal,GT_focus_m=focus_gt,methods={},
-                   status="unscored" if focus_gt is None or focus_pred is None else "evaluated")
+                   nominal_focus_m=nominal,GT_focus_m=focuses["gt"],methods={},
+                   status="unscored" if any(f is None for f in focuses.values()) else "evaluated")
         if row["status"]=="unscored":
             pending.append((case,row,None,None,None))
             continue
@@ -327,14 +341,14 @@ def frame_results(net,cohort,name,frame,unit,entry,cases,root,arms,*,
         else:
             masks["far_recoverable"]=rs["recoverable"]
             masks["near_in_focus"]=np.zeros_like(edge)
-        pending.append((case,row,gt,masks,dict(gt=focus_gt,pred=focus_pred)))
+        pending.append((case,row,gt,masks,focuses))
     images = {c["id"]:{} for c,*_ in pending}
     stats = {}
     stopped = 0.
     for arm in arms:
         stopped += yield_gpu()
-        which = "gt" if arm in ("V0_GT","a") else "pred"
-        depth = gt_depth if which=="gt" else pred
+        which = sources[arm]
+        depth = depths[which]
         maximum = depth
         options = {}
         if arm in tears:
