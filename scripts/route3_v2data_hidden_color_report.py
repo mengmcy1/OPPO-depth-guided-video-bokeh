@@ -97,6 +97,10 @@ def optical_table(rows,focus,family):
         table[method]=dict(pooled=y,cases=len(subset),vs_F2=pair(group,off,names),
                            vs_original=pair(group,base,names),
                            stratification=aggregate_strata(group,y["sse"]))
+        if family=="Query" and method.startswith("QPred@"):
+            same_cut=method.replace("QPred","QGT",1)
+            gt=[items(r,family,focus)[same_cut] for r in subset]
+            table[method]["vs_GT_purity"]=pair(group,gt,names)
         if method=="S3":
             table[method]["reference_same_f030"]={name:combine([items(r,family,focus)[name] for r in subset])
                                                    for name in methods if name!="S3"}
@@ -199,6 +203,12 @@ def build():
     by_scene=defaultdict(list)
     for r in rows:
         by_scene[r["scene"]].append(r)
+    crop=read(OUT/"source-crop-summary.json")
+    crop["same_denominator_comparison"]=dict(
+        development_far_only=crop["development_far"]["recoverable_geometry_fraction"],
+        development_all_scored_cases=crop["development_far"]["recoverable_geometry_pixels"]/(len(dev)*512**2),
+        training_far_only=crop["training"]["far"]["recoverable_geometry_fraction"],
+        training_all_optical_crops=crop["training"]["far"]["recoverable_geometry_pixels"]/crop["training"]["all"]["pixels"])
     derived=dict(case_counts=dict(development=len(dev),legacy=len(legacy),test=0),
                  source_protocol=dict(
                      direct_supervision="route3_v2data_query_prepare.py placement/label_case: associate 256-grid source candidate with its GT 512 centre point, project into the target, require matching deeper peeled surface and ray support; take target fNNN-peeled-color.npz whole pixel at integer projected coordinates. No first_visible_other_frame in target colour. C uses analytic material/UV texture lookup.",
@@ -213,12 +223,16 @@ def build():
                      anchors="Only f030 uses centre peel for representative RGB error and S3. The .99 cutoff controls the fixed figures only; all requested thresholds are kept in numbers.",
                      optics="G uses GT P2 nominal subject focus and P uses each geometry's own focus, both evaluate original masks. Focus shift uses K=25.4 px per inverse metre.",
                  ),
-                 crop_audit=read(OUT/"source-crop-summary.json"),
+                 crop_audit=crop,
                  source_query={"all":source_query(dev),"by_scene":{k:source_query(g) for k,g in by_scene.items()
                                                                if g[0]["cohort"]=="development"}},
                  witness_availability={name:source_witnesses(v) for name,v in scopes.items()},
                  witness_by_scene={name:source_witnesses(v) for name,v in by_scene.items()},
-                 focus_error=focus,optical=optical,query_original_P=original_query_check(rows),
+                 far_witness_by_scene={name:source_witnesses([r for r in v if r["focus_index"]==1])
+                                       for name,v in by_scene.items()},
+                 focus_error=focus,focus_by_case=[{k:r[k] for k in ("scene","case","frame","focus_index","focus_error")}
+                                                  for r in rows],
+                 optical=optical,query_original_P=original_query_check(rows),
                  panels=[item for r in rows for item in r.get("panel",[])],
                  skipped=[dict(scene=r["scene"],case=r["case"],reason=r["status"]) for r in all_rows
                           if r["status"]!="evaluated"],
@@ -234,9 +248,17 @@ def lines_for(report):
     lines=["# 隐藏层见证颜色取色对照","",
            "新开发集 87 个 case，原 3 场景 18 个 case。远焦以 G 为主。S3 只在 f030。",
            "所有数值按对应支持合并，S3 的配对在共同的 f030 上算。","",
+           "## 3a 裁块的几何命中","",
+           "| 分母口径 | 训练远焦可恢复占比 | 开发集远焦可恢复占比 |",
+           "|---|---:|---:|"]
+    comparison=report["crop_audit"]["same_denominator_comparison"]
+    lines.extend([
+           f"| 只计远焦 | {comparison['training_far_only']:.3%} | {comparison['development_far_only']:.3%} |",
+           f"| 计入全部焦点 | {comparison['training_all_optical_crops']:.3%} | {comparison['development_all_scored_cases']:.3%} |",
+           "", "训练日志存有裁块与父点数。像素比例用相同的几何光线定义统计。", "",
            "## 见证可用率","",
            "| 场景 | 父点数 | 任意正覆盖 | ≥.50 | ≥.90 | ≥.99 | f030 S3 |",
-           "|---|---:|---:|---:|---:|---:|---:|"]
+           "|---|---:|---:|---:|---:|---:|---:|"])
     for scene,value in report["witness_by_scene"].items():
         rates=[f"{v:.1%}" if v is not None else "—" for v in value["fractions"].values()]
         n=value["S3"]
@@ -254,7 +276,7 @@ def lines_for(report):
                                  f"{fmt(y.get('patch_lpips'),5)} | {fmt(m['vs_F2']['PSNR']['median'])} | "
                                  f"{fmt(p['median'])} | {p['positive']}/{p['negative']} |")
     lines.extend(["","## 焦距误差","",
-        "| 范围 | 焦层 | 几何 | |Δρ| 中位 / p95 | CoC 中位 / p95 px |",
+        "| 范围 | 焦层 | 几何 | 绝对 Δρ 中位 / p95 | CoC 中位 / p95 px |",
         "|---|---|---|---:|---:|"])
     for school,focus in report["focus_error"].items():
         for label,models in focus.items():
