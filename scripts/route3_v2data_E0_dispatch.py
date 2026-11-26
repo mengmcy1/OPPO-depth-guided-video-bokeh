@@ -147,8 +147,10 @@ def review_panels(mode,step):
                 v,e=(row["methods"][m]["rays"] for m in ("V0_pred","E_learned"))
                 if v["rays"] and e["rays"]:
                     text.append(f"近焦主体高透射光线 {v['high']/v['rays']:.2%} → {e['high']/e['rays']:.2%}")
-                    text.append(f"高透射光线正向 SSE {v['positive_sse_bins'].get('T>=0.1',0):.2f} → "
-                                f"{e['positive_sse_bins'].get('T>=0.1',0):.2f}")
+                    v_bins,e_bins=({entry["category"]:entry["positive_SSE"] for entry in rays["positive_sse_bins"]}
+                                   for rays in (v,e))
+                    text.append(f"高透射光线正向 SSE {v_bins.get('T>=0.1',0):.2f} → "
+                                f"{e_bins.get('T>=0.1',0):.2f}")
             elif "rod_border_gradient" in row:
                 values=row["rod_border_gradient"]
                 text.append(f"远焦杆缘平均梯度 E+撕裂 {values['E_learned']:.4f}、Cycles {values['Cycles']:.4f}、输入 {values['RGB']:.4f}")
