@@ -1,4 +1,5 @@
 """Collect hidden-colour results with the same region pixels in each pair."""
+import argparse
 from collections import defaultdict
 from html import escape
 from pathlib import Path
@@ -10,8 +11,8 @@ import route3_v2data_module2_infer as ref
 from route3_v2data_B_batch import sha256
 from route3_v2data_E0_rerender import STAGE3C
 from route3_v2data_E_labels import save_json
-from route3_v2data_hidden_color_purity import OLD_ARM, target_metadata
-from route3_v2data_hidden_color_sources import OUT, ROOT, read
+from route3_v2data_hidden_color_purity import OLD_ARM, raw_s3_source_coverage, target_metadata
+from route3_v2data_hidden_color_sources import OUT, ROOT, read, read_witnesses, witness_path
 from route3_v2data_stage3b import QUERY
 
 RECORD=ROOT/"03_实验记录/records/route3-v2data-hidden-color-purity-2026-11-26.json"
@@ -152,6 +153,52 @@ def source_witnesses(rows):
                 S3=dict(qualified=qualified,f030_parents=available))
 
 
+def complete_witness_rows():
+    files={p for items in read(OUT/"source-witnesses.json")["files"].values() for p in items}
+    rows=[]
+    for cohort,name,frame,_,_,cases in ref.frames():
+        for case in cases:
+            path=str(witness_path(name,case).relative_to(OUT))
+            if path not in files:
+                continue
+            parents,variants,best,observed=read_witnesses(name,case)
+            rows.append(dict(cohort=cohort,scene=name,frame=frame,focus_index=case["focus_index"],
+                             substitute_source=raw_s3_source_coverage(best,observed,parents,variants)))
+    if len(rows)!=105:
+        raise ValueError("Expected 105 CPU witness audits")
+    return rows
+
+
+def cpu_query_source():
+    path=OUT/"source-query-cpu.json"
+    if not path.is_file():
+        return None
+    receipt=read(path)
+    data=receipt["rows"]
+    if len(data)!=87:
+        raise ValueError("Expected the 87 scored development cases in the CPU Query trace")
+
+    def pool(rows):
+        h=sum(r["heads"] for r in rows)
+        available=[r for r in rows if r["heads"]]
+        source=dict(cases=len(rows),heads=h)
+        for mode in ("dominant","contributors"):
+            hist=np.sum([r[mode]["bins"] for r in available],axis=0)
+            unknown=sum(r[mode]["unknown"] for r in available)
+            n=int(hist.sum())+unknown
+            source[mode]=dict(bins=hist.tolist(),unknown=unknown,total=n,fractions=(hist/n).tolist())
+        source["f030_linear_color_error_by_bin"]={}
+        for k in ("0","1","2","3"):
+            v=sum_dicts(r["peeled_color_error"][k] for r in available)
+            n=int(v["samples"])
+            source["f030_linear_color_error_by_bin"][k]=dict(samples=n,mae=v["absolute"]/(3*n) if n else None,
+                psnr_db=float(-10*np.log10(max(1e-12,v["squared"]/(3*n)))) if n else None)
+        return source
+
+    return dict(source=str(path.relative_to(OUT)),focus_reference=receipt["focus_source"],
+                all=pool(data),far=pool([r for r in data if r["focus_index"]==1]))
+
+
 def focal_stats(subset):
     out={}
     for arm in FAMILIES[:3]:
@@ -213,15 +260,24 @@ def query_floors(rows, tag):
                 composed={a:check([h["methods"][a]["zero"] for h in heads],60) for a in arms})
 
 
-def build():
+def build(*, halted=False):
     paths=sorted((OUT/"frames").glob("*/*.json"))
-    if len(paths)!=54:
+    if len(paths)!=54 and not halted:
         raise ValueError(f"Expected all 54 frames, received {len(paths)}")
+    full_frames=len(paths)
+    qualification=[]
+    if halted:
+        phase=read(OUT/"dispatch.json")
+        if phase["phase"]!="halted":
+            raise ValueError("A partial record requires a halted GPU run")
+        qualification=[p for p in sorted((OUT/"smoke/frames").glob("*/*.json"))
+                       if not (OUT/"frames"/p.parent.name/p.name).exists()]
+        paths.extend(qualification)
     all_rows=[r for p in paths for r in read(p)["rows"]]
     rows=[r for r in all_rows if r["status"]=="evaluated"]
     dev=[r for r in rows if r["cohort"]=="development"]
     legacy=[r for r in rows if r["cohort"]=="legacy"]
-    if (len(dev),len(legacy))!=(87,18):
+    if (len(dev),len(legacy))!=(87,18) and not halted:
         raise ValueError("Expected the registered 87 dev and 18 legacy cases")
     scopes=dict(development=dev,legacy=legacy,
                 thin_structure=[r for r in dev if ref.title(r["scene"]) in ("dev003","dev004","dev005")],
@@ -239,13 +295,25 @@ def build():
     by_scene=defaultdict(list)
     for r in rows:
         by_scene[r["scene"]].append(r)
+    witness_rows=complete_witness_rows()
+    witness_by_scene=defaultdict(list)
+    for r in witness_rows:
+        witness_by_scene[r["scene"]].append(r)
+    witness_scopes=dict(development=[r for r in witness_rows if r["cohort"]=="development"],
+                        legacy=[r for r in witness_rows if r["cohort"]=="legacy"],
+                        thin_structure=[r for r in witness_rows if ref.title(r["scene"]) in ("dev003","dev004","dev005")],
+                        dev008=[r for r in witness_rows if ref.title(r["scene"])=="dev008"])
     crop=read(OUT/"source-crop-summary.json")
     crop["same_denominator_comparison"]=dict(
         development_far_only=crop["development_far"]["recoverable_geometry_fraction"],
-        development_all_scored_cases=crop["development_far"]["recoverable_geometry_pixels"]/(len(dev)*512**2),
+        development_all_scored_cases=crop["development_far"]["recoverable_geometry_pixels"]/(87*512**2),
         training_far_only=crop["training"]["far"]["recoverable_geometry_fraction"],
         training_all_optical_crops=crop["training"]["far"]["recoverable_geometry_pixels"]/crop["training"]["all"]["pixels"])
-    derived=dict(case_counts=dict(development=len(dev),legacy=len(legacy),test=0),
+    derived=dict(status="halted" if halted else "complete",
+                 case_counts=dict(development=len(dev),legacy=len(legacy),test=0),
+                 optical_scope=dict(completed_production_frames=full_frames,planned_frames=54,
+                                    qualification_frames_added=len(qualification),
+                                    planned_development_cases=87,planned_legacy_cases=18),
                  source_protocol=dict(
                      direct_supervision="route3_v2data_query_prepare.py placement/label_case: associate 256-grid source candidate with its GT 512 centre point, project into the target, require matching deeper peeled surface and ray support; take target fNNN-peeled-color.npz whole pixel at integer projected coordinates. No first_visible_other_frame in target colour. C uses analytic material/UV texture lookup.",
                      actual_Query="src/light_candidate_fusion.py: two heads, frozen q/softmax weights, fused world point, source-frame reprojection then bilinear RGB plus bounded learned residual. Count all contributors with positive RGB weights. Dominant results use the highest effective RGB weight per retained head; weighted results sum the entire effective mixture.",
@@ -262,30 +330,37 @@ def build():
                  crop_audit=crop,
                  source_query={"all":source_query(dev),"by_scene":{k:source_query(g) for k,g in by_scene.items()
                                                                if g[0]["cohort"]=="development"}},
-                 witness_availability={name:source_witnesses(v) for name,v in scopes.items()},
-                 witness_by_scene={name:source_witnesses(v) for name,v in by_scene.items()},
+                 source_query_cpu=cpu_query_source(),
+                 witness_availability={name:source_witnesses(v) for name,v in witness_scopes.items()},
+                 witness_by_scene={name:source_witnesses(v) for name,v in witness_by_scene.items()},
                  far_witness_by_scene={name:source_witnesses([r for r in v if r["focus_index"]==1])
-                                       for name,v in by_scene.items()},
+                                       for name,v in witness_by_scene.items()},
                  focus_error=focus,focus_by_case=[{k:r[k] for k in ("scene","case","frame","focus_index","focus_error")}
                                                   for r in rows],
                  optical=optical,query_original_P=original_query_check(rows),
-                 S0_archived_G={scope:s0_reference_check(parts) for scope,parts in scopes.items()},
+                 S0_archived_G={scope:s0_reference_check(parts) for scope,parts in scopes.items() if parts},
                  query_zero_floors={scope:{tag:query_floors(parts,tag) for tag in ("G","P")}
-                                    for scope,parts in scopes.items()},
+                                    for scope,parts in scopes.items() if parts},
                  panels=[item for r in rows for item in r.get("panel",[])],
                  skipped=[dict(scene=r["scene"],case=r["case"],reason=r["status"]) for r in all_rows
                           if r["status"]!="evaluated"],
                  checkpoints=dict(Query=str(QUERY),Query_sha256=sha256(QUERY),E_H2_step=2000,
                                   E_H2_SHA256=sha256(ROOT/"outputs/route3-v2data-E0-2026-11-26-01/E-H2/step-002000.pt")))
-    if len(derived["panels"])!=10 or any(not (OUT/f).is_file() for f in derived["panels"]):
+    if (not halted and len(derived["panels"])!=10) or any(not (OUT/f).is_file() for f in derived["panels"]):
         raise ValueError("Expected all ten requested interleaved image panels")
+    if halted:
+        derived["stop"]=dict(phase,log="inference.log",qualification_log="smoke.log")
     return derived
 
 
 def lines_for(report):
     fmt=lambda x,precision=3:"—" if x is None else f"{x:.{precision}f}"
-    lines=["# 隐藏层见证颜色取色对照","",
-           "新开发集 87 个 case，原 3 场景 18 个 case。远焦以 G 为主。S3 只在 f030。",
+    n=report["case_counts"]
+    caption=f"光学表覆盖新开发 {n['development']} 个 case、原场景 {n['legacy']} 个 case。"
+    if report["status"]=="halted":
+        caption+="GPU 触发零光圈下限后停止。以下是已完成配对，含三帧资格核对。CPU 来源统计覆盖全部新开发 87 个 case。"
+    lines=["# 隐藏层见证颜色取色对照","",caption,
+           "远焦以 G 为主。S3 只在 f030。",
            "所有数值按对应支持合并，S3 的配对在共同的 f030 上算。","",
            "## 3a 裁块的几何命中","",
            "| 分母口径 | 训练远焦可恢复占比 | 开发集远焦可恢复占比 |",
@@ -325,8 +400,8 @@ def lines_for(report):
     return "\n".join(lines)+"\n"
 
 
-def collect():
-    report=build()
+def collect(*, halted=False):
+    report=build(halted=halted)
     save_json(RECORD,report)
     (OUT/"汇总.md").write_text(lines_for(report))
     page=('<!doctype html><meta charset="utf-8"><title>隐藏层颜色纯度对照</title>'
@@ -334,8 +409,11 @@ def collect():
     (OUT/"index.html").write_text(page+"\n".join(
         f'<figure><a href="{escape(p)}"><img src="{escape(p)}" width="1120" loading="lazy"></a>'
         f'<figcaption>{escape(Path(p).stem)}</figcaption></figure>' for p in report["panels"]))
-    save_json(OUT/"dispatch.json",dict(phase="collected",at=time.time(),record=str(RECORD)))
+    if not halted:
+        save_json(OUT/"dispatch.json",dict(phase="collected",at=time.time(),record=str(RECORD)))
 
 
 if __name__=="__main__":
-    collect()
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--halted",action="store_true")
+    collect(halted=parser.parse_args().halted)
