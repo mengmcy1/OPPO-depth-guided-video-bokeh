@@ -141,9 +141,10 @@ def optical_band(z, K, focus, fstop):
 
 
 class BOptical:
-    def __init__(self,run,backbone):
+    def __init__(self,run,backbone,reference_run=None):
         self.run = run
         self.backbone = backbone
+        self.reference_run = reference_run
 
     @lru_cache(maxsize=8)
     @torch.no_grad()
@@ -152,8 +153,10 @@ class BOptical:
         x,y = sample(item)
         K = x["K"][0]
         path = self.run/"native-query"/unit.name/f"f{frame:03d}.npz"
-        if path.is_file():
-            packed = ovg.load(path)
+        inherited = self.reference_run/path.relative_to(self.run) if self.reference_run is not None else path
+        cached = path if path.is_file() else inherited
+        if cached.is_file():
+            packed = ovg.load(cached)
             z = packed["target_depth"]
         else:
             z = self.backbone(x,protect_residual=True,render_heads=False)["depth1"][0].cpu().numpy()
@@ -166,24 +169,25 @@ class BOptical:
             save_npz(path,**packed)
         return x,y,K.new_tensor(z),packed
 
-    def batch(self, network, item, spec, crop, *, count_rays=False):
+    def batch(self, network, item, spec, crop, *, count_rays=False, current=None):
         unit,frame,focus,fstop = (spec[k] for k in ("unit","frame","focus","fstop"))
-        x,y,depth,packed = self.frame(unit,frame)
+        x,y,frozen_depth,packed = self.frame(unit,frame)
+        depth = frozen_depth if current is None else current["depth1"][0]
         K = x["K"][0]
-        band = optical_band(depth.cpu().numpy(),K,focus,fstop)
+        band = optical_band(frozen_depth.cpu().numpy(),K,focus,fstop)
         indices = np.flatnonzero(band.ravel()[packed["query_pixel"]] & packed["candidate_valid"].any(-1))
         # Keep candidates selected from the native annulus. Cropping happens in
         # the camera, so off-crop surfels still contribute via the pupil shift.
         store = FrameQueries(observed_views(unit),packed)
         row = dict(frame=frame,input="native",case=dict(focus_m=focus,fstop=fstop))
-        hidden = hidden_cloud(network,store,row,K,depth,band,indices)
+        hidden = hidden_cloud(network,store,row,K,frozen_depth,band,indices,placement_depth=depth.detach())
         visible = fixed_visible_surfels({"depth1":depth[None]},x)
         offsets = aperture_disk(RENDER_RAYS,.05/(2*fstop),device=K.device,dtype=K.dtype)
         fill = observed_background(spec,x,focus,offsets,crop=crop)
         top,left,h,w = crop
         kc = crop_camera(K,crop)
         target = K.new_tensor(linear_reference(spec)[top:top+h,left:left+w])
-        if hidden is None:
+        if hidden is None and current is None:
             with torch.no_grad():
                 rgb = raster(visible,kc,focus,offsets,h,w,fill).clamp(0,1).mean(0)
             signal = sum(p.sum()*0 for p in network.parameters())
@@ -198,7 +202,7 @@ class BOptical:
                                    offsets[j:j+1],fill[j:j+1],use_reentrant=False)
                      for j in range(len(offsets))]
             rgb = torch.stack(parts).mean(0)
-            signal = 0.
+            signal = sum(p.sum()*0 for p in network.parameters()) if hidden is None else 0.
         support = dict(queries=len(indices),hidden_surfels=len(hidden.means) if hidden is not None else 0)
         if count_rays:
             with torch.no_grad():

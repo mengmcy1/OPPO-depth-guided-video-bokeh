@@ -1,0 +1,325 @@
+{
+  "stage": "3c",
+  "created_at": "2026-11-26T10:18:46+08:00",
+  "inputs": {
+    "geometry": {
+      "path": "/root/autodl-tmp/route3-stage1-pair-20261122/outputs/route3-v2data-stage1-2026-11-22-01/1b/same-surface/checkpoints/step-030000.pt",
+      "sha256": "dfb1d7e52eb67fb756186b252312aee3b136096e3835cbcaf60f5d8250e1c220",
+      "weights": "EMA"
+    },
+    "query": {
+      "path": "/root/autodl-tmp/route3-query-v2-20261123/outputs/route3-query-v2-20261123/train/step-020000.pt",
+      "sha256": "1c19181f296f858a4ff6a6efcb75f8839a3b1a0d066ac7fb744bc7b72486e300"
+    }
+  },
+  "renderer": "V0, b=0, actual Query, O1 footprint order, F2",
+  "training": {
+    "steps": 10000,
+    "eval_steps": [
+      0,
+      5000,
+      10000
+    ],
+    "weights": [
+      "ema",
+      "model"
+    ],
+    "geometry_lr": 1e-06,
+    "query_lr": 6e-06,
+    "query_end_lr": 6e-07,
+    "optimizer": "Adam",
+    "geometry_gradient_clip": 5.0,
+    "query_gradient_clip": 1.0,
+    "ema": 0.999,
+    "fraction_B_optical": 0.5,
+    "fraction_C_direct": 0.5,
+    "native_crop": [
+      256,
+      256
+    ],
+    "required_thin_fraction_of_B": 0.5,
+    "refresh_steps": 500,
+    "seed": 2026111702,
+    "max_process_gpu_gib": 15,
+    "divergence": "nonfinite loss/gradient, or three consecutive 100-B-batch medians above max(0.05, 10 × first-window optical median)"
+  },
+  "losses": {
+    "optical": 1.0,
+    "Query_direct": 6.870901610495976e-06,
+    "geometry_auxiliary": {
+      "disp": 0.00025,
+      "bimodal": 6.25e-05,
+      "alpha": 0.000125,
+      "mv": 1.25e-05,
+      "occ": 0.00025,
+      "same_surface": 0.005,
+      "zero": 0.025
+    },
+    "auxiliary_zero": "Stage 3a v2 256-pixel pinhole composition with detached GT substitute; its loss updates geometry only.",
+    "batch_application": "B: K64 actual-Query LDR optical + 3a auxiliary geometry + paired direct Query. C: 3b direct Query only."
+  },
+  "placement": "Frozen 3b training candidate inputs and annular membership; admit new B frames once using initial geometry. Reorder the predicted surfels against detached current depth; Query gradients remain enabled.",
+  "data": {
+    "training_optical_at_registration": 216,
+    "test_cases_used": 0
+  },
+  "gradient_check": {
+    "passed": true,
+    "inputs": {
+      "geometry": {
+        "path": "/root/autodl-tmp/route3-stage1-pair-20261122/outputs/route3-v2data-stage1-2026-11-22-01/1b/same-surface/checkpoints/step-030000.pt",
+        "sha256": "dfb1d7e52eb67fb756186b252312aee3b136096e3835cbcaf60f5d8250e1c220",
+        "weights": "EMA"
+      },
+      "query": {
+        "path": "/root/autodl-tmp/route3-query-v2-20261123/outputs/route3-query-v2-20261123/train/step-020000.pt",
+        "sha256": "1c19181f296f858a4ff6a6efcb75f8839a3b1a0d066ac7fb744bc7b72486e300"
+      }
+    },
+    "scene": "training-061-ff0a4ff42915123f",
+    "case": "f001-focus1-N1.4-optics",
+    "crop": [
+      206,
+      153,
+      256,
+      256
+    ],
+    "support": {
+      "queries": 3932,
+      "hidden_surfels": 6387,
+      "effective_hidden_rays": 19262,
+      "total_region_rays": 241408
+    },
+    "auxiliary_support": {
+      "disp": 16384,
+      "bimodal": 8192,
+      "alpha": 16384,
+      "mv": 41,
+      "same_surface": 13733,
+      "pair_right": 5766,
+      "pair_excluded_crossing_right": 10494,
+      "pair_down": 7967,
+      "pair_excluded_crossing_down": 6092,
+      "occ_reveal": 1478,
+      "occ_block": 14412,
+      "occ": 15890,
+      "hidden_eligible": 7112,
+      "hidden_placed": 7112,
+      "hidden_has_grad": false,
+      "zero": 65536
+    },
+    "gradient_norms": {
+      "L_bokeh": {
+        "geometry": {
+          "rgb_half": 0.0018956525018438697,
+          "rgb_quarter": 0.00014864507829770446,
+          "depth_quarter": 0.0035738260485231876,
+          "semantic": 0.0034233774058520794,
+          "dpt": 0.0013019823236390948,
+          "quarter": 0.0014202846214175224,
+          "shared_view": 3.659302819869481e-05,
+          "match": 5.886829239898361e-05,
+          "refine": 0.0020350059494376183,
+          "half_decoder": 0.0010095835896208882,
+          "full": 0.0005375132313929498,
+          "prior_head": 0.00041435519233345985,
+          "prior_pixel": 0.0001448694965802133,
+          "geometry": 0.0013272318756207824
+        },
+        "Query": {
+          "head_embedding": 7.16139254564041e-07,
+          "encoder": 6.073108124837745e-06,
+          "condition": 1.7997565464611398e-06,
+          "selection": 1.040858421674784e-07,
+          "position": 1.5051728951220866e-05,
+          "quality": 3.155111016894807e-08,
+          "appearance": 1.2685078445429099e-06,
+          "color": 1.6295285831802175e-06,
+          "opacity": 1.3790837556371116e-06
+        }
+      },
+      "direct_unweighted": {
+        "geometry": {
+          "rgb_half": 0.0,
+          "rgb_quarter": 0.0,
+          "depth_quarter": 0.0,
+          "semantic": 0.0,
+          "dpt": 0.0,
+          "quarter": 0.0,
+          "shared_view": 0.0,
+          "match": 0.0,
+          "refine": 0.0,
+          "half_decoder": 0.0,
+          "full": 0.0,
+          "prior_head": 0.0,
+          "prior_pixel": 0.0,
+          "geometry": 0.0
+        },
+        "Query": {
+          "head_embedding": 0.3163567781448364,
+          "encoder": 2.1685025691986084,
+          "condition": 0.714702308177948,
+          "selection": 0.045909587293863297,
+          "position": 0.6893477439880371,
+          "quality": 0.41019898653030396,
+          "appearance": 0.45411163568496704,
+          "color": 0.09901243448257446,
+          "opacity": 0.5284371972084045
+        }
+      },
+      "geometry_auxiliary_weighted": {
+        "geometry": {
+          "rgb_half": 0.0013919369084760547,
+          "rgb_quarter": 8.554266241844743e-05,
+          "depth_quarter": 0.0026778143364936113,
+          "semantic": 0.0016363279428333044,
+          "dpt": 0.0006620936910621822,
+          "quarter": 0.0008101215353235602,
+          "shared_view": 1.657707616686821e-05,
+          "match": 1.7695299902698025e-05,
+          "refine": 0.0011080654803663492,
+          "half_decoder": 0.0007469156989827752,
+          "full": 0.0004866186936851591,
+          "prior_head": 0.0004736313421744853,
+          "prior_pixel": 0.0001848719548434019,
+          "geometry": 0.00113769737072289
+        },
+        "Query": {
+          "head_embedding": 0.0,
+          "encoder": 0.0,
+          "condition": 0.0,
+          "selection": 0.0,
+          "position": 0.0,
+          "quality": 0.0,
+          "appearance": 0.0,
+          "color": 0.0,
+          "opacity": 0.0
+        }
+      }
+    },
+    "losses": {
+      "L_bokeh": 0.00032033718889579177,
+      "direct": 0.9966586828231812,
+      "auxiliary": 0.0012928345240652561,
+      "direct_terms": {
+        "total": 0.9966586828231812,
+        "relative_depth_L1": 0.07049034535884857,
+        "linear_RGB_L1": 0.05671749264001846,
+        "q_BCE": 1.0043879747390747,
+        "selection_CE": 0.9424160122871399,
+        "opacity_BCE": 2.4004502296447754
+      },
+      "geometry_terms": {
+        "disp": 1.0484353303909302,
+        "bimodal": 6.301920413970947,
+        "alpha": 1.5618292093276978,
+        "mv": 0.02452538162469864,
+        "same_surface": 0.03367152810096741,
+        "occ": 1.0855774879455566,
+        "zero": 6.273477629292756e-05
+      }
+    },
+    "geometry_parameters": {
+      "rgb_half": 960,
+      "rgb_quarter": 13968,
+      "depth_quarter": 16080,
+      "semantic": 98560,
+      "dpt": 221760,
+      "quarter": 92352,
+      "shared_view": 10272,
+      "match": 2080,
+      "refine": 79296,
+      "half_decoder": 55488,
+      "full": 38784,
+      "prior_head": 18627,
+      "prior_pixel": 33,
+      "geometry": 390
+    },
+    "Query_parameter_count": 38281,
+    "seconds": 6.876132614910603,
+    "peak_reserved_bytes": 3489660928,
+    "at": "2026-11-26T10:16:23+08:00"
+  },
+  "step0_consistency": {
+    "passed": true,
+    "scored_development": 87,
+    "scored_legacy": 18,
+    "checked_rows": 108,
+    "row_mismatches": [],
+    "all_summaries_equal": true,
+    "baseline_sha256": "f7d4a598eaa257487d61bde3cd1746325253ecc84f8f104db65d289cefa66e3d",
+    "replay_sha256": "549247cb04ccab4a49f8b283582b474afd34f528ba3638715aecc83de51f4363",
+    "corrected_GT_sha256": "ea36b363f41683460f51c23d809b58111290676199cf0e486a1b09c848fa8102",
+    "comparison": "Exact equality of all case fields and every regrouped 3b score. Zero EMA and raw contain the same initialization."
+  },
+  "evaluation": {
+    "fixed_cases": [
+      [
+        "dev001",
+        30,
+        0
+      ],
+      [
+        "dev006",
+        30,
+        0
+      ],
+      [
+        "dev003",
+        30,
+        0
+      ],
+      [
+        "dev004",
+        30,
+        0
+      ],
+      [
+        "dev005",
+        30,
+        1
+      ],
+      [
+        "dev008",
+        30,
+        0
+      ],
+      [
+        "dev008",
+        30,
+        1
+      ],
+      [
+        "dev000",
+        30,
+        1
+      ],
+      [
+        "122104",
+        30,
+        1
+      ]
+    ],
+    "relative_geometry_limits": {
+      "inverse_depth_rmse": 0.05,
+      "same_surface_step": 0.1,
+      "near_subject_coc_mae": 0.1,
+      "GT_occlusion_crossing_abs_p95": 0.1
+    },
+    "zero_floors_db": {
+      "zero_visible": 50.0,
+      "zero_combined": 60.0
+    },
+    "min_far_hidden_fraction_vs_start": 0.8,
+    "descriptive_equivalence_db": 0.1,
+    "selection": "Among trained EMA checkpoints at 5k/10k with all guardrails, maximize pooled near-focus Query-on score (earlier ties). Adopt only if both scene-paired median changes of the absolute Query-on near/far scores are nonnegative. Step 0 is the fallback.",
+    "provenance": "FP16-masked GT placement; recompute inference candidates from current target geometry and current P2 focal distance, using the same observed source views and memory protocol as Stage 3b."
+  },
+  "code_sha256": {
+    "route3_v2data_stage3c.py": "ec6b6e8f5dcf87b16b62c3ab1b6e400a408d69226b9aba610d3649c8192307bf",
+    "route3_v2data_stage3c_eval.py": "bd54f7970ad4b97e771d5e2198eca691604a86d3ea596e559fe8079360c1bee4",
+    "route3_v2data_dryrun.py": "98b15715ccede282658df022fba6f79e124b1183a08b2b65ec6d768d11cc7570",
+    "route3_v2data_stage3b.py": "c17d8617443ebcd67170dbbd85b6eb83459dc893d25e267403ba33192724f4d5",
+    "route3_v2data_stage3b_eval.py": "f80b4f70c140074aad15c6ceb9ba0736173e866ed5f728e2278281b675fbdbf6"
+  }
+}

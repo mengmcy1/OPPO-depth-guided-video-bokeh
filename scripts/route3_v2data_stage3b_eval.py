@@ -219,20 +219,24 @@ def variant_image(layer,closure,hidden,K,focus,offsets,fill):
 
 
 @torch.inference_mode()
-def evaluate(run,step,weights,*,variant="V0",smoke=False):
+def evaluate(run,step,weights,*,variant="V0",smoke=False,joint=None):
     gt_path = gt_reference_path()
     gpu_setup(dict(training=dict(max_process_gpu_gib=7)))
     began = time.monotonic()
     directory = "evaluation-smoke" if smoke else "evaluation"
     output = run/directory/f"step-{step:06d}"/(weights if variant=="V0" else variant)
     output.mkdir(parents=True,exist_ok=True)
-    path = output/"report.json"
+    path = output/("joint-report.json" if joint is not None else "report.json")
     if path.is_file():
         return load(path)
     geometry = load_geometry()
     query = query_net(QUERY)
     if step:
-        query.load_state_dict(read_checkpoint(path_for(run,step))[weights])
+        saved=read_checkpoint(path_for(run,step))[weights]
+        if joint is None:
+            query.load_state_dict(saved)
+        else:
+            joint.restore(geometry,query,saved)
     initial_path = run/"evaluation/step-000000/ema"
     starting = load(initial_path/"report.json")
     if step and not starting and not smoke:
@@ -259,6 +263,8 @@ def evaluate(run,step,weights,*,variant="V0",smoke=False):
         K = x["K"][0]
         k = K.cpu().numpy()
         ref = ovg.b_edge_reference(item,y)
+        if joint is not None:
+            joint.frame(cohort,name,frame,z,x,y,ref)
         focuses = [p2_focus(z,near_subject(ref["gt"],ref["valid"],k,c["focus_m"])) for c in cases]
         active = [optical_band(z,K,f,c["fstop"]) if f is not None else None for c,f in zip(cases,focuses)]
         if any(m is not None for m in active):
@@ -281,7 +287,7 @@ def evaluate(run,step,weights,*,variant="V0",smoke=False):
                 rows.append(dict(row,status="no_valid_nominal_subject"))
                 continue
             cached = archived[name,tag]
-            if abs(focus-cached["focus_m"])>1e-6:
+            if joint is None and abs(focus-cached["focus_m"])>1e-6:
                 raise ValueError(f"3a reference has a different P2 focus for {name}/{tag}")
             regions = (new_regions(unit,case,ref["gt"],ref["valid"],k) if unit else
                        legacy_masks(geometry_root(name),case))
@@ -302,11 +308,16 @@ def evaluate(run,step,weights,*,variant="V0",smoke=False):
                 off = display(variant_image(layer,closure,None,K,focus,offsets,fill))
                 zero = variant_image(layer,closure,hidden,K,focus,center,zfill)
                 rays = dict(total_region_rays=0,effective_hidden_rays=0)
-            gt_case = cached["scores"]["stage3"]["metrics"]
+            if joint is None:
+                gt_case = cached["scores"]["stage3"]["metrics"][metric]
+            else:
+                gt_case = joint.oracle(unit,entry,case,ref,depth,K,focus,visible,offsets,fill,truth,area)
             row.update(status="evaluated",focus_m=focus,on={metric:score(on,truth,area),
                           "boundary_2px":score(on,truth,edge)},
                        off={metric:region_sse(off,truth,area),"boundary_2px":region_sse(off,truth,edge)},
-                       gt={metric:gt_case[metric]},rays=rays,zero_visible=zero_visible,zero_combined=score(zero,pinhole,full))
+                       gt={metric:gt_case},rays=rays,zero_visible=zero_visible,zero_combined=score(zero,pinhole,full))
+            if joint is not None:
+                joint.case(row,unit,case,area)
             rows.append(row)
             if (ident,frame,idx) in FIXED and variant=="V0":
                 focal_tag = f"{ident}-{tag}"
@@ -318,10 +329,14 @@ def evaluate(run,step,weights,*,variant="V0",smoke=False):
                 file = create_panel(output,focal_tag,pinhole,truth,current,old,
                                     {n:v.cpu().numpy() for n,v in maps.items()},area,row)
                 panels.append(dict(case=focal_tag,path=file,observation=panel_observation(row,prior.get((name,tag),row))))
+                if joint is not None:
+                    joint.panel(output,panels[-1],row,case,area,current,truth)
         print("STAGE3B_EVAL",step,weights,variant,name,frame,flush=True)
     payload = dict(step=step,weights=weights,variant=variant,rows=rows,summary=summary(rows,starting["rows"] if starting else None),
                    baseline=load(BASELINE)["summaries"]["f1.4"],panels=panels,seconds=time.monotonic()-began,
                    hidden_weight_threshold=.001,GT_reference=str(gt_path),test_cases_used=0)
+    if joint is not None:
+        joint.summarize(payload)
     if panels:
         (output/"观察清单.md").write_text("# 固定面板观察清单\n\n"+"\n".join(
             f'- {p["case"]}。{p["observation"]} [面板]({p["path"]})' for p in panels)+"\n")

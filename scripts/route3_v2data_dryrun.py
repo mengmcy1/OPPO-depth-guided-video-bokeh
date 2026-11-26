@@ -46,12 +46,15 @@ def balanced_count(valid, boundary, cap):
 
 def stage_objective(net, inventory, item, stage, generator, *, spec=None, audit_k16=False,
                     audit_transmission=False, b_occ_mode=B_OCC_MODE, stage3_place=None,
-                    stage3_crop=None):
+                    stage3_crop=None, prepared=None, auxiliary_only=False):
     """Use native K16 for occlusion and an optional optical target for Bokeh."""
     tier = item[0]
     device = next(net.parameters()).device
-    batch = inventory.load(item, device)
-    pred = net(batch[0], protect_residual=True, render_heads=stage=='1a')
+    if prepared is None:
+        batch = inventory.load(item, device)
+        pred = net(batch[0], protect_residual=True, render_heads=stage=='1a')
+    else:
+        batch,pred = prepared
     x = batch[0]
     reference = None
     opts = CONFIG['optical_train']
@@ -149,7 +152,7 @@ def stage_objective(net, inventory, item, stage, generator, *, spec=None, audit_
         common = F.interpolate(common[None,None].float(),size=shape,mode='area')[0,0] > .999
     terms['zero'] = masked_mean((zero-x['rgb'][0].permute(1,2,0)).abs().mean(-1),common)
     counts['zero'] = int(common.sum())
-    if spec:
+    if spec and not auxiliary_only:
         optical_input, optical_K, optical_shape = x, K, shape
         native_crop = stage3_crop is not None
         if native_crop:
