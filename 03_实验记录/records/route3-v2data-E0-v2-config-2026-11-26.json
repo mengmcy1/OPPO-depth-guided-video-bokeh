@@ -1,0 +1,243 @@
+{
+  "geometry": {
+    "step": 0,
+    "weights": "EMA",
+    "sha256": "dfb1d7e52eb67fb756186b252312aee3b136096e3835cbcaf60f5d8250e1c220",
+    "path": "/root/autodl-tmp/route3-stage1-pair-20261122/outputs/route3-v2data-stage1-2026-11-22-01/1b/same-surface/checkpoints/step-030000.pt",
+    "adoption": {
+      "selected_step": 0,
+      "candidates": [
+        {
+          "step": 5000,
+          "checks": {
+            "geometry": true,
+            "zero_visible": true,
+            "zero_combined": true,
+            "far_hidden": true
+          },
+          "eligible": true,
+          "near_pooled": 35.52558251384803,
+          "near_paired_median_db": 0.1030520666530137,
+          "far_paired_median_db": 0.009578477139342567,
+          "far_hidden_fraction": 0.8318467756867008
+        },
+        {
+          "step": 10000,
+          "checks": {
+            "geometry": true,
+            "zero_visible": true,
+            "zero_combined": true,
+            "far_hidden": true
+          },
+          "eligible": true,
+          "near_pooled": 35.54846886994327,
+          "near_paired_median_db": 0.12911903539968428,
+          "far_paired_median_db": -0.07281740196393827,
+          "far_hidden_fraction": 0.8279246376119118
+        }
+      ],
+      "lowest_far_hidden_fraction": 0.6609369680644565,
+      "best_eligible_step": 10000,
+      "paired_medians_pass": false,
+      "interpretation": {
+        "near_paired_median_db": "改善",
+        "far_paired_median_db": "基本持平"
+      }
+    },
+    "publication": "ad552dff121b527d0d3076c2fa2fecf5650aeeda",
+    "publication_record": "03_实验记录/records/route3-v2data-stage3c-2026-11-26-step-010000.json"
+  },
+  "change": {
+    "mask": "loss_zone == 2",
+    "objective": "BCE(g * (1-w_f), 0)",
+    "implementation": "-log_mass(front), stable FP32",
+    "weight": 0.1,
+    "from_step": 0,
+    "both_phases": true
+  },
+  "step_zero": {
+    "normal_pixels": 302771,
+    "other_pixels": 221517,
+    "gradient_outside_normal_nonzero": 0,
+    "gradient_l2": 0.07199706172652014,
+    "normal_front_bce": 0.061451505869627,
+    "weighted_bce": 0.0061451505869627,
+    "nll": 5.511956214904785,
+    "unweighted_ratio_to_abs_nll": 0.011148765242992506,
+    "weighted_ratio_to_abs_nll": 0.0011148765242992506,
+    "finite": true,
+    "peak_reserved_gib": 2.48828125
+  },
+  "training": {
+    "steps": 20000,
+    "batch_crops": 8,
+    "crop_px": 256,
+    "region_anchors": {
+      "rod": 2,
+      "gap": 2,
+      "mv_valid": 2,
+      "mv_invalid": 2
+    },
+    "phase1_steps": 8000,
+    "phase2_steps": 12000,
+    "coefficient": {
+      "formula": "K=(0.05 m / 1.4) * fx_pixels, CoC diameter in pixels",
+      "min": 25.3968253968254,
+      "median": 25.3968253968254,
+      "max": 25.3968253968254
+    },
+    "loss_weights": {
+      "nll": 1.0,
+      "dual": 1.0,
+      "order": 0.1,
+      "segment": 0.1,
+      "coc": 0.1,
+      "gate_l1": 0.01
+    },
+    "phase2_actual_term_scales": {
+      "E-L": {
+        "step": 8001,
+        "unweighted": {
+          "nll": -4.819161415100098,
+          "dual": 0.14026165008544922,
+          "order": 0.46975553035736084,
+          "segment": 0.4534537196159363,
+          "coc": 6.213240623474121,
+          "gate_l1": 0.39585503935813904
+        },
+        "weighted": {
+          "nll": -4.819161415100098,
+          "dual": 0.14026165008544922,
+          "order": 0.046975553035736084,
+          "segment": 0.045345371961593633,
+          "coc": 0.6213240623474121,
+          "gate_l1": 0.0039585503935813905
+        }
+      },
+      "E-H1": {
+        "step": 8001,
+        "unweighted": {
+          "nll": -4.234275817871094,
+          "dual": 0.11945672333240509,
+          "order": 0.4832419753074646,
+          "segment": 0.323098361492157,
+          "coc": 7.637569904327393,
+          "gate_l1": 0.4009684920310974
+        },
+        "weighted": {
+          "nll": -4.234275817871094,
+          "dual": 0.11945672333240509,
+          "order": 0.04832419753074646,
+          "segment": 0.0323098361492157,
+          "coc": 0.7637569904327393,
+          "gate_l1": 0.0040096849203109745
+        }
+      },
+      "E-H2": {
+        "step": 8001,
+        "unweighted": {
+          "nll": -4.7590012550354,
+          "dual": 0.12719906866550446,
+          "order": 0.49407467246055603,
+          "segment": 0.2170167863368988,
+          "coc": 6.910689353942871,
+          "gate_l1": 0.4075709879398346
+        },
+        "weighted": {
+          "nll": -4.7590012550354,
+          "dual": 0.12719906866550446,
+          "order": 0.0494074672460556,
+          "segment": 0.02170167863368988,
+          "coc": 0.6910689353942872,
+          "gate_l1": 0.004075709879398346
+        }
+      }
+    },
+    "optimizer": "Adam",
+    "lr_initial": 0.0003,
+    "lr_final": 1e-05,
+    "ema": 0.999,
+    "crop_order_sha256": "91bd66d73e3cc8ce6edefcdc140e4dcbf221445dc3065f52b8b9a5fccfbfd20d",
+    "check_every": 1000,
+    "gpu_process_budget_gib": {
+      "E-L": 3.0,
+      "E-H1": 3.0,
+      "E-H2": 5.5
+    },
+    "h2_overlap": "arithmetic mean, active only inside M",
+    "gate_collapse": "Report extrema; halt for exact whole-domain zero or one at two consecutive phase-two checks"
+  },
+  "inputs": {
+    "native_ovg_channels": 32,
+    "encoder": "frozen Depth Anything V2 Small, layers 2/5/8/11 zero-based",
+    "global_input_side": 518,
+    "local_window_native_side": 112,
+    "local_encoder_input_side": 448,
+    "coordinates": "window in native pixel-edge coordinates; level pixel center x+0.5 and align_corners=False"
+  },
+  "seed": 20261126,
+  "selection": {
+    "rule": "Among EMA candidates with holdout rod p50 no higher than frozen OVG, take lowest balanced NLL. Otherwise take lowest rod p50.",
+    "tie_key": "lower rod p50, then earlier step, then E-L/E-H1/E-H2 in that order",
+    "development_used_for_selection": false
+  },
+  "data": {
+    "train_scenes": 285,
+    "train_frames": 855,
+    "holdout_scenes": [
+      "training-061-ff0a4ff42915123f",
+      "training-064-086730c4acaff4f2",
+      "training-072-31b286ff6377ae60",
+      "training-089-b2a3e0ca0003160b",
+      "training-111-d7e217467bd2475e",
+      "training-140-05fad3fd2dd65434",
+      "training-145-109c724576efe4bb",
+      "training-146-8a0ee3e962c92314",
+      "training-170-b7f646b4ee9080be",
+      "training-173-13ed6793b9ce2fb2"
+    ],
+    "holdout_frames": 30,
+    "dev_scenes": 15,
+    "dev_frames": 45,
+    "independent_test_used": 0,
+    "holdout_numeric_ids": [
+      61,
+      64,
+      72,
+      89,
+      111,
+      140,
+      145,
+      146,
+      170,
+      173
+    ]
+  },
+  "tear_retraining": {
+    "steps": 20000,
+    "crops_per_step": 8,
+    "ema": 0.999,
+    "weights": [
+      1,
+      1,
+      1,
+      2
+    ],
+    "initial_lr": 0.001,
+    "final_lr": 1e-05,
+    "selection": "Minimize mean holdout weighted edge error and false-step tear rate; then weighted edge error and earliest step."
+  },
+  "source_E_H2_configuration_sha256": "5a9dc26bc20611bd1f07fb5d37150e0e78e8d6182db6246607f6705a95d5b3ae",
+  "native_cache": "Reused E0 OVG and E-H2 windows without changes",
+  "cache_rebuild": null,
+  "geometry_limits": {
+    "inverse_depth_rmse": 0.05,
+    "same_surface_step": 0.1,
+    "near_subject_coc_mae": 0.1,
+    "GT_occlusion_crossing_abs_p95": 0.1
+  },
+  "optical_protocol": "P/G P2, f/1.4, FP16 fix 6cff9f9; far F2 is primary, GT substitution pending",
+  "training_arms": [
+    "normal_front_bce"
+  ]
+}
