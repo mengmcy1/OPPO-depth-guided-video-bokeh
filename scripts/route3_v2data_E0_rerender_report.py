@@ -180,10 +180,12 @@ def optical_panel(name,focus,index,row,pictures,arms,*,far_f2=False,far_referenc
     boundary=ref.crop_for(choices[witness],truth,edge)
     width=173
     tiles=("整图","杆 / 缝放大","边缘放大","误差 0–0.25","可见层逆深度","撕裂／误连／误断")
+    header=70
     if far_reference is not None:
         label,reference_images,reference_scores=far_reference
         tiles+=tuple(f"{label} {name}" for name in ("整图","同框边缘","误差 0–0.25"))
-    canvas=Image.new("RGB",(width*(len(arms)+1),70+(width+18)*len(tiles)),(18,22,32))
+        header=90
+    canvas=Image.new("RGB",(width*(len(arms)+1),header+(width+18)*len(tiles)),(18,22,32))
     draw=ImageDraw.Draw(canvas)
     lens = "近焦" if index==0 else "远焦，仅 F2" if far_f2 else "远焦"
     if far_reference is not None:
@@ -196,10 +198,16 @@ def optical_panel(name,focus,index,row,pictures,arms,*,far_f2=False,far_referenc
     region=AREAS[index]
     for i,arm in enumerate(("Cycles",*arms)):
         x=i*width
-        title="Cycles · ∞" if not i else f"{i} {TITLES[i-1]} · "+fmt(ref.score_psnr(row["methods"][arm]["optical"][region]),2)
-        if far_reference is not None and i:
-            reference=fmt(ref.score_psnr(reference_scores[arm]),2)
-            title+=f"／{reference}"
+        title="Cycles · ∞"
+        if i:
+            title=f"{i} {TITLES[i-1]}"
+            score=fmt(ref.score_psnr(row["methods"][arm]["optical"][region]),2)
+            if far_reference is None:
+                title+=f" · {score}"
+            else:
+                second_score=fmt(ref.score_psnr(reference_scores[arm]),2)
+                metrics=f"F2 {score} ／ S2 {second_score}"
+                draw.text((x+3,67),metrics,font=gallery.font(12),fill="white")
         draw.text((x+3,50),title,font=gallery.font(13),fill="white")
         now=truth if i==0 else choices[arm]
         whole=gallery.rgb_image(now)
@@ -227,7 +235,7 @@ def optical_panel(name,focus,index,row,pictures,arms,*,far_f2=False,far_referenc
             second_error=gallery.scalar_image(np.abs(rgb-truth).mean(-1),.25,cv2.COLORMAP_INFERNO)
             layers+=(boxes,second.crop(boundary),second_error)
         for j,p in enumerate(layers):
-            y=70+(width+18)*j
+            y=header+(width+18)*j
             if i==0:
                 draw.text((4,y+1),tiles[j],font=gallery.font(12),fill="white")
             if p is not None:
