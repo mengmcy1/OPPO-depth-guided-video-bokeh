@@ -3,7 +3,6 @@ import argparse
 from collections import defaultdict
 from dataclasses import replace
 import os
-from pathlib import Path
 import time
 
 import cv2
@@ -59,20 +58,22 @@ def lpips_between(model, a, b, layout):
 
 
 def render_bins(visible, cloud, purity, K, focus, offsets):
-    """Summed compositing weights of five disjoint hidden source-purity bins."""
+    """Keep zero-coverage separate so the positive-support cut is exact."""
     if cloud is None:
-        return np.zeros((512,512,5),np.float32)
-    groups=np.where(np.isfinite(purity),1+np.searchsorted(CUTS,purity,side="right"),0)
+        return np.zeros((512,512,6),np.float32)
+    positive=2+np.searchsorted(CUTS,purity,side="right")
+    groups=np.where(np.isfinite(purity),np.where(purity>0,positive,1),0)
     src=torch.as_tensor(groups,device=K.device,dtype=torch.long)
-    tags=torch.nn.functional.one_hot(src,5).float()
-    combined=ref.merge_layers(replace(visible,colors=visible.colors.new_zeros((len(visible.means),5))),
+    tags=torch.nn.functional.one_hot(src,6).float()
+    combined=ref.merge_layers(replace(visible,colors=visible.colors.new_zeros((len(visible.means),6))),
                               replace(cloud,colors=tags))
     image=sum(ref.raster(combined,K,focus,part,512,512).sum(0) for part in offsets.split(4))
     return (image/len(offsets)).cpu().numpy()
 
 
 def grades(weights):
-    return np.where(weights.sum(-1)>1e-6,weights.argmax(-1)-1,-1).astype(np.int8)
+    merged=np.concatenate((weights[...,:1],weights[...,1:3].sum(-1,keepdims=True),weights[...,3:]),-1)
+    return np.where(merged.sum(-1)>1e-6,merged.argmax(-1)-1,-1).astype(np.int8)
 
 
 def stratify(rgb,truth,area,weights):
@@ -81,7 +82,7 @@ def stratify(rgb,truth,area,weights):
     splits["unknown/no_hit"]=ref.region_sse(rgb,truth,area&(group==-1))
     gate={}
     for index,threshold in enumerate((0.,*CUTS.tolist())):
-        keep=weights[...,index+1:].sum(-1)>1e-6
+        keep=weights[...,index+2:].sum(-1)>1e-6
         gate[f"{threshold:.2f}"]=dict(
             recoverable=ref.region_sse(rgb,truth,area&keep),
             unrecoverable=ref.region_sse(rgb,truth,area&~keep))
@@ -156,7 +157,7 @@ def render_substitutes(geometry,arm,tag,focus,unit,name,frame,entry,case,native,
         pictures[f"{arm}/S0"]=color_storage(s0)
         pictures[f"{arm}/F2"]=color_storage(f2)
         pictures[f"{arm}/purity"]=grades(weights)
-        pictures[f"{arm}/unrecoverable"]=weights[...,4]<=1e-6
+        pictures[f"{arm}/unrecoverable"]=weights[...,-1]<=1e-6
     for kind,(color,keep) in variants.items():
         if kind=="S0" or (kind.startswith("S1") and kind!="S1@0.00"):
             continue
@@ -207,7 +208,7 @@ def render_query(visible,cloud,details,args,case,tag,focus,offsets,pictures):
         for arm,weight in (("Query",weights),("QGT@0.99",weights),
                 ("QPred@0.99",render_bins(visible,cloud,best["QPred"],K,focus,offsets))):
             pictures[f"{arm}/purity"]=grades(weight)
-            pictures[f"{arm}/unrecoverable"]=weight[...,4]<=1e-6
+            pictures[f"{arm}/unrecoverable"]=weight[...,-1]<=1e-6
     return dict(methods=metrics,visible_zero=visible_zero,source=src)
 
 

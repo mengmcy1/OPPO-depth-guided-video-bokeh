@@ -18,6 +18,7 @@ from src.dual_layer import depth_band
 
 OUT = ROOT/"outputs/route3-v2data-hidden-color-purity-2026-11-26-01"
 STAGE3A = ROOT/"outputs/route3-v2data-stage3a-2026-11-24-02"
+E0_FRAMES = ROOT/"outputs/route3-v2data-E0-rerender-2026-11-26-01/fixed-base/frames"
 CUTS = np.array([.5,.9,.99], np.float32)
 SAMPLE_GRID = (.125,.375,.625,.875)
 
@@ -313,7 +314,11 @@ def archive_witnesses(item):
     evidence=SceneEvidence(unit,name,views)
     files=[]
     for frame,unit,cases in jobs:
+        evaluated={r["case"] for r in read(E0_FRAMES/name/f"f{frame:03d}.json")["rows"]["G"]
+                   if r["status"]=="evaluated"}
         for case in cases:
+            if case["id"] not in evaluated:
+                continue
             path=witness_path(name,case)
             if not path.exists():
                 p,options,best,actual,_,_=substitute_variants(evidence,unit,name,frame,case)
@@ -342,6 +347,8 @@ def witness_audit():
         for name,files in workers.map(archive_witnesses,sorted(jobs.items()),chunksize=1):
             results[name]=files
             print("SOURCE_WITNESSES",len(results),len(jobs),name,len(files),flush=True)
+    if sum(map(len,results.values()))!=105:
+        raise ValueError("Expected witness coverage for 87 development and 18 legacy evaluated cases")
     save_json(OUT/"source-witnesses.json",dict(files=results))
 
 
