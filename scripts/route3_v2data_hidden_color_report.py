@@ -11,8 +11,10 @@ import route3_v2data_module2_infer as ref
 from route3_v2data_B_batch import sha256
 from route3_v2data_E0_rerender import STAGE3C
 from route3_v2data_E_labels import save_json
-from route3_v2data_hidden_color_purity import OLD_ARM, raw_s3_source_coverage, target_metadata
+from route3_v2data_hidden_color_purity import OLD_ARM, raw_s3_source_coverage, target_metadata, zero_file
 from route3_v2data_hidden_color_sources import OUT, ROOT, read, read_witnesses, witness_path
+from route3_v2data_hidden_color_zero import (COMBINED_FLOOR, FAILURE_CASE, START_TOLERANCE, VISIBLE_FLOOR,
+                                            VISIBLE_TOLERANCE)
 from route3_v2data_stage3b import QUERY
 
 RECORD=ROOT/"03_实验记录/records/route3-v2data-hidden-color-purity-2026-11-26.json"
@@ -250,30 +252,58 @@ def s0_reference_check(rows):
     return dict(cases=len(rows),max_abs_difference_db=maxima,tolerance_db=.01)
 
 
-def query_floors(rows, tag):
-    heads=[r["render"][tag]["Query"] for r in rows]
+def zero_floors(rows, tag, family):
+    arms=sorted(set().union(*(items(r,family,tag).keys() for r in rows)))
     def check(scores, floor):
-        return dict(ref.pooled(scores),threshold_db=floor,passed=sum(s["psnr"]>=floor for s in scores),
-                    evaluated=len(scores),min_case_db=min(s["psnr"] for s in scores))
-    arms=heads[0]["methods"]
-    return dict(visible=check([h["visible_zero"] for h in heads],50),
-                composed={a:check([h["methods"][a]["zero"] for h in heads],60) for a in arms})
+        values=[s for _,s in scores]
+        below=[dict(scene=r["scene"],case=r["case"],psnr_db=s["psnr"]) for r,s in scores if s["psnr"]<floor]
+        return dict(ref.pooled(values),threshold_db=floor,passed=len(values)-len(below),below_floor=len(below),
+                    below_floor_cases=below,evaluated=len(values),min_case_db=min(s["psnr"] for s in values))
+    composed={}
+    for arm in arms:
+        scores=[(r,items(r,family,tag)[arm]["zero"]) for r in rows if arm in items(r,family,tag)]
+        composed[arm]=check(scores,COMBINED_FLOOR)
+    visible_method="Query" if family=="Query" else "F2"
+    visible=[(r,items(r,family,tag)[visible_method]["visible_zero"]) for r in rows]
+    return dict(visible=check(visible,VISIBLE_FLOOR),composed=composed)
+
+
+def frame_rows(path, *, require_zero):
+    rows=read(path)["rows"]
+    first=rows[0]
+    sidecar=zero_file(first["scene"],first["frame"])
+    checks={r["case"]:r for r in read(sidecar)["rows"]} if sidecar.is_file() else {}
+    for r in rows:
+        if r["status"]!="evaluated" or "zero_checks" in r:
+            continue
+        supplement=checks.get(r["case"])
+        if supplement is None:
+            if require_zero:
+                raise ValueError(f"Missing zero-aperture measurements for {r['scene']}/{r['case']}")
+            continue
+        for tag in ("G","P"):
+            for family in FAMILIES:
+                arms=supplement["render"][tag][family]
+                arms=arms["methods"] if family=="Query" else arms
+                for method,measurements in arms.items():
+                    items(r,family,tag)[method].update(measurements)
+        r["zero_checks"]=supplement["zero_checks"]
+    return rows
 
 
 def build(*, halted=False):
     paths=sorted((OUT/"frames").glob("*/*.json"))
+    full_frames=len(paths)
+    qualification=[p for p in sorted((OUT/"smoke/frames").glob("*/*.json"))
+                   if not (OUT/"frames"/p.parent.name/p.name).exists()]
+    paths.extend(qualification)
     if len(paths)!=54 and not halted:
         raise ValueError(f"Expected all 54 frames, received {len(paths)}")
-    full_frames=len(paths)
-    qualification=[]
     if halted:
         phase=read(OUT/"dispatch.json")
         if phase["phase"]!="halted":
             raise ValueError("A partial record requires a halted GPU run")
-        qualification=[p for p in sorted((OUT/"smoke/frames").glob("*/*.json"))
-                       if not (OUT/"frames"/p.parent.name/p.name).exists()]
-        paths.extend(qualification)
-    all_rows=[r for p in paths for r in read(p)["rows"]]
+    all_rows=[r for p in paths for r in frame_rows(p,require_zero=not halted)]
     rows=[r for r in all_rows if r["status"]=="evaluated"]
     dev=[r for r in rows if r["cohort"]=="development"]
     legacy=[r for r in rows if r["cohort"]=="legacy"]
@@ -282,6 +312,23 @@ def build(*, halted=False):
     scopes=dict(development=dev,legacy=legacy,
                 thin_structure=[r for r in dev if ref.title(r["scene"]) in ("dev003","dev004","dev005")],
                 dev008=[r for r in dev if ref.title(r["scene"])=="dev008"])
+    zero_scopes={name:[r for r in cases if "zero_checks" in r]
+                 for name,cases in dict(all=rows,**scopes).items()}
+    zero_tables={name:{tag:{arm:zero_floors(cases,tag,arm) for arm in FAMILIES} for tag in ("G","P")}
+                 for name,cases in zero_scopes.items() if cases}
+    audited=zero_scopes["all"]
+    zero_policy=dict(visible_floor_db=VISIBLE_FLOOR,visible_max_delta_exclusive_db=VISIBLE_TOLERANCE,
+        original_Query_composed_floor_db=COMBINED_FLOOR,original_Query_P_3c_max_delta_inclusive_db=START_TOLERANCE,
+        comparison_convention="3c stores P; G uses its own focus-conditioned Query and keeps the original Query floor.",
+        altered_and_F2_below_floor="record only",
+        verified_cases=len(audited),
+        visible_max_delta_db=max((max(r["zero_checks"]["visible_max_delta_db"].values()) for r in audited),default=None),
+        original_Query_P_max_delta_from_3c_db=max((r["zero_checks"]["query_P_3c_abs_delta_db"]
+                                                  for r in audited),default=None))
+    failure=next((r for r in rows if (r["scene"],r["case"])==FAILURE_CASE[:2]),None)
+    repro=None if failure is None else failure["render"][FAILURE_CASE[2]]["Query"].get("zero_change")
+    if not halted and repro is None:
+        raise ValueError("Missing zero-aperture candidate and ray audit for dev002 f030 far G")
     optical={}
     focus={}
     for name,parts in scopes.items():
@@ -339,8 +386,8 @@ def build(*, halted=False):
                                                   for r in rows],
                  optical=optical,query_original_P=original_query_check(rows),
                  S0_archived_G={scope:s0_reference_check(parts) for scope,parts in scopes.items() if parts},
-                 query_zero_floors={scope:{tag:query_floors(parts,tag) for tag in ("G","P")}
-                                    for scope,parts in scopes.items() if parts},
+                 zero_aperture=dict(policy=zero_policy,by_scope=zero_tables,
+                                    dev002_f030_far_G=repro),
                  panels=[item for r in rows for item in r.get("panel",[])],
                  skipped=[dict(scene=r["scene"],case=r["case"],reason=r["status"]) for r in all_rows
                           if r["status"]!="evaluated"],
@@ -349,7 +396,14 @@ def build(*, halted=False):
     if (not halted and len(derived["panels"])!=10) or any(not (OUT/f).is_file() for f in derived["panels"]):
         raise ValueError("Expected all ten requested interleaved image panels")
     if halted:
-        derived["stop"]=dict(phase,log="inference.log",qualification_log="smoke.log")
+        derived["stop"]=dict(phase,log="inference-resumed.log")
+    if RECORD.is_file():
+        prior=read(RECORD)
+        historical=prior.get("resumed_after") or prior.get("stop",{})
+        if historical.get("arm")=="QGT@0.50":
+            derived["resumed_after"]=dict(historical,classification="停止条件过严（规划方），已放宽后续跑")
+        if "plot_observations" in prior:
+            derived["plot_observations"]=prior["plot_observations"]
     return derived
 
 
@@ -377,6 +431,16 @@ def lines_for(report):
         rates=[f"{v:.1%}" if v is not None else "—" for v in value["fractions"].values()]
         n=value["S3"]
         lines.append(f"| {ref.title(scene)} | {value['parents']} | "+" | ".join(rates)+f" | {n['qualified']}/{n['f030_parents']} |")
+    if report["source_query_cpu"]:
+        source=report["source_query_cpu"]["all"]
+        lines.extend(["", "## 实际 Query 取色来源", "",
+                      "| 覆盖率 | RGB 贡献样本数 | 占比 | f030 剥离匹配数 | 线性 RGB MAE |",
+                      "|---|---:|---:|---:|---:|"])
+        c=source["contributors"]
+        for i,band in enumerate(("<0.50","0.50–0.90","0.90–0.99","≥0.99")):
+            e=source["f030_linear_color_error_by_bin"][str(i)]
+            lines.append(f"| {band} | {c['bins'][i]:,} | {c['fractions'][i]:.2%} | {e['samples']:,} | {fmt(e['mae'],4)} |")
+        lines.extend(["",f"另有 {c['unknown']:,} 个 RGB 贡献样本的覆盖率未知。"])
     for scope,table in report["optical"].items():
         for f,focus in table.items():
             lines.extend(["",f"## {scope} · {f} 远焦","",
@@ -397,6 +461,29 @@ def lines_for(report):
             for k,r in models.items():
                 lines.append(f"| {school} | {label} | {TITLES[k]} | {fmt(r['p50'])} / {fmt(r['p95'])} | "
                              f"{fmt(r['p50_CoC_px'])} / {fmt(r['p95_CoC_px'])} |")
+    zero=report["zero_aperture"]
+    policy=zero["policy"]
+    if policy["verified_cases"]:
+        lines.extend(["", "## 零光圈", "",
+                      f"核对 {policy['verified_cases']} 个 case。可见层同几何最大差 "
+                      f"{policy['visible_max_delta_db']:.8g} dB，原版 Query P 与 3c 起点最大差 "
+                      f"{policy['original_Query_P_max_delta_from_3c_db']:.8g} dB。",
+                      "", "| 几何 / 系统 | 档 | G <60 / 总数 | G 最低 dB | P <60 / 总数 | P 最低 dB |",
+                      "|---|---|---:|---:|---:|---:|"])
+        overall=zero["by_scope"]["all"]
+        for family in FAMILIES:
+            for name,g in overall["G"][family]["composed"].items():
+                p=overall["P"][family]["composed"][name]
+                lines.append(f"| {TITLES[family]} | {name} | {g['below_floor']}/{g['evaluated']} | "
+                             f"{fmt(g['min_case_db'])} | {p['below_floor']}/{p['evaluated']} | {fmt(p['min_case_db'])} |")
+    issue=zero["dev002_f030_far_G"]
+    if issue:
+        rays=issue["pinhole_rays"]["positive_compositing_weight"]
+        lines.extend(["", "### dev002 f030 远焦 G", "",
+                      f"原版 Query {issue['original_query_db']:.6f} dB，QGT@0.50 {issue['variant_db']:.6f} dB，"
+                      f"差 {issue['variant_minus_original_db']:+.6f} dB。去掉 {issue['removed_hidden_points']:,} 个隐藏点，"
+                      f"其余隐藏点中有 {issue['recolored_hidden_points']:,} 个发生实质换色。"
+                      f"有 {rays['either']:,} 条针孔光线从两类改动点收到正合成权重。"])
     return "\n".join(lines)+"\n"
 
 

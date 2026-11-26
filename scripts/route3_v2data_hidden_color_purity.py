@@ -1,6 +1,5 @@
 """Isolated hidden-colour inference with registered scenes and full sensor scoring."""
 import argparse
-from collections import defaultdict
 from dataclasses import replace
 import os
 import time
@@ -19,6 +18,7 @@ from route3_v2data_E0_train import gpu_gate, predict
 from route3_v2data_E_labels import save_json
 from route3_v2data_hidden_color_query import geometry_cloud, color_variants, proxy_generator
 from route3_v2data_hidden_color_sources import OUT, CUTS, SceneEvidence, bin_counts, read, read_witnesses
+from route3_v2data_hidden_color_zero import FAILURE_CASE, ZeroAperture, verify_case
 from route3_v2data_stage3b import QUERY, FrameQueries, optical_band, pack_frame
 
 ROOT=ref.ROOT
@@ -135,10 +135,21 @@ def color_storage(v):
     return v.astype(np.float16)
 
 
+def substitute_alternatives(geometry,unit,name,frame,native,K,parents,variants):
+    _,depth,maximum=geometry
+    for kind,(color,keep) in variants.items():
+        if kind=="S0" or (kind.startswith("S1") and kind!="S1@0.00"):
+            continue
+        cloud=placed(parents,unit,name,frame,native,depth,maximum,K,color=color,support=keep) if keep.any() else None
+        yield kind,cloud
+
+
 def render_substitutes(geometry,arm,tag,focus,unit,name,frame,entry,case,native,x,K,
-                       offsets,center,truth,area,region,lpips,layout,parents,variants,best,pictures,raw):
+                       offsets,center,pinhole,truth,area,region,lpips,layout,parents,variants,best,pictures,raw):
     visible,depth,maximum=geometry
     fill=ref.f2_for(unit,entry,frame,x,focus,offsets)
+    zero=ZeroAperture(visible,K,focus,center,ref.f2_for(unit,entry,frame,x,focus,center),pinhole,
+                      (name,case["id"],tag,arm))
     f2=render_chunked(visible,None,K,focus,offsets,fill)
     cloud=placed(parents,unit,name,frame,native,depth,maximum,K)
     s0=render_chunked(visible,cloud,K,focus,offsets,fill)
@@ -151,57 +162,42 @@ def render_substitutes(geometry,arm,tag,focus,unit,name,frame,entry,case,native,
     if case["focus_index"]==1:
         marker,parents_map=parent_labels(geometry,parents,unit,name,frame,native,K)
         weights=render_bins(visible,marker,best[parents_map],K,focus,offsets)
-    score={"F2":stat_record(f2,truth,area,weights,lpips,layout,s0),
-           "S0":stat_record(s0,truth,area,weights,lpips,layout,s0)}
+    score={"F2":dict(stat_record(f2,truth,area,weights,lpips,layout,s0),**zero.arm("F2")),
+           "S0":dict(stat_record(s0,truth,area,weights,lpips,layout,s0),**zero.arm("S0",cloud))}
     if pictures is not None:
         pictures[f"{arm}/S0"]=color_storage(s0)
         pictures[f"{arm}/F2"]=color_storage(f2)
         pictures[f"{arm}/purity"]=grades(weights)
         pictures[f"{arm}/unrecoverable"]=weights[...,-1]<=1e-6
-    for kind,(color,keep) in variants.items():
-        if kind=="S0" or (kind.startswith("S1") and kind!="S1@0.00"):
-            continue
-        if keep.any():
-            altered=placed(parents,unit,name,frame,native,depth,maximum,K,color=color,support=keep)
-            rgb=render_chunked(visible,altered,K,focus,offsets,fill)
-        else:
-            rgb=f2
-        score[kind]=stat_record(rgb,truth,area,weights,lpips,layout,s0)
+    for kind,altered in substitute_alternatives(geometry,unit,name,frame,native,K,parents,variants):
+        rgb=f2 if altered is None else render_chunked(visible,altered,K,focus,offsets,fill)
+        score[kind]=dict(stat_record(rgb,truth,area,weights,lpips,layout,s0),**zero.arm(kind,altered))
         if pictures is not None and kind in ("S1@0.00","S2@0.99","S3"):
             pictures[f"{arm}/{kind}"]=color_storage(rgb)
     return score
 
 
-def zero_score(visible,hidden,K,focus,center,fill,pinhole):
-    value=ref.display(ref.raster(ref.merge_layers(visible,hidden),K,focus,center,512,512,fill)[0])
-    return ref.region_sse(value,pinhole,np.ones(pinhole.shape[:2],bool))
-
-
 def render_query(visible,cloud,details,args,case,tag,focus,offsets,pictures):
     unit,name,frame,entry,x,K,truth,area,lpips,layout,evidence,views,proxy,center,pinhole=args
     fill=ref.f2_for(unit,entry,frame,x,focus,offsets)
-    zfill=ref.f2_for(unit,entry,frame,x,focus,center)
+    key=(name,case["id"],tag)
+    zero=ZeroAperture(visible,K,focus,center,ref.f2_for(unit,entry,frame,x,focus,center),pinhole,key)
+    trace_at="QGT@0.50" if key==FAILURE_CASE else None
     off=render_chunked(visible,None,K,focus,offsets,fill)
-    visible_zero=ref.region_sse(ref.display(ref.raster(visible,K,focus,center,512,512)[0]),
-                                pinhole,np.ones(area.shape,bool))
+    change=None
     if cloud is None:
         variants={"Query":None}
         for typ in ("QGT","QPred"):
             variants.update({f"{typ}@{cut:.2f}":None for cut in (0.,*CUTS.tolist())})
         src,best=dict(retained_heads=0),{"QGT":np.empty(0),"QPred":np.empty(0)}
     else:
-        variants,src,best=color_variants(cloud,details,evidence,views,frame,proxy)
+        variants,src,best,change=color_variants(cloud,details,evidence,views,frame,proxy,trace_at=trace_at)
     on=render_chunked(visible,cloud,K,focus,offsets,fill)
     weights=render_bins(visible,cloud,best["QGT"],K,focus,offsets) if case["focus_index"]==1 else None
-    metrics={"F2":dict(stat_record(off,truth,area,weights,lpips,layout,on),zero=zero_score(
-               visible,None,K,focus,center,zfill,pinhole))}
+    metrics={"F2":dict(stat_record(off,truth,area,weights,lpips,layout,on),**zero.arm("F2"))}
     for arm,splats in variants.items():
         image=on if arm=="Query" else (off if splats is None else render_chunked(visible,splats,K,focus,offsets,fill))
-        z=zero_score(visible,splats,K,focus,center,zfill,pinhole)
-        if visible_zero["psnr"] < 50 or z["psnr"] < 60:
-            raise ValueError(f"Query {arm} zero-aperture check failed for {name}/{case['id']}/{tag}: "
-                             f"{visible_zero['psnr']}, {z['psnr']}")
-        metrics[arm]=dict(stat_record(image,truth,area,weights,lpips,layout,on),zero=z)
+        metrics[arm]=dict(stat_record(image,truth,area,weights,lpips,layout,on),**zero.arm(arm,splats))
         if pictures is not None and (arm=="Query" or arm.endswith("@0.99")):
             pictures[arm]=color_storage(image)
     if pictures is not None:
@@ -209,7 +205,16 @@ def render_query(visible,cloud,details,args,case,tag,focus,offsets,pictures):
                 ("QPred@0.99",render_bins(visible,cloud,best["QPred"],K,focus,offsets))):
             pictures[f"{arm}/purity"]=grades(weight)
             pictures[f"{arm}/unrecoverable"]=weight[...,-1]<=1e-6
-    return dict(methods=metrics,visible_zero=visible_zero,source=src)
+    result=dict(methods=metrics,visible_zero=metrics["Query"]["visible_zero"],source=src)
+    if change is not None:
+        removed,recolored=(change.pop(k) for k in ("removed","recolored"))
+        original=metrics["Query"]["zero"]["psnr"]
+        variant=metrics[trace_at]["zero"]["psnr"]
+        result["zero_change"]=dict(change,original_query_db=original,variant_db=variant,
+            variant_minus_original_db=variant-original,original_hidden_points=len(removed),
+            removed_hidden_points=int(removed.sum()),recolored_hidden_points=int(recolored.sum()),
+            pinhole_rays=zero.changed_rays(cloud,removed,recolored))
+    return result
 
 
 def selected_view_context(unit,name,views,memory,frame,depth,K,cases,focus_tags):
@@ -225,6 +230,42 @@ def selected_view_context(unit,name,views,memory,frame,depth,K,cases,focus_tags)
 def frame_file(name,frame,smoke):
     dest=(OUT/"smoke" if smoke else OUT)/"frames"/name/f"f{frame:03d}.json"
     return dest
+
+
+def zero_file(name,frame):
+    return OUT/"zeros-only"/name/f"f{frame:03d}.json"
+
+
+def supplement_zero(previous, surface, unit, name, frame, entry, native, x, K, center, pinhole, cases):
+    """Backfill the new fields, keeping earlier K64 scores and Query pinhole scores."""
+    rows=[]
+    for old in previous["rows"]:
+        if old["status"]!="evaluated":
+            continue
+        case=next(c for c in cases if c["id"]==old["case"])
+        parents,variants,_,_=read_witnesses(name,case)
+        scored={}
+        cached_visible=[]
+        for tag in ("G","P"):
+            scored[tag]={}
+            for arm,geometry in surface.items():
+                focus=old["focus_error"][arm]["GT_focus_m" if tag=="G" else "focus_m"]
+                visible,depth,maximum=geometry
+                zfill=ref.f2_for(unit,entry,frame,x,focus,center)
+                zero=ZeroAperture(visible,K,focus,center,zfill,pinhole,(name,case["id"],tag,arm))
+                s0=placed(parents,unit,name,frame,native,depth,maximum,K)
+                candidate={"F2":zero.arm("F2"),"S0":zero.arm("S0",s0)}
+                for method,hidden in substitute_alternatives(geometry,unit,name,frame,native,K,parents,variants):
+                    candidate[method]=zero.arm(method,hidden)
+                scored[tag][arm]=candidate
+                if arm=="V0_pred":
+                    original=old["render"][tag]["Query"]
+                    cached_visible.append(original["visible_zero"]["psnr"])
+                    scored[tag]["Query"]=dict(methods={method:zero.arm(method,saved_combined=m["zero"])
+                                                        for method,m in original["methods"].items()})
+        checks=verify_case(dict(old,render=scored),cached_visible=cached_visible)
+        rows.append(dict(case=case["id"],render=scored,zero_checks=checks))
+    return dict(rows=rows)
 
 
 def comparison_map(subject, focus, target, predicted):
@@ -265,14 +306,15 @@ def evaluate(smoke=False):
         if smoke and (frame!=30 or slug not in ("dev010","dev005","122104")):
             continue
         dest=frame_file(name,frame,smoke)
-        if dest.exists():
+        saved=dest if dest.is_file() else frame_file(name,frame,True)
+        previous=read(saved) if saved.is_file() else None
+        sidecar=zero_file(name,frame)
+        needs_zero=previous is not None and any(r["status"]=="evaluated" and "zero_checks" not in r
+                                               for r in previous["rows"])
+        if previous is not None and (not needs_zero or sidecar.is_file()):
             totals+=1
             continue
         gpu_gate(LIMIT)
-        if last!=name:
-            views,memory=ref.gallery.scene_views(dict(unit=unit) if unit else legacy[name,frame])
-            evidence=SceneEvidence(unit,name,views)
-            last=name
         sample=("B",name,ref.ovg.TRAIN_FRAMES.index(frame))
         x,y=ref.sample(sample)
         predicted=geometry(x,protect_residual=True,render_heads=False,return_features=True)
@@ -292,6 +334,15 @@ def evaluate(smoke=False):
         arrays={a:d.cpu().numpy() for a,d in depths.items()}
         surface={arm:(*make_visible(color,d,K,t if arm=="E2k" else None),d) for arm,d in depths.items()}
         surface={arm:(vis,d,maximum) for arm,(vis,maximum,d) in surface.items()}
+        if previous is not None:
+            save_json(sidecar,supplement_zero(previous,surface,unit,name,frame,entry,native,x,K,center,pinhole,cases))
+            totals+=1
+            print("HIDDEN_COLOR_ZERO_ONLY",totals,slug,frame,flush=True)
+            continue
+        if last!=name:
+            views,memory=ref.gallery.scene_views(dict(unit=unit) if unit else legacy[name,frame])
+            evidence=SceneEvidence(unit,name,views)
+            last=name
         subj=[ref.near_subject(native["gt"],native["valid"],K.cpu().numpy(),c["focus_m"]) for c in cases]
         selected={a:[ref.p2_focus(d,s) for s in subj] for a,d in arrays.items()}
         stores=selected_view_context(unit,name,views,memory,frame,arrays["V0_pred"],K,cases,
@@ -318,7 +369,7 @@ def evaluate(smoke=False):
                 arm:comparison_map(subj[i],selected[arm][i],focus_gt,arrays[arm]) for arm in arrays},
                 substitute_source=raw_s3_source_coverage(best,witness,parents,variants),render={})
             pictures={} if frame==30 and far and slug in MAIN_CASES else None
-            reference_args=(unit,name,frame,entry,case,native,x,K,offsets,center,truth,area,
+            reference_args=(unit,name,frame,entry,case,native,x,K,offsets,center,pinhole,truth,area,
                             region,lpips,layout,parents,variants,best)
             query_args=(unit,name,frame,entry,x,K,truth,area,lpips,layout,evidence,views,proxy,center,pinhole)
             for tag in ("G","P"):
@@ -338,6 +389,7 @@ def evaluate(smoke=False):
                     scored["Query"]=render_query(surface["V0_pred"][0],hidden,trace,query_args,case,tag,f,
                                                   offsets,pictures if tag=="G" else None)
                 row["render"][tag]=scored
+            row["zero_checks"]=verify_case(row)
             if pictures is not None:
                 picture_root=OUT/"smoke" if smoke else OUT
                 files=draw_panel(picture_root,row,truth,area,ref.bands(native,y)[0],pictures)

@@ -132,7 +132,7 @@ def error_by_bin(colors, pure, support, target_rgb):
     return values
 
 
-def color_variants(cloud, data, evidence, views, frame, proxy):
+def color_variants(cloud, data, evidence, views, frame, proxy, *, trace_at=None):
     n=len(cloud.means)
     source=np.asarray([a["frame"] for a in views])
     for view in views:
@@ -176,6 +176,7 @@ def color_variants(cloud, data, evidence, views, frame, proxy):
                     clean[source_rows]&np.isfinite(source_purity),peeled[source_rows]))
     modes={"Query":cloud}
     best={}
+    change=None
     for typ,values in (("QGT",gt),("QPred",pred)):
         known=np.isfinite(values)&(weights>0)
         maximum=np.where(known,values,-1).max(1)
@@ -194,7 +195,15 @@ def color_variants(cloud, data, evidence, views, frame, proxy):
             key=f"{typ}@{thresh:.2f}"
             modes[key]=GaussianScene(**attrs) if keep.any() else None
             stats[typ]["admitted"][key]=int(keep.sum())
-    return modes,stats,best
+            if key==trace_at:
+                removed=~torch.as_tensor(keep,device=cloud.means.device)
+                discarded=(weights>0)&~good
+                recolored=(~removed)&torch.as_tensor(discarded.any(1),device=cloud.means.device) & (
+                    (replacement-cloud.colors).abs().amax(dim=1)>2e-6)
+                change=dict(removed=removed,recolored=recolored,
+                            original_source_contributions=int((weights>0).sum()),
+                            removed_source_contributions=int(discarded.sum()))
+    return modes,stats,best,change
 
 
 def proxy_generator(geometry, e_network, e_inputs, evidence, sample, train_frames):
