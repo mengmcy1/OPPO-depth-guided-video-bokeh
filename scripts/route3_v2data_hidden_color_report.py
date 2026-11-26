@@ -10,6 +10,7 @@ import route3_v2data_module2_infer as ref
 from route3_v2data_B_batch import sha256
 from route3_v2data_E0_rerender import STAGE3C
 from route3_v2data_E_labels import save_json
+from route3_v2data_hidden_color_purity import OLD_ARM, target_metadata
 from route3_v2data_hidden_color_sources import OUT, ROOT, read
 from route3_v2data_stage3b import QUERY
 
@@ -184,6 +185,34 @@ def original_query_check(rows):
     return dict(source=str(path),cases=len(deltas),max_difference_db=max(deltas) if deltas else None)
 
 
+def s0_reference_check(rows):
+    maxima={a:0. for a in FAMILIES[:3]}
+    for r in rows:
+        region="far_recoverable" if r["focus_index"] else "near_in_focus"
+        expected=target_metadata(r["scene"],r["frame"],{"id":r["case"]})["methods"]
+        for arm in maxima:
+            old=expected[OLD_ARM[arm]]["optical"][region]
+            new=items(r,arm,"G")["S0"]["score"]
+            a,b=(ref.score_psnr(x) for x in (old,new))
+            if old["pixels"]!=new["pixels"] or (a is None)!=(b is None):
+                raise ValueError(f"S0 evaluation support changed for {r['scene']}/{r['case']}/{arm}")
+            if a is not None:
+                maxima[arm]=max(maxima[arm],abs(a-b))
+    if max(maxima.values())>.01:
+        raise ValueError(f"S0 did not reproduce the archived G rendering within .01 dB: {maxima}")
+    return dict(cases=len(rows),max_abs_difference_db=maxima,tolerance_db=.01)
+
+
+def query_floors(rows, tag):
+    heads=[r["render"][tag]["Query"] for r in rows]
+    def check(scores, floor):
+        return dict(ref.pooled(scores),threshold_db=floor,passed=sum(s["psnr"]>=floor for s in scores),
+                    evaluated=len(scores),min_case_db=min(s["psnr"] for s in scores))
+    arms=heads[0]["methods"]
+    return dict(visible=check([h["visible_zero"] for h in heads],50),
+                composed={a:check([h["methods"][a]["zero"] for h in heads],60) for a in arms})
+
+
 def build():
     paths=sorted((OUT/"frames").glob("*/*.json"))
     if len(paths)!=54:
@@ -240,6 +269,9 @@ def build():
                  focus_error=focus,focus_by_case=[{k:r[k] for k in ("scene","case","frame","focus_index","focus_error")}
                                                   for r in rows],
                  optical=optical,query_original_P=original_query_check(rows),
+                 S0_archived_G={scope:s0_reference_check(parts) for scope,parts in scopes.items()},
+                 query_zero_floors={scope:{tag:query_floors(parts,tag) for tag in ("G","P")}
+                                    for scope,parts in scopes.items()},
                  panels=[item for r in rows for item in r.get("panel",[])],
                  skipped=[dict(scene=r["scene"],case=r["case"],reason=r["status"]) for r in all_rows
                           if r["status"]!="evaluated"],
