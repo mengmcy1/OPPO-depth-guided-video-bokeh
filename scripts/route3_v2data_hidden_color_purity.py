@@ -254,6 +254,7 @@ def evaluate(smoke=False):
     e_net,_=load_model("E-H2",2000)
     inputs=EInputs("E-H2")
     tear=load_tear(E0/"E-H2/tear-002000/selected.pt")
+    os.environ["TORCH_HOME"]=str(OUT/"lpips-weights")
     lpips=load_lpips().cuda().eval()
     from route3_v2data_hidden_color_panels import draw_panel
     legacy={(p["name"],p["frame"]):p for p in ref.gallery.planned_frames() if p["unit"] is None}
