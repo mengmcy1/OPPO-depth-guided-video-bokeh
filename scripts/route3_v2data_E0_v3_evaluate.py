@@ -11,6 +11,7 @@ import route3_v2data_E0_evaluate as depth_eval
 import route3_v2data_E0_rerender as replay
 import route3_v2data_E0_rerender_report as panels
 import route3_v2data_E0_v2 as v2
+import route3_v2data_E0_v3_color as color
 import route3_v2data_module2_infer as ref
 from route3_v2data_B_batch import sha256
 from route3_v2data_E_labels import load, save_json
@@ -24,10 +25,11 @@ from src.ovg_edge_statistics import EdgeStatistics
 EVAL=RUN/"evaluation"
 FOCI=("P","G")
 FIXED_KEYS=("V0_pred","v2a","E_learned","E2_4k_tear","E2_2k","E2_2k_tear",
-            "E3","E3_tear","E3_gt","V0_GT")
+            "E3","E3_tear","E3_gt","V0_GT","b")
 TITLES=dict(zip(FIXED_KEYS,("V0 预测","OVG + v2a","E1 2k + 撕裂","E2 4k + 撕裂","E2 2k",
-                           "E2 2k + 撕裂","E3","E3 + 撕裂","E3 + GT 撕裂","V0 GT")))
+                           "E2 2k + 撕裂","E3","E3 + 撕裂","E3 + GT 撕裂","V0 GT","OVG + GT 撕裂")))
 ARCHIVE_ARMS={"V0_pred":"V0_pred","v2a":"v2a","E_learned":"E_learned","E2_4k_tear":"E_B_learned"}
+COLOR_RECORD=v2.RECORDS/"route3-v2data-hidden-color-purity-2026-11-26.json"
 
 
 def steps():
@@ -38,7 +40,7 @@ def steps():
 
 def groups(retrospective, chosen):
     result={
-        "E1_2k":("v1",2000,{a:a for a in ("V0_pred","v2a","E_learned","V0_GT")}),
+        "E1_2k":("v1",2000,{a:a for a in ("V0_pred","v2a","E_learned","V0_GT","b")}),
         "E2_4k":("v2",4000,{"E2_4k_tear":"E_B_learned"}),
         "E2_2k":("v2",2000,{"E2_2k":"E_B","E2_2k_tear":"E_B_learned"}),
         "E3":("v3",chosen,{"E3":"E_B","E3_tear":"E_B_learned","E3_gt":"E_B_gt"}),
@@ -119,8 +121,13 @@ def optical_summary(parts, arms):
         for cohort,scope in table.items():
             rows=[r for p in parts for r in p["rows"][tag] if belongs(r,cohort)]
             scope["far_f2"]=v2.far_f2(rows,arms=arms,new_arms=new)
+            scope["far_witness_comparison"]=color.far_witness_table(rows,arms,legacy=cohort=="legacy")
+            for method in scope["paired"].values():
+                method.pop("far_recoverable")
             scope["paired_vs_E1"]={a:ref.compare(scope["per_scene"],"E_learned",a,scope["methods"],
                                                   include_absolute_near=True) for a in new}
+            for method in scope["paired_vs_E1"].values():
+                method.pop("far_recoverable")
         report[tag]=table
     return report
 
@@ -230,14 +237,17 @@ def write_panels(parts, arm_groups, arms):
                 if r["status"]!="evaluated":
                     continue
                 i=r["focus_index"]
+                extra=None
                 if i==1:
+                    extra=(color.S2,{a:images[f"{tag}/{i}/{a}/{color.WITNESS}"] for a in arms},
+                           {a:m[color.WITNESS] for a,m in r["methods"].items()})
                     methods={a:dict(m,optical=dict(m["optical"],far_recoverable=m["far_off"]))
                              for a,m in r["methods"].items()}
                     r=dict(r,methods=methods)
                     with_f2=dict(images,**{f"{tag}/{i}/{a}":images[f"{tag}/{i}/{a}/F2"] for a in arms})
                 else:
                     with_f2=images
-                paths.append(panels.optical_panel(slug,tag,i,r,with_f2,arms,far_f2=i==1))
+                paths.append(panels.optical_panel(slug,tag,i,r,with_f2,arms,far_f2=i==1,far_reference=extra))
     if len(paths)!=38:
         raise ValueError(f"Expected 38 E3 panels, received {len(paths)}")
     return paths,titles
@@ -262,7 +272,8 @@ def evaluate(arm_groups):
             model,_=load_model(MODE,step,run=BASES[version])
             tear=replay.load_tear(tear_root(version,step)/"selected.pt")
             bundle=(geometry,None,inputs,model,tear)
-        phases[name]=replay.phase(EVAL/name,bundle,tuple(mapping.values()),FOCI,render_options=v2.PHASE_OPTIONS)
+        phases[name]=replay.phase(EVAL/name,bundle,tuple(mapping.values()),FOCI,
+                                  render_options=dict(v2.PHASE_OPTIONS,extra_far=color.extra_far))
         if name=="E2_4k":
             initial={k:arm_groups[k] for k in phases}
             before=tuple(a for _,_,m in initial.values() for a in m)
@@ -275,6 +286,8 @@ def evaluate(arm_groups):
     optical=optical_summary(parts,arms)
     paths,titles=write_panels(parts,arm_groups,arms)
     return dict(optical=optical,depth=depth,panels=paths,titles=titles,arm_order=list(arms),P_self_check=checks,
+                far_colour_protocol=dict(color.PROTOCOL,source_record=COLOR_RECORD.name),
+                S2_coverage_by_scene=color.coverage(COLOR_RECORD),
                 dev003_subject={k:v["dev003_subject"] for k,v in depth.items()})
 
 
@@ -285,7 +298,9 @@ def fmt(x, n=3):
 def text_summary(report):
     lines=["# E0 第三版方案 A", "", "## 怎么读", "",
            "留出表每行是一版的一个 EMA 检查点。杆和后分量误差越低越好，均衡 CoC 采用 px 且越低越好。",
-           "光学表每行是同一几何和撕裂头组合，PSNR 单位 dB 且越高越好。近焦按各方法对焦的 P，远焦主要读 F2 的 P 和 G。", "",
+           "光学表每行是同一几何和撕裂头组合，PSNR 用 dB，越高越好。近焦读 P。远焦在 P 和 G 下都并列读 F2 和颜色参照。",
+           "S2@0.90 用来观察给定理想隐藏层颜色时的几何表现，F2 用来观察不靠隐藏层时有没有退化。两列之差是实际隐藏层需要补上的量。",
+           "新开发集无合格见证的隐藏点回退 F2。原 3 场景用同帧剥离 S0。新开发集的原 S0 是旧口径，已知被污染。", "",
            "## 留出集重新选点", "", "| 版本 | 原选点 | 新规则选点 | 通过杆门槛 | 均衡 CoC px |",
            "|---|---:|---:|---|---:|"]
     for version,r in report["holdout"].items():
@@ -325,18 +340,49 @@ def text_summary(report):
         guard=data["guards"]["development"]
         g=[f"{guard['relative'][k]:+.2%}（{'通过' if guard['passed'][k] else '超限'}）" for k in depth_eval.GUARDS]
         lines.append("| "+" | ".join([alias,*rg,*g])+" |")
+    lines.extend(["", "## 新开发集远焦见证覆盖", "",
+                  "每行按同一场景三个远焦帧的隐藏点合并。两列分别为至少一个覆盖率 ≥0.90 的见证与回退 F2 的比例。", "",
+                  "| 场景 | 隐藏点 | 合格见证 | 回退 F2 | 参照范围 |", "|---|---:|---:|---:|---|"])
+    for name,r in report["S2_coverage_by_scene"].items():
+        limit="约一半回退，S2 参照偏低" if r["limited_reference"] else ""
+        lines.append(f"| {ref.title(name)} | {r['parents']:,} | {r['qualified_fraction']:.2%} | "
+                     f"{r['fallback_fraction']:.2%} | {limit} |")
     for group in ("development","legacy","thin_structure","dev008"):
         p,g=(report["optical"][t][group] for t in FOCI)
-        lines.extend(["",f"## {group} 光学", "", "括号中为相对 V0_pred 的逐场景配对中位数，单位 dB。", "",
-                      "| 档 | P 近焦 | P 远焦 F2 | G 远焦 F2 | P／G 含替身待查 |", "|---|---:|---:|---:|---:|"])
+        label="同帧剥离 S0" if group=="legacy" else color.S2
+        old="旧 S0 P／G（已知被污染）" if group!="legacy" else "归档 S0 P／G"
+        lines.extend(["",f"## {group} 光学", "",
+                      "F2 括号为相对 V0_pred F2 的配对中位与正／负数。参照括号相对同档 F2。", "",
+                      f"| 档 | P 近焦 | P F2 | P {label} | G F2 | G {label} | {old} |",
+                      "|---|---:|---:|---:|---:|---:|---:|"])
         for arm in report["arm_order"]:
             a,b=(s["methods"][arm] for s in (p,g))
-            off=[s["far_f2"]["pooled"][arm]["psnr_db"] for s in (p,g)]
-            md=[np.median(list(s["far_f2"]["paired"][arm]["per_scene_db"].values())).item()
-                if arm!="V0_pred" else 0. for s in (p,g)]
+            off=[]
+            compare=[]
+            for section in (p,g):
+                base=section["far_f2"]["pooled"][arm]["psnr_db"]
+                if arm in section["far_f2"]["paired"]:
+                    info=section["far_f2"]["paired"][arm]
+                    off.append(f"{fmt(base)} ({info['median_db']:+.3f}, {info['positive']}/{info['negative']})")
+                else:
+                    off.append(fmt(base))
+                primary=section["far_witness_comparison"]["methods"][arm]["primary_reference"]
+                info=primary["paired_vs_same_arm_F2"]
+                value=primary["pooled"]["reference"]["psnr_db"]
+                compare.append(f"{fmt(value)} ({info['median_db']:+.3f}, {info['positive']}/{info['negative']})")
             lines.append(f"| {report['titles'][arm]} | {fmt(a['near_in_focus']['psnr_db'])} | "
-                         f"{fmt(off[0])} ({md[0]:+.3f}) | {fmt(off[1])} ({md[1]:+.3f}) | {fmt(a['far_recoverable']['psnr_db'])}／"
-                         f"{fmt(b['far_recoverable']['psnr_db'])} |")
+                         f"{off[0]} | {compare[0]} | {off[1]} | {compare[1]} | "
+                         f"{fmt(a['far_recoverable']['psnr_db'])}／{fmt(b['far_recoverable']['psnr_db'])} |")
+    lines.extend(["", "## 新开发集 f030 远焦", "", "S2 和 S3 仅使用共同的 f030 case。两列括号均相对同档、同帧 F2。", "",
+                  "| 档 | 焦距 | F2 | S2@0.90 | S3 |", "|---|---|---:|---:|---:|"])
+    for tag in FOCI:
+        refs=report["optical"][tag]["development"]["far_witness_comparison"]["methods"]
+        for arm in report["arm_order"]:
+            sample=refs[arm]["matched_f030"]
+            s2,s3=(sample[k]["pooled"] for k in ("S2","S3"))
+            lines.append(f"| {report['titles'][arm]} | {tag} | {fmt(s2['F2']['psnr_db'])} | "
+                         f"{fmt(s2['reference']['psnr_db'])} ({s2['delta_vs_F2_db']:+.3f}) | "
+                         f"{fmt(s3['reference']['psnr_db'])} ({s3['delta_vs_F2_db']:+.3f}) |")
     lines.extend(["", "## dev003 远焦主体", "", "区域、分量和锚点列给像素数。后分量给原始逆深度与截断后逆深度的中位数，单位 m⁻¹。对焦距离单位 m。", "",
                   "| 检查点 | 帧 | 杆／缝／正常／边界 | 选前／后 | ρ₂／DS／三角化 | 后分量原始／截断 | 实际焦距 |",
                   "|---|---:|---:|---:|---:|---:|---:|"])
@@ -362,7 +408,7 @@ def collect():
     report=dict(cached,holdout=hist,training=training,config_file=CONFIG.name,test_cases_used=0,
                 checkpoint_step=step,checkpoint_sha256=sha256(RUN/MODE/f"step-{step:06d}.pt"),
                 tear_heads={name:{k:r[k] for k in ("config","selected","wall_seconds")} for name,r in heads.items()},
-                far_primary="F2-only",substitute="pending validation")
+                far_references=["F2",color.S2],old_S0="Old development colour protocol with known contamination")
     save_json(RESULT,report)
     (EVAL/"汇总.md").write_text(text_summary(report))
     gallery='<!doctype html><meta charset="utf-8"><title>E0 第三版</title><h1>E0 第三版</h1><p><a href="汇总.md">汇总</a></p>'
@@ -400,10 +446,13 @@ def publish():
         p,g=(report["optical"][f]["development"] for f in FOCI)
         score=p["methods"]["E3_tear"]["near_in_focus"]["psnr_db"]
         far=[s["far_f2"]["pooled"]["E3_tear"]["psnr_db"] for s in (p,g)]
+        ref_far=[s["far_witness_comparison"]["methods"]["E3_tear"]["primary_reference"]["pooled"]["reference"]["psnr_db"]
+                 for s in (p,g)]
         picked="／".join(f"{h['selected']['step']//1000}k" for h in report["holdout"].values())
         line=(f"{tag}。统一留出选点第一／二／三版为 {picked}。第三版配重训撕裂头的开发集近焦 P "
-              f"为 {score:.3f} dB，远焦仅 F2 的 P／G 为 {far[0]:.3f}／{far[1]:.3f} dB。"
-              f"含 GT 替身的远焦列待查。 [机器记录](records/{RESULT.name})")
+              f"为 {score:.3f} dB。远焦 F2 的 P／G 为 {far[0]:.3f}／{far[1]:.3f} dB，"
+              f"S2@0.90 的 P／G 为 {ref_far[0]:.3f}／{ref_far[1]:.3f} dB。S0 保留为旧口径。"
+              f" [机器记录](records/{RESULT.name})")
         v2.PROGRESS.write_text(progress.replace(anchor,anchor+"\n\n"+line,1))
     v2.publish((RESULT,v2.PROGRESS),"记录 E0 第三版、三版统一选点及配对评价")
     dispatch("complete",commit=v2.git("rev-parse","HEAD",capture=True).stdout.strip(),panels=38)

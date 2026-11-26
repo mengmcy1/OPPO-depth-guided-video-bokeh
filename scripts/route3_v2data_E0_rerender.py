@@ -189,7 +189,7 @@ def subject_probe(folder,scene,frame,context,decoded,subject,depths,native):
 
 @torch.inference_mode()
 def render_frame(folder,bundle,job,arms,conventions,previous=None,*,far_f2=False,
-                 far_diagnostics=True,strict_floors=True):
+                 far_diagnostics=True,strict_floors=True,extra_far=None):
     cohort,name,frame,unit,entry,cases=job
     ovg_net,ovg_tear,inputs,e,tear=bundle
     item=("B",name,ovg.TRAIN_FRAMES.index(frame))
@@ -285,19 +285,20 @@ def render_frame(folder,bundle,job,arms,conventions,previous=None,*,far_f2=False
             idx=case["focus_index"]
             tag=case["id"]
             method0=previous_rows.get(tag,{}).get("methods",{}).get(arm)
-            seen={} if method0 is None else {method0["focus_m"]:(method0,None,None)}
+            seen={} if method0 is None else {method0["focus_m"]:(method0,None,None,{})}
             hidden=ref.place_hidden(unit,name,frame,case,native,z,maximum,K)
             rays=None if idx else method0["rays"] if method0 else near_trace(
                 unit,entry,name,frame,case,x,y,native,K,truth,visible,hidden)
             for kind,row in work.items():
                 target=focus[source if kind=="P" else kind]
                 if target in seen:
-                    method,on,off=seen[target]
+                    method,on,off,extras=seen[target]
                     if on is None and save_panel and kind!="V":
                         on=old_arrays[f"P/{idx}/{arm}"]
                         if far_f2 and idx==1:
                             off=old_arrays[f"P/{idx}/{arm}/F2"]
                 else:
+                    extras={}
                     fill=ref.f2_for(unit,entry,frame,x,target,offsets)
                     on=ref.display(ref.light(visible,hidden,K,target,offsets,fill))
                     off=None
@@ -311,9 +312,14 @@ def render_frame(folder,bundle,job,arms,conventions,previous=None,*,far_f2=False
                         rays=rays,**zeros)
                     if far_f2 and idx==1:
                         method["far_off"]=ref.region_sse(off,truth,masks["far_recoverable"])
+                        if extra_far is not None:
+                            extras=extra_far((visible,z,maximum),unit,name,frame,native,case,K,target,
+                                             offsets,fill,on,off)
+                            mask=masks["far_recoverable"]
+                            method.update({k:ref.region_sse(image,truth,mask) for k,image in extras.items()})
                     if any(method["optical"][k0]["pixels"]!=int(mask.sum()) for k0,mask in masks.items()):
                         raise ValueError(f"Nonfinite optical support: {name}/{tag}/{arm}/{kind}")
-                    seen[target]=(method,on,off)
+                    seen[target]=(method,on,off,extras)
                 if kind=="P":
                     method0=method
                 else:
@@ -327,6 +333,8 @@ def render_frame(folder,bundle,job,arms,conventions,previous=None,*,far_f2=False
                     pictures[f"{kind}/{idx}/{arm}"]=on.astype(np.float16)
                     if far_f2 and idx==1:
                         pictures[f"{kind}/{idx}/{arm}/F2"]=off.astype(np.float16)
+                        for key,image in extras.items():
+                            pictures[f"{kind}/{idx}/{arm}/{key}"]=image.astype(np.float16)
         del visible,maximum,hidden
     return dict(rows=rows,subject=probe),pictures
 

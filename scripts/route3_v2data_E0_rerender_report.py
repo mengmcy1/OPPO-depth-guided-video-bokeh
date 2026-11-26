@@ -168,7 +168,7 @@ def draw_subjects(subjects, *, base_key="E-H2@2k", other_key="E_B"):
     return stems
 
 
-def optical_panel(name,focus,index,row,pictures,arms,*,far_f2=False):
+def optical_panel(name,focus,index,row,pictures,arms,*,far_f2=False,far_reference=None):
     target=pictures[f"{index}/target"]
     edge=pictures[f"{index}/edge"]
     zone=pictures.get("rod_gap",target)
@@ -180,9 +180,14 @@ def optical_panel(name,focus,index,row,pictures,arms,*,far_f2=False):
     boundary=ref.crop_for(choices[witness],truth,edge)
     width=173
     tiles=("整图","杆 / 缝放大","边缘放大","误差 0–0.25","可见层逆深度","撕裂／误连／误断")
+    if far_reference is not None:
+        label,reference_images,reference_scores=far_reference
+        tiles+=tuple(f"{label} {name}" for name in ("整图","同框边缘","误差 0–0.25"))
     canvas=Image.new("RGB",(width*(len(arms)+1),70+(width+18)*len(tiles)),(18,22,32))
     draw=ImageDraw.Draw(canvas)
     lens = "近焦" if index==0 else "远焦，仅 F2" if far_f2 else "远焦"
+    if far_reference is not None:
+        lens=f"远焦，F2／{label}"
     draw.text((6,4),f"{name} f030 · {focus} · {lens} · 局部评分掩码",
               font=gallery.font(18),fill="white")
     if name=="dev010":
@@ -192,6 +197,9 @@ def optical_panel(name,focus,index,row,pictures,arms,*,far_f2=False):
     for i,arm in enumerate(("Cycles",*arms)):
         x=i*width
         title="Cycles · ∞" if not i else f"{i} {TITLES[i-1]} · "+fmt(ref.score_psnr(row["methods"][arm]["optical"][region]),2)
+        if far_reference is not None and i:
+            reference=fmt(ref.score_psnr(reference_scores[arm]),2)
+            title+=f"／{reference}"
         draw.text((x+3,50),title,font=gallery.font(13),fill="white")
         now=truth if i==0 else choices[arm]
         whole=gallery.rgb_image(now)
@@ -209,6 +217,15 @@ def optical_panel(name,focus,index,row,pictures,arms,*,far_f2=False):
             shade[active]=marked[active]/255.
             marked=gallery.rgb_image(shade).crop(boundary)
         layers=(outlined,whole.crop(detail),whole.crop(boundary),error,depth,marked)
+        if far_reference is not None:
+            rgb=truth if not i else reference_images[arm].astype(np.float32)
+            second=gallery.rgb_image(rgb)
+            boxes=second.copy()
+            draw2=ImageDraw.Draw(boxes)
+            draw2.rectangle(detail,outline=(255,185,65),width=2)
+            draw2.rectangle(boundary,outline=(85,208,242),width=2)
+            second_error=gallery.scalar_image(np.abs(rgb-truth).mean(-1),.25,cv2.COLORMAP_INFERNO)
+            layers+=(boxes,second.crop(boundary),second_error)
         for j,p in enumerate(layers):
             y=70+(width+18)*j
             if i==0:
