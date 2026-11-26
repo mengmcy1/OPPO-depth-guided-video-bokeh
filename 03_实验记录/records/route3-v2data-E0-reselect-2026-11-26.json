@@ -181,5 +181,169 @@
     "step": 2000
   },
   "selection_used_development": false,
-  "test_cases_used": 0
+  "test_cases_used": 0,
+  "development_depth": {
+    "errors": {
+      "rod/decoded": {
+        "n": 125831,
+        "p50": 0.07160460948944092,
+        "p95": 0.22559387981891632,
+        "signed_p50": -0.029967069625854492
+      },
+      "rod/OVG": {
+        "n": 125831,
+        "p50": 0.07061195373535156,
+        "p95": 0.22014813125133514,
+        "signed_p50": -0.0121992826461792
+      },
+      "gap/decoded": {
+        "n": 1062726,
+        "p50": 0.04623446613550186,
+        "p95": 0.17460668087005615,
+        "signed_p50": 0.0006202757358551025
+      },
+      "gap/OVG": {
+        "n": 1062726,
+        "p50": 0.14337056875228882,
+        "p95": 0.4379456490278244,
+        "signed_p50": 0.14326626062393188
+      },
+      "normal/decoded": {
+        "n": 10390464,
+        "p50": 0.01855337619781494,
+        "p95": 0.1345234513282776,
+        "signed_p50": -0.0024343207478523254
+      },
+      "normal/OVG": {
+        "n": 10390464,
+        "p50": 0.018824301660060883,
+        "p95": 0.15056260973215102,
+        "signed_p50": -0.00021892786026000977
+      },
+      "boundary/decoded": {
+        "n": 52695,
+        "p50": 0.046434998512268066,
+        "p95": 0.4140304774045942,
+        "signed_p50": 0.00379103422164917
+      },
+      "boundary/OVG": {
+        "n": 52695,
+        "p50": 0.07987111806869507,
+        "p95": 0.4983587741851806,
+        "signed_p50": 0.053535401821136475
+      },
+      "gap_mv_invalid/rear": {
+        "n": 444197,
+        "p50": 0.0656726285815239,
+        "p95": 0.17928613424301146,
+        "signed_p50": 0.008030712604522705
+      },
+      "gap_mv_invalid/OVG_rho2_anchor": {
+        "n": 444197,
+        "p50": 0.058255381882190704,
+        "p95": 0.19710938334465025,
+        "signed_p50": 0.002057313919067383
+      },
+      "rod/rear_to_peeled": {
+        "n": 125831,
+        "p50": 0.05114298313856125,
+        "p95": 0.15909332036972046,
+        "signed_p50": -0.00959818810224533
+      }
+    },
+    "normal_selected_back": {
+      "mv_valid": 0.1928429992160849,
+      "mv_invalid": 0.796750353032329
+    },
+    "guards": {
+      "inverse_depth_rmse": {
+        "OVG": 0.10069018463623772,
+        "E": 0.06933721389392282,
+        "relative_change": -0.3113806063181175,
+        "limit": 0.05,
+        "passed": true
+      },
+      "same_surface_step": {
+        "OVG": 0.07733698872715355,
+        "E": 0.08453952840333276,
+        "relative_change": 0.09313188675589523,
+        "limit": 0.1,
+        "passed": true
+      },
+      "near_subject_coc_mae": {
+        "OVG": 0.3166648469731785,
+        "E": 0.32863248838043235,
+        "relative_change": 0.0377927689847668,
+        "limit": 0.1,
+        "passed": true
+      },
+      "GT_occlusion_crossing_abs_p95": {
+        "OVG": 0.58990288124754,
+        "E": 0.5042519475376086,
+        "relative_change": -0.14519497434695494,
+        "limit": 0.1,
+        "passed": true
+      }
+    },
+    "panels": [
+      "/root/autodl-tmp/route3-e0-20261126/outputs/route3-v2data-E0-2026-11-26-01/E-H2/evaluation-003000-depth/depth-panels/dev000-f030-depth.jpg",
+      "/root/autodl-tmp/route3-e0-20261126/outputs/route3-v2data-E0-2026-11-26-01/E-H2/evaluation-003000-depth/depth-panels/dev003-f030-depth.jpg",
+      "/root/autodl-tmp/route3-e0-20261126/outputs/route3-v2data-E0-2026-11-26-01/E-H2/evaluation-003000-depth/depth-panels/dev004-f030-depth.jpg",
+      "/root/autodl-tmp/route3-e0-20261126/outputs/route3-v2data-E0-2026-11-26-01/E-H2/evaluation-003000-depth/depth-panels/dev005-f030-depth.jpg",
+      "/root/autodl-tmp/route3-e0-20261126/outputs/route3-v2data-E0-2026-11-26-01/E-H2/evaluation-003000-depth/depth-panels/dev008-f030-depth.jpg",
+      "/root/autodl-tmp/route3-e0-20261126/outputs/route3-v2data-E0-2026-11-26-01/E-H2/evaluation-003000-depth/depth-panels/dev011-f030-depth.jpg"
+    ],
+    "source_sha256": "ed43387d5488a42879e197fc5251abada75f4f2f0dc9eb234664c95eaedc295a"
+  },
+  "retrained_tear": {
+    "selected": 20000,
+    "training_steps": 20000,
+    "selected_assessment": {
+      "threshold": 0.5,
+      "precision": 0.3723080252655977,
+      "recall": 0.9363456992799029,
+      "balanced_precision": 0.9755646266565249,
+      "weighted_error": 0.061917448917484505,
+      "error_by_group": [
+        0.06365430072009715,
+        0.11002046879286921,
+        0.020351974212492616,
+        0.05778025043098178
+      ],
+      "true_positive": 426630,
+      "false_positive": 719276
+    },
+    "rank": [
+      0.08596895885517686,
+      0.061917448917484505,
+      20000
+    ],
+    "protocol": {
+      "E_sha256": "0eec7e33660a8af021f28dda19793584823999c378176eb7a26140de76203786",
+      "train_frames": 306,
+      "holdout_frames": 30,
+      "excluded_overlap": [
+        "training-061-ff0a4ff42915123f",
+        "training-140-05fad3fd2dd65434",
+        "training-146-8a0ee3e962c92314",
+        "training-170-b7f646b4ee9080be",
+        "training-173-13ed6793b9ce2fb2"
+      ],
+      "steps": 20000,
+      "batch": 8,
+      "inputs": 55,
+      "seed": 20261126,
+      "loss_weights": [
+        1,
+        1,
+        1,
+        2
+      ],
+      "lr_start": 0.001,
+      "lr_end": 1e-05,
+      "ema": 0.999,
+      "selection": "Minimize the mean of weighted edge error and global false-step tear rate; ties use weighted error, then earliest step"
+    },
+    "source_sha256": "14c74227a15e9dc19b889040dd04d3c399f7ba98da26c4cb91ead0dcca78000f"
+  }
 }
