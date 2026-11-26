@@ -89,18 +89,18 @@ def split(index):
     return train,valid,sorted(held&set(prior))
 
 
-def load_model(mode,step):
-    ck=RUN/mode/f"step-{step:06d}.pt"
+def load_model(mode,step,*,run=RUN):
+    ck=run/mode/f"step-{step:06d}.pt"
     network=module(mode).eval().requires_grad_(False)
     network.load_state_dict(torch.load(ck,map_location="cpu",weights_only=True)["ema"])
     return network,ck
 
 
-def train(mode,step):
-    rows=load(RUN/"data.json")["rows"]
+def train(mode,step,*,run=RUN):
+    rows=load(run/"data.json")["rows"]
     index=dataset()
     train_frames,holdout,excluded=split(index)
-    root=RUN/mode/f"tear-{step:06d}"
+    root=run/mode/f"tear-{step:06d}"
     result=root/"training.json"
     if result.is_file():
         return load(result)
@@ -110,7 +110,7 @@ def train(mode,step):
     waited=gpu_gate(LIMIT)
     began=time.monotonic()
     before=competitor_state()
-    network,source=load_model(mode,step)
+    network,source=load_model(mode,step,run=run)
     root.mkdir(parents=True,exist_ok=True)
     protocol=dict(E_sha256=sha256(source),train_frames=len(train_frames),holdout_frames=len(holdout),
                   excluded_overlap=excluded,steps=STEPS,batch=BATCH,inputs=INPUT_CHANNELS,seed=SEED,

@@ -135,25 +135,24 @@ def rgba_mask(image,mask):
     return Image.fromarray(pixels)
 
 
-def draw_subjects(subjects):
+def draw_subjects(subjects, *, base_key="E-H2@2k", other_key="E_B"):
     stems=[]
     root=RUN/"figures"
-    for index,old in enumerate(subjects["E-H2@2k"]):
-        pieces={"OVG ρ₁":None,"GT 中心逆深度":None,"E-H2@2k ρc":None}
+    for index,old in enumerate(subjects[base_key]):
         with np.load(RUN/old["panel_data"]) as p:
             mask=p["subject"]
             gt=p["GT central axial depth (m)"]
-            pieces.update({"OVG ρ₁":p["OVG rho1 (m^-1)"],
-                          "GT 中心逆深度":np.divide(1.,gt,out=np.zeros_like(gt),where=gt>0),
-                          "E-H2@2k ρc":p["E rho_c (m^-1)"]})
-        if "E_B" in subjects:
-            b=subjects["E_B"][index]
+            pieces={"OVG ρ₁":p["OVG rho1 (m^-1)"],
+                    "GT 中心逆深度":np.divide(1.,gt,out=np.zeros_like(gt),where=gt>0),
+                    f"{base_key} ρc":p["E rho_c (m^-1)"]}
+        if other_key in subjects:
+            b=subjects[other_key][index]
             if b["frame"]!=old["frame"]:
                 raise ValueError("Unmatched P2 subject frames")
             with np.load(RUN/b["panel_data"]) as p:
                 if not np.array_equal(mask,p["subject"]):
                     raise ValueError("P2 subject mask differs between E candidates")
-                pieces["E B ρc"]=p["E rho_c (m^-1)"]
+                pieces[f"{other_key} ρc"]=p["E rho_c (m^-1)"]
         shared=max(float(np.quantile(v,.99)) for v in pieces.values())
         canvas=Image.new("RGB",(292*len(pieces),325),(18,22,32))
         draw=ImageDraw.Draw(canvas)
@@ -169,7 +168,7 @@ def draw_subjects(subjects):
     return stems
 
 
-def optical_panel(name,focus,index,row,pictures,arms):
+def optical_panel(name,focus,index,row,pictures,arms,*,far_f2=False):
     target=pictures[f"{index}/target"]
     edge=pictures[f"{index}/edge"]
     zone=pictures.get("rod_gap",target)
@@ -183,7 +182,8 @@ def optical_panel(name,focus,index,row,pictures,arms):
     tiles=("整图","杆 / 缝放大","边缘放大","误差 0–0.25","可见层逆深度","撕裂／误连／误断")
     canvas=Image.new("RGB",(width*(len(arms)+1),70+(width+18)*len(tiles)),(18,22,32))
     draw=ImageDraw.Draw(canvas)
-    draw.text((6,4),f"{name} f030 · {focus} · {'近焦' if index==0 else '远焦'} · 局部评分掩码",
+    lens = "近焦" if index==0 else "远焦，仅 F2" if far_f2 else "远焦"
+    draw.text((6,4),f"{name} f030 · {focus} · {lens} · 局部评分掩码",
               font=gallery.font(18),fill="white")
     if name=="dev010":
         draw.text((6,28),"近焦无有效主体，本场只列远焦。",font=gallery.font(14),fill="white")

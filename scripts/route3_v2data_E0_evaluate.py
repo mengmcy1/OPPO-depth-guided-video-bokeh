@@ -39,9 +39,9 @@ GUARDS=("inverse_depth_rmse","same_surface_step","near_subject_coc_mae","GT_occl
 
 
 class EInputs:
-    def __init__(self, mode):
+    def __init__(self, mode, *, cache_run=RUN):
         self.mode=mode
-        self.rows=load(RUN/"data.json")["rows"]
+        self.rows=load(cache_run/"data.json")["rows"]
         self.lookup={(r["scene"],r["frame"]):i for i,r in enumerate(self.rows)}
         self.encoder=None
 

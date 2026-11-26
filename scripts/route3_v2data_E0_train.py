@@ -126,6 +126,12 @@ def objective(values,phase):
     return sum(WEIGHTS[k]*values[k] for k in include)
 
 
+def normal_front_bce(log_mass, loss_zone):
+    # BCE(w_back_eff, 0) is -log(1 - w_back_eff).
+    # The mixture head already computes this complement in stable FP32 log space.
+    return average(-log_mass[:, :1], loss_zone == 2)
+
+
 def module(mode):
     torch.manual_seed(SEED)
     return ELight(mode).cuda().to(memory_format=torch.channels_last)
@@ -211,7 +217,7 @@ def qualify():
 
 def new_diagnostics():
     return dict(error=defaultdict(list),selected=defaultdict(Counter),nll=Counter(),
-                zones=Counter(),jump=Counter(),gate=Counter(),rear_source=Counter())
+                zones=Counter(),jump=Counter(),gate=Counter(),gate_by_zone=Counter(),rear_source=Counter())
 
 
 def spatial_jump(weight,selected,visible):
@@ -247,6 +253,7 @@ def add_diagnostics(totals,out,target):
         support=visible&(loss_zone==i)
         totals["zones"][word]+=int(support.sum())
         totals["nll"][word]+=float(np.sum(nll[support],dtype=np.float64))
+        totals["gate_by_zone"][word]+=float(np.sum(gate[support],dtype=np.float64))
         choose=visible&(zone==i) if i<3 else support
         totals["error"][word+"/decoded"].append((decoded-center)[choose])
         totals["error"][word+"/OVG"].append((base-center)[choose])
@@ -254,6 +261,13 @@ def add_diagnostics(totals,out,target):
             pixels=choose&valid
             branch=totals["selected"][word+"/"+label]
             branch.update(pixels=int(pixels.sum()),rear=int((pixels&selected).sum()))
+    strict_normal=visible&(loss_zone==2)
+    totals["error"]["normal_loss_zone/decoded"].append((decoded-center)[strict_normal])
+    totals["error"]["normal_loss_zone/OVG"].append((base-center)[strict_normal])
+    for label,valid in (("mv_valid",mv),("mv_invalid",~mv)):
+        region=strict_normal&valid
+        totals["selected"]["normal_loss_zone/"+label].update(
+            pixels=int(region.sum()),rear=int((region&selected).sum()))
     gaps=visible&(zone==1)&~mv
     totals["error"]["gap_mv_invalid/rear"].append((rear-center)[gaps])
     totals["error"]["gap_mv_invalid/OVG_rho2_anchor"].append(
@@ -281,6 +295,7 @@ def diagnostic_summary(totals):
                 nll_by_zone={k:fraction(totals["nll"][k],n) for k,n in totals["zones"].items()},
                 spatial_jump=dict(totals["jump"],ratio=fraction(totals["jump"]["changes"],totals["jump"]["pairs"])),
                 gate=dict(totals["gate"],mean=fraction(totals["gate"]["sum"],totals["gate"]["pixels"])),
+                gate_by_zone={k:fraction(totals["gate_by_zone"][k],n) for k,n in totals["zones"].items()},
                 rear_source=dict(totals["rear_source"]))
 
 
@@ -304,24 +319,24 @@ def choose(curve):
     return min(curve,key=lambda r:(rod(r),r["holdout"]["nll"],r["step"])),False
 
 
-def verify_registration(data):
-    config=load(CONFIG)
+def verify_registration(data, config_path=CONFIG):
+    config=load(config_path)
     if config["training"]["crop_order_sha256"]!=data["crop_order_sha256"]:
         raise ValueError("The registered E0 crop sequence disagrees with the data")
-    relative=str(CONFIG.relative_to(CONFIG.parents[2]))
-    committed=subprocess.check_output(["git","show",f"HEAD:{relative}"],cwd=CONFIG.parents[2])
+    relative=str(config_path.relative_to(config_path.parents[2]))
+    committed=subprocess.check_output(["git","show",f"HEAD:{relative}"],cwd=config_path.parents[2])
     if json.loads(committed)!=config:
         raise ValueError("Commit the E0 configuration before training")
     return config
 
 
-def train(mode):
+def train(mode, *, run=RUN, config_path=CONFIG, normal_front_weight=0.):
     data,order=checked_prepared()
-    verify_registration(data)
+    verify_registration(data,config_path)
     rows=data["rows"]
     index=dataset()
     holdout=[i for i,r in enumerate(rows) if r["scene"] in set(index["holdout"])]
-    path=RUN/mode
+    path=run/mode
     report=path/"training.json"
     if report.is_file():
         return load(report)
@@ -360,6 +375,9 @@ def train(mode):
         loss=terms(out,target)
         phase=1 if step<=RAMP else 2
         total=objective(loss,phase)
+        if normal_front_weight:
+            loss["normal_front_bce"]=normal_front_bce(out["log_mass"],target["loss_zone"])
+            total=total+normal_front_weight*loss["normal_front_bce"]
         if not torch.isfinite(total):
             raise FloatingPointError(f"Nonfinite E0 objective at {mode} step {step}")
         total.backward()
@@ -370,9 +388,10 @@ def train(mode):
             torch._foreach_lerp_(shadow,params,1.-EMA)
         active+=time.monotonic()-started
         if step==RAMP+1:
+            weights=dict(WEIGHTS,normal_front_bce=normal_front_weight)
             save_json(path/"phase2-term-scales.json",
                       dict(step=step,unweighted={k:float(v.detach()) for k,v in loss.items()},
-                           weighted={k:float(v.detach())*WEIGHTS[k] for k,v in loss.items()}))
+                           weighted={k:float(v.detach())*weights[k] for k,v in loss.items()}))
         if step%100==0 or step==1:
             row=dict(step=step,phase=phase,loss=float(total.detach()),wall_seconds=time.monotonic()-start,
                      active_seconds=active,mean_step_seconds=active/(step-step0),gpu_wait_seconds=waited,
@@ -396,6 +415,7 @@ def train(mode):
     selected,passed=choose(curve)
     result=dict(mode=mode,steps=STEPS,parameters=sum(p.numel() for p in params),curve=curve,
                 selected=selected,rod_baseline_eligible=passed,
+                normal_front_weight=normal_front_weight,
                 phase2=load(path/"phase2-term-scales.json"),wall_seconds=time.monotonic()-start,
                 step_seconds=active/max(1,STEPS-step0),peak_allocated_gib=torch.cuda.max_memory_allocated()/GIB,
                 peak_reserved_gib=torch.cuda.max_memory_reserved()/GIB,

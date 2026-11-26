@@ -133,10 +133,10 @@ def zero_scores(visible,hidden,K,focus,center,fill,pinhole,full,common,zv):
              ("zero_visible_common",zv,common),("zero_combined_common",composed,common))}
 
 
-def check_zero(old,new,scene,case,arm):
+def check_zero(old,new,scene,case,arm,*,strict_floors=True):
     for name,floor in ref.FLOORS.items():
         a,b=(values[name] for values in (old,new))
-        if b["pixels"] and min(ref.score_psnr(a),ref.score_psnr(b))<floor:
+        if strict_floors and b["pixels"] and min(ref.score_psnr(a),ref.score_psnr(b))<floor:
             raise ValueError(f"Fixed-focus {name} did not pass for {scene}/{case}/{arm}: {a}, {b}")
         if a["pixels"]!=b["pixels"] or not np.isclose(a["sse"],b["sse"],rtol=1e-5,atol=1e-9):
             raise ValueError(f"Pinhole changed with focus for {scene}/{case}/{arm}/{name}")
@@ -161,7 +161,6 @@ def save_arrays(path,values):
 
 
 def subject_probe(folder,scene,frame,context,decoded,subject,depths,native):
-    data={}
     fields={
         "OVG rho1 (m^-1)":context["rho1"][0,0].cpu().numpy(),
         "E rho_c (m^-1)":decoded["decoded"][0,0].cpu().numpy(),
@@ -175,15 +174,22 @@ def subject_probe(folder,scene,frame,context,decoded,subject,depths,native):
     path=folder/"subjects"/f"{scene}-f{frame:03d}.npz"
     path.parent.mkdir(parents=True,exist_ok=True)
     save_arrays(path,dict(subject=subject,**fields))
-    return dict(scene=scene,frame=frame,pixels=n,selected_front=int((subject&~rear).sum()),
+    row=dict(scene=scene,frame=frame,pixels=n,selected_front=int((subject&~rear).sum()),
                 selected_back=int((subject&rear).sum()),
                 beta_source={name:int((subject&(source==i)).sum()) for i,name in enumerate(("rho2","DepthSplat","triangulation"))},
                 medians={name:float(np.median(value[subject])) if n else None for name,value in fields.items()},
+                actual_P2_focus_m=ref.p2_focus(depths["E_current"],subject),
                 panel_data=str(path.relative_to(RUN)))
+    if "loss_zone" in context:
+        zones=context["loss_zone"][0,0].cpu().numpy()
+        row["regions"]={name:int((subject&(zones==i)).sum())
+                        for i,name in enumerate(("rod","gap","normal","boundary"))}
+    return row
 
 
 @torch.inference_mode()
-def render_frame(folder,bundle,job,arms,conventions,previous=None):
+def render_frame(folder,bundle,job,arms,conventions,previous=None,*,far_f2=False,
+                 far_diagnostics=True,strict_floors=True):
     cohort,name,frame,unit,entry,cases=job
     ovg_net,ovg_tear,inputs,e,tear=bundle
     item=("B",name,ovg.TRAIN_FRAMES.index(frame))
@@ -279,47 +285,53 @@ def render_frame(folder,bundle,job,arms,conventions,previous=None):
             idx=case["focus_index"]
             tag=case["id"]
             method0=previous_rows.get(tag,{}).get("methods",{}).get(arm)
-            seen={} if method0 is None else {method0["focus_m"]:(method0,None)}
+            seen={} if method0 is None else {method0["focus_m"]:(method0,None,None)}
             hidden=ref.place_hidden(unit,name,frame,case,native,z,maximum,K)
             rays=None if idx else method0["rays"] if method0 else near_trace(
                 unit,entry,name,frame,case,x,y,native,K,truth,visible,hidden)
             for kind,row in work.items():
                 target=focus[source if kind=="P" else kind]
                 if target in seen:
-                    method,on=seen[target]
+                    method,on,off=seen[target]
                     if on is None and save_panel and kind!="V":
                         on=old_arrays[f"P/{idx}/{arm}"]
+                        if far_f2 and idx==1:
+                            off=old_arrays[f"P/{idx}/{arm}/F2"]
                 else:
                     fill=ref.f2_for(unit,entry,frame,x,target,offsets)
                     on=ref.display(ref.light(visible,hidden,K,target,offsets,fill))
                     off=None
-                    if idx==0:
+                    if idx==0 or far_f2:
                         off=ref.display(ref.light(visible,None,K,target,offsets,fill)) if hidden is not None else on
                     zeros=zero_scores(visible,hidden,K,target,center,ref.f2_for(unit,entry,frame,x,target,center),
                                       pinhole,full,common,zv)
                     method=dict(focus_m=target,GT_focus_m=row["GT_focus_m"],
                         optical={k0:ref.region_sse(on,truth,mask) for k0,mask in masks.items()},
-                        near_off=ref.region_sse(off,truth,masks["near_in_focus"]) if off is not None else None,
+                        near_off=ref.region_sse(off,truth,masks["near_in_focus"]) if idx==0 else None,
                         rays=rays,**zeros)
+                    if far_f2 and idx==1:
+                        method["far_off"]=ref.region_sse(off,truth,masks["far_recoverable"])
                     if any(method["optical"][k0]["pixels"]!=int(mask.sum()) for k0,mask in masks.items()):
                         raise ValueError(f"Nonfinite optical support: {name}/{tag}/{arm}/{kind}")
-                    seen[target]=(method,on)
+                    seen[target]=(method,on,off)
                 if kind=="P":
                     method0=method
                 else:
-                    check_zero(method0,method,name,tag,arm)
+                    check_zero(method0,method,name,tag,arm,strict_floors=strict_floors)
                 row["methods"][arm]=dict(method)
-                if idx==1 and kind=="G" and arm in DIAGNOSTIC_ARMS:
+                if far_diagnostics and idx==1 and kind=="G" and arm in DIAGNOSTIC_ARMS:
                     fill=ref.f2_for(unit,entry,frame,x,target,offsets)
                     row["methods"][arm]["far_diagnostic"]=far_trace(visible,hidden,K,target,offsets,fill,
                             masks["far_recoverable"],truth,method["optical"]["far_recoverable"])
                 if save_panel and kind!="V":
                     pictures[f"{kind}/{idx}/{arm}"]=on.astype(np.float16)
+                    if far_f2 and idx==1:
+                        pictures[f"{kind}/{idx}/{arm}/F2"]=off.astype(np.float16)
         del visible,maximum,hidden
     return dict(rows=rows,subject=probe),pictures
 
 
-def phase(folder,bundle,arms,conventions,earlier=None,smoke=False):
+def phase(folder,bundle,arms,conventions,earlier=None,smoke=False,*,render_options=None):
     rows=[]
     for job in ref.frames():
         cohort,name,frame,unit,entry,cases=job
@@ -330,7 +342,7 @@ def phase(folder,bundle,arms,conventions,earlier=None,smoke=False):
             previous=load(frame_paths(earlier,name,frame)[0]) if earlier else None
             if earlier and not previous:
                 raise FileNotFoundError(f"Missing earlier P score for {name}/{frame}")
-            entry,pictures=render_frame(folder,bundle,job,arms,conventions,previous)
+            entry,pictures=render_frame(folder,bundle,job,arms,conventions,previous,**(render_options or {}))
             dest.parent.mkdir(parents=True,exist_ok=True)
             save_arrays(picture,pictures)
             save_json(dest,entry)
