@@ -1,5 +1,6 @@
 """Register, train and reselect the matched Scheme A E-H2 experiment."""
 import argparse
+import fcntl
 import os
 import time
 
@@ -138,7 +139,9 @@ def reselect():
 
 def tear_root(version, step):
     known=BASES[version]/MODE/f"tear-{step:06d}"
-    if (known/"selected.pt").is_file() and (known/"training.json").is_file():
+    if ORIGINAL_STEPS.get(version)==step:
+        if not (known/"selected.pt").is_file() or not (known/"training.json").is_file():
+            raise FileNotFoundError(f"Missing original tear head for {version}@{step}")
         return known
     return RUN/"tear-heads"/version/f"step-{step:06d}"
 
@@ -147,7 +150,10 @@ def retrain(version, step):
     root=tear_root(version,step)
     if (root/"training.json").is_file():
         return load(root/"training.json")
-    return tears.train(MODE,step,run=BASES[version],destination=root)
+    root.mkdir(parents=True,exist_ok=True)
+    with (root/"dispatch.lock").open("a") as lock:
+        fcntl.flock(lock,fcntl.LOCK_EX)
+        return tears.train(MODE,step,run=BASES[version],destination=root)
 
 
 if __name__=="__main__":

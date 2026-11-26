@@ -314,24 +314,24 @@ def check_replay(parts,choice):
     return dict(mode="reproduce_E0",scores=report)
 
 
-def far_f2(rows):
+def far_f2(rows, *, arms=ARMS, new_arms=NEW_ARMS):
     by_scene=defaultdict(list)
     for row in rows:
         if row["status"]=="evaluated" and row["focus_index"]==1:
             by_scene[row["scene"]].append(row)
-    pooled={a:ref.pooled([r["methods"][a]["far_off"] for rr in by_scene.values() for r in rr]) for a in ARMS}
-    scenes={key:{a:ref.pooled([r["methods"][a]["far_off"] for r in rr]) for a in ARMS}
+    pooled={a:ref.pooled([r["methods"][a]["far_off"] for rr in by_scene.values() for r in rr]) for a in arms}
+    scenes={key:{a:ref.pooled([r["methods"][a]["far_off"] for r in rr]) for a in arms}
             for key,rr in by_scene.items()}
     pairs={}
     relative_to_initial={}
-    for arm in ARMS[1:]:
+    for arm in arms[1:]:
         def paired(base):
             diffs={n:table[arm]["psnr_db"]-table[base]["psnr_db"] for n,table in scenes.items()
                    if table[arm]["psnr_db"] is not None}
             return dict(per_scene_db=diffs,pooled_delta_db=pooled[arm]["psnr_db"]-pooled[base]["psnr_db"],
                         **ref.distribution(list(diffs.values())))
         pairs[arm]=paired("V0_pred")
-        if arm in NEW_ARMS:
+        if arm in new_arms:
             relative_to_initial[arm]=paired("E_learned")
     return dict(pooled=pooled,per_scene=scenes,paired=pairs,paired_vs_E_H2=relative_to_initial)
 
