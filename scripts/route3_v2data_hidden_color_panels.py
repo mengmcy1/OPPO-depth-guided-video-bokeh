@@ -29,11 +29,12 @@ def outline(image,area):
     return Image.fromarray(rgb)
 
 
-def draw_panel(root,row,truth,area,pictures):
+def draw_panel(root,row,truth,area,edge,pictures):
     where=root/"figures"
     where.mkdir(parents=True,exist_ok=True)
     shape=(512,512)
-    crop=crop_for(pictures["V0_GT/S0"].astype(np.float32),truth,area)
+    boundary=area&edge
+    crop=crop_for(pictures["V0_GT/S0"].astype(np.float32),truth,boundary if boundary.any() else area)
     w,h=196,196
     board=Image.new("RGB",(w*len(COLUMNS),h*5+116),(22,26,32))
     draw=ImageDraw.Draw(board)

@@ -340,7 +340,7 @@ def evaluate(smoke=False):
                 row["render"][tag]=scored
             if pictures is not None:
                 picture_root=OUT/"smoke" if smoke else OUT
-                files=draw_panel(picture_root,row,truth,area,pictures)
+                files=draw_panel(picture_root,row,truth,area,ref.bands(native,y)[0],pictures)
                 row["panel"]=[str(f.relative_to(OUT)) for f in files]
             rows.append(row)
         dest.parent.mkdir(parents=True,exist_ok=True)

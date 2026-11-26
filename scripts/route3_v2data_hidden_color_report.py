@@ -114,20 +114,27 @@ def source_query(rows):
     if not n:
         return dict(retained_heads=0)
     bins=np.sum([x["dominant_gt"]["bins"] for x in available],axis=0)
+    contributing=np.sum([x["contributing_gt"]["bins"] for x in available],axis=0)
+    unknown=sum(x["contributing_gt"]["unknown"] for x in available)
+    count=int(contributing.sum())+unknown
     effective=np.sum([x["weighted_gt"] for x in available],axis=0)
-    error_from_peel={}
-    for k in ("0","1","2","3"):
-        d=sum_dicts(x["peeled_color_error"][k] for x in available)
-        error_from_peel[k]=dict(
-            samples=int(d["samples"]),
-            linear_L1=d["absolute"]/(3*d["samples"]) if d["samples"] else None,
-            linear_PSNR=-10*np.log10(max(1e-12,d["squared"]/(3*d["samples"]))) if d["samples"] else None)
+    def peel_errors(field):
+        result={}
+        for k in ("0","1","2","3"):
+            d=sum_dicts(x[field][k] for x in available)
+            samples=int(d["samples"])
+            result[k]=dict(samples=samples,linear_L1=d["absolute"]/(3*samples) if samples else None,
+                           linear_PSNR=-10*np.log10(max(1e-12,d["squared"]/(3*samples))) if samples else None)
+        return result
     admitted={t:sum_dicts(x[t]["admitted"] for x in available) for t in ("QGT","QPred")}
     return dict(retained_heads=n,dominant_bins=bins.tolist(),dominant_fractions=(bins/n).tolist(),
                 dominant_unknown=int(n-bins.sum()),soft_rgb_weight_fractions=(effective/n).tolist(),
                 unknown_rgb_weight=sum(x["unknown_weight"] for x in available)/n,
+                contributing_samples=count,contributing_bins=contributing.tolist(),
+                contributing_fractions=(contributing/count).tolist(),contributing_unknown=unknown,
                 matched_f030_peel_count=sum(x["peeled_matched"] for x in available),
-                f030_color_error_by_bin=error_from_peel,admitted_heads=admitted)
+                f030_color_error_by_bin=peel_errors("peeled_color_error"),
+                f030_contributing_color_error=peel_errors("contributing_color_error"),admitted_heads=admitted)
 
 
 def source_witnesses(rows):
@@ -212,7 +219,7 @@ def build():
     derived=dict(case_counts=dict(development=len(dev),legacy=len(legacy),test=0),
                  source_protocol=dict(
                      direct_supervision="route3_v2data_query_prepare.py placement/label_case: associate 256-grid source candidate with its GT 512 centre point, project into the target, require matching deeper peeled surface and ray support; take target fNNN-peeled-color.npz whole pixel at integer projected coordinates. No first_visible_other_frame in target colour. C uses analytic material/UV texture lookup.",
-                     actual_Query="src/light_candidate_fusion.py: two heads, frozen q/softmax weights, fused world point, source-frame reprojection then bilinear RGB plus bounded learned residual. Dominant results use the highest effective RGB weight per retained head; weighted results sum the entire effective mixture.",
+                     actual_Query="src/light_candidate_fusion.py: two heads, frozen q/softmax weights, fused world point, source-frame reprojection then bilinear RGB plus bounded learned residual. Count all contributors with positive RGB weights. Dominant results use the highest effective RGB weight per retained head; weighted results sum the entire effective mixture.",
                      original_substitute="Stage 3a hidden_parents: first_visible_other_frame and nearest whole-pixel RGB in new B dev. Legacy S0 uses the archived same-frame peeled EXR oracle, as in E0.",
                      Query_purity="GT anchor is the surface at the dominant source candidate's original centre pixel. The exact four bilinear taps in each actual RGB source are weighted by their 4x4 occupancy of that surface. Purity is spatial coverage of that identity, not correctness of the inferred hidden surface.",
                      predicted="For every actual E-H2@2k source pixel, purity = 2*abs(w_back_eff-.5), interpolated at the same four taps. Query geometry, source slots, O1 and per-head opacity are frozen. Drop unreliable RGB weights and renormalize the original mixture on survivors; keep the original residual. A head without admissible colour is omitted so F2 receives the residual transmittance.",

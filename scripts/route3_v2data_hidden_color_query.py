@@ -156,13 +156,18 @@ def color_variants(cloud, data, evidence, views, frame, proxy):
     strongest=gt[ar,dominant]
     clean,peeled=evidence.peeled(frame,world,identity)
     finite=np.isfinite(gt)
+    source_rows,source_cols=np.nonzero(weights>0)
+    source_purity=gt[source_rows,source_cols]
     summed=np.bincount(np.searchsorted(CUTS,gt[finite],side="right"),
                        weights=weights[finite],minlength=4).tolist()
     stats=dict(retained_heads=n,dominant_gt=bin_counts(strongest),
+               contributing_gt=bin_counts(source_purity),
                weighted_gt=summed,unknown_weight=float(weights[~finite].sum()),
                peeled_matched=int((clean&np.isfinite(strongest)).sum()),
                peeled_color_error=error_by_bin(rgb[ar,dominant],strongest,
-                                               clean&np.isfinite(strongest),peeled))
+                                               clean&np.isfinite(strongest),peeled),
+               contributing_color_error=error_by_bin(rgb[source_rows,source_cols],source_purity,
+                    clean[source_rows]&np.isfinite(source_purity),peeled[source_rows]))
     modes={"Query":cloud}
     best={}
     for typ,values in (("QGT",gt),("QPred",pred)):
