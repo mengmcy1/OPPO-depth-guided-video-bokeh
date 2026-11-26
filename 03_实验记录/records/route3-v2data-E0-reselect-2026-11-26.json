@@ -1,0 +1,185 @@
+{
+  "rule": "在留出选点场景上，从杆解码误差 p50 ≤ OVG ρ₁ 杆 p50 × 1.05 的 EMA 检查点中取混合负对数似然最低者。打平依次比较杆 p50 更低、步数更早、E-L / E-H1 / E-H2。无满足者取杆 p50 最低者，同样比较步数与配置。",
+  "change": "2026-11-26，在看过 E0 开发集结果之后修改；原规则（杆 p50 ≤ OVG）选中 E-H2@2k",
+  "reason": "留出场景属于 OVG 阶段 1 看过的 B 场景。OVG 在留出集和开发集的杆 p50 分别约为 0.033 和 0.071 m⁻¹，门槛被压在样本内水平。",
+  "archived_curve_sha256": "955b57144abc442d41f3580498bcc0ae0cb67d3c3b4990191b2b13a476749687",
+  "candidate_count": 60,
+  "candidates": [
+    {
+      "mode": "E-H2",
+      "rank": 2,
+      "step": 3000,
+      "phase": 1,
+      "rod_p50": 0.0349200963973999,
+      "rod_p95": 0.18885166645050044,
+      "gap_p50": 0.015019889920949936,
+      "OVG_rod_p50": 0.0334043949842453,
+      "threshold": 0.03507461473345757,
+      "nll": -2.9977222280773304,
+      "rod_selected_front": {
+        "mv_valid": 0.9886581336591054,
+        "mv_invalid": 0.9678677989442277
+      },
+      "normal_selected_back": {
+        "mv_valid": 0.25954541648513385,
+        "mv_invalid": 0.9622582515442333
+      },
+      "eligible": true
+    },
+    {
+      "mode": "E-H1",
+      "rank": 1,
+      "step": 3000,
+      "phase": 1,
+      "rod_p50": 0.03381912410259247,
+      "rod_p95": 0.20132102966308588,
+      "gap_p50": 0.016396187245845795,
+      "OVG_rod_p50": 0.0334043949842453,
+      "threshold": 0.03507461473345757,
+      "nll": -2.870485339860352,
+      "rod_selected_front": {
+        "mv_valid": 0.8682774800788516,
+        "mv_invalid": 0.4926391029214073
+      },
+      "normal_selected_back": {
+        "mv_valid": 0.2471605881349413,
+        "mv_invalid": 0.9568216857368508
+      },
+      "eligible": true
+    },
+    {
+      "mode": "E-H2",
+      "rank": 2,
+      "step": 2000,
+      "phase": 1,
+      "rod_p50": 0.03284698724746704,
+      "rod_p95": 0.18366434574127172,
+      "gap_p50": 0.017609860748052597,
+      "OVG_rod_p50": 0.0334043949842453,
+      "threshold": 0.03507461473345757,
+      "nll": -2.034829405015516,
+      "rod_selected_front": {
+        "mv_valid": 0.9978412971652275,
+        "mv_invalid": 0.9805239516049706
+      },
+      "normal_selected_back": {
+        "mv_valid": 0.19926346562951547,
+        "mv_invalid": 0.7528006960533559
+      },
+      "eligible": true
+    },
+    {
+      "mode": "E-H1",
+      "rank": 1,
+      "step": 2000,
+      "phase": 1,
+      "rod_p50": 0.03476874530315399,
+      "rod_p95": 0.1926890432834624,
+      "gap_p50": 0.02801460027694702,
+      "OVG_rod_p50": 0.0334043949842453,
+      "threshold": 0.03507461473345757,
+      "nll": -1.7848127816336232,
+      "rod_selected_front": {
+        "mv_valid": 0.9895951911597302,
+        "mv_invalid": 0.9699334404406702
+      },
+      "normal_selected_back": {
+        "mv_valid": 0.20179783521851324,
+        "mv_invalid": 0.8813868260939718
+      },
+      "eligible": true
+    },
+    {
+      "mode": "E-H2",
+      "rank": 2,
+      "step": 1000,
+      "phase": 1,
+      "rod_p50": 0.033216238021850586,
+      "rod_p95": 0.18100260049104686,
+      "gap_p50": 0.08836865425109863,
+      "OVG_rod_p50": 0.0334043949842453,
+      "threshold": 0.03507461473345757,
+      "nll": 0.3868800912237653,
+      "rod_selected_front": {
+        "mv_valid": 1.0,
+        "mv_invalid": 1.0
+      },
+      "normal_selected_back": {
+        "mv_valid": 0.0,
+        "mv_invalid": 0.0
+      },
+      "eligible": true
+    },
+    {
+      "mode": "E-H1",
+      "rank": 1,
+      "step": 1000,
+      "phase": 1,
+      "rod_p50": 0.033069729804992676,
+      "rod_p95": 0.18054916858673092,
+      "gap_p50": 0.08988425135612488,
+      "OVG_rod_p50": 0.0334043949842453,
+      "threshold": 0.03507461473345757,
+      "nll": 0.5463831069918952,
+      "rod_selected_front": {
+        "mv_valid": 1.0,
+        "mv_invalid": 1.0
+      },
+      "normal_selected_back": {
+        "mv_valid": 0.0,
+        "mv_invalid": 0.0
+      },
+      "eligible": true
+    },
+    {
+      "mode": "E-L",
+      "rank": 0,
+      "step": 1000,
+      "phase": 1,
+      "rod_p50": 0.03279471397399902,
+      "rod_p95": 0.18014948368072506,
+      "gap_p50": 0.08943036198616028,
+      "OVG_rod_p50": 0.0334043949842453,
+      "threshold": 0.03507461473345757,
+      "nll": 0.6360106652486539,
+      "rod_selected_front": {
+        "mv_valid": 1.0,
+        "mv_invalid": 1.0
+      },
+      "normal_selected_back": {
+        "mv_valid": 0.0,
+        "mv_invalid": 0.0
+      },
+      "eligible": true
+    }
+  ],
+  "selected": {
+    "mode": "E-H2",
+    "rank": 2,
+    "step": 3000,
+    "phase": 1,
+    "rod_p50": 0.0349200963973999,
+    "rod_p95": 0.18885166645050044,
+    "gap_p50": 0.015019889920949936,
+    "OVG_rod_p50": 0.0334043949842453,
+    "threshold": 0.03507461473345757,
+    "nll": -2.9977222280773304,
+    "rod_selected_front": {
+      "mv_valid": 0.9886581336591054,
+      "mv_invalid": 0.9678677989442277
+    },
+    "normal_selected_back": {
+      "mv_valid": 0.25954541648513385,
+      "mv_invalid": 0.9622582515442333
+    },
+    "eligible": true
+  },
+  "selected_checkpoint_sha256": "0eec7e33660a8af021f28dda19793584823999c378176eb7a26140de76203786",
+  "selected_margin_percent": 0.4405417913550809,
+  "original_selected": {
+    "mode": "E-H2",
+    "step": 2000
+  },
+  "selection_used_development": false,
+  "test_cases_used": 0
+}
