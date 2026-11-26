@@ -18,14 +18,25 @@ def geometry_cloud(network, store, frame, case, depth, K):
     if not len(active):
         return None,None
     residuals=[]
+    sources=[]
+    source_colors=network.source_colors
     def take_residual(module,inputs,value):
         residuals.append(network.color_bound*value[...,:3].tanh())
+    def trace_sources(world,slots,context):
+        rgb,inside=source_colors(world,slots,context)
+        pose=context["c2w"][slots]
+        camera=torch.einsum("bhmi,bmij->bhmj",world[:,:,None]-pose[:,None,:,:3,3],pose[:,:,:3,:3])
+        uv=(camera@context["K"].T)[...,:2]/camera[...,2:].clamp_min(1e-8)
+        sources.append((rgb,inside,uv))
+        return rgb,inside
     hook=network.appearance.register_forward_hook(take_residual)
+    network.source_colors=trace_sources
     row=dict(frame=frame,input="native",case=case)
     try:
         outputs=[store.forward(network,row,part,{"size":depth.shape[-1]})[0]
                  for part in np.array_split(active,(len(active)+2047)//2048)]
     finally:
+        del network.source_colors
         hook.remove()
     def join(key):
         return torch.cat([p[key].flatten(0,1) for p in outputs])
@@ -61,20 +72,15 @@ def geometry_cloud(network, store, frame, case, depth, K):
     fields=store.features
     slots=torch.as_tensor(fields["source_slots"][ids],dtype=torch.long,device=K.device)
     valid=torch.as_tensor(fields["candidate_valid"][ids],device=K.device)
-    ctx=store.observed
-    world=join("means_world")[retained]
     weights=join("weights")[retained]
-    rgb,in_view=network.source_colors(world[:,None],slots,ctx)
-    rgb,in_view=rgb[:,0],in_view[:,0]
-    effective=weights*valid*in_view
+    rgb,in_view,coords=(torch.cat([part[i].flatten(0,1) for part in sources])[retained] for i in range(3))
+    effective=weights*in_view*valid
     effective=effective/effective.sum(-1,keepdim=True).clamp_min(1e-8)
     delta=torch.cat(residuals).flatten(0,1)[retained]
     original=((rgb*effective[...,None]).sum(1)+delta).clamp(0,1)
     if not torch.allclose(result.colors,original,atol=2e-6,rtol=0):
-        raise ValueError("Frozen Query appearance did not reproduce the actual RGB source mixture")
-    pose=ctx["c2w"][slots]
-    cam=torch.einsum("nmi,nmij->nmj",world[:,None]-pose[:,:,:3,3],pose[:,:,:3,:3])
-    coords=(cam@ctx["K"].T)[...,:2]/cam[...,2:].clamp_min(1e-8)
+        difference=float((result.colors-original).abs().max())
+        raise ValueError(f"Frozen Query appearance did not reproduce the actual RGB source mixture: {difference}")
     return result,dict(slots=slots.cpu().numpy(),source_xy=fields["source_xy"][ids],
                        uv=coords.cpu().numpy(),weights=effective,rgb=rgb,delta=delta)
 
