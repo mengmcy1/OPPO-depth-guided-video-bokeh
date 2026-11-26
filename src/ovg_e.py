@@ -85,11 +85,14 @@ def modes(means, scales, logit):
     return torch.where(use_back, means[:,1:2],means[:,0:1]).exp(), use_back
 
 
-def decode_gated(rho1, beta, attenuation, residual, scales, front_logit, gate_logit):
+def decode_gated(rho1, beta, attenuation, residual, scales, front_logit, gate_logit, rear_source=None):
     gate = gate_logit.sigmoid()
     delta = RESIDUAL_LIMIT * attenuation * gate * residual
     front = rho1.log() + delta[:,0:1]
-    back = beta + delta[:,1:2]
+    back_delta = delta[:,1:2]
+    if rear_source is not None:
+        back_delta = torch.where(rear_source==0,RESIDUAL_LIMIT*residual[:,1:2],back_delta)
+    back = beta + back_delta
     order = front + math.log(ORDER_RATIO)
     means = torch.cat((front, torch.minimum(back,order)), 1)
     mass = gated_log_mass(front_logit, gate_logit)
@@ -97,8 +100,12 @@ def decode_gated(rho1, beta, attenuation, residual, scales, front_logit, gate_lo
     selected = second > first
     # This is the front mean in linear inverse depth, exact when its residual is zero.
     decoded = torch.where(selected,means[:,1:2].exp(),rho1 * delta[:,0:1].exp())
-    return dict(means=means,scales=scales,log_mass=mass,gate=gate,decoded=decoded,
-                selected_back=selected,order_gap=back-order)
+    out = dict(means=means,scales=scales,log_mass=mass,gate=gate,decoded=decoded,
+               selected_back=selected,order_gap=back-order,raw_back=back)
+    if rear_source is not None:
+        rear_limit=torch.where(rear_source==0,RESIDUAL_LIMIT,RESIDUAL_LIMIT*attenuation.detach()*gate.detach())
+        out["single_back_mean"]=beta.detach()+rear_limit*residual[:,1:2]
+    return out
 
 
 def feature_grid(origins, size, stride):
@@ -130,12 +137,13 @@ def block(widths, stride=1):
 
 
 class ELight(nn.Module):
-    def __init__(self, feature_mode="E-L", *, legacy_mixture=False):
+    def __init__(self, feature_mode="E-L", *, legacy_mixture=False, scheme_a=False):
         super().__init__()
         if feature_mode not in FEATURE_MODES:
             raise ValueError(feature_mode)
         self.feature_mode = feature_mode
         self.legacy_mixture = legacy_mixture
+        self.scheme_a = scheme_a
         self.phi = nn.Conv2d(64,16,1)
         self.enc1 = block((32,32,32))
         self.enc2 = block((32,48,48),2)
@@ -174,7 +182,7 @@ class ELight(nn.Module):
             features.append(local*active)
         return self.context_fusion[level](torch.cat(features,1))
 
-    def forward(self, features, phi, mask, rho1, beta, attenuation, context=None):
+    def forward(self, features, phi, mask, rho1, beta, attenuation, context=None, *, rear_source=None):
         e1 = self.enc1(torch.cat((features,self.phi(phi)),1))
         e2 = self.enc2(e1)
         b = self.bottleneck(e2)
@@ -201,5 +209,10 @@ class ELight(nn.Module):
             output = dict(means=means,scales=scales,gate=gate,decoded=decoded,
                           selected_back=selected,order_gap=back-order)
         else:
-            output = decode_gated(rho1,beta,attenuation,raw_tanh,scales,h[:,4:5],gate_logit)
+            if self.scheme_a and rear_source is None:
+                raise ValueError("Scheme A needs each pixel's rear anchor source")
+            output = decode_gated(rho1,beta,attenuation,raw_tanh,scales,h[:,4:5],gate_logit,
+                                  rear_source if self.scheme_a else None)
+            if self.scheme_a:
+                output.update(mixture_head=h,gate_logit=gate_logit)
         return dict(output,logit=h[:,4:5],raw_tanh=raw_tanh,segmentation=self.segment(d1),d1=d1)

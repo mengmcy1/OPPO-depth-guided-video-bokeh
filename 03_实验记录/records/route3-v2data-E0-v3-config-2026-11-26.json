@@ -1,0 +1,297 @@
+{
+  "geometry": {
+    "step": 0,
+    "weights": "EMA",
+    "sha256": "dfb1d7e52eb67fb756186b252312aee3b136096e3835cbcaf60f5d8250e1c220",
+    "path": "/root/autodl-tmp/route3-stage1-pair-20261122/outputs/route3-v2data-stage1-2026-11-22-01/1b/same-surface/checkpoints/step-030000.pt",
+    "adoption": {
+      "selected_step": 0,
+      "candidates": [
+        {
+          "step": 5000,
+          "checks": {
+            "geometry": true,
+            "zero_visible": true,
+            "zero_combined": true,
+            "far_hidden": true
+          },
+          "eligible": true,
+          "near_pooled": 35.52558251384803,
+          "near_paired_median_db": 0.1030520666530137,
+          "far_paired_median_db": 0.009578477139342567,
+          "far_hidden_fraction": 0.8318467756867008
+        },
+        {
+          "step": 10000,
+          "checks": {
+            "geometry": true,
+            "zero_visible": true,
+            "zero_combined": true,
+            "far_hidden": true
+          },
+          "eligible": true,
+          "near_pooled": 35.54846886994327,
+          "near_paired_median_db": 0.12911903539968428,
+          "far_paired_median_db": -0.07281740196393827,
+          "far_hidden_fraction": 0.8279246376119118
+        }
+      ],
+      "lowest_far_hidden_fraction": 0.6609369680644565,
+      "best_eligible_step": 10000,
+      "paired_medians_pass": false,
+      "interpretation": {
+        "near_paired_median_db": "改善",
+        "far_paired_median_db": "基本持平"
+      }
+    },
+    "publication": "ad552dff121b527d0d3076c2fa2fecf5650aeeda",
+    "publication_record": "03_实验记录/records/route3-v2data-stage3c-2026-11-26-step-010000.json"
+  },
+  "feature_mode": "E-H2",
+  "training": {
+    "steps": 20000,
+    "batch_crops": 8,
+    "crop_px": 256,
+    "region_anchors": {
+      "rod": 2,
+      "gap": 2,
+      "mv_valid": 2,
+      "mv_invalid": 2
+    },
+    "phase1_steps": 8000,
+    "phase2_steps": 12000,
+    "coefficient": {
+      "formula": "K=(0.05 m / 1.4) * fx_pixels, CoC diameter in pixels",
+      "min": 25.3968253968254,
+      "median": 25.3968253968254,
+      "max": 25.3968253968254
+    },
+    "loss_weights": {
+      "nll": 1.0,
+      "dual": 1.0,
+      "order": 0.1,
+      "segment": 0.1,
+      "coc": 0.1,
+      "gate_l1": 0.01
+    },
+    "phase2_actual_term_scales": {
+      "E-L": {
+        "step": 8001,
+        "unweighted": {
+          "nll": -4.819161415100098,
+          "dual": 0.14026165008544922,
+          "order": 0.46975553035736084,
+          "segment": 0.4534537196159363,
+          "coc": 6.213240623474121,
+          "gate_l1": 0.39585503935813904
+        },
+        "weighted": {
+          "nll": -4.819161415100098,
+          "dual": 0.14026165008544922,
+          "order": 0.046975553035736084,
+          "segment": 0.045345371961593633,
+          "coc": 0.6213240623474121,
+          "gate_l1": 0.0039585503935813905
+        }
+      },
+      "E-H1": {
+        "step": 8001,
+        "unweighted": {
+          "nll": -4.234275817871094,
+          "dual": 0.11945672333240509,
+          "order": 0.4832419753074646,
+          "segment": 0.323098361492157,
+          "coc": 7.637569904327393,
+          "gate_l1": 0.4009684920310974
+        },
+        "weighted": {
+          "nll": -4.234275817871094,
+          "dual": 0.11945672333240509,
+          "order": 0.04832419753074646,
+          "segment": 0.0323098361492157,
+          "coc": 0.7637569904327393,
+          "gate_l1": 0.0040096849203109745
+        }
+      },
+      "E-H2": {
+        "step": 8001,
+        "unweighted": {
+          "nll": -4.7590012550354,
+          "dual": 0.12719906866550446,
+          "order": 0.49407467246055603,
+          "segment": 0.2170167863368988,
+          "coc": 6.910689353942871,
+          "gate_l1": 0.4075709879398346
+        },
+        "weighted": {
+          "nll": -4.7590012550354,
+          "dual": 0.12719906866550446,
+          "order": 0.0494074672460556,
+          "segment": 0.02170167863368988,
+          "coc": 0.6910689353942872,
+          "gate_l1": 0.004075709879398346
+        }
+      }
+    },
+    "optimizer": "Adam",
+    "lr_initial": 0.0003,
+    "lr_final": 1e-05,
+    "ema": 0.999,
+    "crop_order_sha256": "91bd66d73e3cc8ce6edefcdc140e4dcbf221445dc3065f52b8b9a5fccfbfd20d",
+    "check_every": 1000,
+    "gpu_process_budget_gib": {
+      "E-L": 3.0,
+      "E-H1": 3.0,
+      "E-H2": 5.5
+    },
+    "h2_overlap": "arithmetic mean, active only inside M",
+    "gate_collapse": "Report extrema; halt for exact whole-domain zero or one at two consecutive phase-two checks"
+  },
+  "schedule": {
+    "native_ovg_channels": 32,
+    "encoder": "frozen Depth Anything V2 Small, layers 2/5/8/11 zero-based",
+    "global_input_side": 518,
+    "local_window_native_side": 112,
+    "local_encoder_input_side": 448,
+    "coordinates": "window in native pixel-edge coordinates; level pixel center x+0.5 and align_corners=False"
+  },
+  "seed": 20261126,
+  "data": {
+    "train_scenes": 285,
+    "train_frames": 855,
+    "holdout_scenes": [
+      "training-061-ff0a4ff42915123f",
+      "training-064-086730c4acaff4f2",
+      "training-072-31b286ff6377ae60",
+      "training-089-b2a3e0ca0003160b",
+      "training-111-d7e217467bd2475e",
+      "training-140-05fad3fd2dd65434",
+      "training-145-109c724576efe4bb",
+      "training-146-8a0ee3e962c92314",
+      "training-170-b7f646b4ee9080be",
+      "training-173-13ed6793b9ce2fb2"
+    ],
+    "holdout_frames": 30,
+    "dev_scenes": 15,
+    "dev_frames": 45,
+    "independent_test_used": 0,
+    "holdout_numeric_ids": [
+      61,
+      64,
+      72,
+      89,
+      111,
+      140,
+      145,
+      146,
+      170,
+      173
+    ]
+  },
+  "tear_retraining": {
+    "steps": 20000,
+    "crops_per_step": 8,
+    "ema": 0.999,
+    "weights": [
+      1,
+      1,
+      1,
+      2
+    ],
+    "initial_lr": 0.001,
+    "final_lr": 1e-05,
+    "selection": "Minimize mean holdout weighted edge error and false-step tear rate; then weighted edge error and earliest step."
+  },
+  "scheme_A": {
+    "support": "visible & ~valid_dual",
+    "target": "min(log rho_GT_center, stopgrad(mu_f) + log(0.985))",
+    "fitted_value": "raw mu_b before front/back clipping; detach a and g for this term",
+    "objective": "Sum of the four per-zone means of Smooth L1 with beta 0.05, log inverse depth",
+    "weight": 1.0,
+    "from_step": 0,
+    "both_phases": true,
+    "rho2_rear_residual": "1.5 * tanh(h1), independent of a and g",
+    "multiview_rear_residual": "1.5 * a * g * tanh(h1)",
+    "front_residual": "unchanged from v2",
+    "rear_mass": "g * (1-w_f)",
+    "clip_ratio": 0.985,
+    "residual_limit": 1.5,
+    "order_penalty": "unchanged softplus(order_gap)",
+    "dual_supervision": "unchanged unbalanced pixel mean",
+    "normal_front_bce_weight": 0.1,
+    "semantics": "On single-surface pixels the rear component targets the same visible surface subject to order clipping, including rod interiors. It no longer denotes a surface behind the visible one. Retrain the tear head with the changed |delta log rho_b| channel. Other seed-propagation uses are deferred.",
+    "depth_offset_at_clip_percent": 1.522842639593902,
+    "coc_offset_at_rho_half_px": 0.19050000000000017
+  },
+  "selection": {
+    "metric": "Equal mean of the rod, gap, boundary and normal zone pixel means of 25.4 * abs(decoded rho - GT center rho), in px.",
+    "boundary": "For a boundary prediction at p, take the minimum error against valid ground truth at q in the 3x3 window about p.",
+    "see_source": "https://github.com/zhyever/PatchFusion/blob/main/estimator/utils/metric.py",
+    "rod_gate": "Holdout rod absolute decoded-error p50 <= 1.00 * OVG rho1 rod-error p50.",
+    "eligible_tie": "Earlier step",
+    "fallback": "Minimum rod p50, then earlier step if tied.",
+    "diagnostic_only": [
+      "NLL",
+      "spatial_switch"
+    ],
+    "checkpoints": "EMA every 1000 steps from 1000 to 20000"
+  },
+  "old_selected_steps": {
+    "v1": 2000,
+    "v2": 4000
+  },
+  "step_zero": {
+    "loss": 1.1680848598480225,
+    "nll": 5.511956214904785,
+    "peak_reserved_gib": 2.33203125,
+    "max_abs_grad": {
+      "front_tanh": 0.0,
+      "back_tanh": 0.03947368264198303,
+      "front_scale": 0.0,
+      "back_scale": 0.0,
+      "front_weight_logit": 0.0
+    },
+    "gate_logit_max_abs_grad": 0.0,
+    "single_pixels": 505052,
+    "direct_raw_back_matches_forward": true,
+    "loss_vs_abs_nll": 0.21191838510789046
+  },
+  "reachability": {
+    "frames": 855,
+    "initial_gate": 0.5,
+    "assumptions": "Initialize mu_f at log rho1; evaluate the post-order-clamp interval. V2 uses initial g, V3 multiview uses g=1 as the attainable upper limit.",
+    "by_source": {
+      "rho2": {
+        "n": 208353992,
+        "v2_initial_unreachable": 83794135,
+        "v3_unreachable": 333196,
+        "v2_initial_fraction": 0.40217196798417953,
+        "v3_fraction": 0.001599182222532122
+      },
+      "multiview": {
+        "n": 11992873,
+        "v2_initial_unreachable": 728999,
+        "v3_unreachable": 301466,
+        "v2_initial_fraction": 0.06078601849615184,
+        "v3_fraction": 0.025137096006936786
+      }
+    }
+  },
+  "geometry_limits": {
+    "inverse_depth_rmse": 0.05,
+    "same_surface_step": 0.1,
+    "near_subject_coc_mae": 0.1,
+    "GT_occlusion_crossing_abs_p95": 0.1
+  },
+  "evaluation": {
+    "development_cases": 87,
+    "legacy_cases": 18,
+    "test_cases": 0,
+    "far_primary": "F2-only, substitute pending",
+    "focus": [
+      "P",
+      "G"
+    ],
+    "FP16_fix": "6cff9f9"
+  }
+}

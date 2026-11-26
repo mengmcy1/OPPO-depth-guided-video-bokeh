@@ -3,6 +3,7 @@ import argparse
 from collections import Counter, defaultdict
 from copy import deepcopy
 import json
+import math
 import subprocess
 import time
 
@@ -18,7 +19,7 @@ from route3_v2data_E0_data import (ANCHORS,BATCH,CONFIG,HOLDOUT,INPUTS,PREP,RUN,
 from route3_v2data_module2_d_train import snapshot
 from route3_v2data_module2_infer import COMPETITOR,competitor_state
 from route3_v2data_stage3a import gpu_setup
-from src.ovg_e import ELight,FEATURE_MODES,REAR_MARGINS,mixture_density
+from src.ovg_e import ELight,FEATURE_MODES,ORDER_RATIO,REAR_MARGINS,mixture_density
 
 WEIGHTS = dict(nll=1.,dual=1.,order=.1,segment=.1,coc=.1,gate_l1=.01)
 GROUPS = ("rod","gap","normal","boundary")
@@ -95,8 +96,9 @@ def frame_batch(rows, requests, mode, side=SIDE, *, labels=True):
 
 def predict(model,batch):
     args=[batch[k] if k!="mask" else batch[k].float() for k in INPUTS]
+    options={"rear_source":batch["mv_source"]} if getattr(model,"scheme_a",False) else {}
     with torch.autocast("cuda",dtype=torch.bfloat16):
-        return model(*args,context=batch.get("context"))
+        return model(*args,context=batch.get("context"),**options)
 
 
 def average(value,mask):
@@ -132,9 +134,21 @@ def normal_front_bce(log_mass, loss_zone):
     return average(-log_mass[:, :1], loss_zone == 2)
 
 
-def module(mode):
+def single_back_target(out, target):
+    return torch.minimum(target["center"].clamp_min(1e-8).log(),
+                         out["means"][:,:1].detach()+math.log(ORDER_RATIO))
+
+
+def single_back_loss(out, target):
+    active=target["visible"]&~target["valid_dual"]
+    discrepancy=F.smooth_l1_loss(out["single_back_mean"],single_back_target(out,target),
+                                 reduction="none",beta=.05)
+    return balanced(discrepancy,dict(visible=active,loss_zone=target["loss_zone"]))
+
+
+def module(mode, *, scheme_a=False):
     torch.manual_seed(SEED)
-    return ELight(mode).cuda().to(memory_format=torch.channels_last)
+    return ELight(mode,scheme_a=scheme_a).cuda().to(memory_format=torch.channels_last)
 
 
 def checked_prepared():
@@ -330,7 +344,8 @@ def verify_registration(data, config_path=CONFIG):
     return config
 
 
-def train(mode, *, run=RUN, config_path=CONFIG, normal_front_weight=0.):
+def train(mode, *, run=RUN, config_path=CONFIG, normal_front_weight=0., scheme_a=False,
+          diagnose_fn=diagnose, choose_fn=choose):
     data,order=checked_prepared()
     verify_registration(data,config_path)
     rows=data["rows"]
@@ -345,7 +360,7 @@ def train(mode, *, run=RUN, config_path=CONFIG, normal_front_weight=0.):
     waited=gpu_gate(limit)
     start=time.monotonic()
     competitor_before=competitor_state()
-    model=module(mode)
+    model=module(mode,scheme_a=scheme_a)
     ema=deepcopy(model).eval().requires_grad_(False)
     params=list(model.parameters())
     shadow=list(ema.parameters())
@@ -378,6 +393,9 @@ def train(mode, *, run=RUN, config_path=CONFIG, normal_front_weight=0.):
         if normal_front_weight:
             loss["normal_front_bce"]=normal_front_bce(out["log_mass"],target["loss_zone"])
             total=total+normal_front_weight*loss["normal_front_bce"]
+        if scheme_a:
+            loss["single_back"]=single_back_loss(out,target)
+            total=total+loss["single_back"]
         if not torch.isfinite(total):
             raise FloatingPointError(f"Nonfinite E0 objective at {mode} step {step}")
         total.backward()
@@ -389,6 +407,8 @@ def train(mode, *, run=RUN, config_path=CONFIG, normal_front_weight=0.):
         active+=time.monotonic()-started
         if step==RAMP+1:
             weights=dict(WEIGHTS,normal_front_bce=normal_front_weight)
+            if scheme_a:
+                weights["single_back"]=1.
             save_json(path/"phase2-term-scales.json",
                       dict(step=step,unweighted={k:float(v.detach()) for k,v in loss.items()},
                            weighted={k:float(v.detach())*weights[k] for k,v in loss.items()}))
@@ -402,20 +422,20 @@ def train(mode, *, run=RUN, config_path=CONFIG, normal_front_weight=0.):
         if step%EVERY:
             continue
         checkpoint=path/f"step-{step:06d}.pt"
-        stats0=diagnose(ema,rows,holdout)
+        stats0=diagnose_fn(ema,rows,holdout)
         g=stats0["gate"]
         collapse=collapse+1 if phase==2 and (g["zero"]==g["pixels"] or g["one"]==g["pixels"]) else 0
         if collapse>=2:
             raise FloatingPointError(f"E0 gate remained collapsed at {mode} step {step}")
-        snapshot(dict(model=model.state_dict(),ema=ema.state_dict(),step=step,mode=mode),checkpoint)
+        snapshot(dict(model=model.state_dict(),ema=ema.state_dict(),step=step,mode=mode,scheme_a=scheme_a),checkpoint)
         curve.append(dict(step=step,phase=phase,checkpoint=checkpoint.name,holdout=stats0))
         snapshot(dict(model=model.state_dict(),ema=ema.state_dict(),optimizer=optimizer.state_dict(),
                       scheduler=scheduler.state_dict(),curve=curve,step=step),since)
         save_json(path/"holdout-curve.json",curve)
-    selected,passed=choose(curve)
+    selected,passed=choose_fn(curve)
     result=dict(mode=mode,steps=STEPS,parameters=sum(p.numel() for p in params),curve=curve,
                 selected=selected,rod_baseline_eligible=passed,
-                normal_front_weight=normal_front_weight,
+                normal_front_weight=normal_front_weight,scheme_a=scheme_a,
                 phase2=load(path/"phase2-term-scales.json"),wall_seconds=time.monotonic()-start,
                 step_seconds=active/max(1,STEPS-step0),peak_allocated_gib=torch.cuda.max_memory_allocated()/GIB,
                 peak_reserved_gib=torch.cuda.max_memory_reserved()/GIB,

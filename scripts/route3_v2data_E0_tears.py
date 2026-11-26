@@ -91,16 +91,17 @@ def split(index):
 
 def load_model(mode,step,*,run=RUN):
     ck=run/mode/f"step-{step:06d}.pt"
-    network=module(mode).eval().requires_grad_(False)
-    network.load_state_dict(torch.load(ck,map_location="cpu",weights_only=True)["ema"])
+    state=torch.load(ck,map_location="cpu",weights_only=True)
+    network=module(mode,scheme_a=state.get("scheme_a",False)).eval().requires_grad_(False)
+    network.load_state_dict(state["ema"])
     return network,ck
 
 
-def train(mode,step,*,run=RUN):
+def train(mode,step,*,run=RUN,destination=None):
     rows=load(run/"data.json")["rows"]
     index=dataset()
     train_frames,holdout,excluded=split(index)
-    root=run/mode/f"tear-{step:06d}"
+    root=destination if destination is not None else run/mode/f"tear-{step:06d}"
     result=root/"training.json"
     if result.is_file():
         return load(result)
