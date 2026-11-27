@@ -244,10 +244,13 @@ def evaluate(version, step, *, full=False):
     if len(jobs) != (54 if full else 45):
         raise ValueError("Unexpected development or legacy frame inventory")
     view_cache = None
+    scored_far = set()
     for job in jobs:
         cohort, scene, frame, unit, _, cases = job
         dest, image = replay.frame_paths(path,scene,frame)
         if dest.is_file():
+            scored_far.update((r["cohort"],r["focus_mode"]) for r in load(dest)["rows"]
+                              if r["status"]=="evaluated" and "far" in r)
             continue
         try:
             if full and (view_cache is None or scene != view_cache[0]):
@@ -265,7 +268,12 @@ def evaluate(version, step, *, full=False):
         dest.parent.mkdir(parents=True,exist_ok=True)
         replay.save_arrays(image,pictures)
         save_json(dest,rows)
+        scored_far.update((r["cohort"],r["focus_mode"]) for r in rows["rows"]
+                          if r["status"]=="evaluated" and "far" in r)
         print("E0_V4_OPTICS",version,step,full,ref.title(scene),frame,monotonic()-began,flush=True)
+    expected = {(j[0], focus) for j in jobs for focus in FOCI}
+    if missing := expected - scored_far:
+        raise RuntimeError(f"No scored far cases in {sorted(missing)} for {version}@{step}")
     resource = dict(version=version,step=step,complete=full,checkpoint_sha256=digest,seconds=monotonic()-began,
                     frames=len(jobs),peak_reserved_gib=torch.cuda.max_memory_reserved()/1024**3)
     save_json(mark,resource)
