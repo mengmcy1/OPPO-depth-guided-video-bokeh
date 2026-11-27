@@ -127,12 +127,12 @@ def bin_counts(x, valid=None):
     return dict(bins=counts.tolist(),unknown=int(x.size-good.sum()))
 
 
-def ray_geometry(unit, frame, case):
+def ray_geometry(unit, frame, case, *, parents=None):
     """Recover the exact identity and point associated with each stored parent."""
     if not unit:
         raise ValueError("Use the legacy world_position and object_id already in its oracle file")
     path=PARENTS/unit.name/(case["id"]+"-optics.npz")
-    p=load_parents(path)
+    p=load_parents(path) if parents is None else parents
     k,poses=cameras(unit)
     pose=poses[frame-1]
     spec=dict(tiers="B",unit=unit,frame=frame,focus=case["focus_m"],fstop=case["fstop"],
@@ -248,9 +248,9 @@ def verify_witness(audit, parents, points, ids, frames):
     return purity
 
 
-def substitute_variants(evidence, unit, name, frame, case):
+def substitute_variants(evidence, unit, name, frame, case, *, parents=None):
     if unit:
-        parents,points,ids,first,pixels,pupil=ray_geometry(unit,frame,case)
+        parents,points,ids,first,pixels,pupil=ray_geometry(unit,frame,case,parents=parents)
         s0=verify_witness(evidence,parents,points,ids,first)
         # Recast the exact K16 ray before testing alternate viewpoints. The
         # camera-space depth stored in the label is half precision.
