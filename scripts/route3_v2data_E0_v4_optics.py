@@ -37,8 +37,15 @@ def setup():
 def checkpoint(version, step, *, stitch):
     model, path = load_model(v3.MODE, step, run=BASES[version])
     if stitch:
-        tear_path = RUN / v3.MODE / f"tear-{step:06d}" if version == "v4" else v3.tear_root(version, step)
-        tear = replay.load_tear(tear_path / "selected.pt")
+        if version == "v4":
+            weights = RUN / v3.MODE / f"tear-{step:06d}" / "selected.pt"
+        elif (version, step) == ("v3", 4000):
+            weights = PREVIOUS / "tear-D" / "selected.pt"
+            if sha256(weights) != load(EARLIER)["D_tear"]["checkpoint_sha256"]:
+                raise ValueError("Archived D tear head differs from the four-arm release")
+        else:
+            weights = v3.tear_root(version, step) / "selected.pt"
+        tear = replay.load_tear(weights)
     else:
         tear = None
     return model, tear, sha256(path)
