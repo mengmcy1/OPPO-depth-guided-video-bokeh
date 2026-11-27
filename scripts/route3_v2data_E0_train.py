@@ -139,8 +139,10 @@ def single_back_target(out, target):
                          out["means"][:,:1].detach()+math.log(ORDER_RATIO))
 
 
-def single_back_loss(out, target):
+def single_back_loss(out, target, *, exclude_rod=False):
     active=target["visible"]&~target["valid_dual"]
+    if exclude_rod:
+        active=active&(target["loss_zone"]!=0)
     discrepancy=F.smooth_l1_loss(out["single_back_mean"],single_back_target(out,target),
                                  reduction="none",beta=.05)
     return balanced(discrepancy,dict(visible=active,loss_zone=target["loss_zone"]))
@@ -344,7 +346,7 @@ def verify_registration(data, config_path=CONFIG):
     return config
 
 
-def train(mode, *, run=RUN, config_path=CONFIG, normal_front_weight=0., scheme_a=False,
+def train(mode, *, run=RUN, config_path=CONFIG, normal_front_weight=0., scheme_a=False, exclude_rod=False,
           diagnose_fn=diagnose, choose_fn=choose):
     data,order=checked_prepared()
     verify_registration(data,config_path)
@@ -394,7 +396,7 @@ def train(mode, *, run=RUN, config_path=CONFIG, normal_front_weight=0., scheme_a
             loss["normal_front_bce"]=normal_front_bce(out["log_mass"],target["loss_zone"])
             total=total+normal_front_weight*loss["normal_front_bce"]
         if scheme_a:
-            loss["single_back"]=single_back_loss(out,target)
+            loss["single_back"]=single_back_loss(out,target,exclude_rod=exclude_rod)
             total=total+loss["single_back"]
         if not torch.isfinite(total):
             raise FloatingPointError(f"Nonfinite E0 objective at {mode} step {step}")
