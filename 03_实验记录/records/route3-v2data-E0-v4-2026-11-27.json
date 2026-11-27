@@ -301,5 +301,69 @@
     },
     "tear": false,
     "selection": false
+  },
+  "selection_optical": {
+    "registered_at": "2026-11-27T15:44:11+08:00",
+    "label": "追加，登记于 2026-11-27T15:44:11+08:00",
+    "cohort": "existing E0 held-out selection split, training-061/064/072/089/111/140/145/146/170/173",
+    "scene_indices": [
+      61,
+      64,
+      72,
+      89,
+      111,
+      140,
+      145,
+      146,
+      170,
+      173
+    ],
+    "frames": [
+      1,
+      30,
+      60
+    ],
+    "focus_index": 1,
+    "fstop": 1.4,
+    "focus_modes": [
+      "P",
+      "G"
+    ],
+    "renderer": "E0 v4 curve, native 512, K64, no tear, recoverable region, original F2 and S2@0.90",
+    "candidate_steps": [
+      1000,
+      2000,
+      3000,
+      4000,
+      5000,
+      6000,
+      7000,
+      8000,
+      9000,
+      10000,
+      11000,
+      12000,
+      13000,
+      14000,
+      15000,
+      16000,
+      17000,
+      18000,
+      19000,
+      20000
+    ],
+    "score": "G focus F2 pooled far recoverable display-space PSNR = -10 log10(SSE/(3*pixels)). Pool scored cases and record all technically skipped cases.",
+    "rule": "Find global maximum of G F2 pooled PSNR. Choose earliest step whose score differs from that maximum by strictly less than 0.02 dB.",
+    "report_only": [
+      "P focus F2",
+      "G focus S2@0.90",
+      "P focus S2@0.90",
+      "scene PSNR/SSE/pixels",
+      "holdout rod p50"
+    ],
+    "development_curve_disclosure": "Planning had already seen the development-set 2k/4k/6k/8k curve. This added rule uses only the ten holdout scenes. The development set does not participate in selection.",
+    "primary_point": "The already registered depth-rule point remains the primary evaluation point, anticipated 1k. Read selected.step from the completed training.json.",
+    "success_both_points": "For G focus F2 and S2 on development, each paired median vs B >= 0 dB and each pooled PSNR >= B. B = archived v1@2k plus tear from 3e135e5.",
+    "same_step": "A shared checkpoint is evaluated once and reported under both selections."
   }
 }
