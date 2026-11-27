@@ -1,0 +1,1094 @@
+{
+  "status": "paused_before_four_arm_evaluation",
+  "recorded_at": "2026-11-27T10:22:22+08:00",
+  "definitions": {
+    "P": "Each arm uses its own P2 focus distance for the same subject.",
+    "G": "All arms use the GT focus distance.",
+    "paired_base": "Same arm, same focus mode, F2.",
+    "recovery_fraction": "(Query - F2) / (S2@0.90 - F2) in per-scene dB; identify scene denominators below 0.1 dB.",
+    "legacy_reference": "S0, same-frame peeled.",
+    "psnr": "−10 log10(SSE / (3 × pixels)).",
+    "rods": "visible and loss_zone == 0, native 512, f001/f030/f060. Error = |decoded rho − GT center rho|. Gap = rho_f − rho_b from the clipped component means, in m^-1."
+  },
+  "query": {
+    "checkpoint": "../route3-query-v2-20261123/outputs/route3-query-v2-20261123/train/step-020000.pt",
+    "sha256": "1c19181f296f858a4ff6a6efcb75f8839a3b1a0d066ac7fb744bc7b72486e300",
+    "adoption_record": "route3-v2data-query-2026-11-23.json",
+    "adoption_commit": "ed0f8f6",
+    "stage3c_record": "route3-v2data-stage3c-2026-11-26-step-010000.json",
+    "stage3c_commit": "ad552df",
+    "stage3c_selected_step": 0
+  },
+  "arm_plan": {
+    "A": {
+      "geometry": "OVG + v2a",
+      "tear_record_commit": "759db34"
+    },
+    "B": {
+      "geometry": "E-H2 v1@2k EMA + existing retrained tear"
+    },
+    "C": {
+      "geometry": "E-H2 v2@4k EMA + existing retrained tear",
+      "sha256": "f298e4db4c89c2f532cbc13e14620c591899d836b0204e22fbee8bf12f93f434",
+      "official_E": true
+    },
+    "D": {
+      "geometry": "E-H2 v3@4k EMA + matched new tear",
+      "sha256": "5575a4fc6c5df662f314a50fb4da6c8941c5630323929c24ecbd61c4d8ae9826",
+      "diagnostic_only": "不作为采用依据",
+      "tear_status": "not_started",
+      "matched_tear_steps": 20000
+    }
+  },
+  "calibration": {
+    "workdir_artifact": "outputs/route3-v2data-E-query-2026-11-27-01/single-case-check.json",
+    "case": {
+      "scene": "development-005-35442efa18790d0a",
+      "case": "f030-focus1-N1.4",
+      "focus_mode": "P",
+      "focus_m": 2.3145370483398438,
+      "reference_focus_m": 2.3145370483398438,
+      "baseline_3c_V0_native": {
+        "far_recoverable": {
+          "sse": 1237.6893710957488,
+          "pixels": 21793,
+          "psnr_db": 17.228266122066454
+        },
+        "zero_visible": {
+          "sse": 2.431982094954619,
+          "pixels": 262144,
+          "psnr_db": 55.097008034764784
+        },
+        "zero_combined": {
+          "sse": 0.18354409054844112,
+          "pixels": 262144,
+          "psnr_db": 66.31920770307579
+        }
+      },
+      "reference_3c_V0": {
+        "far_recoverable": {
+          "sse": 1237.6893710957488,
+          "pixels": 21793,
+          "psnr_db": 17.228266122066454
+        },
+        "zero_visible": {
+          "sse": 2.431982094954619,
+          "pixels": 262144,
+          "psnr_db": 55.097008034764784
+        },
+        "zero_combined": {
+          "sse": 0.18354409054844112,
+          "pixels": 262144,
+          "psnr_db": 66.31920770307579
+        }
+      },
+      "arm_A_visible": {
+        "sse": 2.4319848450219794,
+        "pixels": 262144,
+        "psnr_db": 55.0970031237977
+      },
+      "deltas_db": {
+        "far_recoverable": 0.0,
+        "zero_visible": 0.0,
+        "zero_combined": 0.0
+      },
+      "arm_A_requested_floor_db": 60,
+      "arm_A_passed": false
+    },
+    "original_per_case_floors": {
+      "zero_visible_db": 50,
+      "zero_combined_db": 60
+    },
+    "archives": {
+      "arm_A": "outputs/route3-v2data-E0-v3-2026-11-26-01/evaluation/E1_2k/frames",
+      "stage3c": "../route3-stage3c-20261126/outputs/route3-v2data-stage3c-2026-11-26-01/evaluation/step-000000/ema/report.json"
+    },
+    "archive_summary": {
+      "arm_A_visible": {
+        "scored": 87,
+        "min_db": 53.954376623101325,
+        "max_db": 56.980062717284866,
+        "at_least_50_db": 87,
+        "at_least_60_db": 0,
+        "pooled_db": 55.04869819909874
+      },
+      "baseline_3c_V0_visible": {
+        "scored": 87,
+        "min_db": 53.95438476134045,
+        "max_db": 56.98006342502182,
+        "at_least_50_db": 87,
+        "at_least_60_db": 0,
+        "pooled_db": 55.04869927993465
+      },
+      "baseline_3c_V0_combined": {
+        "scored": 87,
+        "min_db": 60.15600633823307,
+        "max_db": 91.12529891012998,
+        "at_least_50_db": 87,
+        "at_least_60_db": 87,
+        "pooled_db": 71.33700832883999
+      },
+      "maximum_abs_visible_difference_db": 8.138239124377833e-06
+    },
+    "detail": "The exact 3c baseline uses V0 without tear interpolation. The single new A measurement is the pinhole visible layer with v2a. No new A finite-aperture Query score was produced."
+  },
+  "interface": {
+    "references": [
+      "scripts/route3_v2data_stage3b.py:92",
+      "scripts/route3_v2data_stage3b.py:129",
+      "scripts/route3_v2data_stage1_evaluate.py:82",
+      "scripts/route3_s2a_data.py:83",
+      "scripts/route3_v2data_E0_rerender.py:75"
+    ],
+    "observed": "3c substitutes only the target depth. Source feature geometry uses observation-derived aligned SHARP for B development and the original observation path for legacy. The candidate builder takes one target depth and does not consume E component IDs or a tear field separately.",
+    "target_depth": "E's selected component is represented by its single decoded target depth.",
+    "decision_needed": "Confirm whether to leave source views unchanged as in 3c or rebuild them using the E depth in all source frames. Confirm whether tear interpolation affects candidate construction, or only visible subpixel geometry and the existing maximum-subpixel-depth hidden placement rule."
+  },
+  "archived_far_references": {
+    "source": "route3-v2data-E0-v3-2026-11-26.json",
+    "source_commit": "9eae952",
+    "status": "archived_only",
+    "scope": {
+      "P": {
+        "development": {
+          "reference": "S2@0.90",
+          "arms": {
+            "A": {
+              "case_count": 45,
+              "pooled": {
+                "F2": {
+                  "sse": 2050.7224803077515,
+                  "pixels": 167431,
+                  "psnr_db": 23.890502335924584
+                },
+                "reference": {
+                  "sse": 1987.4511149223356,
+                  "pixels": 167431,
+                  "psnr_db": 24.026606706603705
+                },
+                "delta_vs_F2_db": 0.13610437067912073
+              },
+              "paired_vs_same_arm_F2": {
+                "n": 15,
+                "median_db": 0.20835143477446394,
+                "sd_db": 0.7145311210189439,
+                "positive": 11,
+                "negative": 4,
+                "tied": 0
+              }
+            },
+            "B": {
+              "case_count": 45,
+              "pooled": {
+                "F2": {
+                  "sse": 718.9437806865342,
+                  "pixels": 167431,
+                  "psnr_db": 28.442621946903678
+                },
+                "reference": {
+                  "sse": 684.1627831993292,
+                  "pixels": 167431,
+                  "psnr_db": 28.657976799129674
+                },
+                "delta_vs_F2_db": 0.21535485222599604
+              },
+              "paired_vs_same_arm_F2": {
+                "n": 15,
+                "median_db": 0.733929305194966,
+                "sd_db": 1.4489387189066754,
+                "positive": 11,
+                "negative": 4,
+                "tied": 0
+              }
+            },
+            "C": {
+              "case_count": 45,
+              "pooled": {
+                "F2": {
+                  "sse": 798.9096333209225,
+                  "pixels": 167431,
+                  "psnr_db": 27.984594678848175
+                },
+                "reference": {
+                  "sse": 786.4930763200745,
+                  "pixels": 167431,
+                  "psnr_db": 28.052622220534722
+                },
+                "delta_vs_F2_db": 0.06802754168654701
+              },
+              "paired_vs_same_arm_F2": {
+                "n": 15,
+                "median_db": 0.5630614969296488,
+                "sd_db": 2.1612528058008076,
+                "positive": 12,
+                "negative": 3,
+                "tied": 0
+              }
+            }
+          }
+        },
+        "legacy": {
+          "reference": "S0 (same-frame peeled)",
+          "arms": {
+            "A": {
+              "case_count": 9,
+              "pooled": {
+                "F2": {
+                  "sse": 289.24712604454135,
+                  "pixels": 94841,
+                  "psnr_db": 29.928483267336894
+                },
+                "reference": {
+                  "sse": 253.38042187344985,
+                  "pixels": 94841,
+                  "psnr_db": 30.503443243339493
+                },
+                "delta_vs_F2_db": 0.5749599760025994
+              },
+              "paired_vs_same_arm_F2": {
+                "n": 3,
+                "median_db": 0.5972170980346512,
+                "sd_db": 0.867623787035938,
+                "positive": 3,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "B": {
+              "case_count": 9,
+              "pooled": {
+                "F2": {
+                  "sse": 289.93278822525616,
+                  "pixels": 94841,
+                  "psnr_db": 29.91820047149711
+                },
+                "reference": {
+                  "sse": 251.8666521669005,
+                  "pixels": 94841,
+                  "psnr_db": 30.529467097067858
+                },
+                "delta_vs_F2_db": 0.6112666255707495
+              },
+              "paired_vs_same_arm_F2": {
+                "n": 3,
+                "median_db": 0.6139509624390236,
+                "sd_db": 0.5322128267964392,
+                "positive": 3,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "C": {
+              "case_count": 9,
+              "pooled": {
+                "F2": {
+                  "sse": 402.40513194549493,
+                  "pixels": 94841,
+                  "psnr_db": 28.494538685155895
+                },
+                "reference": {
+                  "sse": 337.74538780781523,
+                  "pixels": 94841,
+                  "psnr_db": 29.255279521501606
+                },
+                "delta_vs_F2_db": 0.7607408363457111
+              },
+              "paired_vs_same_arm_F2": {
+                "n": 3,
+                "median_db": 0.6610399148253698,
+                "sd_db": 1.2358347523019186,
+                "positive": 3,
+                "negative": 0,
+                "tied": 0
+              }
+            }
+          }
+        }
+      },
+      "G": {
+        "development": {
+          "reference": "S2@0.90",
+          "arms": {
+            "A": {
+              "case_count": 45,
+              "pooled": {
+                "F2": {
+                  "sse": 375.4051922547723,
+                  "pixels": 167431,
+                  "psnr_db": 31.26456850751714
+                },
+                "reference": {
+                  "sse": 365.1778366687119,
+                  "pixels": 167431,
+                  "psnr_db": 31.38452714323813
+                },
+                "delta_vs_F2_db": 0.11995863572099097
+              },
+              "paired_vs_same_arm_F2": {
+                "n": 15,
+                "median_db": 0.1921200373827645,
+                "sd_db": 1.0112773189150064,
+                "positive": 10,
+                "negative": 5,
+                "tied": 0
+              }
+            },
+            "B": {
+              "case_count": 45,
+              "pooled": {
+                "F2": {
+                  "sse": 426.66465886215894,
+                  "pixels": 167431,
+                  "psnr_db": 30.708704546111495
+                },
+                "reference": {
+                  "sse": 370.4003801734435,
+                  "pixels": 167431,
+                  "psnr_db": 31.322857020716036
+                },
+                "delta_vs_F2_db": 0.6141524746045413
+              },
+              "paired_vs_same_arm_F2": {
+                "n": 15,
+                "median_db": 0.7230924667404075,
+                "sd_db": 1.4023357292283036,
+                "positive": 11,
+                "negative": 4,
+                "tied": 0
+              }
+            },
+            "C": {
+              "case_count": 45,
+              "pooled": {
+                "F2": {
+                  "sse": 563.8218771061889,
+                  "pixels": 167431,
+                  "psnr_db": 29.498152027171276
+                },
+                "reference": {
+                  "sse": 471.7187253066141,
+                  "pixels": 167431,
+                  "psnr_db": 30.272740095302307
+                },
+                "delta_vs_F2_db": 0.7745880681310311
+              },
+              "paired_vs_same_arm_F2": {
+                "n": 15,
+                "median_db": 0.9547170533513061,
+                "sd_db": 1.9388636590485513,
+                "positive": 12,
+                "negative": 3,
+                "tied": 0
+              }
+            }
+          }
+        },
+        "legacy": {
+          "reference": "S0 (same-frame peeled)",
+          "arms": {
+            "A": {
+              "case_count": 9,
+              "pooled": {
+                "F2": {
+                  "sse": 359.10369006006874,
+                  "pixels": 94841,
+                  "psnr_db": 28.988975113840077
+                },
+                "reference": {
+                  "sse": 314.36131406861506,
+                  "pixels": 94841,
+                  "psnr_db": 29.566882837259307
+                },
+                "delta_vs_F2_db": 0.57790772341923
+              },
+              "paired_vs_same_arm_F2": {
+                "n": 3,
+                "median_db": 0.4540927544695528,
+                "sd_db": 0.9065682964644576,
+                "positive": 3,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "B": {
+              "case_count": 9,
+              "pooled": {
+                "F2": {
+                  "sse": 372.91819200917627,
+                  "pixels": 94841,
+                  "psnr_db": 28.825038092378247
+                },
+                "reference": {
+                  "sse": 314.7472858521811,
+                  "pixels": 94841,
+                  "psnr_db": 29.56155385473304
+                },
+                "delta_vs_F2_db": 0.7365157623547951
+              },
+              "paired_vs_same_arm_F2": {
+                "n": 3,
+                "median_db": 0.5483981057065463,
+                "sd_db": 1.07627578702438,
+                "positive": 3,
+                "negative": 0,
+                "tied": 0
+              }
+            },
+            "C": {
+              "case_count": 9,
+              "pooled": {
+                "F2": {
+                  "sse": 415.22968216950323,
+                  "pixels": 94841,
+                  "psnr_db": 28.358289882922275
+                },
+                "reference": {
+                  "sse": 352.9068751430101,
+                  "pixels": 94841,
+                  "psnr_db": 29.06457260099703
+                },
+                "delta_vs_F2_db": 0.7062827180747568
+              },
+              "paired_vs_same_arm_F2": {
+                "n": 3,
+                "median_db": 0.7116220231570267,
+                "sd_db": 1.191958442967225,
+                "positive": 3,
+                "negative": 0,
+                "tied": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    "S2_coverage_by_scene": {
+      "development-000-8e840e827a5e835c": {
+        "parents": 15889,
+        "qualified": 8278,
+        "fallback": 7611,
+        "qualified_fraction": 0.5209893637107433,
+        "fallback_fraction": 0.4790106362892567,
+        "limited_reference": true
+      },
+      "development-001-c2e77289a531d9c6": {
+        "parents": 7114,
+        "qualified": 7040,
+        "fallback": 74,
+        "qualified_fraction": 0.9895979758223222,
+        "fallback_fraction": 0.010402024177677818,
+        "limited_reference": false
+      },
+      "development-002-9d1be93b64c29ff2": {
+        "parents": 12259,
+        "qualified": 12240,
+        "fallback": 19,
+        "qualified_fraction": 0.998450118280447,
+        "fallback_fraction": 0.0015498817195529816,
+        "limited_reference": false
+      },
+      "development-003-8c92e9e93c0ff003": {
+        "parents": 25066,
+        "qualified": 23697,
+        "fallback": 1369,
+        "qualified_fraction": 0.945384185749621,
+        "fallback_fraction": 0.054615814250379,
+        "limited_reference": false
+      },
+      "development-004-403a5734469f072d": {
+        "parents": 10856,
+        "qualified": 10853,
+        "fallback": 3,
+        "qualified_fraction": 0.9997236551215918,
+        "fallback_fraction": 0.0002763448784082535,
+        "limited_reference": false
+      },
+      "development-005-35442efa18790d0a": {
+        "parents": 47489,
+        "qualified": 47478,
+        "fallback": 11,
+        "qualified_fraction": 0.9997683674114005,
+        "fallback_fraction": 0.00023163258859946513,
+        "limited_reference": false
+      },
+      "development-006-cfa2a67575eca884": {
+        "parents": 5272,
+        "qualified": 5247,
+        "fallback": 25,
+        "qualified_fraction": 0.995257966616085,
+        "fallback_fraction": 0.004742033383915023,
+        "limited_reference": false
+      },
+      "development-007-7f68b7245eb4f8a2": {
+        "parents": 10328,
+        "qualified": 10254,
+        "fallback": 74,
+        "qualified_fraction": 0.9928350116189001,
+        "fallback_fraction": 0.007164988381099922,
+        "limited_reference": false
+      },
+      "development-008-6feda700c49fc611": {
+        "parents": 5132,
+        "qualified": 5116,
+        "fallback": 16,
+        "qualified_fraction": 0.9968823070927514,
+        "fallback_fraction": 0.003117692907248636,
+        "limited_reference": false
+      },
+      "development-009-082e653bca2a3be9": {
+        "parents": 5088,
+        "qualified": 5026,
+        "fallback": 62,
+        "qualified_fraction": 0.987814465408805,
+        "fallback_fraction": 0.01218553459119497,
+        "limited_reference": false
+      },
+      "development-010-41701db7e3333e89": {
+        "parents": 1362,
+        "qualified": 1241,
+        "fallback": 121,
+        "qualified_fraction": 0.9111600587371512,
+        "fallback_fraction": 0.08883994126284875,
+        "limited_reference": false
+      },
+      "development-011-d0fd8daa5ce0ec59": {
+        "parents": 9833,
+        "qualified": 9610,
+        "fallback": 223,
+        "qualified_fraction": 0.9773212651276314,
+        "fallback_fraction": 0.022678734872368555,
+        "limited_reference": false
+      },
+      "development-012-edecf4a38be3ec1d": {
+        "parents": 4112,
+        "qualified": 4096,
+        "fallback": 16,
+        "qualified_fraction": 0.9961089494163424,
+        "fallback_fraction": 0.0038910505836575876,
+        "limited_reference": false
+      },
+      "development-013-ce68041af26e6e53": {
+        "parents": 9567,
+        "qualified": 9518,
+        "fallback": 49,
+        "qualified_fraction": 0.9948782272394691,
+        "fallback_fraction": 0.005121772760530992,
+        "limited_reference": false
+      },
+      "development-014-46267e4acd6e6f30": {
+        "parents": 20844,
+        "qualified": 11195,
+        "fallback": 9649,
+        "qualified_fraction": 0.5370850124736135,
+        "fallback_fraction": 0.4629149875263865,
+        "limited_reference": true
+      }
+    },
+    "scene_details": "See source optical.<P or G>.<development or legacy>.far_witness_comparison.methods.<arm>.primary_reference.by_scene."
+  },
+  "paired_rod_diagnostics": {
+    "v2_4k": {
+      "development": {
+        "scene_count": 15,
+        "frames": 45,
+        "scenes_with_rod_pixels": 4,
+        "rod_pixels": 125831,
+        "selected_back_fraction": 0.06377601703872654,
+        "absolute_decoded_rho_error_m_inv": {
+          "front": {
+            "pixels": 117806,
+            "p10": 0.01591348648071289,
+            "p50": 0.07134145498275757,
+            "p90": 0.19070884585380554,
+            "p95": 0.22414908558130264
+          },
+          "back": {
+            "pixels": 8025,
+            "p10": 0.030610716342926027,
+            "p50": 0.159146249294281,
+            "p90": 0.5690544128417969,
+            "p95": 0.5856767654418945
+          }
+        },
+        "front_minus_back_rho_m_inv": {
+          "all": {
+            "pixels": 125831,
+            "p10": 0.11647874116897583,
+            "p50": 0.293552964925766,
+            "p90": 0.45215535163879395,
+            "p95": 0.48190684616565704
+          },
+          "front": {
+            "pixels": 117806,
+            "p10": 0.14463014900684357,
+            "p50": 0.29702404141426086,
+            "p90": 0.45336560904979706,
+            "p95": 0.483234241604805
+          },
+          "back": {
+            "pixels": 8025,
+            "p10": 0.008403730392456055,
+            "p50": 0.17405304312705994,
+            "p90": 0.4178822755813599,
+            "p95": 0.45831477642059326
+          }
+        }
+      },
+      "holdout": {
+        "scene_count": 10,
+        "frames": 30,
+        "scenes_with_rod_pixels": 5,
+        "rod_pixels": 174567,
+        "selected_back_fraction": 0.011875096667755073,
+        "absolute_decoded_rho_error_m_inv": {
+          "front": {
+            "pixels": 172494,
+            "p10": 0.005487793684005737,
+            "p50": 0.031986840069293976,
+            "p90": 0.13299235403537757,
+            "p95": 0.17529636323452003
+          },
+          "back": {
+            "pixels": 2073,
+            "p10": 0.04044782221317291,
+            "p50": 0.33088037371635437,
+            "p90": 0.38303996324539186,
+            "p95": 0.5670655727386474
+          }
+        },
+        "front_minus_back_rho_m_inv": {
+          "all": {
+            "pixels": 174567,
+            "p10": 0.06468340158462524,
+            "p50": 0.1353192925453186,
+            "p90": 0.4187964141368866,
+            "p95": 0.5092834532260895
+          },
+          "front": {
+            "pixels": 172494,
+            "p10": 0.06463907957077027,
+            "p50": 0.13461364805698395,
+            "p90": 0.4196005284786225,
+            "p95": 0.5101609766483307
+          },
+          "back": {
+            "pixels": 2073,
+            "p10": 0.0697395920753479,
+            "p50": 0.24695169925689697,
+            "p90": 0.39871277809143063,
+            "p95": 0.4174502849578857
+          }
+        }
+      }
+    },
+    "v3_4k": {
+      "development": {
+        "scene_count": 15,
+        "frames": 45,
+        "scenes_with_rod_pixels": 4,
+        "rod_pixels": 125831,
+        "selected_back_fraction": 0.05567785362907392,
+        "absolute_decoded_rho_error_m_inv": {
+          "front": {
+            "pixels": 118825,
+            "p10": 0.019123709201812746,
+            "p50": 0.07579511404037476,
+            "p90": 0.16552881002426148,
+            "p95": 0.1912729501724243
+          },
+          "back": {
+            "pixels": 7006,
+            "p10": 0.023443251848220825,
+            "p50": 0.13780251145362854,
+            "p90": 0.539329320192337,
+            "p95": 0.5787499696016312
+          }
+        },
+        "front_minus_back_rho_m_inv": {
+          "all": {
+            "pixels": 125831,
+            "p10": 0.03274959325790405,
+            "p50": 0.14783775806427002,
+            "p90": 0.3808240294456482,
+            "p95": 0.4263452738523483
+          },
+          "front": {
+            "pixels": 118825,
+            "p10": 0.03720523118972779,
+            "p50": 0.14942830801010132,
+            "p90": 0.3781343936920166,
+            "p95": 0.4233717679977417
+          },
+          "back": {
+            "pixels": 7006,
+            "p10": 0.008293122053146362,
+            "p50": 0.1058066338300705,
+            "p90": 0.44268546998500824,
+            "p95": 0.4908531829714775
+          }
+        }
+      },
+      "holdout": {
+        "scene_count": 10,
+        "frames": 30,
+        "scenes_with_rod_pixels": 5,
+        "rod_pixels": 174567,
+        "selected_back_fraction": 0.017506172415175835,
+        "absolute_decoded_rho_error_m_inv": {
+          "front": {
+            "pixels": 171511,
+            "p10": 0.006028234958648682,
+            "p50": 0.037424564361572266,
+            "p90": 0.14794659614562988,
+            "p95": 0.18821007013320923
+          },
+          "back": {
+            "pixels": 3056,
+            "p10": 0.021609634160995483,
+            "p50": 0.10582007467746735,
+            "p90": 0.36838507652282715,
+            "p95": 0.3767113536596298
+          }
+        },
+        "front_minus_back_rho_m_inv": {
+          "all": {
+            "pixels": 174567,
+            "p10": 0.03782288432121277,
+            "p50": 0.07771831750869751,
+            "p90": 0.38805238008499143,
+            "p95": 0.4479469716548918
+          },
+          "front": {
+            "pixels": 171511,
+            "p10": 0.0377386212348938,
+            "p50": 0.07713544368743896,
+            "p90": 0.389202743768692,
+            "p95": 0.44870126247406006
+          },
+          "back": {
+            "pixels": 3056,
+            "p10": 0.046277567744255066,
+            "p50": 0.14895598590373993,
+            "p90": 0.3450789898633957,
+            "p95": 0.3942198380827904
+          }
+        }
+      }
+    }
+  },
+  "D_diagnostic_only": {
+    "note": "不作为采用依据",
+    "artifact": "outputs/route3-v2data-E-query-2026-11-27-01/depth/v3_4k/report.json",
+    "development_geometry_guards": {
+      "OVG": {
+        "inverse_depth_rmse": 0.10069018463623772,
+        "inverse_depth_pixels": 11579021,
+        "same_surface_step": 0.07733698872715355,
+        "near_subject_coc_mae": 0.3166648469731785,
+        "near_coc_pixels": 1443183,
+        "GT_occlusion_crossing_abs_p95": 0.58990288124754,
+        "GT_occlusion_crossing_signed_median": -0.010539202703469641,
+        "crossing_pairs": 142204
+      },
+      "E": {
+        "inverse_depth_rmse": 0.06338061324811835,
+        "inverse_depth_pixels": 11579021,
+        "same_surface_step": 0.08367035653141223,
+        "near_subject_coc_mae": 0.32843154247058276,
+        "near_coc_pixels": 1443183,
+        "GT_occlusion_crossing_abs_p95": 0.4774193132582149,
+        "GT_occlusion_crossing_signed_median": 0.0020147805772265104,
+        "crossing_pairs": 142204
+      },
+      "relative": {
+        "inverse_depth_rmse": -0.37053831535722404,
+        "same_surface_step": 0.08189312654262926,
+        "near_subject_coc_mae": 0.037158199307171236,
+        "GT_occlusion_crossing_abs_p95": -0.1906815029474721
+      },
+      "limits": {
+        "inverse_depth_rmse": 0.05,
+        "same_surface_step": 0.1,
+        "near_subject_coc_mae": 0.1,
+        "GT_occlusion_crossing_abs_p95": 0.1
+      },
+      "passed": {
+        "inverse_depth_rmse": true,
+        "same_surface_step": true,
+        "near_subject_coc_mae": true,
+        "GT_occlusion_crossing_abs_p95": true
+      }
+    },
+    "errors": {
+      "development": {
+        "rod/decoded": {
+          "n": 125831,
+          "p50": 0.07661157846450806,
+          "p95": 0.20635679364204407,
+          "signed_p50": -0.02661430835723877
+        },
+        "rod/OVG": {
+          "n": 125831,
+          "p50": 0.07061195373535156,
+          "p95": 0.22014813125133514,
+          "signed_p50": -0.0121992826461792
+        },
+        "gap/decoded": {
+          "n": 1062726,
+          "p50": 0.039507992565631866,
+          "p95": 0.15985333919525146,
+          "signed_p50": 0.001056373119354248
+        },
+        "gap/OVG": {
+          "n": 1062726,
+          "p50": 0.14337056875228882,
+          "p95": 0.4379456490278244,
+          "signed_p50": 0.14326626062393188
+        },
+        "normal/decoded": {
+          "n": 10390464,
+          "p50": 0.01674935221672058,
+          "p95": 0.12499132305383681,
+          "signed_p50": -0.0015516728162765503
+        },
+        "normal/OVG": {
+          "n": 10390464,
+          "p50": 0.018824301660060883,
+          "p95": 0.15056260973215102,
+          "signed_p50": -0.00021892786026000977
+        },
+        "boundary/decoded": {
+          "n": 52695,
+          "p50": 0.04372000694274902,
+          "p95": 0.3578416705131527,
+          "signed_p50": -0.0027371644973754883
+        },
+        "boundary/OVG": {
+          "n": 52695,
+          "p50": 0.07987111806869507,
+          "p95": 0.4983587741851806,
+          "signed_p50": 0.053535401821136475
+        },
+        "rod/rear_to_peeled": {
+          "n": 125831,
+          "p50": 0.08920955657958984,
+          "p95": 0.40681561827659607,
+          "signed_p50": 0.07146456837654114
+        }
+      },
+      "thin_structure": {
+        "rod/decoded": {
+          "n": 112874,
+          "p50": 0.08019816875457764,
+          "p95": 0.19812097996473305,
+          "signed_p50": -0.028546899557113647
+        },
+        "rod/OVG": {
+          "n": 112874,
+          "p50": 0.07469812035560608,
+          "p95": 0.2136202320456504,
+          "signed_p50": -0.0077838897705078125
+        },
+        "gap/decoded": {
+          "n": 1053661,
+          "p50": 0.04000958800315857,
+          "p95": 0.15994471311569214,
+          "signed_p50": 0.0012553632259368896
+        },
+        "gap/OVG": {
+          "n": 1053661,
+          "p50": 0.14443129301071167,
+          "p95": 0.4383391737937927,
+          "signed_p50": 0.1443300098180771
+        },
+        "normal/decoded": {
+          "n": 1178465,
+          "p50": 0.022955715656280518,
+          "p95": 0.1292199671268463,
+          "signed_p50": -0.0006546378135681152
+        },
+        "normal/OVG": {
+          "n": 1178465,
+          "p50": 0.051863670349121094,
+          "p95": 0.22296000123023987,
+          "signed_p50": 0.002373427152633667
+        },
+        "boundary/decoded": {
+          "n": 1797,
+          "p50": 0.034838542342185974,
+          "p95": 0.2645147383213043,
+          "signed_p50": 0.0004903972148895264
+        },
+        "boundary/OVG": {
+          "n": 1797,
+          "p50": 0.3187344968318939,
+          "p95": 0.45787494778633114,
+          "signed_p50": 0.3187344968318939
+        },
+        "rod/rear_to_peeled": {
+          "n": 112874,
+          "p50": 0.08964180946350098,
+          "p95": 0.4105136588215828,
+          "signed_p50": 0.06982776522636414
+        }
+      },
+      "dev008": {
+        "rod/decoded": {
+          "n": 12957,
+          "p50": 0.04217422008514404,
+          "p95": 0.40263240337371803,
+          "signed_p50": -0.02095794677734375
+        },
+        "rod/OVG": {
+          "n": 12957,
+          "p50": 0.03942692279815674,
+          "p95": 0.39818755388259874,
+          "signed_p50": -0.02246677875518799
+        },
+        "gap/decoded": {
+          "n": 9065,
+          "p50": 0.021550282835960388,
+          "p95": 0.056925606727600046,
+          "signed_p50": -0.017925292253494263
+        },
+        "gap/OVG": {
+          "n": 9065,
+          "p50": 0.03549553453922272,
+          "p95": 0.3691107869148254,
+          "signed_p50": 0.028940707445144653
+        },
+        "normal/decoded": {
+          "n": 710711,
+          "p50": 0.005417153239250183,
+          "p95": 0.07724276185035706,
+          "signed_p50": -0.0010358244180679321
+        },
+        "normal/OVG": {
+          "n": 710711,
+          "p50": 0.006468474864959717,
+          "p95": 0.09075573086738586,
+          "signed_p50": -0.0011683553457260132
+        },
+        "boundary/decoded": {
+          "n": 35,
+          "p50": 0.02339671552181244,
+          "p95": 0.04064372032880783,
+          "signed_p50": -0.023069635033607483
+        },
+        "boundary/OVG": {
+          "n": 35,
+          "p50": 0.03526413440704346,
+          "p95": 0.33248788118362427,
+          "signed_p50": 0.03526413440704346
+        },
+        "rod/rear_to_peeled": {
+          "n": 12957,
+          "p50": 0.08474227786064148,
+          "p95": 0.34462302923202515,
+          "signed_p50": 0.08474227786064148
+        }
+      }
+    },
+    "dev003_far_subject": [
+      {
+        "frame": 1,
+        "case": "f001-focus1-N1.4",
+        "pixels": 245897,
+        "regions": {
+          "rod": 0,
+          "gap": 123821,
+          "normal": 122015,
+          "boundary": 61
+        },
+        "selected_front": 92655,
+        "selected_back": 153242,
+        "rear_base_source": {
+          "rho2": 245897,
+          "DS": 0,
+          "tri": 0
+        },
+        "raw_rear_log_inverse_p50": -1.0220768451690674,
+        "raw_rear_inverse_p50": 0.359846830368042,
+        "clipped_rear_inverse_p50": 0.35951507091522217,
+        "single_rear_target_log_inverse_p50": -0.8508186936378479,
+        "OVG_rho1_p50": 0.4844295382499695,
+        "decoded_rho_p50": 0.3714895248413086,
+        "GT_center_rho_p50": 0.4876190423965454,
+        "actual_focus_m": 2.691865921020508,
+        "GT_P2_focus_m": 2.0507812719642975
+      },
+      {
+        "frame": 30,
+        "case": "f030-focus1-N1.4",
+        "pixels": 245727,
+        "regions": {
+          "rod": 0,
+          "gap": 121742,
+          "normal": 123899,
+          "boundary": 86
+        },
+        "selected_front": 96319,
+        "selected_back": 149408,
+        "rear_base_source": {
+          "rho2": 217376,
+          "DS": 0,
+          "tri": 28351
+        },
+        "raw_rear_log_inverse_p50": -0.8633182644844055,
+        "raw_rear_inverse_p50": 0.4217602610588074,
+        "clipped_rear_inverse_p50": 0.4216236174106598,
+        "single_rear_target_log_inverse_p50": -0.7182208299636841,
+        "OVG_rho1_p50": 0.5702211856842041,
+        "decoded_rho_p50": 0.44484269618988037,
+        "GT_center_rho_p50": 0.4876190423965454,
+        "actual_focus_m": 2.247985601425171,
+        "GT_P2_focus_m": 2.0507812719642975
+      },
+      {
+        "frame": 60,
+        "case": "f060-focus1-N1.4",
+        "pixels": 245897,
+        "regions": {
+          "rod": 0,
+          "gap": 123821,
+          "normal": 121990,
+          "boundary": 86
+        },
+        "selected_front": 85335,
+        "selected_back": 160562,
+        "rear_base_source": {
+          "rho2": 245897,
+          "DS": 0,
+          "tri": 0
+        },
+        "raw_rear_log_inverse_p50": -1.0215638875961304,
+        "raw_rear_inverse_p50": 0.36003145575523376,
+        "clipped_rear_inverse_p50": 0.35967743396759033,
+        "single_rear_target_log_inverse_p50": -0.8232085108757019,
+        "OVG_rho1_p50": 0.5073814988136292,
+        "decoded_rho_p50": 0.3693384528160095,
+        "GT_center_rho_p50": 0.4880838990211487,
+        "actual_focus_m": 2.7075436115264893,
+        "GT_P2_focus_m": 2.0488280846909683
+      }
+    ],
+    "dev003_far_subject_definition": "P2 nominal far subject mask; GT P2 focus is reciprocal of the GT center inverse-depth median on this same mask."
+  },
+  "read_only_run": {
+    "elapsed_s": 84.21249590069056,
+    "peak_reserved_gib": 2.79296875
+  },
+  "scope": {
+    "planned_development_cases": 87,
+    "planned_legacy_cases": 18,
+    "test_cases_used": 0,
+    "new_optical_baseline_cases": 1,
+    "four_arm_completed_cases": 0,
+    "diagnostic_tear_trained": false
+  },
+  "outstanding": [
+    "Resolve visible-only 60 dB calibration against the 3c 50/60 dB convention.",
+    "Confirm source-view depth and tear placement for E candidates.",
+    "Train the matched diagnostic D tear, rebuild candidates, run P/G three-column evaluation, compute recovery ratios, and render the four requested panels."
+  ]
+}
